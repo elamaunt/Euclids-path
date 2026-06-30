@@ -54,3 +54,4 @@ import EuclidsPath.Engine.ProductHall       -- ProductHall/Steering pump (4-сл
 import EuclidsPath.Engine.SeparatingScale   -- separating scale: ¬ProductHall чистой арифметикой (закрыт узел)
 import EuclidsPath.Engine.RankDescent       -- energy-defect trichotomy + конечный product-rank descent
 import EuclidsPath.Engine.ProductCore       -- исправленный product-core: 3 дефекта закрыты теоремами
+import EuclidsPath.Engine.CarrierBridge     -- последнее звено: carrier бесконечен; вход = FactorizationData

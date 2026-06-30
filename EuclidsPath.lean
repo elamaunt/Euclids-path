@@ -41,3 +41,4 @@ import EuclidsPath.Engine.PaymentLedger     -- channel/tax/shifted-primorial/Y_A
 -- IV. Финальный узел: единственная открытая лемма
 import EuclidsPath.Engine.SNOL              -- rank descent → rank-1 → shifted-neighbour (SNOL)
 import EuclidsPath.Engine.OldPeel           -- SNOL раскрывается в old-peel ⇒ EPMI-противоречие
+import EuclidsPath.Engine.NOPSL             -- NOPSL: нет old-peel sink ⇒ twin sink (замыкание)

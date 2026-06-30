@@ -47,3 +47,4 @@ import EuclidsPath.Engine.Residuals         -- Step00-остатки: start (pri
 import EuclidsPath.Engine.RigidClose        -- rigid-замыкание: reaches_twin без цикла + cofactor_is_center
 import EuclidsPath.Engine.CleanGraph        -- clean/boundary split: clean-sink ⟹ twin выше M₀ (исправление)
 import EuclidsPath.Engine.BoundaryDecomp    -- BoundaryExit декомпозиция + глобальный absorber-узел
+import EuclidsPath.Engine.PumpFinal         -- pump (условно) + разрыв EPMI на self-loop

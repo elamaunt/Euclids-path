@@ -104,4 +104,80 @@ theorem no_productHall {P_A r : ℕ} {X₁ X₂ : RankNode r} (k : Fin r)
     rw [← e1, ← e2, hcong]
   exact hne this
 
+/-! ### Финальная сборка: equal residues + bound ⟹ equal factors -/
+
+/--
+  **Equal CoreSig + bound ⟹ equal factors.** Если `coreSigOf X₁ = coreSigOf X₂` (равные residues)
+  и все факторы обоих `< P_A`, то факторы совпадают поточечно. (Residue инъективна на `[0,P_A)`.) -/
+theorem factors_eq_of_coreSig {P_A r : ℕ} {X₁ X₂ : RankNode r}
+    (hsig : (coreSigOf X₁ : CoreSig P_A r) = coreSigOf X₂)
+    (h1 : ∀ i, X₁.factors i < P_A) (h2 : ∀ i, X₂.factors i < P_A) :
+    ∀ k, X₁.factors k = X₂.factors k := by
+  intro k
+  have hres : (X₁.factors k : ZMod P_A) = (X₂.factors k : ZMod P_A) := by
+    have := congrArg CoreSig.residues hsig
+    exact congrFun this k
+  by_contra hne
+  exact no_productHall k (h1 k) (h2 k) hres hne
+
+/--
+  **Equal CoreSig + bound ⟹ equal nodes (extensionality через арифметику).** Объединяет
+  `factors_eq_of_coreSig` и `no_mismatch_core_eq`: signs из подписи, факторы из bound. -/
+theorem rankNode_eq_of_coreSig {P_A r : ℕ} {X₁ X₂ : RankNode r}
+    (hsig : (coreSigOf X₁ : CoreSig P_A r) = coreSigOf X₂)
+    (h1 : ∀ i, X₁.factors i < P_A) (h2 : ∀ i, X₂.factors i < P_A) :
+    X₁ = X₂ := by
+  have hsign : X₁.sign = X₂.sign := congrArg CoreSig.sign hsig
+  exact no_mismatch_core_eq X₁ X₂ hsign (factors_eq_of_coreSig hsig h1 h2)
+
+/-- `CoreCollision`: два РАЗНЫХ AmbientLegal-RankNode ранга `r` с равной `CoreSig`. -/
+def CoreCollision (X_A P_A r : ℕ) : Prop :=
+  ∃ X₁ X₂ : RankNode r, X₁ ≠ X₂ ∧
+    AmbientLegal X_A X₁.factors ∧ AmbientLegal X_A X₂.factors ∧
+    (coreSigOf X₁ : CoreSig P_A r) = coreSigOf X₂
+
+/--
+  **rank_one_coreCollision_absurd (Lemma 9.1) — ДОКАЗАНО чистой арифметикой.** При separating scale
+  `CoreCollision_1` ⟹ False: rank-1 факторы `< P_A`, равные residues ⟹ равны ⟹ `X₁=X₂` ⟹ ⊥.
+  База НЕ через внешний SNOL — через ту же separating-scale арифметику. -/
+theorem rank_one_coreCollision_absurd {X_A P_A : ℕ} (hsep : 6 * X_A + 1 < P_A)
+    (h : CoreCollision X_A P_A 1) : False := by
+  obtain ⟨X₁, X₂, hne, ha1, ha2, hsig⟩ := h
+  have b1 := ambient_factor_lt_primorial hsep ha1
+  have b2 := ambient_factor_lt_primorial hsep ha2
+  exact hne (rankNode_eq_of_coreSig hsig b1 b2)
+
+/-- rank-1 коллизия ⟹ Engine (по ex falso, через separating scale). -/
+theorem rank_one_coreCollision_engine {X_A P_A : ℕ} {Engine : Prop}
+    (hsep : 6 * X_A + 1 < P_A) (h : CoreCollision X_A P_A 1) : Engine :=
+  False.elim (rank_one_coreCollision_absurd hsep h)
+
+/-! ### coreCollision_engine: индукция r→1; и финальный product_core_pump -/
+
+/--
+  **CoreCollision ⟹ Engine (Theorem 10.1) — индукция по рангу.** База `r=1` — арифметика
+  (`rank_one_coreCollision_absurd`). Шаг `r>1` — `core_step` (открытый вход: descent r→r-1 через
+  удаление mismatched role; вся его арифметика — `delete_preserves_coreSig` + `no_productHall`,
+  доказаны в RankDescent/здесь, но сшивка с конкретным `deleteFactor` — оставлена входом). -/
+theorem coreCollision_engine {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A + 1 < P_A)
+    (core_step : ∀ r, 2 ≤ r → CoreCollision X_A P_A r → CoreCollision X_A P_A (r - 1)) :
+    ∀ r, 1 ≤ r → CoreCollision X_A P_A r → Engine := by
+  intro r
+  induction r using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hge hcol
+    rcases Nat.lt_or_ge n 2 with h1 | h2
+    · have : n = 1 := by omega
+      subst this; exact rank_one_coreCollision_engine hsep hcol
+    · exact ih (n - 1) (by omega) (by omega) (core_step n h2 hcol)
+
+/--
+  **product_core_pump (Theorem 12.1) — финальная сборка.** Бесконечно много fresh-стартов дают
+  core-коллизию (`freshStarts`, открытый вход: pigeonhole + факторизация), а та ⟹ Engine. -/
+theorem product_core_pump {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A + 1 < P_A)
+    (core_step : ∀ r, 2 ≤ r → CoreCollision X_A P_A r → CoreCollision X_A P_A (r - 1))
+    (freshStarts : ∃ r, 1 ≤ r ∧ r ≤ 4 ∧ CoreCollision X_A P_A r) : Engine := by
+  obtain ⟨r, hrpos, _hrle, hcol⟩ := freshStarts
+  exact coreCollision_engine hsep core_step r hrpos hcol
+
 end EuclidsPath.ProductCore

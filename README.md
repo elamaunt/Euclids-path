@@ -77,6 +77,11 @@
   `#print axioms` подтверждает: теоремы `no_infinite_descent`, `no_perpetual_engine`,
   `descent_strict`, `boundary_dichotomy` **не зависят ни от одной аксиомы** (полностью конструктивно,
   без `sorry`). Toolchain: Lean `v4.31.0`.
+- **Фрактальный слой двигателя (Wave 1–3, 6) — формализован и проверен** (см. [prose/17](prose/17_FractalEngineLayer.md)).
+  Модули `EuclidsPath/Engine/{TwoGap, Descent, BK, Squeeze, Cycle, NonCover}.lean` компилируются без
+  `sorry`; `#print axioms` — только стандартные `[propext, Classical.choice, Quot.sound]`, запрещённых
+  (аналитика/распределение/сито) нет. Цепь **`survivor ⟹ … ⟹ TwinLowers.Infinite`** замкнута;
+  открытым осталось комбинаторное ядро (carrier из 2-переноса; bad-upper + survivor⟹twin) — Wave 5–6.
 - Полностью написаны шаги **00** и **01** (проза + Lean); шаг **16** (multi-rank/fan-cycle) — проза.
 - Остальные шаги (02–15, A, B) — **заготовки** с целью шага и метками `TODO`/`sorry`.
 

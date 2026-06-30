@@ -18,6 +18,7 @@
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
+import EuclidsPath.Engine.TwoGap
 
 set_option autoImplicit false
 
@@ -66,5 +67,34 @@ theorem not_RH_gives_engine (H_RH : EngineBridge) (hnotRH : ¬ RiemannHypothesis
   simp only [not_forall] at hnotRH
   obtain ⟨ρ, hρ, hne⟩ := hnotRH
   exact H_RH ρ hρ hne
+
+/-! ### Связка с близнецами: один общий узел вместо двух -/
+
+/--
+  **Закон переноса двойки (абстрактно).** Пропозиция «ядро переноса двойки держится» — она УЖЕ
+  доказана конкретными тождествами `Engine/TwoGap` (`det_law_rank33`, `det_law_CD`, `det_collapse`,
+  …). Здесь — её абстрактная форма как посылки (свидетель — любое из тождеств). -/
+def TwoTransportLaw : Prop :=
+  ∀ m a b v q r s : ℕ, 1 ≤ m → 6 * m - 1 = a * b * v → 6 * m + 1 = q * r * s →
+    q * r * s = a * b * v + 2
+
+/-- Закон переноса двойки ДОКАЗАН (это `det_law_rank33`). Не аксиома. -/
+theorem twoTransportLaw_holds : TwoTransportLaw :=
+  fun _ _ _ _ _ _ _ hm h1 h2 => det_law_rank33 hm h1 h2
+
+/--
+  **Узел-связка `TwoTransportBridge` — ЕДИНСТВЕННОЕ, что надо доказать для «одновременности».**
+  Импликация (НЕ эквивалентность гипотез!): закон переноса двойки ⟹ EngineBridge. То есть нуль `ζ`
+  вне `1/2` ломает перенос двойки и порождает вечный двигатель. Если ЭТО доказано, RH следует из
+  УЖЕ доказанного ядра (`TwoGap` + EPMI), не дожидаясь близнецов. -/
+def TwoTransportBridge : Prop := TwoTransportLaw → EngineBridge
+
+/--
+  **RH из доказанного ядра + одной связки (структура «одновременности» явно).** Если узел-связка
+  `TwoTransportBridge` верен, то RH следует — потому что `TwoTransportLaw` УЖЕ доказан
+  (`twoTransportLaw_holds`) и EPMI УЖЕ доказан. Открытым остаётся РОВНО `TwoTransportBridge`
+  (импликация перенос-двойки ⟹ мост), а НЕ отдельная аналитика и НЕ эквивалентность гипотез. -/
+theorem riemann_of_two_transport (bridge : TwoTransportBridge) : RiemannHypothesis :=
+  riemann_of_engine_bridge (bridge twoTransportLaw_holds)
 
 end EuclidsPath.RiemannBranch

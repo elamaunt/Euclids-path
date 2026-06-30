@@ -170,6 +170,7 @@ theorem coreCollision_engine {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A + 1
     · have : n = 1 := by omega
       subst this; exact rank_one_coreCollision_engine hsep hcol
     · exact ih (n - 1) (by omega) (by omega) (core_step n h2 hcol)
+  -- (core_step здесь — гипотеза; ниже он ЗАКРЫТ как `core_step_succ` и подставлен в финал)
 
 /--
   **product_core_pump (Theorem 12.1) — финальная сборка.** Бесконечно много fresh-стартов дают
@@ -179,5 +180,68 @@ theorem product_core_pump {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A + 1 < 
     (freshStarts : ∃ r, 1 ≤ r ∧ r ≤ 4 ∧ CoreCollision X_A P_A r) : Engine := by
   obtain ⟨r, hrpos, _hrle, hcol⟩ := freshStarts
   exact coreCollision_engine hsep core_step r hrpos hcol
+
+/-! ### Закрытие core_step: удаление role + дихотомия residual -/
+
+/-- Удаление role `k` из `RankNode (r+1)` ⟹ `RankNode r` (через `Fin.succAbove`). -/
+def deleteFactor {r : ℕ} (X : RankNode (r + 1)) (k : Fin (r + 1)) : RankNode r :=
+  ⟨X.sign, fun i => X.factors (k.succAbove i)⟩
+
+/-- **Удаление сохраняет CoreSig.** Равные подписи ⟹ равные после удаления того же `k`. -/
+theorem delete_preserves_coreSig {P_A r : ℕ} {X₁ X₂ : RankNode (r + 1)} (k : Fin (r + 1))
+    (hsig : (coreSigOf X₁ : CoreSig P_A (r + 1)) = coreSigOf X₂) :
+    (coreSigOf (deleteFactor X₁ k) : CoreSig P_A r) = coreSigOf (deleteFactor X₂ k) := by
+  have hsign : X₁.sign = X₂.sign := congrArg CoreSig.sign hsig
+  have hres : ∀ i, (X₁.factors i : ZMod P_A) = (X₂.factors i : ZMod P_A) :=
+    fun i => congrFun (congrArg CoreSig.residues hsig) i
+  unfold deleteFactor coreSigOf
+  simp only [CoreSig.mk.injEq]
+  exact ⟨hsign, funext fun i => hres (k.succAbove i)⟩
+
+/--
+  **core_step ДОКАЗАН (для `r = r'+1 ≥ 2`).** Коллизия ранга `r'+1` ⟹ коллизия ранга `r'`.
+  Есть mismatched role `k` (иначе `no_mismatch_core_eq` ⟹ равны ⟹ ⊥). Удаляем `k`: residual
+  signatures равны (`delete_preserves_coreSig`). Если residual различны — коллизия `r'`. Если равны —
+  это ProductHall (`a_k` различны но ≡ mod P_A), невозможный по separating scale (`no_productHall`). -/
+theorem core_step_succ {X_A P_A r' : ℕ} (hsep : 6 * X_A + 1 < P_A)
+    (hcol : CoreCollision X_A P_A (r' + 1)) : CoreCollision X_A P_A r' := by
+  obtain ⟨X₁, X₂, hne, ha1, ha2, hsig⟩ := hcol
+  have b1 := ambient_factor_lt_primorial hsep ha1
+  have b2 := ambient_factor_lt_primorial hsep ha2
+  -- mismatched role существует (иначе X₁=X₂)
+  have hmis : ∃ k, X₁.factors k ≠ X₂.factors k := by
+    by_contra hno
+    simp only [not_exists, not_not] at hno
+    exact hne (no_mismatch_core_eq X₁ X₂ (congrArg CoreSig.sign hsig) hno)
+  obtain ⟨k, hk⟩ := hmis
+  set Y₁ := deleteFactor X₁ k with hY1
+  set Y₂ := deleteFactor X₂ k with hY2
+  have hsigDel : (coreSigOf Y₁ : CoreSig P_A r') = coreSigOf Y₂ := delete_preserves_coreSig k hsig
+  have haY1 : AmbientLegal X_A Y₁.factors := ambientLegal_delete k ha1
+  have haY2 : AmbientLegal X_A Y₂.factors := ambientLegal_delete k ha2
+  by_cases hYeq : Y₁ = Y₂
+  · -- residual равны ⟹ ProductHall ⟹ ⊥
+    exfalso
+    have hres : (X₁.factors k : ZMod P_A) = (X₂.factors k : ZMod P_A) :=
+      congrFun (congrArg CoreSig.residues hsig) k
+    exact no_productHall k (b1 k) (b2 k) hres hk
+  · -- residual различны ⟹ коллизия ранга r'
+    exact ⟨Y₁, Y₂, hYeq, haY1, haY2, hsigDel⟩
+
+/-- `core_step` (с `r-1`) теперь ДОКАЗАН из `core_step_succ`: для `r≥2`, `r = (r-1)+1`. -/
+theorem core_step_proved {X_A P_A : ℕ} (hsep : 6 * X_A + 1 < P_A) :
+    ∀ r, 2 ≤ r → CoreCollision X_A P_A r → CoreCollision X_A P_A (r - 1) := by
+  intro r hr hcol
+  obtain ⟨r', rfl⟩ : ∃ r', r = r' + 1 := ⟨r - 1, by omega⟩
+  simpa using core_step_succ hsep hcol
+
+/--
+  **product_core_pump_closed — финал БЕЗ гипотезы core_step.** Только separating scale + freshStarts
+  (бесконечно много стартов ⟹ core-коллизия). Шаг descent ДОКАЗАН (`core_step_proved`), база rank-1
+  ДОКАЗАНА (арифметика). Единственный оставшийся вход — `freshStarts`. -/
+theorem product_core_pump_closed {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A + 1 < P_A)
+    (freshStarts : ∃ r, 1 ≤ r ∧ r ≤ 4 ∧ CoreCollision X_A P_A r) : Engine := by
+  obtain ⟨r, hrpos, _hrle, hcol⟩ := freshStarts
+  exact coreCollision_engine hsep (core_step_proved hsep) r hrpos hcol
 
 end EuclidsPath.ProductCore

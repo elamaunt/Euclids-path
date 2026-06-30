@@ -30,3 +30,5 @@ import EuclidsPath.Step15_OpenProblems
 import EuclidsPath.Step16_MultiRankFanCycle
 import EuclidsPath.Engine.EPMI
 import EuclidsPath.Engine.Carrier
+import EuclidsPath.Engine.TwoGap
+import EuclidsPath.Engine.Descent

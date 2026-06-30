@@ -1,0 +1,12 @@
+# Lean / Lake build artifacts
+/.lake/
+/build/
+/lake-packages/
+*.olean
+*.ilean
+*.trace
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/

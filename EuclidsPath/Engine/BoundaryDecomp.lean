@@ -69,4 +69,31 @@ theorem no_global_absorption_under_epmi {A M0 : ℕ} {EuclideanEngine : Prop}
     (hnoTwin : NoNewTwinAbove M0) (habs : GlobalOldTwinAbsorption A M0) : False :=
   no_engine (hnode hnoTwin habs)
 
+/-! ### Авторский черновик: глобальный absorber ⟹ engine через pigeonhole -/
+
+/--
+  **Pigeonhole-скелет (черновик автора).** Бесконечно много свежих стартов `S` (домен), каждый
+  отображается в `(absorber, normSignature)` — КОНЕЧНЫЙ кодомен (`Finite Codom`). Тогда есть два
+  РАЗНЫХ старта `γ₁ ≠ γ₂` с одинаковым образом, и `pump` (Hall-узел) превращает их в engine.
+
+  Это ДОКАЗУЕМАЯ комбинаторика (бесконечный домен → конечный кодомен → коллизия). ВСЯ нагрузка —
+  в `pump` (два разных genealogy с одним absorber+сигнатурой ⟹ engine), который НЕ доказан: это и
+  есть Hall-узел (превращение fan-in в двигатель). Здесь `pump` — явная гипотеза.
+-/
+theorem global_absorber_forces_engine
+    {α Codom : Type*} {EuclideanEngine : Prop}
+    (S : Set α) (hInfStarts : S.Infinite)
+    [Finite Codom]
+    (key : α → Codom)                         -- key γ = (absorber γ, NormSig γ)
+    (pump : ∀ γ₁ γ₂, γ₁ ≠ γ₂ → key γ₁ = key γ₂ → EuclideanEngine) :
+    EuclideanEngine := by
+  -- pigeonhole: бесконечный домен в конечный кодомен ⟹ коллизия
+  by_contra hno
+  -- если нет коллизии, key инъективна на S ⟹ S конечно ⟹ противоречие
+  have hinj : Set.InjOn key S := by
+    intro a _ b _ hkab
+    by_contra hne
+    exact hno (pump a b hne hkab)
+  exact hInfStarts (Set.Finite.of_finite_image (Set.toFinite _) hinj)
+
 end EuclidsPath.BoundaryDecomp

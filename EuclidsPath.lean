@@ -50,3 +50,4 @@ import EuclidsPath.Engine.BoundaryDecomp    -- BoundaryExit декомпозиц
 import EuclidsPath.Engine.PumpFinal         -- pump (условно) + разрыв EPMI на self-loop
 import EuclidsPath.Engine.PumpStanding      -- pump v2 (two-token standing cycle) + EPMI-разрыв остаётся
 import EuclidsPath.Engine.RiemannBranch     -- побочная ветка: RH от противного через двигатель (условно)
+import EuclidsPath.Engine.ProductHall       -- ProductHall/Steering pump (4-случайная логика, без циркулярного payment)

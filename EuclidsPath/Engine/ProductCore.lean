@@ -244,4 +244,57 @@ theorem product_core_pump_closed {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A
   obtain ⟨r, hrpos, _hrle, hcol⟩ := freshStarts
   exact coreCollision_engine hsep (core_step_proved hsep) r hrpos hcol
 
+/-! ### Закрытие freshStarts: pigeonhole-ядро (доказано) + структура carrier -/
+
+/--
+  **Pigeonhole-ядро (ДОКАЗАНО полностью).** Дан тип стартов `ι` с бесконечным множеством `S`, и
+  отображение `node : ι → RankNode r`, инъективное на `S` (разные старты ⟹ разные cores). Если
+  `CoreSig` конечна, то существуют два разных старта с равной подписью ⟹ `CoreCollision r`
+  (с AmbientLegal, если он есть у каждого node). -/
+theorem coreCollision_of_infinite {ι : Type*} {X_A P_A r : ℕ} [NeZero P_A]
+    (S : Set ι) (hS : S.Infinite)
+    (node : ι → RankNode r)
+    (hinj : Set.InjOn node S)                                 -- разные старты ⟹ разные cores
+    (hamb : ∀ i ∈ S, AmbientLegal X_A (node i).factors) :
+    CoreCollision X_A P_A r := by
+  -- бесконечный S в конечный CoreSig ⟹ два разных образа с равной подписью
+  have hfin : Set.Finite (Set.range (fun i => (coreSigOf (node i) : CoreSig P_A r))) :=
+    Set.toFinite _
+  -- если бы coreSig∘node была InjOn на S, S было бы конечно
+  by_contra hno
+  -- предположим, что коллизии НЕТ ⟹ coreSig∘node инъективна на S
+  have hcsinj : Set.InjOn (fun i => (coreSigOf (node i) : CoreSig P_A r)) S := by
+    intro a ha b hb hcs
+    by_contra hab
+    -- node a ≠ node b (инъективность node), но coreSig равны ⟹ CoreCollision
+    exact hno ⟨node a, node b,
+      fun h => hab (hinj ha hb h), hamb a ha, hamb b hb, hcs⟩
+  -- InjOn в конечный тип ⟹ S конечно ⟹ противоречие
+  exact hS (Set.Finite.of_finite_image (Set.toFinite _) hcsinj)
+
+/--
+  **freshStarts ⟹ CoreCollision (структурный вход carrier).** Если carrier даёт: бесконечно много
+  стартов одного знака и ранга `r` (`1≤r≤4`), каждый ⟹ AmbientLegal-RankNode, и разные старты ⟹
+  разные cores, то `CoreCollision_r`. Pigeonhole доказан (`coreCollision_of_infinite`); вход — лишь
+  СТРУКТУРА данных от carrier (факторизация `6m+σ=∏aᵢ`, `rank≤4`, distinct). -/
+theorem freshStarts_to_coreCollision {ι : Type*} {X_A P_A r : ℕ} [NeZero P_A]
+    (hr : 1 ≤ r ∧ r ≤ 4)
+    (S : Set ι) (hS : S.Infinite) (node : ι → RankNode r)
+    (hinj : Set.InjOn node S) (hamb : ∀ i ∈ S, AmbientLegal X_A (node i).factors) :
+    ∃ r', 1 ≤ r' ∧ r' ≤ 4 ∧ CoreCollision X_A P_A r' :=
+  ⟨r, hr.1, hr.2, coreCollision_of_infinite S hS node hinj hamb⟩
+
+/--
+  **ФИНАЛ от carrier-данных (Theorem 12.1, полностью собран).** Separating scale + структура carrier
+  (бесконечно много стартов одного ранга `1≤r≤4`, каждый — AmbientLegal-RankNode, разные старты ⟹
+  разные cores) ⟹ Engine. ВСЁ внутри доказано: pigeonhole, descent (`core_step_proved`), rank-1 база.
+  Открытым остаётся ровно carrier-структура `CarrierData` — то, что должно прийти из
+  GlobalOldAbsorption (факторизация `6m+σ`, `rank≤4`, бесконечность стартов). -/
+theorem product_core_engine_of_carrier {ι : Type*} {X_A P_A r : ℕ} {Engine : Prop} [NeZero P_A]
+    (hsep : 6 * X_A + 1 < P_A) (hr : 1 ≤ r ∧ r ≤ 4)
+    (S : Set ι) (hS : S.Infinite) (node : ι → RankNode r)
+    (hinj : Set.InjOn node S) (hamb : ∀ i ∈ S, AmbientLegal X_A (node i).factors) :
+    Engine :=
+  product_core_pump_closed hsep (freshStarts_to_coreCollision hr S hS node hinj hamb)
+
 end EuclidsPath.ProductCore

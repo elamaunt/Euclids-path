@@ -55,3 +55,4 @@ import EuclidsPath.Engine.SeparatingScale   -- separating scale: ¬ProductHall �
 import EuclidsPath.Engine.RankDescent       -- energy-defect trichotomy + конечный product-rank descent
 import EuclidsPath.Engine.ProductCore       -- исправленный product-core: 3 дефекта закрыты теоремами
 import EuclidsPath.Engine.CarrierBridge     -- последнее звено: carrier бесконечен; вход = FactorizationData
+import EuclidsPath.Engine.MkNode            -- mkNode: RankNode из составной стороны (арифметика, доказано)

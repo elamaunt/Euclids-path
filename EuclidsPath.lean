@@ -46,3 +46,4 @@ import EuclidsPath.Engine.Regeneration      -- Old-Peel Regeneration: дихот
 import EuclidsPath.Engine.Residuals         -- Step00-остатки: start (primorial), sink⇒twin, height
 import EuclidsPath.Engine.RigidClose        -- rigid-замыкание: reaches_twin без цикла + cofactor_is_center
 import EuclidsPath.Engine.CleanGraph        -- clean/boundary split: clean-sink ⟹ twin выше M₀ (исправление)
+import EuclidsPath.Engine.BoundaryDecomp    -- BoundaryExit декомпозиция + глобальный absorber-узел

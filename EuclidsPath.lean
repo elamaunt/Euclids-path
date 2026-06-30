@@ -45,3 +45,4 @@ import EuclidsPath.Engine.NOPSL             -- NOPSL: нет old-peel sink ⇒ t
 import EuclidsPath.Engine.Regeneration      -- Old-Peel Regeneration: дихотомия Ω_A (случаи 1–3)
 import EuclidsPath.Engine.Residuals         -- Step00-остатки: start (primorial), sink⇒twin, height
 import EuclidsPath.Engine.RigidClose        -- rigid-замыкание: reaches_twin без цикла + cofactor_is_center
+import EuclidsPath.Engine.CleanGraph        -- clean/boundary split: clean-sink ⟹ twin выше M₀ (исправление)

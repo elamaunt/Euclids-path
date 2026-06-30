@@ -27,6 +27,8 @@ $$|\Omega_A|\gg X\prod_{3<p\le A}\Big(1-\tfrac2p\Big)\gg \frac{X}{(\log A)^2}.$$
 
 Так как `6m±1 ≤ A^κ`, `κ<5`, и все простые делители `>A`:
 $$\rho_\pm(m)=\Omega(6m\pm1)\le 4.$$
+🟢 **проверено компилятором:** `EuclidsPath/Step16` теорема `fullRank_le_four`
+(`(A+1)^{Ω(n)} ≤ ∏ простых = n < A^5 < (A+1)^5 ⇒ Ω(n) ≤ 4`).
 **Лемма 2.2.1 (exact factorization):** rank-3 сторона `= abv` без residual cofactor (иначе `h>A²` ⟹
 `abvh>A⁵`, противоречие `κ<5`). 🟢 элементарно.
 

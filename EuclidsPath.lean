@@ -43,3 +43,4 @@ import EuclidsPath.Engine.ToTwins
 import EuclidsPath.Engine.RealFourCorner
 import EuclidsPath.Engine.NoBackward
 import EuclidsPath.Engine.Irreversibility
+import EuclidsPath.Engine.FiniteContradiction

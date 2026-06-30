@@ -37,3 +37,4 @@ import EuclidsPath.Engine.Squeeze
 import EuclidsPath.Engine.Cycle
 import EuclidsPath.Engine.NonCover
 import EuclidsPath.Engine.TwoTransport
+import EuclidsPath.Engine.FourCorner

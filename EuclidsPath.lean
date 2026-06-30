@@ -1,48 +1,42 @@
 /-
-  Корневой модуль консолидации `Euclids-path`.
+  Корневой модуль `Euclids-path`. Импорты идут В ПОРЯДКЕ ХОДА ДОКАЗАТЕЛЬСТВА
+  (двигатель Евклида → его законы → редукция к близнецам → линии-атаки → финальный узел SNOL).
 
-  Импортирует всю пронумерованную цепочку шагов 00–15.
-  Проза-аналог каждого шага лежит в `prose/NN_*.md`.
+  Карта хода: prose/00_ProofPath.md. Парная проза к каждому модулю — prose/NN_*.md.
+  Старая аналитическая линия (PMKLS/DASC/G2/O4C) — изучена и обойдена, см. archive/.
 
-  Статус формализации (легенда):
-    * доказанные шаги    — без `sorry`;
-    * открытые места     — помечены `sorry` с комментарием `-- OPEN:`.
+  Легенда статуса:
+    * доказанные модули — без `sorry` (стандартные аксиомы);
+    * единственная открытая цель — `Step00.twin_prime_conjecture` (= финальный узел SNOL);
+    * единственный явный вход к закрытию — `SNOL.SNOLInput` (он же `ToTwins`-`H`).
   `sorry` подделать нельзя: «зелёный» файл = реально проверенная часть.
-
-  NB: проект ещё не компилировался (Lean не установлен) — см. lakefile.toml.
 -/
+
+-- 00. Основания: цель и базовые определения (TwinLowers, IsTwinCenter)
 import EuclidsPath.Step00_Overview
-import EuclidsPath.Step01_CenterReduction
-import EuclidsPath.Step02_CRTForbiddenClasses
-import EuclidsPath.Step03_ActiveSieve
-import EuclidsPath.Step04_RankLedger
-import EuclidsPath.Step05_DeterminantLaw
-import EuclidsPath.Step06_EuclideanPerpetualEngine
-import EuclidsPath.Step07_ChargedLedger
-import EuclidsPath.Step08_SmallChargedClasses
-import EuclidsPath.Step09_CertificateCoverTerminalBridge
-import EuclidsPath.Step10_O4CRes
-import EuclidsPath.Step11_DASC
-import EuclidsPath.Step12_G2
-import EuclidsPath.Step13_FinalAssembly
-import EuclidsPath.Step14_TwinPrimesInfinity
-import EuclidsPath.Step15_OpenProblems
-import EuclidsPath.Step16_MultiRankFanCycle
-import EuclidsPath.Engine.EPMI
-import EuclidsPath.Engine.Carrier
-import EuclidsPath.Engine.TwoGap
-import EuclidsPath.Engine.Descent
-import EuclidsPath.Engine.BK
-import EuclidsPath.Engine.Squeeze
-import EuclidsPath.Engine.Cycle
-import EuclidsPath.Engine.NonCover
-import EuclidsPath.Engine.TwoTransport
-import EuclidsPath.Engine.FourCorner
-import EuclidsPath.Engine.ModelFourCorner
-import EuclidsPath.Engine.ToTwins
-import EuclidsPath.Engine.RealFourCorner
-import EuclidsPath.Engine.NoBackward
-import EuclidsPath.Engine.Irreversibility
-import EuclidsPath.Engine.FiniteContradiction
-import EuclidsPath.Engine.PaymentLedger
-import EuclidsPath.Engine.SNOL
+
+-- I. Двигатель Евклида и его законы (атомарные, доказанные)
+import EuclidsPath.Engine.EPMI              -- невозможность вечного двигателя
+import EuclidsPath.Engine.Carrier           -- shared gcd ∣ 2 (носитель двойки)
+import EuclidsPath.Engine.TwoGap            -- XY−ZW=2 (сохранение двойки, 1-й закон)
+import EuclidsPath.Engine.Descent           -- строгий спуск + boundary-law
+import EuclidsPath.Engine.Irreversibility   -- не повернёт назад / асимметрия / turn⇒halt (2-й закон)
+import EuclidsPath.Engine.NoBackward        -- диагональ исчезает (эксклюзивность)
+import EuclidsPath.Engine.Squeeze           -- cubic squeeze (короткий train)
+import EuclidsPath.Engine.BK                -- bounded additive cycle
+import EuclidsPath.Engine.Cycle             -- factor-repeat rigidity, cross-side fuel
+
+-- II. Редукция гипотезы близнецов к блочному ядру
+import EuclidsPath.Engine.NonCover          -- survivor ⇒ twin; infinite_of_unbounded_centers
+import EuclidsPath.Engine.TwoTransport      -- twin_prime_conjecture_of_blocks
+
+-- III. Линии-атаки на оценку (изучены по пути; упираются в стену чётности)
+import EuclidsPath.Engine.FourCorner        -- N₃₃<N₀₀ из four-corner + side-corner
+import EuclidsPath.Engine.ModelFourCorner   -- 20·C(n,6) ≤/< C(n,3)² (модельный, строгий)
+import EuclidsPath.Engine.RealFourCorner    -- точная декомпозиция остатка
+import EuclidsPath.Engine.ToTwins           -- twin_primes_of_four_corner (условно на H)
+import EuclidsPath.Engine.FiniteContradiction -- finite ∧ H ⇒ False (3 маршрута от противного)
+import EuclidsPath.Engine.PaymentLedger     -- channel/tax/shifted-primorial/Y_A (закон оплаты)
+
+-- IV. Финальный узел: единственная открытая лемма
+import EuclidsPath.Engine.SNOL              -- rank descent → rank-1 → shifted-neighbour (SNOL)

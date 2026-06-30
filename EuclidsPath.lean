@@ -32,3 +32,6 @@ import EuclidsPath.Engine.EPMI
 import EuclidsPath.Engine.Carrier
 import EuclidsPath.Engine.TwoGap
 import EuclidsPath.Engine.Descent
+import EuclidsPath.Engine.BK
+import EuclidsPath.Engine.Squeeze
+import EuclidsPath.Engine.Cycle

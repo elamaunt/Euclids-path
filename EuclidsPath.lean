@@ -27,3 +27,6 @@ import EuclidsPath.Step12_G2
 import EuclidsPath.Step13_FinalAssembly
 import EuclidsPath.Step14_TwinPrimesInfinity
 import EuclidsPath.Step15_OpenProblems
+import EuclidsPath.Step16_MultiRankFanCycle
+import EuclidsPath.Engine.EPMI
+import EuclidsPath.Engine.Carrier

@@ -18,18 +18,22 @@ namespace EuclidsPath
 /-- Простое `p > 3`, для которого `p+2` тоже простое, удовлетворяет `p ≡ 5 (mod 6)`. -/
 theorem twin_center_mod_six {p : ℕ} (hp : p.Prime) (hp2 : (p + 2).Prime) (h : 3 < p) :
     p % 6 = 5 := by
-  -- p не делится на 2 (иначе делитель 2 примарного p даёт 2 = 1 или 2 = p)
-  have h2 : ¬ (2 ∣ p) := by
-    intro hd
-    rcases hp.eq_one_or_self_of_dvd 2 hd with h' | h' <;> omega
-  -- p не делится на 3
-  have h3 : ¬ (3 ∣ p) := by
-    intro hd
+  -- p нечётно (простое > 2)
+  have m2 : p % 2 = 1 := by
+    rcases hp.eq_two_or_odd with h' | h' <;> omega
+  -- p не делится на 3 (иначе делитель 3 простого p даёт 3 = 1 или 3 = p)
+  have m3 : p % 3 ≠ 0 := by
+    intro hmod
+    have hd : (3 : ℕ) ∣ p := Nat.dvd_of_mod_eq_zero hmod
     rcases hp.eq_one_or_self_of_dvd 3 hd with h' | h' <;> omega
-  -- p+2 не делится на 3 (иначе при p ≡ 1 (mod 6) число p+2 было бы кратно 3)
-  have h3' : ¬ (3 ∣ (p + 2)) := by
-    intro hd
+  -- p+2 не делится на 3 (иначе p ≡ 1 (mod 3), и тогда был бы случай p % 6 = 1)
+  have m3' : (p + 2) % 3 ≠ 0 := by
+    intro hmod
+    have hd : (3 : ℕ) ∣ (p + 2) := Nat.dvd_of_mod_eq_zero hmod
     rcases hp2.eq_one_or_self_of_dvd 3 hd with h' | h' <;> omega
+  -- из p ≢ 0 (mod 3) и p+2 ≢ 0 (mod 3) следует p ≡ 2 (mod 3)
+  have e3 : p % 3 = 2 := by omega
+  -- p нечётно и p ≡ 2 (mod 3)  ⟹  p ≡ 5 (mod 6)
   omega
 
 /-- **Лемма 1.1.** Центр `p+1` нетривиальной пары близнецов делится на 6. -/

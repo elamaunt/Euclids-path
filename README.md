@@ -43,6 +43,8 @@
 | 13 | Финальная сборка `B₅>0` | [13](prose/13_FinalAssembly.md) | `Step13_FinalAssembly` |
 | 14 | От `B₅>0` к бесконечности близнецов | [14](prose/14_TwinPrimesInfinity.md) | `Step14_TwinPrimesInfinity` |
 | 15 | Честный реестр открытого | [15](prose/15_OpenProblems.md) | `Step15_OpenProblems` |
+| 16 | Multi-rank descent и Universal Fan-Cycle | [16](prose/16_MultiRankFanCycle.md) | `Step16_MultiRankFanCycle` |
+| — | **Двигатель: невозможность (проверено компилятором)** | [06](prose/06_EuclideanPerpetualEngine.md) | `Engine/EPMI` ✅ |
 | A | Численные данные (CSV) | [A](prose/A_NumericalEvidence.md) | — |
 | B | История: снятый PMKLS-слой | [B](prose/B_DeprecatedPMKLS.md) | — |
 
@@ -70,16 +72,26 @@
 
 ## Текущее состояние репозитория
 
-- Полностью написаны шаги **00** и **01** (проза + Lean) — как эталон формата.
+- **Невозможность вечного двигателя (EPMI) — формализована и проверена компилятором.**
+  Модуль `EuclidsPath/Engine/EPMI.lean` (только ядро Lean 4, без mathlib) компилируется чисто, и
+  `#print axioms` подтверждает: теоремы `no_infinite_descent`, `no_perpetual_engine`,
+  `descent_strict`, `boundary_dichotomy` **не зависят ни от одной аксиомы** (полностью конструктивно,
+  без `sorry`). Toolchain: Lean `v4.31.0`.
+- Полностью написаны шаги **00** и **01** (проза + Lean); шаг **16** (multi-rank/fan-cycle) — проза.
 - Остальные шаги (02–15, A, B) — **заготовки** с целью шага и метками `TODO`/`sorry`.
-- Lean **ещё не компилировался**: `lean/lake/elan` не установлены. См. `lakefile.toml`.
 
-### Сборка Lean (на будущее)
+### Проверка EPMI (быстро, без mathlib)
 
 ```sh
-# установить elan (Lean toolchain manager), затем:
-# выровнять lean-toolchain под коммит mathlib и собрать
+lean EuclidsPath/Engine/EPMI.lean   # exit 0 = проверено
+```
+
+### Полная сборка проекта (с mathlib)
+
+```sh
+# elan уже ставит toolchain из lean-toolchain (v4.31.0)
 lake update
+lake exe cache get   # скачать прекомпилированные oleans mathlib
 lake build
 ```
 

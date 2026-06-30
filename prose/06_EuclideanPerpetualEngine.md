@@ -64,12 +64,16 @@ $$D_a(m)=\begin{cases} m', & m'\in\Omega_A\ (\text{остаётся clean}),\\ \
 
 ## Статус
 
-- 🟢 **строго:** монотонность высоты и невозможность бесконечного *локального* clean-спуска
-  (Теор. 77.1 — арифметика `m' < m/A`); boundary-exit law.
+- 🟢 **строго и ПРОВЕРЕНО КОМПИЛЯТОРОМ:** монотонность высоты и невозможность бесконечного
+  *локального* clean-спуска (Теор. 77.1 — арифметика `m' < m/A`); boundary-exit дихотомия.
+  Формализация: `EuclidsPath/Engine/EPMI.lean` (только ядро Lean 4). Теоремы `descent_strict`,
+  `no_infinite_descent`, `no_perpetual_engine`, `boundary_dichotomy` компилируются чисто и
+  `#print axioms` показывает «does not depend on any axioms» — полностью конструктивно, без `sorry`.
 - 🔴 **ОТКРЫТО (глобально):** конечное bounded-depth дерево, где каждая ветвь оканчивается absorbing
   boundary-leaf, комбинаторно возможно. Невозможность *локального* двигателя НЕ даёт глобальный
-  non-cover. Это центральный открытый фронт **BDNC⁺** (boundary-depth non-cover/compression),
-  см. [[15]] (BE_UPDATED §80–81).
+  non-cover. В новом слое [[16]] этот фронт переоформлен как multi-rank non-cover + Universal
+  Fan-Cycle (условно на proof-local conventions), заменяя прежний изолированный BDNC⁺
+  (BE_UPDATED §80–81). См. [[15]], [[16]].
 
 ## Ссылки
 

@@ -48,3 +48,4 @@ import EuclidsPath.Engine.RigidClose        -- rigid-замыкание: reaches
 import EuclidsPath.Engine.CleanGraph        -- clean/boundary split: clean-sink ⟹ twin выше M₀ (исправление)
 import EuclidsPath.Engine.BoundaryDecomp    -- BoundaryExit декомпозиция + глобальный absorber-узел
 import EuclidsPath.Engine.PumpFinal         -- pump (условно) + разрыв EPMI на self-loop
+import EuclidsPath.Engine.PumpStanding      -- pump v2 (two-token standing cycle) + EPMI-разрыв остаётся

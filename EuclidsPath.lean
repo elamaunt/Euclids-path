@@ -53,3 +53,4 @@ import EuclidsPath.Engine.RiemannBranch     -- побочная ветка: RH �
 import EuclidsPath.Engine.ProductHall       -- ProductHall/Steering pump (4-случайная логика, без циркулярного payment)
 import EuclidsPath.Engine.SeparatingScale   -- separating scale: ¬ProductHall чистой арифметикой (закрыт узел)
 import EuclidsPath.Engine.RankDescent       -- energy-defect trichotomy + конечный product-rank descent
+import EuclidsPath.Engine.ProductCore       -- исправленный product-core: 3 дефекта закрыты теоремами

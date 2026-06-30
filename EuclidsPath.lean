@@ -43,3 +43,4 @@ import EuclidsPath.Engine.SNOL              -- rank descent → rank-1 → shift
 import EuclidsPath.Engine.OldPeel           -- SNOL раскрывается в old-peel ⇒ EPMI-противоречие
 import EuclidsPath.Engine.NOPSL             -- NOPSL: нет old-peel sink ⇒ twin sink (замыкание)
 import EuclidsPath.Engine.Regeneration      -- Old-Peel Regeneration: дихотомия Ω_A (случаи 1–3)
+import EuclidsPath.Engine.Residuals         -- Step00-остатки: start (primorial), sink⇒twin, height

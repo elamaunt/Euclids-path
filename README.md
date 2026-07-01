@@ -19,7 +19,8 @@
 - **`EuclidsPath/Engine/*.lean`** — основная (доказанная) линия: двигатель и его законы → редукция к
   близнецам → линии-атаки → финальный узел. Импортируются корневым `EuclidsPath.lean` **в порядке
   хода доказательства**.
-- **`prose/NN_*.md`** — парная проза, та же сквозная нумерация 00→18.
+- **`prose/NN_*.md`** — парная проза, та же сквозная нумерация 00→32 (+ приложение `A`), единый
+  академический нарратив от двигателя до Римана.
 - **`tools/`** — числовые харнессы (`*_harness.py`) и результаты (`RESULTS_*.md`).
 - **`archive/`** — первая **аналитическая** линия (PMKLS/DASC/G2/O4C, `B₅=N₀₀−N₃₃`), изученная и
   **обойдённая**. Сохранена ради видимого хода мысли (см. `archive/README.md`).
@@ -46,18 +47,44 @@
 | 15 | Цепь к близнецам (условно `H`) | [15](prose/15_ToTwins.md) | `Engine/ToTwins` | 🟢 |
 | 16 | От противного: finite∧H⇒False | [16](prose/16_FiniteContradiction.md) | `Engine/FiniteContradiction` | 🟢 |
 | 17 | Закон оплаты (ledger) | [17](prose/17_PaymentLedger.md) | `Engine/PaymentLedger` | 🟢 |
-| 18 | **SNOL — финальный узел** | [18](prose/18_SNOL.md) | `Engine/SNOL` | 🔴 единственный вход |
+| 18 | SNOL — shifted-neighbour узел | [18](prose/18_SNOL.md) | `Engine/SNOL` | 🟢 |
+| 19 | Old-peel: catch как шаг спуска | [19](prose/19_OldPeel.md) | `Engine/OldPeel` | 🟢 |
+| 20 | NOPSL: нет old-peel sink | [20](prose/20_NOPSL.md) | `Engine/NOPSL` | 🟢 |
+| 21 | Дихотомия регенерации (Ω_A) | [21](prose/21_Regeneration.md) | `Engine/Regeneration` | 🟢 |
+| 22 | Residuals: старт, sink⇒twin | [22](prose/22_Residuals.md) | `Engine/Residuals` | 🟢 |
+| 23 | Clean/boundary граф | [23](prose/23_CleanGraph.md) | `Engine/CleanGraph` | 🟢 |
+| 24 | Boundary-декомпозиция + глоб. узел | [24](prose/24_BoundaryDecomp.md) | `Engine/BoundaryDecomp` | 🟢 |
+| 25 | Rigid-замыкание (reaches_twin) | [25](prose/25_RigidClose.md) | `Engine/RigidClose` | 🟢 |
+| 26 | Separating scale ⟹ ¬ProductHall | [26](prose/26_SeparatingScale.md) | `Engine/SeparatingScale` | 🟢 |
+| 27 | Product-core: вся машина | [27](prose/27_ProductCore.md) | `Engine/ProductCore` | 🟢 |
+| 28 | Факторизация → RankNode | [28](prose/28_MkNode.md) | `Engine/MkNode` | 🟢 |
+| 29 | **Последнее звено + граница** | [29](prose/29_CarrierBridge.md) | `Engine/CarrierBridge` | 🔴 единственный узел |
+| 30 | Риман: контрапозиция (двигатель) | [30](prose/30_RiemannBranch.md) | `Engine/RiemannBranch` | 🔴 вход RH |
+| 31 | Риман через Лиувилля (λ=(−1)^rank) | [31](prose/31_RiemannLiouville.md) | `Engine/RiemannLiouville` | 🔴 вход RH |
+| 32 | Единый rank-parity узел (эпилог) | [32](prose/32_RankParityUnity.md) | — (синтез) | 🔴 гипотеза единства |
 | A | Численные данные | [A](prose/A_NumericalEvidence.md) | `tools/RESULTS_*` | — |
 
-🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🔴 = открытый узел.
+🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🔴 = открытый узел / вход.
 
 ## Статус (честно)
 
-- **Доказано (без `sorry`):** весь двигатель и его законы; редукция гипотезы к блочному ядру;
-  модельный four-corner; алгебра оплаты; финальная редукция к SNOL.
-- **Единственная открытая цель:** `Step00.twin_prime_conjecture` = финальный узел **SNOL**
-  (`SNOL.SNOLInput`). Численно SNOL **не следует из CRT-ёмкости** — требует Euclidean-родословную `a`,
-  а не распределение (`tools/RESULTS_snol.md`).
+- **Доказано (без `sorry`, стандартные аксиомы):** весь двигатель и его законы (EPMI); редукция
+  гипотезы к блочному ядру; модельный four-corner; алгебра оплаты; раскрытие SNOL в old-peel-спуск
+  (sign law, height drop, замыкание на двигатель); дихотомия регенерации; separating scale ⟹
+  `¬ProductHall` **чистой арифметикой**; **вся product-core машина** (экстенсиональность, rank-descent
+  4→1, база rank-1, pigeonhole); факторизация `RankNode` из составной стороны; бесконечность carrier.
+  Все прежние стены (parity, трилемма `UniqueLegalLift`, steering-self-loop, циркулярный payment,
+  три дефекта rank-descent) **сняты**.
+- **Единственный открытый узел:** `GlobalOldAbsorption` ([29](prose/29_CarrierBridge.md),
+  `tools/RESULTS_final_gap.md`) — бесконечно много поглощаемых родословных на **растущем** масштабе
+  спуска (fan-in `570 → 1`), а не в фиксированном отрезке `[1, X_A]`. `Step00.twin_prime_conjecture`
+  остаётся `sorry` до его закрытия. Это **честная редукция**, а не доказательство.
+- **Побочная ветвь (Риман):** независимая контрапозиция через двигатель
+  ([30](prose/30_RiemannBranch.md)) и через функцию Лиувилля `λ(n)=(−1)^{rank(n)}`
+  ([31](prose/31_RiemannLiouville.md), тождество и флип **доказаны**); открытый вход — оценка
+  `LiouvilleBound` `|L(x)|=O(√x·x^ε)`. Единый rank-parity узел ([32](prose/32_RankParityUnity.md))
+  показывает, что оставшийся узел близнецов и узел RH — **одна и та же** стена контроля чётности ранга
+  (гипотеза единства, не редукция).
 - `sorry` подделать нельзя: «зелёный» модуль = реально проверенная часть.
 
 ## Сборка

@@ -11,8 +11,10 @@
 > collision — циркулярна), `Engine/HigherEnergy.lean` (взвешенная энергия долга — реальный движок, но
 > promotion мизориентирован = refuel), `Engine/HigherTower.lean` (инверсный предел — fixed-center башня
 > вакуумна, moving = стена), `Engine/EngineTower.lean` (inverse-limit без traversal — обходит
-> orientation-стену, но recurrence вакуумна, escape = counting). Всё — редукции/рефакторинги/инструменты,
-> НЕ закрытие; см. разделы ниже. Числа: `tools/RESULTS_global_absorber`.
+> orientation-стену, но recurrence вакуумна, escape = counting), `Engine/ParityBarrier.lean` +
+> `Engine/ReverseTower.lean` (стена чётности как ТЕОРЕМА — негативный результат, не доказательство
+> близнецов). Всё — редукции/рефакторинги/инструменты, НЕ закрытие; см. разделы ниже.
+> Числа: `tools/RESULTS_global_absorber`.
 
 В [23. Rigid closure] мы свели всё замыкание к одному конструктивному входу: у каждого не-twin
 центра делитель должен порождать валидный меньший центр (`regenerates_needs_target_center`), а
@@ -438,6 +440,38 @@ C/D/E) — `hRepeat` (pigeonhole по конечной подписи = counting
 (cross-level labelled-fan-in = та же fan-in стена, где `snolHallSeed_bare_no_go` уже показал ловушку), и
 `hForce`/компактность (finite branching + скрыто требует `m<A²`). Orientation-стена обойдена,
 **counting-стена осталась**. Красная линия цела. `Step00` остаётся `sorry`.
+
+### Стена чётности как ТЕОРЕМА (негативный результат, не доказательство близнецов)
+
+Двенадцатый кирпич делает принципиально иное, чем предыдущие одиннадцать: он не пытается **закрыть**
+близнецов, а формализует **саму стену** как теорему (`Engine/ParityBarrier.lean`, минимальные аксиомы,
+часть — вообще без аксиом). Схлопнув пару в один объект `TwinBlock` и введя «сито-вид уровня $A$»
+($\mathrm{view}\,A$), доказываем:
+
+- `parityBlind_cannot_certify_twin` — **сердце стены**: сертификат, зависящий лишь от конечного
+  $A$-вида (parity-blind), корректный и при *ambiguity* (два $A$-эквивалентных блока, один twin, другой
+  нет) ⟹ $\bot$. Конечный вид **не может** отличить twin от не-twin;
+- `sound_cert_requires_cofinal_information` — корректный сертификат при ambiguity на **каждом** уровне
+  **требует cofinal-информации** (не факторизуется через конечный вид);
+- `finite_sieve_engine_cannot_cross_barrier`, `parity_barrier_model_no_finite_view_decides_twin`
+  (модельная форма), `finite_twins_contradiction_requires_cofinal_cert`;
+- `exists_clean_nonTwin_block` — стена **не вакуумна**: clean-non-twin блок существует ($m=4$, сторона
+  $25=5^2$). Мы НЕ утверждаем существование clean-*twin* блока — это была бы контрабанда близнецов.
+
+Плюс reverse-engine (`Engine/ReverseTower.lean`): `no_reverseAncestorTree_of_barrier` — абстрактное
+reverse-противоречие через pigeonhole повтора cut-подписи на обратном луче (König-ветвь).
+
+> **Примечание (это доказательство ОГРАНИЧЕНИЯ, а не близнецов).** Кирпич честно НЕ утверждает twin
+> primes. Он превращает стену чётности из интуиции в **машинно-проверенную теорему** и делает
+> требование к её пересечению точным: любой Step00-сертификат, пересекающий стену, обязан предъявить
+> **cofinal-информацию** (видеть бесконечно далеко), а не быть finite-sieve движком. Step00-инстанциация
+> (`step00_reverseBarrier` = cross-level labelled-fan-in; `noTwin_forces_reverseAncestorTree` = где
+> возвращается counting) — входы, не предъявлены. `Step00` остаётся `sorry`.
+
+**Итог.** Впервые за одиннадцать заходов — не провал очередного обхода, а **позитивный негативный
+результат**: стена чётности формализована как теорема, а точное требование к её пересечению (cofinal, не
+finite-sieve) — доказано и аудируемо. Это не приближает к близнецам, но делает границу невозможного
+строгой. Красная линия цела. `Step00` остаётся `sorry`.
 
 ## Где мы
 

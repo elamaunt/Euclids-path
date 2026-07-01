@@ -66,3 +66,5 @@ import EuclidsPath.Engine.ManyUnresolved     -- маршрут many-unresolved c
 import EuclidsPath.Engine.HigherEnergy       -- weighted debt energy: реальный well-founded движок; вход = step00_promotion_is_weightedDebtReplacement
 import EuclidsPath.Engine.HigherTower        -- Euclidean Tower: fixed-center BadTower ВАКУУМЕН; moving tower = orientation стена
 import EuclidsPath.Engine.EngineTower        -- EngineTower без traversal: recurrence-ветка ТОЖЕ вакуумна; escape/collision = counting стена
+import EuclidsPath.Engine.ParityBarrier       -- стена чётности как ТЕОРЕМА: finite-sieve не сертифицирует twin; пересечение требует cofinal
+import EuclidsPath.Engine.ReverseTower        -- reverse engine: дерево предков + barrier (абстрактный no-go); Step00-мосты = стена

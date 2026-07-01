@@ -78,3 +78,4 @@ import EuclidsPath.Engine.ConcreteStep00Graph  -- КОНКРЕТНЫЙ граф 
 import EuclidsPath.Engine.RiemannEngine        -- RH→OffCriticalZero→Engine (чистая форма); мосты = входы; RH не доказана
 import EuclidsPath.Engine.RiemannImpossibleEngine -- RH через невозможный closed-paid двигатель: no_riemannEngineFactory БЕЗУСЛОВНА; вход = strip-bridge
 import EuclidsPath.Engine.RiemannImpossibleEngineOff -- OffCritical версия: убирает TrivialBelowZeroClassification; ЕДИНСТВЕННЫЙ вход = OffCriticalRiemannEngineBridge
+import EuclidsPath.Engine.RankJumpBridge        -- rank/parity мост (Лиувилль λ=(−1)^Ω ↔ factory): всё ВОКРУГ узла доказано; §4 запрет читинга; вход = RankJumpLocalization

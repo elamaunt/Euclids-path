@@ -57,4 +57,5 @@ import EuclidsPath.Engine.RankDescent       -- energy-defect trichotomy + кон
 import EuclidsPath.Engine.ProductCore       -- исправленный product-core: 3 дефекта закрыты теоремами
 import EuclidsPath.Engine.CarrierBridge     -- последнее звено: carrier бесконечен; вход = FactorizationData
 import EuclidsPath.Engine.MkNode            -- mkNode: RankNode из составной стороны (арифметика, доказано)
-import EuclidsPath.Engine.LabelledFanIn     -- labelled fan-in v2: GlobalOldAbsorption ⟹ engine (локализация узла)
+import EuclidsPath.Engine.LabelledFanIn     -- labelled fan-in: König ДОКАЗАН, SNOL сведён (v2→v4)
+import EuclidsPath.Engine.AtomicSNOL         -- post-audit: legal subtype (нет hAll) + SNOL-free atomic + SNOLDeriv (R8 = красная линия)

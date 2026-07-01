@@ -68,3 +68,4 @@ import EuclidsPath.Engine.HigherTower        -- Euclidean Tower: fixed-center Ba
 import EuclidsPath.Engine.EngineTower        -- EngineTower без traversal: recurrence-ветка ТОЖЕ вакуумна; escape/collision = counting стена
 import EuclidsPath.Engine.ParityBarrier       -- стена чётности как ТЕОРЕМА: finite-sieve не сертифицирует twin; пересечение требует cofinal
 import EuclidsPath.Engine.ReverseTower        -- reverse engine: дерево предков + barrier (абстрактный no-go); Step00-мосты = стена
+import EuclidsPath.Engine.AboveConflict       -- конфликт в «Above»: order-логика тривиальна; step00_forces_above_conflict в ловушке (машинно)

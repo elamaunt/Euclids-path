@@ -13,6 +13,7 @@ import EuclidsPath.Engine.CleanGraph
 import EuclidsPath.Engine.BoundaryDefectPayment
 import EuclidsPath.Engine.BoundaryLedgerCollision
 import EuclidsPath.Engine.LabelledFanIn
+import EuclidsPath.Engine.Residuals
 
 set_option autoImplicit false
 set_option linter.unusedVariables false
@@ -1209,6 +1210,373 @@ end StrictLedgerAudit
 
 end ProperUnboundedLedgerGraph
 
+
+
+/-! ### §11. Generated-flow формулировка источника (кратность сохранена).
+Источник: EuclidsPath_generated_flow_strict_formulation_patch. Пиджонхол на ГЕНЕАЛОГИЯХ
+(поток = старт+непустой путь+ledger-терминал), не на состояниях — fan-in не стирается. -/
+
+namespace GeneratedFlowFormulation
+open EuclidsPath.Residuals
+
+
+open EuclidsPath.CleanGraph
+open EuclidsPath.LabelledFanIn
+open EuclidsPath.BoundaryLedgerCollision
+open EuclidsPath.BoundaryDefectPayment
+open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph
+open EuclidsPath.Residuals
+
+/-#############################################################################
+  §1. Generated flows / genealogies
+#############################################################################-/
+
+/--
+A generated Step00 flow from a fresh clean centre into the concrete graph.
+
+The field `path` is nonempty.  Therefore the flow is not merely the start state;
+it records at least one actual transition in `ConcreteStep00Graph.RealStep`.
+-/
+structure GeneratedFlow (A M0 : ℕ) where
+  start : ℕ
+  terminal : State
+  steps : ℕ
+  nonempty : 0 < steps
+  path : PathN (RealStep A M0) steps (State.center start) terminal
+  startClean : Clean A start
+  startFresh : M0 < start
+  terminalLegal : Legal A M0 terminal
+
+/-- The concrete start state of a generated flow. -/
+def GeneratedFlow.startState {A M0 : ℕ} (F : GeneratedFlow A M0) : State :=
+  State.center F.start
+
+/-- A generated flow is fresh by construction if its start is above `M0`. -/
+def FlowFresh {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  M0 < F.start
+
+/-- A generated flow is legal if its terminal is legal; the path is already stored in `F.path`. -/
+def FlowLegal {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  Legal A M0 F.terminal
+
+/-- The terminal of the flow is a fresh concrete defect state. -/
+def EndsInFreshDefect {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  Fresh M0 F.terminal ∧ Defective A F.terminal ∧ Legal A M0 F.terminal
+
+/-- The terminal of the flow is an old absorber. -/
+def EndsInOldAbsorber {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  OldAbsorber M0 F.terminal ∧ Legal A M0 F.terminal
+
+/--
+The terminal is ledger-relevant: either a fresh defect or an old absorber.
+This is the correct replacement for a bare `Defective` predicate on states.
+-/
+def HasLedgerTerminal {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  EndsInFreshDefect F ∨ EndsInOldAbsorber F
+
+/--
+An admissible generated flow: fresh start, legal terminal, and a terminal that
+must be explained by the ledger.
+-/
+def FlowAdmissible {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  FlowFresh F ∧ FlowLegal F ∧ HasLedgerTerminal F
+
+/-- Every generated flow is fresh at the start by its stored certificate. -/
+theorem flowFresh_of_generated {A M0 : ℕ} (F : GeneratedFlow A M0) :
+    FlowFresh F :=
+  F.startFresh
+
+/-- Every generated flow is legal at the terminal by its stored certificate. -/
+theorem flowLegal_of_generated {A M0 : ℕ} (F : GeneratedFlow A M0) :
+    FlowLegal F :=
+  F.terminalLegal
+
+/--
+A family of generated flows.  This is the non-vacuous source object that should
+be produced from the finite-twin assumption.
+-/
+def InfiniteGeneratedFlowFamily (A M0 : ℕ)
+    (𝓕 : Set (GeneratedFlow A M0)) : Prop :=
+  𝓕.Infinite ∧ ∀ F ∈ 𝓕, FlowAdmissible F
+
+/-- Extract the set of fresh defect terminal states reached by a flow family. -/
+def FreshDefectTerminalStates {A M0 : ℕ}
+    (𝓕 : Set (GeneratedFlow A M0)) : Set State :=
+  {U | ∃ F ∈ 𝓕, F.terminal = U ∧ EndsInFreshDefect F}
+
+/-- Extract the set of old absorber terminal states reached by a flow family. -/
+def OldAbsorberTerminalStates {A M0 : ℕ}
+    (𝓕 : Set (GeneratedFlow A M0)) : Set State :=
+  {U | ∃ F ∈ 𝓕, F.terminal = U ∧ EndsInOldAbsorber F}
+
+/-#############################################################################
+  §2. The positive source obligation: finite twins -> generated flows
+#############################################################################-/
+
+/-- A concrete old bound: no twin centre exists above `M0`. -/
+abbrev TwinBoundAbove (M0 : ℕ) : Prop :=
+  ∀ m : ℕ, M0 < m → ¬ TwinCenterZ m
+
+/-- Infinite CRT-clean starts at a fixed sieve scale. -/
+abbrev InfiniteCleanStarts (A M0 : ℕ) : Prop :=
+  {m : ℕ | M0 < m ∧ Clean A m}.Infinite
+
+/--
+The real positive source obligation.
+
+Given a fixed scale `A`, an old twin bound `M0`, infinitely many clean starts,
+and no twin centre above `M0`, produce an infinite family of generated Step00
+flows.  This is where CRT clean-start supply, clean non-twin peel, and
+well-founded termination of the clean descent must be connected.
+-/
+def TwinBoundForcesInfiniteGeneratedFlows (A M0 : ℕ) : Prop :=
+  InfiniteCleanStarts A M0 →
+  TwinBoundAbove M0 →
+  ∃ 𝓕 : Set (GeneratedFlow A M0), InfiniteGeneratedFlowFamily A M0 𝓕
+
+/--
+A more explicit factory form of the same obligation.
+
+It says that every clean start above `M0` has a generated flow, and that the
+chosen collection of such flows is infinite.  This form is often easier to audit
+than a direct existential family.
+-/
+structure GeneratedFlowFactory (A M0 : ℕ) where
+  flowOf : ∀ m : ℕ, M0 < m → Clean A m → ¬ TwinCenterZ m → GeneratedFlow A M0
+  admissible : ∀ m hFresh hClean hNoTwin,
+    FlowAdmissible (flowOf m hFresh hClean hNoTwin)
+  start_eq : ∀ m hFresh hClean hNoTwin,
+    (flowOf m hFresh hClean hNoTwin).start = m
+
+/--
+The final source input in compact package form.
+
+This is intentionally only a structure: this patch does not prove it.  It is the
+correct target for the arithmetic construction of `S`.
+-/
+structure GeneratedFlowSourceInput (A M0 : ℕ) where
+  cleanStarts : InfiniteCleanStarts A M0
+  twinBound : TwinBoundAbove M0
+  family : Set (GeneratedFlow A M0)
+  infiniteFamily : InfiniteGeneratedFlowFamily A M0 family
+
+/-#############################################################################
+  §3. Finite semantic ledger projection on flows
+#############################################################################-/
+
+/--
+A finite semantic ledger projection whose key is attached to generated flows,
+not merely to terminal states.
+
+This is the central correction: if two different clean starts end at the same
+terminal state, they remain two different flows.  The finite ledger must explain
+the collision of genealogies, not just the collision of final states.
+-/
+structure SemanticFlowLedgerProjection (A M0 : ℕ) where
+  Key : Type
+  finiteKey : Finite Key
+  keyFlow : GeneratedFlow A M0 → Key
+
+/-- A same-key collision between two generated flows in a family. -/
+structure FlowSameKeyCollision {A M0 : ℕ}
+    (proj : SemanticFlowLedgerProjection A M0)
+    (𝓕 : Set (GeneratedFlow A M0))
+    (F₁ F₂ : GeneratedFlow A M0) : Prop where
+  distinct : F₁ ≠ F₂
+  left_mem : F₁ ∈ 𝓕
+  right_mem : F₂ ∈ 𝓕
+  left_admissible : FlowAdmissible F₁
+  right_admissible : FlowAdmissible F₂
+  same_key : proj.keyFlow F₁ = proj.keyFlow F₂
+
+/--
+Pure unbounded-to-finite pigeonhole for generated flows.
+
+The source `𝓕` is a set of generated genealogies.  It may be infinite even when
+terminal states repeat.  The target is the finite flow-ledger key.
+-/
+theorem infinite_generated_flows_force_flow_key_collision
+    {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0)
+    {𝓕 : Set (GeneratedFlow A M0)}
+    (h𝓕 : InfiniteGeneratedFlowFamily A M0 𝓕) :
+    ∃ F₁ F₂ : GeneratedFlow A M0,
+      FlowSameKeyCollision proj 𝓕 F₁ F₂ := by
+  classical
+  letI : Finite proj.Key := proj.finiteKey
+  rcases h𝓕 with ⟨hInf, hMem⟩
+  obtain ⟨F₁, F₂, hF₁, hF₂, hne, hkey⟩ :=
+    BoundaryLedgerCollision.infinite_set_key_collision
+      (σ := GeneratedFlow A M0) (Key := proj.Key)
+      (S := 𝓕) hInf proj.keyFlow
+  exact ⟨F₁, F₂,
+    ⟨hne, hF₁, hF₂, hMem F₁ hF₁, hMem F₂ hF₂, hkey⟩⟩
+
+/-#############################################################################
+  §4. Flow-collision resolution: the actual Euclidean-engine wall
+#############################################################################-/
+
+/-- The only two resolution alternatives for a generated-flow key collision. -/
+abbrev FlowResolutionAlternative (A M0 : ℕ) : Prop :=
+  LegalCycle (RealStep A M0) (Legal A M0) ∨
+    BoundaryDefectPayment.ImpossiblePayment
+
+/--
+No resolution alternative is available for free in the concrete graph:
+cycles are forbidden by `lexRank`, and payment is impossible.
+-/
+theorem no_flowResolutionAlternative (A M0 : ℕ) :
+    ¬ FlowResolutionAlternative A M0 := by
+  intro h
+  rcases h with hCycle | hPayment
+  · exact no_concrete_legalCycle_by_lexRank
+      (A := A) (M0 := M0) hCycle
+  · exact BoundaryDefectPayment.impossiblePayment_false hPayment
+
+/--
+Semantic flow-ledger collision resolution.
+
+This is the local arithmetic law that is still missing.  It is stronger and more
+precise than a state-level collision law: it compares generated histories.
+-/
+def SemanticFlowLedgerCollisionResolves
+    {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : GeneratedFlow A M0,
+    F₁ ≠ F₂ →
+    FlowAdmissible F₁ →
+    FlowAdmissible F₂ →
+    proj.keyFlow F₁ = proj.keyFlow F₂ →
+      FlowResolutionAlternative A M0
+
+/-- Projection alone only produces an unresolved collision. -/
+def UnresolvedFlowKeyCollision {A M0 : ℕ}
+    (proj : SemanticFlowLedgerProjection A M0)
+    (𝓕 : Set (GeneratedFlow A M0)) : Prop :=
+  (∃ left right : GeneratedFlow A M0, FlowSameKeyCollision proj 𝓕 left right) ∧
+    ¬ FlowResolutionAlternative A M0
+
+/--
+Every finite flow-ledger projection has an unresolved same-key collision on an
+infinite generated-flow family, unless additional arithmetic rules out that
+family or supplies a genuine resolution.
+-/
+theorem infinite_generated_flows_force_unresolved_flow_collision
+    {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0)
+    {𝓕 : Set (GeneratedFlow A M0)}
+    (h𝓕 : InfiniteGeneratedFlowFamily A M0 𝓕) :
+    UnresolvedFlowKeyCollision proj 𝓕 := by
+  rcases infinite_generated_flows_force_flow_key_collision
+      (A := A) (M0 := M0) proj h𝓕 with ⟨F₁, F₂, hCol⟩
+  exact ⟨⟨F₁, F₂, hCol⟩, no_flowResolutionAlternative A M0⟩
+
+/--
+If semantic collision resolution is supplied, an infinite generated-flow family
+forces a resolution alternative.
+-/
+theorem infinite_generated_flows_force_cycle_or_payment
+    {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0)
+    {𝓕 : Set (GeneratedFlow A M0)}
+    (h𝓕 : InfiniteGeneratedFlowFamily A M0 𝓕)
+    (hResolve : SemanticFlowLedgerCollisionResolves proj) :
+    FlowResolutionAlternative A M0 := by
+  rcases infinite_generated_flows_force_flow_key_collision
+      (A := A) (M0 := M0) proj h𝓕 with ⟨F₁, F₂, hCol⟩
+  exact hResolve F₁ F₂
+    hCol.distinct hCol.left_admissible hCol.right_admissible hCol.same_key
+
+/--
+Main strict close for the generated-flow formulation.
+
+The contradiction uses no finite-state vacuity: the source type is the type of
+all generated flows, and the finite object is only `proj.Key`.
+-/
+theorem infinite_generated_flows_impossible_with_resolution
+    {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0)
+    {𝓕 : Set (GeneratedFlow A M0)}
+    (h𝓕 : InfiniteGeneratedFlowFamily A M0 𝓕)
+    (hResolve : SemanticFlowLedgerCollisionResolves proj) :
+    False := by
+  have hAlt : FlowResolutionAlternative A M0 :=
+    infinite_generated_flows_force_cycle_or_payment
+      (A := A) (M0 := M0) proj h𝓕 hResolve
+  exact no_flowResolutionAlternative A M0 hAlt
+
+/--
+The no-cheat conclusion for generated flows: a finite projection on flows cannot
+itself manufacture the Euclidean engine.  It always produces an unresolved
+collision unless the missing semantic law is added.
+-/
+abbrev FlowProjectionCheatsOn {A M0 : ℕ}
+    (proj : SemanticFlowLedgerProjection A M0)
+    (𝓕 : Set (GeneratedFlow A M0)) : Prop :=
+  UnresolvedFlowKeyCollision proj 𝓕
+
+/-- Every finite flow-ledger projection cheats on an infinite generated-flow family unless extra arithmetic is supplied. -/
+theorem every_flow_projection_cheats_on_infinite_family
+    {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0)
+    {𝓕 : Set (GeneratedFlow A M0)}
+    (h𝓕 : InfiniteGeneratedFlowFamily A M0 𝓕) :
+    FlowProjectionCheatsOn proj 𝓕 :=
+  infinite_generated_flows_force_unresolved_flow_collision proj h𝓕
+
+/-#############################################################################
+  §5. The exact remaining Step00 package in generated-flow form
+#############################################################################-/
+
+/--
+The corrected final positive package.
+
+Compared with the earlier state-family package, the source is now an infinite
+family of generated flows, and the key is a finite semantic key on flows.
+-/
+structure GeneratedFlowStep00Package (A M0 : ℕ) where
+  source : GeneratedFlowSourceInput A M0
+  proj : SemanticFlowLedgerProjection A M0
+  semanticResolution : SemanticFlowLedgerCollisionResolves proj
+
+/-- Any generated-flow Step00 package is contradictory by the already closed branches. -/
+theorem generatedFlowStep00Package_false
+    {A M0 : ℕ} (P : GeneratedFlowStep00Package A M0) : False := by
+  exact infinite_generated_flows_impossible_with_resolution
+    P.proj P.source.infiniteFamily P.semanticResolution
+
+/--
+The actual generated-flow obligation.
+
+To move Step00, construct this package for the `A` and `M0` produced by the
+finite-twin assumption.  The height, cycle, and payment branches are not fields:
+they have already been closed by previous patches.
+-/
+abbrev TheGeneratedFlowStep00Obligation (A M0 : ℕ) : Prop :=
+  ∃ P : GeneratedFlowStep00Package A M0, True
+
+/-#############################################################################
+  §6. Diagnostic split: terminal states are not the right source object
+#############################################################################-/
+
+/--
+A family has state-terminal multiplicity if two different flows share the same
+terminal state.  This is not a bug; it is exactly the kind of fan-in that a
+state-only family would erase.
+-/
+def TerminalFanIn {A M0 : ℕ}
+    (𝓕 : Set (GeneratedFlow A M0)) : Prop :=
+  ∃ F₁ F₂ : GeneratedFlow A M0,
+    F₁ ∈ 𝓕 ∧ F₂ ∈ 𝓕 ∧ F₁ ≠ F₂ ∧ F₁.terminal = F₂.terminal
+
+/--
+If terminal fan-in occurs, then replacing flows by terminal states loses
+multiplicity.  This theorem is intentionally only the formal witness of loss:
+the equality of terminal states is exactly the erased information.
+-/
+theorem terminalFanIn_witnesses_state_projection_loss
+    {A M0 : ℕ} {𝓕 : Set (GeneratedFlow A M0)}
+    (h : TerminalFanIn 𝓕) :
+    ∃ F₁ F₂ : GeneratedFlow A M0,
+      F₁ ∈ 𝓕 ∧ F₂ ∈ 𝓕 ∧ F₁ ≠ F₂ ∧
+      F₁.terminal = F₂.terminal :=
+  h
+
+end GeneratedFlowFormulation
 
 end ConcreteStep00Graph
 end EuclidsPath

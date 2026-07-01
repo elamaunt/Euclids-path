@@ -34,8 +34,14 @@ def NontrivialZeroM (ρ : ℂ) : Prop :=
   riemannZeta ρ = 0 ∧ (¬ ∃ n : ℕ, ρ = -2 * (n + 1)) ∧ ρ ≠ 1
 
 /--
-  **`no_zero_of_one_le_re` — ДОКАЗАНА через mathlib.** У дзеты нет нулей с `Re ρ ≥ 1`
-  (`riemannZeta_ne_zero_of_one_le_re`). Значит любой нуль имеет `Re ρ < 1`. -/
+  **`no_zero_of_one_le_re` — ЗАМЫКАЕТСЯ mathlib-АНАЛИТИКОЙ (не ядром двигателя).** У дзеты нет нулей
+  с `Re ρ ≥ 1`, значит любой нуль имеет `Re ρ < 1`.
+
+  ⚠️ ЧЕСТНАЯ ОГОВОРКА (по результату аудита): «доказано» здесь означает «выводимо из mathlib», а НЕ
+  «выводимо из нашего ядра». Единственный шаг — импортированная лемма `riemannZeta_ne_zero_of_one_le_re`,
+  то есть неисчезание дзеты на `Re ≥ 1` — **аналитический результат PNT-уровня**, доказанный в mathlib,
+  а не нами. Он лишь ОГРАНИЧИВАЕТ полосу (`Re < 1`); он НЕ помещает нуль на `Re = 1/2` и НЕ закрывает ни
+  один открытый мост. Это не утечка RH, но и не самодостаточная часть двигателя. -/
 theorem no_zero_of_one_le_re {ρ : ℂ} (hz : riemannZeta ρ = 0) : ρ.re < 1 := by
   by_contra h
   push_neg at h
@@ -50,9 +56,12 @@ def TrivialBelowZeroClassification : Prop :=
   ∀ ρ : ℂ, riemannZeta ρ = 0 → ρ.re ≤ 0 → ∃ n : ℕ, ρ = -2 * (n + 1)
 
 /--
-  **`nontrivialZero_in_strip` — ДОКАЗАНА (mathlib `Re<1` + вход по `Re≤0`).** Нетривиальный нуль
-  лежит строго в критической полосе `0 < Re ρ < 1`. Верхняя граница — из mathlib; нижняя — из входа
-  `TrivialBelowZeroClassification` (не тривиальный ⟹ `Re > 0`). -/
+  **`nontrivialZero_in_strip` — ЛОКАЛИЗАЦИЯ В ПОЛОСУ (mathlib-аналитика `Re<1` + вход по `Re≤0`).**
+  Нетривиальный нуль лежит строго в критической полосе `0 < Re ρ < 1`.
+
+  ⚠️ Обе границы — НЕ из ядра двигателя: верхняя (`Re < 1`) держится на mathlib-аналитике PNT-уровня
+  (см. `no_zero_of_one_le_re`), нижняя (`Re > 0`) — на явном аналитическом входе
+  `TrivialBelowZeroClassification`. Ни та, ни другая не помещает нуль на `1/2`. -/
 theorem nontrivialZero_in_strip (hClass : TrivialBelowZeroClassification)
     {ρ : ℂ} (hρ : NontrivialZeroM ρ) : 0 < ρ.re ∧ ρ.re < 1 := by
   obtain ⟨hz, hnt, _⟩ := hρ

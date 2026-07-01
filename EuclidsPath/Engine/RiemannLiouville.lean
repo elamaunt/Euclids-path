@@ -34,17 +34,23 @@ theorem liouville_eq_neg_one_pow_rank {n : ℕ} (hn : n ≠ 0) :
     liouville n = (-1) ^ (cardFactors n) :=
   liouville_apply hn
 
+/-- **Простой имеет λ = −1 (из mathlib).** Bridge для deleteFactor. -/
+theorem liouville_prime {p : ℕ} (hp : p.Prime) : liouville p = -1 := by
+  rw [liouville_apply hp.ne_zero, cardFactors_apply_prime hp]; norm_num
+
 /--
   **Флип знака при удалении фактора (наш deleteFactor ↔ λ).** Если `n = p·m` (`p` простое),
-  то `Ω(n) = Ω(m)+1`, значит `λ(n) = −λ(m)`: удаление одного фактора (наш rank r→r−1) флипает знак
-  Лиувилля. Это ровно `RankNode.deleteFactor` в терминах `λ`. -/
-theorem liouville_flip_of_mul_prime {p m : ℕ} (hp : p.Prime) (hm : m ≠ 0) :
+  то `λ(n) = −λ(m)`: удаление одного фактора (наш rank r→r−1) флипает знак Лиувилля. Это ровно
+  `RankNode.deleteFactor` в терминах `λ`. Доказано через mathlib-мультипликативность `liouville_apply_mul`
+  (безусловна — верно и при `m = 0`), поэтому гипотеза `m ≠ 0` НЕ нужна. -/
+theorem liouville_flip_of_mul_prime {p m : ℕ} (hp : p.Prime) :
     liouville (p * m) = - liouville m := by
-  have hpm : p * m ≠ 0 := Nat.mul_ne_zero hp.ne_zero hm
-  rw [liouville_apply hpm, liouville_apply hm]
-  have hcard : cardFactors (p * m) = cardFactors m + 1 := by
-    rw [cardFactors_mul hp.ne_zero hm, cardFactors_apply_prime hp]; ring
-  rw [hcard, pow_succ]; ring
+  rw [liouville_apply_mul, liouville_prime hp]; ring
+
+/-- **Версия для deleteFactor-шага.** Если engine говорит `n = p·m`, удаление `p` флипает λ. -/
+theorem liouville_flip_of_deleteFactor_eq {n p m : ℕ} (hp : p.Prime) (hdel : n = p * m) :
+    liouville n = - liouville m := by
+  subst n; exact liouville_flip_of_mul_prime hp
 
 /-! ### RH-эквивалентность Лиувилля и ветка -/
 
@@ -53,14 +59,12 @@ theorem liouville_flip_of_mul_prime {p m : ℕ} (hp : p.Prime) (hm : m ≠ 0) :
 def LiouvilleBound : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧ ∀ x : ℕ, |(L x : ℝ)| ≤ C * (x : ℝ) ^ (1/2 + ε)
 
-/-- Гипотеза Римана (через нетривиальные нули, как в RiemannBranch). -/
-def RiemannHypothesis : Prop :=
-  ∀ ρ : ℂ, riemannZeta ρ = 0 → 0 < ρ.re → ρ.re < 1 → ρ.re = 1 / 2
-
 /--
   **Мост Лиувилля (H_L) — классическая эквивалентность.** `LiouvilleBound ⟺ RH`. Это ИЗВЕСТНАЯ
   теорема аналитической теории чисел (в mathlib пока нет). Здесь — как явный вход-мост, чтобы ветка
-  RH была условной на нём (не постулируем RH, постулируем классическую эквивалентность). -/
+  RH была условной на нём (не постулируем RH, постулируем классическую эквивалентность).
+  `RiemannHypothesis` — из **mathlib** (официальная формулировка через нули `riemannZeta`), а НЕ
+  самодельный def. -/
 def LiouvilleRHBridge : Prop := LiouvilleBound ↔ RiemannHypothesis
 
 /--

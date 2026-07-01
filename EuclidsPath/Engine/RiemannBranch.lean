@@ -4,17 +4,20 @@
 
   ЧЕСТНАЯ РАМКА (важно): RH НЕ следует логически из бесконечности близнецов напрямую — это
   независимые утверждения. Здесь строится КОРРЕКТНАЯ контрапозиция через МЕХАНИЗМ (двигатель),
-  тот же, что замыкает близнецов:
+  тот же, что замыкает близнецов.
 
-    ¬RH  ⟺  ∃ нетривиальный нуль ρ с Re(ρ) ≠ 1/2
-         ⟹  [мост H_RH, НЕ доказан]  нарушение переноса двойки / вечный двигатель
-         ⟹  противоречие с `no_infinite_descent` (двигатель невозможен, ДОКАЗАНО)
-    ∴ RH.
+  ВНЕШНЕЕ = ИЗ MATHLIB. `RiemannHypothesis` берётся из mathlib (НЕ самодельный def): официальная
+  формулировка через нули `riemannZeta`, исключая тривиальные нули `-2(n+1)` и `s = 1`. Расположение
+  нулей тоже из mathlib: `riemannZeta_ne_zero_of_one_le_re` (нет нулей при `Re ≥ 1`).
 
-  Логическая форма ровно как у близнецов: `(¬P ⟹ Engine) ∧ ¬Engine ⟹ P`.
-
-  Здесь RH формализована как УСЛОВНАЯ теорема на явном мосту `H_RH` (помечен открытым, как `pump`).
-  `riemannZeta` — из mathlib. Мост — единственный открытый узел этой ветки.
+  Что доказано / что вход:
+    • `Re ρ ≥ 1` невозможно для нуля — ДОКАЗАНО через mathlib (`riemannZeta_ne_zero_of_one_le_re`);
+    • `Re ρ ≤ 0` ⟹ ρ тривиальный (`-2(n+1)`) — АНАЛИТИЧЕСКИЙ ВХОД `TrivialBelowZeroClassification`
+      (функциональное уравнение; mathlib даёт значения тривиальных нулей, но не классификацию
+      «все нули с Re ≤ 0 тривиальны» — это явный помеченный вход);
+    • полоса `0 < Re ρ < 1` с `Re ≠ 1/2` ⟹ вечный двигатель — мост `EngineBridge` (открыт, как `pump`);
+    • вечного двигателя нет — ДОКАЗАНО (`no_infinite_descent`).
+  RH-ветка условна на `EngineBridge` + `TrivialBelowZeroClassification`. Оба — явные входы, не аксиомы.
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -26,54 +29,74 @@ namespace EuclidsPath.RiemannBranch
 
 open Complex EuclidsPath.Engine
 
-/-- Нетривиальный нуль дзеты: `ζ ρ = 0` в критической полосе `0 < Re ρ < 1`. -/
-def NontrivialZero (ρ : ℂ) : Prop := riemannZeta ρ = 0 ∧ 0 < ρ.re ∧ ρ.re < 1
-
-/-- Гипотеза Римана: каждый нетривиальный нуль лежит на критической прямой `Re = 1/2`. -/
-def RiemannHypothesis : Prop := ∀ ρ : ℂ, NontrivialZero ρ → ρ.re = 1 / 2
+/-- Нетривиальный нуль дзеты в смысле mathlib-RH: `ζ ρ = 0`, ρ не тривиальный нуль, `ρ ≠ 1`. -/
+def NontrivialZeroM (ρ : ℂ) : Prop :=
+  riemannZeta ρ = 0 ∧ (¬ ∃ n : ℕ, ρ = -2 * (n + 1)) ∧ ρ ≠ 1
 
 /--
-  **Мост двигателя (H_RH) — ЕДИНСТВЕННЫЙ открытый узел ветки.** Если существует нетривиальный нуль
-  с `Re ≠ 1/2`, то возникает вечный двигатель Евклида: асимметрия `Re ≠ 1/2` даёт «бесплатное»
-  направленное перекачивание массы вдоль descent (нарушение переноса двойки), т.е. бесконечную
-  clean-цепь строго убывающей высоты, не достигающую дна.
+  **`no_zero_of_one_le_re` — ДОКАЗАНА через mathlib.** У дзеты нет нулей с `Re ρ ≥ 1`
+  (`riemannZeta_ne_zero_of_one_le_re`). Значит любой нуль имеет `Re ρ < 1`. -/
+theorem no_zero_of_one_le_re {ρ : ℂ} (hz : riemannZeta ρ = 0) : ρ.re < 1 := by
+  by_contra h
+  push_neg at h
+  exact riemannZeta_ne_zero_of_one_le_re h hz
 
-  Формально (абстрактно): нуль вне `1/2` ⟹ существует `A ≥ 1` и `H : ℕ → ℕ` с `DescentStep A (H t)
-  (H (t+1))` для всех `t` (вечный двигатель). Это НЕ доказано — это содержательный аналитический мост,
-  который должен следовать из тех же законов (перенос двойки / RH-связь), что замыкают близнецов. -/
+/--
+  **Аналитический вход `TrivialBelowZeroClassification`.** Всякий нуль с `Re ρ ≤ 0` тривиален
+  (`ρ = -2(n+1)`). Это классика (функциональное уравнение), но mathlib даёт лишь ЗНАЧЕНИЯ тривиальных
+  нулей (`riemannZeta_neg_two_mul_nat_add_one`), а НЕ обратную классификацию. Поэтому — явный вход,
+  а НЕ самодельная RH. -/
+def TrivialBelowZeroClassification : Prop :=
+  ∀ ρ : ℂ, riemannZeta ρ = 0 → ρ.re ≤ 0 → ∃ n : ℕ, ρ = -2 * (n + 1)
+
+/--
+  **`nontrivialZero_in_strip` — ДОКАЗАНА (mathlib `Re<1` + вход по `Re≤0`).** Нетривиальный нуль
+  лежит строго в критической полосе `0 < Re ρ < 1`. Верхняя граница — из mathlib; нижняя — из входа
+  `TrivialBelowZeroClassification` (не тривиальный ⟹ `Re > 0`). -/
+theorem nontrivialZero_in_strip (hClass : TrivialBelowZeroClassification)
+    {ρ : ℂ} (hρ : NontrivialZeroM ρ) : 0 < ρ.re ∧ ρ.re < 1 := by
+  obtain ⟨hz, hnt, _⟩ := hρ
+  refine ⟨?_, no_zero_of_one_le_re hz⟩
+  by_contra h
+  push_neg at h                    -- ρ.re ≤ 0
+  exact hnt (hClass ρ hz h)
+
+/--
+  **Мост двигателя (H_RH) — открытый узел ветки.** Нуль в полосе с `Re ≠ 1/2` ⟹ вечный двигатель:
+  асимметрия даёт бесконечную clean-цепь строго убывающей высоты. НЕ доказан — аналитический вход. -/
 def EngineBridge : Prop :=
-  ∀ ρ : ℂ, NontrivialZero ρ → ρ.re ≠ 1 / 2 →
+  ∀ ρ : ℂ, riemannZeta ρ = 0 → 0 < ρ.re → ρ.re < 1 → ρ.re ≠ 1 / 2 →
     ∃ (A : ℕ) (H : ℕ → ℕ), 1 ≤ A ∧ ∀ t, DescentStep A (H t) (H (t + 1))
 
 /--
-  **RH от противного (условная теорема).** Если мост `EngineBridge` верен, то RH истинна:
-  нуль вне `1/2` дал бы вечный двигатель, что невозможно (`no_infinite_descent`). Значит каждый
-  нетривиальный нуль на `Re = 1/2`. Вся аналитика изолирована в `EngineBridge`. -/
-theorem riemann_of_engine_bridge (H_RH : EngineBridge) : RiemannHypothesis := by
-  intro ρ hρ
+  **RH (mathlib) из двух явных входов (условная теорема).** Если мост `EngineBridge` и классификация
+  `TrivialBelowZeroClassification` даны, то выполняется mathlib-`RiemannHypothesis`: любой нетривиальный
+  нуль имеет `Re = 1/2`. Механизм: нуль в полосе (доказано) с `Re ≠ 1/2` дал бы двигатель, которого нет
+  (`no_infinite_descent`). Вся аналитика изолирована в двух входах; сам двигатель — доказанное ядро. -/
+theorem riemannHypothesis_of_engine_bridge
+    (hClass : TrivialBelowZeroClassification) (H_RH : EngineBridge) :
+    RiemannHypothesis := by
+  intro ρ hz htriv hne1
+  -- собрать нетривиальность в смысле нашего предиката
+  have hρ : NontrivialZeroM ρ := ⟨hz, htriv, hne1⟩
+  obtain ⟨hpos, hlt⟩ := nontrivialZero_in_strip hClass hρ
   by_contra hne
-  -- нуль вне 1/2 ⟹ вечный двигатель (мост)
-  obtain ⟨A, Hgt, hA, hchain⟩ := H_RH ρ hρ hne
-  -- но вечного двигателя нет (доказано)
+  obtain ⟨A, Hgt, hA, hchain⟩ := H_RH ρ hz hpos hlt hne
   exact no_infinite_descent hA Hgt hchain
 
 /--
-  **Контрапозиция явно: ¬RH ⟹ двигатель ⟹ ⊥.** Тот же EPMI-механизм, что у близнецов.
-  Если мост верен и RH ложна, то существует вечный двигатель — противоречие. -/
-theorem not_RH_gives_engine (H_RH : EngineBridge) (hnotRH : ¬ RiemannHypothesis) :
+  **Контрапозиция: ¬RH ⟹ двигатель ⟹ ⊥.** Если оба входа даны и mathlib-RH ложна, то существует
+  вечный двигатель — противоречие с ядром. -/
+theorem not_RH_gives_engine
+    (hClass : TrivialBelowZeroClassification) (H_RH : EngineBridge) (hnotRH : ¬ RiemannHypothesis) :
     ∃ (A : ℕ) (H : ℕ → ℕ), 1 ≤ A ∧ ∀ t, DescentStep A (H t) (H (t + 1)) := by
-  -- ¬RH ⟹ есть нуль вне 1/2
-  rw [RiemannHypothesis] at hnotRH
-  simp only [not_forall] at hnotRH
-  obtain ⟨ρ, hρ, hne⟩ := hnotRH
-  exact H_RH ρ hρ hne
+  exact absurd (riemannHypothesis_of_engine_bridge hClass H_RH) hnotRH
 
 /-! ### Связка с близнецами: один общий узел вместо двух -/
 
 /--
-  **Закон переноса двойки (абстрактно).** Пропозиция «ядро переноса двойки держится» — она УЖЕ
-  доказана конкретными тождествами `Engine/TwoGap` (`det_law_rank33`, `det_law_CD`, `det_collapse`,
-  …). Здесь — её абстрактная форма как посылки (свидетель — любое из тождеств). -/
+  **Закон переноса двойки (абстрактно).** «Ядро переноса двойки держится» — УЖЕ доказано тождествами
+  `Engine/TwoGap`. Здесь — абстрактная форма как посылка. -/
 def TwoTransportLaw : Prop :=
   ∀ m a b v q r s : ℕ, 1 ≤ m → 6 * m - 1 = a * b * v → 6 * m + 1 = q * r * s →
     q * r * s = a * b * v + 2
@@ -83,18 +106,18 @@ theorem twoTransportLaw_holds : TwoTransportLaw :=
   fun _ _ _ _ _ _ _ hm h1 h2 => det_law_rank33 hm h1 h2
 
 /--
-  **Узел-связка `TwoTransportBridge` — ЕДИНСТВЕННОЕ, что надо доказать для «одновременности».**
-  Импликация (НЕ эквивалентность гипотез!): закон переноса двойки ⟹ EngineBridge. То есть нуль `ζ`
-  вне `1/2` ломает перенос двойки и порождает вечный двигатель. Если ЭТО доказано, RH следует из
-  УЖЕ доказанного ядра (`TwoGap` + EPMI), не дожидаясь близнецов. -/
+  **Узел-связка `TwoTransportBridge`.** Импликация: закон переноса двойки ⟹ EngineBridge. Нуль ζ вне
+  `1/2` ломает перенос двойки и порождает вечный двигатель. Если ЭТО (+ классификация) доказано, RH
+  следует из УЖЕ доказанного ядра (`TwoGap` + EPMI). -/
 def TwoTransportBridge : Prop := TwoTransportLaw → EngineBridge
 
 /--
-  **RH из доказанного ядра + одной связки (структура «одновременности» явно).** Если узел-связка
-  `TwoTransportBridge` верен, то RH следует — потому что `TwoTransportLaw` УЖЕ доказан
-  (`twoTransportLaw_holds`) и EPMI УЖЕ доказан. Открытым остаётся РОВНО `TwoTransportBridge`
-  (импликация перенос-двойки ⟹ мост), а НЕ отдельная аналитика и НЕ эквивалентность гипотез. -/
-theorem riemann_of_two_transport (bridge : TwoTransportBridge) : RiemannHypothesis :=
-  riemann_of_engine_bridge (bridge twoTransportLaw_holds)
+  **RH (mathlib) из доказанного ядра + двух связок.** Если `TwoTransportBridge` и классификация даны,
+  RH следует: `TwoTransportLaw` УЖЕ доказан, EPMI УЖЕ доказан. Открыты РОВНО `TwoTransportBridge` и
+  `TrivialBelowZeroClassification` — обе явные, не аксиомы. -/
+theorem riemannHypothesis_of_two_transport
+    (hClass : TrivialBelowZeroClassification) (bridge : TwoTransportBridge) :
+    RiemannHypothesis :=
+  riemannHypothesis_of_engine_bridge hClass (bridge twoTransportLaw_holds)
 
 end EuclidsPath.RiemannBranch

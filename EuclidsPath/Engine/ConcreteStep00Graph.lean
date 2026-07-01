@@ -1578,5 +1578,115 @@ theorem terminalFanIn_witnesses_state_projection_loss
 
 end GeneratedFlowFormulation
 
+
+/-! ### §12. Структурная аналогия P/NP (НЕ доказательство P≠NP и НЕ близнецов).
+FORWARD (P): длина пути ≤ lexRank старта (доказано). REVERSE (NP): конечный ключ не восстанавливает
+генеалогию (доказано). УЗЕЛ PolyCertificateSuffices = SemanticFlowLedgerCollisionResolves — вход. -/
+
+namespace PvsNPAnalogy
+open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph
+open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph.StrictLedgerAudit
+open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
+
+
+open EuclidsPath.LabelledFanIn
+open EuclidsPath.ConcreteStep00Graph
+open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph
+open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph.StrictLedgerAudit
+open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
+
+/-! ### §1. FORWARD = P: длина пути ограничена lexRank старта (полиномиальная проверка) -/
+
+/--
+**`pathN_len_le_lexRank` — ДОКАЗАНА.** Любой forward-путь длины `n` из `X` имеет `n ≤ lexRank X`.
+Т.е. прямой ход двигателя «дёшев»: число шагов ограничено координатой старта (линейно по `lexRank`),
+и проверка легальности пути — пошаговая. Это P-сторона аналогии. Следствие `lexRank`-спуска. -/
+theorem pathN_len_le_lexRank {A M0 : ℕ} :
+    ∀ n X Y, PathN (RealStep A M0) n X Y → n ≤ lexRank X := by
+  intro n
+  induction n with
+  | zero => intro X Y h; omega
+  | succ k ih =>
+      intro X Y h
+      obtain ⟨Z, hXZ, hZY⟩ := h
+      have h1 : lexRank Z < lexRank X := lexRank_strict_decrease_on_RealStep hXZ
+      have h2 : k ≤ lexRank Z := ih Z Y hZY
+      omega
+
+/-- Генеалогия имеет полиномиально-ограниченную длину: `steps ≤ lexRank (center start)`. -/
+theorem generatedFlow_steps_le_lexRank {A M0 : ℕ} (F : GeneratedFlow A M0) :
+    F.steps ≤ lexRank (State.center F.start) :=
+  pathN_len_le_lexRank F.steps (State.center F.start) F.terminal F.path
+
+/-- **`VerificationEasy` — форма P.** «Проверить генеалогию `F` дёшево»: длина ограничена `lexRank`
+    старта (свидетель проверяется за число шагов ≤ координаты). Это ДОКАЗУЕМОЕ свойство графа. -/
+def VerificationEasy {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
+  F.steps ≤ lexRank (State.center F.start)
+
+theorem verificationEasy_always {A M0 : ℕ} (F : GeneratedFlow A M0) : VerificationEasy F :=
+  generatedFlow_steps_le_lexRank F
+
+/-! ### §2. REVERSE = NP: конечный сертификат НЕ восстанавливает генеалогию (поиск не сжимается) -/
+
+/--
+**`SearchNotCompressible` — форма NP.** На бесконечной семье состояний конечный ключ проекции НЕ
+определяет состояние (⟹ тем более не восстанавливает полную генеалогию). Т.е. «сжать обратный поиск
+в полиномиальный сертификат» невозможно на уровне состояний. Прямое следствие §10-аудита. -/
+def SearchNotCompressible {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) (S : Set State) : Prop :=
+  ¬ KeyDeterminesStateOn proj S
+
+/-- **`search_not_compressible_of_infinite` — ДОКАЗАНА.** Для любой конечной проекции на бесконечной
+    семье поиск не сжимается: ключ теряет информацию. Это NP-сторона: сертификат не эквивалентен
+    полному обратному пути. -/
+theorem search_not_compressible_of_infinite {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State} (hInf : S.Infinite) :
+    SearchNotCompressible proj S :=
+  finite_key_cannot_determine_state_on_infinite proj hInf
+
+/-! ### §3. АНАЛОГИЯ КАК ТЕОРЕМА: verify и search структурно различны (не лозунг)
+
+FORWARD ограничен lexRank (доказано), REVERSE не сжимается в конечный ключ (доказано). Значит
+«проверка» и «поиск» здесь разделены МАШИННО: verify всегда лёгок, а сжатие поиска — невозможно. -/
+
+/--
+**`verify_easy_but_search_not_compressible` — ДОКАЗАНА (аналогия как факт).** Одновременно:
+(1) КАЖДАЯ генеалогия проверяется дёшево (`VerificationEasy`, ограничение `lexRank`); и
+(2) на бесконечной семье поиск НЕ сжимается в конечный ключ (`SearchNotCompressible`).
+Это машинная форма асимметрии «проверка легка / поиск не сжимается» — структурная тень P vs NP,
+БЕЗ утверждения P≠NP. -/
+theorem verify_easy_but_search_not_compressible {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State} (hInf : S.Infinite) :
+    (∀ F : GeneratedFlow A M0, VerificationEasy F) ∧ SearchNotCompressible proj S :=
+  ⟨verificationEasy_always, search_not_compressible_of_infinite proj hInf⟩
+
+/-! ### §4. УЗЕЛ: «полиномиальный сертификат достаточен» = SemanticFlowLedgerCollisionResolves
+
+Оставшийся вход в одежде P/NP: «конечный (полиномиальный) сертификат обратного пути РЕШАЕТ, что
+коллизия двух генеалогий = настоящий цикл». Это РОВНО SemanticFlowLedgerCollisionResolves. НЕ доказан —
+и §2 показывает почему: сертификат теряет информацию, поэтому «сертификата достаточно» — доп. арифметика. -/
+
+/-- **`PolyCertificateSuffices` (вход).** Псевдоним для `SemanticFlowLedgerCollisionResolves` в
+    P/NP-терминах: конечный сертификат коллизии генеалогий достаточен, чтобы вывести резолюцию
+    (цикл ∨ невозможная оплата). НЕ доказан. -/
+def PolyCertificateSuffices {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0) : Prop :=
+  SemanticFlowLedgerCollisionResolves proj
+
+/--
+**`branch_closes_if_polyCertificateSuffices` — ДОКАЗАНА (условно на узле).** ЕСЛИ полиномиальный
+сертификат достаточен (`PolyCertificateSuffices`) И есть бесконечная семья генеалогий, ТО ветка
+схлопывается (`False`) — зеркало `generatedFlowStep00Package_false`. Узел НЕ предъявлен: это тот же
+несводимый вход близнецов, лишь названный по-P/NP. -/
+theorem branch_closes_if_polyCertificateSuffices {A M0 : ℕ}
+    (proj : SemanticFlowLedgerProjection A M0)
+    {𝓕 : Set (GeneratedFlow A M0)}
+    (h𝓕 : InfiniteGeneratedFlowFamily A M0 𝓕)
+    (hCert : PolyCertificateSuffices proj) :
+    False :=
+  infinite_generated_flows_impossible_with_resolution proj h𝓕 hCert
+
+
+end PvsNPAnalogy
+
 end ConcreteStep00Graph
 end EuclidsPath

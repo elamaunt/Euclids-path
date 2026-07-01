@@ -695,5 +695,253 @@ theorem unboundedConcreteStep00CollapsePackage_false {A M0 : ℕ}
 abbrev TheUnboundedConcreteGraphObligation (A M0 : ℕ) : Prop :=
   ∃ P : UnboundedConcreteStep00CollapsePackage A M0, True
 
+
+/-! ### §9. ПРАВИЛЬНЫЙ неограниченный ledger-граф (не вакуумный: State ∞, Key конечен).
+Источник: EuclidsPath_proper_unbounded_ledger_graph_patch. Заменяет вакуумный finite-strict:
+пиджонхол на бесконечном подмножестве НЕОГРАНИЧЕННОГО State → конечный ledger-ключ. -/
+
+namespace ProperUnboundedLedgerGraph
+
+open EuclidsPath.BoundaryLedgerCollision
+open EuclidsPath.BoundaryDefectPayment
+open EuclidsPath.LabelledFanIn
+
+/-#############################################################################
+  §1. Semantic finite ledger projection and quotient graph
+#############################################################################-/
+
+/--
+A semantic finite ledger projection for the concrete unbounded Step00 graph.
+
+`Key` is the finite ledger vertex type.  It should encode only bounded old data
+(absorber slot, side/payment class, normalized finite signature, etc.), not the
+unbounded centre or full trace.  The mathematical correctness of that encoding
+is not hidden here; it is consumed later as the collision-resolution law.
+-/
+structure SemanticLedgerProjection (A M0 : ℕ) where
+  Key : Type
+  finiteKey : Finite Key
+  key : State → Key
+
+/-- The finite vertex type of the semantic ledger quotient graph. -/
+abbrev Vertex {A M0 : ℕ} (proj : SemanticLedgerProjection A M0) : Type := proj.Key
+
+/-- The vertex type of the semantic ledger quotient graph is finite. -/
+instance finiteVertex {A M0 : ℕ} (proj : SemanticLedgerProjection A M0) :
+    Finite (Vertex proj) :=
+  proj.finiteKey
+
+/--
+The finite ledger quotient edge relation.
+
+A ledger edge `K -> L` exists exactly when it is induced by an actual concrete
+Step00 edge `U -> V` between legal concrete states whose keys are `K` and `L`.
+-/
+def LedgerEdge {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    (K L : Vertex proj) : Prop :=
+  ∃ U V : State,
+    Legal A M0 U ∧ Legal A M0 V ∧
+    RealStep A M0 U V ∧
+    proj.key U = K ∧ proj.key V = L
+
+/-- A small bundled finite graph object for the semantic ledger quotient. -/
+structure LedgerQuotientGraph (A M0 : ℕ) where
+  proj : SemanticLedgerProjection A M0
+  Edge : Vertex proj → Vertex proj → Prop := LedgerEdge proj
+
+/-- The vertices of a ledger quotient graph are finite by construction. -/
+instance quotientGraphVertexFinite {A M0 : ℕ} (G : LedgerQuotientGraph A M0) :
+    Finite (Vertex G.proj) :=
+  G.proj.finiteKey
+
+/-- Every legal concrete real edge projects to a finite ledger edge. -/
+theorem ledgerEdge_of_realStep {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    {U V : State}
+    (hU : Legal A M0 U) (hV : Legal A M0 V)
+    (hStep : RealStep A M0 U V) :
+    LedgerEdge proj (proj.key U) (proj.key V) := by
+  exact ⟨U, V, hU, hV, hStep, rfl, rfl⟩
+
+/--
+Membership predicate for a ledger vertex occupied by a concrete fresh legal
+defect from a set `S`.
+-/
+def OccupiedByFreshDefect {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    (S : Set State) (K : Vertex proj) : Prop :=
+  ∃ U : State,
+    U ∈ S ∧ Fresh M0 U ∧ Defective A U ∧ Legal A M0 U ∧ proj.key U = K
+
+/-- Every member of a concrete fresh-defect family occupies its ledger key. -/
+theorem occupied_key_of_family_member {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S)
+    {U : State} (hU : U ∈ S) :
+    OccupiedByFreshDefect proj S (proj.key U) := by
+  rcases hS with ⟨_hInf, hMem⟩
+  rcases hMem U hU with ⟨hFresh, hDef, hLeg⟩
+  exact ⟨U, hU, hFresh, hDef, hLeg, rfl⟩
+
+/-#############################################################################
+  §2. Non-vacuous pigeonhole on the unbounded concrete state space
+#############################################################################-/
+
+/--
+The proper pigeonhole statement.
+
+The source set `S` is a subset of the unbounded concrete `State`, and may be
+infinite.  The target is only the finite ledger vertex type `proj.Key`.  Thus the
+conclusion is a real collision between two distinct concrete states in `S`, not
+a vacuous contradiction from finiteness of the state type.
+-/
+theorem infinite_unbounded_family_forces_ledger_collision
+    {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    {S : Set State} (hS : InfiniteFreshDefectFamily A M0 S) :
+    ∃ U₁ U₂ : State,
+      U₁ ≠ U₂ ∧
+      U₁ ∈ S ∧ U₂ ∈ S ∧
+      Fresh M0 U₁ ∧ Defective A U₁ ∧ Legal A M0 U₁ ∧
+      Fresh M0 U₂ ∧ Defective A U₂ ∧ Legal A M0 U₂ ∧
+      proj.key U₁ = proj.key U₂ := by
+  classical
+  letI : Finite proj.Key := proj.finiteKey
+  rcases hS with ⟨hInf, hMem⟩
+  exact infinite_defect_flows_force_ledger_collision
+    (σ := State) (Key := proj.Key)
+    (RealStep := RealStep A M0) (Legal := Legal A M0)
+    (Fresh := Fresh M0) (Defective := Defective A)
+    (S := S) hInf hMem proj.key
+
+/--
+A same-ledger-key collision resolution law for the proper unbounded concrete
+ledger graph.
+
+This is the local arithmetic obligation for the chosen semantic projection.
+Unlike the older fixed-envelope `LedgerProjection`, the key type is allowed to be
+any finite type supplied by `proj`.
+-/
+abbrev SemanticLedgerCollisionResolves
+    {A M0 : ℕ} (proj : SemanticLedgerProjection A M0) : Prop :=
+  BoundaryLedgerCollisionResolves
+    (σ := State) (Key := proj.Key)
+    (RealStep A M0) (Legal A M0) (Fresh M0) (Defective A)
+    proj.key BoundaryDefectPayment.ImpossiblePayment
+
+/--
+The quotient graph plus resolution gives `LegalCycle ∨ ImpossiblePayment`.
+This is the exact finite-ledger branch before burning either side.
+-/
+theorem infinite_unbounded_family_forces_cycle_or_payment
+    {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    {S : Set State} (hS : InfiniteFreshDefectFamily A M0 S)
+    (hResolve : SemanticLedgerCollisionResolves proj) :
+    LegalCycle (RealStep A M0) (Legal A M0) ∨
+      BoundaryDefectPayment.ImpossiblePayment := by
+  classical
+  letI : Finite proj.Key := proj.finiteKey
+  rcases hS with ⟨hInf, hMem⟩
+  exact infinite_defect_flows_force_cycle_or_payment
+    (σ := State) (Key := proj.Key)
+    (RealStep := RealStep A M0) (Legal := Legal A M0)
+    (Fresh := Fresh M0) (Defective := Defective A)
+    (ImpossiblePayment := BoundaryDefectPayment.ImpossiblePayment)
+    (S := S) hInf hMem proj.key hResolve
+
+/-#############################################################################
+  §3. Strict closure: payment burned, cycles forbidden by `lexRank`
+#############################################################################-/
+
+/--
+The payment branch is already impossible; therefore a resolved infinite
+unbounded fresh-defect family would force a concrete legal cycle.
+-/
+theorem infinite_unbounded_family_forces_cycle
+    {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    {S : Set State} (hS : InfiniteFreshDefectFamily A M0 S)
+    (hResolve : SemanticLedgerCollisionResolves proj) :
+    LegalCycle (RealStep A M0) (Legal A M0) := by
+  classical
+  letI : Finite proj.Key := proj.finiteKey
+  rcases hS with ⟨hInf, hMem⟩
+  exact infinite_defect_flows_force_cycle
+    (σ := State) (Key := proj.Key)
+    (RealStep := RealStep A M0) (Legal := Legal A M0)
+    (Fresh := Fresh M0) (Defective := Defective A)
+    (ImpossiblePayment := BoundaryDefectPayment.ImpossiblePayment)
+    (S := S) hInf hMem proj.key hResolve
+    BoundaryDefectPayment.impossiblePayment_false
+
+/--
+Strict closure of the proper unbounded finite-ledger graph.
+
+This is the non-vacuous close:
+
+  infinite concrete fresh defects in unbounded `State`
+  + finite semantic ledger projection
+  + same-ledger collision resolution
+  ----------------------------------------------------
+  False
+
+The contradiction is not obtained from finiteness of the state type.  It is
+obtained because the finite ledger creates a real same-key collision, resolution
+turns it into cycle/payment, payment is impossible, and the concrete graph is
+acyclic by the global `lexRank` descent.
+-/
+theorem proper_unbounded_ledger_graph_closes_strictly
+    {A M0 : ℕ} (proj : SemanticLedgerProjection A M0)
+    {S : Set State} (hS : InfiniteFreshDefectFamily A M0 S)
+    (hResolve : SemanticLedgerCollisionResolves proj) :
+    False := by
+  have hCycle : LegalCycle (RealStep A M0) (Legal A M0) :=
+    infinite_unbounded_family_forces_cycle proj hS hResolve
+  exact no_concrete_legalCycle_by_lexRank
+    (A := A) (M0 := M0) hCycle
+
+/--
+The same strict closure expressed through the finite quotient graph object.
+-/
+theorem proper_ledger_quotient_graph_closes_strictly
+    {A M0 : ℕ} (G : LedgerQuotientGraph A M0)
+    {S : Set State} (hS : InfiniteFreshDefectFamily A M0 S)
+    (hResolve : SemanticLedgerCollisionResolves G.proj) :
+    False := by
+  exact proper_unbounded_ledger_graph_closes_strictly
+    G.proj hS hResolve
+
+/-#############################################################################
+  §4. The exact remaining positive package
+#############################################################################-/
+
+/--
+The correct remaining Step00 package.
+
+This is deliberately not a finite-state package.  The concrete state type remains
+unbounded; only the semantic ledger quotient is finite.
+-/
+structure ProperUnboundedLedgerCollapsePackage (A M0 : ℕ) where
+  proj : SemanticLedgerProjection A M0
+  S : Set State
+  infiniteFreshDefects : InfiniteFreshDefectFamily A M0 S
+  collisionResolves : SemanticLedgerCollisionResolves proj
+
+/-- Any proper unbounded ledger collapse package is contradictory. -/
+theorem properUnboundedLedgerCollapsePackage_false
+    {A M0 : ℕ} (P : ProperUnboundedLedgerCollapsePackage A M0) : False := by
+  exact proper_unbounded_ledger_graph_closes_strictly
+    P.proj P.infiniteFreshDefects P.collisionResolves
+
+/--
+Final audit name for the now-correct graph task.
+
+To close Step00, one must construct a term of this proposition for the actual
+`A` and old bound `M0` forced by the finite-twin assumption.  The fields are the
+three genuine positive arithmetic inputs; height, acyclicity, and payment are no
+longer fields.
+-/
+abbrev TheProperUnboundedLedgerGraphObligation (A M0 : ℕ) : Prop :=
+  ∃ P : ProperUnboundedLedgerCollapsePackage A M0, True
+
+end ProperUnboundedLedgerGraph
+
+
 end ConcreteStep00Graph
 end EuclidsPath

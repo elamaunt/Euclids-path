@@ -59,3 +59,4 @@ import EuclidsPath.Engine.CarrierBridge     -- последнее звено: ca
 import EuclidsPath.Engine.MkNode            -- mkNode: RankNode из составной стороны (арифметика, доказано)
 import EuclidsPath.Engine.LabelledFanIn     -- labelled fan-in: König ДОКАЗАН, SNOL сведён (v2→v4)
 import EuclidsPath.Engine.AtomicSNOL         -- post-audit: legal subtype (нет hAll) + SNOL-free atomic + SNOLDeriv (R8 = красная линия)
+import EuclidsPath.Engine.ConcreteComponents -- discharge active/old-peel компоненты из separating scale; локализация counting-стены

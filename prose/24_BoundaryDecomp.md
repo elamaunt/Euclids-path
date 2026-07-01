@@ -6,8 +6,9 @@
 > `Engine/LabelledFanIn.lean` (König ДОКАЗАН, SNOL сведён к более лёгкому закону) и
 > `Engine/AtomicSNOL.lean` (атомизация SNOL — рефакторинг), `Engine/ConcreteComponents.lean`
 > (active/old-peel компоненты доказаны; финальная density-редукция циркулярна),
-> `Engine/BadCoverDescent.lean` (bad-cover descent — тоже циркулярна). Всё — редукции/рефакторинги,
-> НЕ закрытие; см. разделы ниже. Числа: `tools/RESULTS_global_absorber`.
+> `Engine/BadCoverDescent.lean` (bad-cover descent — тоже циркулярна), `Engine/ObstructionClosure.lean`
+> (abstract obstruction-двигатель — входы неинстанциируемы, стена подтверждена). Всё —
+> редукции/рефакторинги/инструменты, НЕ закрытие; см. разделы ниже. Числа: `tools/RESULTS_global_absorber`.
 
 В [23. Rigid closure] мы свели всё замыкание к одному конструктивному входу: у каждого не-twin
 центра делитель должен порождать валидный меньший центр (`regenerates_needs_target_center`), а
@@ -271,6 +272,42 @@ parity-стена). Следующий заход (`Engine/BadCoverDescent.lean`
 настоящая инстанциация с energy, структурно убывающей на old-peel/active шагах). Но стена не обойдена:
 R3 as-hard-as-goal. Красная линия цела (чистая Finset-комбинаторика, никакой плотности в самом костяке).
 `Step00` остаётся `sorry`.
+
+### Obstruction-двигатель: well-founded механика (входы неинстанциируемы, стена подтверждена)
+
+Следующий кирпич методологически зрелее: он **сам содержит no-go-критерии** и ставит бинарный тест.
+Идея — искать двигатель в **положительном** obstruction-сертификате: `Bad m ⟹ ∃ obs, ObsAt obs m` и
+`ObsAt obs m ⟹ Close ∨ меньший obs`; тогда well-founded индукция по рангу даёт `Bad m ⟹ Close`.
+Абстрактная механика доказана (`Engine/ObstructionClosure.lean`, **без аксиом**): `obs_closes`,
+`mem_bad_closes_of_obstruction_reduction`, сборка `exists_close_of_nonempty_carrier_and_bad_engine`,
+снятие engine-ветки `goal_all_of_exists_close_all`. Чистая well-founded логика, без арифметики простых.
+
+> **Примечание (главный аудитный тест кирпича — результат отрицательный, подтверждён аудитом).**
+> Кирпич сам формулирует no-go (§13, §16): двигатель работает ТОЛЬКО ЕСЛИ `SNOL.bad` имеет
+> **положительную** obstruction-семантику. Проверка кода (исчерпывающий grep): в базе НЕТ `def bad`/
+> `def good`/`def carrier`/`Obs`/`LocalObstruction`. Реальный узел `SNOL.SNOLInput` использует
+> `bad, carrier : Finset ℕ` как **экзистенциально-квантифицированные** множества с единственным
+> содержательным условием `bad.card < carrier.card` (counting), а survivor тянется из
+> `survivor_of_not_covered` — чистый счёт. Значит `SNOL.bad` — counting-объект, а НЕ obstruction; по
+> критерию §16 входы U1/U2 **неинстанциируемы** без цели/counting, двигатель на реальном узле не
+> запускается.
+
+> **Примечание (даже построенный obstruction циркулярен в терминале).** Obstruction для `6m±1` уже
+> частично построен: `ObsAt` = old-peel/active ребро с большим простым делителем, `rank` = высота-центр.
+> Шаги редукции U2 доказуемы **нециркулярно** (`cofactor_is_center`, `old_peel_height_drop`,
+> `active_descent_height` — catch есть ступенька вниз, не стена). НО в **ранг-0 терминале** (clean-центр
+> с простыми сторонами) обе спускающие ветви `regeneration_dichotomy` исчезают, остаётся ровно «это
+> twin» — U2-терминал `Close ∨ меньший obs` сводится к `Close ∨ ничего` = **цель**. Та же
+> circularity-подпись, что машинно зафиксирована в `BadCoverDescent.descent_reduction_is_circular` и
+> `ConcreteComponents.smallCleanSupply_iff_goal` (обе: вход ⟺ цель). Плюс orientation-стена
+> `Step00Close`: спуск даёт twin ниже старта, а нужен выше N.
+
+**Итог (по §16 кирпича, честно).** Абстрактный obstruction-двигатель корректен, axiom-free и
+переиспользуем, но его содержательные входы к `SNOL.bad` не привязываются. Двигатель добавляет
+реальную лемму спуска и более точную локализацию стены (она бьёт при построении `ObsAt` для clean
+prime-sided центра, ещё ДО запуска абстрактной машины), но **ничего не закрывает**. Итог аудита
+подтверждён: `SNOL.SNOLInput` — настоящая density/counting/parity стена. Красная линия цела. `Step00`
+остаётся `sorry`.
 
 ## Где мы
 

@@ -61,3 +61,4 @@ import EuclidsPath.Engine.LabelledFanIn     -- labelled fan-in: König ДОКА�
 import EuclidsPath.Engine.AtomicSNOL         -- post-audit: legal subtype (нет hAll) + SNOL-free atomic + SNOLDeriv (R8 = красная линия)
 import EuclidsPath.Engine.ConcreteComponents -- discharge active/old-peel компоненты из separating scale; локализация counting-стены
 import EuclidsPath.Engine.BadCoverDescent    -- обход counting-стены: bad-cover finite descent (условная редукция, R3 = новая красная линия)
+import EuclidsPath.Engine.ObstructionClosure -- абстрактный well-founded obstruction-двигатель; входы НЕинстанциируемы (SNOL.bad — counting)

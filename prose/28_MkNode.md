@@ -120,7 +120,7 @@ $$
 множителей имеет длину не меньше двух:
 
 $$
-2 \le \bigl\lvert \operatorname{primeFactorsList} N\bigr\rvert .
+2 \le \bigl\lvert \mathrm{primeFactorsList} N\bigr\rvert .
 $$
 
 *Что доказано и почему.* Отправная точка — тождество `Nat.prod_primeFactorsList`: для `N ≠ 0`
@@ -205,7 +205,7 @@ $$
 `r` с `2 ≤ r ≤ 4` и узел `X : RankNode r` такой, что
 
 $$
-\mathtt{AmbientLegal}\ X_A\ X.\mathtt{factors}\qquad\text{и}\qquad \prod \bigl(\operatorname{ofFn} X.\mathtt{factors}\bigr) = N .
+\mathtt{AmbientLegal}\ X_A\ X.\mathtt{factors}\qquad\text{и}\qquad \prod \bigl(\mathrm{ofFn} X.\mathtt{factors}\bigr) = N .
 $$
 
 *Что доказано и почему.* Строим узел явно. Пусть `L = primeFactorsList N`. Тогда:

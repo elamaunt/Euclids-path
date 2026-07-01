@@ -121,7 +121,7 @@ RH через эквивалентность Лиувилля $\lambda=(-1)^{\ma
 редуцируются не просто одним методом, а к **одному арифметическому инварианту** — чётности ранга.
 
 **Определение (ранг).** Ранг числа $n\ge1$ — это число его простых факторов с кратностью,
-$\mathrm{rank}(n)=\Omega(n)=\operatorname{cardFactors}(n)$. Наш `RankNode r` (модуль
+$\mathrm{rank}(n)=\Omega(n)=\mathrm{cardFactors}(n)$. Наш `RankNode r` (модуль
 `Engine/ProductCore`) — это состояние ранга $r$ с role-indexed факторами $\mathrm{factors}:\mathrm{Fin}\,r\to\mathbb N$;
 оператор `deleteFactor` понижает ранг $r\to r-1$.
 

@@ -22,7 +22,7 @@ $$
 $$
 \ell \mid N_0 + q\,n_1,\qquad \ell \mid N_0 + q\,n_2,
 $$
-и пусть $\ell$ взаимно просто с шагом, $\operatorname{IsCoprime}(\ell,q)$. Мы говорим, что повтор делителя $\ell$ **ригиден**, если разность центров кратна $\ell$:
+и пусть $\ell$ взаимно просто с шагом, $\mathrm{IsCoprime}(\ell,q)$. Мы говорим, что повтор делителя $\ell$ **ригиден**, если разность центров кратна $\ell$:
 $$
 \ell \mid (n_2 - n_1).
 $$
@@ -32,7 +32,7 @@ $$
 
 **Теорема** (`factor_repeat_rigidity`). Для целых $\ell, q, N_0, n_1, n_2$
 $$
-\ell \mid N_0 + q\,n_1 \ \wedge\ \ell \mid N_0 + q\,n_2 \ \wedge\ \operatorname{IsCoprime}(\ell,q)
+\ell \mid N_0 + q\,n_1 \ \wedge\ \ell \mid N_0 + q\,n_2 \ \wedge\ \mathrm{IsCoprime}(\ell,q)
 \ \Longrightarrow\ \ell \mid (n_2 - n_1).
 $$
 

@@ -940,6 +940,273 @@ longer fields.
 abbrev TheProperUnboundedLedgerGraphObligation (A M0 : ℕ) : Prop :=
   ∃ P : ProperUnboundedLedgerCollapsePackage A M0, True
 
+
+/-! ### §10. Строгий аудит проекции Π (анти-читинг: запрет identity-ключа и скрытого центра).
+Источник: EuclidsPath_semantic_ledger_strict_audit_patch. Не доказывает soundness Π —
+машинно запрещает жульнические проекции; вся арифметика изолирована в SemanticLedgerCollisionResolves. -/
+
+namespace StrictLedgerAudit
+
+open EuclidsPath.BoundaryLedgerCollision
+open EuclidsPath.BoundaryDefectPayment
+open EuclidsPath.LabelledFanIn
+
+/-#############################################################################
+  §1. What it means for a key to leak too much information
+#############################################################################-/
+
+/--
+`proj.key` is state-complete on `S` if equal keys force equal concrete states.
+
+For an infinite family this is impossible for a finite key.  This predicate
+therefore detects an illicit `key := identity`-style projection.
+-/
+def KeyDeterminesStateOn {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) (S : Set State) : Prop :=
+  ∀ ⦃U V : State⦄, U ∈ S → V ∈ S → proj.key U = proj.key V → U = V
+
+/--
+`proj.key` determines the centre on `S` if equal keys force equal `centerOf`.
+
+This is not always forbidden: many different states may legitimately have the
+same old centre.  It becomes forbidden on a family where `centerOf` is injective,
+because then centre-completeness implies state-completeness for the collision
+created by finite pigeonhole.
+-/
+def KeyDeterminesCenterOn {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) (S : Set State) : Prop :=
+  ∀ ⦃U V : State⦄, U ∈ S → V ∈ S → proj.key U = proj.key V → centerOf U = centerOf V
+
+/-- State-completeness immediately implies centre-completeness. -/
+theorem keyDeterminesCenter_of_keyDeterminesState {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) (S : Set State)
+    (h : KeyDeterminesStateOn proj S) :
+    KeyDeterminesCenterOn proj S := by
+  intro U V hU hV hkey
+  simpa [h hU hV hkey]
+
+/--
+A finite ledger key cannot determine the whole concrete state on an infinite
+subset of the unbounded state space.
+-/
+theorem finite_key_cannot_determine_state_on_infinite {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hInf : S.Infinite) :
+    ¬ KeyDeterminesStateOn proj S := by
+  classical
+  intro hDet
+  letI : Finite proj.Key := proj.finiteKey
+  rcases infinite_set_key_collision
+      (σ := State) (Key := proj.Key) (S := S) hInf proj.key with
+    ⟨U, V, hU, hV, hne, hkey⟩
+  exact hne (hDet hU hV hkey)
+
+/--
+If centres are injective on an infinite family, then a finite key cannot even
+determine the centre on that family.
+
+This is the formal no-centre-leak check.  It blocks a projection that smuggles
+unbounded centre data into a finite key and then makes the collision meaningless.
+-/
+theorem finite_key_cannot_determine_center_on_center_injective_infinite
+    {A M0 : ℕ} (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hInf : S.Infinite)
+    (hCenterInj : Set.InjOn centerOf S) :
+    ¬ KeyDeterminesCenterOn proj S := by
+  classical
+  intro hDet
+  letI : Finite proj.Key := proj.finiteKey
+  rcases infinite_set_key_collision
+      (σ := State) (Key := proj.Key) (S := S) hInf proj.key with
+    ⟨U, V, hU, hV, hne, hkey⟩
+  have hc : centerOf U = centerOf V := hDet hU hV hkey
+  have hUV : U = V := hCenterInj hU hV hc
+  exact hne hUV
+
+/--
+State-completeness is a special forbidden case of the finite-key audit.
+-/
+theorem no_state_complete_semantic_key_on_family {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S) :
+    ¬ KeyDeterminesStateOn proj S := by
+  exact finite_key_cannot_determine_state_on_infinite proj hS.1
+
+/--
+Centre-completeness is forbidden on any infinite fresh-defect family whose
+centres are injective.
+-/
+theorem no_center_complete_semantic_key_on_center_injective_family {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S)
+    (hCenterInj : Set.InjOn centerOf S) :
+    ¬ KeyDeterminesCenterOn proj S := by
+  exact finite_key_cannot_determine_center_on_center_injective_infinite
+    proj hS.1 hCenterInj
+
+/-#############################################################################
+  §2. The genuine same-key collision produced by finite pigeonhole
+#############################################################################-/
+
+/--
+A concrete same-ledger collision inside an actual infinite fresh-defect family.
+
+This is deliberately a collision in the unbounded concrete `State`, not in a
+finite envelope type.
+-/
+abbrev HasSemanticLedgerCollision {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) (S : Set State) : Prop :=
+  ∃ U₁ U₂ : State,
+    U₁ ≠ U₂ ∧
+    U₁ ∈ S ∧ U₂ ∈ S ∧
+    Fresh M0 U₁ ∧ Defective A U₁ ∧ Legal A M0 U₁ ∧
+    Fresh M0 U₂ ∧ Defective A U₂ ∧ Legal A M0 U₂ ∧
+    proj.key U₁ = proj.key U₂
+
+/--
+Every infinite concrete fresh-defect family creates a real same-key collision
+for every finite semantic ledger projection proj.
+-/
+theorem hasSemanticLedgerCollision_of_infinite_family {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S) :
+    HasSemanticLedgerCollision proj S := by
+  exact infinite_unbounded_family_forces_ledger_collision proj hS
+
+/--
+The collision is not by itself a proof of Step00.  It is only the counting half.
+The arithmetic half is exactly `SemanticLedgerCollisionResolves proj`.
+-/
+abbrev SemanticSoundnessObligation {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) : Prop :=
+  SemanticLedgerCollisionResolves proj
+
+/-#############################################################################
+  §3. Bundled audit certificate: what is proved before semantic soundness
+#############################################################################-/
+
+/--
+The strict audit certificate for a candidate semantic ledger projection proj on a
+concrete infinite fresh-defect family `S`.
+
+The certificate records only what is forced by finiteness and infinitude:
+there is a real same-key collision, and the key cannot be a hidden identity key.
+It does *not* include the collision-resolution law.
+-/
+structure ProjectionAuditCertificate {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) (S : Set State) where
+  family : InfiniteFreshDefectFamily A M0 S
+  collision : HasSemanticLedgerCollision proj S
+  notStateComplete : ¬ KeyDeterminesStateOn proj S
+  notCenterCompleteOnCenterInjective :
+    Set.InjOn centerOf S → ¬ KeyDeterminesCenterOn proj S
+
+/--
+The audit certificate is obtained for free from an infinite concrete
+fresh-defect family and a finite semantic key.  This is still only audit/counting;
+it does not close Step00.
+-/
+theorem projectionAuditCertificate_of_infinite_family {A M0 : ℕ}
+    (proj : SemanticLedgerProjection A M0) {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S) :
+    ProjectionAuditCertificate proj S := by
+  refine ⟨hS, ?_, ?_, ?_⟩
+  · exact hasSemanticLedgerCollision_of_infinite_family proj hS
+  · exact no_state_complete_semantic_key_on_family proj hS
+  · intro hCenterInj
+    exact no_center_complete_semantic_key_on_center_injective_family
+      proj hS hCenterInj
+
+/--
+Adding the missing semantic soundness law to an audit certificate closes the
+branch.  This theorem is intentionally separated from the certificate: the audit
+layer alone must not pretend to prove the arithmetic collision-resolution law.
+-/
+theorem projectionAudit_closes_with_semanticSoundness {A M0 : ℕ}
+    {proj : SemanticLedgerProjection A M0} {S : Set State}
+    (C : ProjectionAuditCertificate proj S)
+    (hSound : SemanticSoundnessObligation proj) :
+    False := by
+  exact proper_unbounded_ledger_graph_closes_strictly
+    proj C.family hSound
+
+/--
+The exact remaining package after the strict audit.
+
+A term of this structure is the real Step00 arithmetic content for the chosen
+scale `A` and old bound `M0`: an audited finite semantic ledger projection, plus
+the local semantic collision-resolution law.
+-/
+structure AuditedSemanticLedgerClosingPackage (A M0 : ℕ) where
+  proj : SemanticLedgerProjection A M0
+  S : Set State
+  audit : ProjectionAuditCertificate proj S
+  semanticSoundness : SemanticSoundnessObligation proj
+
+/-- Any fully audited-and-sound semantic ledger package is contradictory. -/
+theorem auditedSemanticLedgerClosingPackage_false {A M0 : ℕ}
+    (P : AuditedSemanticLedgerClosingPackage A M0) : False := by
+  exact projectionAudit_closes_with_semanticSoundness
+    P.audit P.semanticSoundness
+
+/-#############################################################################
+  §4. Trivial key sanity check: finite does not mean sound
+#############################################################################-/
+
+/--
+The maximally coarse finite key.  It is useful as a sanity check: finiteness and
+collisions are automatic, but semantic soundness is still a real obligation.
+-/
+noncomputable def unitProjection (A M0 : ℕ) : SemanticLedgerProjection A M0 where
+  Key := PUnit
+  finiteKey := inferInstance
+  key := fun _ => PUnit.unit
+
+/-- The unit projection assigns the same key to all states. -/
+theorem unitProjection_key_eq {A M0 : ℕ} (U V : State) :
+    (unitProjection A M0).key U = (unitProjection A M0).key V := by
+  rfl
+
+/--
+Even for `Key := Unit`, closing the branch still requires the explicit semantic
+collision-resolution law.  This theorem has that law as a hypothesis on purpose.
+-/
+theorem unitProjection_closes_only_with_resolution {A M0 : ℕ}
+    {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S)
+    (hResolve : SemanticSoundnessObligation (unitProjection A M0)) :
+    False := by
+  exact proper_unbounded_ledger_graph_closes_strictly
+    (unitProjection A M0) hS hResolve
+
+/--
+For the unit projection, the audit certificate exists for every infinite
+fresh-defect family, but this still does not supply semantic soundness.
+-/
+theorem unitProjection_auditCertificate {A M0 : ℕ}
+    {S : Set State}
+    (hS : InfiniteFreshDefectFamily A M0 S) :
+    ProjectionAuditCertificate (unitProjection A M0) S := by
+  exact projectionAuditCertificate_of_infinite_family
+    (unitProjection A M0) hS
+
+/-#############################################################################
+  §5. Final audit name
+#############################################################################-/
+
+/--
+The post-audit Step00 obligation.
+
+Compared with the earlier proper unbounded ledger package, this version makes
+explicit that proj has passed the finite-key anti-vacuity audit and that the only
+remaining unproved mathematical field is semantic collision-resolution.
+-/
+abbrev TheStrictSemanticLedgerAuditObligation (A M0 : ℕ) : Prop :=
+  ∃ P : AuditedSemanticLedgerClosingPackage A M0, True
+
+end StrictLedgerAudit
+
+
 end ProperUnboundedLedgerGraph
 
 

@@ -1,8 +1,10 @@
 # 24. Декомпозиция boundary и глобальный узел
 
-> Источник: `step00_boundary_exit_decomposition_global_absorber_fix_ru_2026-06-30.md`.
-> Lean: `Engine/BoundaryDecomp.lean` (декомпозиция доказана; глобальный узел — единственная явная
-> гипотеза). Числа: `tools/RESULTS_global_absorber`.
+> Источник: `step00_boundary_exit_decomposition_global_absorber_fix_ru_2026-06-30.md`,
+> `step00_labelled_fanin_patch_ru_2026-07-01.md`.
+> Lean: `Engine/BoundaryDecomp.lean` (декомпозиция доказана; глобальный узел — явная гипотеза) и
+> `Engine/LabelledFanIn.lean` (patch: узел точнее локализован через labelled fan-in / label
+> determinism; НЕ закрыт — см. раздел «Патч labelled fan-in»). Числа: `tools/RESULTS_global_absorber`.
 
 В [23. Rigid closure] мы свели всё замыкание к одному конструктивному входу: у каждого не-twin
 центра делитель должен порождать валидный меньший центр (`regenerates_needs_target_center`), а
@@ -155,6 +157,51 @@ Pigeonhole гарантирует коллизию; но что коллизия
 > самоликвидация, как в [29. ProductHall]). Критическая развилка та же трилемма нормальной формы:
 > сигнатура должна **различать** родословные (иначе pump тривиально ложен на совпадающих) и при этом
 > **склеивать** их в один паспорт (иначе кодомен не конечен и pigeonhole пуст).
+
+## Патч labelled fan-in: попытка сменить counting-стену на structural
+
+Естественно спросить: раз путь через product-core коллизию `CoreCollision ⟹ Engine` закрыт (separating
+scale делает `CoreSig` инъективным, [26. SeparatingScale] — коллизии просто нет), нельзя ли обойти
+Hall-узел `pump`, заменив глобальный fan-in на **локальную детерминированность метки ребра**? Идея
+(формализована в `Engine/LabelledFanIn.lean`): убрать примитивный конструктор `AbsorberStep` (он и
+давал произвольный many-to-one collapse), оставить только реальные арифметические шаги
+$\mathrm{RealStep} = \text{active} \lor \text{oldPeel} \lor \text{boundary} \lor \text{SNOL} \lor
+\text{corridor}$, а поглощение сделать **path-свойством** $\mathrm{Absorbed}(s) := \exists O,\
+\mathrm{OldAbsorber}(O) \land \mathrm{Path}(\mathrm{RealStep}, s, O)$. Тогда цепь такова:
+
+$$\mathrm{GlobalOldAbsorption} \;\Rightarrow\; \mathrm{LabelledFanIn} \lor \mathrm{InfiniteLegalDescent}
+\quad(\text{König}), \qquad \neg\,\mathrm{InfiniteLegalDescent}\ (\text{EPMI}),$$
+$$\mathrm{LabelledFanIn} \;\Rightarrow\; \mathsf{Engine}\quad(\text{local label determinism}).$$
+
+Здесь `LabelledFanIn` — два **разных** легальных предшественника одного $V$ с **одинаковой** меткой
+ребра $\mathrm{edgeSig}(U_1,V) = \mathrm{edgeSig}(U_2,V)$, а метка конечна при фиксированном $A$.
+
+**Что из этого доказано (машинно, `LabelledFanIn.lean`, стандартные аксиомы).** Логический костяк:
+`labelledFanIn_to_engine` (из детерминизма метки, без аксиом), `descend_along_pred` (бесконечный спуск
+из данной функции предшественников — dependent choice, без аксиом), `localLabelDeterminism`
+(**настоящая** сборка через классификатор тега `kind` и согласованность $\mathrm{edgeSig}\leftrightarrow
+\mathrm{kind}$, а не переименование), и мост `no_infiniteLegalDescent_of_height` — что ветвь EPMI
+(`hNoInf`) **выводится** из строгого падения высоты через уже доказанный `no_infinite_descent` [01].
+
+> **Примечание (честный аудит, 8 адверсариальных агентов).** Патч **не закрывает** узел — он его
+> **точнее локализует**. Нагрузка переехала на два недоказанных входа. (1) `hComp` (компонентный
+> детерминизм) содержит **SNOL-случай**, который есть *ровно* старая SNOL/Hall стена: `SNOLBoundary`
+> неинъективен $\Rightarrow$ $\mathsf{Engine}$ — та же нагрузка, что `pump` выше, переименованная, а
+> не снятая. (2) König-ветвь §7.2 (finitely-branching бесконечное reverse-tree $\Rightarrow$
+> бесконечная ветвь) — недоказанная комбинаторика; discharge-цель — `Order.KonigLemma` (mathlib) при
+> инстанциации reverse-tree. Первая наивная формализация König через посылку «у каждого состояния есть
+> предшественник» была **ложной** (absorber — корень reverse-tree, предшественника не имеет; пример
+> $18 \mapsto (107,109)$ — состояние без предшественника) и исправлена: König-ветвь подана явным входом
+> `KonigBranchInput` с премиссой `GlobalOldAbsorption`, а итерация `descend_along_pred` честно
+> переименована (это **не** König — König извлекает ветвь, а не итерирует данную).
+
+**Итог патча.** Абстрактная машина `LabelledFanIn.lean` доказывает `globalAbsorption_to_engine` при
+трёх явных входах и связана с формой Step00-узла мостом `globalAbsorption_refutes_under_epmi` (при
+$\mathsf{Engine} := \bot$ цепь опровергает `GlobalOldAbsorption` — та же контрапозиция, что
+`no_global_absorption_under_epmi`). Но `σ`, `RealStep`, `edgeSig` **не привязаны** к конкретному графу
+$6m\pm1$, а вход `hComp` несёт несведённую SNOL-стену. Это **лучшая локализация** (узел стал
+structural — нормальная форма шага, — а не counting fan-in), но **не закрытие**: единственный узел
+по-прежнему открыт, `Step00` остаётся `sorry`.
 
 ## Где мы
 

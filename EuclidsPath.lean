@@ -62,3 +62,4 @@ import EuclidsPath.Engine.AtomicSNOL         -- post-audit: legal subtype (не�
 import EuclidsPath.Engine.ConcreteComponents -- discharge active/old-peel компоненты из separating scale; локализация counting-стены
 import EuclidsPath.Engine.BadCoverDescent    -- обход counting-стены: bad-cover finite descent (условная редукция, R3 = новая красная линия)
 import EuclidsPath.Engine.ObstructionClosure -- абстрактный well-founded obstruction-двигатель; входы НЕинстанциируемы (SNOL.bad — counting)
+import EuclidsPath.Engine.ManyUnresolved     -- маршрут many-unresolved collision: комбинаторика доказана, U4-терминал циркулярен

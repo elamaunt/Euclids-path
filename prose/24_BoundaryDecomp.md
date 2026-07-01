@@ -7,8 +7,9 @@
 > `Engine/AtomicSNOL.lean` (атомизация SNOL — рефакторинг), `Engine/ConcreteComponents.lean`
 > (active/old-peel компоненты доказаны; финальная density-редукция циркулярна),
 > `Engine/BadCoverDescent.lean` (bad-cover descent — тоже циркулярна), `Engine/ObstructionClosure.lean`
-> (abstract obstruction-двигатель — входы неинстанциируемы, стена подтверждена). Всё —
-> редукции/рефакторинги/инструменты, НЕ закрытие; см. разделы ниже. Числа: `tools/RESULTS_global_absorber`.
+> (abstract obstruction-двигатель — входы неинстанциируемы), `Engine/ManyUnresolved.lean` (массовая
+> collision — тоже циркулярна). Всё — редукции/рефакторинги/инструменты, НЕ закрытие; см. разделы ниже.
+> Числа: `tools/RESULTS_global_absorber`.
 
 В [23. Rigid closure] мы свели всё замыкание к одному конструктивному входу: у каждого не-twin
 центра делитель должен порождать валидный меньший центр (`regenerates_needs_target_center`), а
@@ -307,6 +308,32 @@ R3 as-hard-as-goal. Красная линия цела (чистая Finset-ко
 реальную лемму спуска и более точную локализацию стены (она бьёт при построении `ObsAt` для clean
 prime-sided центра, ещё ДО запуска абстрактной машины), но **ничего не закрывает**. Итог аудита
 подтверждён: `SNOL.SNOLInput` — настоящая density/counting/parity стена. Красная линия цела. `Step00`
+остаётся `sorry`.
+
+### Many-unresolved collision: массовое семейство вместо одного terminal (тоже циркулярно)
+
+Следующий кирпич пробует не закрывать ОДИН terminal (это уже схлопывалось в цель), а закрыть
+**массовое** семейство unresolved terminals через pigeonhole на конечной подписи + local determinism:
+`NoNewTwinAbove N ⟹ ∞ high starts ⟹ (many old-absorbed ∨ many unresolved) ⟹ Engine ∨ TwinAbove`.
+Абстрактный **комбинаторный костяк доказан** (`Engine/ManyUnresolved.lean`, std аксиомы, аудит
+подтвердил соундность): `infinite_split`, `infinite_two_same_sig` (pigeonhole: ∞ + конечная подпись ⟹
+два РАЗНЫХ с равной подписью), сборка `close_of_highStarts` → `twin_prime_conjecture_of_engine`. Чистая
+переиспользуемая комбинаторика.
+
+> **Примечание (я переоценил — аудит поправил; маршрут циркулярен, как шесть предыдущих).** Сначала я
+> заявил, что нетерминальные случаи U4 (active/oldPeel collision) закрываются через
+> `active_component_determinism`/`oldPeel_component_determinism`. **Это ошибка**, и я её принял: эти
+> леммы доказывают ДРУГОЕ — one-step детерминизм над **общим** base `V` (два предшественника одного `V`
+> совпадают), они не берут два РАЗНЫХ старта `m₁≠m₂`, не дают `Close`, и здесь даже не импортированы.
+> Pigeonhole-collision общего base не даёт — направление противоположное. Значит U4 циркулярен **везде**,
+> не только в терминале: машинно `goal_implies_U4` (цель разряжает U4). Плюс U2 (split
+> old-absorbed/unresolved) требует counting — знать, что unresolved-класс бесконечен, это ровно
+> `bad.card < carrier.card = SNOL.SNOLInput`; а U1 (single clean-центр из `carrier_nonempty_above`) не
+> даёт бесконечного семейства на фикс. масштабе.
+
+**Итог.** Костяк — реальная комбинаторика, маршрут ещё точнее локализует стену (U2-split = caught/survivor
+= `SNOLInput`; U4-collision = цель). Но **не закрывает**: circular overall, как шесть предыдущих.
+`SNOL.SNOLInput` подтверждён как настоящая density/counting/parity стена. Красная линия цела. `Step00`
 остаётся `sorry`.
 
 ## Где мы

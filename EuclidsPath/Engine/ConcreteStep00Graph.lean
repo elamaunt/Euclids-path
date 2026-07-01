@@ -615,5 +615,85 @@ fresh defect family and a concrete bounded ledger-collision resolution law.
 abbrev TheBoundedConcreteGraphObligation (A M0 B : ℕ) : Prop :=
   ∃ P : BoundedConcreteStep00CollapsePackage A M0 B, True
 
+/-! ### §6–8. Безусловная (глобальная) ацикличность из lexRank
+
+Убывающий ℕ-ранг `lexRank` САМ запрещает циклы (well-founded), без границы `B` и без co-height.
+Источник: EuclidsPath_step00_lexRank_acyclic_patch. Anti-cycle сторона снята ГЛОБАЛЬНО. -/
+
+/-- Ранг, строго убывающий вдоль ребра, слабо убывает вдоль любого пути. -/
+theorem pathN_rank_le_of_step_decrease
+    {α : Type*} {R : α → α → Prop} {rank : α → ℕ}
+    (hstep : ∀ {U V : α}, R U V → rank V < rank U) :
+    ∀ {n : ℕ} {X Y : α}, PathN R n X Y → rank Y ≤ rank X := by
+  intro n
+  induction n with
+  | zero => intro X Y h; dsimp [PathN] at h; cases h; exact le_rfl
+  | succ n ih =>
+      intro X Y h
+      dsimp [PathN] at h
+      rcases h with ⟨Z, hXZ, hZY⟩
+      exact Nat.le_trans (ih hZY) (Nat.le_of_lt (hstep hXZ))
+
+/-- Строго убывающий ранг строго убывает вдоль НЕПУСТОГО пути. -/
+theorem pathN_rank_strict_of_pos_of_step_decrease
+    {α : Type*} {R : α → α → Prop} {rank : α → ℕ}
+    (hstep : ∀ {U V : α}, R U V → rank V < rank U) :
+    ∀ {n : ℕ} {X Y : α}, 0 < n → PathN R n X Y → rank Y < rank X := by
+  intro n
+  cases n with
+  | zero => intro X Y hpos _; omega
+  | succ n =>
+      intro X Y _ hpath
+      dsimp [PathN] at hpath
+      rcases hpath with ⟨Z, hXZ, hZY⟩
+      exact lt_of_le_of_lt (pathN_rank_le_of_step_decrease (R := R) (rank := rank) hstep hZY)
+        (hstep hXZ)
+
+/-- Строгий ℕ-спуск вдоль ребра запрещает непустой self-путь (прямой well-founded, без co-height). -/
+theorem no_nonemptyPath_of_step_decrease
+    {α : Type*} {R : α → α → Prop} {rank : α → ℕ}
+    (hstep : ∀ {U V : α}, R U V → rank V < rank U) (W : α) :
+    ¬ NonemptyPath R W W := by
+  rintro ⟨n, hpos, hPathN⟩
+  exact Nat.lt_irrefl (rank W)
+    (pathN_rank_strict_of_pos_of_step_decrease (R := R) (rank := rank) hstep hpos hPathN)
+
+/-- **Конкретный граф Step00 ацикличен ГЛОБАЛЬНО** (безусловно, из `lexRank`). -/
+theorem no_concrete_nonemptyPath_by_lexRank {A M0 : ℕ} (W : State) :
+    ¬ NonemptyPath (RealStep A M0) W W :=
+  no_nonemptyPath_of_step_decrease (R := RealStep A M0) (rank := lexRank)
+    (fun hStep => lexRank_strict_decrease_on_RealStep hStep) W
+
+/-- Нет legal-цикла в конкретном графе (форма для ledger-collision). -/
+theorem no_concrete_legalCycle_by_lexRank {A M0 : ℕ} :
+    ¬ LegalCycle (RealStep A M0) (Legal A M0) := by
+  rintro ⟨W, _hLegal, hPath⟩
+  exact no_concrete_nonemptyPath_by_lexRank (A := A) (M0 := M0) W hPath
+
+/-- ∞ свежих дефектов + collision-resolve ⟹ `False` НАПРЯМУЮ из `lexRank` (без границы `B`). -/
+theorem infinite_fresh_defects_impossible_by_lexRank
+    {A M0 : ℕ} {S : Set State}
+    (proj : LedgerProjection A M0)
+    (hS : InfiniteFreshDefectFamily A M0 S)
+    (hResolve : ConcreteLedgerCollisionResolves A M0 proj) : False :=
+  no_concrete_legalCycle_by_lexRank (A := A) (M0 := M0)
+    (infinite_fresh_defects_force_concrete_cycle (A := A) (M0 := M0) (S := S) proj hS hResolve)
+
+/-- Unbounded-пакет: без поля высоты и без `B` (anti-cycle = `lexRank`). -/
+structure UnboundedConcreteStep00CollapsePackage (A M0 : ℕ) where
+  proj : LedgerProjection A M0
+  S : Set State
+  infiniteFreshDefects : InfiniteFreshDefectFamily A M0 S
+  collisionResolves : ConcreteLedgerCollisionResolves A M0 proj
+
+/-- Любой unbounded-пакет схлопывается по `lexRank`. -/
+theorem unboundedConcreteStep00CollapsePackage_false {A M0 : ℕ}
+    (P : UnboundedConcreteStep00CollapsePackage A M0) : False :=
+  infinite_fresh_defects_impossible_by_lexRank P.proj P.infiniteFreshDefects P.collisionResolves
+
+/-- Остаток после глобальной ацикличности: ТРИ позитивных входа (proj, ∞-семья, resolve). -/
+abbrev TheUnboundedConcreteGraphObligation (A M0 : ℕ) : Prop :=
+  ∃ P : UnboundedConcreteStep00CollapsePackage A M0, True
+
 end ConcreteStep00Graph
 end EuclidsPath

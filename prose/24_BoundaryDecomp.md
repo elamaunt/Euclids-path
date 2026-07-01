@@ -10,8 +10,9 @@
 > (abstract obstruction-двигатель — входы неинстанциируемы), `Engine/ManyUnresolved.lean` (массовая
 > collision — циркулярна), `Engine/HigherEnergy.lean` (взвешенная энергия долга — реальный движок, но
 > promotion мизориентирован = refuel), `Engine/HigherTower.lean` (инверсный предел — fixed-center башня
-> вакуумна, moving = стена). Всё — редукции/рефакторинги/инструменты, НЕ закрытие; см. разделы ниже.
-> Числа: `tools/RESULTS_global_absorber`.
+> вакуумна, moving = стена), `Engine/EngineTower.lean` (inverse-limit без traversal — обходит
+> orientation-стену, но recurrence вакуумна, escape = counting). Всё — редукции/рефакторинги/инструменты,
+> НЕ закрытие; см. разделы ниже. Числа: `tools/RESULTS_global_absorber`.
 
 В [23. Rigid closure] мы свели всё замыкание к одному конструктивному входу: у каждого не-twin
 центра делитель должен порождать валидный меньший центр (`regenerates_needs_target_center`), а
@@ -416,6 +417,33 @@ $State\,A$, restriction $B\to A$ забывает информацию, башн
 `relTower_stabilizes_or_forces_twin`; по §19 самого кирпича без стабилизации/collision это снова
 orientation/carrier стена (форсировать стабилизацию = инфинитарный pigeonhole = counting). `Step00`
 остаётся `sorry`.
+
+### EngineTower без traversal: обходит orientation-стену, но recurrence ТОЖЕ вакуумна
+
+Одиннадцатый кирпич — архитектурно самый продуманный: он **избегает orientation-стены**, не требуя,
+чтобы конечный движок ПРОЕЗЖАЛ бесконечную башню (= вечный двигатель). Вместо traversal — inverse-limit
+через **компактность конечных префиксов** + moving-center дихотомия: NoTwin ⟹ все префиксы ⟹
+(компактность) EngineTower ⟹ RecurrentCenter ∨ CrossLevelCollision. Реальный факт доказан
+(`Engine/EngineTower.lean`, std аксиомы, не counting): `unboundedClean_forces_side_le_one`.
+
+> **Примечание (кирпич надеялся уйти от вакуумности — но recurrence ТОЖЕ вакуумна; аудит подтвердил
+> машинно).** После прошлой башни кирпич надеялся, что recurrence (центр на *неограниченных* уровнях)
+> СЛАБЕЕ fixed-center clean-forever и потому не-вакуумна. **Это не так.** Для простого делителя $p$
+> стороны взять $B=p$, получить $A\ge p$ с $CleanZ\,A\,m$, и $p\le A$ ⟹ запрет. Значит unbounded-clean
+> запрещает ЛЮБОЙ простой делитель ⟹ $side \le 1$ — та же ловушка. Поэтому `no_recurrentEngineTower`
+> вакуумен: противоречие «recurrent ⟹ side ≤ 1», а не «recurrent ⟹ twin»; поле `bad` в доказательствах
+> НЕ используется (проверено grep'ом — ноль вхождений). Ослабление recurrence логически реально, но
+> бесполезно: для $side \le 1$ хватает ОДНОГО чистого уровня $A\ge q$ на каждый простой $q$, что
+> recurrence и даёт через $B=q$.
+
+**Итог (честно, с частичным кредитом — аудит: net = прогресс формы).** Traversal-avoidance — **реальный
+выигрыш формы**: маршрут genuinely избегает orientation-стены, которая убила weighted-debt движок
+(кирпич 7), и *машинно доказывает*, что recurrence-escape вакуумен (чего прошлая башня лишь подозревала).
+НО counting-стена не тронута: recurrence вакуумна, поэтому ВСЯ нагрузка в escape/collision входах (§18
+C/D/E) — `hRepeat` (pigeonhole по конечной подписи = counting = `SNOLInput`), `hCollisionClose`
+(cross-level labelled-fan-in = та же fan-in стена, где `snolHallSeed_bare_no_go` уже показал ловушку), и
+`hForce`/компактность (finite branching + скрыто требует `m<A²`). Orientation-стена обойдена,
+**counting-стена осталась**. Красная линия цела. `Step00` остаётся `sorry`.
 
 ## Где мы
 

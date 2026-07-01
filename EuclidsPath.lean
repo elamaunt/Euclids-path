@@ -65,3 +65,4 @@ import EuclidsPath.Engine.ObstructionClosure -- абстрактный well-foun
 import EuclidsPath.Engine.ManyUnresolved     -- маршрут many-unresolved collision: комбинаторика доказана, U4-терминал циркулярен
 import EuclidsPath.Engine.HigherEnergy       -- weighted debt energy: реальный well-founded движок; вход = step00_promotion_is_weightedDebtReplacement
 import EuclidsPath.Engine.HigherTower        -- Euclidean Tower: fixed-center BadTower ВАКУУМЕН; moving tower = orientation стена
+import EuclidsPath.Engine.EngineTower        -- EngineTower без traversal: recurrence-ветка ТОЖЕ вакуумна; escape/collision = counting стена

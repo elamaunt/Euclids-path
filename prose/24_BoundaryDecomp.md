@@ -13,7 +13,9 @@
 > вакуумна, moving = стена), `Engine/EngineTower.lean` (inverse-limit без traversal — обходит
 > orientation-стену, но recurrence вакуумна, escape = counting), `Engine/ParityBarrier.lean` +
 > `Engine/ReverseTower.lean` (стена чётности как ТЕОРЕМА — негативный результат),
-> `Engine/AboveConflict.lean` (конфликт в «Above» — order-логика тривиальна, force-вход в ловушке).
+> `Engine/AboveConflict.lean` (конфликт в «Above» — order-логика тривиальна, force-вход в ловушке),
+> `Engine/JumpBarrier.lean` (jump/cut-barrier — paid jump + cofinal cut-пиджонхол доказаны, force-ray/barrier = стена),
+> `Engine/PaidDynamics.lean` (платная динамика — no free inertia/acceleration/cloning доказаны, regeneration-to-close = SNOL стена).
 > Всё — редукции/рефакторинги/инструменты, НЕ закрытие; см. разделы ниже.
 > Числа: `tools/RESULTS_global_absorber`.
 
@@ -499,6 +501,65 @@ finite-sieve) — доказано и аудируемо. Это не прибл
 **Итог.** Идея красивая (перенести противоречие в порядок), но машинно доказано, что при sound-порядке
 конфликта не существует, поэтому `step00_forces_above_conflict` не может быть новым ресурсом — он
 эквивалентен предъявлению twin в интервале. Красная линия цела. `Step00` остаётся `sorry`.
+
+### Jump engine и cut-barrier: рассуждать по разрезам, а не по посещённым уровням
+
+Четырнадцатый кирпич уточняет физику двигателя: он **может тратить энергию быстрее и перепрыгивать
+уровни**. Значит нельзя строить аргумент на требовании «посетить каждый уровень»
+($\forall A\ \exists k:\ \mathrm{level}_k = A$) — оно ломается уже на $\mathrm{level}_k = 2k$ (cofinal,
+но нечётные уровни не посещаются). Правильная замена: не **посещать** уровень, а **проецироваться на
+каждый разрез** (cut). Для high-level state на уровне $B$ и cut $A_0 \le B$ есть конечная подпись
+$\mathrm{CutSig}(A_0)$; если обратный луч уходит вверх (cofinal), проекций на $A_0$ бесконечно много, а
+$\mathrm{CutSig}(A_0)$ конечен — подпись **повторяется**, и повтор форсит $\mathrm{Close}$.
+
+Доказано (`Engine/JumpBarrier.lean`, минимальные аксиомы): `paidJump_decreases_energy` (оплаченный
+скачок строго роняет энергию — больший расход лишь **усиливает** терминацию), `no_infinite_strict_energy_descent`,
+`jump_breaks_visitsEveryLevel` (контрпример $2k$ — машинный), `repeated_cutSig_on_jumpReverseRay`
+(jump-совместимый пиджонхол ∞→конечный тип), `no_jumpReverseRay_of_cutBarrier` (нет луча при cut-barrier
+и `¬Close`), и `no_jumpAboveGapConflict` (скачок через twin-gap + возврат внутрь = порядковое
+противоречие, честно связано с `TwinGap` из above-раздела).
+
+> **Примечание (машинный диагноз ловушки — red-tests §19 кирпича).** Абстрактный no-go корректен и не
+> вакуумен (луч cofinal с конечной подписью — реальный объект). Но Step00-инстанциация держится на
+> **двух недоказанных входах**: `step00_jumpReverseBarrier` (повтор cut-подписи ⟹ Close) — это
+> cross-level labelled fan-in, тот же trap, что `snolHallSeed_bare_no_go`; и `noTwin_forces_jumpReverseRay` —
+> red-test #5 прямо запрещает опираться на `SNOL.SNOLInput`/`CleanDensityBelowA2`. Я зафиксировал это
+> машинно: `jump_route_is_trapped` показывает, что противоречие выводимо **лишь** при обоих входах, а
+> `red_test_forceRay_is_supply` разворачивает force-ray в чистую supply-форму «`NoTwin → NoEngine →
+> ∃ ray`» — ровно shape supply-теоремы SNOL. Пиджонхол/энергия (доказанное) сами по себе НЕ дают ни
+> barrier, ни force-ray.
+
+**Итог.** Кирпич даёт правильную **форму** рассуждения (разрезы вместо посещённых уровней) и реальные
+платные/пиджонхол-леммы, но два содержательных входа — та же counting/fan-in стена. Красная линия цела.
+`Step00` остаётся `sorry`.
+
+### Скрытый двигатель и платная динамика: где может прятаться второй двигатель
+
+Пятнадцатый кирпич задаёт аудит: если Step00 не закрывается локально, «второй двигатель» может прятаться
+в четырёх обличьях — (1) промоушен масштаба $A\to A'$, (2) регенерация carrier, (3) неучтённая
+инерция/кредит, (4) клонирование ветвей. Против каждого — **платный закон**: если всё оплачено из общего
+потенциала $\mathrm{Total}$, бесконечного/cofinal/клонирующего движения нет.
+
+Доказано (`Engine/PaidDynamics.lean`, минимальные аксиомы): `PaidDynamics` c `strict_drop`,
+`path_budget`, `steps_bounded`, `no_infinite_paid_run` (нет бесплатной инерции); телескоп
+`monotone_nat_telescope_sub_le_sum_sub` (sorry кирпича **закрыт**) и `no_cofinal_paid_jump_path` (нет
+ускорения к cofinal-уровням оплаченными скачками); `no_infinite_noFreeInertia_run` (инерция/кредит внутри
+$\mathrm{Total}$); `no_two_live_children_from_unit` (один live-юнит с $\mathrm{Total}=1$ **не** становится
+двумя — запрет клонирования); и абстрактная сборка `contradiction_from_regeneration`.
+
+> **Примечание (машинный диагноз ловушки — §6/§34/§36 кирпича).** Платные законы реальны и доказаны, но
+> они лишь **локализуют** скрытый двигатель. Любой бесконечный Step00-механизм обязан использовать
+> `regeneration_forces_close` ($\text{InfiniteCarrierRegeneration} \Rightarrow \exists A,\ \mathrm{Close}$),
+> и кирпич прямо говорит: этот вход = supply clean carrier at scale = `SNOL.SNOLInput`. Я зафиксировал
+> это машинно: `regeneration_to_close_is_supply` разворачивает вход в чистую supply-импликацию, а
+> `paid_laws_do_not_close_regeneration` строит нетривиальную бесконечную регенерацию (масштаб $k$) —
+> значит платные законы её **не** запрещают (в `InfiniteCarrierRegeneration` нет поля $\mathrm{Total}$),
+> запрет может дать **лишь** supply-вход.
+
+**Итог.** Аудит правильный и полезный: он машинно доказывает, что скрытого двигателя нет в масштабе,
+инерции или клонировании — и что весь остаток сжат в **одну** регенерационную supply-теорему, которая
+есть ровно `SNOL.SNOLInput`. Это не обход, а точная **локализация** стены. Красная линия цела.
+`Step00` остаётся `sorry`.
 
 ## Где мы
 

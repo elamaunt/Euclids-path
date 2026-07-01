@@ -69,3 +69,5 @@ import EuclidsPath.Engine.EngineTower        -- EngineTower без traversal: re
 import EuclidsPath.Engine.ParityBarrier       -- стена чётности как ТЕОРЕМА: finite-sieve не сертифицирует twin; пересечение требует cofinal
 import EuclidsPath.Engine.ReverseTower        -- reverse engine: дерево предков + barrier (абстрактный no-go); Step00-мосты = стена
 import EuclidsPath.Engine.AboveConflict       -- конфликт в «Above»: order-логика тривиальна; step00_forces_above_conflict в ловушке (машинно)
+import EuclidsPath.Engine.JumpBarrier          -- jump/cut-barrier: paid jump + cofinal cut-пиджонхол (доказано); force-ray/barrier = входы (стена)
+import EuclidsPath.Engine.PaidDynamics         -- платная динамика: no free inertia/acceleration/cloning (доказано); regeneration-to-close = SNOL стена

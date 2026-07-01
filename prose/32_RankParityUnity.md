@@ -101,7 +101,7 @@ $$R_{\mathrm{fc}} \;=\; \frac{N_{00}\,N_{33}}{N_{03}\,N_{30}} \;<\; 1,$$
 Теперь Риман в тех же терминах. По тождеству $\lambda = (-1)^{\mathrm{rank}}$ сумма
 
 $$L(x) \;=\; \sum_{n\le x} (-1)^{\mathrm{rank}(n)}
-\;=\; \#\{n\le x:\ \mathrm{rank}(n)\ \text{чётен}\} \;-\; \#\{n\le x:\ \mathrm{rank}(n)\ \text{нечётен}\}$$
+\;=\; \bigl\lvert\{n\le x:\ \mathrm{rank}(n)\ \text{чётен}\}\bigr\rvert \;-\; \bigl\lvert\{n\le x:\ \mathrm{rank}(n)\ \text{нечётен}\}\bigr\rvert$$
 
 есть в точности **дисбаланс чётности ранга** на отрезке $[1,x]$: разность числа чисел с чётным и
 нечётным числом простых факторов. `LiouvilleBound` — $|L(x)| = O(\sqrt{x}\cdot x^{\varepsilon})$ —

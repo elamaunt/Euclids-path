@@ -204,4 +204,88 @@ theorem goal_implies_U4 {N : ℕ} (hgoal : ∃ t, N < t ∧ IsTwinCenter t)
     ∀ m₁ m₂, U m₁ → U m₂ → m₁ ≠ m₂ → sig m₁ = sig m₂ → (∃ t, N < t ∧ IsTwinCenter t) :=
   fun _ _ _ _ _ _ => hgoal
 
+/-! ### §Э. Теорема высшей энергетической несовместимости (4 канала — обобщение)
+
+Кирпич `higher_energy_incompatibility` обобщает `close_of_highStarts` до ЧЕТЫРЁХ каналов, добавляя
+явный `DescentSeed` (запрещённый бесконечный legal descent, убиваемый EPMI). Теорема — чистая
+комбинаторная несовместимость: бесконечное семейство high-starts не может избежать всех четырёх
+каналов. Это ДОКАЗУЕМО и НЕ циркулярно КАК КОМБИНАТОРНОЕ УТВЕРЖДЕНИЕ.
+
+ЧЕСТНО (что это НЕ меняет): новый `DescentSeed`-канал закрывается тривиально (`hNoDescent`, EPMI) и
+НЕ добавляет escape. Содержательные входы — те же `hOutcome` (U2) и `hUnresolvedManyCloses` (U4/E3),
+которые адверсариальный аудит (`w16s8jc2v`) уже признал: U2 требует counting (= `SNOL.SNOLInput`), U4
+циркулярен во всех genuine-collision ветках (`goal_implies_U4`). Обобщение до 4 каналов соундно, но
+стену не двигает. -/
+
+/-- §5. Вспомогательная: `S ⊆ A ∪ B`, `S` бесконечно ⟹ `A` или `B` бесконечно. -/
+theorem infinite_or_infinite_of_subset_union {α : Type*} {S A B : Set α}
+    (hInf : S.Infinite) (hSub : S ⊆ A ∪ B) : A.Infinite ∨ B.Infinite := by
+  by_contra h
+  push_neg at h
+  obtain ⟨hA, hB⟩ := h
+  exact hInf ((hA.union hB).subset hSub)
+
+/--
+  **`higher_energy_incompatibility_on_euclidean_path` — ДОКАЗАНА (4-канальная несовместимость; это
+  КОМБИНАТОРНАЯ ОБОЛОЧКА, стену НЕ двигает — нагрузка в недоказанных U2/U4).**
+  Бесконечное семейство high-starts + покрытие исходов четырьмя каналами (Close / DescentSeed /
+  OldAbsorbed / Unresolved) + запрет Descent (EPMI) + закрытие обеих массовых веток ⟹ `¬Close`
+  невозможно (`False`). Чистая комбинаторика: под `¬Close` и `¬DescentSeed` каждый high-start —
+  old-absorbed ∨ unresolved, бесконечность даёт бесконечную массовую ветку, та закрывает — против
+  `hNoClose`. Соундно и НЕ циркулярно как утверждение; нагрузка — в U2 (`hOutcome`) и U4
+  (`hUnresolvedManyCloses`), см. §Э. -/
+theorem higher_energy_incompatibility_on_euclidean_path
+    (HighStart OldAbsorbed Unresolved DescentSeed : ℕ → Prop) (Close : Prop)
+    (hInfStarts : Set.Infinite {m : ℕ | HighStart m})
+    (hOutcome : ∀ m, HighStart m → Close ∨ DescentSeed m ∨ OldAbsorbed m ∨ Unresolved m)
+    (hNoDescent : ∀ m, DescentSeed m → False)
+    (hOldManyCloses : Set.Infinite {m : ℕ | HighStart m ∧ OldAbsorbed m} → Close)
+    (hUnresolvedManyCloses : Set.Infinite {m : ℕ | HighStart m ∧ Unresolved m} → Close)
+    (hNoClose : ¬ Close) : False := by
+  have hCover : {m : ℕ | HighStart m} ⊆
+      {m : ℕ | HighStart m ∧ OldAbsorbed m} ∪ {m : ℕ | HighStart m ∧ Unresolved m} := by
+    intro m hm
+    rcases hOutcome m hm with hC | hD | hO | hU
+    · exact absurd hC hNoClose
+    · exact absurd (hNoDescent m hD) not_false
+    · exact Or.inl ⟨hm, hO⟩
+    · exact Or.inr ⟨hm, hU⟩
+  rcases infinite_or_infinite_of_subset_union hInfStarts hCover with hOld | hUnr
+  · exact hNoClose (hOldManyCloses hOld)
+  · exact hNoClose (hUnresolvedManyCloses hUnr)
+
+/-! ### §7. Step00-специализация: `CloseAt` и снятие двух предпосылок -/
+
+/-- `CloseAt A M0 N := Engine A ∨ ∃ t>N, twin`. -/
+def CloseAt (Engine : ℕ → Prop) (A N : ℕ) : Prop :=
+  Engine A ∨ ∃ t, N < t ∧ IsTwinCenter t
+
+/-- **`noClose_of_noEngine_noNew` — ДОКАЗАНА.** `¬Engine` + «нет twin выше N» ⟹ `¬CloseAt`. -/
+theorem noClose_of_noEngine_noNew {Engine : ℕ → Prop} {A N : ℕ}
+    (hNoEngine : ¬ Engine A) (hNoNew : ¬ ∃ t, N < t ∧ IsTwinCenter t) :
+    ¬ CloseAt Engine A N := by
+  rintro (hE | hT)
+  · exact hNoEngine hE
+  · exact hNoNew hT
+
+/--
+  **`higher_energy_incompatibility_step00` — ДОКАЗАНА (специализация §7; оболочка, стену НЕ двигает).**
+  Под `¬Engine A` и «нет twin выше N» четыре канала несовместимы ⟹ `False`. Это КОНТРАПОЗИТИВНАЯ
+  упаковка: входы U2/U4 остаются недоказанными (U2 = counting = `SNOL.SNOLInput`, U4 циркулярен). Из
+  теоремы `twin_prime_conjecture` НЕ следует — вся нагрузка в неинстанциированных входах. -/
+theorem higher_energy_incompatibility_step00 {Engine : ℕ → Prop} {A N : ℕ}
+    (HighStart OldAbsorbed Unresolved DescentSeed : ℕ → Prop)
+    (hInfStarts : Set.Infinite {m : ℕ | HighStart m})
+    (hOutcome : ∀ m, HighStart m →
+      CloseAt Engine A N ∨ DescentSeed m ∨ OldAbsorbed m ∨ Unresolved m)
+    (hNoDescent : ∀ m, DescentSeed m → False)
+    (hOldManyCloses : Set.Infinite {m : ℕ | HighStart m ∧ OldAbsorbed m} → CloseAt Engine A N)
+    (hUnresolvedManyCloses : Set.Infinite {m : ℕ | HighStart m ∧ Unresolved m} → CloseAt Engine A N)
+    (hNoEngine : ¬ Engine A)
+    (hNoNew : ¬ ∃ t, N < t ∧ IsTwinCenter t) : False :=
+  higher_energy_incompatibility_on_euclidean_path
+    HighStart OldAbsorbed Unresolved DescentSeed (CloseAt Engine A N)
+    hInfStarts hOutcome hNoDescent hOldManyCloses hUnresolvedManyCloses
+    (noClose_of_noEngine_noNew hNoEngine hNoNew)
+
 end EuclidsPath.ManyUnresolved

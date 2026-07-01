@@ -72,3 +72,8 @@ import EuclidsPath.Engine.AboveConflict       -- конфликт в «Above»: 
 import EuclidsPath.Engine.JumpBarrier          -- jump/cut-barrier: paid jump + cofinal cut-пиджонхол (доказано); force-ray/barrier = входы (стена)
 import EuclidsPath.Engine.PaidDynamics         -- платная динамика: no free inertia/acceleration/cloning (доказано); regeneration-to-close = SNOL стена
 import EuclidsPath.Engine.ClosedUniverse       -- двигатель не покидает вселенную: universe-preservation + closed-paid no-run (доказано); promotion_paid_or_closes = стена
+import EuclidsPath.Engine.BoundaryDefectPayment -- boundary-дефект: извлечение SmallPrimeDefect + невозможность no-tax оплаты (доказано); вход = дихотомия цикл∨оплата
+import EuclidsPath.Engine.BoundaryLedgerCollision -- ledger-коллизия: пиджонхол + сжигание оплаты ⟹ цикл (доказано); вход = collision-resolve
+import EuclidsPath.Engine.ConcreteStep00Graph  -- КОНКРЕТНЫЙ граф 6m±1 (не абстрактный σ); lexRank высота ДОКАЗАНА (падает на absorb); остаток = ledger/семья/resolve
+import EuclidsPath.Engine.RiemannEngine        -- RH→OffCriticalZero→Engine (чистая форма); мосты = входы; RH не доказана
+import EuclidsPath.Engine.RiemannImpossibleEngine -- RH через невозможный closed-paid двигатель: no_riemannEngineFactory БЕЗУСЛОВНА; вход = strip-bridge

@@ -77,3 +77,4 @@ import EuclidsPath.Engine.BoundaryLedgerCollision -- ledger-коллизия: п
 import EuclidsPath.Engine.ConcreteStep00Graph  -- КОНКРЕТНЫЙ граф 6m±1 (не абстрактный σ); lexRank высота ДОКАЗАНА (падает на absorb); остаток = ledger/семья/resolve
 import EuclidsPath.Engine.RiemannEngine        -- RH→OffCriticalZero→Engine (чистая форма); мосты = входы; RH не доказана
 import EuclidsPath.Engine.RiemannImpossibleEngine -- RH через невозможный closed-paid двигатель: no_riemannEngineFactory БЕЗУСЛОВНА; вход = strip-bridge
+import EuclidsPath.Engine.RiemannImpossibleEngineOff -- OffCritical версия: убирает TrivialBelowZeroClassification; ЕДИНСТВЕННЫЙ вход = OffCriticalRiemannEngineBridge

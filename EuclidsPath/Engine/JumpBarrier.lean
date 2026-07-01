@@ -25,7 +25,7 @@
     * `step00_jumpReverseBarrier` (повтор cut-подписи на jump-луче ⟹ Close) — cross-level labelled
       fan-in, тот же trap, что `snolHallSeed_bare_no_go`;
     * `noTwin_forces_jumpReverseRay` — red-test #5: если требует `SNOL.SNOLInput`/`CleanDensityBelowA2`,
-      это переименование стены. `red_test_forceRay_is_SNOL_shaped` фиксирует: force-ray = supply-теорема.
+      это переименование стены. `red_test_forceRay_is_supply` фиксирует: force-ray = supply-теорема.
   Здесь оба — входы. `Step00` остаётся `sorry`.
 -/
 import Mathlib

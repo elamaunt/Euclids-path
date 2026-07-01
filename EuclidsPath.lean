@@ -71,3 +71,4 @@ import EuclidsPath.Engine.ReverseTower        -- reverse engine: дерево п
 import EuclidsPath.Engine.AboveConflict       -- конфликт в «Above»: order-логика тривиальна; step00_forces_above_conflict в ловушке (машинно)
 import EuclidsPath.Engine.JumpBarrier          -- jump/cut-barrier: paid jump + cofinal cut-пиджонхол (доказано); force-ray/barrier = входы (стена)
 import EuclidsPath.Engine.PaidDynamics         -- платная динамика: no free inertia/acceleration/cloning (доказано); regeneration-to-close = SNOL стена
+import EuclidsPath.Engine.ClosedUniverse       -- двигатель не покидает вселенную: universe-preservation + closed-paid no-run (доказано); promotion_paid_or_closes = стена

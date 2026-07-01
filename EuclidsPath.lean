@@ -63,3 +63,4 @@ import EuclidsPath.Engine.ConcreteComponents -- discharge active/old-peel ком
 import EuclidsPath.Engine.BadCoverDescent    -- обход counting-стены: bad-cover finite descent (условная редукция, R3 = новая красная линия)
 import EuclidsPath.Engine.ObstructionClosure -- абстрактный well-founded obstruction-двигатель; входы НЕинстанциируемы (SNOL.bad — counting)
 import EuclidsPath.Engine.ManyUnresolved     -- маршрут many-unresolved collision: комбинаторика доказана, U4-терминал циркулярен
+import EuclidsPath.Engine.HigherEnergy       -- weighted debt energy: реальный well-founded движок; вход = step00_promotion_is_weightedDebtReplacement

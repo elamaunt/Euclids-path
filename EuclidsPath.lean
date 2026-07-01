@@ -50,6 +50,7 @@ import EuclidsPath.Engine.BoundaryDecomp    -- BoundaryExit декомпозиц
 import EuclidsPath.Engine.PumpFinal         -- pump (условно) + разрыв EPMI на self-loop
 import EuclidsPath.Engine.PumpStanding      -- pump v2 (two-token standing cycle) + EPMI-разрыв остаётся
 import EuclidsPath.Engine.RiemannBranch     -- побочная ветка: RH от противного через двигатель (условно)
+import EuclidsPath.Engine.RiemannLiouville  -- RH через Liouville-эквивалентность (λ=(−1)^rank)
 import EuclidsPath.Engine.ProductHall       -- ProductHall/Steering pump (4-случайная логика, без циркулярного payment)
 import EuclidsPath.Engine.SeparatingScale   -- separating scale: ¬ProductHall чистой арифметикой (закрыт узел)
 import EuclidsPath.Engine.RankDescent       -- energy-defect trichotomy + конечный product-rank descent

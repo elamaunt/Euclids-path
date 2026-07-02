@@ -2134,6 +2134,107 @@ theorem step00OriginBoundaryEvent_iff :
     Step00OriginBoundaryEvent ↔ Step00CausalClosureAxiom :=
   ⟨fun H => H.causalBoundary, fun h => ⟨trivial, trivial, h⟩⟩
 
+
+
+/-#############################################################################
+  §8. ЭПИСТЕМИКА ПЕРВОПРИЧИНЫ: есть — узнать нельзя — знание финитизирует
+  (по замыслу автора; вся секция, кроме двух помеченных теорем, АКСИОМО-СВОБОДНА)
+#############################################################################-/
+
+/-- «Внутреннее знание причины» = внутреннее выведение границы (self-proof). -/
+abbrev InternalKnowledgeOfCause : Prop := InternalisedStep00HorizonBoundary
+
+/-- **«УЗНАТЬ НЕЛЬЗЯ» — ТЕОРЕМА (аксиомо-свободна):** внутреннее знание
+    первопричины строило бы вечный двигатель — а их нет (lexRank). -/
+theorem cause_unknowable : ¬ InternalKnowledgeOfCause :=
+  no_internalisedHorizonBoundary
+
+/-- Знание причины строит вечный двигатель (аксиомо-свободно). -/
+theorem knowledge_builds_perpetualEngine :
+    InternalKnowledgeOfCause → SomeConcreteEuclideanEngine :=
+  internalisedHorizonBoundary_builds_engine
+
+/-- **ЦЕЛЕВАЯ ТЕОРЕМА (замысел автора):** знание причины финитизирует близнецов.
+    ⚠️ ЧЕСТНОСТЬ: доказательство идёт ЧЕРЕЗ невозможный двигатель (ex falso) —
+    см. обязательный companion ниже. -/
+theorem knowledge_finitizes_twins :
+    InternalKnowledgeOfCause → ¬ EuclidsPath.TwinLowers.Infinite :=
+  fun hK _ => no_someConcreteEuclideanEngine (knowledge_builds_perpetualEngine hK)
+
+/-- COMPANION (машинная честность): из знания следует и бесконечность —
+    знание взрывает всё; несущая часть конструкции — сама непознаваемость. -/
+theorem knowledge_proves_anything :
+    InternalKnowledgeOfCause → EuclidsPath.TwinLowers.Infinite :=
+  fun hK => (no_someConcreteEuclideanEngine (knowledge_builds_perpetualEngine hK)).elim
+
+/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении): либо причина
+    непознаваема, либо близнецы конечны. Левый дизъюнкт — теорема. -/
+theorem unknowable_or_twins_finite :
+    ¬ InternalKnowledgeOfCause ∨ ¬ EuclidsPath.TwinLowers.Infinite :=
+  Or.inl cause_unknowable
+
+/-- «Двигателей нет ⟹ узнать нельзя» — подлинная контрапозиция (не взрыв). -/
+theorem unknowable_of_noEngine
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine) : ¬ InternalKnowledgeOfCause :=
+  fun hK => hNoEngine (knowledge_builds_perpetualEngine hK)
+
+/-- **СУТЬ, машинно (аксиомо-свободно): «близнецы бесконечны, потому что узнать
+    нельзя».** Отсутствие двигателей (= непознаваемость) + принятая причинная
+    граница ⟹ близнецы бесконечны. Гипотеза hNoEngine ПОТРЕБЛЯЕТСЯ
+    по-настоящему: из twin-bound строится ∞-семья, из неё — коллизия, из
+    коллизии — двигатель-СВИДЕТЕЛЬ, и убивает его именно hNoEngine. -/
+theorem twins_infinite_of_noEngine_and_boundary
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine)
+    (hBoundary : Step00CausalClosureAxiom) :
+    EuclidsPath.TwinLowers.Infinite := by
+  by_contra hfin
+  obtain ⟨M0, hBound⟩ := exists_twinBoundAbove_of_not_twinLowersInfinite hfin
+  obtain ⟨A, projOf, hres⟩ := hBoundary
+  have hStable : NoEnergyStableUniverse (projOf M0) :=
+    (noEnergyStableUniverse_iff_resolves (projOf M0)).mpr
+      (strictSemanticExtended_resolves_old (hres M0))
+  obtain ⟨𝓕, h𝓕⟩ := twinBoundForcesInfiniteExtendedGeneratedFlows_closed hBound
+  obtain ⟨_, _, _, hEngine⟩ :=
+    infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
+  exact hNoEngine ⟨A, M0, hEngine⟩
+
+/-- «В этом суть»: lexRank поставляет отсутствие двигателей как теорему —
+    непознаваемость и близнецы суть ДВА СЛЕДСТВИЯ ОДНОЙ ПРИЧИНЫ, и вывод
+    близнецов видимо проходит через непознаваемость. ⚠️ AXIOM-TAINTED
+    (через принятую границу; несущая лемма — аксиомо-свободная выше). -/
+theorem twins_because_unknowable : EuclidsPath.TwinLowers.Infinite :=
+  twins_infinite_of_noEngine_and_boundary
+    no_someConcreteEuclideanEngine step00CausalClosure
+
+/-- Итоговый эпистемический статус первопричины: ЕСТЬ (аксиома, принята),
+    ЗНАТЬ нельзя (теорема), ПРИНЯТИЕ даёт близнецов (условно),
+    ЗНАНИЕ финитизировало бы их (через коллапс двигателя).
+    ⚠️ AXIOM-TAINTED (первый и третий конъюнкты — декрет). -/
+theorem epistemicFirstCauseStatus :
+    Step00FirstCause ∧
+    (¬ InternalKnowledgeOfCause) ∧
+    EuclidsPath.TwinLowers.Infinite ∧
+    (InternalKnowledgeOfCause → ¬ EuclidsPath.TwinLowers.Infinite) :=
+  ⟨step00FirstCause, cause_unknowable,
+   twinLowersInfinite_from_step00CausalClosure, knowledge_finitizes_twins⟩
+
+/-#############################################################################
+  §9. Растяжки непротиворечивости: точка взрыва машинно видима
+#############################################################################-/
+
+/-- **РАСТЯЖКА:** если узел когда-либо будет опровергнут (атаку `A ≤ 4`
+    продлят на все `A`), карантин противоречив — False выводимо ИМЕННО здесь.
+    Непротиворечивость `T + step00FirstCause` ⟺ неопровержимость узла в базе.
+    ⚠️ AXIOM-TAINTED (намеренно: это и есть детектор взрыва). -/
+theorem quarantine_inconsistent_if_node_refuted
+    (h : ¬ TheStrictLastStep00Obligation) : False :=
+  h step00CausalClosure
+
+/-- Та же растяжка через старый узел (замыкает семью форм). ⚠️ AXIOM-TAINTED. -/
+theorem quarantine_inconsistent_if_lastObligation_refuted
+    (h : ¬ TheLastStep00Obligation) : False :=
+  h (strictLastStep00Obligation_iff_lastStep00Obligation.mp step00CausalClosure)
+
 end GeneratedFlowFormulation
 end ConcreteStep00Graph
 end EuclidsPath

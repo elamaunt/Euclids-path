@@ -75,16 +75,22 @@
   4→1, база rank-1, pigeonhole); факторизация `RankNode` из составной стороны; бесконечность carrier.
   Все прежние стены (parity, трилемма `UniqueLegalLift`, steering-self-loop, циркулярный payment,
   три дефекта rank-descent) **сняты**.
-- **Единственный открытый узел:** `GlobalOldAbsorption` ([29](prose/29_CarrierBridge.md),
-  `tools/RESULTS_final_gap.md`) — бесконечно много поглощаемых родословных на **растущем** масштабе
-  спуска (fan-in `570 → 1`), а не в фиксированном отрезке `[1, X_A]`. `Step00.twin_prime_conjecture`
-  остаётся `sorry` до его закрытия. Это **честная редукция**, а не доказательство.
-- **Побочная ветвь (Риман):** независимая контрапозиция через двигатель
-  ([30](prose/30_RiemannBranch.md)) и через функцию Лиувилля `λ(n)=(−1)^{rank(n)}`
-  ([31](prose/31_RiemannLiouville.md), тождество и флип **доказаны**); открытый вход — оценка
-  `LiouvilleBound` `|L(x)|=O(√x·x^ε)`. Единый rank-parity узел ([32](prose/32_RankParityUnity.md))
-  показывает, что оставшийся узел близнецов и узел RH — **одна и та же** стена контроля чётности ранга
-  (гипотеза единства, не редукция).
+- **Единственный открытый узел (острейшая форма, [24](prose/24_BoundaryDecomp.md)):**
+  `TheLastStep00Obligation` — «конечный семантический ключ разрешает коллизии генеалогий»
+  (`SemanticExtendedFlowLedgerCollisionResolves`). Вся близнецовая ветка сведена к нему машинно
+  (`twinLowersInfinite_of_lastStep00Obligation`); ∞ чистых стартов закрыта **конструктивным примориалом**,
+  flow-builder и cofactor-нормализатор — реальной `6m±1`-арифметикой. **Честность (машинно):**
+  `twin_above_of_resolves` — этот вход на масштабе `M0` **предъявляет twin выше `M0`**, т.е. он не слабее
+  цели по-масштабно; достаточно кофинальных масштабов (`twinLowersInfinite_of_cofinal_resolves`).
+  `Step00.twin_prime_conjecture` остаётся `sorry`. Это **честная редукция**, а не доказательство.
+  (Историческая форма узла — `GlobalOldAbsorption`, [29](prose/29_CarrierBridge.md).)
+- **Побочная ветвь (Риман):** контрапозиции через двигатель и через `λ(n)=(−1)^{rank(n)}`
+  ([30](prose/30_RiemannBranch.md), [31](prose/31_RiemannLiouville.md); тождество и флип **доказаны**;
+  цель — официальная mathlib-`RiemannHypothesis`). **Честность (машинно):** `offCriticalBridge_iff_RH` —
+  вход impossible-engine-маршрута **эквивалентен RH дословно**; `spectralBridge_forces_no_violation` —
+  rank-jump-мост скрыто несёт `¬LiouvilleViolation` (RH-силы). Открытые входы: `LiouvilleBound`-оценка /
+  `RankJumpLocalization` (декомпозирован в `Engine/DissipativeCascade` на capacity + pairing). Единый
+  rank-parity узел ([32](prose/32_RankParityUnity.md)) — гипотеза единства, не редукция.
 - `sorry` подделать нельзя: «зелёный» модуль = реально проверенная часть.
 
 ## Сборка

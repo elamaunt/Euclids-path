@@ -623,4 +623,34 @@ def RankJumpLocalizationTarget
 ```
 -/
 
+
+/-! ## 8bis. ЧЕСТНОСТЬ: скрытое содержание моста (машинно)
+
+`no_closedPaidFactory` безусловна ⟹ поле `jump_to_factory` эквивалентно `¬TwinJump`, а весь мост
+форсит `¬LiouvilleViolation` (= LiouvilleBound-содержание, RH-силы). Мост — не нейтральная редукция:
+он НЕСЁТ в себе и «джампа нет», и «дисбаланса нет». -/
+
+/-- **`jumpToFactory_iff_no_jump` — ДОКАЗАНА (честность).** Поле `jump_to_factory` ⟺ `¬TwinJump`
+    (factory безусловно невозможна, значит импликация выполнима лишь вакуумно). -/
+theorem jumpToFactory_iff_no_jump (TwinSystem : RankParitySystem) :
+    (TwinCarrierEnergyJump TwinSystem → Nonempty ClosedPaidFactory) ↔
+    ¬ TwinCarrierEnergyJump TwinSystem := by
+  constructor
+  · intro h hJump
+    exact no_closedPaidFactory (h hJump)
+  · intro hNo hJump
+    exact absurd hJump hNo
+
+/-- **`spectralBridge_forces_no_violation` — ДОКАЗАНА (честность).** Любой `SpectralToTwinRankBridge`
+    форсит `¬LiouvilleViolation`: localization даёт Violation→Jump, jump_to_factory даёт ¬Jump.
+    То есть мост скрыто содержит LiouvilleBound (арифметическую RH-форму) — не нейтральный вход. -/
+theorem spectralBridge_forces_no_violation {OffCriticalZero : Type}
+    {TwinSystem : RankParitySystem}
+    (B : SpectralToTwinRankBridge OffCriticalZero TwinSystem) :
+    ¬ LiouvilleViolation := by
+  intro hV
+  have hJump : TwinCarrierEnergyJump TwinSystem :=
+    twinCarrierJump_of_liouvilleViolation B.localization hV
+  exact no_closedPaidFactory (B.jump_to_factory hJump)
+
 end EuclidsPath.RankJumpBridge

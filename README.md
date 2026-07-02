@@ -105,15 +105,22 @@
   (Историческая форма узла — `GlobalOldAbsorption`, [29](prose/29_CarrierBridge.md).)
 - **Побочная ветвь (Риман):** контрапозиции через двигатель и через `λ(n)=(−1)^{rank(n)}`
   ([30](prose/30_RiemannBranch.md), [31](prose/31_RiemannLiouville.md); тождество и флип **доказаны**;
-  цель — официальная mathlib-`RiemannHypothesis`). **Честность (машинно):** `offCriticalBridge_iff_RH` —
-  вход impossible-engine-маршрута **эквивалентен RH дословно**; `spectralBridge_forces_no_violation` —
-  rank-jump-мост скрыто несёт `¬LiouvilleViolation` (RH-силы). Открытые входы: `LiouvilleBound`-оценка /
-  `RankJumpLocalization` (декомпозирован в `Engine/DissipativeCascade` на capacity + pairing; pairing-вход
-  `unpaired_gives_jump` далее декомпозирован в `Engine/RiemannRankProjection`: **first-crossing лемма
-  ДОКАЗАНА** (`Nat.find`-минимальность), остаток — window-бухгалтерия + «first crossing ⟹ unpaired» +
-  rank-видимость; стыковка с `TwinCarrierPairing` машинно проверена, «no-RH-leak аудиты» честно
-  помечены как маркеры, не проверки). Единый
-  rank-parity узел ([32](prose/32_RankParityUnity.md)) — гипотеза единства, не редукция.
+  цель — официальная mathlib-`RiemannHypothesis`).
+  ✅ **ВХОД ЗАКРЫТ:** `TrivialBelowZeroClassification` **ДОКАЗАНА** (`Engine/RiemannTrivialZeros`,
+  функциональное уравнение mathlib): всякий нуль с `Re ≤ 0` тривиален. Следствия безусловны:
+  локализация в полосу — теорема; **RH теперь условна ТОЛЬКО на `EngineBridge`**
+  (`riemannHypothesis_of_engineBridge_only`) или `TwoTransportBridge`.
+  ⚠️ **Эпизод вакуумности №2 (вскрыт адверсариальным probe, полное раскрытие —
+  `Engine/RiemannRankProjectionAudit`):** цель rank-jump-маршрута `TwinCarrierEnergyJump` НЕ привязана
+  к нарушению — для естественной системы (rank = Ω, sign = λ) она безусловная теорема; ПОЛНЫЙ пакет
+  `LiouvilleToTwinLocalization` обитаем с нулевым входом (`fullLocalization_noInput`); поле `paired`
+  инертно. Декомпозиция «cancellation + pairing» была **ложной**: честная стена маршрута —
+  ровно `¬LiouvilleViolation` (`wall_global`) = RH-силы Лиувилль-bound. Window-бухгалтерия при этом
+  закрыта честно (`relevantViolation_gives_window`). Маршрут требует переформулировки с привязанной целью.
+  **Честность (машинно):** `offCriticalBridge_iff_RH` — вход impossible-engine-маршрута
+  **эквивалентен RH дословно**; `spectralBridge_forces_no_violation` — мост скрыто несёт RH-силы.
+  Живые входы после всего: `EngineBridge` (или `TwoTransportBridge`) / `LiouvilleBound`(⟺RH классически).
+  Единый rank-parity узел ([32](prose/32_RankParityUnity.md)) — гипотеза единства, не редукция.
 - ⚠️ **Единственный `axiom` репозитория (карантин):** `Engine/CausalClosureAxiom.lean` объявляет
   `step00CausalClosure` (= открытый узел `TheStrictLastStep00Obligation`, принятый декретом) и выводит
   из него `TwinLowers.Infinite` — это **условный вывод, НЕ доказательство**; `twin_prime_conjecture`

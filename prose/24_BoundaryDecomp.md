@@ -779,6 +779,23 @@ support-условие **вакуумно** (коллизий нет вовсе 
 **`noEnergyStableUniverseLastStep00Obligation_iff_lastStep00Obligation`** — no-energy-форма ⟺
 старый узел; **`twin_above_of_noEnergyStableUniverse`** — twin-детектор.
 
+### Нет бесконечной компрессии информации
+
+Кирпич compression: строгая компрессия = коллизия, чьё единственное объяснение — одностороннее
+вложение (внутренняя вселенная меньше). Доказано: **`strictInformationCompression_drops_rank`**
+(каждый шаг компрессии роняет `lexRank`), **`no_informationCompressionChain`** (∞-цепь компрессий
+невозможна — «сжимать причинную информацию вечно нельзя»),
+**`seamCollision_informationCompression_classification`** (полный классификатор: возврат / взаимное
+вложение / оплата / сингулярность / компрессия в одну из сторон),
+**`twinLowersInfinite_of_informationCompressionLastStep00Obligation`** ⟹ близнецы.
+*Фикс кирпича:* в реверсных случаях `¬Return F₁ F₂` переворачивается в `¬Return F₂ F₁` через
+`Or.symm` (сертификат — симметричная дизъюнкция).
+
+**Честность (машинно):** **`noStrictCompression_iff_noDangling`** — запрет компрессии ⟺ запрет
+dangling-вложений (в обе стороны); **`compressionAudit_iff_resolves`**,
+**`informationCompressionLastStep00Obligation_iff_lastStep00Obligation`** — compression-форма ⟺
+старый узел; **`twin_above_of_compressionAudit`** — twin-детектор.
+
 ### Диссипативный cascade: capacity/overflow декомпозиция Лиувилль-узла
 
 `Engine/DissipativeCascade` (единый blueprint Step00/RH/Навье–Стокс): «дефект не исчезает; не закрылся —

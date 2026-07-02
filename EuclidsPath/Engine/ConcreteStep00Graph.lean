@@ -5264,6 +5264,326 @@ theorem twin_above_of_noEnergyStableUniverse {A M0 : ℕ}
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_resolves proj (noEnergyStableUniverse_resolves_old H)
 
+/-#############################################################################
+  НЕТ БЕСКОНЕЧНОЙ КОМПРЕССИИ ИНФОРМАЦИИ (кирпич:
+  no_infinite_information_compression).
+  «Gauge забывать можно, причинность сжимать вечно — нельзя»: строгая
+  компрессия = коллизия + одностороннее вложение (спуск lexRank, не финал);
+  ∞-цепь компрессий невозможна (через nested-цепи). Фикс кирпича: в
+  реверсных случаях ¬Return переворачивается через Or.symm. Ниже — кирпич +
+  машинная честность: NoCompression ⟺ NoDangling, пара аудита ⟺ старый
+  резолвер, obligation ⟺ старый узел, twin-детектор.
+#############################################################################-/
+
+/-#############################################################################
+  §1. Strict causal information compression
+#############################################################################-/
+
+/--
+A strict information-compression step from `F_outer` to `F_inner`.
+
+The finite semantic key has identified two admissible genealogies.  There is no
+return certificate, no mutual nesting/engine, and no payment contradiction; the
+only available realization is that `F_inner` is a smaller internal universe of
+`F_outer`.
+
+This is a legal descent event, not a final resolution of the Step00 collision.
+-/
+def StrictInformationCompression {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F_outer F_inner : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamCollision proj F_outer F_inner ∧
+  NestedUniverseEmbedding F_outer F_inner ∧
+  ¬ ExtendedFlowReturnCertificate F_outer F_inner ∧
+  ¬ MutuallyNestedUniverses F_outer F_inner ∧
+  ¬ ImpossiblePayment
+
+/-- A projection has no unresolved one-way compression steps.  This is stronger
+than merely saying that infinite compression chains are impossible; it forbids
+using a single dangling compression as a terminal explanation of a collision. -/
+def NoStrictInformationCompression {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    ¬ StrictInformationCompression proj F₁ F₂
+
+/-- A strict information-compression step strictly decreases the start-rank of
+the internal universe. -/
+theorem strictInformationCompression_drops_rank {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F_outer F_inner : ExtendedProperGeneratedFlow A M0}
+    (h : StrictInformationCompression proj F_outer F_inner) :
+    lexRank (State.center F_inner.start) <
+      lexRank (State.center F_outer.start) := by
+  exact nestedUniverseEmbedding_drops_startRank h.2.1
+
+/-#############################################################################
+  §2. Infinite compression chains are impossible
+#############################################################################-/
+
+/-- An infinite chain of strict information-compression steps. -/
+def InformationCompressionChain {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (C : ℕ → ExtendedProperGeneratedFlow A M0) : Prop :=
+  ∀ i : ℕ, StrictInformationCompression proj (C i) (C (i + 1))
+
+/-- Every information-compression chain is in particular a nested-universe
+chain. -/
+theorem informationCompressionChain_to_nestedUniverseChain {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {C : ℕ → ExtendedProperGeneratedFlow A M0}
+    (hC : InformationCompressionChain proj C) :
+    NestedUniverseChain C := by
+  intro i
+  exact (hC i).2.1
+
+/-- There is no infinite chain of strict causal information compression in the
+concrete Step00 graph.  This is the precise formal version of: information may
+be compressed into a smaller internal universe, but not forever. -/
+theorem no_informationCompressionChain {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (C : ℕ → ExtendedProperGeneratedFlow A M0) :
+    ¬ InformationCompressionChain proj C := by
+  intro hC
+  exact no_nestedUniverseChain C
+    (informationCompressionChain_to_nestedUniverseChain (proj := proj) hC)
+
+/-- Equivalently, the rank of a finite prefix of a compression chain has already
+dropped by at least the prefix length.  This is useful for audit/debugging: the
+compression cannot be hidden in a finite semantic key without consuming concrete
+`lexRank`. -/
+theorem informationCompressionChain_rank_bound {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {C : ℕ → ExtendedProperGeneratedFlow A M0}
+    (hC : InformationCompressionChain proj C) :
+    ∀ n : ℕ,
+      lexRank (State.center (C n).start) + n ≤
+        lexRank (State.center (C 0).start) := by
+  exact nestedUniverseChain_rank_bound
+    (C := C) (informationCompressionChain_to_nestedUniverseChain (proj := proj) hC)
+
+/-#############################################################################
+  §3. Same-key collisions classified with compression as an explicit case
+#############################################################################-/
+
+/--
+The full information-theoretic classification of a same-key seam collision.
+
+The compression alternatives are the two possible one-way embeddings.  They are
+kept separate from mutual nesting: mutual nesting is already an engine, whereas
+strict compression is only a smaller internal universe and cannot be accepted as
+an infinite support mechanism.
+-/
+def InformationCompressionAlternative {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨
+  MutuallyNestedUniverses F₁ F₂ ∨
+  ImpossiblePayment ∨
+  LedgerSeamSingularity proj F₁ F₂ ∨
+  StrictInformationCompression proj F₁ F₂ ∨
+  StrictInformationCompression proj F₂ F₁
+
+/-- Same-key seam collisions classically fall into the explicit information
+classification: return, mutual nesting, payment, singularity, or strict
+one-way compression in one of the two directions.
+
+This theorem is only a classifier; it does not prove Step00.  It names the
+remaining non-closing case as compression rather than silently accepting it as an
+engine. -/
+theorem seamCollision_informationCompression_classification {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hColl : LedgerSeamCollision proj F₁ F₂) :
+    InformationCompressionAlternative proj F₁ F₂ := by
+  classical
+  have hClass := seamCollision_classical_classification (proj := proj) hColl
+  rcases hClass with hReturn | hRest
+  · exact Or.inl hReturn
+  · rcases hRest with hNest₁₂ | hRest
+    · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+      · exact Or.inl hReturn
+      · by_cases hMut : MutuallyNestedUniverses F₁ F₂
+        · exact Or.inr (Or.inl hMut)
+        · by_cases hPay : ImpossiblePayment
+          · exact Or.inr (Or.inr (Or.inl hPay))
+          · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl
+              ⟨hColl, hNest₁₂, hReturn, hMut, hPay⟩))))
+    · rcases hRest with hNest₂₁ | hRest
+      · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+        · exact Or.inl hReturn
+        · by_cases hMut : MutuallyNestedUniverses F₁ F₂
+          · exact Or.inr (Or.inl hMut)
+          · by_cases hPay : ImpossiblePayment
+            · exact Or.inr (Or.inr (Or.inl hPay))
+            · have hCollRev : LedgerSeamCollision proj F₂ F₁ := by
+                rcases hColl with ⟨hne, hAdm₁, hAdm₂, hkey⟩
+                exact ⟨Ne.symm hne, hAdm₂, hAdm₁, hkey.symm⟩
+              have hNoMutRev : ¬ MutuallyNestedUniverses F₂ F₁ := by
+                intro hRev
+                exact hMut hRev.symm
+              exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+                ⟨hCollRev, hNest₂₁, fun h => hReturn h.symm, hNoMutRev, hPay⟩))))
+      · rcases hRest with hPay | hSing
+        · exact Or.inr (Or.inr (Or.inl hPay))
+        · exact Or.inr (Or.inr (Or.inr (Or.inl hSing)))
+
+/-#############################################################################
+  §4. Compression audit versus dangling nesting audit
+#############################################################################-/
+
+/-- If a projection has no strict information-compression steps, then it has no
+dangling one-way nesting. -/
+theorem noStrictCompression_implies_noDangling {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoStrictInformationCompression proj) :
+    NoDanglingOneWayNesting proj := by
+  intro F₁ F₂ hDangling
+  rcases hDangling with ⟨hColl, hNoReturn, hNoMutual, hNoPayment, hOneWay⟩
+  rcases hOneWay with hNest₁₂ | hNest₂₁
+  · exact H F₁ F₂
+      ⟨hColl, hNest₁₂, hNoReturn, hNoMutual, hNoPayment⟩
+  · have hCollRev : LedgerSeamCollision proj F₂ F₁ := by
+      rcases hColl with ⟨hne, hAdm₁, hAdm₂, hkey⟩
+      exact ⟨Ne.symm hne, hAdm₂, hAdm₁, hkey.symm⟩
+    have hNoMutualRev : ¬ MutuallyNestedUniverses F₂ F₁ := by
+      intro hMutRev
+      exact hNoMutual hMutRev.symm
+    exact H F₂ F₁
+      ⟨hCollRev, hNest₂₁, fun h => hNoReturn h.symm, hNoMutualRev, hNoPayment⟩
+
+/-- No seam singularities plus no strict compression gives the existing nested
+resolver.  This is the clean audit form of:
+
+  a finite projection may forget only gauge information;
+  it may not forget causal information into a singular seam;
+  and it may not use one-way compression as a final support mechanism.
+-/
+theorem noSingularity_noStrictCompression_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj := by
+  exact noSingularity_noDangling_resolves_nested
+    (proj := proj)
+    hNoSing
+    (noStrictCompression_implies_noDangling (proj := proj) hNoCompression)
+
+/-- And therefore it also gives the old cycle-or-payment resolver. -/
+theorem noSingularity_noStrictCompression_resolves_old {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj :=
+  nestedSemanticExtended_resolves_old
+    (noSingularity_noStrictCompression_resolves_nested
+      (proj := proj) hNoSing hNoCompression)
+
+/-#############################################################################
+  §5. Final obligation phrased as no singularity + no infinite compression
+#############################################################################-/
+
+/--
+The information-compression version of the last Step00 obligation.
+
+For one fixed scale `A`, every last-twin bound `M0` must have a finite semantic
+flow-ledger projection whose same-key collisions have neither seam singularities
+nor unresolved strict compression.  Under those two audit conditions, the
+existing generated-flow machinery closes the twin-prime contradiction.
+-/
+abbrev InformationCompressionLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+      ∀ M0 : ℕ,
+        NoLedgerSeamSingularity (projOf M0) ∧
+        NoStrictInformationCompression (projOf M0)
+
+/-- The information-compression last obligation implies the old strict final
+obligation and hence infinitely many lower twin centers. -/
+theorem twinLowersInfinite_of_informationCompressionLastStep00Obligation
+    (H : InformationCompressionLastStep00Obligation) :
+    TwinLowers.Infinite := by
+  rcases H with ⟨A, projOf, hAudit⟩
+  exact twinLowersInfinite_of_global_semanticExtendedResolution
+    (A := A)
+    (projOf := projOf)
+    (by
+      intro M0
+      exact noSingularity_noStrictCompression_resolves_old
+        (proj := projOf M0)
+        (hAudit M0).1
+        (hAudit M0).2)
+
+/-#############################################################################
+  §6. Human-readable residue of the patch
+#############################################################################-/
+
+/--
+The remaining concrete certificate after this patch.
+
+The finite projection must be conservative on causal information:
+if it identifies two admissible genealogies, then the identification is either
+an engine/payment event or a single smaller compression step.  But such steps
+cannot continue forever by `lexRank`, and they cannot be accepted as terminal
+ledger explanations under `NoStrictInformationCompression`.
+-/
+abbrev RemainingNoInfiniteCompressionCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoLedgerSeamSingularity proj ∧
+  NoStrictInformationCompression proj
+
+/-! Машинная честность compression-формы -/
+
+/-- Компрессия = коллизия + вложение (остальные запреты выполнены даром). -/
+theorem strictInformationCompression_iff {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    StrictInformationCompression proj F₁ F₂ ↔
+      (LedgerSeamCollision proj F₁ F₂ ∧ NestedUniverseEmbedding F₁ F₂) := by
+  constructor
+  · rintro ⟨hColl, hNest, _, _, _⟩
+    exact ⟨hColl, hNest⟩
+  · rintro ⟨hColl, hNest⟩
+    exact ⟨hColl, hNest, no_extendedFlowReturnCertificate,
+      no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false⟩
+
+/-- Запрет компрессии ⟺ запрет dangling-вложений (в обе стороны). -/
+theorem noStrictCompression_iff_noDangling {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    NoStrictInformationCompression proj ↔ NoDanglingOneWayNesting proj := by
+  constructor
+  · exact noStrictCompression_implies_noDangling
+  · intro hNoDangling F₁ F₂ hComp
+    rcases strictInformationCompression_iff.mp hComp with ⟨hColl, hNest⟩
+    exact (noDanglingOneWayNesting_iff.mp hNoDangling) F₁ F₂ hColl (Or.inl hNest)
+
+/-- Compression-аудит ⟺ старый резолвер. -/
+theorem compressionAudit_iff_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    (NoLedgerSeamSingularity proj ∧ NoStrictInformationCompression proj) ↔
+      SemanticExtendedFlowLedgerCollisionResolves proj := by
+  rw [noStrictCompression_iff_noDangling]
+  exact seamAudit_iff_resolves proj
+
+/-- Compression-обязательство ⟺ старый узел (переформулировка, не обход). -/
+theorem informationCompressionLastStep00Obligation_iff_lastStep00Obligation :
+    InformationCompressionLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 =>
+      (compressionAudit_iff_resolves (projOf M0)).mp (h M0)⟩
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 =>
+      (compressionAudit_iff_resolves (projOf M0)).mpr (h M0)⟩
+
+/-- Compression-аудит на масштабе M0 — тоже twin-детектор. -/
+theorem twin_above_of_compressionAudit {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves proj
+    (noSingularity_noStrictCompression_resolves_old hNoSing hNoCompression)
+
 end GeneratedFlowFormulation
 
 

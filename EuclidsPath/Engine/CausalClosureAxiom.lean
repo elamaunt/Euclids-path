@@ -21,8 +21,20 @@
   (`strictLastStep00Obligation_iff_lastStep00Obligation`), и она УЖЕ утверждает
   близнецов на каждом масштабе (`causalClosureAxiom_asserts_twins_at_every_scale`)
   — принять её = принять близнецов, декрет не слабее вывода.
+
+  РАСШИРЕНИЕ ДЕКРЕТА (§10, по решению автора): структура первопричины несёт
+  ДВЕ причинные границы — twin-узел (`causalBoundary`) и римановский закон
+  манифестации (`riemannBoundary` : каждый off-critical нуль манифестирует
+  неоплатимой поставкой потоков на разрешённых масштабах; зелёная машина —
+  Engine/RiemannManifestationFront). Аксиома по-прежнему ОДНА. Машинная
+  честность расширения: при границе закон манифестации ⟺ RH
+  (`riemannManifestation_asserts_RH`) — принять расширенную первопричину =
+  принять RH; `riemannHypothesis_from_firstCause` — НЕ доказательство RH,
+  а редукция, закрытая декретом. Растяжки §10: опровержение RH или закона —
+  False ровно здесь.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
+import EuclidsPath.Engine.RiemannManifestationFront
 
 set_option autoImplicit false
 
@@ -52,13 +64,16 @@ abbrev Step00CausalClosureAxiom : Prop :=
 /--
 **СТРУКТУРА ПЕРВОПРИЧИНЫ** — намеренно принимаемое внешнее начало Step00-мира.
 
-Три поля — точная структура события `0 → 1`:
+Четыре поля — точная структура события `0 → 1` и его причинные границы:
 * `origin` — маркер сингулярности `0` (до-кадровое состояние; несёт `True`:
   до первого кадра внутреннего языка нет, утверждать нечего);
 * `firstFrame` — маркер первого причинного кадра `1` (с него доступен язык
   состояний/шагов/леджеров; тоже `True` — маркер, не утверждение);
-* `causalBoundary` — СОДЕРЖАТЕЛЬНАЯ причинная граница: strict-обязательство
-  Step00 (вся математическая тяжесть первопричины живёт здесь).
+* `causalBoundary` — причинная граница БЛИЗНЕЦОВ: strict-обязательство Step00;
+* `riemannBoundary` — причинная граница РИМАНА (расширение декрета, §10):
+  закон манифестации — каждое off-critical отклонение нуля обязано проявиться
+  неоплатимой поставкой потоков там, где леджер сводит книги
+  (`RiemannManifestationLaw`, зелёная машина — RiemannManifestationFront).
 
 Интернализация первопричины невозможна (доказано ранее: внутренняя
 первопричина = запрещённый двигатель, `no_internalisedHorizonBoundary`) —
@@ -68,6 +83,7 @@ structure Step00FirstCause : Prop where
   origin : True
   firstFrame : True
   causalBoundary : Step00CausalClosureAxiom
+  riemannBoundary : RiemannManifestationLaw
 
 /--
 **ЕДИНСТВЕННАЯ АКСИОМА РЕПОЗИТОРИЯ — ПЕРВОПРИЧИНА (намеренно, структурой).**
@@ -88,13 +104,15 @@ axiom step00FirstCause : Step00FirstCause
 theorem step00CausalClosure : Step00CausalClosureAxiom :=
   step00FirstCause.causalBoundary
 
-/-- **ЧЕСТНОСТЬ (машинно): структура первопричины ⟺ голый узел.** Маркеры
-    origin/firstFrame — `True`, вся сила — в causalBoundary: намеренное
-    включение первопричины меняет ПРОИСХОЖДЕНИЕ (корень архитектуры и имя
-    аксиомы в таинте), но не математическую силу декрета. -/
+/-- **ЧЕСТНОСТЬ (машинно): структура первопричины ⟺ конъюнкция её границ.**
+    Маркеры origin/firstFrame — `True`, вся сила — в двух границах: twin-узле
+    и римановском законе манифестации. Намеренное включение первопричины
+    меняет ПРОИСХОЖДЕНИЕ (корень архитектуры и имя аксиомы в таинте), но не
+    математическую силу декрета — она ровно сумма принятых границ. -/
 theorem step00FirstCause_iff_causalClosure :
-    Step00FirstCause ↔ Step00CausalClosureAxiom :=
-  ⟨fun F => F.causalBoundary, fun h => ⟨trivial, trivial, h⟩⟩
+    Step00FirstCause ↔ (Step00CausalClosureAxiom ∧ RiemannManifestationLaw) :=
+  ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary⟩,
+   fun h => ⟨trivial, trivial, h.1, h.2⟩⟩
 
 /-#############################################################################
   §2. What the axiom generates (⚠️ conditional on the axiom, NOT proofs)
@@ -2234,6 +2252,69 @@ theorem quarantine_inconsistent_if_node_refuted
 theorem quarantine_inconsistent_if_lastObligation_refuted
     (h : ¬ TheLastStep00Obligation) : False :=
   h (strictLastStep00Obligation_iff_lastStep00Obligation.mp step00CausalClosure)
+
+/-#############################################################################
+  §10. РИМАН ЧЕРЕЗ ПЕРВОПРИЧИНУ: вторая граница декрета
+  (та же машина, что близнецы: отклонение → манифестация → коллизия →
+  двигатель → lexRank; зелёная цепь — Engine/RiemannManifestationFront)
+#############################################################################-/
+
+/-- Римановский закон манифестации, спроецированный из первопричины:
+    каждое off-critical отклонение обязано проявиться неоплатимой поставкой
+    потоков там, где леджер сводит книги. ⚠️ AXIOM-TAINTED (это и есть
+    принятая вторая граница декрета). -/
+theorem riemannManifestationLaw : RiemannManifestationLaw :=
+  step00FirstCause.riemannBoundary
+
+/-- **RH ИЗ ЕДИНОГО РАСШИРЕННОГО ДЕКРЕТА.** ⚠️ AXIOM-TAINTED: это НЕ
+    доказательство гипотезы Римана — это редукция, закрытая расширенной
+    первопричиной. Цепь честно ранговая (та же, что у близнецов): нуль вне
+    критической прямой — неоплаченное отклонение; принятая граница близнецов
+    сводит книги на масштабе высоты нуля; закон манифестации заставляет
+    отклонение проявиться бесконечной поставкой потоков; коллизия
+    конечноключевой проекции строит запрещённый двигатель; lexRank его
+    убивает — нуля нет. Классификация тривиальных нулей — доказанная теорема
+    (`trivialBelowZeroClassification`). -/
+theorem riemannHypothesis_from_firstCause : RiemannHypothesis :=
+  riemannHypothesis_of_manifestation_and_boundary
+    no_someConcreteEuclideanEngine step00CausalClosure riemannManifestationLaw
+
+/-- **ЧЕСТНОСТЬ (машинно, зеркало
+    `causalClosureAxiom_asserts_twins_at_every_scale`):** при принятой twin-
+    границе римановская граница ⟺ RH — вторая граница декрета ровно RH-силы:
+    принять расширенную первопричину = принять RH. Декрет не слабее вывода.
+    ⚠️ AXIOM-TAINTED (через twin-границу). -/
+theorem riemannManifestation_asserts_RH :
+    RiemannManifestationLaw ↔ RiemannHypothesis :=
+  manifestationLaw_iff_RH_of_boundary step00CausalClosure
+
+/-- **РАСТЯЖКА (Риман):** если off-critical нуль когда-либо будет предъявлен,
+    карантин противоречив — False выводимо ИМЕННО здесь. ⚠️ AXIOM-TAINTED
+    (намеренно: детектор взрыва). -/
+theorem quarantine_inconsistent_if_offCriticalZero_exhibited
+    (Z : RiemannOffCriticalZero) : False :=
+  noOffCriticalZero_of_manifestation_and_boundary
+    no_someConcreteEuclideanEngine step00CausalClosure riemannManifestationLaw
+    ⟨Z⟩
+
+/-- **РАСТЯЖКА (Риман):** если ¬RH когда-либо будет доказана, карантин
+    противоречив. Непротиворечивость `T + step00FirstCause` теперь требует
+    ещё и неопровержимости RH в базе. ⚠️ AXIOM-TAINTED. -/
+theorem quarantine_inconsistent_if_RH_refuted
+    (h : ¬ RiemannHypothesis) : False := by
+  obtain ⟨Z⟩ :=
+    EuclidsPath.RiemannImpossibleEngineOff.offCriticalZero_of_not_RH h
+  exact quarantine_inconsistent_if_offCriticalZero_exhibited Z
+
+/-- **РАСТЯЖКА (Риман):** опровержение самого закона манифестации — False
+    ровно здесь. ⚠️ AXIOM-TAINTED. -/
+theorem quarantine_inconsistent_if_manifestation_refuted
+    (h : ¬ RiemannManifestationLaw) : False :=
+  h riemannManifestationLaw
+
+-- Машинная видимость нового таинта прямо в build-логе: у RH-редукции в списке
+-- аксиом ОБЯЗАН стоять step00FirstCause (и только он сверх стандартных).
+#print axioms riemannHypothesis_from_firstCause
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

@@ -100,8 +100,12 @@ import EuclidsPath.Engine.MersenneForwardFront -- Мерсенн-форвард 
 import EuclidsPath.Engine.ClassicalFrontierRoutes -- P/NP-фронт (42); удалён ложный falseDecider; ~30 слоганов = True; входы-переупаковки помечены
 import EuclidsPath.Engine.RankClosureFront -- rank-closure (6); разделение целиком условно на невыстроенном witness
 import EuclidsPath.Engine.FiniteKnowledgeBarrier -- СТРОГО: конечная система не знает про близнецов почти ничего (чистота классов, propext-only); две стены — одна природа
+import EuclidsPath.Engine.RiemannDualEngineFront -- дуальный маршрут (3): синхронизация оплат фантом/подлинный, встреча⟺смена ранга, счётный мост близнецы↔встречи↔нули; ЧЕСТНО: все законы — поля-входы, мост считает НЕтривиальные (не off-critical) нули
+import EuclidsPath.Engine.RiemannManifestationFront -- ЗЕЛЁНАЯ римановская цепь первопричины: закон манифестации отклонений + невозможность на разрешённых масштабах (L2) + essence-лемма (L3) + аудиты (закон⟺RH ПРИ границе, L7)
 
--- ⚠️ КАРАНТИН: ЕДИНСТВЕННЫЙ axiom репозитория (step00CausalClosure = открытый узел, принятый декретом).
--- Всё зависящее от него — УСЛОВНО, машинно помечается верификатором как AXIOM-TAINTED.
--- twin_prime_conjecture НЕ замыкается через этот модуль и остаётся sorry.
+-- ⚠️ КАРАНТИН: ЕДИНСТВЕННЫЙ axiom репозитория — первопричина с ДВУМЯ границами:
+-- twin-узел (causalBoundary) и римановский закон манифестации (riemannBoundary, §10).
+-- Всё зависящее от неё — УСЛОВНО, машинно помечается верификатором как AXIOM-TAINTED.
+-- twin_prime_conjecture НЕ замыкается через этот модуль и остаётся sorry;
+-- riemannHypothesis_from_firstCause — редукция, закрытая декретом, НЕ доказательство RH.
 import EuclidsPath.Engine.CausalClosureAxiom

@@ -77,10 +77,12 @@
 | 35 | P/NP: узел и классический мост | [35](prose/35_ClassicalPNP.md) | `Engine/LocalPNPNode`, `ClassicalPNPBridge`, `CanonicalSelfReduction`, `ClassicalFrontierRoutes`, `RankClosureFront` | 🟢 сборка; 🔴 фрейм+реконструкция |
 | 36 | Навье–Стокс | [36](prose/36_NavierStokes.md) | `Engine/NavierStokes` | 🟢 каркас; 🔴 EnergyBalanceLaw |
 | 37 | Римановы фронты | [37](prose/37_RiemannFronts.md) | `Engine/RiemannTrivialZeros` (вход №1 ЗАКРЫТ), `RiemannRankProjection(+Audit)`, `RiemannTwoTransportFront`, `RiemannArithmeticTwoTransport`, `RiemannSpectralAnchorAudit`, `RiemannLayerBoxFront`, `RiemannTerminalRankFront` | 🟢 арифметика; 🔴 два входа; ⚠️ вакуумность №2 |
+| 38 | **Риман через первопричину** | [38](prose/38_RiemannFirstCause.md) | `Engine/RiemannManifestationFront` (зелёная цепь), `Engine/CausalClosureAxiom` §10, `Engine/RiemannDualEngineFront` | 🟢 цепь; 🟡 RH из декрета; 🔴 дуальные пакеты |
 | A | Численные данные | [A](prose/A_NumericalEvidence.md) | `tools/RESULTS_*` | — |
 
 🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🟡 = AXIOM-TAINTED (условно на
-`step00FirstCause`; ровно 24 декларации, карантин). 🔴 = открытый узел / вход.
+`step00FirstCause`; ровно 31 декларация — 30 в карантине + задокументированное следствие
+`higherEnergyIncompatibility_twins`). 🔴 = открытый узел / вход.
 
 ## Статус (честно)
 
@@ -142,21 +144,32 @@
   кирпичей свободны (`regateTrivially`). Декомпозиция — карта обязательств, не некруговой путь.
   Живые входы после всего: `EngineBridge` (или `TwoTransportBridge`) / `LiouvilleBound`(⟺RH классически).
   Единый rank-parity узел ([32](prose/32_RankParityUnity.md)) — гипотеза единства, не редукция.
+  ✳️ **РАСШИРЕННЫЙ ДЕКРЕТ ([38](prose/38_RiemannFirstCause.md)):** RH проведена через ту же ранговую
+  машину, что близнецы, — нуль вне прямой = неоплаченное отклонение; закон манифестации
+  (`RiemannManifestationLaw`, вторая граница первопричины) + зелёная невозможность на разрешённых
+  масштабах (`no_deviationFlowSupply_at_resolved_scale` 🟢) ⟹ `riemannHypothesis_from_firstCause` 🟡.
+  **НЕ доказательство RH** — редукция, закрытая декретом; цена раскрыта машинно:
+  `riemannManifestation_asserts_RH` — при границе закон ⟺ RH (декрет не слабее вывода).
 - ⚠️ **Единственный `axiom` репозитория — ПЕРВОПРИЧИНА (карантин):** `Engine/CausalClosureAxiom.lean`
   объявляет `step00FirstCause : Step00FirstCause` — намеренно структурированное внешнее начало
-  `0 → 1` (маркер сингулярности + первый причинный кадр + **содержательная** причинная граница =
-  открытый узел `TheStrictLastStep00Obligation`). Прежняя `step00CausalClosure` — теперь ТЕОРЕМА из
-  первопричины; из неё условно следует `TwinLowers.Infinite` — **условный вывод, НЕ доказательство**;
+  `0 → 1` с **ДВУМЯ причинными границами**: twin-узел `causalBoundary`
+  (= `TheStrictLastStep00Obligation`) и римановский закон манифестации `riemannBoundary`
+  (= `RiemannManifestationLaw`, [38](prose/38_RiemannFirstCause.md)). Прежняя `step00CausalClosure` —
+  теперь ТЕОРЕМА из первопричины; из границ условно следуют `TwinLowers.Infinite` и
+  `riemannHypothesis_from_firstCause` — **условные выводы, НЕ доказательства**;
   `twin_prime_conjecture` через аксиому не замыкается. Честность (машинно):
-  `step00FirstCause_iff_causalClosure` — маркеры несут `True`, вся сила в границе: включение
-  первопричины меняет корень архитектуры, не силу декрета; интернализация первопричины невозможна
+  `step00FirstCause_iff_causalClosure` — маркеры несут `True`, первопричина ⟺ конъюнкция границ:
+  включение первопричины меняет корень архитектуры, сила декрета — ровно сумма принятого; декрет
+  не слабее выводов (`causalClosureAxiom_asserts_twins_at_every_scale`,
+  `riemannManifestation_asserts_RH`); интернализация первопричины невозможна
   (двигатель). **Эпистемика (машинно, аксиомо-свободно):** узнать причину нельзя — теорема
   (`cause_unknowable`: знание = вечный двигатель); «близнецы бесконечны, потому что узнать нельзя» —
   несущая лемма `twins_infinite_of_noEngine_and_boundary` (непознаваемость потребляется
   по-настоящему); знание финитизировало бы близнецов (`knowledge_finitizes_twins`, ex-falso маршрут
-  честно помечен companion'ом). **Непротиворечивость** расширенной теории ⟺ неопровержимость узла;
-  растяжки `quarantine_inconsistent_if_*` фиксируют точку взрыва. Карантин машинно отслеживается:
-  верификатор репортит каждую AXIOM-TAINTED декларацию (все в карантинном модуле; утечки нет).
+  честно помечен companion'ом). **Непротиворечивость** расширенной теории ⟺ неопровержимость узла
+  **и RH в базе**; растяжки `quarantine_inconsistent_if_*` (узел, старый узел, off-critical нуль,
+  ¬RH, закон манифестации) фиксируют точку взрыва. Карантин машинно отслеживается:
+  верификатор репортит каждую AXIOM-TAINTED декларацию (утечек нет).
 - `sorry` подделать нельзя: «зелёный» модуль = реально проверенная часть (и аксиом-трекинг верификатора
   не даёт спрятать декрет).
 

@@ -3337,6 +3337,20 @@ theorem branch_closes_if_polyCertificateSuffices {A M0 : ℕ}
     False :=
   infinite_generated_flows_impossible_with_resolution proj h𝓕 hCert
 
+/-! ### §12bis. Финальная редукция близнецов = P/NP-узел (машинная связка)
+
+Цепочка из 7 factory-кирпичей свела ВСЮ близнецовую ветку к `TheLastStep00Obligation`
+(`∃ A projOf, ∀ M0, SemanticExtendedFlowLedgerCollisionResolves (projOf M0)`). Это ровно
+«полиномиальный сертификат обратного пути достаточен» — форма P/NP-узла. Фиксируем машинно, что
+единственный оставшийся вход близнецов ИМЕЕТ форму «сертификат достаточен ⟹ бесконечность близнецов». -/
+
+/-- **`twin_reduction_is_pnp_node` — ДОКАЗАНА (машинная связка).** `TheLastStep00Obligation` (сертификат
+    разрешения коллизий генеалогий достаточен) ⟹ `TwinLowers.Infinite`. Это переформулировка уже
+    доказанной `twinLowersInfinite_of_lastStep00Obligation`: единственный вход близнецов — P/NP-узел
+    «достаточен ли полиномиальный сертификат обратного пути». НЕ доказывает близнецов. -/
+theorem twin_reduction_is_pnp_node
+    (H : TheLastStep00Obligation) : EuclidsPath.TwinLowers.Infinite :=
+  twinLowersInfinite_of_lastStep00Obligation H
 
 end PvsNPAnalogy
 

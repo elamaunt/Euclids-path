@@ -1,0 +1,146 @@
+# 34. Ветка Мерсенна: честный мост и цена форварда
+
+> Lean: `Engine/MersenneBranch.lean` (`mersenneCenter`, `mersenne_eq_sixCenter_add_one`,
+> `isTwinCenter_mersenneCenter_iff`, `mersenne_twin_instances`, `twinLowersInfinite_of_mersenneTwins`,
+> `NoTwinsToMersenneImplicationClaimed`), `Engine/MersennePaymentConflict.lean` (платёжный маршрут,
+> `twinLowersInfinite_of_primePaymentRoute`, `pressure_iff_supply_for_everythingPrimeLedger`),
+> `Engine/MersennePeelPressure.lean` (peel/debt-расщепления, `twinLowersInfinite_of_peelPaymentRoute`,
+> `twinLowersInfinite_of_debtRoute`, `canonical_coverage_iff`), `Engine/MersenneForwardFront.lean`
+> (форвард-серия из 34 кирпичей — ⚠️ вакуумность №3, см. ниже).
+> Во всей ветке нет ни `sorry`, ни `axiom`; нет и AXIOM-TAINTED деклараций — ветка не трогает
+> `step00FirstCause`. Всё зелёное здесь — 🟢 при стандартных аксиомах.
+
+Простые Мерсенна — постоянный соблазн для программы: числа вида $2^p-1$ выглядят как готовые жители
+языка $6m\pm 1$, и хочется объявить, что машина, гоняющаяся за близнецами, «заодно» решает и их. Эта
+глава начинается с запрета на такой соблазн, продолжается тем немногим, что доказано по-настоящему,
+и заканчивается самым жёстким на сегодня эпизодом машинной честности — вакуумностью №3.
+
+## Честная коррекция: близнецы НЕ дают Мерсенна
+
+Зафиксируем сразу, чего эта ветка **не** утверждает.
+
+> **Примечание.** Бесконечность простых Мерсенна не следует из гипотезы близнецов — ни тривиально,
+> ни каким-либо известным математике способом. Это независимые открытые проблемы: близнецы дали бы
+> бесконечно много twin-центров, но ничего не говорят об экспоненциально редких центрах Мерсенна.
+> Импликация «близнецы ⟹ Мерсенн» в репозитории **не записана как теорема** — и чтобы это нельзя
+> было тихо забыть, в `MersenneBranch.lean` стоит явный маркер охвата
+> `NoTwinsToMersenneImplicationClaimed` (это `True` — документ, а не результат), а цель-маркер
+> `MersennePrimesInfinite` объявлен и **ниоткуда в ветке не выводится**. 🔴
+
+Единственная тривиальная импликация между темами существует — и она в **обратную** сторону; к ней мы
+придём через вложение.
+
+## Вложение в язык программы
+
+Первый настоящий результат — Мерсенн живёт на плюс-стороне сетки $6m+1$. Определим центр Мерсенна
+$m_p = (2^{p-1}-1)/3$ (для нечётного $p$ деление точное). Тогда:
+
+> 🟢 **`mersenne_eq_sixCenter_add_one`.** Для нечётного $p$: $\;2^p - 1 = 6\,m_p + 1$.
+
+То есть каждое нечётное число Мерсенна — это в точности верхняя сторона центра `mersenneCenter p`.
+Нижняя сторона того же центра — $6m_p - 1 = 2^p - 3$, и отсюда немедленный twin-критерий:
+
+> 🟢 **`isTwinCenter_mersenneCenter_iff`.** Для нечётного $p \ge 2$ центр $m_p$ — twin-центр
+> $\iff$ оба числа $2^p-3$ и $2^p-1$ просты.
+
+Такие «Мерсенн-близнецы» существуют: 🟢 **`mersenne_twin_instances`** проверяет $p=3$ (центр $1$,
+пара $(5,7)$) и $p=5$ (центр $5$, пара $(29,31)$). Дальше по $p$ совпадения быстро иссякают — и
+никто здесь не обещает, что они не иссякнут навсегда.
+
+## Правильная импликация: Мерсенн ⟹ близнецы
+
+Если Мерсенн-близнецов бесконечно много (гипотеза-вход `MersenneTwinCentersUnbounded` — заведомо
+**сильнее** обычной гипотезы близнецов), то twin-пары $(2^p-3,\,2^p-1)$ неограничены, и:
+
+> 🟢 **`twinLowersInfinite_of_mersenneTwins`.** `MersenneTwinCentersUnbounded` ⟹
+> `TwinLowers.Infinite`.
+
+Это и есть единственная честная стрелка между темами: подпоследовательность близнецов — всё ещё
+близнецы. Стрелка тривиальна, направлена от более сильного к более слабому и никакой новой
+информации о близнецах не даёт; её ценность — в том, что все дальнейшие маршруты ветки доведены
+именно до настоящей цели программы, а не до локального суррогата.
+
+## Платёжные маршруты: conflict, peel, debt
+
+`MersennePaymentConflict.lean` переносит на Мерсенн бухгалтерию из [17. Payment ledger]. Центры
+записаны без деления, как base-4 repunit'ы $m_{k+1} = 4m_k + 1$ ($0,1,5,21,85,\dots$); стыковка с
+вложением — 🟢 `sixCenter_add_one_eq_mersenne` ($6c_k+1 = 2^{2k+1}-1$), совпадение центров всех
+слоёв — 🟢 `peelCenter_eq_conflictCenter`, `coverageCenter_eq_conflictCenter`. Над абстрактным
+леджером (`RawPrimePaymentLedger`: генеалогии платят числа-токены) доказана вся сборочная логика:
+sound-платёж обеих сторон извлекает настоящий Мерсенн-близнец (🟢 `mersennePairPaid_extracts_twin`),
+и пакет `MersennePrimePaymentRoute` — леджер + `sound` + обычная twin-бесконечность + **кофинальное
+давление** `CofinalMersennePrimePaymentPressure` — даёт 🟢
+`infinite_mersenne_supply_of_primePaymentRoute` и далее по мосту 🟢
+`twinLowersInfinite_of_primePaymentRoute`. При tail-отсутствии Мерсенн-близнецов доказана дихотомия
+дефектов (🟢 `absence_forces_payment_cofinality_or_extraction_defect`): ломается либо кофинальность
+оплат, либо извлечение — а извлечение при soundness сломаться не может.
+
+`MersennePeelPressure.lean` расщепляет несущий вход дальше. Слой 1: давление = **coverage**
+(`CofinalMersennePeelCoverage` — близнецы навязывают попадания генеалогий в repunit-центры) +
+**payment law** (`PeelHitForcesPrimePayment` — попадание платит обе стороны $6m_k \mp 1$); сборка —
+🟢 `twinLowersInfinite_of_peelPaymentRoute`. Слой 2: coverage = **debt-давление**
+(`CofinalPeelDebtPressure` — неограниченные peel-debt индексы) + **реализация**
+(`PeelDebtRealizesHit`); сборка — 🟢 `twinLowersInfinite_of_debtRoute`, и полная трихотомия дефектов
+при отсутствии — 🟢 `absence_forces_debtCofinality_or_realization_or_payment_defect`.
+
+## Канонические коллапсы как честность
+
+Вся эта архитектура доказана **условно на несущих входах**, и ветка сама измеряет, сколько они
+весят. Для канонического леджера «плати всё простое» (`everythingPrimeLedger`, soundness
+дефинициальна) доказано:
+
+> 🟢 **`pressure_iff_supply_for_everythingPrimeLedger`.** Давление ⟺ переименованный **вывод**
+> (бесконечность Мерсенн-близнецов).
+
+Аналогично для канонической peel-системы `canonicalPeelSystem` («hit = уже twin», payment law —
+🟢 `canonical_paymentLaw` дефинициально): 🟢 **`canonical_coverage_iff`** — coverage ⟺ тот же
+вывод. То есть на произвольном леджере входы пусты: предположить давление — значит предположить
+заключение. Расщепления имеют содержание только для **настоящего** Step00-леджера генеалогий, где
+платежи навязаны структурой графа. Такого леджера в репозитории пока нет; все несущие входы — 🔴.
+
+## ⚠️ Вакуумность №3: форвард-серия необитаема
+
+`MersenneForwardFront.lean` — 34 кирпича одной сборкой: peel-lift сертификаты и операторы, точная
+successor-арифметика, sparse-маршруты и index-jump lift, debt-firewalls, same-key pigeonhole,
+resolver-payment декомпозиция, admissible filter с circularity-аудитом, side-payment сертификат,
+semantic realizer, no-escape / full-closure / endgame и мост к twin-Step00. Сборочный аудит вскрыл —
+и заголовок модуля фиксирует целиком:
+
+- **noEngine-пакеты необитаемы.** У `LegacyStep00NoEscapeLayer` (four_defect),
+  `TwinStep00NoEscapeLayer` / `AcceptedTwinStep00NoGoPackage` (twin_step00_bridge) и всей семьи
+  `NoForbiddenPrimePaymentEngine` (oversaturation / no_escape / full_closure_endgame) поле
+  `noEngine` требует `Engine → False`, но токены дефектов (`Step00DefectToken` и родня) несут
+  **свободное** поле `witness : Prop` — «запрещённый двигатель» строится тривиально
+  (`witness := True`), слой внутренне противоречив, и headline-теоремы
+  (`produces_infinite_mersenne_twins` и родственные, включая `forbids_eventual_absence`) —
+  **вакуумны**: из необитаемой посылки следует что угодно. Маршруты в этой форме неинстанциируемы.
+- **`TwinStep00CausalClosureNode`** — свободный гейт (произвольное `Prop` + его доказательство).
+- **Renamed-conclusion входы:** поля `PrimePaymentSound` / `lower_sound`+`upper_sound` — целевой
+  вывод, переупакованный «законом»; `CofinalAdmissibleGenealogyHits` / `cofinal_filter` напрямую
+  поставляют кофинальные admissible-индексы — то, что маршрут должен был добыть.
+- **Свободные гейты честности:** `not_using_ordinary_twin_absence`, `cofinal_tail_scope`,
+  `not_using_mersenne_twin_infinitude`, `not_using_classical_PNP`, `lower/upper_not_circular` —
+  инстанциируются `True`; один кирпич сам это и делает.
+- `tokenOfFinalDefect` переписан (оригинал нетипизируем) и не проходит через четыре типизированных
+  адаптера; `twinTokenOfAbsence` — проходит.
+
+Итог аудита: безусловных сильных выводов в серии **нет**; `sorry`/`axiom` — нет. Как и в эпизодах
+№1 (близнецы) и №2 (Риман), пустота вскрыта машинно и задокументирована в самом модуле, а не
+замазана: 34 кирпича — это каркас обязательств, а не 34 результата.
+
+## Живой фронт и место в общем ходе
+
+Ремонт всех трёх дыр — одна и та же работа: **привязать witness к реальной Step00-структуре**.
+Нужен настоящий леджер генеалогий, в котором `PaysPrime` навязан boundary/ledger-механикой графа
+из [17]–[24], hit — реальное попадание генеалогии в repunit-центр (base-4 peel как
+подпоследовательность peel-шагов), а токены дефектов несут типизированные свидетельства вместо
+свободного `Prop`. Тогда coverage/payment/debt перестанут быть переименованными выводами, а
+noEngine-слой станет обитаем — и условные цепи 🟢, доведённые до `TwinLowers.Infinite`, получат во
+что упереться. До тех пор статус ветки: вложение, критерий и обратная импликация — 🟢; несущие
+входы всех маршрутов и `MersennePrimesInfinite` — 🔴.
+
+Для общего хода программы ветка Мерсенна — боковая и намеренно скромная: она не участвует ни в
+узле `TheLastStep00Obligation` (суженном до $A \ge 5$), ни в главной теореме
+`higherEnergyIncompatibility_main`. Её вклад другой: это третий подряд случай, когда адверсариальный
+аудит нашёл пустую обёртку раньше, чем она успела попасть в витрину, — и тем самым лучший из
+имеющихся аргумент доверять тем частям, которые витрину всё-таки прошли.

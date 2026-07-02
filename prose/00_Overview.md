@@ -1,216 +1,206 @@
-# 00. Пролог: двигатель Евклида, близнецы и Риман как один rank-parity узел
+# 00. Пролог: двигатель Евклида, близнецы, Риман и классические фронты — одна rank-parity программа
 
-> Это входной файл всей программы — пролог и синопсис. Дальше идут пронумерованные главы
-> `prose/NN_*.md` (парная проза) и модули `EuclidsPath/Engine/*.lean` (машинная проверка).
-> Здесь мы вводим объект, объявляем стратегию, чертим карту частей I–VI и — главное — честно
-> фиксируем, что именно доказано машинно, а что остаётся **редукцией**, а не доказательством.
+> Это входной файл всей программы — пролог и главный навигатор. Дальше идут пронумерованные главы
+> `prose/NN_*.md` (парная проза, 00→37) и модули `EuclidsPath/Engine/*.lean` (машинная проверка).
+> Здесь мы вводим объект, объявляем стратегию, чертим карту частей I–VIII и — главное — честно
+> фиксируем, что именно доказано машинно, что условно на единственную аксиому, а что открыто.
+>
+> **Легенда статусов:** 🟢 — доказано машинно при стандартных аксиомах Lean/mathlib;
+> 🟡 — **AXIOM-TAINTED**: условно на единственную аксиому репозитория `step00FirstCause`
+> (первопричина `0 → 1`, карантин `Engine/CausalClosureAxiom.lean`, ровно 24 такие декларации,
+> утечек нет — верификатор отслеживает каждую); 🔴 — открытый узел / цель.
+> Сама цель `twin_prime_conjecture` остаётся `sorry`. Ничего сильнее машинных фактов здесь нет.
 
-Мы начинаем с самого начала: перед нами не одна, а две классические гипотезы — о бесконечности
-простых-близнецов и Римана, — и мы утверждаем, что при правильном выборе объекта они оказываются
-двумя лицами одного и того же узла. Чтобы это увидеть, введём сперва объект.
+## ★ Главная теорема программы
+
+**`higherEnergyIncompatibility_main`** (`Engine/FiniteKnowledgeBarrier`) — **высшая энергетическая
+несовместимость**, пять граней одной несовместимости, ядро целиком 🟢 (аксиомо-свободно):
+
+1. внутреннее знание первопричины **строит** вечный двигатель (`knowledge_builds_perpetualEngine`);
+2. потому первопричина непознаваема изнутри — `cause_unknowable` (двигателей нет, `lexRank`);
+3. конечный просеивающий вид знает близнеца только целиком чистым классом — близнец со смешанным
+   классом принципиально невидим (`mixed_class_twin_unknowable`);
+4. при хвостовом смешении классов бесконечность близнецов изнутри неудостоверима
+   (`infinitude_unknowable_of_eventually_mixed`);
+5. несущая грань: сама несовместимость (нет двигателей = непознаваемость) + принятая причинная
+   граница ⟹ близнецы бесконечны (`twins_infinite_of_noEngine_and_boundary`).
+
+Читается это так: **знание изнутри стоит вечного двигателя, которого нет; бесконечность близнецов —
+внешнее знание, оплачиваемое первопричиной.** Обе стены — одна природа (`two_walls_one_nature`, 🟢).
+Следствие **`higherEnergyIncompatibility_twins`** — `TwinLowers.Infinite` — 🟡 AXIOM-TAINTED:
+грань 5 инстанциирована декретом `step00FirstCause`. Это условный вывод, **не** доказательство
+гипотезы близнецов.
 
 ## 1. Объект: двигатель Евклида как well-founded мультипликативный спуск
 
-Всё здание стоит на одном элементарном объекте. Из интуиции бесконечного спуска Ферма естественно
-предположить, что «состояние» любого евклидова процесса разложения сводится к его **высоте** —
-натуральному индексу $m$ центра пары $(6m-1,\,6m+1)$. Один успешный «чистый» шаг спуска не просто
-уменьшает высоту, а уменьшает её **мультипликативно**: новая высота в $A$ раз меньше старой.
+Всё здание стоит на одном элементарном объекте: «состояние» евклидова процесса разложения сводится
+к его **высоте** — индексу $m$ центра пары $(6m-1,\,6m+1)$; чистый шаг спуска уменьшает высоту
+**мультипликативно**: $\mathrm{DescentStep}(A,h,h') :\Leftrightarrow A\cdot h' < h$ (`DescentStep`,
+`Engine/EPMI`). Двигатель Евклида — гипотетическая бесконечная последовательность высот, в которой
+каждый шаг таков. Её не существует: $H(t)+t$ не возрастает, а строго убывающая цепь натуральных
+высот обрывается — это бесконечный спуск Ферма, переписанный мультипликативно.
 
-**Определение (шаг спуска).** Для $A,h,h'\in\mathbb N$ полагаем
-$$\mathrm{DescentStep}(A,h,h') \;:\Longleftrightarrow\; A\cdot h' < h.$$
-В Lean это `DescentStep` (модуль `Engine/EPMI`). Двигатель Евклида — это гипотетическая бесконечная
-последовательность высот $H:\mathbb N\to\mathbb N$, в которой **каждый** шаг является таким спуском:
-$$\forall t,\quad A\cdot H(t{+}1) < H(t),\qquad A\ge 1.$$
-
-Наблюдение, на котором держится всё: такой последовательности не существует. Величина $H(t)+t$
-не возрастает (потому что $A\ge1$ и $H(t{+}1)\le A\cdot H(t{+}1)<H(t)$), значит ограничена $H(0)$; при
-$t=H(0)+1$ получаем противоречие. Высота — положительное целое, а $H(t)<H(0)/A^{t}<1$ для больших
-$t$ невозможно.
-
-> **Примечание.** Это ровно бесконечный спуск Ферма, переписанный мультипликативно. Well-foundedness
-> $\mathbb N$ здесь не метафора, а буквальный механизм противоречия: строго убывающая цепь натуральных
-> высот обрывается.
-
-**Теорема (невозможность вечного двигателя).** `no_infinite_descent`: при $A\ge1$ не существует
-$H:\mathbb N\to\mathbb N$ с $\mathrm{DescentStep}(A,H(t),H(t{+}1))$ для всех $t$. Структурная форма —
-`no_perpetual_engine`; дихотомия исхода одного шага (успешный `clean`-спуск либо поглощающий
-`boundary`-выход) — `boundary_dichotomy`. Все три доказаны машинно, без `sorry`, на голом ядре Lean 4
-(даже без mathlib) — это `Engine/EPMI`, самый твёрдый камень фундамента.
-
-Что это значит. У нас есть **абсолютно надёжное «нет»**: любая конструкция, которую мы сумеем
-предъявить как вечный двигатель, автоматически ложна. Дальнейшая работа — целиком про то, как
-загнать интересующие нас гипотезы в форму «если гипотеза ложна, то возникает вечный двигатель».
+**Теорема (невозможность вечного двигателя).** `no_infinite_descent`, структурная форма
+`no_perpetual_engine`, дихотомия шага `boundary_dichotomy` — все 🟢, без `sorry`, на голом ядре
+Lean 4 (даже без mathlib). Это самый твёрдый камень фундамента: любая конструкция, предъявленная
+как вечный двигатель, автоматически ложна.
 
 ## 2. Стратегия: контрапозиция через двигатель
 
-Отсюда единая логическая схема обеих ветвей. Пусть $P$ — интересующее утверждение (бесконечность
-близнецов; гипотеза Римана). Мы строим **мост** — импликацию $\neg P \Rightarrow \mathsf{Engine}$ — и
-замыкаем её доказанным EPMI:
-$$\bigl(\neg P \Rightarrow \mathsf{Engine}\bigr)\ \land\ \neg\,\mathsf{Engine}\ \Longrightarrow\ P.$$
+Для каждой цели $P$ (бесконечность близнецов; Риман; фронты) строится мост
+$\neg P \Rightarrow \mathsf{Engine}$ и замыкается доказанным EPMI:
+$(\neg P \Rightarrow \mathsf{Engine}) \land \neg\,\mathsf{Engine} \Rightarrow P$. Для близнецов:
+конечность близнецов (`NoNewTwinAbove M0`) загоняет бесконечный поток чистых стартов в конечное
+множество старых поглотителей — rigid-цикл, двигатель, противоречие. Для Римана: нуль вне
+критической прямой даёт бесплатную направленную перекачку массы — снова двигатель. Мы **не** пишем
+`twins ⟹ RH`: общее у ветвей не следствие, а механизм — один EPMI, одна контрапозиция и, как
+покажет §4, один rank-parity инвариант.
 
-Для близнецов это выглядит так. Формальная цель — `twin_prime_conjecture` (тип `TwinLowers.Infinite`,
-модуль `Step00_Overview`); центровая форма — `IsTwinCenter m := (6m-1).Prime ∧ (6m+1).Prime`. Если
-близнецов **конечно**, то выше некоторого порога $M_0$ новых twin-центров нет
-(`NoNewTwinAbove M0`), и тогда бесконечный поток свежих чистых стартов вынужден целиком осесть в
-конечном множестве старых поглотителей — а это, как мы покажем, порождает rigid-цикл, то есть вечный
-двигатель. Противоречие с `no_infinite_descent` заставляет новый близнец существовать выше любого
-порога, откуда бесконечность.
+## 3. Карта частей I–VIII
 
-Для Римана схема буквально та же: нетривиальный нуль $\zeta$ вне критической прямой даёт
-«бесплатную» направленную перекачку массы вдоль спуска — снова вечный двигатель.
+**I. Двигатель и его законы (гл. 01–09, 🟢).** Ядро невозможности (`Engine/EPMI`, гл. 01);
+носитель двойки `no_large_shared_divisor` (`Engine/Carrier`, гл. 02); 1-й закон $XY-ZW=2$ —
+`det_law_rank33` (`Engine/TwoGap`, гл. 03); спуск и boundary-law (`Engine/Descent`, гл. 04);
+необратимость, `turn ⇒ halt` (`Engine/Irreversibility`, гл. 05); исчезновение диагонали
+(`Engine/NoBackward`, гл. 06); squeeze, ограниченный цикл, factor-repeat rigidity
+(`Engine/Squeeze`, `Engine/BK`, `Engine/Cycle`, гл. 07–09).
 
-> **Примечание (честность рамки).** Мы **не** пишем `twins ⟹ RH` как теорему — это независимые
-> утверждения, и такая импликация была бы ложной. Общее у них не следствие, а **механизм**: один и
-> тот же EPMI и одна и та же контрапозиция. Ниже (§4) мы увидим, что даже входные мосты у них —
-> один объект.
+**II. Редукция к близнецам (гл. 10–11, 🟢).** `infinite_of_unbounded_centers` (`Engine/NonCover`,
+гл. 10); `twin_prime_conjecture_of_blocks` (`Engine/TwoTransport`, гл. 11).
 
-## 3. Карта частей I–VI
+**III. Линии-атаки и стена чётности (гл. 12–17, 🟢 условно/модельно).** Four-corner
+(`Engine/FourCorner`, гл. 12); модельный слой (`Engine/ModelFourCorner`, гл. 13); декомпозиция
+остатка (`Engine/RealFourCorner`, гл. 14); цепь к близнецам (`Engine/ToTwins`, гл. 15);
+`finite ∧ H ⇒ False` (`Engine/FiniteContradiction`, гл. 16); ledger (`Engine/PaymentLedger`, гл. 17).
 
-Ход доказательства разложен на шесть частей; ссылки — на главы `prose/NN` и модули `Engine/*`.
+**IV. Финальная редукция twin-линии (гл. 18–25, 🟢 + 🔴 узел).** `twin_primes_of_SNOL`
+(`Engine/SNOL`, гл. 18); old-peel (`Engine/OldPeel`, гл. 19); NOPSL (гл. 20);
+`regeneration_dichotomy` (`Engine/Regeneration`, гл. 21); residuals/clean-graph (гл. 22–23);
+boundary-декомпозиция и **финальный узел близнецов** `TheLastStep00Obligation`
+(`Engine/BoundaryDecomp`, `Engine/ConcreteStep00Graph` и свита, гл. 24); rigid-замыкание
+`reaches_twin` (`Engine/RigidClose`, гл. 25).
 
-**I. Двигатель и его законы (главы 01–09, доказано без `sorry`).** Ядро невозможности
-(`Engine/EPMI`, гл. 01); носитель двойки `shared gcd ∣ 2` — `no_large_shared_divisor`
-(`Engine/Carrier`, гл. 02); 1-й закон сохранения двойки $XY-ZW=2$ — `det_law_rank33`
-(`Engine/TwoGap`, гл. 03); строгий спуск и boundary-law $p\mid bv-2\varepsilon$ (`Engine/Descent`,
-гл. 04); 2-й закон необратимости, асимметрия вверх-∞/вниз-конечно, `turn ⇒ halt`
-(`Engine/Irreversibility`, гл. 05); исчезновение диагонали (`Engine/NoBackward`, гл. 06); короткий
-train, ограниченный цикл, factor-repeat rigidity (`Engine/Squeeze`, `Engine/BK`, `Engine/Cycle`,
-гл. 07–09).
-
-**II. Редукция к близнецам (главы 10–11, доказано).** `survivor ⇒ twin` и мост к бесконечности —
-`infinite_of_unbounded_centers` (`Engine/NonCover`, гл. 10); `twin_prime_conjecture_of_blocks`:
-гипотеза следует из блочного ядра (`Engine/TwoTransport`, гл. 11).
-
-**III. Линии-атаки на оценку и стена чётности (главы 12–17, доказано условно/модельно).**
-Four-corner из эксклюзивности двойки (`Engine/FourCorner`, гл. 12); фрактальный/модельный слой
-$20\binom n6 \le \binom n3^2$ (`Engine/ModelFourCorner`, гл. 13); точная декомпозиция остатка
-(`Engine/RealFourCorner`, гл. 14); цепь к близнецам, условная на входе $H$ (`Engine/ToTwins`,
-гл. 15); `finite ∧ H ⇒ False` тремя маршрутами (`Engine/FiniteContradiction`, гл. 16); закон оплаты
-channel/tax/shifted-primorial/$Y_A$ (`Engine/PaymentLedger`, гл. 17).
-
-**IV. Финальная редукция twin-линии через SNOL (главы 18–25, доказано + один узел).** rank-descent
-4→3→2→1 к rank-1 shifted-neighbour obstruction — `twin_primes_of_SNOL` (`Engine/SNOL`, гл. 18);
-раскрытие в old-peel (`Engine/OldPeel`, гл. 19); NOPSL-замыкание (`Engine/NOPSL`, гл. 20); формализация
-Леммы 6.1 о регенерации — `regeneration_dichotomy` (`Engine/Regeneration`, гл. 21); residuals и
-clean/boundary split (`Engine/Residuals` гл. 22, `Engine/CleanGraph` гл. 23); декомпозиция boundary и
-глобальный absorber-узел (`Engine/BoundaryDecomp`, гл. 24); rigid-замыкание `reaches_twin` без цикла
-(`Engine/RigidClose`, гл. 25).
-
-**V. Product-core rank descent и последнее звено twin-линии (главы 26–29, доказано + один узел).**
-Закрытие ProductHall чистой арифметикой через separating scale $P_A>6X_A+1$ — `no_productHall`
-(`Engine/SeparatingScale`, гл. 26); исправленный product-core с экстенсиональным `RankNode` и вся
-pump-машина (rank-descent 4→1, база rank-1, pigeonhole) — `product_core_engine_of_carrier`
-(`Engine/ProductCore`, гл. 27); извлечение `RankNode` из составной стороны и `factor_rank_le_four`
-(`Engine/MkNode`, гл. 28); последнее звено «carrier бесконечен ⟹ Engine» — `cleanCenters_infinite`,
+**V. Product-core rank descent (гл. 26–29, 🟢 + 🔴 узел).** `no_productHall`
+(`Engine/SeparatingScale`, гл. 26); `product_core_engine_of_carrier` (`Engine/ProductCore`, гл. 27);
+`factor_rank_le_four` (`Engine/MkNode`, гл. 28); `cleanCenters_infinite`,
 `engine_of_factorization` (`Engine/CarrierBridge`, гл. 29).
 
-**VI. Rank-parity мост и римановская ветка (главы 30–32).** Побочная ветка RH от противного через
-двигатель — `riemann_of_engine_bridge`, `not_RH_gives_engine` (`Engine/RiemannBranch`, гл. 30);
-RH через эквивалентность Лиувилля $\lambda=(-1)^{\mathrm{rank}}$ — `liouville_eq_neg_one_pow_rank`,
-`riemann_of_liouville_bound` (`Engine/RiemannLiouville`). Именно здесь обе гипотезы сходятся в один
-узел — см. §4.
+**VI. Риманова ветка и rank-parity мост (гл. 30–32).** `riemann_of_engine_bridge`,
+`not_RH_gives_engine` (`Engine/RiemannBranch`, `Engine/RiemannEngine`,
+`Engine/RiemannImpossibleEngine(-Off)`, `Engine/RankJumpBridge`, гл. 30);
+`liouville_eq_neg_one_pow_rank`, `riemann_of_liouville_bound` (`Engine/RiemannLiouville`, гл. 31);
+единый rank-parity узел — эпилог-гипотеза (гл. 32).
 
-> **Примечание (о нумерации).** Внутренние заголовки некоторых глав сдвинуты относительно имён
-> файлов (историческое наследие рефакторинга). Здесь мы даём **логический** порядок хода
-> доказательства; при расхождении именем модуля управляет корневой `EuclidsPath.lean`, который
-> импортирует всё строго в порядке доказательства.
+**VII. Первопричина и барьер конечного знания (гл. 33, пишется параллельно).** Карантинная аксиома
+`step00FirstCause` и её теоремная свита: `step00CausalClosure` (теперь теорема из первопричины),
+честность `step00FirstCause_iff_causalClosure` (маркеры несут `True`, вся сила в границе),
+эквивалентность остатка `nonAxiomaticRemainingObligation_iff_lastStep00Obligation`
+(`Engine/CausalClosureAxiom`); эпистемика — `cause_unknowable`, `two_walls_one_nature` и **главная
+теорема** `higherEnergyIncompatibility_main` (`Engine/FiniteKnowledgeBarrier`) — см. блок ★ выше.
 
-## 4. Единый rank-parity узел: близнецы и Риман — это одно
+**VIII. Классические фронты (гл. 34–37, пишутся параллельно).**
+— *Мерсенн (гл. 34):* тождество $M_p = 6c+1$ — `mersenne_eq_sixCenter_add_one`, условный мост
+`twinLowersInfinite_of_mersenneTwins`, честный гейт `noTwinsToMersenneImplicationClaimed`
+(`Engine/MersenneBranch`); платёжный конфликт — `soundness_forbids_mersennePrimePaymentConflict`,
+`twinLowersInfinite_of_infiniteMersenneSupply` (`Engine/MersennePaymentConflict`); peel-давление —
+`mersenneCenter_base4PeelStep`, `absence_forces_peelCoverage_or_paymentLaw_defect`
+(`Engine/MersennePeelPressure`); форвард-фронт из 34 кирпичей (`Engine/MersenneForwardFront`) —
+⚠️ поздние noEngine-пакеты **необитаемы** (вакуумность №3, см. §5).
+— *P vs NP, локально (гл. 35):* `verificationEasy_always`,
+`localPSuccess_iff_semanticFlowLedgerCollisionResolves`, `localP_success_detects_twin`,
+безусловная несжимаемость малого масштаба `concrete_localSearchIncompressible_smallScale`
+(`Engine/LocalPNPNode`); классический мост — `genealogyLanguage_in_NP`,
+`classicalSeparation_of_localIncompressible`, гейт области `bridgeScopeGuard_ok`
+(`Engine/ClassicalPNPBridge`); каноническая самозедукция — `extracts_local_success_of_selfReduction`,
+антивакуумный гейт `trivialFrame_not_faithful` (`Engine/CanonicalSelfReduction`); маршруты фронта —
+`extracts_local_success_of_bitwiseEncoding` (`Engine/ClassicalFrontierRoutes`); дисциплина ранга —
+`no_rankBoundaryEngine`, `taxonomyExpansion_not_strictProgress` (`Engine/RankClosureFront`).
+— *Навье–Стокс (гл. 36):* `ns_no_infinite_dissipative_cascade`,
+`ns_no_infinite_dissipative_cascade_of_balance`, `kineticEnergy_nonneg` (`Engine/NavierStokes`,
+каркас каскада — `Engine/DissipativeCascade`) — структурное «нет бесконечного диссипативного
+каскада», **не** задача регулярности Клэя.
+— *Риман-фронты (гл. 37):* вход закрыт — `trivialBelowZeroClassification` 🟢
+(`Engine/RiemannTrivialZeros`, функциональное уравнение mathlib): RH условна **только** на
+`EngineBridge` (`riemannHypothesis_of_engineBridge_only`) или `TwoTransportBridge`; rank-projection
+маршрут и его вскрытие (`Engine/RiemannRankProjection`, `Engine/RiemannRankProjectionAudit` —
+вакуумность №2, см. §5); two-transport форма и её честность `coherentTwoTransportBridge_iff_RH`
+(`Engine/RiemannTwoTransportFront`); арифметический атом $+2$ —
+`riemannHypothesis_of_arithmeticTwoTransport` (`Engine/RiemannArithmeticTwoTransport`);
+спектральные аудиты — `front_pair_iff_RH`, `no_single_atom_anchors_two_distinct_invariants`
+(`Engine/RiemannSpectralAnchorAudit`), origin-blind firewall
+`no_identity_with_residues_555_111_plus_two` (`Engine/RiemannLayerBoxFront`), терминальный
+rank-фронт — `no_free_origin_for_distinct_zeros`, чек-лист 66 линий / 11 балансов
+(`Engine/RiemannTerminalRankFront`).
 
-Теперь центральное наблюдение всей программы — то, ради чего написан этот пролог. Обе гипотезы
-редуцируются не просто одним методом, а к **одному арифметическому инварианту** — чётности ранга.
+## 4. Единый rank-parity узел
 
-**Определение (ранг).** Ранг числа $n\ge1$ — это число его простых факторов с кратностью,
-$\mathrm{rank}(n)=\Omega(n)=\mathrm{cardFactors}(n)$. Наш `RankNode r` (модуль
-`Engine/ProductCore`) — это состояние ранга $r$ с role-indexed факторами $\mathrm{factors}:\mathrm{Fin}\,r\to\mathbb N$;
-оператор `deleteFactor` понижает ранг $r\to r-1$.
+Обе исходные гипотезы редуцируются к одному инварианту — чётности ранга
+$\mathrm{rank}(n)=\Omega(n)$. Twin-сторона: эксклюзивность двойки (`no_large_shared_divisor`)
+запрещает перекрёстный член $xy$ в производящей функции рангов и форсирует четырёхугольное
+неравенство $N_{00}N_{33}\le N_{03}N_{30}$ (`N33_lt_N00_of_four_corner`, `Engine/FourCorner`) —
+баланс близнецов есть баланс rank-parity. Риман-сторона: $\lambda(n)=(-1)^{\mathrm{rank}(n)}$
+(`liouville_eq_neg_one_pow_rank`), `deleteFactor` флипает знак (`liouville_flip_of_mul_prime`),
+а RH — малость $L(x)=\sum_{n\le x}(-1)^{\mathrm{rank}(n)}$ (`LiouvilleBound`). Один инвариант,
+один оператор, одна стена чётности — потому мы говорим об **одном rank-parity узле**. Фронты
+части VIII — попытки обойти эту стену с разных сторон; их аудиты (гл. 37) машинно показывают,
+где обход подлинный, а где — переупаковка RH.
 
-**Twin-сторона (баланс $N_{00}$–$N_{33}$).** Эксклюзивность двойки — `no_large_shared_divisor`
-(`shared gcd ∣ 2`) — означает, что простое $p>2$ делит **ровно одну** из сторон $6m\mp1$, никогда
-обе. Поэтому производящая функция рангов есть произведение по простым $\prod_p(c_p+a_px+b_py)$ **без
-перекрёстного члена $xy$**, что форсирует отрицательную ассоциацию рангов $(r_-,r_+)$ и четырёхугольное
-неравенство
-$$N_{00}\,N_{33}\ \le\ N_{03}\,N_{30}\quad\Longrightarrow\quad N_{33}<N_{00}$$
-(`N33_lt_N00_of_four_corner`, `Engine/FourCorner`). Индексы $00,33,03,30$ — это классы **чётности
-ранга** обеих сторон: баланс близнецов есть баланс rank-parity.
+## 5. Честный статус по веткам
 
-**Риман-сторона (сумма $(-1)^{\mathrm{rank}}$).** Функция Лиувилля есть в точности знак чётности
-ранга: $\lambda(n)=(-1)^{\Omega(n)}=(-1)^{\mathrm{rank}(n)}$ — это `liouville_eq_neg_one_pow_rank`
-(из mathlib, `Engine/RiemannLiouville`). Наш `deleteFactor` (rank $r\to r-1$) **флипает** знак
-Лиувилля — `liouville_flip_of_mul_prime`: $\lambda(p\cdot m)=-\lambda(m)$. А классический
-арифметический эквивалент RH — это малость суммирующей функции
-$$L(x)=\sum_{n\le x}\lambda(n)=\sum_{n\le x}(-1)^{\mathrm{rank}(n)}=O\!\bigl(x^{1/2+\varepsilon}\bigr),$$
-то есть `LiouvilleBound`. Иными словами, RH — это утверждение о **балансе тех же rank-parity знаков**,
-которые product-rank descent двигает по одному.
+**Близнецы — 🔴 один узел, максимально сужен.** Вся ветка машинно сведена к
+`TheLastStep00Obligation` (`Engine/ConcreteStep00Graph`):
+`twinLowersInfinite_of_lastStep00Obligation` 🟢. Узел — twin-детектор: `twin_above_of_resolves`
+(вход на масштабе `M0` сам предъявляет twin выше `M0` — он не слабее цели помасштабно); вся семья
+из ~15 эквивалентных форм (energy / nested / seam / gauge / compression …) машинно ⟺ ему.
+⚠️ **Сужение (адверсариальный probe):** ветвь `A ≤ 4` **опровергнута** — 5-адическая цепь
+$c(k{+}1)=5c(k)+1$ даёт бесконечно много admissible-генеалогий без twin-гипотез
+(`smallScale_branch_of_lastStep00Obligation_refuted`); `∃A` живёт только при `A ≥ 5`
+(`lastStep00Obligation_forces_scale_ge_five`). ⚠️ **Вакуумность №1 (вскрыта, починена):**
+дегенеративный peel `p = p·1` делал узел опровержимым; заплата `properDiv` + `targetPos` — теперь
+twin-гипотеза несущая, выполнимость при `A ≥ 5` подлинно открыта. Условное замыкание через
+первопричину (`higherEnergyIncompatibility_twins` и родня) — 🟡. `Step00.twin_prime_conjecture`
+остаётся `sorry`.
 
-**Одно и то же.** Слева баланс $N_{00}=N_{33}$-типа (чётность ранга сторон), справа баланс
-$\sum(-1)^{\mathrm{rank}}$ (чётность ранга целых). Оба — про то, что при удалении одного простого
-фактора (шаг двигателя, `deleteFactor`) знак/класс чётности переворачивается, и вопрос лишь в том,
-компенсируются ли эти перевороты. Двигатель Евклида двигает ровно этот инвариант. Поэтому мы говорим
-об **одном rank-parity узле**, а не о двух задачах.
+**Риман — 🔴 вход, честно локализован.** 🟢: `trivialBelowZeroClassification` (всякий нуль с
+`Re ≤ 0` тривиален) — RH условна только на `EngineBridge`/`TwoTransportBridge`/`LiouvilleBound`.
+⚠️ **Вакуумность №2 (вскрыта, не приукрашена):** цель rank-jump-маршрута не привязана — полный
+пакет `LiouvilleToTwinLocalization` обитаем с нулевым входом (`fullLocalization_noInput`),
+честная стена — ровно `¬LiouvilleViolation` (`wall_global`) = RH-силы; window-бухгалтерия при этом
+закрыта честно (`relevantViolation_gives_window`). Машинная честность мостов:
+`offCriticalBridge_iff_RH`, `coherentTwoTransportBridge_iff_RH`, `no_coherent_twoTransportLaw` —
+декомпозиции суть карты обязательств, не некруговой путь.
 
-> **Примечание.** Это объясняет, почему обе ветки упираются в **одну и ту же стену чётности**: и
-> $R_{fc}\to1$ снизу в четырёхугольнике, и малость $L(x)$ — это тугой parity-баланс, который
-> счётные/плотностные аргументы не берут. Численно (`tools/RESULTS_*`) стена видна как knife-edge
-> $1-R_{fc}\to0$ и налог $\sim1/\ln A$ (Мертенс).
+**P vs NP — локальная архитектура, не классическая теорема.** 🟢: верификация легка всегда
+(`verificationEasy_always`), локальный успех ⟺ семантический узел близнецов
+(`localPSuccess_iff_semanticFlowLedgerCollisionResolves`), на малом масштабе `A ≤ 4`
+несжимаемость безусловна (`concrete_localSearchIncompressible_smallScale`). Классическое
+разделение (`classicalSeparation_of_localIncompressible`) условно на `remainingBridgeObligation` —
+гейт `localPNP_is_architecture_local` фиксирует явно: это **не** доказательство P ≠ NP.
 
-## 5. Честный статус: что доказано и что остаётся редукцией
+**Навье–Стокс — структурный результат, не Клэй.** 🟢: `ns_no_infinite_dissipative_cascade` —
+при энергетическом балансе бесконечный диссипативный каскад невозможен (тот же well-founded
+механизм EPMI в $\mathbb{R}_{\ge0}$). О глобальной регулярности гладких решений ничего не заявлено.
 
-Мы никогда не выдаём редукцию за доказательство. Разложим статус по узлам.
+**Мерсенн — условные мосты + вакуумность №3.** 🟢: арифметика центров, условный экспорт
+`twinLowersInfinite_of_mersenneTwins` и платёжно-peel'ные дихотомии дефектов. ⚠️ **Вакуумность №3
+(вскрыта, зафиксирована в шапке модуля):** в `Engine/MersenneForwardFront` поздние
+noEngine-пакеты (`NoForbiddenPrimePaymentEngine`-семейство и родня) **необитаемы** — токены несут
+свободное поле `witness : Prop`, «двигатель» строится тривиально, headline-выводы этих кирпичей
+вакуумны; маршруты в этой форме неинстанциируемы. Безусловных сильных выводов в ветке нет.
 
-**Доказано машинно (без `sorry`, стандартные аксиомы).** Весь двигатель и его законы (части I–II);
-модельный four-corner и алгебра оплаты (часть III); формальная дихотомия регенерации
-`regeneration_dichotomy`; декомпозиция boundary `boundary_exit_decomposes`; сборка под EPMI
-`no_global_absorption_under_epmi` и pigeonhole-скелет `global_absorber_forces_engine`; **закрытие
-ProductHall** чистой арифметикой `no_productHall` (separating scale, минимальные аксиомы, без
-`Classical.choice`); экстенсиональность ядра `no_mismatch_core_eq`, factor-bound
-`ambient_factor_lt_primorial`, product-core pump `product_core_engine_of_carrier`; бесконечность
-carrier `cleanCenters_infinite` и последнее звено `engine_of_factorization`. Для римановой ветки —
-условные теоремы `riemann_of_engine_bridge`, `not_RH_gives_engine`, `riemann_of_two_transport`,
-`riemann_of_liouville_bound` и связь `liouville_eq_neg_one_pow_rank` / `liouville_flip_of_mul_prime`.
+**Первопричина — 🟡 карантин.** Единственная аксиома `step00FirstCause`; ровно 24 AXIOM-TAINTED
+декларации, все в карантинном модуле, верификатор репортит каждую. Непротиворечивость расширенной
+теории ⟺ неопровержимость узла; интернализация первопричины невозможна — двигатель
+(`no_internalSelfDerivation_step00CausalClosure`, 🟢).
 
-**Открытые узлы (гипотезы, не доказательства).**
-
-- **Twin-линия — `GlobalOldAbsorption` / `GlobalAbsorberNode` (гл. 29 / `Engine/BoundaryDecomp`).**
-  $$\mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine}:=\mathrm{NoNewTwinAbove}\,M_0\to\mathrm{GlobalOldTwinAbsorption}\,A\,M_0\to\mathsf{Engine}.$$
-  Доказан pigeonhole (бесконечный домен свежих стартов → конечный кодомен старых absorber'ов ⟹
-  коллизия), доказана сборка с EPMI. **Не доказан** `pump`: что коллизия двух родословных с одним
-  absorber и одной сигнатурой — это именно двигатель, а не просто два пути в точку. Численно fan-in
-  доходит до $570\to1$ (`RESULTS_global_absorber`).
-
-  > **Гипотеза и план закрытия.** `pump`: различные родословные $\gamma_1\ne\gamma_2$ с общим
-  > absorber и общей rigid-подписью $\Rightarrow$ $\mathsf{Engine}$. План: (1) определить норм-сигнатуру
-  > как **каноническую** rigid-форму, различающую родословные, но склеивающую их в конечный паспорт;
-  > (2) вывести из совпадения подписей замкнутый цикл сохранения двойки (законы гл. 03, 09); (3) свести
-  > к уже доказанному EPMI, а не к переопределению `Engine := … ∨ Steering` (иначе самоликвидация,
-  > как в гл. 29). Критическая развилка — та же трилемма нормальной формы: сигнатура обязана
-  > **различать** (иначе pump ложен) и **склеивать** (иначе кодомен бесконечен, pigeonhole пуст).
-
-- **Риман-линия — `LiouvilleBound` и `EngineBridge` (гл. 30–31 / `Engine/RiemannLiouville`,
-  `Engine/RiemannBranch`).** RH доказана **условно**: `riemann_of_liouville_bound` даёт RH из
-  `LiouvilleBound` через классический мост $L(x)=O(x^{1/2+\varepsilon})\Leftrightarrow\mathrm{RH}$;
-  `riemann_of_engine_bridge` даёт RH из `EngineBridge` (нуль вне $1/2$ ⟹ двигатель). **Не доказаны**
-  сами `LiouvilleBound` (что наш rank-аппарат уравновешивает знаки Лиувилля) и `EngineBridge` (что
-  асимметрия $\mathrm{Re}\ne1/2$ порождает вечный двигатель).
-
-  > **Гипотеза и план закрытия.** `EngineBridge`: нуль $\zeta$ вне $1/2$ $\Rightarrow$ вечный
-  > двигатель. Точнее — `TwoTransportBridge`: $\mathrm{TwoTransportLaw}\Rightarrow\mathrm{EngineBridge}$,
-  > причём `TwoTransportLaw` уже доказан (`twoTransportLaw_holds` = `det_law_rank33`). План: показать,
-  > что rank-parity баланс из §4 разлагает именно $L(x)$ — то есть свести `LiouvilleBound` к тому же
-  > product-rank descent, что и twin-баланс. Это, по всей видимости, по сложности сопоставимо с самой
-  > RH — как и на twin-стороне финальный узел сопоставим с самой гипотезой.
-
-**Итог честно.** Обе классические гипотезы **сведены** машинно-проверенной цепью к одному
-rank-parity узлу, локализованному в `GlobalOldAbsorption` (twin) и `LiouvilleBound`/`EngineBridge`
-(Риман). Всё вокруг этих узлов — доказано. Сами узлы — **редукция, а не доказательство**: `sorry`
-подделать нельзя, и «зелёные» модули суть реально проверенная часть, но несущий rank-parity узел
-остаётся открытым.
+**Итог честно.** 🟢-корпус — реально проверенная машина: двигатель, редукции, аудиты, главная
+теорема (ядро). 🟡-слой — ровно то, что оплачено первопричиной, и он отделён карантином.
+🔴 — `TheLastStep00Obligation` при `A ≥ 5`, входы RH, классические фронты. Редукция — не
+доказательство; `sorry` подделать нельзя.
 
 ## Где мы и куда дальше
 
-Мы ввели объект (мультипликативный well-founded спуск, `no_infinite_descent`), объявили стратегию
-(контрапозиция через двигатель), расчертили части I–VI и — главное — показали, что твин-баланс
-$N_{00}$–$N_{33}$ и риманова сумма $\sum(-1)^{\mathrm{rank}}$ суть один rank-parity инвариант,
-сдвигаемый оператором `deleteFactor`. Следующая глава [01. EPMI] строит этот фундамент буквально:
-формализует невозможность вечного двигателя на голом ядре Lean и предъявляет `no_infinite_descent`
-как первый неоспоримый камень, на который опираются все дальнейшие мосты.
+Мы ввели объект (`no_infinite_descent`), объявили стратегию (контрапозиция через двигатель),
+расчертили части I–VIII и поставили в вершину карты `higherEnergyIncompatibility_main`: знание
+изнутри стоит вечного двигателя, которого нет. Следующая глава [01. EPMI] строит фундамент
+буквально — на голом ядре Lean; главы 33–37 разворачивают первопричину и классические фронты.

@@ -50,15 +50,51 @@ abbrev Step00CausalClosureAxiom : Prop :=
   TheStrictLastStep00Obligation
 
 /--
-The single external axiom of this patch — AND OF THE WHOLE REPOSITORY.
+**СТРУКТУРА ПЕРВОПРИЧИНЫ** — намеренно принимаемое внешнее начало Step00-мира.
 
-Reading: Step00 causal closure is accepted as an outside universe-generating
-principle.  It is not derived by the internal no-engine machinery.
+Три поля — точная структура события `0 → 1`:
+* `origin` — маркер сингулярности `0` (до-кадровое состояние; несёт `True`:
+  до первого кадра внутреннего языка нет, утверждать нечего);
+* `firstFrame` — маркер первого причинного кадра `1` (с него доступен язык
+  состояний/шагов/леджеров; тоже `True` — маркер, не утверждение);
+* `causalBoundary` — СОДЕРЖАТЕЛЬНАЯ причинная граница: strict-обязательство
+  Step00 (вся математическая тяжесть первопричины живёт здесь).
+
+Интернализация первопричины невозможна (доказано ранее: внутренняя
+первопричина = запрещённый двигатель, `no_internalisedHorizonBoundary`) —
+потому она принимается ИЗВНЕ, аксиомой, намеренно.
+-/
+structure Step00FirstCause : Prop where
+  origin : True
+  firstFrame : True
+  causalBoundary : Step00CausalClosureAxiom
+
+/--
+**ЕДИНСТВЕННАЯ АКСИОМА РЕПОЗИТОРИЯ — ПЕРВОПРИЧИНА (намеренно, структурой).**
+
+Reading: внешнее начало `0 → 1` принято как корень архитектуры; из него
+теоремой следует causal closure, а из той — весь условный слой.
 
 ⚠️ Everything depending on this axiom is CONDITIONAL and machine-flagged by
-the node verifier as AXIOM-TAINTED.
+the node verifier as AXIOM-TAINTED (axiom name: `step00FirstCause`).
 -/
-axiom step00CausalClosure : Step00CausalClosureAxiom
+axiom step00FirstCause : Step00FirstCause
+
+/--
+Прежняя causal-closure «аксиома» — теперь ТЕОРЕМА из первопричины: имя и все
+использования ниже по течению не меняются, но корень архитектуры — намеренно
+структурированная первопричина. ⚠️ AXIOM-TAINTED (через step00FirstCause).
+-/
+theorem step00CausalClosure : Step00CausalClosureAxiom :=
+  step00FirstCause.causalBoundary
+
+/-- **ЧЕСТНОСТЬ (машинно): структура первопричины ⟺ голый узел.** Маркеры
+    origin/firstFrame — `True`, вся сила — в causalBoundary: намеренное
+    включение первопричины меняет ПРОИСХОЖДЕНИЕ (корень архитектуры и имя
+    аксиомы в таинте), но не математическую силу декрета. -/
+theorem step00FirstCause_iff_causalClosure :
+    Step00FirstCause ↔ Step00CausalClosureAxiom :=
+  ⟨fun F => F.causalBoundary, fun h => ⟨trivial, trivial, h⟩⟩
 
 /-#############################################################################
   §2. What the axiom generates (⚠️ conditional on the axiom, NOT proofs)

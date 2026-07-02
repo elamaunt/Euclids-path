@@ -93,6 +93,7 @@ import EuclidsPath.Engine.MersennePaymentConflict -- платёжный марш
 import EuclidsPath.Engine.MersennePeelPressure -- расщепление давления: coverage+payment-law, затем debt+realization; цепи до TwinLowers.Infinite; канонический коллапс = честность
 import EuclidsPath.Engine.LocalPNPNode -- строгий локальный P/NP-узел + конкретная инстанциация (при A≤4 несжимаемость БЕЗУСЛОВНА); scope guard: НЕ классические P/NP
 import EuclidsPath.Engine.ClassicalPNPBridge -- мост к классическим P/NP: несущее поле = извлечение локального резолвера из P-decider'а; ЧЕСТНОСТЬ: фрейм абстрактен (trivialFrame разделяет даром)
+import EuclidsPath.Engine.CanonicalSelfReduction -- fuel-протокол self-reduction: run/run_done закрыты ГЕНЕРИЧЕСКИ (терминация доказана); FaithfulPFrame отсекает trivialFrame
 
 -- ⚠️ КАРАНТИН: ЕДИНСТВЕННЫЙ axiom репозитория (step00CausalClosure = открытый узел, принятый декретом).
 -- Всё зависящее от него — УСЛОВНО, машинно помечается верификатором как AXIOM-TAINTED.

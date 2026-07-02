@@ -79,10 +79,11 @@
 | 37 | Римановы фронты | [37](prose/37_RiemannFronts.md) | `Engine/RiemannTrivialZeros` (вход №1 ЗАКРЫТ), `RiemannRankProjection(+Audit)`, `RiemannTwoTransportFront`, `RiemannArithmeticTwoTransport`, `RiemannSpectralAnchorAudit`, `RiemannLayerBoxFront`, `RiemannTerminalRankFront` | 🟢 арифметика; 🔴 два входа; ⚠️ вакуумность №2 |
 | 38 | **Риман через первопричину** | [38](prose/38_RiemannFirstCause.md) | `Engine/RiemannManifestationFront` (зелёная цепь), `Engine/CausalClosureAxiom` §10, `Engine/RiemannDualEngineFront` | 🟢 цепь; 🟡 RH из декрета; 🔴 дуальные пакеты |
 | 39 | **P/NP: оплата сертификатов ранга** | [39](prose/39_PNPRankPayment.md) | `Engine/PNPRankPaymentFront` (зелёная сепарация A ≤ 4 + трилемма), `Engine/CausalClosureAxiom` §11 | 🟢 сепарация в ранговой модели; 🟡 P/NP-язык декрета; ⚠️ вакуумность №4 |
+| 40 | **Янг–Миллс: масс-щель через двигатель** | [40](prose/40_YangMills.md) | `Engine/YangMillsFront` (зелёная цепь + трилемма), `Engine/CausalClosureAxiom` §12 | 🟢 квантованность⟹щель; 🟡 язык декрета; 🔴 data-anchor спектра |
 | A | Численные данные | [A](prose/A_NumericalEvidence.md) | `tools/RESULTS_*` | — |
 
 🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🟡 = AXIOM-TAINTED (условно на
-`step00FirstCause`; ровно 35 деклараций — 34 в карантине + задокументированное следствие
+`step00FirstCause`; ровно 37 деклараций — 36 в карантине + задокументированное следствие
 `higherEnergyIncompatibility_twins`). 🔴 = открытый узел / вход.
 
 ## Статус (честно)
@@ -162,6 +163,15 @@
   data-anchored машинную модель. ⚠️ **Вакуумность №4 (вскрыта):** decider-gated extraction-фронты
   (`FaithfulSelfReductionFront`, `CurrentExtractionFront`) классически ПУСТЫ (`PDecider` свободен) —
   их `gives_classicalSeparation` вакуумны; InP-gated мост не затронут.
+- **Янг–Миллс: безмассовость = вечный двигатель ([40](prose/40_YangMills.md)):** halving-лестница
+  сколь-угодно-дешёвых возбуждений — бесконечный мультипликативный ℝ-спуск (тот самый контрпример
+  каскадного предупреждения); **квантованность спектра ⟹ масс-щель — 🟢 ТЕОРЕМА**
+  (`massGap_of_quantizationLaw`: лестница + ранг = ℕ-спуск, убит EPMI). Четвёртой границы декрета
+  НЕТ — машинно (трилемма: универсал опровержим кованой лестницей, экзистенциал вакуумен,
+  риманово зеркало НЕСОВМЕСТИМО с принятой границей — лестница, в отличие от нуля, предъявима;
+  коллапс `quantizationLaw_iff_massGap` — закон ⟺ щель зелёно). Мир декрета гэпнут в языке
+  поставок (`decreedScale_no_deviationSupply` 🟡). Проблема Клэя НЕ решена и НЕ объявлена:
+  🔴 вход — data-anchored построенный YM-спектр (в mathlib отсутствует).
 - ⚠️ **Единственный `axiom` репозитория — ПЕРВОПРИЧИНА (карантин):** `Engine/CausalClosureAxiom.lean`
   объявляет `step00FirstCause : Step00FirstCause` — намеренно структурированное внешнее начало
   `0 → 1` с **ДВУМЯ причинными границами**: twin-узел `causalBoundary`

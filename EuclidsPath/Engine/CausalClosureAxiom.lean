@@ -42,10 +42,23 @@
   был бы вакуумен). Существующая граница УЖЕ говорит на языке P/NP: на
   декретном масштабе A ≥ 5 она даёт LocalPSuccess/полную оплату/ограниченную
   поставку (§11) — чистый раскол по масштабам с зелёной сепарацией на A ≤ 4.
+
+  ЯНГ–МИЛЛС-ЯЗЫК ДЕКРЕТА (§12): ЧЕТВЁРТОЙ границы НЕТ — намеренно. Трилемма
+  (Engine/YangMillsFront §7): универсальный кандидат опровержим
+  (cooked-лестница + EPMI), экзистенциальный вакуумен, манифестационный
+  НЕСОВМЕСТИМ с принятой границей (лестница, в отличие от off-critical нуля,
+  зелёно предъявима — ymManifestationLaw_refutes_boundary); per-model
+  «закон квантования ⟺ масс-гэп» зелёно и БЕЗ границы
+  (quantizationLaw_iff_massGap) — декретировать закон = декретировать цель.
+  Сам вывод «квантованность ⟹ гэп» — зелёная условная цепь
+  (massGap_of_quantizationLaw); §12 фиксирует лишь то, что декрет утверждает
+  САМ: на его масштабе A ≥ 5 поставки отклонений нет — его мир гэпнут в
+  языке поставок. Клэй НЕ решается и НЕ объявляется.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
 import EuclidsPath.Engine.RiemannManifestationFront
 import EuclidsPath.Engine.PNPRankPaymentFront
+import EuclidsPath.Engine.YangMillsFront
 
 set_option autoImplicit false
 
@@ -2377,6 +2390,36 @@ theorem quarantine_inconsistent_if_incompressible_at_all_scales
 
 -- Машинная видимость: P/NP-язык декрета заражён ровно step00FirstCause.
 #print axioms decreedScale_localPSuccess
+
+/-#############################################################################
+  §12. ЯНГ–МИЛЛС-ЯЗЫК ДЕКРЕТА: гэп его собственного мира
+  (четвёртой границы НЕТ — намеренно; трилемма: Engine/YangMillsFront §7;
+  per-model закон ⟺ гэп зелёно — декретировать было бы = декретировать цель;
+  мир декрета интринзично квантован (lexRank : ℕ) — ниже только то, что
+  декрет утверждает САМ.)
+#############################################################################-/
+
+/-- ⚠️ AXIOM-TAINTED: на декретном масштабе (обязательно A ≥ 5) поставка
+    отклонений ОТСУТСТВУЕТ на каждом M0 — в мире первопричины нет бесконечной
+    башни сколь-угодно-дешёвых возбуждений: декрет гэпнут в языке поставок. -/
+theorem decreedScale_no_deviationSupply :
+    ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ, ¬ DeviationFlowSupply A M0 :=
+  EuclidsPath.YangMills.boundary_refuses_deviationSupply_at_decreed_scale
+    step00CausalClosure
+
+/-- **РАСТЯЖКА (Янг–Миллс):** если поставку отклонений когда-либо предъявят
+    на ВСЕХ масштабах (включая декретный A ≥ 5), карантин противоречив —
+    False выводимо ИМЕННО здесь. Безопасность растяжки: зелёный мир знает
+    поставку только при A ≤ 4 (`smallScale_deviationSupply`); кованые
+    спектральные модели Янга–Миллса живут в спектральном мире и этого
+    утверждения не касаются. ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+theorem quarantine_inconsistent_if_supply_at_every_scale
+    (h : ∀ A M0 : ℕ, DeviationFlowSupply A M0) : False := by
+  obtain ⟨A, _, hNo⟩ := decreedScale_no_deviationSupply
+  exact hNo 0 (h A 0)
+
+-- Машинная видимость: ЯМ-язык декрета заражён ровно step00FirstCause.
+#print axioms decreedScale_no_deviationSupply
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

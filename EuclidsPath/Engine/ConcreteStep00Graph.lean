@@ -4977,6 +4977,293 @@ theorem twin_above_of_faithfulGaugePackage {A M0 : ℕ}
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_resolves P.proj (faithfulGaugePackage_resolves_old P)
 
+/-#############################################################################
+  ВСЕЛЕННАЯ БЕЗ ЭНЕРГИИ (кирпич: no_energy_stable_universe).
+  «Нет платёжного канала» = same-key коллизия может опираться лишь на
+  геометрию (возврат/вложение) или маркер сингулярности. Кирпич честно
+  избегает вакуумного Energy := Empty. Ниже — кирпич + машинная честность:
+  под двумя seam-запретами support-условие вакуумно, тройка ⟺ пара аудита
+  ⟺ старый резолвер; obligation ⟺ старый узел; twin-детектор.
+#############################################################################-/
+
+/-#############################################################################
+  §1. No-energy alternatives
+#############################################################################-/
+
+/--
+The local alternatives available to a same-key collision when the system has no
+payment/energy channel.
+
+The last case, `LedgerSeamSingularity`, is not a valid support mechanism; it is
+included only as a diagnostic marker for a broken ledger seam.
+-/
+def NoEnergySupportAlternative {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨
+  NestedUniverseEmbedding F₁ F₂ ∨
+  NestedUniverseEmbedding F₂ F₁ ∨
+  LedgerSeamSingularity proj F₁ F₂
+
+/--
+A no-energy support law for a candidate finite ledger projection.
+
+If two distinct admissible genealogies have the same semantic key, the collision
+must be supported geometrically by return/nesting, or else explicitly marked as
+a seam singularity.  No payment alternative is allowed here.
+-/
+def NoEnergyCollisionSupport {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    F₁ ≠ F₂ →
+    ExtendedFlowAdmissible F₁ →
+    ExtendedFlowAdmissible F₂ →
+    proj.keyFlow F₁ = proj.keyFlow F₂ →
+      NoEnergySupportAlternative proj F₁ F₂
+
+/--
+A no-energy stable universe is one whose same-key collisions have only geometric
+support, with seam singularities and dangling one-way nestings ruled out by
+separate audit conditions.
+-/
+def NoEnergyStableUniverse {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoEnergyCollisionSupport proj ∧
+  NoLedgerSeamSingularity proj ∧
+  NoDanglingOneWayNesting proj
+
+/-#############################################################################
+  §2. No-energy support reduces to the nested resolver
+#############################################################################-/
+
+/--
+A no-energy support alternative, together with no seam singularity and no
+dangling one-way nesting, yields the old nested-universe resolution alternative.
+
+This is the formal version of:
+
+  no energy + stable ledger seam
+    ⟹ same-key collision must be supported by a return path or mutual nesting.
+-/
+theorem noEnergyAlternative_to_nestedResolution {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoDangling : NoDanglingOneWayNesting proj)
+    (hColl : LedgerSeamCollision proj F₁ F₂)
+    (hAlt : NoEnergySupportAlternative proj F₁ F₂) :
+    NestedUniverseResolutionAlternative F₁ F₂ := by
+  classical
+  rcases hAlt with hReturn | hRest
+  · exact Or.inl hReturn
+  · rcases hRest with hNest₁₂ | hRest
+    · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+      · exact Or.inl hReturn
+      · by_cases hPay : ImpossiblePayment
+        · exact Or.inr (Or.inr hPay)
+        · have hMut : MutuallyNestedUniverses F₁ F₂ :=
+            oneWayNesting_forces_mutual_of_noDangling
+              (proj := proj) hNoDangling hColl hReturn hPay (Or.inl hNest₁₂)
+          exact Or.inr (Or.inl hMut)
+    · rcases hRest with hNest₂₁ | hSing
+      · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+        · exact Or.inl hReturn
+        · by_cases hPay : ImpossiblePayment
+          · exact Or.inr (Or.inr hPay)
+          · have hMut : MutuallyNestedUniverses F₁ F₂ :=
+              oneWayNesting_forces_mutual_of_noDangling
+                (proj := proj) hNoDangling hColl hReturn hPay (Or.inr hNest₂₁)
+            exact Or.inr (Or.inl hMut)
+      · exact False.elim ((hNoSing F₁ F₂) hSing)
+
+/--
+No-energy support plus the two seam-audit prohibitions gives the nested resolver
+required by the existing near-close machinery.
+-/
+theorem noEnergySupport_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoEnergy : NoEnergyCollisionSupport proj)
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj := by
+  intro F₁ F₂ hne hAdm₁ hAdm₂ hkey
+  have hColl : LedgerSeamCollision proj F₁ F₂ :=
+    ⟨hne, hAdm₁, hAdm₂, hkey⟩
+  have hAlt : NoEnergySupportAlternative proj F₁ F₂ :=
+    hNoEnergy F₁ F₂ hne hAdm₁ hAdm₂ hkey
+  exact noEnergyAlternative_to_nestedResolution
+    (proj := proj) hNoSing hNoDangling hColl hAlt
+
+/-- Same reduction packaged as a stable-universe theorem. -/
+theorem noEnergyStableUniverse_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj :=
+  noEnergySupport_resolves_nested
+    (proj := proj) H.1 H.2.1 H.2.2
+
+/-- Consequently a no-energy stable universe also supplies the older
+cycle-or-payment resolver.  The payment branch may still syntactically appear in
+that old resolver, but the construction of the resolver did not use an energy
+or payment channel. -/
+theorem noEnergyStableUniverse_resolves_old {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj :=
+  nestedSemanticExtended_resolves_old
+    (noEnergyStableUniverse_resolves_nested (proj := proj) H)
+
+/-#############################################################################
+  §3. Collapse for an infinite generated-flow family
+#############################################################################-/
+
+/--
+An infinite family of generated genealogies cannot be supported by a finite
+no-energy stable ledger.  The contradiction goes through the usual finite-key
+pigeonhole, then through the no-energy nested resolver, and finally through
+lexRank/payment impossibility already proved elsewhere.
+-/
+theorem infinite_extended_flows_impossible_noEnergyStableUniverse
+    {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)}
+    (h𝓕 : InfiniteExtendedGeneratedFlowFamily A M0 𝓕)
+    (H : NoEnergyStableUniverse proj) :
+    False := by
+  exact infinite_extended_flows_impossible_with_resolution
+    (A := A) (M0 := M0) proj h𝓕
+    (noEnergyStableUniverse_resolves_old (proj := proj) H)
+
+/--
+Under a hypothetical last-twin bound, a no-energy stable ledger is impossible.
+This is the formal version of:
+
+  after the last twin, infinitely many fresh flows must be absorbed;
+  if there is no energy channel, the old finite universe can only support them
+  by return/nesting;
+  but return/nesting is forbidden by lexRank once it closes.
+-/
+theorem twinBound_impossible_with_noEnergyStableUniverse
+    {A M0 : ℕ}
+    (hTwinBound : TwinBoundAbove M0)
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (H : NoEnergyStableUniverse proj) :
+    False := by
+  obtain ⟨𝓕, h𝓕⟩ :=
+    twinBoundForcesInfiniteExtendedGeneratedFlows_closed
+      (A := A) (M0 := M0) hTwinBound
+  exact infinite_extended_flows_impossible_noEnergyStableUniverse
+    (A := A) (M0 := M0) (proj := proj) h𝓕 H
+
+/-#############################################################################
+  §4. Final no-energy last obligation
+#############################################################################-/
+
+/--
+The no-energy version of the final Step00 obligation.
+
+For one fixed scale `A`, every hypothetical last-twin bound `M0` admits a finite
+semantic projection whose same-key collisions are geometrically supported
+without payment, and whose seam audit forbids singularity and dangling nesting.
+-/
+abbrev TheNoEnergyStableUniverseLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+      ∀ M0 : ℕ, NoEnergyStableUniverse (projOf M0)
+
+/-- The no-energy stable-universe last obligation implies the nested-universe
+last obligation. -/
+theorem noEnergyStableUniverseLast_implies_nestedUniverseLast
+    (H : TheNoEnergyStableUniverseLastStep00Obligation) :
+    TheNestedUniverseLastStep00Obligation := by
+  rcases H with ⟨A, projOf, hStable⟩
+  refine ⟨A, projOf, ?_⟩
+  intro M0
+  exact noEnergyStableUniverse_resolves_nested
+    (proj := projOf M0) (hStable M0)
+
+/-- Therefore a no-energy stable Step00 universe is sufficient for infinitude of
+lower twin centres. -/
+theorem twinLowersInfinite_of_noEnergyStableUniverseLastStep00Obligation
+    (H : TheNoEnergyStableUniverseLastStep00Obligation) :
+    TwinLowers.Infinite :=
+  twinLowersInfinite_of_nestedUniverseLastStep00Obligation
+    (noEnergyStableUniverseLast_implies_nestedUniverseLast H)
+
+/-#############################################################################
+  §5. Audit names
+#############################################################################-/
+
+/-- The remaining certificate for the no-energy interpretation: same-key
+collisions must be supported geometrically, not by payment. -/
+abbrev RemainingNoEnergySupportCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoEnergyCollisionSupport proj
+
+/-- A candidate projection with no payment channel fails precisely by creating a
+same-key collision that is not geometrically supported except by a broken seam. -/
+def ProjectionNeedsEnergyOrSingularity {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∃ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    LedgerSeamCollision proj F₁ F₂ ∧
+    ¬ ExtendedFlowReturnCertificate F₁ F₂ ∧
+    ¬ NestedUniverseEmbedding F₁ F₂ ∧
+    ¬ NestedUniverseEmbedding F₂ F₁
+
+/--
+Reading guide:
+if `ProjectionNeedsEnergyOrSingularity proj` holds, then a no-energy interpretation
+of `proj` can succeed only by allowing a broken seam.  If broken seams are forbidden,
+then the projection must add a genuine energy/payment channel or produce a
+return/nesting engine.
+-/
+abbrev NoEnergyReadingGuide {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoEnergyCollisionSupport proj ∧
+  NoLedgerSeamSingularity proj ∧
+  NoDanglingOneWayNesting proj
+
+/-! Машинная честность no-energy-формы -/
+
+/-- Под двумя seam-запретами support-условие ВАКУУМНО: тройка ⟺ пара аудита. -/
+theorem noEnergyStableUniverse_iff_seamAudit {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    NoEnergyStableUniverse proj ↔
+      (NoLedgerSeamSingularity proj ∧ NoDanglingOneWayNesting proj) := by
+  constructor
+  · rintro ⟨_, hNoSing, hNoDangling⟩
+    exact ⟨hNoSing, hNoDangling⟩
+  · rintro ⟨hNoSing, hNoDangling⟩
+    refine ⟨?_, hNoSing, hNoDangling⟩
+    intro F₁ F₂ hne h1 h2 hkey
+    exact (seamAudit_forces_no_collision hNoSing hNoDangling F₁ F₂
+      ⟨hne, h1, h2, hkey⟩).elim
+
+/-- No-energy stable universe ⟺ старый резолвер. -/
+theorem noEnergyStableUniverse_iff_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    NoEnergyStableUniverse proj ↔
+      SemanticExtendedFlowLedgerCollisionResolves proj :=
+  noEnergyStableUniverse_iff_seamAudit.trans (seamAudit_iff_resolves proj)
+
+/-- No-energy-обязательство ⟺ старый узел (переформулировка, не обход). -/
+theorem noEnergyStableUniverseLastStep00Obligation_iff_lastStep00Obligation :
+    TheNoEnergyStableUniverseLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 =>
+      (noEnergyStableUniverse_iff_resolves (projOf M0)).mp (h M0)⟩
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 =>
+      (noEnergyStableUniverse_iff_resolves (projOf M0)).mpr (h M0)⟩
+
+/-- No-energy stable universe на масштабе M0 — тоже twin-детектор. -/
+theorem twin_above_of_noEnergyStableUniverse {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (H : NoEnergyStableUniverse proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves proj (noEnergyStableUniverse_resolves_old H)
+
 end GeneratedFlowFormulation
 
 

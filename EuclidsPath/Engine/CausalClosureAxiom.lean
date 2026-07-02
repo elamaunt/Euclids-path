@@ -882,6 +882,395 @@ theorem refutationEscapes_iff_refutationExists
   rw [RefutationEscapesStep00Architecture, refutationReturns_iff_noRefutations,
     not_isEmpty_iff]
 
+
+
+/-#############################################################################
+  WELL-FOUNDED ПРИЧИННЫЙ ФРАКТАЛ (кирпич: well_founded_causal_fractal).
+  Точный смысл слогана «вселенная фрактальна»: причинно-информационное
+  самоподобие на мета-границе (в каждом мета-узле повторяется дихотомия
+  побег/возврат) + внутренняя well-foundedness (∞-ветвь со строгим
+  ℕ-спуском ранга невозможна). НЕ геометрический фрактал и не космология
+  (scope guard кирпича). Аксиому НЕ использует — все декларации axiom-clean.
+  Фиксы: RankedMetaFractalBranch несёт данные → `→ False`.
+  Машинная честность: 6-ветвевой исход коллапсирует в 3-дизъюнкцию
+  (узел ∨ есть доказательство ∨ есть опровержение); поля самоподобия —
+  Nonempty/IsEmpty-тавтологии meta-уровня.
+#############################################################################-/
+
+open EuclidsPath.BoundaryDefectPayment
+
+/-#############################################################################
+  §1. Meta-fractal nodes
+#############################################################################-/
+
+/--
+A node of the meta-fractal is an external proof theory together with one of its
+sentences.  The intended sentence is often the external representation of
+`TwinLowers.Infinite`, but the audit is stated for any external sentence.
+-/
+structure MetaFractalNode where
+  T : ExternalProofTheory
+  φ : T.Sentence
+
+namespace MetaFractalNode
+
+/--
+The proof side of a node returns to Step00 if proofs of its sentence admit a
+Step00 proof interface.
+-/
+abbrev proofReturns (N : MetaFractalNode) : Prop :=
+  ProofReturnsToStep00Architecture N.T N.φ
+
+/--
+The refutation side of a node returns to Step00 if refutations of its sentence
+admit a Step00 refutation interface.
+-/
+abbrev refutationReturns (N : MetaFractalNode) : Prop :=
+  RefutationReturnsToStep00Architecture N.T N.φ
+
+/--
+The proof side genuinely escapes Step00 when it has no proof-return interface.
+-/
+abbrev proofEscapes (N : MetaFractalNode) : Prop :=
+  ProofEscapesStep00Architecture N.T N.φ
+
+/--
+The refutation side genuinely escapes Step00 when it has no refutation-return
+interface.
+-/
+abbrev refutationEscapes (N : MetaFractalNode) : Prop :=
+  RefutationEscapesStep00Architecture N.T N.φ
+
+end MetaFractalNode
+
+/-#############################################################################
+  §2. Local fractal alternatives
+#############################################################################-/
+
+/--
+The local alternatives available at a meta-fractal node.
+
+`externalBoundary` is the legitimate outside causal-closure input.
+`proofEscape` and `refutationEscape` are genuine exits from Step00 mediation.
+`seam`, `payment`, and `engine` are the already audited failure/forbidden
+branches.
+-/
+inductive MetaFractalOutcome (N : MetaFractalNode) : Prop where
+  | externalBoundary :
+      ExternalUniverseCause Step00CausalClosureAxiom → MetaFractalOutcome N
+  | proofEscape :
+      N.proofEscapes → MetaFractalOutcome N
+  | refutationEscape :
+      N.refutationEscapes → MetaFractalOutcome N
+  | seam :
+      RealisedDenialOfCausalCause → MetaFractalOutcome N
+  | payment :
+      ImpossiblePayment → MetaFractalOutcome N
+  | engine :
+      SomeConcreteEuclideanEngine → MetaFractalOutcome N
+
+/--
+An actual external proof certificate cannot return to Step00.  It is therefore
+a genuine proof escape at that meta-fractal node.
+-/
+theorem actualProof_forces_metaFractalProofEscape
+    (N : MetaFractalNode) (p : N.T.proves N.φ) :
+    N.proofEscapes :=
+  existing_externalProof_forces_proofEscape p
+
+/--
+An actual external refutation certificate cannot return to Step00.  It is
+therefore a genuine refutation escape at that meta-fractal node.
+-/
+theorem actualRefutation_forces_metaFractalRefutationEscape
+    (N : MetaFractalNode) (r : N.T.refutes N.φ) :
+    N.refutationEscapes :=
+  existing_externalRefutation_forces_refutationEscape r
+
+/--
+An actual external proof produces one of the local meta-fractal outcomes:
+genuine proof escape.
+-/
+theorem actualProof_metaFractalOutcome
+    (N : MetaFractalNode) (p : N.T.proves N.φ) :
+    MetaFractalOutcome N :=
+  MetaFractalOutcome.proofEscape
+    (actualProof_forces_metaFractalProofEscape N p)
+
+/--
+An actual external refutation produces one of the local meta-fractal outcomes:
+genuine refutation escape.
+-/
+theorem actualRefutation_metaFractalOutcome
+    (N : MetaFractalNode) (r : N.T.refutes N.φ) :
+    MetaFractalOutcome N :=
+  MetaFractalOutcome.refutationEscape
+    (actualRefutation_forces_metaFractalRefutationEscape N r)
+
+/--
+If a proof route returns to Step00, then it has no actual external proof
+certificate in the audited no-engine architecture.
+-/
+theorem proofReturn_has_no_actualProof
+    (N : MetaFractalNode) (hReturn : N.proofReturns) :
+    IsEmpty (N.T.proves N.φ) :=
+  no_externalProof_under_proofReturn hReturn
+
+/--
+If a refutation route returns to Step00, then it has no actual external
+refutation certificate in the audited no-engine architecture.
+-/
+theorem refutationReturn_has_no_actualRefutation
+    (N : MetaFractalNode) (hReturn : N.refutationReturns) :
+    IsEmpty (N.T.refutes N.φ) :=
+  no_externalRefutation_under_refutationReturn hReturn
+
+/--
+A proof cannot both exist and fail to escape the Step00 architecture.
+-/
+theorem actualProof_cannot_be_nonEscaping
+    (N : MetaFractalNode) (p : N.T.proves N.φ)
+    (hNoEscape : ¬ N.proofEscapes) : False :=
+  hNoEscape (actualProof_forces_metaFractalProofEscape N p)
+
+/--
+A refutation cannot both exist and fail to escape the Step00 architecture.
+-/
+theorem actualRefutation_cannot_be_nonEscaping
+    (N : MetaFractalNode) (r : N.T.refutes N.φ)
+    (hNoEscape : ¬ N.refutationEscapes) : False :=
+  hNoEscape (actualRefutation_forces_metaFractalRefutationEscape N r)
+
+/-#############################################################################
+  §3. Self-similarity law
+#############################################################################-/
+
+/--
+The local self-similarity law of the causal fractal.
+
+At every meta-node, actual proof/refutation certificates force genuine escape.
+If one additionally asserts that the route returns to Step00, then the
+corresponding certificates are empty.  This is the formal version of:
+
+  an apparent exit either really exits, or it is translated back into Step00 and
+  dies by the forbidden-engine audit.
+-/
+structure MetaFractalSelfSimilarity where
+  proof_certificate_forces_escape :
+    ∀ N : MetaFractalNode,
+      Nonempty (N.T.proves N.φ) → N.proofEscapes
+  refutation_certificate_forces_escape :
+    ∀ N : MetaFractalNode,
+      Nonempty (N.T.refutes N.φ) → N.refutationEscapes
+  proof_return_forbids_certificate :
+    ∀ N : MetaFractalNode,
+      N.proofReturns → IsEmpty (N.T.proves N.φ)
+  refutation_return_forbids_certificate :
+    ∀ N : MetaFractalNode,
+      N.refutationReturns → IsEmpty (N.T.refutes N.φ)
+
+/--
+The audited Step00 meta-boundary satisfies the local self-similarity law.
+-/
+def metaFractalSelfSimilarity : MetaFractalSelfSimilarity where
+  proof_certificate_forces_escape := by
+    intro N hp
+    rcases hp with ⟨p⟩
+    exact actualProof_forces_metaFractalProofEscape N p
+  refutation_certificate_forces_escape := by
+    intro N hr
+    rcases hr with ⟨r⟩
+    exact actualRefutation_forces_metaFractalRefutationEscape N r
+  proof_return_forbids_certificate := by
+    intro N hReturn
+    exact proofReturn_has_no_actualProof N hReturn
+  refutation_return_forbids_certificate := by
+    intro N hReturn
+    exact refutationReturn_has_no_actualRefutation N hReturn
+
+/-#############################################################################
+  §4. Infinite internal fractal branches
+#############################################################################-/
+
+/--
+A ranked meta-fractal branch is an infinite sequence of apparent meta-levels
+whose internalisation strictly lowers a natural rank at every step.
+
+This abstracts the Step00 situation: return/nesting/compression/internalisation
+is allowed to move to another level only if it pays a strict rank decrease.
+-/
+structure RankedMetaFractalBranch where
+  node : ℕ → MetaFractalNode
+  rank : ℕ → ℕ
+  drops : ∀ i : ℕ, rank (i + 1) < rank i
+
+/--
+There is no infinite internal meta-fractal branch when every level strictly
+lowers a natural rank.
+-/
+theorem no_rankedMetaFractalBranch
+    (B : RankedMetaFractalBranch) : False :=
+  no_infinite_nat_strict_descent B.rank B.drops
+
+/--
+Alias for the slogan: the Step00 causal fractal is well-founded internally.
+-/
+abbrev WellFoundedInternalCausalFractal : Prop :=
+  RankedMetaFractalBranch → False
+
+/--
+The internal causal fractal is well-founded.
+-/
+theorem wellFoundedInternalCausalFractal :
+    WellFoundedInternalCausalFractal :=
+  no_rankedMetaFractalBranch
+
+/-#############################################################################
+  §5. Finite fractal prefixes
+#############################################################################-/
+
+/--
+A finite prefix of a causal fractal is just a finite causal tower.  The name
+connects the previous induction patch with the current fractal reading.
+-/
+abbrev FiniteCausalFractalPrefix (P : Prop) (n : ℕ) : Prop :=
+  FiniteCausalTowerAttempt P n
+
+/--
+Every finite fractal prefix classifies into the same four finite tower outcomes:
+external boundary, seam, payment, or engine.
+-/
+theorem finiteCausalFractalPrefix_classifies
+    {P : Prop} {n : ℕ}
+    (F : FiniteCausalFractalPrefix P n) : CausalTowerOutcome P :=
+  finiteCausalTowerAttempt_classifies F
+
+/--
+If external boundary, seam, payment, and engine are all forbidden, no finite
+fractal prefix can be completely internal.
+-/
+theorem no_closed_finiteCausalFractalPrefix
+    {P : Prop} {n : ℕ}
+    (hNoExternal : ¬ ExternalUniverseCause P)
+    (hNoSeam : ¬ RealisedDenialOfCausalCause)
+    (hNoPayment : ¬ ImpossiblePayment)
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine) :
+    ¬ FiniteCausalFractalPrefix P n :=
+  no_finiteCausalTowerAttempt_without_boundary_or_failure
+    hNoExternal hNoSeam hNoPayment hNoEngine
+
+/-#############################################################################
+  §6. The well-founded causal-fractal audit package
+#############################################################################-/
+
+/--
+The full audited meaning of "causal fractal" for Step00.
+
+It packages three facts:
+
+* local self-similarity of the escape-or-return dichotomy;
+* finite internal prefixes still need boundary/seam/payment/engine;
+* infinite internal self-similar regress is impossible under rank descent.
+-/
+structure WellFoundedCausalFractalAudit where
+  local_self_similarity : MetaFractalSelfSimilarity
+  finite_prefix_classifies :
+    ∀ {P : Prop} {n : ℕ},
+      FiniteCausalFractalPrefix P n → CausalTowerOutcome P
+  no_closed_finite_prefix :
+    ∀ {P : Prop} {n : ℕ},
+      (¬ ExternalUniverseCause P) →
+      (¬ RealisedDenialOfCausalCause) →
+      (¬ ImpossiblePayment) →
+      (¬ SomeConcreteEuclideanEngine) →
+        ¬ FiniteCausalFractalPrefix P n
+  no_infinite_internal_branch : WellFoundedInternalCausalFractal
+
+/--
+The audited Step00 universe is a well-founded causal fractal.
+-/
+def wellFoundedCausalFractalAudit : WellFoundedCausalFractalAudit where
+  local_self_similarity := metaFractalSelfSimilarity
+  finite_prefix_classifies := by
+    intro P n F
+    exact finiteCausalFractalPrefix_classifies F
+  no_closed_finite_prefix := by
+    intro P n hNoExternal hNoSeam hNoPayment hNoEngine
+    exact no_closed_finiteCausalFractalPrefix
+      hNoExternal hNoSeam hNoPayment hNoEngine
+  no_infinite_internal_branch := wellFoundedInternalCausalFractal
+
+/--
+Compressed theorem form:
+
+  the Step00 universe is self-similar at meta-boundaries, but well-founded
+  internally.  Hence it behaves like a causal/informational fractal, not like an
+  infinite internal regress.
+-/
+theorem wellFoundedCausalFractal_slogan :
+    (∀ N : MetaFractalNode,
+      Nonempty (N.T.proves N.φ) → N.proofEscapes) ∧
+    (∀ N : MetaFractalNode,
+      Nonempty (N.T.refutes N.φ) → N.refutationEscapes) ∧
+    (∀ {P : Prop} {n : ℕ},
+      FiniteCausalFractalPrefix P n → CausalTowerOutcome P) ∧
+    WellFoundedInternalCausalFractal := by
+  constructor
+  · intro N hp
+    exact metaFractalSelfSimilarity.proof_certificate_forces_escape N hp
+  constructor
+  · intro N hr
+    exact metaFractalSelfSimilarity.refutation_certificate_forces_escape N hr
+  constructor
+  · intro P n F
+    exact finiteCausalFractalPrefix_classifies F
+  · exact wellFoundedInternalCausalFractal
+
+/-#############################################################################
+  §7. Scope guard
+#############################################################################-/
+
+/--
+Scope marker: this is a causal/informational fractal audit, not a claim about
+geometric fractals, physical cosmology, or absolute metamathematical
+independence.
+-/
+abbrev ThisIsACausalInformationalFractalNotAGeometricFractal : Prop := True
+
+/--
+The scope marker is intentionally trivial.
+-/
+theorem thisIsACausalInformationalFractalNotAGeometricFractal :
+    ThisIsACausalInformationalFractalNotAGeometricFractal := by
+  trivial
+
+/-! Машинная честность fractal-формы -/
+
+/-- ИСХОД КОЛЛАПСИРУЕТ в честную 3-дизъюнкцию: seam/payment/engine сожжены,
+    «побеги» ⟺ существование сертификатов, граница ⟺ сама аксиома-узел.
+    Шестиветвевой фрактальный исход = (узел ∨ есть доказательство ∨ есть
+    опровержение) — вся структура сведена к подлинным содержаниям. -/
+theorem metaFractalOutcome_iff (N : MetaFractalNode) :
+    MetaFractalOutcome N ↔
+      (Step00CausalClosureAxiom ∨
+        Nonempty (N.T.proves N.φ) ∨ Nonempty (N.T.refutes N.φ)) := by
+  constructor
+  · intro O
+    cases O with
+    | externalBoundary h => exact Or.inl h
+    | proofEscape h =>
+        exact Or.inr (Or.inl (proofEscapes_iff_proofExists.mp h))
+    | refutationEscape h =>
+        exact Or.inr (Or.inr (refutationEscapes_iff_refutationExists.mp h))
+    | seam h => exact (no_realisedNegationOfCausalClosure h).elim
+    | payment h => exact (BoundaryDefectPayment.impossiblePayment_false h).elim
+    | engine h => exact (no_someConcreteEuclideanEngine h).elim
+  · rintro (h | hp | hr)
+    · exact MetaFractalOutcome.externalBoundary h
+    · exact MetaFractalOutcome.proofEscape (proofEscapes_iff_proofExists.mpr hp)
+    · exact MetaFractalOutcome.refutationEscape
+        (refutationEscapes_iff_refutationExists.mpr hr)
+
 end GeneratedFlowFormulation
 end ConcreteStep00Graph
 end EuclidsPath

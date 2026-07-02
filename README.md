@@ -108,7 +108,11 @@
   цель — официальная mathlib-`RiemannHypothesis`). **Честность (машинно):** `offCriticalBridge_iff_RH` —
   вход impossible-engine-маршрута **эквивалентен RH дословно**; `spectralBridge_forces_no_violation` —
   rank-jump-мост скрыто несёт `¬LiouvilleViolation` (RH-силы). Открытые входы: `LiouvilleBound`-оценка /
-  `RankJumpLocalization` (декомпозирован в `Engine/DissipativeCascade` на capacity + pairing). Единый
+  `RankJumpLocalization` (декомпозирован в `Engine/DissipativeCascade` на capacity + pairing; pairing-вход
+  `unpaired_gives_jump` далее декомпозирован в `Engine/RiemannRankProjection`: **first-crossing лемма
+  ДОКАЗАНА** (`Nat.find`-минимальность), остаток — window-бухгалтерия + «first crossing ⟹ unpaired» +
+  rank-видимость; стыковка с `TwinCarrierPairing` машинно проверена, «no-RH-leak аудиты» честно
+  помечены как маркеры, не проверки). Единый
   rank-parity узел ([32](prose/32_RankParityUnity.md)) — гипотеза единства, не редукция.
 - ⚠️ **Единственный `axiom` репозитория (карантин):** `Engine/CausalClosureAxiom.lean` объявляет
   `step00CausalClosure` (= открытый узел `TheStrictLastStep00Obligation`, принятый декретом) и выводит

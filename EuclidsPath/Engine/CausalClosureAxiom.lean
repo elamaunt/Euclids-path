@@ -460,6 +460,428 @@ theorem nonAxiomaticRemainingObligation_forces_scale_ge_five
   lastStep00Obligation_forces_scale_ge_five
     (strictLastStep00Obligation_iff_lastStep00Obligation.mp H)
 
+
+
+/-#############################################################################
+  ФИНАЛЬНЫЙ МЕТА-КИРПИЧ: ПОБЕГ ИЛИ ВОЗВРАТ (кирпич: final_meta_escape_or_return).
+  Размещён здесь из-за ссылок на имена модуля (Step00CausalClosureAxiom,
+  twinLowersInfinite_of_axiomaticClosure), но АКСИОМУ НЕ ИСПОЛЬЗУЕТ — все
+  декларации ниже axiom-clean (верификатор подтверждает: AXIOM-TAINTED не
+  прибавилось). Дихотомия: внешнее доказательство либо транслируется назад в
+  Step00 (⟹ двигатель ⟹ пусто), либо подлинно сбегает из архитектуры.
+  Фиксы: ¬Step00MediatedStatement (data-структура) → `→ False`.
+  Машинная честность: возврат ⟺ пустота, «побег» ⟺ существование —
+  дихотомия тавтологична (Nonempty/IsEmpty), несущая часть — axiomGivesTwins.
+#############################################################################-/
+
+/-#############################################################################
+  §1. One-sided Step00 mediation
+#############################################################################-/
+
+/--
+A one-sided proof interface: every external proof certificate of `φ` can be
+translated into an audited Step00 internal decision attempt.
+
+This is weaker than `Step00MediatedStatement`, because it only talks about
+proofs, not refutations.
+-/
+structure Step00ProofInterface
+    (T : ExternalProofTheory) (φ : T.Sentence) where
+  proofToInternal : T.proves φ → InternalStableDecisionAttempt
+
+/--
+A one-sided refutation interface: every external refutation certificate of `φ`
+can be translated into an audited Step00 internal decision attempt.
+-/
+structure Step00RefutationInterface
+    (T : ExternalProofTheory) (φ : T.Sentence) where
+  refutationToInternal : T.refutes φ → InternalStableDecisionAttempt
+
+/--
+An external proof route returns to Step00 if such a one-sided proof translator
+exists.
+-/
+abbrev ProofReturnsToStep00Architecture
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  Nonempty (Step00ProofInterface T φ)
+
+/--
+An external refutation route returns to Step00 if such a one-sided refutation
+translator exists.
+-/
+abbrev RefutationReturnsToStep00Architecture
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  Nonempty (Step00RefutationInterface T φ)
+
+/--
+A proof route genuinely escapes Step00 when it does not return to the Step00
+internal decision interface.
+-/
+abbrev ProofEscapesStep00Architecture
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  ¬ ProofReturnsToStep00Architecture T φ
+
+/--
+A refutation route genuinely escapes Step00 when it does not return to the
+Step00 internal decision interface.
+-/
+abbrev RefutationEscapesStep00Architecture
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  ¬ RefutationReturnsToStep00Architecture T φ
+
+/-#############################################################################
+  §2. Returning to Step00 builds the forbidden engine
+#############################################################################-/
+
+/--
+A returned proof certificate constructs the same forbidden concrete Euclidean
+engine as every other internal Step00 decision attempt.
+-/
+theorem proofReturningToStep00_builds_engine
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00ProofInterface T φ) (p : T.proves φ) :
+    SomeConcreteEuclideanEngine := by
+  exact internalStableDecisionAttempt_builds_engine (M.proofToInternal p)
+
+/--
+A returned refutation certificate also constructs the forbidden concrete
+Euclidean engine.
+-/
+theorem refutationReturningToStep00_builds_engine
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00RefutationInterface T φ) (r : T.refutes φ) :
+    SomeConcreteEuclideanEngine := by
+  exact internalStableDecisionAttempt_builds_engine (M.refutationToInternal r)
+
+/--
+Therefore a proof route that returns to Step00 has no external proof
+certificates.
+-/
+theorem no_externalProof_under_proofReturn
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (hReturn : ProofReturnsToStep00Architecture T φ) :
+    IsEmpty (T.proves φ) := by
+  refine ⟨?_⟩
+  intro p
+  rcases hReturn with ⟨M⟩
+  exact no_someConcreteEuclideanEngine
+    (proofReturningToStep00_builds_engine M p)
+
+/--
+Therefore a refutation route that returns to Step00 has no external refutation
+certificates.
+-/
+theorem no_externalRefutation_under_refutationReturn
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (hReturn : RefutationReturnsToStep00Architecture T φ) :
+    IsEmpty (T.refutes φ) := by
+  refine ⟨?_⟩
+  intro r
+  rcases hReturn with ⟨M⟩
+  exact no_someConcreteEuclideanEngine
+    (refutationReturningToStep00_builds_engine M r)
+
+/-#############################################################################
+  §3. Actual external decisions force genuine escape
+#############################################################################-/
+
+/--
+If an external proof certificate actually exists, then no proof translator back
+into the Step00 no-engine architecture can exist.  Hence the proof genuinely
+escapes the Step00 architecture.
+-/
+theorem existing_externalProof_forces_proofEscape
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (p : T.proves φ) :
+    ProofEscapesStep00Architecture T φ := by
+  intro hReturn
+  rcases hReturn with ⟨M⟩
+  exact no_someConcreteEuclideanEngine
+    (proofReturningToStep00_builds_engine M p)
+
+/--
+If an external refutation certificate actually exists, then no refutation
+translator back into the Step00 no-engine architecture can exist.  Hence the
+refutation genuinely escapes the Step00 architecture.
+-/
+theorem existing_externalRefutation_forces_refutationEscape
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (r : T.refutes φ) :
+    RefutationEscapesStep00Architecture T φ := by
+  intro hReturn
+  rcases hReturn with ⟨M⟩
+  exact no_someConcreteEuclideanEngine
+    (refutationReturningToStep00_builds_engine M r)
+
+/--
+Equivalently: an actual proof plus a claim that the proof does not escape Step00
+is a contradiction.
+-/
+theorem externalProof_without_escape_contradiction
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (p : T.proves φ)
+    (hNoEscape : ¬ ProofEscapesStep00Architecture T φ) :
+    False := by
+  exact hNoEscape (existing_externalProof_forces_proofEscape p)
+
+/--
+Equivalently: an actual refutation plus a claim that the refutation does not
+escape Step00 is a contradiction.
+-/
+theorem externalRefutation_without_escape_contradiction
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (r : T.refutes φ)
+    (hNoEscape : ¬ RefutationEscapesStep00Architecture T φ) :
+    False := by
+  exact hNoEscape (existing_externalRefutation_forces_refutationEscape r)
+
+/-#############################################################################
+  §4. Relation with the earlier two-sided mediated-statement interface
+#############################################################################-/
+
+/--
+A two-sided mediated statement supplies both one-sided interfaces.
+-/
+def Step00MediatedStatement.toProofInterface
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00MediatedStatement T φ) :
+    Step00ProofInterface T φ where
+  proofToInternal := M.proofToInternal
+
+/--
+A two-sided mediated statement also supplies the one-sided refutation interface.
+-/
+def Step00MediatedStatement.toRefutationInterface
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00MediatedStatement T φ) :
+    Step00RefutationInterface T φ where
+  refutationToInternal := M.refutationToInternal
+
+/--
+An actual external proof forbids the statement from being Step00-mediated.
+-/
+theorem actualProof_forbids_step00MediatedStatement
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (p : T.proves φ)
+    (M : Step00MediatedStatement T φ) : False :=
+  no_someConcreteEuclideanEngine
+    (proofReturningToStep00_builds_engine M.toProofInterface p)
+
+/--
+An actual external refutation also forbids Step00 mediation.
+-/
+theorem actualRefutation_forbids_step00MediatedStatement
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (r : T.refutes φ)
+    (M : Step00MediatedStatement T φ) : False :=
+  no_someConcreteEuclideanEngine
+    (refutationReturningToStep00_builds_engine M.toRefutationInterface r)
+
+/-#############################################################################
+  §5. The optional strong meta-completeness principle
+#############################################################################-/
+
+/--
+A strong meta-completeness principle for a chosen external twin-prime sentence:
+all of its external proofs and refutations return to Step00.
+
+This is deliberately not proved here.  It is the exact strong meta-assumption
+one would need in order to say that no external route can escape this
+architecture.
+-/
+structure Step00CompletenessForTwinPrimeProofs
+    (T : ExternalProofTheory) (φ : T.Sentence) where
+  proofInterface : Step00ProofInterface T φ
+  refutationInterface : Step00RefutationInterface T φ
+
+/--
+The strong completeness principle is equivalent to a two-sided mediated
+statement, as far as the existing audit interface is concerned.
+-/
+def Step00CompletenessForTwinPrimeProofs.toMediatedStatement
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (C : Step00CompletenessForTwinPrimeProofs T φ) :
+    Step00MediatedStatement T φ where
+  proofToInternal := C.proofInterface.proofToInternal
+  refutationToInternal := C.refutationInterface.refutationToInternal
+
+/--
+Conversely, a two-sided mediated statement is exactly such a completeness
+certificate for that external sentence.
+-/
+def Step00CompletenessForTwinPrimeProofs.ofMediatedStatement
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00MediatedStatement T φ) :
+    Step00CompletenessForTwinPrimeProofs T φ where
+  proofInterface := M.toProofInterface
+  refutationInterface := M.toRefutationInterface
+
+/--
+If all external twin-prime proofs/refutations are Step00-mediated, then neither
+kind of certificate exists in the no-engine architecture.
+-/
+theorem step00Completeness_noProof_noRefutation
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (C : Step00CompletenessForTwinPrimeProofs T φ) :
+    IsEmpty (T.proves φ) ∧ IsEmpty (T.refutes φ) := by
+  constructor
+  · exact no_externalProof_under_proofReturn ⟨C.proofInterface⟩
+  · exact no_externalRefutation_under_refutationReturn ⟨C.refutationInterface⟩
+
+/--
+If the strong completeness principle holds, an actual external proof is
+impossible.
+-/
+theorem step00Completeness_forbids_externalProof
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (C : Step00CompletenessForTwinPrimeProofs T φ) :
+    ¬ Nonempty (T.proves φ) := by
+  intro hp
+  rcases hp with ⟨p⟩
+  exact no_someConcreteEuclideanEngine
+    (proofReturningToStep00_builds_engine C.proofInterface p)
+
+/--
+If the strong completeness principle holds, an actual external refutation is
+also impossible.
+-/
+theorem step00Completeness_forbids_externalRefutation
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (C : Step00CompletenessForTwinPrimeProofs T φ) :
+    ¬ Nonempty (T.refutes φ) := by
+  intro hr
+  rcases hr with ⟨r⟩
+  exact no_someConcreteEuclideanEngine
+    (refutationReturningToStep00_builds_engine C.refutationInterface r)
+
+/-#############################################################################
+  §6. The final meta brick
+#############################################################################-/
+
+/--
+The final meta-audit package for an external sentence `φ` intended to represent
+`TwinLowers.Infinite` in an external proof theory.
+
+It records exactly three facts:
+
+* the internal Step00 theorem closes once the causal-closure axiom is accepted;
+* any actual external proof must genuinely escape Step00;
+* any actual external refutation must genuinely escape Step00;
+* if one additionally assumes strong Step00 completeness for all external
+  twin-prime decisions, then there are no such external decisions at all.
+-/
+structure LastMetaStep00Brick
+    (T : ExternalProofTheory) (φ : T.Sentence) where
+  axiomGivesTwins : Step00CausalClosureAxiom → TwinLowers.Infinite
+  proofExistsForcesEscape :
+    Nonempty (T.proves φ) → ProofEscapesStep00Architecture T φ
+  refutationExistsForcesEscape :
+    Nonempty (T.refutes φ) → RefutationEscapesStep00Architecture T φ
+  completenessForbidsDecision :
+    Step00CompletenessForTwinPrimeProofs T φ →
+      IsEmpty (T.proves φ) ∧ IsEmpty (T.refutes φ)
+
+/--
+The audited final meta brick.
+-/
+def lastMetaStep00Brick
+    (T : ExternalProofTheory) (φ : T.Sentence) :
+    LastMetaStep00Brick T φ where
+  axiomGivesTwins := by
+    intro H
+    exact twinLowersInfinite_of_axiomaticClosure H
+  proofExistsForcesEscape := by
+    intro hp
+    rcases hp with ⟨p⟩
+    exact existing_externalProof_forces_proofEscape p
+  refutationExistsForcesEscape := by
+    intro hr
+    rcases hr with ⟨r⟩
+    exact existing_externalRefutation_forces_refutationEscape r
+  completenessForbidsDecision := by
+    intro C
+    exact step00Completeness_noProof_noRefutation C
+
+/--
+Compressed slogan as a theorem:
+
+  inside Step00, causal closure gives twins;
+  outside Step00, any actual proof/refutation must genuinely escape;
+  if every route is forced back into Step00, no route exists.
+-/
+theorem finalMetaBrick_slogan
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    (Step00CausalClosureAxiom → TwinLowers.Infinite) ∧
+    (Nonempty (T.proves φ) → ProofEscapesStep00Architecture T φ) ∧
+    (Nonempty (T.refutes φ) → RefutationEscapesStep00Architecture T φ) ∧
+    (Step00CompletenessForTwinPrimeProofs T φ →
+      IsEmpty (T.proves φ) ∧ IsEmpty (T.refutes φ)) := by
+  constructor
+  · intro H
+    exact twinLowersInfinite_of_axiomaticClosure H
+  constructor
+  · intro hp
+    rcases hp with ⟨p⟩
+    exact existing_externalProof_forces_proofEscape p
+  constructor
+  · intro hr
+    rcases hr with ⟨r⟩
+    exact existing_externalRefutation_forces_refutationEscape r
+  · intro C
+    exact step00Completeness_noProof_noRefutation C
+
+/-#############################################################################
+  §7. Scope guard
+#############################################################################-/
+
+/--
+Scope marker: the file proves a relative escape-or-return theorem, not absolute
+independence of the twin-prime conjecture from any standard foundation.
+-/
+abbrev ThisIsTheLastMetaBrickNotAnAbsoluteIndependenceTheorem : Prop := True
+
+theorem thisIsTheLastMetaBrickNotAnAbsoluteIndependenceTheorem :
+    ThisIsTheLastMetaBrickNotAnAbsoluteIndependenceTheorem := by
+  trivial
+
+/-! Машинная честность meta-формы -/
+
+/-- Возврат в Step00 ⟺ пустота внешних доказательств (одностороннее
+    «мост = пустота»). -/
+theorem proofReturns_iff_noProofs
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    ProofReturnsToStep00Architecture T φ ↔ IsEmpty (T.proves φ) := by
+  constructor
+  · exact no_externalProof_under_proofReturn
+  · intro hEmpty
+    exact ⟨⟨fun p => (hEmpty.false p).elim⟩⟩
+
+/-- Возврат опровержений ⟺ пустота внешних опровержений. -/
+theorem refutationReturns_iff_noRefutations
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    RefutationReturnsToStep00Architecture T φ ↔ IsEmpty (T.refutes φ) := by
+  constructor
+  · exact no_externalRefutation_under_refutationReturn
+  · intro hEmpty
+    exact ⟨⟨fun r => (hEmpty.false r).elim⟩⟩
+
+/-- ЧЕСТНОСТЬ: «побег» ⟺ существование доказательства. Дихотомия
+    escape-or-return — переименование Nonempty/IsEmpty: «настоящее
+    доказательство обязано сбежать» тавтологично («непустой тип не пуст»).
+    Несущая часть кирпича — только axiomGivesTwins (условная, уже известная). -/
+theorem proofEscapes_iff_proofExists
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    ProofEscapesStep00Architecture T φ ↔ Nonempty (T.proves φ) := by
+  rw [ProofEscapesStep00Architecture, proofReturns_iff_noProofs,
+    not_isEmpty_iff]
+
+/-- «Побег» опровержения ⟺ существование опровержения. -/
+theorem refutationEscapes_iff_refutationExists
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    RefutationEscapesStep00Architecture T φ ↔ Nonempty (T.refutes φ) := by
+  rw [RefutationEscapesStep00Architecture, refutationReturns_iff_noRefutations,
+    not_isEmpty_iff]
+
 end GeneratedFlowFormulation
 end ConcreteStep00Graph
 end EuclidsPath

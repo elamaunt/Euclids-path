@@ -396,4 +396,23 @@ i.e.
 This is the exact point where the analytic/dynamical content of RH remains.
 -/
 
+
+/-! ## 7bis. ЧЕСТНОСТЬ-ТЕОРЕМА: вход эквивалентен самой RH (циркулярность вскрыта машинно)
+
+Раз `no_riemannEngineFactoryOff` доказана БЕЗУСЛОВНО (factory не существует ни для какого Z), вход
+`OffCriticalRiemannEngineBridge = ∀ Z, Nonempty (Factory Z)` выполним ЛИШЬ вакуумно — когда off-critical
+нулей нет вовсе. То есть вход ⟺ RH ДОСЛОВНО. «Редукция» через impossible engine — переформулировка RH,
+а не понижение сложности. Любая будущая заявка доказать bridge = заявка доказать RH. -/
+
+/-- **`offCriticalBridge_iff_RH` — ДОКАЗАНА (честность).** Вход `OffCriticalRiemannEngineBridge`
+    ЭКВИВАЛЕНТЕН mathlib-`RiemannHypothesis`. Прямое направление — уже доказанная
+    `RH_of_offCriticalRiemannEngineBridge`; обратное — при RH off-critical нулей нет, и `∀ Z, …`
+    выполняется вакуумно (`not_RH_of_offCriticalZero`). -/
+theorem offCriticalBridge_iff_RH :
+    OffCriticalRiemannEngineBridge ↔ RiemannHypothesis := by
+  constructor
+  · exact RH_of_offCriticalRiemannEngineBridge
+  · intro hRH Z
+    exact absurd hRH (not_RH_of_offCriticalZero Z)
+
 end EuclidsPath.RiemannImpossibleEngineOff

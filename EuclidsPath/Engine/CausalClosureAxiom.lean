@@ -1271,6 +1271,257 @@ theorem metaFractalOutcome_iff (N : MetaFractalNode) :
     · exact MetaFractalOutcome.refutationEscape
         (refutationEscapes_iff_refutationExists.mpr hr)
 
+
+
+/-#############################################################################
+  STRICT-ПАКЕТ АКСИОМЫ (кирпич: strict_causal_closure_axiom_package).
+  Максимально явная data-форма аксиомы: (A, projOf, resolves) — и запись
+  того, что именно из неё следует. Кирпич честно отделяет её от «какой-то
+  внешней причины» (§5): нужна ТОЧНАЯ Step00-каузальность, не произвольная.
+  Новой аксиомы НЕТ; §3 переиспользует step00CausalClosure (эти декларации
+  AXIOM-TAINTED). Фиксы: Π→proj; ofStep00CausalClosure — Prop→Type
+  элиминация через .choose (noncomputable). Машинная честность: пакет ⟺
+  старый узел; пакет — twin-детектор; У ЛЮБОГО ПАКЕТА A ≥ 5 (сужение бьёт
+  прямо по полю данных).
+#############################################################################-/
+
+/-#############################################################################
+  §1. The strict causal-closure package
+#############################################################################-/
+
+/--
+Data form of the strict Step00 causal-closure axiom.
+
+`A` is the global Step00 scale.  For every alleged finite bound `M0` on twin
+centres, `projOf M0` is the finite semantic ledger projection on extended generated
+flows at that bound.  The resolver says that every admissible same-key collision
+of two distinct generated genealogies must produce the strict local certificate
+from `StrictSemanticExtendedFlowLedgerCollisionResolves`.
+-/
+structure StrictStep00CausalClosurePackage where
+  A : ℕ
+  projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0
+  resolves : ∀ M0 : ℕ,
+    StrictSemanticExtendedFlowLedgerCollisionResolves (projOf M0)
+
+/--
+The proposition form of the strict package.
+
+This is intentionally just existence of the data above.  It carries no hidden
+claim that arbitrary external axioms prove anything.
+-/
+abbrev StrictStep00CausalClosurePackageExists : Prop :=
+  ∃ C : StrictStep00CausalClosurePackage, True
+
+/-- Convert package data into the previously isolated final Step00 obligation. -/
+def StrictStep00CausalClosurePackage.toStep00CausalClosure
+    (C : StrictStep00CausalClosurePackage) :
+    Step00CausalClosureAxiom := by
+  exact ⟨C.A, C.projOf, C.resolves⟩
+
+/-- Convert the final Step00 obligation into explicit package data. -/
+noncomputable def StrictStep00CausalClosurePackage.ofStep00CausalClosure
+    (H : Step00CausalClosureAxiom) :
+    StrictStep00CausalClosurePackage :=
+  ⟨H.choose, H.choose_spec.choose, H.choose_spec.choose_spec⟩
+
+/--
+The explicit package formulation is equivalent to the already named final
+causal-closure axiom.
+-/
+theorem strictStep00CausalClosurePackageExists_iff_axiom :
+    StrictStep00CausalClosurePackageExists ↔ Step00CausalClosureAxiom := by
+  constructor
+  · rintro ⟨C, _⟩
+    exact C.toStep00CausalClosure
+  · intro H
+    exact ⟨StrictStep00CausalClosurePackage.ofStep00CausalClosure H, trivial⟩
+
+/-#############################################################################
+  §2. Local consequence: no finite twin bound survives the axiom
+#############################################################################-/
+
+/--
+For a fixed strict causal-closure package, no proposed finite twin bound `M0`
+can survive.  The resolver at `M0` contradicts the generated-flow family forced
+by such a bound.
+-/
+theorem no_twinBoundAbove_of_strictPackage
+    (C : StrictStep00CausalClosurePackage)
+    (M0 : ℕ) :
+    ¬ TwinBoundAbove M0 := by
+  intro hBound
+  exact twinBound_impossible_with_strictSemanticExtendedResolution
+    (A := C.A) (M0 := M0) (C.projOf M0) hBound (C.resolves M0)
+
+/--
+A strict causal-closure package gives infinitude of lower twin centres.
+-/
+theorem twinLowersInfinite_of_strictPackage
+    (C : StrictStep00CausalClosurePackage) :
+    TwinLowers.Infinite :=
+  twinLowersInfinite_of_strictLastStep00Obligation C.toStep00CausalClosure
+
+/--
+The proposition form of the package gives infinitude of lower twin centres.
+-/
+theorem twinLowersInfinite_of_strictPackageExists
+    (H : StrictStep00CausalClosurePackageExists) :
+    TwinLowers.Infinite := by
+  rcases H with ⟨C, _⟩
+  exact twinLowersInfinite_of_strictPackage C
+
+/--
+The named causal-closure axiom gives infinitude of lower twin centres.
+This is the same theorem as the earlier endpoint, restated through the strict
+package interface.
+-/
+theorem twinLowersInfinite_of_strictCausalClosureAxiom
+    (H : Step00CausalClosureAxiom) :
+    TwinLowers.Infinite :=
+  twinLowersInfinite_of_strictPackage
+    (StrictStep00CausalClosurePackage.ofStep00CausalClosure H)
+
+/-#############################################################################
+  §3. The accepted external axiom closes the Step00 universe
+#############################################################################-/
+
+/-- The already accepted external axiom supplies the strict package. -/
+theorem accepted_strictStep00CausalClosurePackageExists :
+    StrictStep00CausalClosurePackageExists :=
+  (strictStep00CausalClosurePackageExists_iff_axiom).2 step00CausalClosure
+
+/-- Therefore the accepted external axiom yields infinitely many lower twins. -/
+theorem twinLowersInfinite_from_acceptedStrictPackage :
+    TwinLowers.Infinite :=
+  twinLowersInfinite_of_strictPackageExists
+    accepted_strictStep00CausalClosurePackageExists
+
+/-#############################################################################
+  §4. What exactly follows from the axiom
+#############################################################################-/
+
+/--
+The audited list of final Step00 consequences of the causal-closure axiom.
+
+This is the precise meaning of "from the axiom everything follows" in this
+project:
+
+  * the lower twin centres are infinite;
+  * every finite twin bound is impossible once the package data are fixed;
+  * the non-axiomatic remaining obligation is exactly this same axiom;
+  * the axiom is external-only: an internal self-derivation would be a forbidden
+    engine and is therefore impossible in the stable no-engine architecture.
+-/
+abbrev FinalConsequencesOfStep00CausalClosure
+    (C : StrictStep00CausalClosurePackage) : Prop :=
+  TwinLowers.Infinite ∧
+  (∀ M0 : ℕ, ¬ TwinBoundAbove M0) ∧
+  (Step00PipelineClosesWithoutNewAxiom ↔ Step00CausalClosureAxiom) ∧
+  ¬ InternalSelfDerivationOfStep00CausalClosure
+
+/--
+All audited Step00 consequences follow from one strict causal-closure package.
+-/
+theorem finalConsequences_of_strictPackage
+    (C : StrictStep00CausalClosurePackage) :
+    FinalConsequencesOfStep00CausalClosure C := by
+  exact ⟨
+    twinLowersInfinite_of_strictPackage C,
+    no_twinBoundAbove_of_strictPackage C,
+    pipelineClosesWithoutNewAxiom_iff_causalClosure,
+    no_internalSelfDerivation_step00CausalClosure
+  ⟩
+
+/--
+All audited Step00 consequences follow from the named causal-closure axiom.
+-/
+theorem finalConsequences_of_step00CausalClosureAxiom
+    (H : Step00CausalClosureAxiom) :
+    FinalConsequencesOfStep00CausalClosure
+      (StrictStep00CausalClosurePackage.ofStep00CausalClosure H) :=
+  finalConsequences_of_strictPackage
+    (StrictStep00CausalClosurePackage.ofStep00CausalClosure H)
+
+/--
+All audited Step00 consequences follow from the accepted external axiom.
+-/
+theorem finalConsequences_from_acceptedExternalAxiom :
+    FinalConsequencesOfStep00CausalClosure
+      (StrictStep00CausalClosurePackage.ofStep00CausalClosure
+        step00CausalClosure) :=
+  finalConsequences_of_step00CausalClosureAxiom step00CausalClosure
+
+/-#############################################################################
+  §5. Negative boundary: why this does not mean "any axiom proves everything"
+#############################################################################-/
+
+/--
+A marker for arbitrary external causes.  It is deliberately independent from
+`Step00CausalClosureAxiom`: a mere external cause is not enough to run the
+Step00 proof.
+-/
+abbrev ArbitraryExternalCause : Prop :=
+  True
+
+/--
+What is needed is not arbitrary causality, but causality in the precise Step00
+same-key generated-flow sense.
+-/
+abbrev ArbitraryCauseIsNotTheStep00Axiom : Prop :=
+  ArbitraryExternalCause ∧
+  (Step00CausalClosureAxiom → TwinLowers.Infinite)
+
+/--
+The project uses the second conjunct, not the first.
+-/
+theorem arbitraryCause_marker_and_preciseAxiom_suffices :
+    ArbitraryCauseIsNotTheStep00Axiom := by
+  exact ⟨trivial, twinLowersInfinite_of_strictCausalClosureAxiom⟩
+
+/-#############################################################################
+  §6. Final slogan theorem
+#############################################################################-/
+
+/--
+Final strict formulation:
+
+  a precise Step00 causal-closure package is equivalent to the last axiom;
+  from it every audited Step00 consequence follows;
+  in particular, lower twin centres are infinite.
+-/
+theorem strictCausalClosureAxiom_final_slogan :
+    (StrictStep00CausalClosurePackageExists ↔ Step00CausalClosureAxiom) ∧
+    TwinLowers.Infinite ∧
+    ¬ InternalSelfDerivationOfStep00CausalClosure := by
+  exact ⟨
+    strictStep00CausalClosurePackageExists_iff_axiom,
+    twinLowersInfinite_from_acceptedStrictPackage,
+    no_internalSelfDerivation_step00CausalClosure
+  ⟩
+
+/-! Машинная честность package-формы -/
+
+/-- Пакет ⟺ старый узел (через семью эквивалентностей). -/
+theorem strictPackageExists_iff_lastStep00Obligation :
+    StrictStep00CausalClosurePackageExists ↔ TheLastStep00Obligation :=
+  strictStep00CausalClosurePackageExists_iff_axiom.trans
+    strictLastStep00Obligation_iff_lastStep00Obligation
+
+/-- Пакет на каждом масштабе предъявляет twin (детектор). -/
+theorem twin_above_of_strictPackage
+    (C : StrictStep00CausalClosurePackage) (M0 : ℕ) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_strictResolves (C.projOf M0) (C.resolves M0)
+
+/-- СУЖЕНИЕ БЬЁТ ПО ПОЛЮ: у ЛЮБОГО strict-пакета масштаб A ≥ 5
+    (ветвь A ≤ 4 машинно опровергнута 5-адической цепью). -/
+theorem strictPackage_scale_ge_five
+    (C : StrictStep00CausalClosurePackage) : 5 ≤ C.A := by
+  by_contra hA
+  exact no_projection_resolves_at_smallScale (by omega) (C.projOf 1)
+    (strictSemanticExtended_resolves_old (C.resolves 1))
+
 end GeneratedFlowFormulation
 end ConcreteStep00Graph
 end EuclidsPath

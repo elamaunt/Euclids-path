@@ -3593,6 +3593,238 @@ theorem search_incompressible_under_twinBound {A M0 : ℕ}
     exact absurd hkey (hInj F₁ F₂ hne h1 h2)
   exact twinBound_impossible_with_semanticExtendedResolution hTwinBound proj hRes
 
+/-#############################################################################
+  ЭНЕРГЕТИЧЕСКИЙ LEDGER (кирпич: energy_ledger_exhaustion).
+  Конечный энерго-токен поверх семантической проекции: «не вернулся — плати
+  свежей энергией»; конечность `(ключ, токен)` ⟹ double spend ⟹ уже сожжённая
+  альтернатива (цикл/оплата). Ниже — кирпич + машинная честность (детектор и
+  факторизация через старый узел).
+#############################################################################-/
+
+/--
+A finite energy ledger attached to a finite semantic flow-ledger projection.
+
+`token F` is the finite resource consumed by the genealogy `F` if it is absorbed
+by the old system without producing an explicit return path.  The central
+soundness field is `no_double_spend_resolves`: two distinct admissible flows that
+have the same semantic ledger key and the same energy token cannot remain two
+independent absorptions.  Their double spend must resolve to the strict expanded
+alternative: explicit return path or impossible payment.
+-/
+structure ExtendedFlowEnergyLedger {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) where
+  Energy : Type
+  finiteEnergy : Finite Energy
+  token : ExtendedProperGeneratedFlow A M0 → Energy
+  no_double_spend_resolves :
+    ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+      F₁ ≠ F₂ →
+      ExtendedFlowAdmissible F₁ →
+      ExtendedFlowAdmissible F₂ →
+      proj.keyFlow F₁ = proj.keyFlow F₂ →
+      token F₁ = token F₂ →
+        ExpandedExtendedFlowResolutionAlternative F₁ F₂
+
+/-- The finite combined key: semantic ledger slot plus consumed energy token. -/
+def energyCollisionKey {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (E : ExtendedFlowEnergyLedger proj)
+    (F : ExtendedProperGeneratedFlow A M0) : proj.Key × E.Energy :=
+  (proj.keyFlow F, E.token F)
+
+/--
+If two distinct admissible flows have the same ledger key, then avoiding the
+strict expanded alternative forces them to use different energy tokens.
+
+This is the local formal meaning of "to avoid the Euclidean engine, the system
+must pay fresh energy."  The proof is not arithmetic: it is exactly the
+no-double-spend rule of the energy ledger, contraposed.
+-/
+theorem same_key_without_expandedAlternative_requires_distinct_energy
+    {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (E : ExtendedFlowEnergyLedger proj)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hne : F₁ ≠ F₂)
+    (hAdm₁ : ExtendedFlowAdmissible F₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂)
+    (hkey : proj.keyFlow F₁ = proj.keyFlow F₂)
+    (hNoAlt : ¬ ExpandedExtendedFlowResolutionAlternative F₁ F₂) :
+    E.token F₁ ≠ E.token F₂ := by
+  intro htok
+  exact hNoAlt (E.no_double_spend_resolves F₁ F₂ hne hAdm₁ hAdm₂ hkey htok)
+
+/--
+In the concrete Step00 graph the strict expanded alternative is already
+impossible, so every same-key collision must spend different energy tokens.
+
+This is the precise "pay new energy or return" dichotomy after the return and
+payment branches have been burned.
+-/
+theorem same_key_collision_requires_fresh_energy
+    {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (E : ExtendedFlowEnergyLedger proj)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hne : F₁ ≠ F₂)
+    (hAdm₁ : ExtendedFlowAdmissible F₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂)
+    (hkey : proj.keyFlow F₁ = proj.keyFlow F₂) :
+    E.token F₁ ≠ E.token F₂ := by
+  exact same_key_without_expandedAlternative_requires_distinct_energy
+    E hne hAdm₁ hAdm₂ hkey no_expandedExtendedFlowResolutionAlternative
+
+/--
+An infinite admissible extended-flow family is impossible once the finite energy
+ledger is supplied.
+
+The proof uses real non-vacuous pigeonhole:
+
+  * the family lives in the unbounded genealogy type;
+  * the codomain is finite only after quotienting to `(semantic key, energy)`;
+  * two distinct genealogies with the same combined key force the strict
+    expanded alternative by `no_double_spend_resolves`;
+  * that alternative is already impossible by lexRank/payment closure.
+-/
+theorem infinite_extended_flows_impossible_with_energyLedger
+    {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (E : ExtendedFlowEnergyLedger proj)
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)}
+    (h𝓕 : InfiniteExtendedGeneratedFlowFamily A M0 𝓕) :
+    False := by
+  classical
+  letI : Finite proj.Key := proj.finiteKey
+  letI : Finite E.Energy := E.finiteEnergy
+  haveI : Finite (proj.Key × E.Energy) := inferInstance
+  rcases h𝓕 with ⟨hInf, hAdm⟩
+  obtain ⟨F₁, F₂, hF₁, hF₂, hne, hCombined⟩ :=
+    BoundaryLedgerCollision.infinite_set_key_collision
+      (σ := ExtendedProperGeneratedFlow A M0)
+      (Key := proj.Key × E.Energy)
+      (S := 𝓕)
+      hInf
+      (energyCollisionKey E)
+  have hkey : proj.keyFlow F₁ = proj.keyFlow F₂ := by
+    simpa [energyCollisionKey] using congrArg Prod.fst hCombined
+  have htok : E.token F₁ = E.token F₂ := by
+    simpa [energyCollisionKey] using congrArg Prod.snd hCombined
+  have hAlt : ExpandedExtendedFlowResolutionAlternative F₁ F₂ :=
+    E.no_double_spend_resolves F₁ F₂ hne (hAdm F₁ hF₁) (hAdm F₂ hF₂) hkey htok
+  exact no_expandedExtendedFlowResolutionAlternative hAlt
+
+/--
+A twin bound is impossible once, for the chosen projection, a finite energy
+ledger is supplied.
+
+All source-side work is reused from the maximal extended-flow close: a twin
+bound gives infinitely many generated genealogies.  The present theorem only
+adds the finite-energy exhaustion argument.
+-/
+theorem twinBound_impossible_with_energyLedger
+    {A M0 : ℕ}
+    (hTwinBound : TwinBoundAbove M0)
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (E : ExtendedFlowEnergyLedger proj) :
+    False := by
+  obtain ⟨𝓕, h𝓕⟩ :=
+    twinBoundForcesInfiniteExtendedGeneratedFlows_closed
+      (A := A) (M0 := M0) hTwinBound
+  exact infinite_extended_flows_impossible_with_energyLedger
+    (A := A) (M0 := M0) proj E h𝓕
+
+/--
+The energy form of the last Step00 obligation.
+
+For one fixed scale `A`, every possible last-twin bound `M0` receives a finite
+semantic flow projection and a finite energy ledger over that projection.  This
+is stronger in shape than the old final resolver, but more informative: it says
+exactly why a legal non-returning engine would have to spend unbounded energy.
+-/
+abbrev EnergyLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+      ∃ EOf : ∀ M0 : ℕ, ExtendedFlowEnergyLedger (projOf M0),
+        True
+
+/--
+Energy obligation implies lower twin infinitude.
+
+Assume finitely many lower twin centres.  Choose a bound `M0`.  The source-side
+machinery creates infinitely many extended generated genealogies above `M0`.
+The finite product `(ledger key, energy token)` then produces a double spend,
+which is forbidden by the energy ledger and the already closed return/payment
+branches.
+-/
+theorem twinLowersInfinite_of_energyLastStep00Obligation
+    (H : EnergyLastStep00Obligation) : TwinLowers.Infinite := by
+  classical
+  by_contra hfin
+  obtain ⟨M0, hTwinBound⟩ := exists_twinBoundAbove_of_not_twinLowersInfinite hfin
+  rcases H with ⟨A, projOf, EOf, _⟩
+  exact twinBound_impossible_with_energyLedger
+    (A := A) (M0 := M0)
+    hTwinBound (projOf M0) (EOf M0)
+
+/--
+The exact remaining energy certificate for a candidate projection.
+
+A candidate `proj.keyFlow` is not enough.  To avoid the no-cheat failure, one must
+also provide a finite `Energy` type and prove that a same-key/same-energy double
+spend extracts a strict expanded alternative.  Since the expanded alternative is
+already impossible in the concrete graph, an infinite family cannot pay forever.
+-/
+def RemainingFiniteEnergyCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  Nonempty (ExtendedFlowEnergyLedger proj)
+
+/-! #### Машинная честность энергетической формы (пост-аудит, обязательна) -/
+
+/-- **`twin_above_of_energyLedger` — ДОКАЗАНА (честность energy-формы).** Energy-ledger на
+    масштабе `M0` ТОЖЕ предъявляет twin выше `M0`: он не слабее цели по-масштабно. Как и
+    прежние резолверы, энергетический сертификат — twin-ДЕТЕКТОР, не нейтральное условие. -/
+theorem twin_above_of_energyLedger {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (E : ExtendedFlowEnergyLedger proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m := by
+  by_contra hno
+  push_neg at hno
+  exact twinBound_impossible_with_energyLedger (fun m hm => hno m hm) proj E
+
+/-- Комбинированная проекция: energy-ledger — это в точности УТОЧНЕНИЕ КЛЮЧА старой
+    семантической проекции до `Key × Energy` (конечность сохраняется). -/
+def combinedEnergyProjection {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (E : ExtendedFlowEnergyLedger proj) :
+    SemanticExtendedFlowLedgerProjection A M0 where
+  Key := proj.Key × E.Energy
+  finiteKey := by
+    letI : Finite proj.Key := proj.finiteKey
+    letI : Finite E.Energy := E.finiteEnergy
+    exact inferInstance
+  keyFlow := energyCollisionKey E
+
+/-- **`combinedEnergyProjection_resolves` — ДОКАЗАНА (факторизация).** Комбинированная
+    проекция резолвит коллизии в старом смысле: energy-форма НЕ новый узел, а старый узел
+    с уточнённым ключом. Содержательно `no_double_spend_resolves` (при уже сожжённой
+    альтернативе) = инъективность комбинированного ключа на admissible-генеалогиях. -/
+theorem combinedEnergyProjection_resolves {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (E : ExtendedFlowEnergyLedger proj) :
+    SemanticExtendedFlowLedgerCollisionResolves (combinedEnergyProjection E) := by
+  intro F₁ F₂ hne h1 h2 hkey
+  exact absurd
+    (E.no_double_spend_resolves F₁ F₂ hne h1 h2
+      (congrArg Prod.fst hkey) (congrArg Prod.snd hkey))
+    no_expandedExtendedFlowResolutionAlternative
+
+/-- **`lastStep00Obligation_of_energy` — ДОКАЗАНА (энергетическая форма ⟹ старый узел).**
+    Энергетическое обязательство машинно факторизуется через `TheLastStep00Obligation`:
+    это переформулировка финального узла, не обход. Открытость узла НЕ уменьшилась —
+    вся арифметика теперь живёт в построении energy-ledger'а. -/
+theorem lastStep00Obligation_of_energy
+    (H : EnergyLastStep00Obligation) : TheLastStep00Obligation := by
+  rcases H with ⟨A, projOf, EOf, _⟩
+  exact ⟨A, fun M0 => combinedEnergyProjection (EOf M0),
+    fun M0 => combinedEnergyProjection_resolves (EOf M0)⟩
+
 end GeneratedFlowFormulation
 
 

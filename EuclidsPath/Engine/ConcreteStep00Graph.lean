@@ -7938,6 +7938,278 @@ theorem universeCauseMode_iff {P : Prop} :
     | negated h => exact (no_realisedNegationOfCausalClosure h).elim
   · exact UniverseCauseMode.external
 
+/-#############################################################################
+  КОНЕЧНЫЕ БАШНИ ПРИЧИН ПО ИНДУКЦИИ (кирпич: finite_causal_tower_induction).
+  Конечная башня «кто-то создал вселенную» классифицируется индукцией в
+  4 исхода: внешняя граница / шов / оплата / двигатель; без всех четырёх
+  башня невозможна; ∞-башня со строгим ℕ-спуском ранга невозможна.
+  Фиксы: InfiniteRankedCausalTower несёт данные → невозможность `→ False`;
+  CausalTowerAuditSummary объявлена : Prop (theorem-совместимость).
+  Ниже — кирпич + машинная честность: исход ⟺ P и башня ⟺ P (обитаема
+  только boundary-ветвь — «добавление творцов не снимает границу» буквально).
+#############################################################################-/
+
+/-#############################################################################
+  §1. Boundary/failure alternatives for a causal tower
+#############################################################################-/
+
+/--
+The four allowed ways for a causal tower to avoid being a closed internal
+self-cause.
+
+`external` is the legitimate outside boundary/axiom.
+`seam` is the forbidden realised denial of causal closure.
+`payment` is the energy/payment branch.
+`engine` is the forbidden Euclidean return/cycle witness.
+-/
+inductive CausalTowerOutcome (P : Prop) : Prop where
+  | external : ExternalUniverseCause P → CausalTowerOutcome P
+  | seam : RealisedDenialOfCausalCause → CausalTowerOutcome P
+  | payment : ImpossiblePayment → CausalTowerOutcome P
+  | engine : SomeConcreteEuclideanEngine → CausalTowerOutcome P
+
+/--
+A causal tower of finite depth `n` for a principle `P`.
+
+This is deliberately an audit datatype: it records all ways a finite tower can
+terminate or fail.  The only genuinely internal constructor is `internal`, and
+previous patches show that an internal cause immediately builds the forbidden
+engine.
+
+The `extend` constructor represents adding one more “someone else caused it”
+level above the current tower.  Induction on this constructor is the formal
+version of: adding finitely many extra causal universes never removes the need
+for an external boundary, seam, payment, or engine.
+-/
+inductive FiniteCausalTowerAttempt (P : Prop) : ℕ → Prop where
+  | boundary {n : ℕ} : ExternalUniverseCause P → FiniteCausalTowerAttempt P n
+  | seam {n : ℕ} : RealisedDenialOfCausalCause → FiniteCausalTowerAttempt P n
+  | payment {n : ℕ} : ImpossiblePayment → FiniteCausalTowerAttempt P n
+  | internal {n : ℕ} : InternalUniverseCause P → FiniteCausalTowerAttempt P n
+  | extend {n : ℕ} : FiniteCausalTowerAttempt P n →
+      FiniteCausalTowerAttempt P (n + 1)
+
+/--
+Every finite causal tower attempt classifies into one of the four outcomes.
+The proof is ordinary induction on the tower.
+-/
+theorem finiteCausalTowerAttempt_classifies
+    {P : Prop} {n : ℕ}
+    (T : FiniteCausalTowerAttempt P n) : CausalTowerOutcome P := by
+  induction T with
+  | boundary h => exact CausalTowerOutcome.external h
+  | seam h => exact CausalTowerOutcome.seam h
+  | payment h => exact CausalTowerOutcome.payment h
+  | internal h =>
+      exact CausalTowerOutcome.engine (internalUniverseCause_builds_engine h)
+  | extend T ih => exact ih
+
+/--
+A closed finite tower without external boundary, seam, payment, or engine cannot
+exist.
+-/
+theorem no_finiteCausalTowerAttempt_without_boundary_or_failure
+    {P : Prop} {n : ℕ}
+    (hNoExternal : ¬ ExternalUniverseCause P)
+    (hNoSeam : ¬ RealisedDenialOfCausalCause)
+    (hNoPayment : ¬ ImpossiblePayment)
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine) :
+    ¬ FiniteCausalTowerAttempt P n := by
+  intro T
+  cases finiteCausalTowerAttempt_classifies T with
+  | external h => exact hNoExternal h
+  | seam h => exact hNoSeam h
+  | payment h => exact hNoPayment h
+  | engine h => exact hNoEngine h
+
+/--
+Specialisation: if the external Step00 causal-closure principle is not supplied
+as an outside axiom, no finite internal causal tower can manufacture it without
+hitting seam/payment/engine.
+-/
+theorem no_finiteTower_for_strictStep00_without_external_or_failure
+    {n : ℕ}
+    (hNoExternal : ¬ ExternalUniverseCause ExternalUniverseGeneratingPrinciple)
+    (hNoSeam : ¬ RealisedDenialOfCausalCause)
+    (hNoPayment : ¬ ImpossiblePayment) :
+    ¬ FiniteCausalTowerAttempt ExternalUniverseGeneratingPrinciple n := by
+  exact no_finiteCausalTowerAttempt_without_boundary_or_failure
+    hNoExternal hNoSeam hNoPayment no_someConcreteEuclideanEngine
+
+/--
+Specialisation: the no-energy universe also cannot be manufactured by a finite
+internal tower without external boundary, seam, payment, or engine.
+-/
+theorem no_finiteTower_for_noEnergyStep00_without_external_or_failure
+    {n : ℕ}
+    (hNoExternal : ¬ ExternalUniverseCause NoEnergyUniverseGeneratingPrinciple)
+    (hNoSeam : ¬ RealisedDenialOfCausalCause)
+    (hNoPayment : ¬ ImpossiblePayment) :
+    ¬ FiniteCausalTowerAttempt NoEnergyUniverseGeneratingPrinciple n := by
+  exact no_finiteCausalTowerAttempt_without_boundary_or_failure
+    hNoExternal hNoSeam hNoPayment no_someConcreteEuclideanEngine
+
+/-#############################################################################
+  §2. “Someone else” finite creation chains
+#############################################################################-/
+
+/--
+A finite chain of “someone else caused this universe” is just a finite causal
+tower attempt.  The name is added to make the intended reading explicit.
+-/
+abbrev FiniteSomeoneElseCreationChain (P : Prop) (n : ℕ) : Prop :=
+  FiniteCausalTowerAttempt P n
+
+/--
+A finite “someone else” chain still needs one of the same four outcomes.  Adding
+finitely many creators above the universe never removes the boundary problem.
+-/
+theorem finiteSomeoneElseCreationChain_classifies
+    {P : Prop} {n : ℕ}
+    (T : FiniteSomeoneElseCreationChain P n) : CausalTowerOutcome P :=
+  finiteCausalTowerAttempt_classifies T
+
+/--
+No finite “someone else” chain can be completely internal and stable.
+-/
+theorem no_finiteSomeoneElseCreationChain_without_boundary_or_failure
+    {P : Prop} {n : ℕ}
+    (hNoExternal : ¬ ExternalUniverseCause P)
+    (hNoSeam : ¬ RealisedDenialOfCausalCause)
+    (hNoPayment : ¬ ImpossiblePayment)
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine) :
+    ¬ FiniteSomeoneElseCreationChain P n :=
+  no_finiteCausalTowerAttempt_without_boundary_or_failure
+    hNoExternal hNoSeam hNoPayment hNoEngine
+
+/-#############################################################################
+  §3. Infinite towers require non-well-founded rank descent
+#############################################################################-/
+
+/--
+A bare infinite causal tower with a natural rank strictly decreasing at every
+level.  This abstracts the concrete Step00 situation, where nested universes or
+information-compression steps strictly decrease `lexRank`.
+-/
+structure InfiniteRankedCausalTower where
+  rank : ℕ → ℕ
+  drops : ∀ i : ℕ, rank (i + 1) < rank i
+
+/--
+There is no infinite strictly descending chain in natural numbers.
+-/
+theorem no_infinite_nat_strict_descent
+    (rank : ℕ → ℕ)
+    (hdrop : ∀ i : ℕ, rank (i + 1) < rank i) : False := by
+  have hle : ∀ n : ℕ, rank n + n ≤ rank 0 := by
+    intro n
+    induction n with
+    | zero =>
+        omega
+    | succ n ih =>
+        have hs : rank (n + 1) + 1 ≤ rank n := Nat.succ_le_of_lt (hdrop n)
+        omega
+  have hbad := hle (rank 0 + 1)
+  omega
+
+/--
+Therefore no infinite ranked causal tower exists.
+-/
+theorem no_infiniteRankedCausalTower
+    (T : InfiniteRankedCausalTower) : False :=
+  no_infinite_nat_strict_descent T.rank T.drops
+
+/--
+A convenient alias for the concrete Step00 reading: an infinite tower of nested
+universes is impossible whenever each nesting/compression step strictly lowers a
+natural rank.
+-/
+abbrev NoWellFoundedInfiniteCausalRegress : Prop :=
+  InfiniteRankedCausalTower → False
+
+/--
+The well-founded no-regress principle is already available from natural-number
+rank descent.
+-/
+theorem noWellFoundedInfiniteCausalRegress :
+    NoWellFoundedInfiniteCausalRegress :=
+  no_infiniteRankedCausalTower
+
+/-#############################################################################
+  §4. Final slogan theorem
+#############################################################################-/
+
+/--
+Final finite-and-well-founded causal-tower slogan.
+
+A finite tower needs an external boundary, seam, payment, or engine.  An
+infinite tower is possible only if the alleged causal levels fail to be
+well-founded by a natural rank.
+-/
+structure CausalTowerAuditSummary (P : Prop) : Prop where
+  finite_tower_classifies :
+    ∀ {n : ℕ}, FiniteCausalTowerAttempt P n → CausalTowerOutcome P
+  no_closed_finite_tower :
+    (¬ ExternalUniverseCause P) →
+    (¬ RealisedDenialOfCausalCause) →
+    (¬ ImpossiblePayment) →
+    (¬ SomeConcreteEuclideanEngine) →
+      ∀ {n : ℕ}, ¬ FiniteCausalTowerAttempt P n
+  no_well_founded_infinite_tower :
+    NoWellFoundedInfiniteCausalRegress
+
+/--
+The audit summary for any proposed Step00 universe-generating principle.
+-/
+theorem causalTowerAuditSummary (P : Prop) :
+    CausalTowerAuditSummary P where
+  finite_tower_classifies := by
+    intro n T
+    exact finiteCausalTowerAttempt_classifies T
+  no_closed_finite_tower := by
+    intro hNoExternal hNoSeam hNoPayment hNoEngine n
+    exact no_finiteCausalTowerAttempt_without_boundary_or_failure
+      hNoExternal hNoSeam hNoPayment hNoEngine
+  no_well_founded_infinite_tower := noWellFoundedInfiniteCausalRegress
+
+/--
+Concrete slogan for the strict Step00 causal-closure universe.
+-/
+theorem strictStep00_causalTowerAuditSummary :
+    CausalTowerAuditSummary ExternalUniverseGeneratingPrinciple :=
+  causalTowerAuditSummary ExternalUniverseGeneratingPrinciple
+
+/--
+Concrete slogan for the no-energy Step00 causal-closure universe.
+-/
+theorem noEnergyStep00_causalTowerAuditSummary :
+    CausalTowerAuditSummary NoEnergyUniverseGeneratingPrinciple :=
+  causalTowerAuditSummary NoEnergyUniverseGeneratingPrinciple
+
+/-! Машинная честность tower-формы -/
+
+/-- Исход башни ⟺ P: seam/payment/engine сожжены, обитаема лишь external. -/
+theorem causalTowerOutcome_iff {P : Prop} : CausalTowerOutcome P ↔ P := by
+  constructor
+  · intro O
+    cases O with
+    | external h => exact h
+    | seam h => exact (no_realisedNegationOfCausalClosure h).elim
+    | payment h => exact (BoundaryDefectPayment.impossiblePayment_false h).elim
+    | engine h => exact (no_someConcreteEuclideanEngine h).elim
+  · exact CausalTowerOutcome.external
+
+/-- БАШНЯ КОЛЛАПСИРУЕТ: конечная башня любой глубины ⟺ просто P. «Добавление
+    творцов не снимает граничную проблему» — буквально: единственная обитаемая
+    цепочка конструкторов упирается в boundary (внешний вход P). -/
+theorem finiteCausalTowerAttempt_iff {P : Prop} {n : ℕ} :
+    FiniteCausalTowerAttempt P n ↔ P := by
+  constructor
+  · intro T
+    exact causalTowerOutcome_iff.mp (finiteCausalTowerAttempt_classifies T)
+  · intro hp
+    exact FiniteCausalTowerAttempt.boundary hp
+
 end GeneratedFlowFormulation
 
 

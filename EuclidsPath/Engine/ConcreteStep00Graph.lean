@@ -1719,6 +1719,9 @@ structure ProperCenterPeel (A m n : ℕ) where
   bigBeyondScale : A < bigDivisor
   factor : sideValue inSide m = bigDivisor * sideValue outSide n
   smaller : n < m
+  /-- АУДИТ-ЗАПЛАТА (дегенеративный peel): цель `n ≥ 1`. Без этого простая сторона `p = p·1`
+      (`1 = 6·0+1`) давала peel в центр 0 БЕЗ twin-гипотезы — вакуум-эксплойт аудита. -/
+  targetPos : 1 ≤ n
 
 /--
 A proper boundary peel.
@@ -2652,6 +2655,9 @@ structure RawBigSideDivisor (A m : ℕ) where
   bigPrime : bigDivisor.Prime
   bigBeyondScale : A < bigDivisor
   bigDivides : bigDivisor ∣ sideValue inSide m
+  /-- АУДИТ-ЗАПЛАТА (дегенеративный peel): делитель СОБСТВЕННЫЙ — иначе простая сторона делит
+      сама себя и кофактор 1 = 6·0+1 даёт peel в центр 0 БЕЗ twin-гипотезы (вакуум-эксплойт). -/
+  properDiv : bigDivisor < sideValue inSide m
 
 /-- Cleanliness of a centre forbids every small prime on the minus side. -/
 theorem clean_forbids_minus {A m q : ℕ}
@@ -2686,29 +2692,42 @@ theorem exists_rawBigSideDivisor_of_clean_nonTwin {A m : ℕ}
     simpa [TwinCenterZ] using hNoTwin
   rcases EuclidsPath.MkNode.composite_side_of_not_twin hlo hhi hNoTwin' with hminus | hplus
   · rcases hminus with ⟨hside, hcomp⟩
-    have hcleanSide : ∀ q : ℕ, q.Prime → q ≤ A → ¬ q ∣ (6 * m - 1) := by
-      intro q hq hqA
-      exact clean_forbids_minus hClean hq hqA
-    rcases EuclidsPath.Residuals.clean_side_composite_big_divisor
-        (by omega) hcomp hcleanSide with ⟨b, hbPrime, hbBig, hbDiv⟩
-    have hbDiv' : b ∣ sideValue Side.minus m := by simpa [sideValue] using hbDiv
+    -- b := minFac стороны; КОМПОЗИТНОСТЬ теперь НЕСУЩАЯ: она даёт b < side (собственность).
+    set S := 6 * m - 1 with hS
+    have hSne1 : S ≠ 1 := by omega
+    have hbPrime : S.minFac.Prime := Nat.minFac_prime hSne1
+    have hbDiv : S.minFac ∣ S := Nat.minFac_dvd S
+    have hbBig : A < S.minFac := by
+      by_contra hle
+      exact clean_forbids_minus hClean hbPrime (by omega) hbDiv
+    have hbLt : S.minFac < S := by
+      rcases lt_or_eq_of_le (Nat.le_of_dvd (by omega) hbDiv) with h | h
+      · exact h
+      · exact absurd (h ▸ hbPrime) hcomp
     exact ⟨{ inSide := Side.minus
-             bigDivisor := b
+             bigDivisor := S.minFac
              bigPrime := hbPrime
              bigBeyondScale := hbBig
-             bigDivides := hbDiv' }⟩
+             bigDivides := by simpa [sideValue, hS] using hbDiv
+             properDiv := by simpa [sideValue, hS] using hbLt }⟩
   · rcases hplus with ⟨hside, hcomp⟩
-    have hcleanSide : ∀ q : ℕ, q.Prime → q ≤ A → ¬ q ∣ (6 * m + 1) := by
-      intro q hq hqA
-      exact clean_forbids_plus hClean hq hqA
-    rcases EuclidsPath.Residuals.clean_side_composite_big_divisor
-        (by omega) hcomp hcleanSide with ⟨b, hbPrime, hbBig, hbDiv⟩
-    have hbDiv' : b ∣ sideValue Side.plus m := by simpa [sideValue] using hbDiv
+    set S := 6 * m + 1 with hS
+    have hSne1 : S ≠ 1 := by omega
+    have hbPrime : S.minFac.Prime := Nat.minFac_prime hSne1
+    have hbDiv : S.minFac ∣ S := Nat.minFac_dvd S
+    have hbBig : A < S.minFac := by
+      by_contra hle
+      exact clean_forbids_plus hClean hbPrime (by omega) hbDiv
+    have hbLt : S.minFac < S := by
+      rcases lt_or_eq_of_le (Nat.le_of_dvd (by omega) hbDiv) with h | h
+      · exact h
+      · exact absurd (h ▸ hbPrime) hcomp
     exact ⟨{ inSide := Side.plus
-             bigDivisor := b
+             bigDivisor := S.minFac
              bigPrime := hbPrime
              bigBeyondScale := hbBig
-             bigDivides := hbDiv' }⟩
+             bigDivides := by simpa [sideValue, hS] using hbDiv
+             properDiv := by simpa [sideValue, hS] using hbLt }⟩
 
 /-- Сырой большой делитель как данные (через `Classical.choice` из существования). -/
 noncomputable def rawBigSideDivisor_of_clean_nonTwin {A m : ℕ}
@@ -2733,6 +2752,8 @@ structure ProperCofactorTarget {A m : ℕ} (R : RawBigSideDivisor A m) where
   outSide : Side
   factor : sideValue R.inSide m = R.bigDivisor * sideValue outSide target
   smaller : target < m
+  /-- АУДИТ-ЗАПЛАТА: цель — настоящий центр (`≥ 1`), НЕ дегенеративный 0. -/
+  targetPos : 1 ≤ target
 
 /--
 The remaining source-side arithmetic obligation.
@@ -2755,7 +2776,8 @@ def properCenterPeel_of_cofactorTarget {A m : ℕ}
     bigPrime := R.bigPrime
     bigBeyondScale := R.bigBeyondScale
     factor := T.factor
-    smaller := T.smaller }
+    smaller := T.smaller
+    targetPos := T.targetPos }
 
 /--
 A cofactor normalizer closes the previously isolated one-step normalizer.
@@ -2977,16 +2999,35 @@ theorem exists_properCofactorTarget_of_raw {A m : ℕ}
     rw [hcenter, hquot_c]
     exact hcPos
   rcases int_center_to_nat_side hη' ht0 hcofacPos with ⟨target, outSide, hout, htargetCast⟩
+  -- АУДИТ-ЗАПЛАТА: кофактор c ≥ 2 (из properDiv), значит target ≥ 1 (иначе sideValue ∈ {0,1}).
+  have hside5 : 5 ≤ sideValue R.inSide m := by
+    cases hIn : R.inSide <;> simp [sideValue] <;> omega
+  have hc2 : 2 ≤ c := by
+    by_contra hlt2
+    interval_cases c
+    · simp at hcNat; omega
+    · have : sideValue R.inSide m = R.bigDivisor := by omega
+      have := R.properDiv
+      omega
+  have hc_eq : (c : ℤ) = 6 * t' + η' := by
+    rw [← hquot_c, hcenter]
+  have hc_center : (c : ℤ) = ((sideValue outSide target : ℕ) : ℤ) := by
+    rw [hc_eq, ← hout]
+  have htargetPos : 1 ≤ target := by
+    by_contra h0
+    have ht0' : target = 0 := by omega
+    have hcle : (c : ℤ) ≤ 1 := by
+      rw [hc_center, ht0']
+      cases outSide <;> simp [sideValue]
+    have : (2 : ℤ) ≤ (c : ℤ) := by exact_mod_cast hc2
+    omega
   refine ⟨
     { target := target
       outSide := outSide
       factor := ?_
-      smaller := ?_ }⟩
+      smaller := ?_
+      targetPos := htargetPos }⟩
   · -- Factor equality back in `ℕ`.
-    have hc_eq : (c : ℤ) = 6 * t' + η' := by
-      rw [← hquot_c, hcenter]
-    have hc_center : (c : ℤ) = ((sideValue outSide target : ℕ) : ℤ) := by
-      rw [hc_eq, ← hout]
     have hfactorInt : ((sideValue R.inSide m : ℕ) : ℤ) =
         (R.bigDivisor : ℤ) * ((sideValue outSide target : ℕ) : ℤ) := by
       rw [hcInt, hc_center]

@@ -81,3 +81,4 @@ import EuclidsPath.Engine.RiemannImpossibleEngineOff -- OffCritical версия
 import EuclidsPath.Engine.RankJumpBridge        -- rank/parity мост (Лиувилль λ=(−1)^Ω ↔ factory): всё ВОКРУГ узла доказано; §4 запрет читинга; вход = RankJumpLocalization
 import EuclidsPath.Engine.DichotomyEngine       -- УНИФИКАЦИЯ: Close∨paid-step ⟹ Close неизбежен (close_forced); все режимы читинга поглощены; вход = локальная дихотомия
 import EuclidsPath.Engine.DissipativeCascade    -- cascade-сертификат (Step00/RH/NS-аналогия): capacity/overflow декомпозиция Лиувилль-узла; ℝ vs ℕ warning
+import EuclidsPath.Engine.NavierStokes          -- САМО уравнение НС (PDE-предикат, mathlib fderiv/gradient/∫): momentum+incompressible; ноль-решение; каскад-связка

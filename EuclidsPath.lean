@@ -89,6 +89,7 @@ import EuclidsPath.Engine.RiemannTwoTransportFront -- вход №1 в two-trans
 import EuclidsPath.Engine.RiemannArithmeticTwoTransport -- НЕ-двигательная цель: qrs = abv + 2 (зазор 2 доказан); ЧЕСТНОСТЬ: при свободном anchor оба входа = один вопрос AdmissibleAtomExists
 import EuclidsPath.Engine.MersenneBranch -- Мерсенн: вложение 2^p−1 = 6m_p+1 + twin-критерий; ЧЕСТНО: Мерсенн-близнецы ⟹ близнецы (НЕ наоборот!)
 import EuclidsPath.Engine.MersennePaymentConflict -- платёжный маршрут: sound-леджер + давление ⟹ ∞ Мерсенн-близнецов ⟹ TwinLowers.Infinite; ЧЕСТНОСТЬ: для канонич. леджера pressure = вывод
+import EuclidsPath.Engine.MersennePeelPressure -- расщепление давления: coverage+payment-law, затем debt+realization; цепи до TwinLowers.Infinite; канонический коллапс = честность
 import EuclidsPath.Engine.LocalPNPNode -- строгий локальный P/NP-узел + конкретная инстанциация (при A≤4 несжимаемость БЕЗУСЛОВНА); scope guard: НЕ классические P/NP
 import EuclidsPath.Engine.ClassicalPNPBridge -- мост к классическим P/NP: несущее поле = извлечение локального резолвера из P-decider'а; ЧЕСТНОСТЬ: фрейм абстрактен (trivialFrame разделяет даром)
 

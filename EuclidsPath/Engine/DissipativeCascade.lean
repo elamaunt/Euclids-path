@@ -56,6 +56,55 @@ theorem real_positive_work_not_wellfounded :
     have he : (1/2 : ℝ) ^ (n + 1) = (1/2) ^ n * (1/2) := by ring
     rw [he]; nlinarith
 
+/-! ### §2bis. Квантизация СПАСАЕТ ℝ-каскад (завершение предупреждения §2)
+
+Контрпример §2 показал: положительная работа над ℝ не даёт конечности. Вот ТОЧНОЕ спасение (опция 3
+blueprint'a): равномерная нижняя граница δ на диссипацию bad-шага. Это форма настоящего НС-сертификата:
+«каждый каскадный переход к меньшему масштабу диссипирует ≥ δ» ⟹ каскад конечен. -/
+
+/-- **`real_cascade_bounded_of_uniform_work` — ДОКАЗАНА (квантизация).** При равномерной δ-диссипации
+    накопленная работа за n шагов ≤ E(0): `n·δ ≤ Total(path 0)`. -/
+theorem real_cascade_bounded_of_uniform_work
+    {State : Type} {Step : State → State → Prop}
+    (Total : State → ℝ) (Work : State → State → ℝ) (δ : ℝ) (hδ : 0 < δ)
+    (hpaid : ∀ {x y}, Step x y → Total y + Work x y ≤ Total x)
+    (hwork : ∀ {x y}, Step x y → δ ≤ Work x y)
+    (hnonneg : ∀ x, 0 ≤ Total x)
+    (path : ℕ → State) (hstep : ∀ k, Step (path k) (path (k + 1))) :
+    ∀ n : ℕ, (n : ℝ) * δ ≤ Total (path 0) := by
+  intro n
+  have key : ∀ m : ℕ, Total (path m) + (m : ℝ) * δ ≤ Total (path 0) := by
+    intro m
+    induction m with
+    | zero => simp
+    | succ k ih =>
+        have hp := hpaid (hstep k)
+        have hw := hwork (hstep k)
+        have : Total (path (k+1)) + δ ≤ Total (path k) := by linarith
+        push_cast
+        linarith
+  have := key n
+  have := hnonneg (path n)
+  linarith
+
+/-- **`no_infinite_uniform_dissipative_cascade` — ДОКАЗАНА.** Бесконечный равномерно-диссипативный
+    ℝ-каскад невозможен: `n·δ` превысит `E(0)`. Это честный ℝ-аналог `no_infinite_closed_paid_run`
+    и ТОЧНАЯ форма, которую должен иметь НС-сертификат регулярности. -/
+theorem no_infinite_uniform_dissipative_cascade
+    {State : Type} {Step : State → State → Prop}
+    (Total : State → ℝ) (Work : State → State → ℝ) (δ : ℝ) (hδ : 0 < δ)
+    (hpaid : ∀ {x y}, Step x y → Total y + Work x y ≤ Total x)
+    (hwork : ∀ {x y}, Step x y → δ ≤ Work x y)
+    (hnonneg : ∀ x, 0 ≤ Total x) :
+    ¬ ∃ path : ℕ → State, ∀ k, Step (path k) (path (k + 1)) := by
+  rintro ⟨path, hstep⟩
+  obtain ⟨n, hn⟩ := exists_nat_gt (Total (path 0) / δ)
+  have hb := real_cascade_bounded_of_uniform_work Total Work δ hδ hpaid hwork hnonneg path hstep n
+  have : Total (path 0) / δ * δ < (n : ℝ) * δ :=
+    mul_lt_mul_of_pos_right hn hδ
+  rw [div_mul_cancel₀ _ (ne_of_gt hδ)] at this
+  linarith
+
 /-! ### §10. Partition и capacity / overflow -/
 
 /-- Разбиение `[1,X]` на релевантную (twin-carrier) и нерелевантную части. -/

@@ -3534,6 +3534,24 @@ theorem twin_above_of_strictResolves {A M0 : ℕ}
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_resolves proj (strictSemanticExtended_resolves_old h)
 
+
+/-- **`search_incompressible_under_twinBound` — ДОКАЗАНА («локальное P≠NP» как теорема).** При
+    twin-bound НИКАКОЙ конечный сертификат (проекция) не инъективен на admissible-генеалогиях:
+    обратный поиск ПРОВЕРЕННО не сжимается. В P/NP-словаре §12: асимметрия «проверка легка
+    (`pathN_len_le_lexRank`) / поиск не сжимается» — под гипотезой конечности близнецов это ТЕОРЕМА,
+    а сжимаемость на любом масштабе предъявляет twin (`twin_above_of_resolves`). НЕ доказывает P≠NP. -/
+theorem search_incompressible_under_twinBound {A M0 : ℕ}
+    (hTwinBound : TwinBoundAbove M0)
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    ¬ (∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0, F₁ ≠ F₂ →
+        ExtendedFlowAdmissible F₁ → ExtendedFlowAdmissible F₂ →
+        proj.keyFlow F₁ ≠ proj.keyFlow F₂) := by
+  intro hInj
+  have hRes : SemanticExtendedFlowLedgerCollisionResolves proj := by
+    intro F₁ F₂ hne h1 h2 hkey
+    exact absurd hkey (hInj F₁ F₂ hne h1 h2)
+  exact twinBound_impossible_with_semanticExtendedResolution hTwinBound proj hRes
+
 end GeneratedFlowFormulation
 
 

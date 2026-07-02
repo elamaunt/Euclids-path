@@ -1522,6 +1522,582 @@ theorem strictPackage_scale_ge_five
   exact no_projection_resolves_at_smallScale (by omega) (C.projOf 1)
     (strictSemanticExtended_resolves_old (C.resolves 1))
 
+
+
+/-#############################################################################
+  ГОРИЗОНТ СОБЫТИЙ + СИНГУЛЯРНОСТЬ НАЧАЛА (кирпичи: step00_event_horizon +
+  step00_origin_singularity). Граница Step00-интерпретируемости: внутри —
+  возврат в интерфейс (⟹ двигатель ⟹ пусто), за горизонтом — подлинно
+  новая не-Step00 информация; «0 → 1» — внешнее граничное событие, не
+  RealStep; интернализация границы = запрещённый self-cause. Accepted-ветки
+  используют аксиому (AXIOM-TAINTED). Машинная честность: горизонт =
+  переименование пустоты/непустоты сертификатов; альтернатива коллапсирует
+  в 3-дизъюнкцию; «событие 0→1» ⟺ сама аксиома (маркеры — True).
+#############################################################################-/
+
+/-#############################################################################
+  §1. The Step00 event horizon
+#############################################################################-/
+
+/--
+A proof route is inside the Step00 event horizon exactly when it returns to the
+Step00 internal proof interface.
+-/
+abbrev InsideStep00ProofHorizon
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  ProofReturnsToStep00Architecture T φ
+
+/--
+A refutation route is inside the Step00 event horizon exactly when it returns to
+the Step00 internal refutation interface.
+-/
+abbrev InsideStep00RefutationHorizon
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  RefutationReturnsToStep00Architecture T φ
+
+/--
+A proof route is beyond the Step00 event horizon exactly when it genuinely
+escapes the Step00 proof interface.
+-/
+abbrev BeyondStep00ProofHorizon
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  ProofEscapesStep00Architecture T φ
+
+/--
+A refutation route is beyond the Step00 event horizon exactly when it genuinely
+escapes the Step00 refutation interface.
+-/
+abbrev BeyondStep00RefutationHorizon
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop :=
+  RefutationEscapesStep00Architecture T φ
+
+/--
+Being inside and being beyond the proof horizon are definitionally exclusive.
+-/
+theorem not_inside_and_beyond_proof_horizon
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (hInside : InsideStep00ProofHorizon T φ)
+    (hBeyond : BeyondStep00ProofHorizon T φ) : False := by
+  exact hBeyond hInside
+
+/--
+Being inside and being beyond the refutation horizon are definitionally
+exclusive.
+-/
+theorem not_inside_and_beyond_refutation_horizon
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (hInside : InsideStep00RefutationHorizon T φ)
+    (hBeyond : BeyondStep00RefutationHorizon T φ) : False := by
+  exact hBeyond hInside
+
+/-#############################################################################
+  §2. What happens inside the horizon
+#############################################################################-/
+
+/--
+An actual proof that remains inside the Step00 proof horizon constructs the
+forbidden engine; hence no such proof certificate exists in the audited
+no-engine architecture.
+-/
+theorem insideProofHorizon_has_no_actualProof
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (hInside : InsideStep00ProofHorizon T φ) :
+    IsEmpty (T.proves φ) :=
+  no_externalProof_under_proofReturn hInside
+
+/--
+An actual refutation that remains inside the Step00 refutation horizon also
+constructs the forbidden engine; hence no such refutation certificate exists in
+the audited no-engine architecture.
+-/
+theorem insideRefutationHorizon_has_no_actualRefutation
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (hInside : InsideStep00RefutationHorizon T φ) :
+    IsEmpty (T.refutes φ) :=
+  no_externalRefutation_under_refutationReturn hInside
+
+/--
+Explicit contradiction form for an actual proof inside the Step00 horizon.
+-/
+theorem actualProof_insideHorizon_contradiction
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (p : T.proves φ)
+    (hInside : InsideStep00ProofHorizon T φ) : False := by
+  have hEmpty := insideProofHorizon_has_no_actualProof hInside
+  exact (IsEmpty.false p)
+
+/--
+Explicit contradiction form for an actual refutation inside the Step00 horizon.
+-/
+theorem actualRefutation_insideHorizon_contradiction
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (r : T.refutes φ)
+    (hInside : InsideStep00RefutationHorizon T φ) : False := by
+  have hEmpty := insideRefutationHorizon_has_no_actualRefutation hInside
+  exact (IsEmpty.false r)
+
+/--
+Equivalently: any actual external proof must live beyond the Step00 proof
+horizon.
+-/
+theorem actualProof_must_cross_eventHorizon
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (p : T.proves φ) :
+    BeyondStep00ProofHorizon T φ :=
+  existing_externalProof_forces_proofEscape p
+
+/--
+Equivalently: any actual external refutation must live beyond the Step00
+refutation horizon.
+-/
+theorem actualRefutation_must_cross_eventHorizon
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (r : T.refutes φ) :
+    BeyondStep00RefutationHorizon T φ :=
+  existing_externalRefutation_forces_refutationEscape r
+
+/-#############################################################################
+  §3. The external causal boundary
+#############################################################################-/
+
+/--
+The precise external boundary condition that closes Step00 is not a vague
+"external cause".  It is exactly `Step00CausalClosureAxiom` accepted from outside
+the internal no-engine derivation interface.
+-/
+abbrev Step00CausalClosureBeyondHorizon : Prop :=
+  ExternalUniverseCause Step00CausalClosureAxiom
+
+/--
+Crossing the horizon by accepting the precise causal-closure boundary gives
+infinitude of lower twin centres.
+-/
+theorem causalClosureBeyondHorizon_generates_twins
+    (H : Step00CausalClosureBeyondHorizon) :
+    TwinLowers.Infinite :=
+  twinLowersInfinite_of_strictLastStep00Obligation H
+
+/--
+The previously declared external axiom is one instance of the causal boundary
+beyond the Step00 horizon.
+-/
+theorem acceptedStep00CausalClosure_is_beyondHorizon :
+    Step00CausalClosureBeyondHorizon :=
+  step00CausalClosure
+
+/--
+Therefore the accepted external boundary generates infinitude of lower twin
+centres.
+-/
+theorem acceptedBoundary_generates_twins :
+    TwinLowers.Infinite :=
+  causalClosureBeyondHorizon_generates_twins
+    acceptedStep00CausalClosure_is_beyondHorizon
+
+/-#############################################################################
+  §4. Why the boundary cannot be internalised
+#############################################################################-/
+
+/--
+Trying to make the horizon boundary into an internal cause is exactly the
+forbidden self-supporting case already audited.
+-/
+abbrev InternalisedStep00HorizonBoundary : Prop :=
+  InternalUniverseCause Step00CausalClosureAxiom
+
+/--
+Any internalised horizon boundary builds the forbidden Euclidean engine.
+-/
+theorem internalisedHorizonBoundary_builds_engine
+    (H : InternalisedStep00HorizonBoundary) :
+    SomeConcreteEuclideanEngine :=
+  internalUniverseCause_builds_engine H
+
+/--
+Therefore the Step00 horizon boundary cannot be internalised in the stable
+no-engine architecture.
+-/
+theorem no_internalisedHorizonBoundary :
+    ¬ InternalisedStep00HorizonBoundary :=
+  no_internalUniverseCause
+
+/--
+If the external causal boundary is also claimed to be internally caused, the
+claim self-destructs by the forbidden-engine contradiction.
+-/
+theorem boundary_insideHorizon_selfDestructs
+    (H : InternalisedStep00HorizonBoundary) : False :=
+  no_internalisedHorizonBoundary H
+
+/-#############################################################################
+  §5. Complete local alternative at the horizon
+#############################################################################-/
+
+/--
+The local alternatives at the Step00 event horizon for an external sentence.
+
+`acceptedBoundary` is the precise causal-closure axiom route.
+`proofBeyond` and `refutationBeyond` are genuine non-Step00 escapes.
+`engine` is the forbidden returned route.
+-/
+inductive Step00EventHorizonAlternative
+    (T : ExternalProofTheory) (φ : T.Sentence) : Prop where
+  | acceptedBoundary :
+      Step00CausalClosureBeyondHorizon →
+      Step00EventHorizonAlternative T φ
+  | proofBeyond :
+      BeyondStep00ProofHorizon T φ →
+      Step00EventHorizonAlternative T φ
+  | refutationBeyond :
+      BeyondStep00RefutationHorizon T φ →
+      Step00EventHorizonAlternative T φ
+  | engine :
+      SomeConcreteEuclideanEngine →
+      Step00EventHorizonAlternative T φ
+
+/--
+An actual external proof gives the horizon alternative `proofBeyond`.
+-/
+theorem actualProof_gives_eventHorizonAlternative
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (p : T.proves φ) :
+    Step00EventHorizonAlternative T φ :=
+  Step00EventHorizonAlternative.proofBeyond
+    (actualProof_must_cross_eventHorizon p)
+
+/--
+An actual external refutation gives the horizon alternative `refutationBeyond`.
+-/
+theorem actualRefutation_gives_eventHorizonAlternative
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (r : T.refutes φ) :
+    Step00EventHorizonAlternative T φ :=
+  Step00EventHorizonAlternative.refutationBeyond
+    (actualRefutation_must_cross_eventHorizon r)
+
+/--
+The accepted causal-closure axiom gives the horizon alternative
+`acceptedBoundary`.
+-/
+theorem acceptedBoundary_gives_eventHorizonAlternative
+    (T : ExternalProofTheory) (φ : T.Sentence) :
+    Step00EventHorizonAlternative T φ :=
+  Step00EventHorizonAlternative.acceptedBoundary
+    acceptedStep00CausalClosure_is_beyondHorizon
+
+/--
+No forbidden-engine branch can actually be realised.
+-/
+theorem no_eventHorizon_engine_branch
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (E : SomeConcreteEuclideanEngine) : False :=
+  no_someConcreteEuclideanEngine E
+
+/-#############################################################################
+  §6. Slogan theorem
+#############################################################################-/
+
+/--
+Formal slogan of this patch.
+
+Inside the horizon, returning proof/refutation mechanisms construct the
+forbidden engine.  The Step00-internal successful route is therefore the precise
+external causal-closure boundary, and any actual non-axiomatic proof/refutation
+must be beyond the Step00 horizon.
+-/
+abbrev Step00EventHorizonSlogan : Prop :=
+  (∀ {T : ExternalProofTheory} {φ : T.Sentence},
+      InsideStep00ProofHorizon T φ → IsEmpty (T.proves φ)) ∧
+  (∀ {T : ExternalProofTheory} {φ : T.Sentence},
+      InsideStep00RefutationHorizon T φ → IsEmpty (T.refutes φ)) ∧
+  (Step00CausalClosureBeyondHorizon → TwinLowers.Infinite) ∧
+  (¬ InternalisedStep00HorizonBoundary)
+
+/-- The Step00 event-horizon slogan is exactly the already proved audit facts. -/
+theorem step00EventHorizon_slogan :
+    Step00EventHorizonSlogan := by
+  constructor
+  · intro T φ hInside
+    exact insideProofHorizon_has_no_actualProof hInside
+  · constructor
+    · intro T φ hInside
+      exact insideRefutationHorizon_has_no_actualRefutation hInside
+    · constructor
+      · intro H
+        exact causalClosureBeyondHorizon_generates_twins H
+      · exact no_internalisedHorizonBoundary
+
+/--
+Scope guard: this is an architecture-relative event horizon, not a claim that
+ordinary mathematics itself has an absolute event horizon.
+-/
+abbrev EventHorizonIsArchitectureRelative : Prop := True
+
+theorem eventHorizonIsArchitectureRelative :
+    EventHorizonIsArchitectureRelative := by
+  trivial
+
+/-#############################################################################
+  §1. Origin markers: zero is not an internal Step00 state
+#############################################################################-/
+
+/--
+`OriginZero` is a marker for the absence of an already available internal
+Step00 causal frame.  It is not a constructor of the concrete Step00 `State`.
+-/
+abbrev OriginZero : Prop := True
+
+/--
+`FirstCausalOne` is a marker for the first admitted causal frame: from this
+point on the Step00 language of states, legal steps, ledgers, and ranks is
+available.
+-/
+abbrev FirstCausalOne : Prop := True
+
+/--
+The origin singularity is the pre-frame marker.  It carries no internal Step00
+edge relation.
+-/
+abbrev Step00OriginSingularity : Prop := OriginZero
+
+/--
+The first causal frame is the post-boundary marker.  It is the first place where
+Step00 can speak internally.
+-/
+abbrev Step00FirstCausalFrame : Prop := FirstCausalOne
+
+/--
+The statement that the origin marker is not itself an ordinary internal causal
+mechanism is represented by the impossibility of internalising the Step00
+horizon boundary.
+-/
+abbrev OriginZeroIsNotInternalMechanism : Prop :=
+  ¬ InternalisedStep00HorizonBoundary
+
+/--
+The origin marker is not an internal mechanism of the already-formed Step00
+world.
+-/
+theorem originZero_is_not_internalMechanism :
+    OriginZeroIsNotInternalMechanism :=
+  no_internalisedHorizonBoundary
+
+/-#############################################################################
+  §2. The 0 → 1 transition as an external boundary event
+#############################################################################-/
+
+/--
+A Step00 origin boundary event consists of the origin marker, the first causal
+frame marker, and the precise external causal-closure boundary beyond the
+Step00 event horizon.
+
+This is the formal version of: `0 → 1` is a boundary event, not an internal
+`RealStep`.
+-/
+structure Step00OriginBoundaryEvent : Prop where
+  origin : Step00OriginSingularity
+  firstFrame : Step00FirstCausalFrame
+  causalBoundary : Step00CausalClosureBeyondHorizon
+
+/--
+The already accepted Step00 causal-closure boundary gives an origin boundary
+event.
+-/
+theorem acceptedStep00OriginBoundaryEvent :
+    Step00OriginBoundaryEvent :=
+  ⟨trivial, trivial, acceptedStep00CausalClosure_is_beyondHorizon⟩
+
+/--
+The origin boundary event generates infinitude of lower twin centres, because
+its causal content is exactly the already audited external causal-closure
+boundary.
+-/
+theorem step00OriginBoundaryEvent_generates_twins
+    (H : Step00OriginBoundaryEvent) : TwinLowers.Infinite :=
+  causalClosureBeyondHorizon_generates_twins H.causalBoundary
+
+/--
+Therefore the accepted origin boundary generates infinitude of lower twin
+centres.
+-/
+theorem acceptedOriginBoundary_generates_twins :
+    TwinLowers.Infinite :=
+  step00OriginBoundaryEvent_generates_twins
+    acceptedStep00OriginBoundaryEvent
+
+/-#############################################################################
+  §3. Internalising 0 → 1 is the forbidden self-cause
+#############################################################################-/
+
+/--
+To internalise the origin event is to claim that the Step00 horizon boundary is
+caused by an internal Step00 mechanism.  This is exactly the dangerous
+self-cause case.
+-/
+abbrev InternalisedStep00OriginEvent : Prop :=
+  InternalisedStep00HorizonBoundary
+
+/--
+Any internalised origin event builds the forbidden concrete Euclidean engine.
+-/
+theorem internalisedOriginEvent_builds_engine
+    (H : InternalisedStep00OriginEvent) : SomeConcreteEuclideanEngine :=
+  internalisedHorizonBoundary_builds_engine H
+
+/--
+No internalised origin event exists in the audited no-engine Step00
+architecture.
+-/
+theorem no_internalisedOriginEvent :
+    ¬ InternalisedStep00OriginEvent :=
+  no_internalisedHorizonBoundary
+
+/--
+The explicit contradiction form: if `0 → 1` is treated as an ordinary internal
+Step00 causal step, the horizon-boundary self-cause contradiction follows.
+-/
+theorem internalisedOriginEvent_contradiction
+    (H : InternalisedStep00OriginEvent) : False :=
+  no_internalisedOriginEvent H
+
+/--
+No forbidden-engine branch can be realised from an internalised origin event.
+-/
+theorem internalisedOriginEngine_impossible
+    (H : InternalisedStep00OriginEvent) : False := by
+  exact internalisedOriginEvent_contradiction H
+
+/-#############################################################################
+  §4. Boundary event versus internal step
+#############################################################################-/
+
+/--
+The origin transition is external/boundary-like when it is supplied as a
+`Step00OriginBoundaryEvent` and is not internalised.
+-/
+abbrev OriginTransitionIsBoundaryEvent : Prop :=
+  Step00OriginBoundaryEvent ∧ ¬ InternalisedStep00OriginEvent
+
+/--
+The accepted origin transition is a boundary event and not an internal self-
+cause.
+-/
+theorem acceptedOriginTransition_is_boundaryEvent :
+    OriginTransitionIsBoundaryEvent :=
+  ⟨acceptedStep00OriginBoundaryEvent, no_internalisedOriginEvent⟩
+
+/--
+The origin transition cannot be both boundary-initialised and internally
+self-caused, because the internalised part is already impossible.
+-/
+theorem originTransition_cannot_be_internal_selfCause
+    (H : OriginTransitionIsBoundaryEvent)
+    (I : InternalisedStep00OriginEvent) : False :=
+  H.2 I
+
+/--
+If one insists that the first causal frame causes itself internally, one has not
+explained the origin; one has built the forbidden engine.
+-/
+theorem selfCausedFirstFrame_builds_engine
+    (H : InternalisedStep00OriginEvent) : SomeConcreteEuclideanEngine :=
+  internalisedOriginEvent_builds_engine H
+
+/--
+Consequently, a self-caused first causal frame is impossible.
+-/
+theorem no_selfCausedFirstFrame :
+    ¬ InternalisedStep00OriginEvent :=
+  no_internalisedOriginEvent
+
+/-#############################################################################
+  §5. Origin slogan
+#############################################################################-/
+
+/--
+Formal slogan of the patch.
+
+`0` is not an internal Step00 state/mechanism; `1` is the first causal frame;
+`0 → 1` is an external boundary-origin event; making it internal produces the
+forbidden engine; the accepted boundary gives `TwinLowers.Infinite`.
+-/
+abbrev Step00OriginSlogan : Prop :=
+  Step00OriginSingularity ∧
+  Step00FirstCausalFrame ∧
+  OriginTransitionIsBoundaryEvent ∧
+  (InternalisedStep00OriginEvent → SomeConcreteEuclideanEngine) ∧
+  (¬ InternalisedStep00OriginEvent) ∧
+  TwinLowers.Infinite
+
+/-- The origin slogan is exactly the already established event-horizon audit. -/
+theorem step00Origin_slogan :
+    Step00OriginSlogan := by
+  constructor
+  · trivial
+  · constructor
+    · trivial
+    · constructor
+      · exact acceptedOriginTransition_is_boundaryEvent
+      · constructor
+        · intro H
+          exact internalisedOriginEvent_builds_engine H
+        · constructor
+          · exact no_internalisedOriginEvent
+          · exact acceptedOriginBoundary_generates_twins
+
+/--
+Scope guard: the `0 → 1` terminology is architecture-relative causal-ledger
+language, not a theorem of physical cosmology.
+-/
+abbrev OriginInterpretationIsArchitectureRelative : Prop := True
+
+/-- The scope guard is immediate. -/
+theorem originInterpretationIsArchitectureRelative :
+    OriginInterpretationIsArchitectureRelative := by
+  trivial
+
+/-! Машинная честность horizon/origin-форм -/
+
+/-- «Внутри горизонта» ⟺ пустота доказательств (переименование). -/
+theorem insideProofHorizon_iff_noProofs
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    InsideStep00ProofHorizon T φ ↔ IsEmpty (T.proves φ) :=
+  proofReturns_iff_noProofs
+
+/-- «За горизонтом» ⟺ существование доказательства (переименование). -/
+theorem beyondProofHorizon_iff_proofExists
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    BeyondStep00ProofHorizon T φ ↔ Nonempty (T.proves φ) :=
+  proofEscapes_iff_proofExists
+
+/-- Горизонт-альтернатива КОЛЛАПСИРУЕТ в 3-дизъюнкцию (двигатель сожжён):
+    аксиома ∨ есть доказательство ∨ есть опровержение. -/
+theorem eventHorizonAlternative_iff
+    {T : ExternalProofTheory} {φ : T.Sentence} :
+    Step00EventHorizonAlternative T φ ↔
+      (Step00CausalClosureAxiom ∨
+        Nonempty (T.proves φ) ∨ Nonempty (T.refutes φ)) := by
+  constructor
+  · intro H
+    cases H with
+    | acceptedBoundary h => exact Or.inl h
+    | proofBeyond h => exact Or.inr (Or.inl (proofEscapes_iff_proofExists.mp h))
+    | refutationBeyond h =>
+        exact Or.inr (Or.inr (refutationEscapes_iff_refutationExists.mp h))
+    | engine h => exact (no_someConcreteEuclideanEngine h).elim
+  · rintro (h | hp | hr)
+    · exact Step00EventHorizonAlternative.acceptedBoundary h
+    · exact Step00EventHorizonAlternative.proofBeyond
+        (proofEscapes_iff_proofExists.mpr hp)
+    · exact Step00EventHorizonAlternative.refutationBeyond
+        (refutationEscapes_iff_refutationExists.mpr hr)
+
+/-- «Событие 0 → 1» ⟺ сама аксиома: маркеры origin/firstFrame — True,
+    содержание граничного события — ровно causal-closure. -/
+theorem step00OriginBoundaryEvent_iff :
+    Step00OriginBoundaryEvent ↔ Step00CausalClosureAxiom :=
+  ⟨fun H => H.causalBoundary, fun h => ⟨trivial, trivial, h⟩⟩
+
 end GeneratedFlowFormulation
 end ConcreteStep00Graph
 end EuclidsPath

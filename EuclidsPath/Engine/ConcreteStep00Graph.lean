@@ -3277,6 +3277,253 @@ theorem twinLowersInfinite_of_cofinal_resolves {A : ℕ}
   refine ⟨m, by omega, ?_⟩
   simpa [EuclidsPath.Residuals.TwinCenterZ, EuclidsPath.IsTwinCenter] using hTwin
 
+
+/-! ### STRICT-слой: return-path сертификат + финальный строгий аудит редукции.
+Недостающий промежуточный слой (semantic_extended_collision_expanded) ПОСТРОЕН: pathN_trans,
+return-сертификат ⟹ цикл (конкатенация forward+return), обе ветви опровергнуты, strict⟹old,
+TheStrictLastStep00Obligation. Затем — тело final_strict_reduction_audit кирпича. -/
+
+open EuclidsPath.LabelledFanIn EuclidsPath.BoundaryLedgerCollision EuclidsPath.BoundaryDefectPayment
+
+-- КОНКАТЕНАЦИЯ ПУТЕЙ (недостающая механика)
+theorem pathN_trans {α : Type*} {R : α → α → Prop} :
+    ∀ {n m : ℕ} {X Y Z : α}, PathN R n X Y → PathN R m Y Z → PathN R (n + m) X Z
+  | 0, m, X, Y, Z, h1, h2 => by
+      have : X = Y := h1
+      subst this
+      simpa using h2
+  | Nat.succ n, m, X, Y, Z, h1, h2 => by
+      rcases h1 with ⟨W, hXW, hWY⟩
+      have hrec : PathN R (n + m) W Z := pathN_trans hWY h2
+      rw [Nat.succ_add]
+      exact ⟨W, hXW, hrec⟩
+
+-- RETURN-СЕРТИФИКАТ: одна из генеалогий возвращается из терминала в СВОЙ старт
+def ExtendedFlowReturnCertificate {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  NonemptyPath (RealStep A M0) F₁.terminal (State.center F₁.start) ∨
+  NonemptyPath (RealStep A M0) F₂.terminal (State.center F₂.start)
+
+-- return-сертификат ⟹ legal-цикл (конкатенация forward-генеалогии с return-путём)
+theorem extendedFlowReturnCertificate_forces_legalCycle {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : ExtendedFlowReturnCertificate F₁ F₂) :
+    LegalCycle (RealStep A M0) (Legal A M0) := by
+  rcases h with hret | hret
+  all_goals {
+    rcases hret with ⟨k, hk, hpath⟩
+    first
+    | (refine ⟨State.center F₁.start, F₁.startClean, F₁.steps + k, by have := F₁.nonempty; omega, ?_⟩
+       exact pathN_trans (properPath_to_realPath F₁.properPath) hpath)
+    | (refine ⟨State.center F₂.start, F₂.startClean, F₂.steps + k, by have := F₂.nonempty; omega, ?_⟩
+       exact pathN_trans (properPath_to_realPath F₂.properPath) hpath) }
+
+-- РАСШИРЕННАЯ АЛЬТЕРНАТИВА (ниже уровнем, чем LegalCycle ∨ Payment)
+def ExpandedExtendedFlowResolutionAlternative {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨ BoundaryDefectPayment.ImpossiblePayment
+
+-- обе ветви УЖЕ опровергнуты (цикл — lexRank; оплата — primorial)
+theorem no_expandedExtendedFlowResolutionAlternative {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    ¬ ExpandedExtendedFlowResolutionAlternative F₁ F₂ := by
+  rintro (hret | hpay)
+  · exact no_concrete_legalCycle_by_lexRank (A := A) (M0 := M0)
+      (extendedFlowReturnCertificate_forces_legalCycle hret)
+  · exact BoundaryDefectPayment.impossiblePayment_false hpay
+
+-- STRICT-РЕЗОЛВЕР (финальная строгая форма входа)
+def StrictSemanticExtendedFlowLedgerCollisionResolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    F₁ ≠ F₂ → ExtendedFlowAdmissible F₁ → ExtendedFlowAdmissible F₂ →
+    proj.keyFlow F₁ = proj.keyFlow F₂ →
+    ExpandedExtendedFlowResolutionAlternative F₁ F₂
+
+-- strict ⟹ старый резолвер
+theorem strictSemanticExtended_resolves_old {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (h : StrictSemanticExtendedFlowLedgerCollisionResolves proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj := by
+  intro F₁ F₂ hne h1 h2 hkey
+  rcases h F₁ F₂ hne h1 h2 hkey with hret | hpay
+  · exact Or.inl (extendedFlowReturnCertificate_forces_legalCycle hret)
+  · exact Or.inr hpay
+
+theorem twinBound_impossible_with_strictSemanticExtendedResolution {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (hTwinBound : TwinBoundAbove M0)
+    (h : StrictSemanticExtendedFlowLedgerCollisionResolves proj) : False :=
+  twinBound_impossible_with_semanticExtendedResolution hTwinBound proj
+    (strictSemanticExtended_resolves_old h)
+
+abbrev TheStrictLastStep00Obligation : Prop :=
+  ∃ (A : ℕ) (projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0),
+    ∀ M0 : ℕ, StrictSemanticExtendedFlowLedgerCollisionResolves (projOf M0)
+
+theorem twinLowersInfinite_of_strictLastStep00Obligation
+    (H : TheStrictLastStep00Obligation) : EuclidsPath.TwinLowers.Infinite := by
+  obtain ⟨A, projOf, hAll⟩ := H
+  exact twinLowersInfinite_of_lastStep00Obligation
+    ⟨A, projOf, fun M0 => strictSemanticExtended_resolves_old (hAll M0)⟩
+
+
+
+/-! ### final strict reduction audit (кирпич) -/
+
+
+/-#############################################################################
+  §1. Final names
+#############################################################################-/
+
+/--
+The final Step00 obligation after all no-cheat and generated-flow refinements.
+
+This is just the strict obligation from the previous patch, renamed here as the
+canonical final target of the audit.
+-/
+abbrev FinalStep00Obligation : Prop :=
+  TheStrictLastStep00Obligation
+
+/--
+The local final resolver for a chosen scale `A`, twin bound `M0`, and finite
+semantic flow-ledger projection `proj`.
+
+This is where the real Euclidean engine must be exhibited.
+-/
+abbrev FinalLocalCollisionResolver {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  StrictSemanticExtendedFlowLedgerCollisionResolves proj
+
+/--
+The explicit local Euclidean-engine certificate for two colliding extended
+flows: one of the two terminal states returns to its own start centre.
+-/
+abbrev FinalReturnCertificate {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂
+
+/--
+The strict expanded alternative demanded from a same-key collision.
+
+This is intentionally lower-level than `LegalCycle ∨ ImpossiblePayment`: the
+cycle must be produced from a concrete return-path certificate.
+-/
+abbrev FinalExpandedCollisionAlternative {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExpandedExtendedFlowResolutionAlternative F₁ F₂
+
+/-#############################################################################
+  §2. Mechanical bridges already closed
+#############################################################################-/
+
+/--
+A return certificate mechanically gives a legal cycle.
+
+This is not an arithmetic input: it is path concatenation of the stored forward
+flow with the explicit return path.
+-/
+theorem finalReturnCertificate_forces_legalCycle {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : FinalReturnCertificate F₁ F₂) :
+    LegalCycle (RealStep A M0) (Legal A M0) :=
+  extendedFlowReturnCertificate_forces_legalCycle h
+
+/--
+The strict local resolver implies the older near-close resolver.
+
+This records that the final strict target is stronger and more honest than the
+previous `cycle ∨ payment` resolver.
+-/
+theorem finalLocalResolver_implies_oldResolver {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (h : FinalLocalCollisionResolver proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj :=
+  strictSemanticExtended_resolves_old h
+
+/--
+A twin bound is impossible once the final local resolver is supplied for the
+chosen finite semantic projection.
+-/
+theorem twinBound_impossible_with_finalLocalResolver {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (hTwinBound : TwinBoundAbove M0)
+    (hResolver : FinalLocalCollisionResolver proj) :
+    False :=
+  twinBound_impossible_with_strictSemanticExtendedResolution proj hTwinBound hResolver
+
+/-#############################################################################
+  §3. Final theorem of the reduction
+#############################################################################-/
+
+/--
+Final strict reduction theorem.
+
+If the final Step00 obligation is provided, then the lower twin-prime infinitude
+statement follows.  All previous construction, pigeonhole, no-cheat, payment,
+and acyclicity layers are already consumed by
+`twinLowersInfinite_of_strictLastStep00Obligation`.
+-/
+theorem twinLowersInfinite_of_finalStep00Obligation
+    (H : FinalStep00Obligation) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_strictLastStep00Obligation H
+
+/-#############################################################################
+  §4. Audit marker: what is *not* proved here
+#############################################################################-/
+
+/--
+This predicate marks the exact place where an alleged finite semantic projection
+would still have to provide real arithmetic content.
+
+It is deliberately not proved here.  A candidate `proj.keyFlow` must be chosen, and
+for every same-key collision of distinct admissible generated genealogies one
+must extract either:
+
+  * a concrete return path from the terminal of one genealogy back to its own
+    start centre; or
+  * the already-refuted impossible-payment certificate.
+
+Pigeonhole alone only gives same-key collision.  Projection coarseness alone is
+classified as cheating by the no-cheat audit.  The return path/payment extraction
+is the remaining Euclidean-engine certificate.
+-/
+def RemainingEuclideanEngineCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  FinalLocalCollisionResolver proj
+
+/--
+A same-key collision still needs the engine certificate.
+
+This is the local audit form: the data below is only an unresolved collision
+unless `RemainingEuclideanEngineCertificate proj` can resolve it.
+-/
+def UnresolvedFinalCollision {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  F₁ ≠ F₂ ∧
+  ExtendedFlowAdmissible F₁ ∧
+  ExtendedFlowAdmissible F₂ ∧
+  proj.keyFlow F₁ = proj.keyFlow F₂ ∧
+  ¬ FinalExpandedCollisionAlternative F₁ F₂
+
+/--
+Any concrete same-key collision is unresolved unless the final engine certificate
+is supplied.  The negation of the expanded alternative follows from the already
+closed payment and acyclicity branches.
+-/
+theorem unresolvedFinalCollision_of_sameKey {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hne : F₁ ≠ F₂)
+    (hAdm₁ : ExtendedFlowAdmissible F₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂)
+    (hkey : proj.keyFlow F₁ = proj.keyFlow F₂) :
+    UnresolvedFinalCollision proj F₁ F₂ := by
+  exact ⟨hne, hAdm₁, hAdm₂, hkey, no_expandedExtendedFlowResolutionAlternative⟩
+
+
+
 end GeneratedFlowFormulation
 
 

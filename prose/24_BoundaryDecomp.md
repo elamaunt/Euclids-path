@@ -817,6 +817,30 @@ dangling-вложений (в обе стороны); **`compressionAudit_iff_re
 **`atomicInformationLastStep00Obligation_iff_lastStep00Obligation`** — atomic-форма ⟺ старый узел;
 **`twin_above_of_atomicInformationAudit`**, **`twin_above_of_noFreeMixingAudit`** — twin-детекторы.
 
+### Стабильная no-engine теория: финальный мета-аудит (объектный уровень)
+
+Кирпич stable-no-engine-theory собирает весь информационный словарь в одну структуру
+`StableNoEngineStep00Theory` (проекции + стабильность без энергии + без компрессии + без
+смешивания, на всех масштабах) и доказывает внутренний no-go:
+
+- **`stableNoEnergy_collision_builds_engine`** — одна same-key коллизия в стабильной no-energy
+  вселенной **строит** явный двигатель-свидетель (`ConcreteEuclideanEngineWitness` — legal-цикл);
+- **`no_concreteEuclideanEngineWitness`** — таких свидетелей не бывает (lexRank);
+- **`infiniteFlows_impossible_in_stableNoEnergy`**, **`stableFiniteTwinTheoryIsImpossible`** —
+  конечный стабильный ledger не может поглотить бесконечную нагрузку генеалогий;
+- **`twinLowersInfinite_of_stableNoEngineTheory`**, **`no_finiteTwin_stableNoEngineTheory`** —
+  теория ⟹ близнецы; теория несовместима с конечностью близнецов.
+
+*Фиксы кирпича:* `ConcreteEuclideanEngineWitness` объявлен `: Prop`; экзистенциал теории — через
+`Nonempty` (структура несёт данные).
+
+**Честность (машинно):** **`stableNoEngineTheoryExists_iff_lastStep00Obligation`** — существование
+стабильной теории **эквивалентно** старому узлу: диагностические поля (`noStrictCompression`,
+`noMixing`) восстановимы из резолвера, вся тяжесть — в `stableNoEnergy`;
+**`twin_above_of_stableNoEngineTheory`** — теория на каждом масштабе предъявляет twin (детектор).
+Итог: «доказать стабильную конечно-twin теорию» = «построить запрещённый двигатель» — красивейшая
+из эквивалентных форм узла, но узел тот же.
+
 ### Диссипативный cascade: capacity/overflow декомпозиция Лиувилль-узла
 
 `Engine/DissipativeCascade` (единый blueprint Step00/RH/Навье–Стокс): «дефект не исчезает; не закрылся —

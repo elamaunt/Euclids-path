@@ -6167,6 +6167,299 @@ theorem twin_above_of_noFreeMixingAudit {A M0 : ℕ}
     (nestedSemanticExtended_resolves_old
       (noFreeInformationMixingAudit_resolves_nested P))
 
+/-#############################################################################
+  СТАБИЛЬНАЯ NO-ENGINE ТЕОРИЯ (кирпич: stable_no_engine_theory).
+  Мета-аудит объектного уровня: конечно-twin вселенная, стабильная и без
+  энергии/швов/компрессии/смешивания, невозможна — попытка её закрыть
+  СТРОИТ явный двигатель (legal-цикл), который запрещён lexRank. Фиксы:
+  ConcreteEuclideanEngineWitness : Prop; экзистенциал теории через Nonempty.
+  Ниже — кирпич + машинная честность: существование теории ⟺ старый узел
+  (диагностические поля восстановимы из резолвера); по-масштабный детектор.
+#############################################################################-/
+
+/-#############################################################################
+  §1. A stable no-engine Step00 theory
+#############################################################################-/
+
+/--
+`NoFreeInformationMixing` is the proposition-level form of the theorem
+`no_free_information_mixing`: no pair of generated genealogies may be cross-wired
+by the ledger projection without engine/payment/singularity/compression support.
+-/
+def NoFreeInformationMixing {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    ¬ InformationMixingWithoutEngine proj F₁ F₂
+
+/--
+A stable no-engine Step00 theory at one scale `A`.
+
+The fields are deliberately separated:
+
+* `stableNoEnergy` is the operative closing assumption used by the already
+  proved no-energy universe theorem: same-key collisions must be geometrically
+  supported and no broken seam / dangling nesting is permitted.
+* `noStrictCompression` and `noMixing` are diagnostic strengthening fields. They
+  record that the projection is not allowed to stabilise itself by unresolved
+  one-way information compression or by cross-wiring different source/terminal
+  information. They are not needed for the shortest close, but they make explicit
+  the intended interpretation: the ledger may forget only gauge information.
+-/
+structure StableNoEngineStep00Theory (A : ℕ) where
+  projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0
+  stableNoEnergy : ∀ M0 : ℕ, NoEnergyStableUniverse (projOf M0)
+  noStrictCompression : ∀ M0 : ℕ, NoStrictInformationCompression (projOf M0)
+  noMixing : ∀ M0 : ℕ, NoFreeInformationMixing (projOf M0)
+
+/--
+The short operational content of a stable no-engine theory: it gives exactly the
+last obligation of the no-energy stable-universe layer.
+-/
+theorem stableNoEngineTheory_to_noEnergyLast {A : ℕ}
+    (T : StableNoEngineStep00Theory A) :
+    TheNoEnergyStableUniverseLastStep00Obligation := by
+  exact ⟨A, T.projOf, T.stableNoEnergy⟩
+
+/--
+Therefore a stable no-engine Step00 theory is already sufficient to derive
+infinitely many lower twin centres.
+-/
+theorem twinLowersInfinite_of_stableNoEngineTheory {A : ℕ}
+    (T : StableNoEngineStep00Theory A) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_noEnergyStableUniverseLastStep00Obligation
+    (stableNoEngineTheory_to_noEnergyLast T)
+
+/--
+Internal no-go form: a stable no-engine Step00 theory is incompatible with the
+finite-twin assumption.
+-/
+theorem finiteTwins_impossible_of_stableNoEngineTheory {A : ℕ}
+    (T : StableNoEngineStep00Theory A)
+    (hFiniteTwins : ¬ TwinLowers.Infinite) : False :=
+  hFiniteTwins (twinLowersInfinite_of_stableNoEngineTheory T)
+
+/-#############################################################################
+  §2. What it means to "prove the stable finite theory": it builds an engine
+#############################################################################-/
+
+/--
+A concrete Euclidean engine witness in the present Step00 graph.  It is just a
+legal nonempty cycle, packaged as data so that later audit lemmas can say:
+"this attempted explanation has constructed a perpetual engine".
+-/
+structure ConcreteEuclideanEngineWitness (A M0 : ℕ) : Prop where
+  cycle : LegalCycle (RealStep A M0) (Legal A M0)
+
+/--
+No concrete Euclidean engine witness exists in the corrected Step00 graph,
+because `lexRank` strictly decreases along every real edge.
+-/
+theorem no_concreteEuclideanEngineWitness {A M0 : ℕ} :
+    ¬ ConcreteEuclideanEngineWitness A M0 := by
+  intro W
+  exact no_concrete_legalCycle_by_lexRank
+    (A := A) (M0 := M0) W.cycle
+
+/--
+A single same-key collision inside a no-energy stable universe already builds a
+concrete Euclidean engine witness.
+
+This is the precise formal version of:
+
+  without energy and without seam breaks, holding two identified genealogies in
+  one ledger slot forces geometric support; geometric support is return or
+  mutual nesting; either one is a legal cycle.
+
+The `ImpossiblePayment` branch appears only because the older nested resolver
+has that historical alternative; it is immediately eliminated by
+`impossiblePayment_false`.
+-/
+theorem stableNoEnergy_collision_builds_engine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hne : F₁ ≠ F₂)
+    (hAdm₁ : ExtendedFlowAdmissible F₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂)
+    (hKey : proj.keyFlow F₁ = proj.keyFlow F₂) :
+    ConcreteEuclideanEngineWitness A M0 := by
+  have hNested : NestedUniverseResolutionAlternative F₁ F₂ :=
+    noEnergyStableUniverse_resolves_nested (proj := proj) H
+      F₁ F₂ hne hAdm₁ hAdm₂ hKey
+  rcases hNested with hReturn | hRest
+  · exact ⟨extendedFlowReturnCertificate_forces_legalCycle hReturn⟩
+  · rcases hRest with hMutual | hPay
+    · exact ⟨mutuallyNestedUniverses_forces_legalCycle hMutual⟩
+    · exact False.elim (impossiblePayment_false hPay)
+
+/--
+Since such an engine witness is impossible, a same-key collision cannot exist in
+a no-energy stable universe.
+-/
+theorem no_stableNoEnergy_sameKey_collision {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hne : F₁ ≠ F₂)
+    (hAdm₁ : ExtendedFlowAdmissible F₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂)
+    (hKey : proj.keyFlow F₁ = proj.keyFlow F₂) : False := by
+  exact no_concreteEuclideanEngineWitness
+    (stableNoEnergy_collision_builds_engine
+      (proj := proj) H hne hAdm₁ hAdm₂ hKey)
+
+/-#############################################################################
+  §3. Infinite generated-flow load forces the forbidden engine
+#############################################################################-/
+
+/--
+An infinite generated-flow family, together with a finite stable ledger key,
+forces a same-key collision; in a no-energy stable universe that collision is a
+concrete Euclidean engine.
+-/
+theorem infiniteFlows_in_stableNoEnergy_build_engine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj)
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)}
+    (h𝓕 : InfiniteExtendedGeneratedFlowFamily A M0 𝓕) :
+    ∃ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+      ExtendedFlowSameKeyCollision proj 𝓕 F₁ F₂ ∧
+      ConcreteEuclideanEngineWitness A M0 := by
+  rcases infinite_extended_flows_force_key_collision
+      (A := A) (M0 := M0) proj h𝓕 with ⟨F₁, F₂, hCol⟩
+  have hEngine : ConcreteEuclideanEngineWitness A M0 :=
+    stableNoEnergy_collision_builds_engine
+      (proj := proj) H
+      hCol.distinct hCol.left_admissible hCol.right_admissible hCol.same_key
+  exact ⟨F₁, F₂, hCol, hEngine⟩
+
+/--
+The same statement as contradiction: a no-energy stable finite ledger cannot
+absorb an infinite generated-flow load.
+-/
+theorem infiniteFlows_impossible_in_stableNoEnergy {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj)
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)}
+    (h𝓕 : InfiniteExtendedGeneratedFlowFamily A M0 𝓕) : False := by
+  rcases infiniteFlows_in_stableNoEnergy_build_engine
+      (proj := proj) H h𝓕 with ⟨_F₁, _F₂, _hCol, hEngine⟩
+  exact no_concreteEuclideanEngineWitness hEngine
+
+/--
+Readable corollary: to close a finite-twin universe under stable no-energy
+rules, one must construct a forbidden engine.
+
+The theorem is intentionally local: it starts from an already generated infinite
+family.  The earlier source-side patches prove that such a family is generated
+from a last-twin bound.  This local theorem isolates the engine extraction.
+-/
+theorem finiteLoadStableTheory_requires_engine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoEnergyStableUniverse proj)
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)}
+    (h𝓕 : InfiniteExtendedGeneratedFlowFamily A M0 𝓕) :
+    ∃ W : ConcreteEuclideanEngineWitness A M0, True := by
+  rcases infiniteFlows_in_stableNoEnergy_build_engine
+      (proj := proj) H h𝓕 with ⟨_F₁, _F₂, _hCol, hEngine⟩
+  exact ⟨hEngine, trivial⟩
+
+/-#############################################################################
+  §4. Stable no-engine theory as an impossible finite-twin theory
+#############################################################################-/
+
+/--
+A named proposition for the phrase "there is a stable no-engine Step00 theory".
+-/
+abbrev StableNoEngineStep00TheoryExists : Prop :=
+  ∃ A : ℕ, Nonempty (StableNoEngineStep00Theory A)
+
+/--
+If such a stable no-engine theory exists, then lower twin centres are infinite.
+-/
+theorem twinLowersInfinite_of_stableNoEngineTheoryExists
+    (H : StableNoEngineStep00TheoryExists) : TwinLowers.Infinite := by
+  rcases H with ⟨A, ⟨T⟩⟩
+  exact twinLowersInfinite_of_stableNoEngineTheory (A := A) T
+
+/--
+Thus a stable no-engine Step00 theory cannot coexist with the finite-twin
+hypothesis.
+-/
+theorem no_finiteTwin_stableNoEngineTheory
+    (H : StableNoEngineStep00TheoryExists)
+    (hFiniteTwins : ¬ TwinLowers.Infinite) : False :=
+  hFiniteTwins (twinLowersInfinite_of_stableNoEngineTheoryExists H)
+
+/-#############################################################################
+  §5. Audit residue
+#############################################################################-/
+
+/--
+Audit phrase, as a proposition: proving a stable finite-twin universe without
+energy/seam/compression/mixing support forces construction of a concrete
+Euclidean engine.  Since such engines are impossible by `lexRank`, the stable
+finite-twin theory is internally inconsistent.
+-/
+abbrev ProvingStableFiniteTwinTheoryBuildsPerpetualEngine : Prop :=
+  ∀ {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)},
+    NoEnergyStableUniverse proj →
+    InfiniteExtendedGeneratedFlowFamily A M0 𝓕 →
+      ∃ W : ConcreteEuclideanEngineWitness A M0, True
+
+/-- The audit phrase is realised by the finite-load engine extraction theorem. -/
+theorem provingStableFiniteTwinTheoryBuildsPerpetualEngine :
+    ProvingStableFiniteTwinTheoryBuildsPerpetualEngine := by
+  intro A M0 proj 𝓕 hStable hFlows
+  exact finiteLoadStableTheory_requires_engine
+    (proj := proj) hStable hFlows
+
+/--
+The stronger, fully forbidden form: the same attempted stable explanation is
+impossible because the engine it builds is disallowed.
+-/
+abbrev StableFiniteTwinTheoryIsImpossible : Prop :=
+  ∀ {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {𝓕 : Set (ExtendedProperGeneratedFlow A M0)},
+    NoEnergyStableUniverse proj →
+    InfiniteExtendedGeneratedFlowFamily A M0 𝓕 → False
+
+/-- The impossible form follows immediately from `lexRank`. -/
+theorem stableFiniteTwinTheoryIsImpossible :
+    StableFiniteTwinTheoryIsImpossible := by
+  intro A M0 proj 𝓕 hStable hFlows
+  exact infiniteFlows_impossible_in_stableNoEnergy
+    (proj := proj) hStable hFlows
+
+/-! Машинная честность stable-no-engine-формы -/
+
+/-- «Стабильная no-engine теория существует» ⟺ старый узел (полная эквивалентность:
+    диагностические поля noStrictCompression/noMixing восстановимы из резолвера). -/
+theorem stableNoEngineTheoryExists_iff_lastStep00Obligation :
+    StableNoEngineStep00TheoryExists ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, ⟨T⟩⟩
+    exact (noEnergyStableUniverseLastStep00Obligation_iff_lastStep00Obligation).mp
+      ⟨A, T.projOf, T.stableNoEnergy⟩
+  · rintro ⟨A, projOf, h⟩
+    refine ⟨A, ⟨⟨projOf,
+      fun M0 => (noEnergyStableUniverse_iff_resolves (projOf M0)).mpr (h M0),
+      fun M0 => ((compressionAudit_iff_resolves (projOf M0)).mpr (h M0)).2,
+      fun M0 F₁ F₂ hMix => ?_⟩⟩⟩
+    obtain ⟨⟨hne, hAdm₁, hAdm₂, hkey⟩, -, -⟩ :=
+      informationMixingWithoutEngine_iff_mixingCollision.mp hMix
+    exact no_extendedFlowResolutionAlternative A M0
+      (h M0 F₁ F₂ hne hAdm₁ hAdm₂ hkey)
+
+/-- Стабильная теория на каждом масштабе M0 предъявляет twin выше M0 (детектор). -/
+theorem twin_above_of_stableNoEngineTheory {A : ℕ}
+    (T : StableNoEngineStep00Theory A) (M0 : ℕ) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_noEnergyStableUniverse (T.projOf M0) (T.stableNoEnergy M0)
+
 end GeneratedFlowFormulation
 
 

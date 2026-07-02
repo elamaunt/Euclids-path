@@ -121,6 +121,11 @@
   закрыта честно (`relevantViolation_gives_window`). Маршрут требует переформулировки с привязанной целью.
   **Честность (машинно):** `offCriticalBridge_iff_RH` — вход impossible-engine-маршрута
   **эквивалентен RH дословно**; `spectralBridge_forces_no_violation` — мост скрыто несёт RH-силы.
+  Вход №1 декомпозирован в two-transport форму (`Engine/RiemannTwoTransportFront`: split +
+  local realization + builder; вся сборка доказана) — но честность машинная:
+  `coherentTwoTransportBridge_iff_RH` — когерентный two-transport мост **⟺ RH дословно**
+  (циркулярность наследуется через пустоту фабрики: `no_coherent_twoTransportLaw`); аудит-гейты
+  кирпичей свободны (`regateTrivially`). Декомпозиция — карта обязательств, не некруговой путь.
   Живые входы после всего: `EngineBridge` (или `TwoTransportBridge`) / `LiouvilleBound`(⟺RH классически).
   Единый rank-parity узел ([32](prose/32_RankParityUnity.md)) — гипотеза единства, не редукция.
 - ⚠️ **Единственный `axiom` репозитория (карантин):** `Engine/CausalClosureAxiom.lean` объявляет

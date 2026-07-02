@@ -6460,6 +6460,252 @@ theorem twin_above_of_stableNoEngineTheory {A : ℕ}
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_noEnergyStableUniverse (T.projOf M0) (T.stableNoEnergy M0)
 
+/-#############################################################################
+  ДВОЙСТВЕННЫЙ АУДИТ: НЕТ ОПРОВЕРЖЕНИЯ БЕЗ ДВИГАТЕЛЯ (кирпич:
+  dual_no_refutation_without_engine).
+  Двойственный слоган: локальная попытка ОПРОВЕРГНУТЬ стабильную no-engine
+  теорию same-key коллизией сама строит запрещённый двигатель. НЕ метаматика
+  (не независимость) — объектный факт архитектуры. Фиксы: data-структуры
+  attempt → импоссибилити в форме `→ False`. Ниже — кирпич + машинная
+  честность: attempt пуст НАПРЯМУЮ через seam-честность (stable пакует
+  «коллизий нет» вместе с коллизией) — двойственность = surfaced ex-falso.
+#############################################################################-/
+
+/-#############################################################################
+  §1. A local same-key refutation attempt
+#############################################################################-/
+
+/--
+A local attempt to refute a stable no-engine ledger theory.
+
+It consists of exactly the data one would naturally use to attack the theory:
+two different admissible generated genealogies which the finite ledger projection
+identifies by the same key.
+
+The field `stable` is important: without the no-energy/no-seam stability
+principle, a same-key collision can merely be a fake collision produced by a
+bad projection.  Under stability, the already proved resolver says that the
+collision must be geometrically supported, hence it builds an engine.
+-/
+structure LocalStableRefutationAttempt {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) where
+  stable : NoEnergyStableUniverse proj
+  F₁ : ExtendedProperGeneratedFlow A M0
+  F₂ : ExtendedProperGeneratedFlow A M0
+  distinct : F₁ ≠ F₂
+  left_admissible : ExtendedFlowAdmissible F₁
+  right_admissible : ExtendedFlowAdmissible F₂
+  same_key : proj.keyFlow F₁ = proj.keyFlow F₂
+
+/--
+A local stable refutation attempt is already a concrete Euclidean engine.
+
+This is the formal version of:
+
+  to refute the stable no-energy ledger by a real same-key collision, one must
+  produce the forbidden return/cycle mechanism.
+-/
+theorem localStableRefutationAttempt_builds_engine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : LocalStableRefutationAttempt proj) :
+    ConcreteEuclideanEngineWitness A M0 := by
+  exact stableNoEnergy_collision_builds_engine
+    (proj := proj) R.stable
+    R.distinct R.left_admissible R.right_admissible R.same_key
+
+/--
+Therefore no such local stable refutation attempt can exist in the corrected
+Step00 graph, since the constructed engine is forbidden by `lexRank`.
+-/
+theorem no_localStableRefutationAttempt {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : LocalStableRefutationAttempt proj) : False :=
+  no_concreteEuclideanEngineWitness
+    (localStableRefutationAttempt_builds_engine (proj := proj) R)
+
+/-#############################################################################
+  §2. Refuting by infinite load is also engine construction
+#############################################################################-/
+
+/--
+An infinite-load refutation attempt: a stable finite ledger is asked to absorb
+an infinite generated-flow family.
+
+The previous source-side patches are what produce such an infinite family from
+a last-twin bound.  Here we isolate the local contradiction: finite key +
+infinite family gives a same-key collision; stability turns that collision into
+an engine.
+-/
+structure InfiniteLoadStableRefutationAttempt {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) where
+  stable : NoEnergyStableUniverse proj
+  𝓕 : Set (ExtendedProperGeneratedFlow A M0)
+  infiniteFlows : InfiniteExtendedGeneratedFlowFamily A M0 𝓕
+
+/--
+An infinite-load refutation attempt contains a local same-key refutation attempt,
+by pigeonhole over the finite semantic key.
+-/
+theorem infiniteLoadStableRefutationAttempt_to_local {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : InfiniteLoadStableRefutationAttempt proj) :
+    ∃ L : LocalStableRefutationAttempt proj, True := by
+  rcases infinite_extended_flows_force_key_collision
+      (A := A) (M0 := M0) proj R.infiniteFlows with ⟨F₁, F₂, hCol⟩
+  refine ⟨{ stable := R.stable
+            F₁ := F₁
+            F₂ := F₂
+            distinct := hCol.distinct
+            left_admissible := hCol.left_admissible
+            right_admissible := hCol.right_admissible
+            same_key := hCol.same_key }, trivial⟩
+
+/--
+Thus an infinite-load refutation attempt is also an engine construction.
+-/
+theorem infiniteLoadStableRefutationAttempt_builds_engine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : InfiniteLoadStableRefutationAttempt proj) :
+    ConcreteEuclideanEngineWitness A M0 := by
+  rcases infiniteLoadStableRefutationAttempt_to_local
+      (proj := proj) R with ⟨L, _⟩
+  exact localStableRefutationAttempt_builds_engine (proj := proj) L
+
+/--
+And therefore the infinite-load refutation attempt is impossible.
+-/
+theorem no_infiniteLoadStableRefutationAttempt {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : InfiniteLoadStableRefutationAttempt proj) : False :=
+  no_concreteEuclideanEngineWitness
+    (infiniteLoadStableRefutationAttempt_builds_engine (proj := proj) R)
+
+/-#############################################################################
+  §3. The exact dual slogan
+#############################################################################-/
+
+/--
+Predicate-level slogan: every local refutation of a stable no-engine ledger by a
+same-key collision is a perpetual-engine construction.
+-/
+abbrev RefutingStableTheoryBuildsPerpetualEngine : Prop :=
+  ∀ {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0},
+    LocalStableRefutationAttempt proj →
+      ConcreteEuclideanEngineWitness A M0
+
+/-- The slogan is realised by `localStableRefutationAttempt_builds_engine`. -/
+theorem refutingStableTheoryBuildsPerpetualEngine :
+    RefutingStableTheoryBuildsPerpetualEngine := by
+  intro A M0 proj R
+  exact localStableRefutationAttempt_builds_engine (proj := proj) R
+
+/--
+Forbidden dual form: since concrete Euclidean engines are impossible, no local
+same-key refutation of a stable no-engine ledger is available.
+-/
+abbrev RefutingStableTheoryWithoutEngineIsImpossible : Prop :=
+  ∀ {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0},
+    LocalStableRefutationAttempt proj → False
+
+/-- The forbidden dual form follows immediately from `lexRank`. -/
+theorem refutingStableTheoryWithoutEngineIsImpossible :
+    RefutingStableTheoryWithoutEngineIsImpossible := by
+  intro A M0 proj
+  exact no_localStableRefutationAttempt (proj := proj)
+
+/--
+Infinite-load version of the same dual audit: attempting to refute the stable
+ledger by forcing it to absorb infinitely many generated genealogies also builds
+the forbidden engine.
+-/
+abbrev InfiniteLoadRefutationBuildsPerpetualEngine : Prop :=
+  ∀ {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0},
+    InfiniteLoadStableRefutationAttempt proj →
+      ConcreteEuclideanEngineWitness A M0
+
+/-- Realisation of the infinite-load dual slogan. -/
+theorem infiniteLoadRefutationBuildsPerpetualEngine :
+    InfiniteLoadRefutationBuildsPerpetualEngine := by
+  intro A M0 proj R
+  exact infiniteLoadStableRefutationAttempt_builds_engine (proj := proj) R
+
+/--
+Therefore an infinite-load refutation without engine is also impossible.
+-/
+abbrev InfiniteLoadRefutationWithoutEngineIsImpossible : Prop :=
+  ∀ {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0},
+    InfiniteLoadStableRefutationAttempt proj → False
+
+/-- Realisation of the infinite-load impossible form. -/
+theorem infiniteLoadRefutationWithoutEngineIsImpossible :
+    InfiniteLoadRefutationWithoutEngineIsImpossible := by
+  intro A M0 proj
+  exact no_infiniteLoadStableRefutationAttempt (proj := proj)
+
+/-#############################################################################
+  §4. Audit residue
+#############################################################################-/
+
+/--
+Audit phrase as a proposition:
+
+  In this Step00 architecture, proving the stable finite theory builds a
+  perpetual engine; refuting it internally by a real same-key collision also
+  builds the same forbidden object.  The obstruction is not a Lean/metalogical
+  incompleteness claim.  It is the object-level fact that any genuine local
+  attack on the stable ledger must pass through a return/cycle certificate.
+-/
+abbrev ProvingOrRefutingStableTheoryRequiresEngine : Prop :=
+  ProvingStableFiniteTwinTheoryBuildsPerpetualEngine ∧
+  RefutingStableTheoryBuildsPerpetualEngine ∧
+  InfiniteLoadRefutationBuildsPerpetualEngine
+
+/-- The combined audit slogan is realised by the previous theorems. -/
+theorem provingOrRefutingStableTheoryRequiresEngine :
+    ProvingOrRefutingStableTheoryRequiresEngine := by
+  exact ⟨provingStableFiniteTwinTheoryBuildsPerpetualEngine,
+         refutingStableTheoryBuildsPerpetualEngine,
+         infiniteLoadRefutationBuildsPerpetualEngine⟩
+
+/--
+The fully forbidden form: all those engine-mediated routes are impossible in the
+corrected concrete Step00 graph, because `lexRank` rules out legal cycles.
+-/
+abbrev NoProofOrRefutationWithoutForbiddenEngine : Prop :=
+  StableFiniteTwinTheoryIsImpossible ∧
+  RefutingStableTheoryWithoutEngineIsImpossible ∧
+  InfiniteLoadRefutationWithoutEngineIsImpossible
+
+/-- The forbidden combined form. -/
+theorem noProofOrRefutationWithoutForbiddenEngine :
+    NoProofOrRefutationWithoutForbiddenEngine := by
+  exact ⟨stableFiniteTwinTheoryIsImpossible,
+         refutingStableTheoryWithoutEngineIsImpossible,
+         infiniteLoadRefutationWithoutEngineIsImpossible⟩
+
+/-! Машинная честность dual-формы -/
+
+/-- ПРЯМАЯ пустота попытки: attempt пакует «коллизий нет» (stable ⟹ резолвер)
+    вместе с коллизией — противоречие без обхода через двигатель. Двойственный
+    слоган = явно поднятый ex-falso; оба маршрута — один и тот же факт. -/
+theorem localStableRefutationAttempt_empty {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : LocalStableRefutationAttempt proj) : False :=
+  seamAudit_forces_no_collision R.stable.2.1 R.stable.2.2 R.F₁ R.F₂
+    ⟨R.distinct, R.left_admissible, R.right_admissible, R.same_key⟩
+
+/-- Прямая пустота infinite-load попытки (через резолвер, без двигателя). -/
+theorem infiniteLoadStableRefutationAttempt_empty {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (R : InfiniteLoadStableRefutationAttempt proj) : False :=
+  infinite_extended_flows_impossible_with_resolution
+    (A := A) (M0 := M0) proj R.infiniteFlows
+    ((noEnergyStableUniverse_iff_resolves proj).mp R.stable)
+
 end GeneratedFlowFormulation
 
 

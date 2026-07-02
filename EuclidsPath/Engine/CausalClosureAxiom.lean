@@ -63,12 +63,25 @@
   каскада при балансе (noSingularCascade_of_energyBalance) — зелёная ТЕОРЕМА
   фронта, не декрет; «гэпнутость в поставках» уже §12 — дубликат не вводится.
   §13 несёт единственную честную растяжку. Клэй НЕ решается и НЕ объявляется.
+
+  ХОДЖ-ЯЗЫК ДЕКРЕТА (§14): ШЕСТОЙ границы НЕТ — намеренно. Трилемма
+  (Engine/HodgeFront §6): универсальный кандидат опровержим (cookedUnpaid —
+  шаг спуска с высоты 1 упирается в якорь квантования), экзистенциальный уже
+  зелёно доказан (cookedPaid), chain-манифестационная форма ВЫРОЖДЕНА в
+  зелёную теорему (цепей нет ни в одной модели — двигатель мёртв безусловно,
+  isEmpty_unpaidDescentChain), манифестационная форма над одиночным
+  неоплаченным классом НЕСОВМЕСТИМА с принятой границей (cookedUnpaidClass
+  зелёно предъявим). Коллапс per-model закона (descentLaw_iff_hodgeProperty)
+  зелёный и безграничный — декретировать закон = декретировать цель.
+  §14 несёт единственную честную растяжку. В mathlib теории Ходжа НЕТ;
+  Клэй НЕ решается и НЕ объявляется.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
 import EuclidsPath.Engine.RiemannManifestationFront
 import EuclidsPath.Engine.PNPRankPaymentFront
 import EuclidsPath.Engine.YangMillsFront
 import EuclidsPath.Engine.NavierStokesFront
+import EuclidsPath.Engine.HodgeFront
 
 set_option autoImplicit false
 
@@ -2457,6 +2470,34 @@ theorem quarantine_inconsistent_if_nsManifestationLaw_decreed
 
 -- Машинная видимость: НС-растяжка заражена ровно step00FirstCause.
 #print axioms quarantine_inconsistent_if_nsManifestationLaw_decreed
+
+/-#############################################################################
+  §14. ХОДЖ-ЯЗЫК ДЕКРЕТА: шестой границы НЕТ — намеренно
+  (трилемма: Engine/HodgeFront §6 — универсал опровержим (cookedUnpaid),
+  экзистенциал уже зелёно доказан (cookedPaid), chain-форма вырождена в
+  зелёную V2 (isEmpty_unpaidDescentChain — двигатель мёртв безусловно),
+  манифестационная форма над предъявимым классом несовместима с принятой
+  границей. Коллапс descentLaw_iff_hodgeProperty зелёный и безграничный —
+  декретировать закон = декретировать цель. «Гэпнутость» мира декрета в
+  языке поставок — уже §12, дубликат НЕ вводится. Клэй НЕ решается и НЕ
+  объявляется; алгебраической геометрии в mathlib нет — модель абстрактна.)
+#############################################################################-/
+
+/-- **РАСТЯЖКА (Ходж):** если манифестационную форму шестого поля когда-либо
+    примут или докажут, карантин противоречив — False выводимо ИМЕННО здесь
+    (кованый неоплаченный класс предъявим зелёно; принятая граница сжигает
+    поставку на своём масштабе). Безопасность растяжки: закон не
+    зелёно-доказуем — он ⟺ глобальной заморозке ВСЕХ леджеров
+    (hodgeManifestationLaw_iff_no_resolution), а зелёный мир знает заморозку
+    только при A ≤ 4 (no_projection_resolves_at_smallScale); масштабы A ≥ 5
+    подлинно открыты. ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+theorem quarantine_inconsistent_if_hodgeManifestationLaw_decreed
+    (h : EuclidsPath.Hodge.HodgeManifestationLaw) : False :=
+  EuclidsPath.Hodge.hodgeManifestationLaw_refutes_boundary h
+    step00CausalClosure
+
+-- Машинная видимость: Ходж-растяжка заражена ровно step00FirstCause.
+#print axioms quarantine_inconsistent_if_hodgeManifestationLaw_decreed
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

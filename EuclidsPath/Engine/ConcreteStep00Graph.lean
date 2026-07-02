@@ -7572,6 +7572,372 @@ theorem lastStep00Obligation_forces_scale_ge_five
   · exact absurd ⟨projOf, h⟩
       (smallScale_branch_of_lastStep00Obligation_refuted (by omega))
 
+/-#############################################################################
+  ВНУТРЕННЯЯ ПРИЧИНА НОВОЙ ВСЕЛЕННОЙ (кирпич: internal_cause_of_new_universe;
+  зависимый слой RealisedNegationOfCausalClosure РЕКОНСТРУИРОВАН — кирпич
+  causal_closure_negation_self_destruct отсутствует в поставке).
+  Внешняя причина (вход/аксиома) порождает вселенную; полная внутренняя
+  причина = boundary-crossing self-proof = запрещённый двигатель; реализованное
+  отрицание причины самоуничтожается. Ниже — слой + кирпич + машинная
+  честность: внутренняя причина ⟺ P ∧ ¬P (тавтологично для любого P);
+  трихотомия режимов КОЛЛАПСИРУЕТ в «режим ⟺ внешний вход P».
+#############################################################################-/
+
+/-- Реализованное отрицание causal-closure: конкретное ВНУТРЕННЕЕ препятствие —
+    стабильный ledger + реальная same-key коллизия против него (а не голое
+    внешнее логическое ¬P). Слой РЕКОНСТРУИРОВАН по спецификации
+    отсутствующего кирпича causal_closure_negation_self_destruct. -/
+def RealisedNegationOfCausalClosure : Prop :=
+  ∃ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
+    Nonempty (LocalStableRefutationAttempt proj)
+
+/-- Реализованное отрицание самоуничтожается: попытка пуста (lexRank/seam). -/
+theorem no_realisedNegationOfCausalClosure :
+    ¬ RealisedNegationOfCausalClosure := by
+  rintro ⟨A, M0, proj, ⟨R⟩⟩
+  exact no_localStableRefutationAttempt R
+
+/-#############################################################################
+  §1. External cause versus internal cause
+#############################################################################-/
+
+/--
+An external cause for a universe-generating principle is just the principle
+accepted as an outside input.
+
+This is intentionally weak: it says nothing about derivability inside the
+Step00 ledger-flow universe.
+-/
+abbrev ExternalUniverseCause (P : Prop) : Prop := P
+
+/--
+An internal cause for a universe-generating principle is a boundary-crossing
+self-proof: from the principle itself one can manufacture an internal stable
+Step00 decision attempt.
+
+This is exactly the dangerous case.  Previous patches show that any such
+internalisation builds the forbidden Euclidean engine.
+-/
+abbrev InternalUniverseCause (P : Prop) : Prop :=
+  BoundaryCrossingSelfProof P
+
+/--
+An external cause may be used as an external input; an internal cause is not
+thereby obtained.
+-/
+abbrev ExternalButNotInternalCause (P : Prop) : Prop :=
+  ExternalUniverseCause P ∧ ¬ InternalUniverseCause P
+
+/--
+Any internal cause constructs the forbidden concrete Euclidean engine.
+-/
+theorem internalUniverseCause_builds_engine {P : Prop}
+    (h : InternalUniverseCause P) : SomeConcreteEuclideanEngine :=
+  boundaryCrossingSelfProof_builds_engine h
+
+/--
+No internal cause for a complete universe-generating principle exists in the
+stable no-engine Step00 architecture.
+-/
+theorem no_internalUniverseCause {P : Prop} :
+    ¬ InternalUniverseCause P :=
+  no_boundaryCrossingSelfProof
+
+/--
+If an internal cause is nevertheless assumed, contradiction follows.
+-/
+theorem internalUniverseCause_contradiction {P : Prop}
+    (h : InternalUniverseCause P) : False :=
+  no_internalUniverseCause h
+
+/-#############################################################################
+  §2. The Step00 causal-closure principle as an external cause
+#############################################################################-/
+
+/--
+The strict Step00 causal-closure universe has an external cause exactly when the
+strict external universe-generating principle is supplied as an outside input.
+-/
+abbrev StrictStep00UniverseHasExternalCause : Prop :=
+  ExternalUniverseCause ExternalUniverseGeneratingPrinciple
+
+/--
+The strict Step00 causal-closure universe has no internal cause.
+-/
+abbrev StrictStep00UniverseHasNoInternalCause : Prop :=
+  ¬ InternalUniverseCause ExternalUniverseGeneratingPrinciple
+
+/--
+External cause of the strict Step00 universe produces the already audited twin
+infinitude conclusion.
+-/
+theorem strictStep00ExternalCause_generates_twins
+    (h : StrictStep00UniverseHasExternalCause) : TwinLowers.Infinite :=
+  externalUniverseGeneratingPrinciple_generates_twins h
+
+/--
+The strict Step00 universe cannot have a complete internal cause.
+-/
+theorem strictStep00Universe_has_no_internalCause :
+    StrictStep00UniverseHasNoInternalCause :=
+  no_strictExternalUniverse_selfProof
+
+/--
+If someone claims an internal cause for the strict Step00 universe, that claim
+is a forbidden-engine contradiction.
+-/
+theorem strictStep00InternalCause_contradiction
+    (h : InternalUniverseCause ExternalUniverseGeneratingPrinciple) : False :=
+  strictStep00Universe_has_no_internalCause h
+
+/--
+With an external cause supplied, the strict Step00 universe is external-only:
+it generates the Step00 conclusion, but it cannot be self-caused internally.
+-/
+theorem strictStep00Universe_externalOnly
+    (h : StrictStep00UniverseHasExternalCause) :
+    ExternalButNotInternalCause ExternalUniverseGeneratingPrinciple := by
+  exact ⟨h, strictStep00Universe_has_no_internalCause⟩
+
+/-#############################################################################
+  §3. No-energy universe: an internal cause would be self-support
+#############################################################################-/
+
+/--
+The no-energy Step00 universe has an external cause when the no-energy stable
+universe principle is supplied as an outside input.
+-/
+abbrev NoEnergyStep00UniverseHasExternalCause : Prop :=
+  ExternalUniverseCause NoEnergyUniverseGeneratingPrinciple
+
+/--
+An internal cause for the no-energy universe is exactly the no-energy
+self-support attempt isolated in the previous patch.
+-/
+theorem noEnergyInternalCause_iff_selfSupport :
+    InternalUniverseCause NoEnergyUniverseGeneratingPrinciple ↔
+      NoEnergySelfSupportAttempt := by
+  rfl
+
+/--
+The no-energy universe cannot cause/support itself internally.
+-/
+theorem noEnergyStep00Universe_has_no_internalCause :
+    ¬ InternalUniverseCause NoEnergyUniverseGeneratingPrinciple :=
+  no_noEnergyUniverse_selfProof
+
+/--
+If a no-energy universe tries to be internally self-caused, contradiction
+follows.  This is the formal version of: without an external cause or energy,
+self-support is the forbidden engine.
+-/
+theorem noEnergyInternalCause_contradiction
+    (h : InternalUniverseCause NoEnergyUniverseGeneratingPrinciple) : False :=
+  noEnergyStep00Universe_has_no_internalCause h
+
+/--
+With an external no-energy cause supplied, the no-energy universe is still
+external-only relative to the audited architecture.
+-/
+theorem noEnergyStep00Universe_externalOnly
+    (h : NoEnergyStep00UniverseHasExternalCause) :
+    ExternalButNotInternalCause NoEnergyUniverseGeneratingPrinciple := by
+  exact ⟨h, noEnergyStep00Universe_has_no_internalCause⟩
+
+/-#############################################################################
+  §4. Arguing by contradiction about the cause
+#############################################################################-/
+
+/--
+A bare external denial that there is an internal cause is a harmless logical
+hypothesis.  It has no local Step00 content until realised as a concrete seam
+or stable-counterexample object.
+-/
+abbrev ExternalDenialOfInternalCause (P : Prop) : Prop :=
+  ¬ InternalUniverseCause P
+
+/--
+For the strict Step00 universe, the external denial of an internal cause is in
+fact already true in the audited architecture.
+-/
+theorem strictStep00_externalDenialOfInternalCause :
+    ExternalDenialOfInternalCause ExternalUniverseGeneratingPrinciple :=
+  strictStep00Universe_has_no_internalCause
+
+/--
+For the no-energy Step00 universe, the external denial of an internal cause is
+also true.
+-/
+theorem noEnergy_externalDenialOfInternalCause :
+    ExternalDenialOfInternalCause NoEnergyUniverseGeneratingPrinciple :=
+  noEnergyStep00Universe_has_no_internalCause
+
+/--
+A realised denial of causal cause inside Step00 is exactly a realised negation
+of causal closure: it must present a concrete local obstruction rather than a
+bare external logical negation.
+-/
+abbrev RealisedDenialOfCausalCause : Prop :=
+  RealisedNegationOfCausalClosure
+
+/--
+No realised denial of causal cause exists in the stable Step00 architecture.
+-/
+theorem no_realisedDenialOfCausalCause :
+    ¬ RealisedDenialOfCausalCause :=
+  no_realisedNegationOfCausalClosure
+
+/--
+Thus a proof by contradiction against the existence of a cause has no internal
+realisation unless it leaves the audited stable/no-engine universe.
+-/
+theorem byContra_noInternalCause_has_no_internal_realisation
+    {P : Prop} (h : ExternalDenialOfInternalCause P) :
+    ¬ RealisedDenialOfCausalCause := by
+  exact no_realisedDenialOfCausalCause
+
+/-#############################################################################
+  §5. Final trichotomy: external cause, internal engine, or singular failure
+#############################################################################-/
+
+/--
+A cause mode for a Step00 universe-generating principle.
+
+The three possibilities correspond to the prose analysis:
+
+  * `external`: the universe is generated by an outside input/axiom;
+  * `internal`: the universe attempts to cause itself internally;
+  * `negated`: the system tries to realise the denial of a causal explanation.
+
+Theorems below show that only the external mode survives in the audited
+no-engine architecture.
+-/
+inductive UniverseCauseMode (P : Prop) : Prop where
+  | external (h : ExternalUniverseCause P) : UniverseCauseMode P
+  | internal (h : InternalUniverseCause P) : UniverseCauseMode P
+  | negated (h : RealisedDenialOfCausalCause) : UniverseCauseMode P
+
+/--
+The internal cause mode is impossible.
+-/
+theorem universeCauseMode_internal_impossible {P : Prop}
+    (h : InternalUniverseCause P) : False :=
+  internalUniverseCause_contradiction h
+
+/--
+The realised-negation mode is impossible.
+-/
+theorem universeCauseMode_negated_impossible
+    (h : RealisedDenialOfCausalCause) : False :=
+  no_realisedDenialOfCausalCause h
+
+/--
+If a universe cause mode does not use an external input, contradiction follows.
+-/
+theorem nonExternalUniverseCauseMode_impossible {P : Prop}
+    (M : UniverseCauseMode P)
+    (hNotExternal : ¬ ExternalUniverseCause P) : False := by
+  cases M with
+  | external h => exact hNotExternal h
+  | internal h => exact universeCauseMode_internal_impossible h
+  | negated h => exact universeCauseMode_negated_impossible h
+
+/--
+For the strict Step00 causal-closure universe: any surviving cause mode must be
+external.  Internal self-cause builds the forbidden engine; realised denial
+self-destructs.
+-/
+theorem strictStep00_cause_must_be_external
+    (M : UniverseCauseMode ExternalUniverseGeneratingPrinciple)
+    (hNoExternal : ¬ ExternalUniverseCause ExternalUniverseGeneratingPrinciple) :
+    False :=
+  nonExternalUniverseCauseMode_impossible M hNoExternal
+
+/--
+For the no-energy Step00 universe: any surviving cause mode must also be
+external.  An internal cause is precisely no-energy self-support, i.e. the
+forbidden engine.
+-/
+theorem noEnergyStep00_cause_must_be_external
+    (M : UniverseCauseMode NoEnergyUniverseGeneratingPrinciple)
+    (hNoExternal : ¬ ExternalUniverseCause NoEnergyUniverseGeneratingPrinciple) :
+    False :=
+  nonExternalUniverseCauseMode_impossible M hNoExternal
+
+/-#############################################################################
+  §6. Final slogans as checked propositions
+#############################################################################-/
+
+/--
+Slogan 1: a new Step00 universe may have an external cause, but not a complete
+internal cause, in the audited no-engine architecture.
+-/
+abbrev NewUniverseCanBeExternallyButNotInternallyCaused : Prop :=
+  StrictStep00UniverseHasExternalCause →
+    ExternalButNotInternalCause ExternalUniverseGeneratingPrinciple
+
+/-- Realisation of slogan 1. -/
+theorem newUniverseCanBeExternallyButNotInternallyCaused :
+    NewUniverseCanBeExternallyButNotInternallyCaused :=
+  strictStep00Universe_externalOnly
+
+/--
+Slogan 2: if the no-energy universe tries to cause/support itself internally,
+that self-cause is the forbidden engine contradiction.
+-/
+abbrev NoEnergySelfCauseIsForbiddenEngineContradiction : Prop :=
+  ¬ InternalUniverseCause NoEnergyUniverseGeneratingPrinciple
+
+/-- Realisation of slogan 2. -/
+theorem noEnergySelfCauseIsForbiddenEngineContradiction :
+    NoEnergySelfCauseIsForbiddenEngineContradiction :=
+  noEnergyStep00Universe_has_no_internalCause
+
+/--
+Slogan 3: arguing by contradiction against the causal cause is legal externally,
+but any internal realisation of that denial self-destructs.
+-/
+abbrev ByContraAgainstCauseHasNoInternalRealisation : Prop :=
+  ∀ P : Prop,
+    ExternalDenialOfInternalCause P → ¬ RealisedDenialOfCausalCause
+
+/-- Realisation of slogan 3. -/
+theorem byContraAgainstCauseHasNoInternalRealisation :
+    ByContraAgainstCauseHasNoInternalRealisation := by
+  intro P h
+  exact byContra_noInternalCause_has_no_internal_realisation h
+
+/--
+Scope marker: this is an object-level theorem about Step00 causal closure, not a
+claim that ordinary external classical reasoning is forbidden.
+-/
+abbrev ThisDoesNotForbidExternalCausesOrExternalByContra : Prop := True
+
+theorem thisDoesNotForbidExternalCausesOrExternalByContra :
+    ThisDoesNotForbidExternalCausesOrExternalByContra := by
+  trivial
+
+/-! Машинная честность cause-формы -/
+
+/-- Внутренняя причина ⟺ `P ∧ ¬P` (тот же тавтологический факт, что и для
+    self-proof): «полной внутренней причины нет» верно для ЛЮБОГО P. -/
+theorem internalUniverseCause_iff_and_not {P : Prop} :
+    InternalUniverseCause P ↔ (P ∧ ¬ P) :=
+  boundaryCrossingSelfProof_iff_and_not
+
+/-- ТРИХОТОМИЯ КОЛЛАПСИРУЕТ: раз internal- и negated-ветви пусты, режим
+    причины ⟺ просто внешний вход P. «Выживает только внешняя причина» —
+    буквально: других обитаемых ветвей нет. -/
+theorem universeCauseMode_iff {P : Prop} :
+    UniverseCauseMode P ↔ P := by
+  constructor
+  · intro M
+    cases M with
+    | external h => exact h
+    | internal h => exact (internalUniverseCause_contradiction h).elim
+    | negated h => exact (no_realisedNegationOfCausalClosure h).elim
+  · exact UniverseCauseMode.external
+
 end GeneratedFlowFormulation
 
 

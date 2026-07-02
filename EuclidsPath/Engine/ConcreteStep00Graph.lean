@@ -5584,6 +5584,589 @@ theorem twin_above_of_compressionAudit {A M0 : ℕ}
   twin_above_of_resolves proj
     (noSingularity_noStrictCompression_resolves_old hNoSing hNoCompression)
 
+/-#############################################################################
+  ИНФОРМАЦИОННЫЕ АТОМЫ / ИЗВЛЕЧЕНИЕ И СМЕШИВАНИЕ БЕЗ ДВИГАТЕЛЯ (кирпичи:
+  information_atom_extraction + no_free_information_mixing).
+  Атом = генеалогия без строгой компрессии; безатомная вселенная порождает
+  ∞-цепь компрессий (Classical.choose-орбита) — невозможно, значит в каждой
+  обитаемой вселенной ЕСТЬ атом (безусловный результат). Извлечение/
+  смешивание информации без возврата/двигателя/оплаты — сингулярность или
+  компрессия; под парой аудита невозможно. Ниже — кирпичи + машинная
+  честность: extraction/mixing-без-двигателя ⟺ просто коллизия (запреты
+  выполнены даром), atomic-obligation ⟺ старый узел, twin-детекторы.
+#############################################################################-/
+
+/-#############################################################################
+  §1. Information atoms
+#############################################################################-/
+
+/--
+`F` is an information atom for the projection `proj` if no admissible generated
+flow can be obtained from it by a strict causal information-compression step.
+
+This is the formal version of: the start of `F` is an indivisible unit of causal
+information for the current ledger view.
+-/
+def InformationAtom {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ∀ G : ExtendedProperGeneratedFlow A M0,
+    ¬ StrictInformationCompression proj F G
+
+/-- `F` is non-atomic if it admits a strict compression into a smaller internal
+universe. -/
+def InformationSplits {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ∃ G : ExtendedProperGeneratedFlow A M0,
+    StrictInformationCompression proj F G
+
+/-- Atom/split are exact complements, classically. -/
+theorem not_informationAtom_iff_splits {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F : ExtendedProperGeneratedFlow A M0} :
+    ¬ InformationAtom proj F ↔ InformationSplits proj F := by
+  classical
+  constructor
+  · intro hAtom
+    unfold InformationAtom at hAtom
+    push_neg at hAtom
+    exact hAtom
+  · rintro ⟨G, hComp⟩ hAtom
+    exact hAtom G hComp
+
+/-- A whole projection is atomless if every generated genealogy can still be
+strictly compressed. -/
+def NoInformationAtoms {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F : ExtendedProperGeneratedFlow A M0,
+    InformationSplits proj F
+
+/-- The classical successor chosen by an atomless projection.  This definition
+is deliberately local to the audit layer: it is not an algorithmic construction,
+only a witness extractor from `NoInformationAtoms`. -/
+noncomputable def compressionSuccessor {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoInformationAtoms proj)
+    (F : ExtendedProperGeneratedFlow A M0) :
+    ExtendedProperGeneratedFlow A M0 :=
+  Classical.choose (H F)
+
+/-- The chosen successor is really a strict compression target. -/
+theorem compressionSuccessor_spec {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoInformationAtoms proj)
+    (F : ExtendedProperGeneratedFlow A M0) :
+    StrictInformationCompression proj F (compressionSuccessor H F) := by
+  exact Classical.choose_spec (H F)
+
+/-- The orbit obtained by repeatedly compressing a non-atomic genealogy. -/
+noncomputable def compressionOrbit {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoInformationAtoms proj)
+    (F₀ : ExtendedProperGeneratedFlow A M0) :
+    ℕ → ExtendedProperGeneratedFlow A M0 :=
+  fun n => Nat.rec F₀ (fun _ F => compressionSuccessor H F) n
+
+/-- An atomless universe generates an infinite strict information-compression
+chain from any starting flow. -/
+theorem atomless_generates_informationCompressionChain {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (H : NoInformationAtoms proj)
+    (F₀ : ExtendedProperGeneratedFlow A M0) :
+    InformationCompressionChain proj (compressionOrbit H F₀) := by
+  intro i
+  unfold compressionOrbit
+  -- `Nat.rec` at `i + 1` unfolds to the chosen successor of the value at `i`.
+  exact compressionSuccessor_spec (proj := proj) H
+    (Nat.rec F₀ (fun _ F => compressionSuccessor H F) i)
+
+/-- Hence, if at least one generated flow exists, a globally atomless
+information universe is impossible.  Otherwise it would produce an infinite
+strict-compression chain, contradicting `lexRank` well-foundedness. -/
+theorem no_global_atomless_information_universe {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (F₀ : ExtendedProperGeneratedFlow A M0) :
+    ¬ NoInformationAtoms proj := by
+  intro H
+  exact no_informationCompressionChain
+    (proj := proj)
+    (compressionOrbit H F₀)
+    (atomless_generates_informationCompressionChain (proj := proj) H F₀)
+
+/-- Equivalently: every inhabited stable generated-flow universe has at least
+one information atom. -/
+theorem exists_informationAtom_of_inhabited {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (F₀ : ExtendedProperGeneratedFlow A M0) :
+    ∃ F : ExtendedProperGeneratedFlow A M0,
+      InformationAtom proj F := by
+  classical
+  by_contra hNoAtom
+  push_neg at hNoAtom
+  have H : NoInformationAtoms proj := by
+    intro F
+    exact (not_informationAtom_iff_splits (proj := proj) (F := F)).mp (hNoAtom F)
+  exact no_global_atomless_information_universe (proj := proj) F₀ H
+
+/-#############################################################################
+  §2. Taking information without starting the engine
+#############################################################################-/
+
+/--
+A same-key collision tries to remove the information distinguishing two
+admissible genealogies when it identifies them by the finite key but refuses all
+engine/payment explanations.
+
+This object is intentionally *not* a valid resolver.  It is the formal version
+of:
+
+  the ledger has taken causal information away, but no return engine, mutual
+  nesting engine, or payment has been supplied.
+-/
+def InformationExtractionWithoutEngine {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamCollision proj F₁ F₂ ∧
+  ¬ ExtendedFlowReturnCertificate F₁ F₂ ∧
+  ¬ MutuallyNestedUniverses F₁ F₂ ∧
+  ¬ ImpossiblePayment
+
+/--
+The extraction is explained if it is either a forbidden seam singularity or a
+strict information-compression step in one of the two directions.
+-/
+def ExtractionFailureAlternative {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamSingularity proj F₁ F₂ ∨
+  StrictInformationCompression proj F₁ F₂ ∨
+  StrictInformationCompression proj F₂ F₁
+
+/--
+Trying to take causal information without a return engine, mutual nesting, or
+payment can only be a seam singularity or a strict one-way compression.
+
+This is pure classification over the already formalized seam alternatives.  It
+is the precise audit statement:
+
+  information cannot be removed for free; if no engine/payment witness appears,
+  the attempt is either a broken seam or a descending compression event.
+-/
+theorem informationExtractionWithoutEngine_classifies {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : InformationExtractionWithoutEngine proj F₁ F₂) :
+    ExtractionFailureAlternative proj F₁ F₂ := by
+  classical
+  rcases h with ⟨hColl, hNoReturn, hNoMutual, hNoPayment⟩
+  have hAlt := seamCollision_informationCompression_classification
+    (proj := proj) hColl
+  rcases hAlt with hReturn | hAlt
+  · exact False.elim (hNoReturn hReturn)
+  · rcases hAlt with hMutual | hAlt
+    · exact False.elim (hNoMutual hMutual)
+    · rcases hAlt with hPayment | hAlt
+      · exact False.elim (hNoPayment hPayment)
+      · rcases hAlt with hSing | hAlt
+        · exact Or.inl hSing
+        · rcases hAlt with hComp₁₂ | hComp₂₁
+          · exact Or.inr (Or.inl hComp₁₂)
+          · exact Or.inr (Or.inr hComp₂₁)
+
+/-- If seam singularities and strict compressions are both forbidden, then one
+cannot extract information without starting an engine or paying. -/
+theorem no_free_information_extraction {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj) :
+    ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+      ¬ InformationExtractionWithoutEngine proj F₁ F₂ := by
+  intro F₁ F₂ hExtract
+  have hClass := informationExtractionWithoutEngine_classifies
+    (proj := proj) hExtract
+  rcases hClass with hSing | hRest
+  · exact hNoSing F₁ F₂ hSing
+  · rcases hRest with hComp₁₂ | hComp₂₁
+    · exact hNoCompression F₁ F₂ hComp₁₂
+    · exact hNoCompression F₂ F₁ hComp₂₁
+
+/-- A positive form: under the no-singularity/no-compression audit, every
+same-key seam collision must trigger the engine/payment alternatives. -/
+theorem information_cannot_be_taken_without_engine_or_payment {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hColl : LedgerSeamCollision proj F₁ F₂) :
+    ExtendedFlowReturnCertificate F₁ F₂ ∨
+    MutuallyNestedUniverses F₁ F₂ ∨
+    ImpossiblePayment := by
+  classical
+  by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+  · exact Or.inl hReturn
+  · by_cases hMutual : MutuallyNestedUniverses F₁ F₂
+    · exact Or.inr (Or.inl hMutual)
+    · by_cases hPayment : ImpossiblePayment
+      · exact Or.inr (Or.inr hPayment)
+      · have hExtract : InformationExtractionWithoutEngine proj F₁ F₂ :=
+          ⟨hColl, hReturn, hMutual, hPayment⟩
+        exact False.elim
+          ((no_free_information_extraction
+              (proj := proj) hNoSing hNoCompression) F₁ F₂ hExtract)
+
+/-#############################################################################
+  §3. Final audit package
+#############################################################################-/
+
+/--
+The atom/extraction version of the remaining local certificate.
+
+It consists of the two exact non-cheating principles:
+
+  * no broken seam: the projection may not identify two genealogies that the
+    real graph cannot glue;
+  * no unresolved strict compression: information may be compressed only as a
+    genuine descent, not as a terminal explanation of a ledger collision.
+
+Under these two conditions, causal information cannot be taken without producing
+an engine/payment alternative, and an inhabited generated-flow universe must have
+an information atom.
+-/
+structure AtomicInformationAuditPackage (A M0 : ℕ) where
+  proj : SemanticExtendedFlowLedgerProjection A M0
+  noSeamSingularity : NoLedgerSeamSingularity proj
+  noStrictCompression : NoStrictInformationCompression proj
+
+/-- The package gives the old nested resolver. -/
+theorem atomicInformationAudit_resolves_nested {A M0 : ℕ}
+    (P : AtomicInformationAuditPackage A M0) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves P.proj :=
+  noSingularity_noStrictCompression_resolves_nested
+    (proj := P.proj) P.noSeamSingularity P.noStrictCompression
+
+/-- The package gives the old cycle-or-payment resolver. -/
+theorem atomicInformationAudit_resolves_old {A M0 : ℕ}
+    (P : AtomicInformationAuditPackage A M0) :
+    SemanticExtendedFlowLedgerCollisionResolves P.proj :=
+  noSingularity_noStrictCompression_resolves_old
+    (proj := P.proj) P.noSeamSingularity P.noStrictCompression
+
+/-- The final Step00 obligation stated as atomic information conservation:
+for one fixed scale, every last-twin bound has a finite semantic projection
+whose same-key collisions neither tear a seam nor use unresolved strict
+compression as a terminal support mechanism. -/
+abbrev AtomicInformationLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ POf : ∀ M0 : ℕ, AtomicInformationAuditPackage A M0,
+      True
+
+/-- Atomic information conservation is sufficient for the already constructed
+Step00 machine to conclude infinitely many lower twin centers. -/
+theorem twinLowersInfinite_of_atomicInformationLastStep00Obligation
+    (H : AtomicInformationLastStep00Obligation) :
+    TwinLowers.Infinite := by
+  rcases H with ⟨A, POf, _⟩
+  exact twinLowersInfinite_of_global_semanticExtendedResolution
+    (A := A)
+    (projOf := fun M0 => (POf M0).proj)
+    (by
+      intro M0
+      exact atomicInformationAudit_resolves_old (POf M0))
+
+/-- Human-readable residue: this is the exact remaining certificate behind the
+slogan “a start is an indivisible information unit; information cannot be taken
+without starting the engine.” -/
+abbrev RemainingAtomicInformationCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoLedgerSeamSingularity proj ∧
+  NoStrictInformationCompression proj
+
+/-#############################################################################
+  §1. Causal mixing collisions
+#############################################################################-/
+
+/--
+A same-key collision genuinely mixes causal information when the two generated
+flows have different start atoms and different terminal ledger states.
+
+This rules out two weaker phenomena:
+
+* merely two certificates for the same start;
+* merely two histories ending at the same terminal.
+
+A mixing collision is the case where the finite key has identified two distinct
+source/terminal pairings.
+-/
+def InformationMixingCollision {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamCollision proj F₁ F₂ ∧
+  F₁.start ≠ F₂.start ∧
+  F₁.terminal ≠ F₂.terminal
+
+/--
+Free information mixing is a mixing collision that refuses all engine/payment
+explanations already accepted by the audit:
+
+* no direct return certificate;
+* no mutual nesting engine;
+* no impossible-payment certificate.
+
+It is deliberately not a valid final resolver.
+-/
+def InformationMixingWithoutEngine {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  InformationMixingCollision proj F₁ F₂ ∧
+  ¬ ExtendedFlowReturnCertificate F₁ F₂ ∧
+  ¬ MutuallyNestedUniverses F₁ F₂ ∧
+  ¬ ImpossiblePayment
+
+/-- Every free mixing event is, in particular, a free extraction event. -/
+theorem informationMixingWithoutEngine_to_extraction {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : InformationMixingWithoutEngine proj F₁ F₂) :
+    InformationExtractionWithoutEngine proj F₁ F₂ := by
+  rcases h with ⟨hMix, hNoReturn, hNoMutual, hNoPayment⟩
+  exact ⟨hMix.1, hNoReturn, hNoMutual, hNoPayment⟩
+
+/-#############################################################################
+  §2. Classification of free mixing
+#############################################################################-/
+
+/--
+The possible explanations of a free mixing attempt are inherited from the
+extraction layer: either the ledger seam is singular, or the event is actually a
+strict one-way information-compression descent in one of the two directions.
+-/
+def MixingFailureAlternative {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamSingularity proj F₁ F₂ ∨
+  StrictInformationCompression proj F₁ F₂ ∨
+  StrictInformationCompression proj F₂ F₁
+
+/--
+A free mixing attempt classifies as a seam singularity or strict compression.
+This is the precise formal version of:
+
+  information cannot be mixed for free; if no engine/payment witness appears,
+  the attempt is either a broken seam or a descending compression event.
+-/
+theorem informationMixingWithoutEngine_classifies {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : InformationMixingWithoutEngine proj F₁ F₂) :
+    MixingFailureAlternative proj F₁ F₂ := by
+  exact informationExtractionWithoutEngine_classifies
+    (proj := proj) (informationMixingWithoutEngine_to_extraction (proj := proj) h)
+
+/--
+If seam singularities and unresolved strict compression are forbidden, then no
+free information mixing is possible.
+-/
+theorem no_free_information_mixing {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj) :
+    ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+      ¬ InformationMixingWithoutEngine proj F₁ F₂ := by
+  intro F₁ F₂ hMix
+  have hExtract : InformationExtractionWithoutEngine proj F₁ F₂ :=
+    informationMixingWithoutEngine_to_extraction (proj := proj) hMix
+  exact (no_free_information_extraction
+    (proj := proj) hNoSing hNoCompression) F₁ F₂ hExtract
+
+/--
+Positive form: every genuine same-key mixing collision must trigger an
+engine/payment alternative, unless the projection violates the no-singularity or
+no-compression audit.
+-/
+theorem information_cannot_be_mixed_without_engine_or_payment {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj)
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hMix : InformationMixingCollision proj F₁ F₂) :
+    ExtendedFlowReturnCertificate F₁ F₂ ∨
+    MutuallyNestedUniverses F₁ F₂ ∨
+    ImpossiblePayment := by
+  exact information_cannot_be_taken_without_engine_or_payment
+    (proj := proj) hNoSing hNoCompression hMix.1
+
+/-#############################################################################
+  §3. Optional square version: explicit cross-wiring
+#############################################################################-/
+
+/--
+A concrete square witnessing that source atoms and terminal ledger states have
+been cross-wired.
+
+`F₁₁` and `F₂₂` are the two original flows.  `F₁₂` has the first start and the
+second terminal; `F₂₁` has the second start and the first terminal.  This square
+is not itself an engine.  It only records the exact place where causal
+information has been permuted.
+-/
+structure InformationMixingSquare {A M0 : ℕ}
+    (F₁₁ F₂₂ F₁₂ F₂₁ : ExtendedProperGeneratedFlow A M0) : Prop where
+  distinctStarts : F₁₁.start ≠ F₂₂.start
+  distinctTerminals : F₁₁.terminal ≠ F₂₂.terminal
+  crossStart₁₂ : F₁₂.start = F₁₁.start
+  crossTerminal₁₂ : F₁₂.terminal = F₂₂.terminal
+  crossStart₂₁ : F₂₁.start = F₂₂.start
+  crossTerminal₂₁ : F₂₁.terminal = F₁₁.terminal
+
+/--
+A same-key mixing square: the two crossed flows occupy the same finite ledger
+class as the original pair.  This is a stronger diagnostic object than a single
+mixing collision, but it is still only an audit object, not a resolver.
+-/
+structure SameKeyInformationMixingSquare {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁₁ F₂₂ F₁₂ F₂₁ : ExtendedProperGeneratedFlow A M0) : Prop
+    extends InformationMixingSquare F₁₁ F₂₂ F₁₂ F₂₁ where
+  originalSameKey : proj.keyFlow F₁₁ = proj.keyFlow F₂₂
+  crossSameKey₁₂ : proj.keyFlow F₁₂ = proj.keyFlow F₁₁
+  crossSameKey₂₁ : proj.keyFlow F₂₁ = proj.keyFlow F₂₂
+  crossedDistinct₁₂ : F₁₂ ≠ F₁₁ ∨ F₁₂ ≠ F₂₂
+  crossedDistinct₂₁ : F₂₁ ≠ F₁₁ ∨ F₂₁ ≠ F₂₂
+
+/--
+A same-key mixing square always contains a same-key mixing collision between the
+original opposite corners, provided the original flows are admissible and
+distinct as flows.
+-/
+theorem sameKeyMixingSquare_to_mixingCollision {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁₁ F₂₂ F₁₂ F₂₁ : ExtendedProperGeneratedFlow A M0}
+    (hAdm₁ : ExtendedFlowAdmissible F₁₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂₂)
+    (hNe : F₁₁ ≠ F₂₂)
+    (hSq : SameKeyInformationMixingSquare proj F₁₁ F₂₂ F₁₂ F₂₁) :
+    InformationMixingCollision proj F₁₁ F₂₂ := by
+  refine ⟨?_, hSq.distinctStarts, hSq.distinctTerminals⟩
+  exact ⟨hNe, hAdm₁, hAdm₂, hSq.originalSameKey⟩
+
+/--
+Therefore, under the same no-cheat audit assumptions, an explicit same-key
+mixing square cannot be used to mix information without triggering the
+engine/payment alternatives for the original two corners.
+-/
+theorem sameKeyMixingSquare_forces_engine_or_payment {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoCompression : NoStrictInformationCompression proj)
+    {F₁₁ F₂₂ F₁₂ F₂₁ : ExtendedProperGeneratedFlow A M0}
+    (hAdm₁ : ExtendedFlowAdmissible F₁₁)
+    (hAdm₂ : ExtendedFlowAdmissible F₂₂)
+    (hNe : F₁₁ ≠ F₂₂)
+    (hSq : SameKeyInformationMixingSquare proj F₁₁ F₂₂ F₁₂ F₂₁) :
+    ExtendedFlowReturnCertificate F₁₁ F₂₂ ∨
+    MutuallyNestedUniverses F₁₁ F₂₂ ∨
+    ImpossiblePayment := by
+  have hMix : InformationMixingCollision proj F₁₁ F₂₂ :=
+    sameKeyMixingSquare_to_mixingCollision
+      (proj := proj) hAdm₁ hAdm₂ hNe hSq
+  exact information_cannot_be_mixed_without_engine_or_payment
+    (proj := proj) hNoSing hNoCompression hMix
+
+/-#############################################################################
+  §4. Audit package
+#############################################################################-/
+
+/--
+The no-free-mixing version of the already isolated final audit assumptions.
+It is intentionally the same mathematical burden as the atom/extraction layer:
+no broken seams and no unresolved strict compression.
+-/
+structure NoFreeInformationMixingAuditPackage (A M0 : ℕ) where
+  proj : SemanticExtendedFlowLedgerProjection A M0
+  noSeamSingularity : NoLedgerSeamSingularity proj
+  noStrictCompression : NoStrictInformationCompression proj
+
+/-- The package forbids free mixing. -/
+theorem noFreeInformationMixingAudit_forbids_mixing {A M0 : ℕ}
+    (P : NoFreeInformationMixingAuditPackage A M0) :
+    ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+      ¬ InformationMixingWithoutEngine P.proj F₁ F₂ := by
+  exact no_free_information_mixing
+    (proj := P.proj) P.noSeamSingularity P.noStrictCompression
+
+/-- The package still gives the old nested resolver, hence plugs into the
+already built final Step00 machine. -/
+theorem noFreeInformationMixingAudit_resolves_nested {A M0 : ℕ}
+    (P : NoFreeInformationMixingAuditPackage A M0) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves P.proj :=
+  noSingularity_noStrictCompression_resolves_nested
+    (proj := P.proj) P.noSeamSingularity P.noStrictCompression
+
+/-- Human-readable residue: information may be projected only modulo gauge data;
+it may not be mixed across different start/terminal pairings without producing
+an engine/payment witness. -/
+abbrev RemainingNoFreeMixingCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoLedgerSeamSingularity proj ∧
+  NoStrictInformationCompression proj
+
+/-! Машинная честность atom/extraction/mixing-форм -/
+
+/-- Extraction-без-двигателя = просто коллизия (три запрета выполнены даром). -/
+theorem informationExtractionWithoutEngine_iff_collision {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    InformationExtractionWithoutEngine proj F₁ F₂ ↔
+      LedgerSeamCollision proj F₁ F₂ := by
+  constructor
+  · exact fun h => h.1
+  · intro hColl
+    exact ⟨hColl, no_extendedFlowReturnCertificate,
+      no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false⟩
+
+/-- Mixing-без-двигателя = просто mixing-коллизия. -/
+theorem informationMixingWithoutEngine_iff_mixingCollision {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    InformationMixingWithoutEngine proj F₁ F₂ ↔
+      InformationMixingCollision proj F₁ F₂ := by
+  constructor
+  · exact fun h => h.1
+  · intro hMix
+    exact ⟨hMix, no_extendedFlowReturnCertificate,
+      no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false⟩
+
+/-- Atomic-обязательство ⟺ старый узел (переформулировка, не обход). -/
+theorem atomicInformationLastStep00Obligation_iff_lastStep00Obligation :
+    AtomicInformationLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, POf, _⟩
+    exact ⟨A, fun M0 => (POf M0).proj, fun M0 =>
+      (compressionAudit_iff_resolves ((POf M0).proj)).mp
+        ⟨(POf M0).noSeamSingularity, (POf M0).noStrictCompression⟩⟩
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, fun M0 =>
+      { proj := projOf M0
+        noSeamSingularity :=
+          ((compressionAudit_iff_resolves (projOf M0)).mpr (h M0)).1
+        noStrictCompression :=
+          ((compressionAudit_iff_resolves (projOf M0)).mpr (h M0)).2 },
+      trivial⟩
+
+/-- Atomic-пакет на масштабе M0 — тоже twin-детектор. -/
+theorem twin_above_of_atomicInformationAudit {A M0 : ℕ}
+    (P : AtomicInformationAuditPackage A M0) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves P.proj (atomicInformationAudit_resolves_old P)
+
+/-- No-free-mixing-пакет на масштабе M0 — тоже twin-детектор. -/
+theorem twin_above_of_noFreeMixingAudit {A M0 : ℕ}
+    (P : NoFreeInformationMixingAuditPackage A M0) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves P.proj
+    (nestedSemanticExtended_resolves_old
+      (noFreeInformationMixingAudit_resolves_nested P))
+
 end GeneratedFlowFormulation
 
 

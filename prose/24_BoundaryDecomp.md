@@ -796,6 +796,27 @@ dangling-вложений (в обе стороны); **`compressionAudit_iff_re
 **`informationCompressionLastStep00Obligation_iff_lastStep00Obligation`** — compression-форма ⟺
 старый узел; **`twin_above_of_compressionAudit`** — twin-детектор.
 
+### Информационные атомы; извлечение и смешивание без двигателя
+
+Кирпичи atom-extraction и no-free-mixing завершают информационный словарь узла:
+
+- **`exists_informationAtom_of_inhabited`** — **безусловный** результат: в любой обитаемой
+  вселенной генеалогий существует информационный АТОМ (генеалогия без строгой компрессии).
+  Доказательство: безатомность даёт `Classical.choose`-орбиту компрессий = ∞-цепь — сожжена
+  `lexRank`. Старт — неделимая единица причинной информации.
+- **`no_free_information_extraction`** / **`no_free_information_mixing`** — под парой аудита
+  (`NoSingularity`, `NoCompression`) нельзя ни извлечь, ни смешать причинную информацию без
+  двигателя/оплаты; **`sameKeyMixingSquare_forces_engine_or_payment`** — cross-wiring квадрат
+  (перестановка старт/терминал парами) тоже принуждает к двигателю.
+- **`twinLowersInfinite_of_atomicInformationLastStep00Obligation`** ⟹ близнецы.
+
+**Честность (машинно):** **`informationExtractionWithoutEngine_iff_collision`**,
+**`informationMixingWithoutEngine_iff_mixingCollision`** — «extraction/mixing без двигателя» — это
+просто same-key коллизия (три запрета выполнены даром: возврат/взаимное вложение/оплата уже
+опровергнуты), а «позитивные формы» (вывод «двигатель ∨ оплата») под аудитом — ex-falso;
+**`atomicInformationLastStep00Obligation_iff_lastStep00Obligation`** — atomic-форма ⟺ старый узел;
+**`twin_above_of_atomicInformationAudit`**, **`twin_above_of_noFreeMixingAudit`** — twin-детекторы.
+
 ### Диссипативный cascade: capacity/overflow декомпозиция Лиувилль-узла
 
 `Engine/DissipativeCascade` (единый blueprint Step00/RH/Навье–Стокс): «дефект не исчезает; не закрылся —

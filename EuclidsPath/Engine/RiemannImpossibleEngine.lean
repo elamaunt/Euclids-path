@@ -145,4 +145,21 @@ theorem RH_of_criticalStripRiemannEngineBridge
   rcases criticalStripOffLineZero_of_not_RH hBelow hNotRH with ⟨Z⟩
   exact no_riemannEngineFactory Z (bridge Z)
 
+
+/-! ## ЧЕСТНОСТЬ: strip-bridge эквивалентен «нет off-line нулей в полосе»
+
+Раз `no_riemannEngineFactory` безусловна, вход `CriticalStripRiemannEngineBridge` выполним лишь
+вакуумно — когда strip-нулей вне прямой нет вовсе. С классификацией `TrivialBelowZeroClassification`
+это даёт RH; без неё — «RH в полосе». Вход = цель (в полосе), не редукция. -/
+
+/-- **`criticalStripBridge_iff_no_stripZero` — ДОКАЗАНА (честность).** Strip-мост ⟺ отсутствие
+    off-line нулей в критической полосе. -/
+theorem criticalStripBridge_iff_no_stripZero :
+    CriticalStripRiemannEngineBridge ↔ ¬ Nonempty CriticalStripOffLineZero := by
+  constructor
+  · intro hBridge ⟨Z⟩
+    exact no_riemannEngineFactory Z (hBridge Z)
+  · intro hNo Z
+    exact absurd ⟨Z⟩ hNo
+
 end EuclidsPath.RiemannImpossibleEngine

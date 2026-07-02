@@ -80,12 +80,12 @@
 | 38 | **Риман через первопричину** | [38](prose/38_RiemannFirstCause.md) | `Engine/RiemannManifestationFront` (зелёная цепь), `Engine/CausalClosureAxiom` §10, `Engine/RiemannDualEngineFront` | 🟢 цепь; 🟡 RH из декрета; 🔴 дуальные пакеты |
 | 39 | **P/NP: оплата сертификатов ранга** | [39](prose/39_PNPRankPayment.md) | `Engine/PNPRankPaymentFront` (зелёная сепарация A ≤ 4 + трилемма), `Engine/CausalClosureAxiom` §11 | 🟢 сепарация в ранговой модели; 🟡 P/NP-язык декрета; ⚠️ вакуумность №4 |
 | 40 | **Янг–Миллс: масс-щель через двигатель** | [40](prose/40_YangMills.md) | `Engine/YangMillsFront` (зелёная цепь + трилемма), `Engine/CausalClosureAxiom` §12 | 🟢 квантованность⟹щель; 🟡 язык декрета; 🔴 data-anchor спектра |
-| 41 | **НС: гладкость через каскад + интеграл** | [41](prose/41_NSSmoothness.md) | `Engine/NavierStokesFront` (тождество энергии + mild-форма + трилемма), `Engine/CausalClosureAxiom` §13 | 🟢 тождество+каскад; 🟡 растяжка; 🔴 EnergyBalanceLaw |
+| 41 | **НС: гладкость через каскад + интеграл** | [41](prose/41_NSSmoothness.md) | `Engine/NavierStokesFront` (тождество + трилемма + ДОБИТИЕ: две ковки и гейт-закон), `Engine/CausalClosureAxiom` §13+§15 | 🟢 тождество+каскад+ковки; 🟡 ТРЕТЬЯ ГРАНИЦА (гейт-закон) — гладкость гейт-решений из декрета |
 | 42 | **Ходж: квантованные заряды и оплата** | [42](prose/42_Hodge.md) | `Engine/HodgeFront` (герой + коллапс + трилемма), `Engine/CausalClosureAxiom` §14 | 🟢 спуск⟹оплата, двигатель мёртв безусловно; 🟡 растяжка; 🔴 DescentLaw |
 | A | Численные данные | [A](prose/A_NumericalEvidence.md) | `tools/RESULTS_*` | — |
 
 🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🟡 = AXIOM-TAINTED (условно на
-`step00FirstCause`; ровно 39 деклараций — 38 в карантине + задокументированное следствие
+`step00FirstCause`; ровно 43 декларации — 42 в карантине + задокументированное следствие
 `higherEnergyIncompatibility_twins`). 🔴 = открытый узел / вход.
 
 ## Статус (честно)

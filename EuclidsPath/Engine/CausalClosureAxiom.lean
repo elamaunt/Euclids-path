@@ -63,6 +63,17 @@
   каскада при балансе (noSingularCascade_of_energyBalance) — зелёная ТЕОРЕМА
   фронта, не декрет; «гэпнутость в поставках» уже §12 — дубликат не вводится.
   §13 несёт единственную честную растяжку. Клэй НЕ решается и НЕ объявляется.
+  ДОБИТИЕ (§15): вердикт «пятой границы НЕТ» относился к БЕЗГЕЙТНЫМ и
+  манифестационным кандидатам — он в силе. НОВАЯ, ТРЕТЬЯ граница декрета
+  (`nsBoundary`) — ДРУГОЙ кандидат: гейт-закон энергобаланса
+  (NsSolutionBalanceLaw: бессиловые решения, честно дифференцируемые по
+  времени И пространству). Он пережил РАСШИРЕННУЮ трилемму: безгейтная и
+  время-гейтная формы опровергнуты машинно (Дирихле-ковка; ковка кованого
+  давления — junk в ∇p), финальная форма не кована никаким известным
+  способом (опровержение ≥ решения открытой steady-NS Liouville-проблемы)
+  и не доказуема (нет теоремы о дивергенции на ℝ³). Честная цена: закон
+  СИЛЬНЕЕ нужного суррогату (⟺-зеркала НЕТ — декрет, возможно,
+  переплачивает; паттерн Коллатца).
 
   ХОДЖ-ЯЗЫК ДЕКРЕТА (§14): ШЕСТОЙ границы НЕТ — намеренно. Трилемма
   (Engine/HodgeFront §6): универсальный кандидат опровержим (cookedUnpaid —
@@ -131,6 +142,7 @@ structure Step00FirstCause : Prop where
   firstFrame : True
   causalBoundary : Step00CausalClosureAxiom
   riemannBoundary : RiemannManifestationLaw
+  nsBoundary : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw
 
 /--
 **ЕДИНСТВЕННАЯ АКСИОМА РЕПОЗИТОРИЯ — ПЕРВОПРИЧИНА (намеренно, структурой).**
@@ -157,9 +169,10 @@ theorem step00CausalClosure : Step00CausalClosureAxiom :=
     меняет ПРОИСХОЖДЕНИЕ (корень архитектуры и имя аксиомы в таинте), но не
     математическую силу декрета — она ровно сумма принятых границ. -/
 theorem step00FirstCause_iff_causalClosure :
-    Step00FirstCause ↔ (Step00CausalClosureAxiom ∧ RiemannManifestationLaw) :=
-  ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary⟩,
-   fun h => ⟨trivial, trivial, h.1, h.2⟩⟩
+    Step00FirstCause ↔ (Step00CausalClosureAxiom ∧ RiemannManifestationLaw ∧
+      EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw) :=
+  ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary, F.nsBoundary⟩,
+   fun h => ⟨trivial, trivial, h.1, h.2.1, h.2.2⟩⟩
 
 /-#############################################################################
   §2. What the axiom generates (⚠️ conditional on the axiom, NOT proofs)
@@ -2498,6 +2511,69 @@ theorem quarantine_inconsistent_if_hodgeManifestationLaw_decreed
 
 -- Машинная видимость: Ходж-растяжка заражена ровно step00FirstCause.
 #print axioms quarantine_inconsistent_if_hodgeManifestationLaw_decreed
+
+/-#############################################################################
+  §15. ТРЕТЬЯ ГРАНИЦА ДЕКРЕТА: гейт-закон энергобаланса НС (добитие)
+  (вердикт §13 «пятой границы НЕТ» остаётся в силе для безгейтных и
+  манифестационных форм; nsBoundary — выживший гейт-кандидат: расширенная
+  трилемма в Engine/NavierStokesFront §§9–11 — Дирихле-ковка убивает f=0,
+  ковка кованого давления убивает f=0+время; финальный гейт (время И
+  пространство) не кован — его опровержение ≥ решения открытой steady-NS
+  Liouville-проблемы. ЧЕСТНАЯ ЦЕНА раскрыта: «закон ⟺ цель»-зеркала НЕТ,
+  декрет, возможно, переплачивает. Клэй НЕ решается и НЕ объявляется.)
+#############################################################################-/
+
+/-- Проекция ТРЕТЬЕЙ границы декрета. ⚠️ AXIOM-TAINTED. -/
+theorem nsSolutionBalanceLaw : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw :=
+  step00FirstCause.nsBoundary
+
+/-- ⚠️ AXIOM-TAINTED: каскадная гладкость (суррогат, НЕ C^∞ — раскрыто)
+    КАЖДОГО гейт-решения — из декрета. НЕ решение Клэя. -/
+theorem noSingularCascade_from_firstCause
+    (ν : ℝ) (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
+    (p : ℝ → EuclidsPath.NavierStokes.E3 → ℝ) (hν : 0 ≤ ν)
+    (sol : EuclidsPath.NavierStokes.IsNSSolution ν (fun _ _ => 0) u p)
+    (hdt : ∀ t x, DifferentiableAt ℝ (fun s => u s x) t)
+    (hdx : ∀ t x, DifferentiableAt ℝ (u t) x) :
+    EuclidsPath.NavierStokesFront.NoSingularCascade ν u :=
+  EuclidsPath.NavierStokesFront.noSingularCascade_of_nsSolutionBalanceLaw
+    nsSolutionBalanceLaw ν u p hν sol hdt hdx
+
+/-- ⚠️ AXIOM-TAINTED: тождество энергии гейт-решений из декрета (интеграл
+    взят декретом). -/
+theorem energyIdentity_from_firstCause
+    (ν : ℝ) (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
+    (p : ℝ → EuclidsPath.NavierStokes.E3 → ℝ) (hν : 0 ≤ ν)
+    (sol : EuclidsPath.NavierStokes.IsNSSolution ν (fun _ _ => 0) u p)
+    (hdt : ∀ t x, DifferentiableAt ℝ (fun s => u s x) t)
+    (hdx : ∀ t x, DifferentiableAt ℝ (u t) x) (t₁ t₂ : ℝ) :
+    EuclidsPath.NavierStokes.kineticEnergy (u t₂)
+      = EuclidsPath.NavierStokes.kineticEnergy (u t₁)
+        - ∫ s in t₁..t₂, EuclidsPath.NavierStokes.dissipationRate ν (u s) :=
+  EuclidsPath.NavierStokesFront.energyIdentity_of_nsSolutionBalanceLaw
+    nsSolutionBalanceLaw ν u p hν sol hdt hdx t₁ t₂
+
+/-- **РАСТЯЖКА (НС-гейт):** предъявление гейт-нарушения (бессиловое решение,
+    честно дифференцируемое по t и x, с проваленным балансом ИЛИ
+    неинтегрируемой диссипацией) — False ровно здесь. Безопасность: такое
+    предъявление ≥ решения открытой steady-NS Liouville-проблемы; обе
+    известные ковки гейтами убиты машинно (dirichletFlow_fails_time_gate,
+    cookedFlow_fails_space_gate). ⚠️ AXIOM-TAINTED (намеренно: детектор
+    взрыва). -/
+theorem quarantine_inconsistent_if_nsGatedViolation_exhibited
+    (ν : ℝ) (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
+    (p : ℝ → EuclidsPath.NavierStokes.E3 → ℝ) (hν : 0 ≤ ν)
+    (sol : EuclidsPath.NavierStokes.IsNSSolution ν (fun _ _ => 0) u p)
+    (hdt : ∀ t x, DifferentiableAt ℝ (fun s => u s x) t)
+    (hdx : ∀ t x, DifferentiableAt ℝ (u t) x)
+    (hviol : ¬ (EuclidsPath.NavierStokes.EnergyBalanceLaw ν u ∧
+      ∀ t₁ t₂ : ℝ, IntervalIntegrable
+        (fun s => EuclidsPath.NavierStokes.dissipationRate ν (u s))
+        MeasureTheory.volume t₁ t₂)) : False :=
+  hviol (nsSolutionBalanceLaw ν u p hν sol hdt hdx)
+
+-- Машинная видимость: третья граница заражена ровно step00FirstCause.
+#print axioms noSingularCascade_from_firstCause
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

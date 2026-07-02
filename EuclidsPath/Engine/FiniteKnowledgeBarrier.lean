@@ -142,5 +142,56 @@ theorem two_walls_one_nature :
       mixed_class_twin_unknowable S A Cert B bad hEq hNot,
    cause_unknowable⟩
 
+
+
+/-#############################################################################
+  ГЛАВНАЯ ТЕОРЕМА ВЫСШЕЙ ЭНЕРГЕТИЧЕСКОЙ НЕСОВМЕСТИМОСТИ
+  (по решению автора; безусловное ядро + следствие при первопричине)
+#############################################################################-/
+
+/-- **ГЛАВНАЯ ТЕОРЕМА ВЫСШЕЙ ЭНЕРГЕТИЧЕСКОЙ НЕСОВМЕСТИМОСТИ (ядро,
+    безусловно).** Внутреннее/конечное знание энергетически несовместимо
+    с бесконечностью — пять граней одной несовместимости:
+
+    1. знание первопричины СТРОИТ вечный двигатель;
+    2. потому первопричина непознаваема (двигателей нет — lexRank);
+    3. конечный вид знает близнеца только целиком чистым классом —
+       близнец со смешанным классом принципиально невидим;
+    4. при хвостовом смешении классов бесконечность близнецов изнутри
+       неудостоверима;
+    5. НЕСУЩАЯ ГРАНЬ: сама несовместимость (отсутствие двигателей =
+       непознаваемость) + принятая причинная граница ⟹ близнецы
+       бесконечны — бесконечность приходит ровно ИЗ несовместимости.
+
+    Энергетическое прочтение: «знать изнутри» стоит бесконечной энергии
+    (вечный двигатель), которой в закрытой системе нет; бесконечность
+    близнецов — внешнее знание, оплачиваемое первопричиной. -/
+theorem higherEnergyIncompatibility_main :
+    (InternalKnowledgeOfCause → SomeConcreteEuclideanEngine) ∧
+    (¬ InternalKnowledgeOfCause) ∧
+    (∀ (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop) (B bad : ℕ),
+        SieveEquivalent S A B bad → ¬ IsTwin bad →
+        ¬ FiniteSystemKnowsTwin S A Cert B) ∧
+    (∀ (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop),
+        (∃ N : ℕ, ∀ B : ℕ, N < B →
+          ∃ bad : ℕ, SieveEquivalent S A B bad ∧ ¬ IsTwin bad) →
+        ¬ FiniteSystemKnowsTwinsInfinite S A Cert) ∧
+    (¬ SomeConcreteEuclideanEngine → Step00CausalClosureAxiom →
+        EuclidsPath.TwinLowers.Infinite) :=
+  ⟨knowledge_builds_perpetualEngine,
+   cause_unknowable,
+   fun S A Cert B bad hEq hNot =>
+     mixed_class_twin_unknowable S A Cert B bad hEq hNot,
+   fun S A Cert hMix =>
+     infinitude_unknowable_of_eventually_mixed S A Cert hMix,
+   twins_infinite_of_noEngine_and_boundary⟩
+
+/-- **Следствие главной теоремы при принятой первопричине:** близнецы
+    бесконечны — потому что узнать нельзя. ⚠️ AXIOM-TAINTED (грань 5
+    инстанциирована декретом; ядро выше — полностью зелёное). -/
+theorem higherEnergyIncompatibility_twins :
+    EuclidsPath.TwinLowers.Infinite :=
+  twins_because_unknowable
+
 end FiniteKnowledgeBarrier
 end EuclidsPath

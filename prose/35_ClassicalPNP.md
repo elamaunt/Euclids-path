@@ -137,3 +137,19 @@ renamed-conclusion входы (`BitwiseClassicalBridgeFront` и родня) не
 когда-нибудь узел падёт при $A \ge 5$, мост немедленно превратит это в разделение классов — но
 лишь относительно фрейма, который ещё предстоит сделать верным. До тех пор: аналогия — теорема,
 мост — условность, классические P/NP — не тронуты. `twin_prime_conjecture` остаётся `sorry`.
+
+## Постскриптум (глава 39, вакуумность №4)
+
+Адверсариальный аудит главы 39 вскрыл о фронтах ЭТОЙ главы: `PDecider` не несёт
+complexity-содержания и классически строится для любого языка
+(`classicalPDecider` 🟢), поэтому decider-gated extraction-фронты
+(`FaithfulSelfReductionFront`, `CurrentExtractionFront`), связывающие
+реконструкцию С несжимаемостью, **классически пусты** (`IsEmpty` — теоремы) —
+их `gives_classicalSeparation` вакуумны. Это **вакуумность №4** программы.
+InP-gated мост (`Step00ToClassicalBridge`) не затронут — `InP` абстрактен;
+но слой фреймов пластичен в обе стороны (`allPFrame` faithful и совпадает даром,
+`constantsFrame` faithful и разделяет даром). Само же неравенство в ранговой
+модели — 🟢 теорема: см. [39_PNPRankPayment.md](39_PNPRankPayment.md)
+(«NP = полная оплата сертификатов ранга» — `concrete_localPSuccess_iff_fullPayment`;
+сепарация — `pnp_rank_separation_smallScale`; трилемма — декретный обход
+невозможен машинно).

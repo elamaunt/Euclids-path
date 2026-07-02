@@ -32,9 +32,20 @@
   принять RH; `riemannHypothesis_from_firstCause` — НЕ доказательство RH,
   а редукция, закрытая декретом. Растяжки §10: опровержение RH или закона —
   False ровно здесь.
+
+  P/NP-ЯЗЫК ДЕКРЕТА (§11): ТРЕТЬЕЙ границы НЕТ — намеренно. Сепарация в
+  авторском прочтении («ранго-быстрый проезд не может оплатить все
+  сертификаты») — ЗЕЛЁНАЯ теорема при A ≤ 4 (Engine/PNPRankPaymentFront,
+  pnp_rank_separation_smallScale); трилемма кандидатов третьего поля доказана
+  машинно (универсальная форма опровержима — декрет был бы противоречив;
+  decider-gated опровержима; экзистенциальная уже зелёно доказана — декрет
+  был бы вакуумен). Существующая граница УЖЕ говорит на языке P/NP: на
+  декретном масштабе A ≥ 5 она даёт LocalPSuccess/полную оплату/ограниченную
+  поставку (§11) — чистый раскол по масштабам с зелёной сепарацией на A ≤ 4.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
 import EuclidsPath.Engine.RiemannManifestationFront
+import EuclidsPath.Engine.PNPRankPaymentFront
 
 set_option autoImplicit false
 
@@ -2315,6 +2326,57 @@ theorem quarantine_inconsistent_if_manifestation_refuted
 -- Машинная видимость нового таинта прямо в build-логе: у RH-редукции в списке
 -- аксиом ОБЯЗАН стоять step00FirstCause (и только он сверх стандартных).
 #print axioms riemannHypothesis_from_firstCause
+
+/-#############################################################################
+  §11. P/NP-ЯЗЫК ДЕКРЕТА: раскол по масштабам (третьей границы НЕТ — намеренно)
+
+  Сепарация в авторском прочтении — ЗЕЛЁНАЯ теорема на A ≤ 4
+  (`pnp_rank_separation_smallScale`, Engine/PNPRankPaymentFront) и декрету
+  НЕ принадлежит. Ниже — только то, что декрет УЖЕ утверждает на СВОЁМ
+  масштабе A ≥ 5 через существующую twin-границу, плюс растяжка.
+  Трилемма (там же, зелёно): универсальный/decider-gated кандидаты третьего
+  поля опровержимы, экзистенциальный уже доказан — честного третьего поля
+  не существует.
+#############################################################################-/
+
+/-- ⚠️ AXIOM-TAINTED: декрет УЖЕ даёт локальный P-успех на своём масштабе
+    (обязательно A ≥ 5) на каждом M0 — там конечный ключ разрешает коллизии. -/
+theorem decreedScale_localPSuccess :
+    ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
+      EuclidsPath.LocalPNP.LocalPSuccess
+        (EuclidsPath.LocalPNP.Concrete.concreteProblem A M0) :=
+  EuclidsPath.PNPRankPayment.boundary_forces_localPSuccess_at_decreed_scale
+    step00CausalClosure
+
+/-- ⚠️ AXIOM-TAINTED: на декретном масштабе первопричина ПЛАТИТ ВСЕ
+    сертификаты ранга (полная оплата в авторском смысле). -/
+theorem decreedScale_fullPayment :
+    ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
+      EuclidsPath.PNPRankPayment.FullRankCertificatePayment
+        (EuclidsPath.LocalPNP.Concrete.concreteFamily A M0) :=
+  EuclidsPath.PNPRankPayment.boundary_forces_fullPayment_at_decreed_scale
+    step00CausalClosure
+
+/-- ⚠️ AXIOM-TAINTED: на декретном масштабе поставка сертификатов ОГРАНИЧЕНА —
+    книги сводятся, потому что поставка конечноключево учётна. -/
+theorem decreedScale_supply_bounded :
+    ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
+      ¬ EuclidsPath.PNPRankPayment.UnboundedCertificateSupply
+        (EuclidsPath.LocalPNP.Concrete.concreteFamily A M0) :=
+  EuclidsPath.PNPRankPayment.boundary_bounds_supply_at_decreed_scale
+    step00CausalClosure
+
+/-- **РАСТЯЖКА (P/NP):** если малую несжимаемость когда-либо распространят
+    на ВСЕ масштабы, карантин противоречив — False выводимо ИМЕННО здесь.
+    ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+theorem quarantine_inconsistent_if_incompressible_at_all_scales
+    (h : ∀ A M0 : ℕ, EuclidsPath.LocalPNP.LocalSearchIncompressible
+      (EuclidsPath.LocalPNP.Concrete.concreteProblem A M0)) : False := by
+  obtain ⟨A, _, hLP⟩ := decreedScale_localPSuccess
+  exact h A 0 (hLP 0)
+
+-- Машинная видимость: P/NP-язык декрета заражён ровно step00FirstCause.
+#print axioms decreedScale_localPSuccess
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

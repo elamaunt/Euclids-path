@@ -102,6 +102,7 @@ import EuclidsPath.Engine.RankClosureFront -- rank-closure (6); разделен
 import EuclidsPath.Engine.FiniteKnowledgeBarrier -- СТРОГО: конечная система не знает про близнецов почти ничего (чистота классов, propext-only); две стены — одна природа
 import EuclidsPath.Engine.RiemannDualEngineFront -- дуальный маршрут (3): синхронизация оплат фантом/подлинный, встреча⟺смена ранга, счётный мост близнецы↔встречи↔нули; ЧЕСТНО: все законы — поля-входы, мост считает НЕтривиальные (не off-critical) нули
 import EuclidsPath.Engine.RiemannManifestationFront -- ЗЕЛЁНАЯ римановская цепь первопричины: закон манифестации отклонений + невозможность на разрешённых масштабах (L2) + essence-лемма (L3) + аудиты (закон⟺RH ПРИ границе, L7)
+import EuclidsPath.Engine.PNPRankPaymentFront -- ЗЕЛЁНАЯ P/NP-цепь: NP = полная оплата сертификатов ранга, P = ранго-быстрый проезд; СЕПАРАЦИЯ ПРИ A ≤ 4 БЕЗУСЛОВНА; трилемма кандидатов третьего поля декрета доказана (двое опровержимы, третий вакуумен); ВАКУУМНОСТЬ №4: decider-gated extraction-фронты классически пусты
 
 -- ⚠️ КАРАНТИН: ЕДИНСТВЕННЫЙ axiom репозитория — первопричина с ДВУМЯ границами:
 -- twin-узел (causalBoundary) и римановский закон манифестации (riemannBoundary, §10).

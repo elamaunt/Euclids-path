@@ -78,10 +78,11 @@
 | 36 | Навье–Стокс | [36](prose/36_NavierStokes.md) | `Engine/NavierStokes` | 🟢 каркас; 🔴 EnergyBalanceLaw |
 | 37 | Римановы фронты | [37](prose/37_RiemannFronts.md) | `Engine/RiemannTrivialZeros` (вход №1 ЗАКРЫТ), `RiemannRankProjection(+Audit)`, `RiemannTwoTransportFront`, `RiemannArithmeticTwoTransport`, `RiemannSpectralAnchorAudit`, `RiemannLayerBoxFront`, `RiemannTerminalRankFront` | 🟢 арифметика; 🔴 два входа; ⚠️ вакуумность №2 |
 | 38 | **Риман через первопричину** | [38](prose/38_RiemannFirstCause.md) | `Engine/RiemannManifestationFront` (зелёная цепь), `Engine/CausalClosureAxiom` §10, `Engine/RiemannDualEngineFront` | 🟢 цепь; 🟡 RH из декрета; 🔴 дуальные пакеты |
+| 39 | **P/NP: оплата сертификатов ранга** | [39](prose/39_PNPRankPayment.md) | `Engine/PNPRankPaymentFront` (зелёная сепарация A ≤ 4 + трилемма), `Engine/CausalClosureAxiom` §11 | 🟢 сепарация в ранговой модели; 🟡 P/NP-язык декрета; ⚠️ вакуумность №4 |
 | A | Численные данные | [A](prose/A_NumericalEvidence.md) | `tools/RESULTS_*` | — |
 
 🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🟡 = AXIOM-TAINTED (условно на
-`step00FirstCause`; ровно 31 декларация — 30 в карантине + задокументированное следствие
+`step00FirstCause`; ровно 35 деклараций — 34 в карантине + задокументированное следствие
 `higherEnergyIncompatibility_twins`). 🔴 = открытый узел / вход.
 
 ## Статус (честно)
@@ -150,6 +151,17 @@
   масштабах (`no_deviationFlowSupply_at_resolved_scale` 🟢) ⟹ `riemannHypothesis_from_firstCause` 🟡.
   **НЕ доказательство RH** — редукция, закрытая декретом; цена раскрыта машинно:
   `riemannManifestation_asserts_RH` — при границе закон ⟺ RH (декрет не слабее вывода).
+- **P/NP как оплата сертификатов ранга ([39](prose/39_PNPRankPayment.md)):** прочтение «NP = полная
+  оплата всех сертификатов ранга, P = ранго-быстрый проезд без посещения всех состояний» —
+  **🟢 ТЕОРЕМА при стандартных аксиомах**: `pnp_rank_separation_smallScale` (A ≤ 4: проезд быстр,
+  проверка легка, поставка неограничена 5-адикой, полная оплата невозможна, поиск несжимаем);
+  «NP = полная оплата» — теорема на каждом масштабе (`concrete_localPSuccess_iff_fullPayment`).
+  Раскол по масштабам: декрет на A ≥ 5 сам ПЛАТИТ все сертификаты (`decreedScale_fullPayment` 🟡).
+  **Третьей границы декрета НЕТ — машинно** (трилемма: универсальный/decider-gated кандидаты
+  опровержимы, экзистенциальный вакуумен); классическое P ≠ NP НЕ объявлено — путь к нему через
+  data-anchored машинную модель. ⚠️ **Вакуумность №4 (вскрыта):** decider-gated extraction-фронты
+  (`FaithfulSelfReductionFront`, `CurrentExtractionFront`) классически ПУСТЫ (`PDecider` свободен) —
+  их `gives_classicalSeparation` вакуумны; InP-gated мост не затронут.
 - ⚠️ **Единственный `axiom` репозитория — ПЕРВОПРИЧИНА (карантин):** `Engine/CausalClosureAxiom.lean`
   объявляет `step00FirstCause : Step00FirstCause` — намеренно структурированное внешнее начало
   `0 → 1` с **ДВУМЯ причинными границами**: twin-узел `causalBoundary`

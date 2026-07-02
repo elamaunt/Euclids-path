@@ -51,7 +51,7 @@ axiom step00FirstCause : Step00FirstCause
 
 Аксиома живёт в карантинном модуле `Engine/CausalClosureAxiom.lean`, и карантин отслеживается
 машинно: узловой верификатор помечает каждую декларацию, зависящую от `step00FirstCause`, как
-AXIOM-TAINTED — таких **ровно 31** (30 в карантине + задокументированное следствие
+AXIOM-TAINTED — таких **ровно 35** (34 в карантине + задокументированное следствие
 `higherEnergyIncompatibility_twins` главы 33), утечек в основную линию нет. Прежняя
 causal-closure «аксиома» — теперь теорема из первопричины (`step00CausalClosure :=
 step00FirstCause.causalBoundary` 🟡). Что аксиома даёт:

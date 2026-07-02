@@ -3825,6 +3825,341 @@ theorem lastStep00Obligation_of_energy
   exact ⟨A, fun M0 => combinedEnergyProjection (EOf M0),
     fun M0 => combinedEnergyProjection_resolves (EOf M0)⟩
 
+/-#############################################################################
+  ВЛОЖЕННЫЕ ВСЕЛЕННЫЕ (кирпич: nested_universes_engine).
+  Диагностическая развёртка узла: одностороннее вложение (терминал внешней
+  генеалогии входит в старт внутренней) — СТРОГИЙ СПУСК lexRank, не цикл;
+  взаимное вложение — legal-цикл (сожжён lexRank); бесконечная цепочка
+  вложений невозможна (rank-спуск в ℕ). Ниже — кирпич + машинная честность:
+  nested-резолвер ⟺ старый резолвер (обе альтернативы сожжены), nested-узел
+  ⟺ старый узел, и nested-резолвер — тоже twin-детектор.
+#############################################################################-/
+
+/-- Возврат генеалогии из терминала в СВОЙ старт (эталон для self-nesting). -/
+def ExtendedFlowReturnsToStart {A M0 : ℕ}
+    (F : ExtendedProperGeneratedFlow A M0) : Prop :=
+  NonemptyPath (RealStep A M0) F.terminal (State.center F.start)
+
+/-#############################################################################
+  §1. One-way nested universes
+#############################################################################-/
+
+/--
+`F_outer` contains `F_inner` as an internal generated universe if, after the
+stored forward genealogy of `F_outer` reaches its terminal, the concrete Step00
+graph has a nonempty path to the start centre of `F_inner`.
+
+This is not yet a cycle.  It is the formal version of:
+
+  outer terminal enters the inner universe.
+-/
+def NestedUniverseEmbedding {A M0 : ℕ}
+    (F_outer F_inner : ExtendedProperGeneratedFlow A M0) : Prop :=
+  NonemptyPath (RealStep A M0) F_outer.terminal (State.center F_inner.start)
+
+/-- Self-nesting is exactly the previous return-to-start certificate. -/
+theorem selfNested_iff_returnsToStart {A M0 : ℕ}
+    (F : ExtendedProperGeneratedFlow A M0) :
+    NestedUniverseEmbedding F F ↔ ExtendedFlowReturnsToStart F := by
+  rfl
+
+/--
+A one-way nesting strictly decreases the start-rank.
+
+Forward path of `F_outer` already strictly decreases `lexRank`, and the nesting
+path decreases it further.  Hence the inner start is a strictly smaller copy of
+the outer start.
+-/
+theorem nestedUniverseEmbedding_drops_startRank {A M0 : ℕ}
+    {F_outer F_inner : ExtendedProperGeneratedFlow A M0}
+    (hNest : NestedUniverseEmbedding F_outer F_inner) :
+    lexRank (State.center F_inner.start) <
+      lexRank (State.center F_outer.start) := by
+  rcases hNest with ⟨r, hrPos, hRetarget⟩
+  have hWhole :
+      PathN (RealStep A M0) (F_outer.steps + r)
+        (State.center F_outer.start) (State.center F_inner.start) :=
+    pathN_trans (properPath_to_realPath F_outer.properPath) hRetarget
+  have hPos : 0 < F_outer.steps + r := by
+    omega
+  exact
+    pathN_rank_strict_of_pos_of_step_decrease
+      (R := RealStep A M0) (rank := lexRank)
+      (by
+        intro U V hStep
+        exact lexRank_strict_decrease_on_RealStep hStep)
+      hPos hWhole
+
+/-#############################################################################
+  §2. Mutual nesting is a legal Euclidean engine
+#############################################################################-/
+
+/-- Two generated universes are mutually nested when each terminal enters the
+start of the other. -/
+def MutuallyNestedUniverses {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  NestedUniverseEmbedding F₁ F₂ ∧ NestedUniverseEmbedding F₂ F₁
+
+/--
+Mutual nesting mechanically builds a legal cycle.
+
+The cycle is:
+
+  center(start F₁)
+    →⁺ terminal F₁
+    →⁺ center(start F₂)
+    →⁺ terminal F₂
+    →⁺ center(start F₁)
+-/
+theorem mutuallyNestedUniverses_forces_legalCycle {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hMutual : MutuallyNestedUniverses F₁ F₂) :
+    LegalCycle (RealStep A M0) (Legal A M0) := by
+  rcases hMutual with ⟨h₁₂, h₂₁⟩
+  rcases h₁₂ with ⟨r₁₂, hr₁₂, hPath₁₂⟩
+  rcases h₂₁ with ⟨r₂₁, hr₂₁, hPath₂₁⟩
+  refine ⟨State.center F₁.start, ?_, ?_⟩
+  · exact F₁.startClean
+  · refine ⟨F₁.steps + r₁₂ + F₂.steps + r₂₁, ?_, ?_⟩
+    · omega
+    · have hForward₁ :
+          PathN (RealStep A M0) F₁.steps
+            (State.center F₁.start) F₁.terminal :=
+        properPath_to_realPath F₁.properPath
+      have hForward₂ :
+          PathN (RealStep A M0) F₂.steps
+            (State.center F₂.start) F₂.terminal :=
+        properPath_to_realPath F₂.properPath
+      have hToStart₂ :
+          PathN (RealStep A M0) (F₁.steps + r₁₂)
+            (State.center F₁.start) (State.center F₂.start) :=
+        pathN_trans hForward₁ hPath₁₂
+      have hToTerminal₂ :
+          PathN (RealStep A M0) ((F₁.steps + r₁₂) + F₂.steps)
+            (State.center F₁.start) F₂.terminal :=
+        pathN_trans hToStart₂ hForward₂
+      have hCyclePath :
+          PathN (RealStep A M0)
+            (((F₁.steps + r₁₂) + F₂.steps) + r₂₁)
+            (State.center F₁.start) (State.center F₁.start) :=
+        pathN_trans hToTerminal₂ hPath₂₁
+      simpa [Nat.add_assoc] using hCyclePath
+
+/-- Mutual nesting is impossible in the concrete Step00 graph because it creates
+an explicit legal cycle, and `lexRank` forbids all such cycles. -/
+theorem no_mutuallyNestedUniverses {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    ¬ MutuallyNestedUniverses F₁ F₂ := by
+  intro h
+  exact no_concrete_legalCycle_by_lexRank
+    (A := A) (M0 := M0)
+    (mutuallyNestedUniverses_forces_legalCycle h)
+
+/-- Equivalently, mutual nesting creates a rank contradiction. -/
+theorem mutuallyNestedUniverses_rank_contradiction {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hMutual : MutuallyNestedUniverses F₁ F₂) : False := by
+  rcases hMutual with ⟨h₁₂, h₂₁⟩
+  have hdrop₁₂ := nestedUniverseEmbedding_drops_startRank h₁₂
+  have hdrop₂₁ := nestedUniverseEmbedding_drops_startRank h₂₁
+  omega
+
+/-#############################################################################
+  §3. Infinite nested chains are forbidden
+#############################################################################-/
+
+/-- A one-way nested-universe chain. -/
+def NestedUniverseChain {A M0 : ℕ}
+    (C : ℕ → ExtendedProperGeneratedFlow A M0) : Prop :=
+  ∀ i : ℕ, NestedUniverseEmbedding (C i) (C (i + 1))
+
+/-- Along a nested chain, the start-rank drops by at least one at each step. -/
+theorem nestedUniverseChain_rank_bound {A M0 : ℕ}
+    {C : ℕ → ExtendedProperGeneratedFlow A M0}
+    (hC : NestedUniverseChain C) :
+    ∀ n : ℕ,
+      lexRank (State.center (C n).start) + n ≤
+        lexRank (State.center (C 0).start) := by
+  intro n
+  induction n with
+  | zero =>
+      simp
+  | succ n ih =>
+      have hdrop :
+          lexRank (State.center (C (n + 1)).start) <
+            lexRank (State.center (C n).start) :=
+        nestedUniverseEmbedding_drops_startRank (hC n)
+      omega
+
+/-- No infinite legal nested-universe chain exists in the concrete Step00 graph. -/
+theorem no_nestedUniverseChain {A M0 : ℕ}
+    (C : ℕ → ExtendedProperGeneratedFlow A M0) :
+    ¬ NestedUniverseChain C := by
+  intro hC
+  have hBound :=
+    nestedUniverseChain_rank_bound (A := A) (M0 := M0)
+      (C := C) hC (lexRank (State.center (C 0).start) + 1)
+  omega
+
+/-- A same-key perpetual nested engine for a semantic flow-ledger projection. -/
+structure SameKeyNestedUniverseEngine {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) where
+  chain : ℕ → ExtendedProperGeneratedFlow A M0
+  admissible : ∀ i : ℕ, ExtendedFlowAdmissible (chain i)
+  same_key : ∀ i : ℕ, proj.keyFlow (chain i) = proj.keyFlow (chain (i + 1))
+  nested : NestedUniverseChain chain
+
+/-- Such a same-key perpetual nested engine cannot exist. -/
+theorem no_sameKeyNestedUniverseEngine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (E : SameKeyNestedUniverseEngine proj) : False :=
+  no_nestedUniverseChain E.chain E.nested
+
+/-#############################################################################
+  §4. Nested-universe resolution alternatives
+#############################################################################-/
+
+/--
+A local same-key collision may resolve by:
+
+  * direct return-path certificate;
+  * mutual nesting, which is already a cycle;
+  * impossible payment.
+
+A merely one-way nesting is deliberately not included here as a final resolution:
+it is only a smaller internal universe.  If it can be repeated forever, §3
+forbids it; if it closes back, §2 turns it into a cycle.
+-/
+def NestedUniverseResolutionAlternative {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨
+    MutuallyNestedUniverses F₁ F₂ ∨
+    ImpossiblePayment
+
+/-- The nested-universe alternative implies the older cycle-or-payment
+resolution alternative. -/
+theorem nestedUniverseAlternative_forces_resolutionAlternative {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : NestedUniverseResolutionAlternative F₁ F₂) :
+    ExtendedFlowResolutionAlternative A M0 := by
+  rcases h with hReturn | hRest
+  · exact Or.inl (extendedFlowReturnCertificate_forces_legalCycle hReturn)
+  · rcases hRest with hMutual | hPay
+    · exact Or.inl (mutuallyNestedUniverses_forces_legalCycle hMutual)
+    · exact Or.inr hPay
+
+/-- Therefore the nested-universe alternative is also impossible once produced,
+because it implies either a forbidden cycle or an impossible payment. -/
+theorem no_nestedUniverseResolutionAlternative {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    ¬ NestedUniverseResolutionAlternative F₁ F₂ := by
+  intro h
+  exact no_extendedFlowResolutionAlternative A M0
+    (nestedUniverseAlternative_forces_resolutionAlternative h)
+
+/--
+A semantic resolver in nested-universe form.
+
+This is another strict expansion of the last Step00 obligation.  It says that a
+same-key genealogy collision must produce a genuine local object: direct return,
+mutual nesting, or impossible payment.  It still does not allow the projection
+itself to manufacture the engine.
+-/
+def NestedSemanticExtendedFlowLedgerCollisionResolves
+    {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    F₁ ≠ F₂ →
+    ExtendedFlowAdmissible F₁ →
+    ExtendedFlowAdmissible F₂ →
+    proj.keyFlow F₁ = proj.keyFlow F₂ →
+      NestedUniverseResolutionAlternative F₁ F₂
+
+/-- The nested-universe resolver implies the previous near-close resolver. -/
+theorem nestedSemanticExtended_resolves_old {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNested : NestedSemanticExtendedFlowLedgerCollisionResolves proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj := by
+  intro F₁ F₂ hne hAdm₁ hAdm₂ hkey
+  exact nestedUniverseAlternative_forces_resolutionAlternative
+    (hNested F₁ F₂ hne hAdm₁ hAdm₂ hkey)
+
+/-- The nested-universe last obligation. -/
+abbrev TheNestedUniverseLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+      ∀ M0 : ℕ, NestedSemanticExtendedFlowLedgerCollisionResolves (projOf M0)
+
+/-- The nested-universe last obligation is sufficient for infinitude of twins. -/
+theorem twinLowersInfinite_of_nestedUniverseLastStep00Obligation
+    (H : TheNestedUniverseLastStep00Obligation) : TwinLowers.Infinite := by
+  rcases H with ⟨A, projOf, hNested⟩
+  exact twinLowersInfinite_of_lastStep00Obligation
+    ⟨A, projOf, fun M0 => nestedSemanticExtended_resolves_old (hNested M0)⟩
+
+/-#############################################################################
+  §5. Audit reading
+#############################################################################-/
+
+/--
+A one-way nested universe is not a final engine.  It is a strict descent.
+This proposition is the exact remaining shape of the arithmetic task: prove
+that same-key collisions cannot keep producing merely one-way strict nestings
+forever without eventually returning or paying.
+-/
+def OneWayNestingIsOnlyDescent {A M0 : ℕ}
+    (F_outer F_inner : ExtendedProperGeneratedFlow A M0) : Prop :=
+  NestedUniverseEmbedding F_outer F_inner ∧
+    lexRank (State.center F_inner.start) <
+      lexRank (State.center F_outer.start)
+
+/-- A one-way nesting certifies only strict descent, not a cycle. -/
+theorem oneWayNesting_is_only_descent {A M0 : ℕ}
+    {F_outer F_inner : ExtendedProperGeneratedFlow A M0}
+    (hNest : NestedUniverseEmbedding F_outer F_inner) :
+    OneWayNestingIsOnlyDescent F_outer F_inner :=
+  ⟨hNest, nestedUniverseEmbedding_drops_startRank hNest⟩
+
+/--
+Final audit name: the Euclidean engine is now either direct return, mutual
+nesting, or the impossibility of an infinite same-key nested chain.
+-/
+abbrev RemainingNestedUniverseEngineCertificate
+    {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NestedSemanticExtendedFlowLedgerCollisionResolves proj
+
+
+/-! Машинная честность nested-формы -/
+
+theorem returnCertificate_iff_either_returns {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) :
+    ExtendedFlowReturnCertificate F₁ F₂ ↔
+      ExtendedFlowReturnsToStart F₁ ∨ ExtendedFlowReturnsToStart F₂ := Iff.rfl
+
+theorem nestedResolves_iff_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj ↔
+      SemanticExtendedFlowLedgerCollisionResolves proj := by
+  constructor
+  · exact nestedSemanticExtended_resolves_old
+  · intro hOld F₁ F₂ hne h1 h2 hkey
+    exact ((no_extendedFlowResolutionAlternative A M0)
+      (hOld F₁ F₂ hne h1 h2 hkey)).elim
+
+theorem nestedUniverseLastStep00Obligation_iff_lastStep00Obligation :
+    TheNestedUniverseLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 => nestedSemanticExtended_resolves_old (h M0)⟩
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 =>
+      (nestedResolves_iff_resolves (projOf M0)).mpr (h M0)⟩
+
+theorem twin_above_of_nestedResolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (h : NestedSemanticExtendedFlowLedgerCollisionResolves proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves proj (nestedSemanticExtended_resolves_old h)
+
 end GeneratedFlowFormulation
 
 

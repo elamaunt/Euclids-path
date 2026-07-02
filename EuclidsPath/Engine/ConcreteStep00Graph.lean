@@ -8613,5 +8613,314 @@ theorem twin_reduction_is_pnp_node
 
 end PvsNPAnalogy
 
+/-#############################################################################
+  ЦЕЛОЧИСЛЕННЫЙ ЗНАКОВЫЙ ФАЙРВОЛ (кирпич: integer_signed_firewall).
+  ℤ-центры не дают нового двигателя: знак — gauge (зеркало сторон при z↦−z),
+  всякий знаковый шаг — pullback беззнакового, gauge-флип +k→−k не шаг
+  (lexRank), нулевой центр — не носитель (6·0±1 = ∓1... ±1). Ниже — кирпич +
+  машинная честность: файрвол ДЕФИНИЦИОНАЛЕН (SignedRealStep ⟺ проекция —
+  дизайн-выбор, не теорема о независимой знаковой динамике), проекция
+  сюръективна (полное gauge-расслоение), конкретное убийство +k→−k.
+#############################################################################-/
+
+open EuclidsPath.LabelledFanIn
+open EuclidsPath.BoundaryLedgerCollision
+
+/-#############################################################################
+  §1. Signed sides and the arithmetic mirror
+#############################################################################-/
+
+/-- The side mirror induced by `z ↦ -z`: `6(-k)-1 = -(6k+1)` and conversely. -/
+def mirrorSide : Side → Side
+  | Side.minus => Side.plus
+  | Side.plus  => Side.minus
+
+/-- Integer-valued signed side expression. -/
+def signedSideValue : Side → ℤ → ℤ
+  | Side.minus, z => 6 * z - 1
+  | Side.plus,  z => 6 * z + 1
+
+/-- The negative integer centre is the signed mirror of the positive one. -/
+theorem signedSideValue_neg_mirror (z : ℤ) (s : Side) :
+    signedSideValue s (-z) = - signedSideValue (mirrorSide s) z := by
+  cases s <;> simp [signedSideValue, mirrorSide] <;> ring
+
+/-#############################################################################
+  §2. Signed Step00 states and unsigned projection
+#############################################################################-/
+
+/--
+Signed version of the concrete Step00 state space.
+
+The centre coordinate is now an integer.  Defect primes remain natural numbers:
+the sign lives only on the carrier coordinate, not on the small-prime witness.
+-/
+inductive SignedState where
+  | center   : ℤ → SignedState
+  | defect   : ℤ → ℕ → Side → SignedState
+  | absorber : ℤ → SignedState
+deriving DecidableEq
+
+/--
+Projection from the signed integer graph to the audited natural graph.
+
+The side is mirrored on negative centres, so that the side label records the
+same absolute `6|z|±1` carrier after projection.
+-/
+def projectSignedState : SignedState → State
+  | SignedState.center z       => State.center (Int.natAbs z)
+  | SignedState.defect z q s   =>
+      if z < 0 then
+        State.defect (Int.natAbs z) q (mirrorSide s)
+      else
+        State.defect (Int.natAbs z) q s
+  | SignedState.absorber z     => State.absorber (Int.natAbs z)
+
+/-- Centre coordinate after forgetting signed gauge. -/
+def signedCenterAbs (U : SignedState) : ℕ :=
+  centerOf (projectSignedState U)
+
+/-- The signed lexicographic rank is just the unsigned rank of the projection. -/
+def signedLexRank (U : SignedState) : ℕ :=
+  lexRank (projectSignedState U)
+
+/-- Signed legality is inherited from the unsigned projected graph. -/
+def SignedLegal (A M0 : ℕ) (U : SignedState) : Prop :=
+  Legal A M0 (projectSignedState U)
+
+/-- Signed freshness is inherited from the unsigned projected graph. -/
+def SignedFresh (M0 : ℕ) (U : SignedState) : Prop :=
+  Fresh M0 (projectSignedState U)
+
+/-- Signed defects are exactly signed states whose unsigned projection is defective. -/
+def SignedDefective (A : ℕ) (U : SignedState) : Prop :=
+  Defective A (projectSignedState U)
+
+/-#############################################################################
+  §3. Signed real steps are only projected real steps
+#############################################################################-/
+
+/--
+The signed real-step relation is the pullback of the unsigned real-step relation.
+
+This is intentionally restrictive.  A sign flip by itself is not a new real
+transition; it is gauge only.  A signed transition is genuine only when its
+unsigned projection is already a genuine concrete Step00 transition.
+-/
+inductive SignedRealStep (A M0 : ℕ) : SignedState → SignedState → Prop
+  | ofProjected {U V : SignedState}
+      (h : RealStep A M0 (projectSignedState U) (projectSignedState V)) :
+      SignedRealStep A M0 U V
+
+/-- Every signed real step projects to an unsigned real step. -/
+theorem signedStep_projects_to_unsignedStep
+    {A M0 : ℕ} {U V : SignedState}
+    (h : SignedRealStep A M0 U V) :
+    RealStep A M0 (projectSignedState U) (projectSignedState V) := by
+  cases h with
+  | ofProjected hProjected => exact hProjected
+
+/-- The signed lexicographic rank strictly decreases on every genuine signed step. -/
+theorem signedLexRank_strict_decrease_on_SignedRealStep
+    {A M0 : ℕ} {U V : SignedState}
+    (h : SignedRealStep A M0 U V) :
+    signedLexRank V < signedLexRank U := by
+  exact lexRank_strict_decrease_on_RealStep
+    (A := A) (M0 := M0)
+    (signedStep_projects_to_unsignedStep h)
+
+/-- Signed gauge equivalence: two signed states have the same unsigned payload. -/
+def SignedGaugeEquivalent (U V : SignedState) : Prop :=
+  projectSignedState U = projectSignedState V
+
+/--
+A pure signed gauge flip cannot be a real Step00 transition.
+
+This kills the fake engine `+k -> -k -> +k`: if the unsigned payload is unchanged,
+then any genuine real step would force `lexRank W < lexRank W`.
+-/
+theorem same_projection_signed_step_impossible
+    {A M0 : ℕ} {U V : SignedState}
+    (hGauge : SignedGaugeEquivalent U V) :
+    ¬ SignedRealStep A M0 U V := by
+  intro hStep
+  have hlt : lexRank (projectSignedState V) < lexRank (projectSignedState U) :=
+    lexRank_strict_decrease_on_RealStep
+      (A := A) (M0 := M0)
+      (signedStep_projects_to_unsignedStep hStep)
+  dsimp [SignedGaugeEquivalent] at hGauge
+  rw [hGauge] at hlt
+  exact (Nat.lt_irrefl (lexRank (projectSignedState V))) hlt
+
+/-#############################################################################
+  §4. Signed paths and signed engines project to unsigned paths and engines
+#############################################################################-/
+
+/-- A signed path projects pointwise to an unsigned path of the same length. -/
+theorem pathN_project_signed
+    {A M0 : ℕ} :
+    ∀ {n : ℕ} {U V : SignedState},
+      PathN (SignedRealStep A M0) n U V →
+      PathN (RealStep A M0) n (projectSignedState U) (projectSignedState V) := by
+  intro n
+  induction n with
+  | zero =>
+      intro U V h
+      dsimp [PathN] at h ⊢
+      cases h
+      rfl
+  | succ n ih =>
+      intro U V h
+      dsimp [PathN] at h ⊢
+      rcases h with ⟨Z, hUZ, hZV⟩
+      refine ⟨projectSignedState Z, ?_, ?_⟩
+      · exact signedStep_projects_to_unsignedStep hUZ
+      · exact ih hZV
+
+/-- A nonempty signed self-path projects to a nonempty unsigned self-path. -/
+theorem nonemptyPath_project_signed
+    {A M0 : ℕ} {U : SignedState}
+    (h : NonemptyPath (SignedRealStep A M0) U U) :
+    NonemptyPath (RealStep A M0) (projectSignedState U) (projectSignedState U) := by
+  rcases h with ⟨n, hpos, hPath⟩
+  exact ⟨n, hpos, pathN_project_signed (A := A) (M0 := M0) hPath⟩
+
+/-- Signed Euclidean engine: a legal nonempty signed cycle. -/
+abbrev SignedEuclideanEngine (A M0 : ℕ) : Prop :=
+  LegalCycle (SignedRealStep A M0) (SignedLegal A M0)
+
+/-- Any signed engine projects to an unsigned concrete Step00 engine. -/
+theorem signedEngine_projects_to_unsignedEngine
+    {A M0 : ℕ}
+    (h : SignedEuclideanEngine A M0) :
+    LegalCycle (RealStep A M0) (Legal A M0) := by
+  rcases h with ⟨U, hLegal, hPath⟩
+  exact ⟨projectSignedState U, hLegal, nonemptyPath_project_signed hPath⟩
+
+/-- There are no signed Euclidean engines. -/
+theorem no_signedEuclideanEngine
+    {A M0 : ℕ} :
+    ¬ SignedEuclideanEngine A M0 := by
+  intro hSigned
+  exact no_concrete_legalCycle_by_lexRank
+    (A := A) (M0 := M0)
+    (signedEngine_projects_to_unsignedEngine hSigned)
+
+/-#############################################################################
+  §5. The zero centre is degenerate, not a carrier
+#############################################################################-/
+
+/--
+A signed state is a nondegenerate carrier only if its projected centre is
+positive.  This excludes the centre `0`, whose sides are `-1` and `1`.
+-/
+def SignedTwinCarrier : SignedState → Prop
+  | SignedState.center z       => 0 < Int.natAbs z
+  | SignedState.defect z _ _   => 0 < Int.natAbs z
+  | SignedState.absorber z     => 0 < Int.natAbs z
+
+/-- The zero centre does not carry a twin-prime pair. -/
+theorem zero_center_not_signedTwinCarrier :
+    ¬ SignedTwinCarrier (SignedState.center 0) := by
+  simp [SignedTwinCarrier]
+
+/-- The zero defect state is also degenerate as a carrier coordinate. -/
+theorem zero_defect_not_signedTwinCarrier {q : ℕ} {s : Side} :
+    ¬ SignedTwinCarrier (SignedState.defect 0 q s) := by
+  simp [SignedTwinCarrier]
+
+/-- The zero absorber is degenerate as a carrier coordinate. -/
+theorem zero_absorber_not_signedTwinCarrier :
+    ¬ SignedTwinCarrier (SignedState.absorber 0) := by
+  simp [SignedTwinCarrier]
+
+/-#############################################################################
+  §6. Firewall package
+#############################################################################-/
+
+/--
+The signed-integer firewall: adding the negative half of `ℤ` creates no new
+Step00 engine and no legal same-projection gauge step.
+-/
+structure IntegerSignedFirewall (A M0 : ℕ) where
+  signedStepProjects :
+    ∀ {U V : SignedState},
+      SignedRealStep A M0 U V →
+      RealStep A M0 (projectSignedState U) (projectSignedState V)
+  sameProjectionNoStep :
+    ∀ {U V : SignedState},
+      SignedGaugeEquivalent U V → ¬ SignedRealStep A M0 U V
+  noSignedEngine :
+    ¬ SignedEuclideanEngine A M0
+  zeroCenterDegenerate :
+    ¬ SignedTwinCarrier (SignedState.center 0)
+
+/-- The concrete firewall is supplied by projection plus `lexRank`. -/
+def integerSignedFirewall (A M0 : ℕ) : IntegerSignedFirewall A M0 where
+  signedStepProjects := by
+    intro U V h
+    exact signedStep_projects_to_unsignedStep h
+  sameProjectionNoStep := by
+    intro U V hGauge
+    exact same_projection_signed_step_impossible
+      (A := A) (M0 := M0) hGauge
+  noSignedEngine := by
+    exact no_signedEuclideanEngine (A := A) (M0 := M0)
+  zeroCenterDegenerate := by
+    exact zero_center_not_signedTwinCarrier
+
+/--
+Final audit slogan as a proposition:
+
+`ℤ` adds only signed gauge mirrors.  Any genuine signed engine descends to the
+already-impossible unsigned engine.
+-/
+abbrev IntegerSignedFirewallSlogan (A M0 : ℕ) : Prop :=
+  (∀ h : SignedEuclideanEngine A M0, False) ∧
+  (∀ {U V : SignedState}, SignedGaugeEquivalent U V → ¬ SignedRealStep A M0 U V) ∧
+  ¬ SignedTwinCarrier (SignedState.center 0)
+
+/-- The signed firewall slogan follows from the concrete firewall package. -/
+theorem integerSignedFirewall_slogan (A M0 : ℕ) :
+    IntegerSignedFirewallSlogan A M0 := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro h
+    exact no_signedEuclideanEngine (A := A) (M0 := M0) h
+  · intro U V hGauge
+    exact same_projection_signed_step_impossible
+      (A := A) (M0 := M0) hGauge
+  · exact zero_center_not_signedTwinCarrier
+
+/-! Машинная честность signed-формы -/
+
+/-- ЧЕСТНОСТЬ: файрвол ДЕФИНИЦИОНАЛЕН. SignedRealStep — pullback по построению,
+    потому «знаки не добавляют динамики» — дизайн-выбор, зафиксированный точным
+    iff, а не теорема о независимо заданной знаковой динамике. -/
+theorem signedRealStep_iff_projected {A M0 : ℕ} {U V : SignedState} :
+    SignedRealStep A M0 U V ↔
+      RealStep A M0 (projectSignedState U) (projectSignedState V) := by
+  constructor
+  · exact signedStep_projects_to_unsignedStep
+  · exact SignedRealStep.ofProjected
+
+/-- Проекция сюръективна: знаковый слой — полное gauge-расслоение над
+    беззнаковым графом (слои = выборы знака), ничего не теряется. -/
+theorem projectSignedState_surjective :
+    Function.Surjective projectSignedState := by
+  intro W
+  cases W with
+  | center n => exact ⟨SignedState.center (n : ℤ), by simp [projectSignedState]⟩
+  | defect n q s =>
+      refine ⟨SignedState.defect (n : ℤ) q s, ?_⟩
+      simp [projectSignedState]
+  | absorber n => exact ⟨SignedState.absorber (n : ℤ), by simp [projectSignedState]⟩
+
+/-- Конкретное убийство фейк-двигателя: шаг `+k → −k` невозможен
+    (обе проекции — center |k|). -/
+theorem no_center_sign_flip_step {A M0 : ℕ} (z : ℤ) :
+    ¬ SignedRealStep A M0 (SignedState.center z) (SignedState.center (-z)) :=
+  same_projection_signed_step_impossible
+    (by simp [SignedGaugeEquivalent, projectSignedState])
+
 end ConcreteStep00Graph
 end EuclidsPath

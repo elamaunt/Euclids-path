@@ -3524,6 +3524,16 @@ theorem unresolvedFinalCollision_of_sameKey {A M0 : ℕ}
 
 
 
+
+/-- **`twin_above_of_strictResolves` — ДОКАЗАНА (честность strict-формы).** Strict-резолвер на масштабе
+    `M0` ТОЖЕ предъявляет twin выше `M0` (через `strict ⟹ old` и `twin_above_of_resolves`). Финальный
+    вход в строгой форме — по-прежнему twin-детектор, не нейтральное условие. -/
+theorem twin_above_of_strictResolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (h : StrictSemanticExtendedFlowLedgerCollisionResolves proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves proj (strictSemanticExtended_resolves_old h)
+
 end GeneratedFlowFormulation
 
 

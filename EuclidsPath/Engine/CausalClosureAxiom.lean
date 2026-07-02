@@ -54,11 +54,21 @@
   (massGap_of_quantizationLaw); §12 фиксирует лишь то, что декрет утверждает
   САМ: на его масштабе A ≥ 5 поставки отклонений нет — его мир гэпнут в
   языке поставок. Клэй НЕ решается и НЕ объявляется.
+
+  НАВЬЕ–СТОКС-ЯЗЫК ДЕКРЕТА (§13): ПЯТОЙ границы НЕТ — намеренно. Трилемма
+  (Engine/NavierStokesFront §7): универсальный кандидат опровержим (cookedFlow —
+  размешиваемый поток набирает энергию), экзистенциальный уже зелёно доказан
+  (нулевое решение), манифестационный НЕСОВМЕСТИМ с принятой границей
+  (cookedProfileCascade зелёно предъявим). Убийца равномерного сингулярного
+  каскада при балансе (noSingularCascade_of_energyBalance) — зелёная ТЕОРЕМА
+  фронта, не декрет; «гэпнутость в поставках» уже §12 — дубликат не вводится.
+  §13 несёт единственную честную растяжку. Клэй НЕ решается и НЕ объявляется.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
 import EuclidsPath.Engine.RiemannManifestationFront
 import EuclidsPath.Engine.PNPRankPaymentFront
 import EuclidsPath.Engine.YangMillsFront
+import EuclidsPath.Engine.NavierStokesFront
 
 set_option autoImplicit false
 
@@ -2420,6 +2430,33 @@ theorem quarantine_inconsistent_if_supply_at_every_scale
 
 -- Машинная видимость: ЯМ-язык декрета заражён ровно step00FirstCause.
 #print axioms decreedScale_no_deviationSupply
+
+/-#############################################################################
+  §13. НАВЬЕ–СТОКС-ЯЗЫК ДЕКРЕТА: пятой границы НЕТ — намеренно
+  (трилемма: Engine/NavierStokesFront §7 — универсал опровержим (cookedFlow),
+  экзистенциал уже зелёно доказан (нулевое решение), манифестационный
+  несовместим с принятой границей (cookedProfileCascade зелёно предъявим).
+  «Гэпнутость» мира декрета в языке поставок — уже §12
+  (decreedScale_no_deviationSupply), НС-дубликат НЕ добавляется. Зелёный
+  убийца равномерного сингулярного каскада при балансе
+  (noSingularCascade_of_energyBalance) — ТЕОРЕМА фронта, НЕ декрет: таинт
+  не подделывается. Клэй НЕ решается и НЕ объявляется.)
+#############################################################################-/
+
+/-- **РАСТЯЖКА (Навье–Стокс):** если манифестационную форму пятого поля
+    когда-либо примут или докажут, карантин противоречив — False выводимо
+    ИМЕННО здесь (кованый профильный каскад предъявим зелёно; принятая
+    граница сжигает поставку на своём масштабе). Безопасность: закон не
+    зелёно-доказуем — он ⟺ глобальной заморозке всех леджеров
+    (nsManifestationLaw_iff_no_resolution), а малые масштабы A ≤ 4 масштабы
+    A ≥ 5 не решают. ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+theorem quarantine_inconsistent_if_nsManifestationLaw_decreed
+    (h : EuclidsPath.NavierStokesFront.NsManifestationLaw) : False :=
+  EuclidsPath.NavierStokesFront.nsManifestationLaw_refutes_boundary h
+    step00CausalClosure
+
+-- Машинная видимость: НС-растяжка заражена ровно step00FirstCause.
+#print axioms quarantine_inconsistent_if_nsManifestationLaw_decreed
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

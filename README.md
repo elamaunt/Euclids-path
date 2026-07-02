@@ -80,10 +80,11 @@
 | 38 | **Риман через первопричину** | [38](prose/38_RiemannFirstCause.md) | `Engine/RiemannManifestationFront` (зелёная цепь), `Engine/CausalClosureAxiom` §10, `Engine/RiemannDualEngineFront` | 🟢 цепь; 🟡 RH из декрета; 🔴 дуальные пакеты |
 | 39 | **P/NP: оплата сертификатов ранга** | [39](prose/39_PNPRankPayment.md) | `Engine/PNPRankPaymentFront` (зелёная сепарация A ≤ 4 + трилемма), `Engine/CausalClosureAxiom` §11 | 🟢 сепарация в ранговой модели; 🟡 P/NP-язык декрета; ⚠️ вакуумность №4 |
 | 40 | **Янг–Миллс: масс-щель через двигатель** | [40](prose/40_YangMills.md) | `Engine/YangMillsFront` (зелёная цепь + трилемма), `Engine/CausalClosureAxiom` §12 | 🟢 квантованность⟹щель; 🟡 язык декрета; 🔴 data-anchor спектра |
+| 41 | **НС: гладкость через каскад + интеграл** | [41](prose/41_NSSmoothness.md) | `Engine/NavierStokesFront` (тождество энергии + mild-форма + трилемма), `Engine/CausalClosureAxiom` §13 | 🟢 тождество+каскад; 🟡 растяжка; 🔴 EnergyBalanceLaw |
 | A | Численные данные | [A](prose/A_NumericalEvidence.md) | `tools/RESULTS_*` | — |
 
 🟢 = машинно проверено, без `sorry` (стандартные аксиомы). 🟡 = AXIOM-TAINTED (условно на
-`step00FirstCause`; ровно 37 деклараций — 36 в карантине + задокументированное следствие
+`step00FirstCause`; ровно 38 деклараций — 37 в карантине + задокументированное следствие
 `higherEnergyIncompatibility_twins`). 🔴 = открытый узел / вход.
 
 ## Статус (честно)
@@ -172,6 +173,15 @@
   коллапс `quantizationLaw_iff_massGap` — закон ⟺ щель зелёно). Мир декрета гэпнут в языке
   поставок (`decreedScale_no_deviationSupply` 🟡). Проблема Клэя НЕ решена и НЕ объявлена:
   🔴 вход — data-anchored построенный YM-спектр (в mathlib отсутствует).
+- **НС: гладкость через каскад + взятый интеграл ([41](prose/41_NSSmoothness.md)):** сингулярность =
+  сингулярный каскад (∞ квантованных диссипаций, сжатых до конечного T) = вечный двигатель;
+  **`noSingularCascade_of_energyBalance`** 🟢 — энергобаланс ⟹ точек разрыва каскадного типа нет
+  (суррогат гладкости; НЕ C^∞ — раскрыто). **Интеграл взят**: `energy_identity_of_energyBalance` 🟢 —
+  тождество E(t₂) = E(t₁) − ∫D равенством (старое неравенство — огрубление);
+  `isNSSolution_integral_form` 🟢 — u t x = u 0 x + ∫₀ᵗ(νΔu − ∇p + f − (u·∇)u) (mild-форма, E3-значный
+  FTC). Пятой границы декрета НЕТ — трилемма (универсал опровержим `cookedFlow`, экзистенциал
+  вакуумен нулём, манифестация несовместима с границей — кованый профильный каскад предъявим).
+  Клэй НЕ решён: Лерэ/единственность/C^∞/`EnergyBalanceLaw` — 🔴 входы.
 - ⚠️ **Единственный `axiom` репозитория — ПЕРВОПРИЧИНА (карантин):** `Engine/CausalClosureAxiom.lean`
   объявляет `step00FirstCause : Step00FirstCause` — намеренно структурированное внешнее начало
   `0 → 1` с **ДВУМЯ причинными границами**: twin-узел `causalBoundary`

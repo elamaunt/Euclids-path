@@ -6706,6 +6706,206 @@ theorem infiniteLoadStableRefutationAttempt_empty {A M0 : ℕ}
     (A := A) (M0 := M0) proj R.infiniteFlows
     ((noEnergyStableUniverse_iff_resolves proj).mp R.stable)
 
+/-#############################################################################
+  НЕТ ВНУТРЕННЕГО РЕШЕНИЯ БЕЗ ДВИГАТЕЛЯ (кирпич:
+  no_internal_decision_without_engine_theorem).
+  Пакет вывода аудита: внутри архитектуры стабильную конечно-twin ветвь
+  нельзя ни доказать, ни опровергнуть разрешёнными локальными механизмами,
+  не построив двигатель (все двигатели сожжены lexRank). Кирпич сам честно
+  маркирует: это НЕ метаматематическая независимость (§4). Фиксы:
+  SomeConcreteEuclideanEngine → ∃-Prop (данные A,M0 под ¬); proof-attempt
+  импоссибилити → `→ False`. Ниже — кирпич + машинная честность: «доказать»
+  и «опровергнуть» несут ОДИНАКОВЫЕ поля; все ветви пусты напрямую.
+#############################################################################-/
+
+/-#############################################################################
+  §1. Stable proof attempts and the common engine target
+#############################################################################-/
+
+/--
+A proof attempt for the stable finite-twin branch, in the precise object-level
+sense used by the audit.
+
+It consists of a no-energy stable ledger together with an infinite generated-flow
+load.  The earlier patches prove that such data build a concrete Euclidean
+engine witness.
+-/
+structure InternalStableProofAttempt {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) where
+  stable : NoEnergyStableUniverse proj
+  𝓕 : Set (ExtendedProperGeneratedFlow A M0)
+  infiniteFlows : InfiniteExtendedGeneratedFlowFamily A M0 𝓕
+
+/--
+A scale-indexed concrete Euclidean engine witness, hiding only the parameters
+`A` and `M0`.
+-/
+def SomeConcreteEuclideanEngine : Prop :=
+  ∃ A M0 : ℕ, ConcreteEuclideanEngineWitness A M0
+
+/--
+There is no concrete Euclidean engine at any scale in the corrected Step00 graph.
+-/
+theorem no_someConcreteEuclideanEngine :
+    ¬ SomeConcreteEuclideanEngine := by
+  rintro ⟨A, M0, W⟩
+  exact no_concreteEuclideanEngineWitness W
+
+/--
+Every internal stable proof attempt builds a concrete Euclidean engine.
+-/
+theorem internalStableProofAttempt_builds_engine {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (P : InternalStableProofAttempt proj) :
+    SomeConcreteEuclideanEngine := by
+  rcases finiteLoadStableTheory_requires_engine
+      (proj := proj) P.stable P.infiniteFlows with ⟨W, _⟩
+  exact ⟨A, M0, W⟩
+
+/--
+Therefore no internal stable proof attempt exists without constructing the
+forbidden engine.
+-/
+theorem no_internalStableProofAttempt {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (P : InternalStableProofAttempt proj) : False :=
+  no_someConcreteEuclideanEngine
+    (internalStableProofAttempt_builds_engine (proj := proj) P)
+
+/-#############################################################################
+  §2. Unified internal decision attempts
+#############################################################################-/
+
+/--
+The three object-level ways the audited architecture can try to decide the
+stable finite-twin branch:
+
+* `prove`: present a stable ledger plus an infinite generated-flow load;
+* `refuteLocal`: present a real local same-key collision against the stable
+  ledger;
+* `refuteInfinite`: present an infinite-load refutation against the stable
+  ledger.
+
+The previous patches showed that each of these constructs the same forbidden
+object: a concrete Euclidean engine witness.
+-/
+inductive InternalStableDecisionAttempt : Prop where
+  | prove {A M0 : ℕ}
+      {proj : SemanticExtendedFlowLedgerProjection A M0}
+      (P : InternalStableProofAttempt proj) :
+      InternalStableDecisionAttempt
+  | refuteLocal {A M0 : ℕ}
+      {proj : SemanticExtendedFlowLedgerProjection A M0}
+      (R : LocalStableRefutationAttempt proj) :
+      InternalStableDecisionAttempt
+  | refuteInfinite {A M0 : ℕ}
+      {proj : SemanticExtendedFlowLedgerProjection A M0}
+      (R : InfiniteLoadStableRefutationAttempt proj) :
+      InternalStableDecisionAttempt
+
+/--
+Any internal decision attempt builds a concrete Euclidean engine.
+-/
+theorem internalStableDecisionAttempt_builds_engine
+    (D : InternalStableDecisionAttempt) :
+    SomeConcreteEuclideanEngine := by
+  cases D with
+  | prove P =>
+      exact internalStableProofAttempt_builds_engine P
+  | refuteLocal R =>
+      exact ⟨_, _, localStableRefutationAttempt_builds_engine R⟩
+  | refuteInfinite R =>
+      exact ⟨_, _, infiniteLoadStableRefutationAttempt_builds_engine R⟩
+
+/--
+Consequently, no internal decision attempt is available in the corrected
+no-engine Step00 architecture.
+-/
+theorem no_internalStableDecisionAttempt :
+    ¬ InternalStableDecisionAttempt := by
+  intro D
+  exact no_someConcreteEuclideanEngine
+    (internalStableDecisionAttempt_builds_engine D)
+
+/-#############################################################################
+  §3. The exact theorem: neither prove nor refute inside this architecture
+#############################################################################-/
+
+/--
+Object-level slogan as a proposition:
+
+  Inside this Step00 architecture, the stable finite-twin branch cannot be
+  proved or refuted by the audited local mechanisms without constructing a
+  forbidden Euclidean engine.
+-/
+abbrev NoInternalDecisionWithoutForbiddenEngine : Prop :=
+  ¬ InternalStableDecisionAttempt
+
+/--
+The formal theorem requested by the audit discussion.
+
+This says “neither prove nor refute” only in the internal architectural sense:
+every allowed proof/refutation route first builds a concrete engine, and every
+such engine is ruled out by the already proved `lexRank` acyclicity theorem.
+-/
+theorem noInternalDecisionWithoutForbiddenEngine :
+    NoInternalDecisionWithoutForbiddenEngine := by
+  exact no_internalStableDecisionAttempt
+
+/--
+Equivalent named version using the earlier dual audit package.
+-/
+abbrev EarlierDualAuditNoDecision : Prop :=
+  NoProofOrRefutationWithoutForbiddenEngine
+
+/--
+The earlier dual audit package also realises the same “no internal decision”
+claim: proof, local refutation, and infinite-load refutation are all forbidden
+unless a concrete engine is constructed.
+-/
+theorem earlierDualAuditNoDecision : EarlierDualAuditNoDecision := by
+  exact noProofOrRefutationWithoutForbiddenEngine
+
+/-#############################################################################
+  §4. Explicit boundary: not a global independence theorem
+#############################################################################-/
+
+/--
+A marker proposition recording the scope of the result.
+
+It is intentionally just `True`: the mathematical content is in
+`noInternalDecisionWithoutForbiddenEngine`.  This marker prevents the audit text
+from being read as a Gödel-style independence claim for the ordinary twin-prime
+statement.  Such a claim would require a separate formal proof system and
+metatheory, which are not part of the Step00 graph.
+-/
+abbrev ThisIsObjectLevelNotMetamathematicalIndependence : Prop := True
+
+theorem thisIsObjectLevelNotMetamathematicalIndependence :
+    ThisIsObjectLevelNotMetamathematicalIndependence := by
+  trivial
+
+/-! Машинная честность no-decision-формы -/
+
+/-- «Proof attempt» несёт БУКВАЛЬНО те же поля, что infinite-load «refutation
+    attempt» (stable + 𝓕 + infiniteFlows): дихотомия «доказать/опровергнуть»
+    здесь номинальна — оба пусты напрямую через seam-честность. -/
+theorem internalStableProofAttempt_empty {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (P : InternalStableProofAttempt proj) : False :=
+  infiniteLoadStableRefutationAttempt_empty
+    ⟨P.stable, P.𝓕, P.infiniteFlows⟩
+
+/-- Прямая пустота решающей попытки (без обхода через двигатель): все три
+    ветви пусты через seam-честность — no-decision = surfaced ex-falso. -/
+theorem internalStableDecisionAttempt_empty_directly :
+    InternalStableDecisionAttempt → False := by
+  intro D
+  cases D with
+  | prove P => exact internalStableProofAttempt_empty P
+  | refuteLocal R => exact localStableRefutationAttempt_empty R
+  | refuteInfinite R => exact infiniteLoadStableRefutationAttempt_empty R
+
 end GeneratedFlowFormulation
 
 

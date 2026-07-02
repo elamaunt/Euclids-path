@@ -215,6 +215,12 @@ theorem riemannHypothesis_of_two_transport
   ⟹ вечный двигатель» — и аналитический вход `TrivialBelowZeroClassification` (нули с $\mathrm{Re}\le 0$
   тривиальны; функциональное уравнение, mathlib даёт лишь значения тривиальных нулей). RH здесь
   **условна** на этих двух узлах и **не доказана**.
+- **⚠️ Циркулярность impossible-engine маршрутов (машинно, `RiemannImpossibleEngineOff` §7bis).**
+  `offCriticalBridge_iff_RH`: раз factory безусловно невозможна, вход `OffCriticalRiemannEngineBridge`
+  **эквивалентен RH дословно** (мост выполним лишь вакуумно — когда off-critical нулей нет). Аналогично
+  `criticalStripBridge_iff_no_stripZero` (strip-вариант) и `spectralBridge_forces_no_violation`
+  (rank-jump-мост скрыто несёт `¬LiouvilleViolation` = RH-содержание). Эти маршруты — точные
+  **переформулировки** RH, а не понижения сложности; их ценность — форма (двигатель), не редукция.
 
 > **Гипотеза (узел, подлежащий закрытию).** Асимметрия $\mathrm{Re}\,\rho \ne \tfrac12$ у нетривиального
 > нуля влечёт нарушение баланса переноса двойки такой силы, что порождает бесконечную clean-цепь

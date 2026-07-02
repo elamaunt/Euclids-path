@@ -7430,6 +7430,148 @@ theorem strictLastStep00Obligation_iff_lastStep00Obligation :
   · rintro ⟨A, projOf, h⟩
     exact ⟨A, projOf, fun M0 => (strictResolves_iff_resolves (projOf M0)).mpr (h M0)⟩
 
+/-#############################################################################
+  МАШИННОЕ СУЖЕНИЕ УЗЛА: ВЕТВЬ A ≤ 4 ОПРОВЕРГНУТА (адверсариальный аудит,
+  probe-агент; проверено и интегрировано).
+  5-адическая цепь c(k+1) = 5·c(k) + 1 (тождество 6·(5x+1)−1 = 5·(6x+1),
+  bigDivisor 5 > A) даёт БЕСКОНЕЧНУЮ admissible-семью БЕЗ twin-гипотез при
+  A ≤ 4, M0 = 1: чистота бесплатна (2 и 3 не делят 6m±1), все пост-аудитные
+  заплаты выполнены честно. Пиджонхол ⟹ никакая конечноключевая проекция не
+  резолвит ⟹ ветвь A ≤ 4 узла мертва; ∃A живёт только в A ≥ 5. Для A ≥ 5
+  тот же приём требует чистых стартов с контролем peel-целей — арифметика
+  дирихле-класса, отсутствующая в репо (и, вероятно, за красной линией):
+  выполнимость узла при A ≥ 5 остаётся подлинно открытой.
+#############################################################################-/
+
+/-- Для `A ≤ 4` каждый центр `m ≥ 1` чист: кандидаты — только 2 и 3,
+    ни один не делит `6m ± 1`. -/
+theorem clean_of_scale_le_four {A : ℕ} (hA : A ≤ 4) {m : ℕ} (hm : 1 ≤ m) :
+    Clean A m := by
+  intro q hq hqA hbad
+  have h2 : 2 ≤ q := hq.two_le
+  have h4 : q ≤ 4 := le_trans hqA hA
+  interval_cases q
+  · rcases hbad with h | h <;> omega
+  · rcases hbad with h | h <;> omega
+  · exact absurd hq (by norm_num)
+
+/-- 5-адическая цепь спуска 1, 6, 31, 156, …: `c(k+1) = 5·c(k) + 1`. -/
+def fiveAdicChain : ℕ → ℕ
+  | 0 => 1
+  | k + 1 => 5 * fiveAdicChain k + 1
+
+theorem fiveAdicChain_pos : ∀ k, 1 ≤ fiveAdicChain k
+  | 0 => le_refl 1
+  | k + 1 => by show 1 ≤ 5 * fiveAdicChain k + 1; omega
+
+theorem fiveAdicChain_strictMono : StrictMono fiveAdicChain :=
+  strictMono_nat_of_lt_succ (fun k => by
+    have := fiveAdicChain_pos k
+    show fiveAdicChain k < 5 * fiveAdicChain k + 1
+    omega)
+
+/-- Собственный peel `center c(k+1) → center c(k)`: тождество
+    `6·(5x+1) − 1 = 5·(6x+1)`, bigDivisor 5 (простой, > A при A ≤ 4);
+    ВСЕ пост-аудитные заплаты (smaller, targetPos) выполнены честно. -/
+def fiveAdicChainPeel {A : ℕ} (hA : A ≤ 4) (k : ℕ) :
+    ProperCenterPeel A (fiveAdicChain (k + 1)) (fiveAdicChain k) :=
+  { inSide := Side.minus
+    outSide := Side.plus
+    bigDivisor := 5
+    bigPrime := by norm_num
+    bigBeyondScale := by omega
+    factor := by
+      show 6 * (5 * fiveAdicChain k + 1) - 1 = 5 * (6 * fiveAdicChain k + 1)
+      omega
+    smaller := by
+      have := fiveAdicChain_pos k
+      show fiveAdicChain k < 5 * fiveAdicChain k + 1
+      omega
+    targetPos := fiveAdicChain_pos k }
+
+/-- Полный собственный путь от `center c(k)` вниз до `center 1`. -/
+theorem fiveAdicChainPath {A : ℕ} (hA : A ≤ 4) :
+    ∀ k, PathN (ProperRealStep A 1) k
+      (State.center (fiveAdicChain k)) (State.center 1) := by
+  intro k
+  induction k with
+  | zero => rfl
+  | succ n ih =>
+      exact ⟨State.center (fiveAdicChain n),
+        ProperRealStep.clean (clean_of_scale_le_four hA (fiveAdicChain_pos (n + 1)))
+          (clean_of_scale_le_four hA (fiveAdicChain_pos n)) (fiveAdicChainPeel hA n),
+        ih⟩
+
+/-- Admissible-генеалогия для каждого k — БЕЗ КАКОЙ-ЛИБО twin-гипотезы. -/
+def fiveAdicChainFlow {A : ℕ} (hA : A ≤ 4) (k : ℕ) :
+    ExtendedProperGeneratedFlow A 1 :=
+  { start := fiveAdicChain (k + 1)
+    terminal := State.center 1
+    steps := k + 1
+    nonempty := Nat.succ_pos k
+    properPath := fiveAdicChainPath hA (k + 1)
+    startClean := clean_of_scale_le_four hA (fiveAdicChain_pos (k + 1))
+    startFresh := by
+      have := fiveAdicChain_pos k
+      show 1 < 5 * fiveAdicChain k + 1
+      omega
+    terminalLegal := clean_of_scale_le_four hA le_rfl
+    ledgerTerminal := extendedLedgerTerminal_oldCleanCenter le_rfl
+      (clean_of_scale_le_four hA le_rfl) }
+
+theorem fiveAdicChainFlow_injective {A : ℕ} (hA : A ≤ 4) :
+    Function.Injective (fiveAdicChainFlow hA) := by
+  intro k₁ k₂ h
+  have hstart : fiveAdicChain (k₁ + 1) = fiveAdicChain (k₂ + 1) :=
+    congrArg ExtendedProperGeneratedFlow.start h
+  have := fiveAdicChain_strictMono.injective hstart
+  omega
+
+/-- **ДВЕ различные admissible-генеалогии БЕЗУСЛОВНО** (A ≤ 4, M0 = 1):
+    ни TwinBoundAbove, ни ¬TwinCenterZ нигде не используются. -/
+theorem two_admissible_flows_unconditional {A : ℕ} (hA : A ≤ 4) :
+    ∃ F₁ F₂ : ExtendedProperGeneratedFlow A 1,
+      F₁ ≠ F₂ ∧ ExtendedFlowAdmissible F₁ ∧ ExtendedFlowAdmissible F₂ := by
+  refine ⟨fiveAdicChainFlow hA 0, fiveAdicChainFlow hA 1, ?_,
+    extendedFlow_admissible _, extendedFlow_admissible _⟩
+  intro h
+  exact absurd (fiveAdicChainFlow_injective hA h) (by omega)
+
+/-- Семья бесконечна ⟹ НИКАКАЯ конечноключевая проекция не резолвит на
+    (A ≤ 4, M0 = 1): пиджонхол даёт same-key пару, альтернатива сожжена. -/
+theorem no_projection_resolves_at_smallScale {A : ℕ} (hA : A ≤ 4)
+    (proj : SemanticExtendedFlowLedgerProjection A 1) :
+    ¬ SemanticExtendedFlowLedgerCollisionResolves proj := by
+  intro hRes
+  letI : Finite proj.Key := proj.finiteKey
+  obtain ⟨k₁, k₂, hne, hkey⟩ :=
+    Finite.exists_ne_map_eq_of_infinite
+      (fun k => proj.keyFlow (fiveAdicChainFlow hA k))
+  have hFne : fiveAdicChainFlow hA k₁ ≠ fiveAdicChainFlow hA k₂ :=
+    fun h => hne (fiveAdicChainFlow_injective hA h)
+  exact no_extendedFlowResolutionAlternative A 1
+    (hRes _ _ hFne (extendedFlow_admissible _) (extendedFlow_admissible _) hkey)
+
+/-- **ВЕТВЬ A ≤ 4 УЗЛА МАШИННО ОПРОВЕРГНУТА**: никакая семья проекций над
+    таким A не резолвит на всех M0 (падает уже на M0 = 1). -/
+theorem smallScale_branch_of_lastStep00Obligation_refuted {A : ℕ} (hA : A ≤ 4) :
+    ¬ ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+        ∀ M0 : ℕ, SemanticExtendedFlowLedgerCollisionResolves (projOf M0) := by
+  rintro ⟨projOf, hRes⟩
+  exact no_projection_resolves_at_smallScale hA (projOf 1) (hRes 1)
+
+/-- **СУЖЕНИЕ УЗЛА**: `∃A` в TheLastStep00Obligation живёт только в `A ≥ 5`. -/
+theorem lastStep00Obligation_forces_scale_ge_five
+    (H : TheLastStep00Obligation) :
+    ∃ A : ℕ, 5 ≤ A ∧
+      ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+        ∀ M0 : ℕ, SemanticExtendedFlowLedgerCollisionResolves (projOf M0) := by
+  rcases H with ⟨A, projOf, h⟩
+  by_cases hA : 5 ≤ A
+  · exact ⟨A, hA, projOf, h⟩
+  · exact absurd ⟨projOf, h⟩
+      (smallScale_branch_of_lastStep00Obligation_refuted (by omega))
+
 end GeneratedFlowFormulation
 
 

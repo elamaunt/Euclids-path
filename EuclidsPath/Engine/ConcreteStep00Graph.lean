@@ -4160,6 +4160,438 @@ theorem twin_above_of_nestedResolves {A M0 : ℕ}
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_resolves proj (nestedSemanticExtended_resolves_old h)
 
+/-#############################################################################
+  СИНГУЛЯРНОСТИ НА ШВЕ ЛЕДЖЕРА (кирпич: ledger_seam_singularity).
+  Классификация same-key коллизии: возврат / вложение (в одну из сторон) /
+  оплата / СИНГУЛЯРНОСТЬ (шов склеил истории, которые граф склеить не умеет).
+  Dangling-вложение — спуск вместо двигателя. Аудит-редукция кирпича:
+  NoSingularity + NoDangling ⟹ nested-резолвер. Ниже — кирпич + машинная
+  честность: обе половины аудита взаимно аннигилируют в «коллизий нет вовсе»
+  (= инъективность), seam-узел ⟺ старый узел, и это опять twin-детектор.
+#############################################################################-/
+
+/-#############################################################################
+  §1. Same-key seam collisions and singularities
+#############################################################################-/
+
+/--
+A same-key ledger seam collision of two admissible extended genealogies.
+This is only the common precondition; it is not yet an engine.
+-/
+def LedgerSeamCollision {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  F₁ ≠ F₂ ∧
+  ExtendedFlowAdmissible F₁ ∧
+  ExtendedFlowAdmissible F₂ ∧
+  proj.keyFlow F₁ = proj.keyFlow F₂
+
+/--
+A singularity on the ledger seam.
+
+The projection identifies two different admissible genealogies by one finite
+semantic key, but the concrete graph gives none of the legitimate realizations:
+no direct return, no nesting in either direction, and no payment contradiction.
+-/
+def LedgerSeamSingularity {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamCollision proj F₁ F₂ ∧
+  ¬ ExtendedFlowReturnCertificate F₁ F₂ ∧
+  ¬ NestedUniverseEmbedding F₁ F₂ ∧
+  ¬ NestedUniverseEmbedding F₂ F₁ ∧
+  ¬ ImpossiblePayment
+
+/-- A projection has no seam singularities if no same-key collision is a broken
+ledger seam. -/
+def NoLedgerSeamSingularity {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    ¬ LedgerSeamSingularity proj F₁ F₂
+
+/-- A singularity is by definition an unresolved same-key collision. -/
+theorem ledgerSeamSingularity_is_unresolved {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (h : LedgerSeamSingularity proj F₁ F₂) :
+    LedgerSeamCollision proj F₁ F₂ ∧
+    ¬ ExtendedFlowReturnCertificate F₁ F₂ ∧
+    ¬ NestedUniverseEmbedding F₁ F₂ ∧
+    ¬ NestedUniverseEmbedding F₂ F₁ ∧
+    ¬ ImpossiblePayment := by
+  exact h
+
+/-#############################################################################
+  §2. Classical seam classification
+#############################################################################-/
+
+/--
+The broad classification of a same-key collision.
+
+This is a tautological classifier, not a proof of Step00: a collision either
+already has one of the concrete witnesses, or it is exactly a seam singularity.
+-/
+def SeamCollisionClassificationAlternative {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨
+  NestedUniverseEmbedding F₁ F₂ ∨
+  NestedUniverseEmbedding F₂ F₁ ∨
+  ImpossiblePayment ∨
+  LedgerSeamSingularity proj F₁ F₂
+
+/--
+Every same-key collision classically falls into the broad seam classification.
+The last case is precisely the singularity case.
+-/
+theorem seamCollision_classical_classification {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hColl : LedgerSeamCollision proj F₁ F₂) :
+    SeamCollisionClassificationAlternative proj F₁ F₂ := by
+  classical
+  by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+  · exact Or.inl hReturn
+  · by_cases hNest₁₂ : NestedUniverseEmbedding F₁ F₂
+    · exact Or.inr (Or.inl hNest₁₂)
+    · by_cases hNest₂₁ : NestedUniverseEmbedding F₂ F₁
+      · exact Or.inr (Or.inr (Or.inl hNest₂₁))
+      · by_cases hPay : ImpossiblePayment
+        · exact Or.inr (Or.inr (Or.inr (Or.inl hPay)))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr
+            ⟨hColl, hReturn, hNest₁₂, hNest₂₁, hPay⟩)))
+
+/-#############################################################################
+  §3. Dangling one-way nesting
+#############################################################################-/
+
+/--
+A dangling one-way nesting is another non-closing seam phenomenon.
+
+There is a same-key collision and at least one one-way nesting, but it is not a
+mutual nesting, not a return-path resolution, and not a payment contradiction.
+Such a case is not a cycle; it is only a smaller internal universe.  If it is
+allowed as a final resolution, the proof has smuggled a descent in place of an
+engine.
+-/
+def DanglingOneWayNesting {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamCollision proj F₁ F₂ ∧
+  ¬ ExtendedFlowReturnCertificate F₁ F₂ ∧
+  ¬ MutuallyNestedUniverses F₁ F₂ ∧
+  ¬ ImpossiblePayment ∧
+  (NestedUniverseEmbedding F₁ F₂ ∨ NestedUniverseEmbedding F₂ F₁)
+
+/-- No dangling one-way nesting means a same-key one-way nesting cannot remain
+as a terminal explanation: it must close into mutual nesting, return, or payment.
+-/
+def NoDanglingOneWayNesting {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    ¬ DanglingOneWayNesting proj F₁ F₂
+
+/-- Under `NoDanglingOneWayNesting`, any one-way nesting in an unresolved
+collision must actually be mutual. -/
+theorem oneWayNesting_forces_mutual_of_noDangling {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hNoDangling : NoDanglingOneWayNesting proj)
+    (hColl : LedgerSeamCollision proj F₁ F₂)
+    (hNoReturn : ¬ ExtendedFlowReturnCertificate F₁ F₂)
+    (hNoPayment : ¬ ImpossiblePayment)
+    (hOneWay : NestedUniverseEmbedding F₁ F₂ ∨ NestedUniverseEmbedding F₂ F₁) :
+    MutuallyNestedUniverses F₁ F₂ := by
+  classical
+  by_contra hNoMutual
+  exact hNoDangling F₁ F₂
+    ⟨hColl, hNoReturn, hNoMutual, hNoPayment, hOneWay⟩
+
+/-#############################################################################
+  §4. From no singularity/no dangling to the old nested resolver
+#############################################################################-/
+
+/--
+Closing alternatives are the ones that already imply the old cycle-or-payment
+resolver: direct return, mutual nesting, payment, or a singularity marker.
+The singularity marker is included only so that `NoLedgerSeamSingularity` can
+explicitly discharge it.
+-/
+def SeamClosingAlternative {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨
+  MutuallyNestedUniverses F₁ F₂ ∨
+  ImpossiblePayment ∨
+  LedgerSeamSingularity proj F₁ F₂
+
+/--
+The broad seam classification, plus the no-dangling audit, yields a closing
+alternative.  This is where a bare one-way nesting is rejected as a final engine.
+-/
+theorem seamClassification_to_closingAlternative {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hNoDangling : NoDanglingOneWayNesting proj)
+    (hColl : LedgerSeamCollision proj F₁ F₂)
+    (hClass : SeamCollisionClassificationAlternative proj F₁ F₂) :
+    SeamClosingAlternative proj F₁ F₂ := by
+  classical
+  rcases hClass with hReturn | hRest
+  · exact Or.inl hReturn
+  · rcases hRest with hNest₁₂ | hRest
+    · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+      · exact Or.inl hReturn
+      · by_cases hPay : ImpossiblePayment
+        · exact Or.inr (Or.inr (Or.inl hPay))
+        · have hMut : MutuallyNestedUniverses F₁ F₂ :=
+            oneWayNesting_forces_mutual_of_noDangling
+              (proj := proj) hNoDangling hColl hReturn hPay (Or.inl hNest₁₂)
+          exact Or.inr (Or.inl hMut)
+    · rcases hRest with hNest₂₁ | hRest
+      · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+        · exact Or.inl hReturn
+        · by_cases hPay : ImpossiblePayment
+          · exact Or.inr (Or.inr (Or.inl hPay))
+          · have hMut : MutuallyNestedUniverses F₁ F₂ :=
+              oneWayNesting_forces_mutual_of_noDangling
+                (proj := proj) hNoDangling hColl hReturn hPay (Or.inr hNest₂₁)
+            exact Or.inr (Or.inl hMut)
+      · rcases hRest with hPay | hSing
+        · exact Or.inr (Or.inr (Or.inl hPay))
+        · exact Or.inr (Or.inr (Or.inr hSing))
+
+/-- A closing alternative becomes the old nested-universe resolution once seam
+singularities are forbidden. -/
+theorem closingAlternative_forces_nestedResolution {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hClose : SeamClosingAlternative proj F₁ F₂) :
+    NestedUniverseResolutionAlternative F₁ F₂ := by
+  rcases hClose with hReturn | hRest
+  · exact Or.inl hReturn
+  · rcases hRest with hMutual | hRest
+    · exact Or.inr (Or.inl hMutual)
+    · rcases hRest with hPay | hSing
+      · exact Or.inr (Or.inr hPay)
+      · exact False.elim ((hNoSing F₁ F₂) hSing)
+
+/--
+The exact seam audit reduction:
+if the projection has neither seam singularities nor dangling one-way nestings,
+then it supplies the nested-universe semantic resolver required by the existing
+near-close machinery.
+-/
+theorem noSingularity_noDangling_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj := by
+  intro F₁ F₂ hne hAdm₁ hAdm₂ hkey
+  have hColl : LedgerSeamCollision proj F₁ F₂ :=
+    ⟨hne, hAdm₁, hAdm₂, hkey⟩
+  have hClass : SeamCollisionClassificationAlternative proj F₁ F₂ :=
+    seamCollision_classical_classification hColl
+  have hClose : SeamClosingAlternative proj F₁ F₂ :=
+    seamClassification_to_closingAlternative
+      (proj := proj) hNoDangling hColl hClass
+  exact closingAlternative_forces_nestedResolution hNoSing hClose
+
+/-- The same audit reduction phrased all the way down to the old resolver. -/
+theorem noSingularity_noDangling_resolves_old {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj :=
+  nestedSemanticExtended_resolves_old
+    (noSingularity_noDangling_resolves_nested
+      (proj := proj) hNoSing hNoDangling)
+
+/-#############################################################################
+  §5. Last obligation in seam-audit form
+#############################################################################-/
+
+/--
+The final Step00 obligation in seam-audit form.
+
+For one fixed scale `A`, every hypothetical last-twin bound `M0` must admit a
+semantic ledger projection whose same-key collisions have no broken seam and no
+dangling one-way nesting.  Then the already-proved machinery forces infinitely
+many twins.
+-/
+abbrev TheSeamAuditLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
+      ∀ M0 : ℕ,
+        NoLedgerSeamSingularity (projOf M0) ∧
+        NoDanglingOneWayNesting (projOf M0)
+
+/-- Seam-audit last obligation implies the nested-universe last obligation. -/
+theorem seamAuditLastStep00Obligation_implies_nestedUniverseLast
+    (H : TheSeamAuditLastStep00Obligation) :
+    TheNestedUniverseLastStep00Obligation := by
+  rcases H with ⟨A, projOf, hAudit⟩
+  refine ⟨A, projOf, ?_⟩
+  intro M0
+  exact noSingularity_noDangling_resolves_nested
+    (proj := projOf M0) (hAudit M0).1 (hAudit M0).2
+
+/-- Therefore the seam-audit last obligation is sufficient for infinitude of
+lower twin centres. -/
+theorem twinLowersInfinite_of_seamAuditLastStep00Obligation
+    (H : TheSeamAuditLastStep00Obligation) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_nestedUniverseLastStep00Obligation
+    (seamAuditLastStep00Obligation_implies_nestedUniverseLast H)
+
+/-#############################################################################
+  §6. Audit names
+#############################################################################-/
+
+/-- The singularity certificate which an auditor should try to rule out for a
+candidate projection. -/
+abbrev RemainingSeamSingularityCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoLedgerSeamSingularity proj
+
+/-- The dangling one-way nesting certificate which an auditor should try to rule
+out for a candidate projection. -/
+abbrev RemainingNoDanglingNestedUniverseCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  NoDanglingOneWayNesting proj
+
+/-- A same-key collision whose only explanation is a singularity marks a cheating
+or incomplete ledger projection: the finite key glues histories that the real
+Step00 graph cannot legally glue. -/
+def ProjectionCreatesBrokenSeam {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∃ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    LedgerSeamSingularity proj F₁ F₂
+
+/-- A same-key collision whose only explanation is one-way nesting marks a
+projection that has produced descent but not an engine. -/
+def ProjectionCreatesDanglingNesting {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∃ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    DanglingOneWayNesting proj F₁ F₂
+
+/-! Машинная честность seam-формы -/
+
+/-- Возвратный сертификат опровергнут безусловно (он строит legal-цикл). -/
+theorem no_extendedFlowReturnCertificate {A M0 : ℕ}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    ¬ ExtendedFlowReturnCertificate F₁ F₂ := fun h =>
+  no_concrete_legalCycle_by_lexRank (A := A) (M0 := M0)
+    (extendedFlowReturnCertificate_forces_legalCycle h)
+
+/-- Сингулярность = коллизия без вложений (остальные запреты выполнены даром). -/
+theorem ledgerSeamSingularity_iff {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    LedgerSeamSingularity proj F₁ F₂ ↔
+      (LedgerSeamCollision proj F₁ F₂ ∧
+        ¬ NestedUniverseEmbedding F₁ F₂ ∧ ¬ NestedUniverseEmbedding F₂ F₁) := by
+  constructor
+  · rintro ⟨hColl, _, hN12, hN21, _⟩
+    exact ⟨hColl, hN12, hN21⟩
+  · rintro ⟨hColl, hN12, hN21⟩
+    exact ⟨hColl, no_extendedFlowReturnCertificate, hN12, hN21,
+      BoundaryDefectPayment.impossiblePayment_false⟩
+
+/-- Dangling = коллизия с хотя бы одним вложением (остальные запреты — даром). -/
+theorem danglingOneWayNesting_iff {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    DanglingOneWayNesting proj F₁ F₂ ↔
+      (LedgerSeamCollision proj F₁ F₂ ∧
+        (NestedUniverseEmbedding F₁ F₂ ∨ NestedUniverseEmbedding F₂ F₁)) := by
+  constructor
+  · rintro ⟨hColl, _, _, _, hOne⟩
+    exact ⟨hColl, hOne⟩
+  · rintro ⟨hColl, hOne⟩
+    exact ⟨hColl, no_extendedFlowReturnCertificate,
+      no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false, hOne⟩
+
+/-- NoSingularity ⟺ «каждая same-key коллизия несёт вложение». -/
+theorem noLedgerSeamSingularity_iff {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    NoLedgerSeamSingularity proj ↔
+      ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+        LedgerSeamCollision proj F₁ F₂ →
+          (NestedUniverseEmbedding F₁ F₂ ∨ NestedUniverseEmbedding F₂ F₁) := by
+  constructor
+  · intro hNo F₁ F₂ hColl
+    by_contra hNone
+    push_neg at hNone
+    exact hNo F₁ F₂ (ledgerSeamSingularity_iff.mpr ⟨hColl, hNone.1, hNone.2⟩)
+  · intro hAll F₁ F₂ hSing
+    rcases ledgerSeamSingularity_iff.mp hSing with ⟨hColl, hN12, hN21⟩
+    rcases hAll F₁ F₂ hColl with h | h
+    · exact hN12 h
+    · exact hN21 h
+
+/-- NoDangling ⟺ «никакая same-key коллизия не несёт вложения». -/
+theorem noDanglingOneWayNesting_iff {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    NoDanglingOneWayNesting proj ↔
+      ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+        LedgerSeamCollision proj F₁ F₂ →
+          ¬ (NestedUniverseEmbedding F₁ F₂ ∨ NestedUniverseEmbedding F₂ F₁) := by
+  constructor
+  · intro hNo F₁ F₂ hColl hOne
+    exact hNo F₁ F₂ (danglingOneWayNesting_iff.mpr ⟨hColl, hOne⟩)
+  · intro hAll F₁ F₂ hD
+    rcases danglingOneWayNesting_iff.mp hD with ⟨hColl, hOne⟩
+    exact hAll F₁ F₂ hColl hOne
+
+/-- ВЗАИМНАЯ АННИГИЛЯЦИЯ: два аудит-условия вместе ⟹ same-key коллизий НЕТ ВОВСЕ. -/
+theorem seamAudit_forces_no_collision {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+      ¬ LedgerSeamCollision proj F₁ F₂ := by
+  intro F₁ F₂ hColl
+  have hOne := (noLedgerSeamSingularity_iff (proj := proj)).mp hNoSing F₁ F₂ hColl
+  exact (noDanglingOneWayNesting_iff (proj := proj)).mp hNoDangling F₁ F₂ hColl hOne
+
+/-- Seam-аудит ⟺ старый резолвер: пара условий — снова инъективность ключа. -/
+theorem seamAudit_iff_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    (NoLedgerSeamSingularity proj ∧ NoDanglingOneWayNesting proj) ↔
+      SemanticExtendedFlowLedgerCollisionResolves proj := by
+  constructor
+  · rintro ⟨hNoSing, hNoDangling⟩
+    exact noSingularity_noDangling_resolves_old hNoSing hNoDangling
+  · intro hRes
+    have hNoColl : ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+        ¬ LedgerSeamCollision proj F₁ F₂ := by
+      rintro F₁ F₂ ⟨hne, h1, h2, hkey⟩
+      exact no_extendedFlowResolutionAlternative A M0 (hRes F₁ F₂ hne h1 h2 hkey)
+    constructor
+    · intro F₁ F₂ hSing
+      exact hNoColl F₁ F₂ hSing.1
+    · intro F₁ F₂ hD
+      exact hNoColl F₁ F₂ hD.1
+
+/-- Seam-обязательство ⟺ старый узел (переформулировка, не обход). -/
+theorem seamAuditLastStep00Obligation_iff_lastStep00Obligation :
+    TheSeamAuditLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 => (seamAudit_iff_resolves (projOf M0)).mp (h M0)⟩
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 => (seamAudit_iff_resolves (projOf M0)).mpr (h M0)⟩
+
+/-- Seam-аудит на масштабе M0 — тоже twin-детектор. -/
+theorem twin_above_of_seamAudit {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (hNoSing : NoLedgerSeamSingularity proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves proj
+    (noSingularity_noDangling_resolves_old hNoSing hNoDangling)
+
 end GeneratedFlowFormulation
 
 

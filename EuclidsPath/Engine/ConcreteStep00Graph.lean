@@ -8210,6 +8210,283 @@ theorem finiteCausalTowerAttempt_iff {P : Prop} {n : ℕ} :
   · intro hp
     exact FiniteCausalTowerAttempt.boundary hp
 
+/-#############################################################################
+  ВНУТРЕННЯЯ ПЕРВОПРИЧИНА = ДВИГАТЕЛЬ (кирпич: internal_first_cause_is_engine).
+  Финальное различение: внешняя первопричина — граница/аксиома; внутренняя
+  (принадлежащая той же замкнутой системе) — self-cause = запрещённый
+  двигатель; «создатель внутри той же системы» невозможен. Кирпич сам честно
+  ограничивает охват (§5: внешние аксиомы НЕ объявляются двигателями).
+  Ниже — кирпич + машинная честность: внутренняя первопричина ⟺ P ∧ ¬P;
+  режим первопричины коллапсирует (FirstCauseMode P ⟺ P).
+#############################################################################-/
+
+/-#############################################################################
+  §1. First causes: external boundary versus internal self-cause
+#############################################################################-/
+
+/--
+An external first cause for a proposition/universe principle is simply an
+outside input.  It is not required to be represented by a Step00 path, ledger
+edge, generated flow, or internal decision attempt.
+-/
+abbrev ExternalFirstCause (P : Prop) : Prop :=
+  ExternalUniverseCause P
+
+/--
+An internal first cause for a proposition/universe principle is an internal
+cause in the already audited sense: a boundary-crossing self-proof of the same
+principle inside the Step00 causal universe.
+
+This is the dangerous case.  It attempts to put the cause of the whole closed
+system inside that same closed system.
+-/
+abbrev InternalFirstCause (P : Prop) : Prop :=
+  InternalUniverseCause P
+
+/--
+A first cause is external-only when it is supplied as a boundary condition but
+cannot be internalised as a self-cause.
+-/
+abbrev ExternalOnlyFirstCause (P : Prop) : Prop :=
+  ExternalFirstCause P ∧ ¬ InternalFirstCause P
+
+/--
+A same-system creator is just an internal first cause: the alleged creator is
+not outside the closed causal universe but belongs to the same Step00 causal
+system.
+-/
+abbrev SameClosedSystemCreator (P : Prop) : Prop :=
+  InternalFirstCause P
+
+/-#############################################################################
+  §2. Internal first cause builds the forbidden engine
+#############################################################################-/
+
+/--
+Any internal first cause constructs the forbidden concrete Euclidean engine.
+This is the formal version of:
+
+  if the first cause belongs to the universe it causes, then it is self-causal;
+  self-causality in Step00 is a return/cycle engine.
+-/
+theorem internalFirstCause_builds_engine {P : Prop}
+    (h : InternalFirstCause P) : SomeConcreteEuclideanEngine :=
+  internalUniverseCause_builds_engine h
+
+/--
+No internal first cause exists in the stable no-engine Step00 architecture.
+-/
+theorem no_internalFirstCause {P : Prop} :
+    ¬ InternalFirstCause P :=
+  no_internalUniverseCause
+
+/--
+Assuming an internal first cause immediately gives contradiction.
+-/
+theorem internalFirstCause_contradiction {P : Prop}
+    (h : InternalFirstCause P) : False :=
+  no_internalFirstCause h
+
+/--
+A creator inside the same closed causal system is impossible for the same
+reason: it is an internal first cause and hence a forbidden engine.
+-/
+theorem sameClosedSystemCreator_contradiction {P : Prop}
+    (h : SameClosedSystemCreator P) : False :=
+  internalFirstCause_contradiction h
+
+/--
+Readable theorem: an internal first cause is a perpetual-engine witness.
+-/
+abbrev InternalFirstCauseIsPerpetualEngine : Prop :=
+  ∀ P : Prop, InternalFirstCause P → SomeConcreteEuclideanEngine
+
+/-- Realisation of the slogan above. -/
+theorem internalFirstCauseIsPerpetualEngine :
+    InternalFirstCauseIsPerpetualEngine := by
+  intro P h
+  exact internalFirstCause_builds_engine h
+
+/--
+Readable theorem: an internal first cause is impossible because the resulting
+perpetual engine is already forbidden.
+-/
+abbrev NoInternalFirstCauseWithoutForbiddenEngine : Prop :=
+  ∀ P : Prop, ¬ InternalFirstCause P
+
+/-- Realisation of the no-go theorem. -/
+theorem noInternalFirstCauseWithoutForbiddenEngine :
+    NoInternalFirstCauseWithoutForbiddenEngine := by
+  intro P
+  exact no_internalFirstCause
+
+/-#############################################################################
+  §3. External first cause is not an internal engine
+#############################################################################-/
+
+/--
+The strict external universe-generating principle, when supplied from outside,
+is an external first cause.
+-/
+abbrev StrictStep00ExternalFirstCause : Prop :=
+  ExternalFirstCause ExternalUniverseGeneratingPrinciple
+
+/--
+The strict Step00 principle cannot also be internally first-caused.
+-/
+abbrev StrictStep00NoInternalFirstCause : Prop :=
+  ¬ InternalFirstCause ExternalUniverseGeneratingPrinciple
+
+/--
+Supplying the strict Step00 principle externally gives an external-only first
+cause: it is a boundary condition, not a self-supporting engine.
+-/
+theorem strictStep00_externalOnlyFirstCause
+    (h : StrictStep00ExternalFirstCause) :
+    ExternalOnlyFirstCause ExternalUniverseGeneratingPrinciple := by
+  exact ⟨h, strictStep00Universe_has_no_internalCause⟩
+
+/--
+The no-energy universe principle, if supplied from outside, is also only an
+external first cause; internalising it is the no-energy self-support attempt and
+is impossible.
+-/
+theorem noEnergyStep00_externalOnlyFirstCause
+    (h : ExternalFirstCause NoEnergyUniverseGeneratingPrinciple) :
+    ExternalOnlyFirstCause NoEnergyUniverseGeneratingPrinciple := by
+  exact ⟨h, noEnergyStep00Universe_has_no_internalCause⟩
+
+/-#############################################################################
+  §4. First-cause modes
+#############################################################################-/
+
+/--
+A first-cause mode for a universe-generating principle.
+
+The `internal` branch is the forbidden-engine branch.  The `negated` branch is
+an internally realised denial of causal explanation, already shown to be a
+seam/engine self-destruction.  Only the external branch survives.
+-/
+inductive FirstCauseMode (P : Prop) : Prop where
+  | external (h : ExternalFirstCause P) : FirstCauseMode P
+  | internal (h : InternalFirstCause P) : FirstCauseMode P
+  | negated (h : RealisedDenialOfCausalCause) : FirstCauseMode P
+
+/--
+The internal first-cause mode is impossible.
+-/
+theorem firstCauseMode_internal_impossible {P : Prop}
+    (h : InternalFirstCause P) : False :=
+  internalFirstCause_contradiction h
+
+/--
+The realised-denial mode is impossible.
+-/
+theorem firstCauseMode_negated_impossible
+    (h : RealisedDenialOfCausalCause) : False :=
+  no_realisedDenialOfCausalCause h
+
+/--
+If no external first cause is supplied, any claimed first-cause mode collapses.
+-/
+theorem nonExternalFirstCauseMode_impossible {P : Prop}
+    (M : FirstCauseMode P)
+    (hNoExternal : ¬ ExternalFirstCause P) : False := by
+  cases M with
+  | external h => exact hNoExternal h
+  | internal h => exact firstCauseMode_internal_impossible h
+  | negated h => exact firstCauseMode_negated_impossible h
+
+/--
+For the strict Step00 universe, any surviving first cause must be external.
+-/
+theorem strictStep00_firstCause_must_be_external
+    (M : FirstCauseMode ExternalUniverseGeneratingPrinciple)
+    (hNoExternal : ¬ ExternalFirstCause ExternalUniverseGeneratingPrinciple) :
+    False :=
+  nonExternalFirstCauseMode_impossible M hNoExternal
+
+/--
+For the no-energy Step00 universe, any surviving first cause must also be
+external.  A same-system first cause is the forbidden no-energy self-support
+engine.
+-/
+theorem noEnergyStep00_firstCause_must_be_external
+    (M : FirstCauseMode NoEnergyUniverseGeneratingPrinciple)
+    (hNoExternal : ¬ ExternalFirstCause NoEnergyUniverseGeneratingPrinciple) :
+    False :=
+  nonExternalFirstCauseMode_impossible M hNoExternal
+
+/-#############################################################################
+  §5. Final checked slogans
+#############################################################################-/
+
+/--
+Slogan 1: an external first cause is an axiom/boundary; it is not an internal
+engine unless it is internalised as a self-cause.
+-/
+abbrev ExternalFirstCauseIsBoundaryNotEngine : Prop :=
+  StrictStep00ExternalFirstCause →
+    ExternalOnlyFirstCause ExternalUniverseGeneratingPrinciple
+
+/-- Realisation of slogan 1. -/
+theorem externalFirstCauseIsBoundaryNotEngine :
+    ExternalFirstCauseIsBoundaryNotEngine :=
+  strictStep00_externalOnlyFirstCause
+
+/--
+Slogan 2: an internal first cause is the forbidden perpetual engine.
+-/
+abbrev InternalFirstCauseIsForbiddenEngine : Prop :=
+  InternalFirstCauseIsPerpetualEngine
+
+/-- Realisation of slogan 2. -/
+theorem internalFirstCauseIsForbiddenEngine :
+    InternalFirstCauseIsForbiddenEngine :=
+  internalFirstCauseIsPerpetualEngine
+
+/--
+Slogan 3: nobody inside the same closed causal Step00 system can create the
+whole system without becoming the forbidden engine.
+-/
+abbrev NoSameSystemCreatorWithoutEngine : Prop :=
+  ∀ P : Prop, SameClosedSystemCreator P → False
+
+/-- Realisation of slogan 3. -/
+theorem noSameSystemCreatorWithoutEngine :
+    NoSameSystemCreatorWithoutEngine := by
+  intro P h
+  exact sameClosedSystemCreator_contradiction h
+
+/--
+Final scope marker: the theorem is object-level for Step00 causal closure.  It
+separates internal first cause from external axiom; it does not identify every
+external axiom in all mathematics with an internal engine.
+-/
+abbrev ThisDoesNotTurnExternalAxiomsIntoEngines : Prop := True
+
+theorem thisDoesNotTurnExternalAxiomsIntoEngines :
+    ThisDoesNotTurnExternalAxiomsIntoEngines := by
+  trivial
+
+/-! Машинная честность first-cause-формы -/
+
+/-- Внутренняя первопричина ⟺ `P ∧ ¬P` (унаследованная тавтологичность). -/
+theorem internalFirstCause_iff_and_not {P : Prop} :
+    InternalFirstCause P ↔ (P ∧ ¬ P) :=
+  internalUniverseCause_iff_and_not
+
+/-- Режим первопричины КОЛЛАПСИРУЕТ: `FirstCauseMode P ⟺ P` — обитаема только
+    внешняя ветвь; «первопричина обязана быть внешней» — буквально. -/
+theorem firstCauseMode_iff {P : Prop} : FirstCauseMode P ↔ P := by
+  constructor
+  · intro M
+    cases M with
+    | external h => exact h
+    | internal h => exact (internalFirstCause_contradiction h).elim
+    | negated h => exact (no_realisedDenialOfCausalCause h).elim
+  · exact FirstCauseMode.external
+
 end GeneratedFlowFormulation
 
 

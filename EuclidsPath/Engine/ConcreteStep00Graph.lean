@@ -3228,6 +3228,55 @@ theorem twinLowersInfinite_of_lastStep00Obligation
 
 
 
+
+/-! ### Обострение финальной редукции: сертификат = twin-детектор; кофинальное ослабление
+
+`no_extendedFlowResolutionAlternative` (цикл и оплата оба невозможны) превращает `Resolves proj` в
+«same-key коллизий НЕТ» = инъективность ключа на admissible-потоках. А раз при twin-bound ∞-семья
+ДОКАЗАНА, инъективный конечный ключ невозможен ⟹ `Resolves` при twin-bound всегда ложен. Переворот:
+`Resolves` на M0 ⟹ twin выше M0. Вход — twin-детектор, НЕ нейтральное условие. -/
+
+/-- **`resolves_iff_key_injective` — ДОКАЗАНА (характеризация).** `Resolves proj` ⟺ ключ инъективен
+    на admissible extended-потоках (обе резолюционные альтернативы невозможны). -/
+theorem resolves_iff_key_injective {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    SemanticExtendedFlowLedgerCollisionResolves proj ↔
+    (∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0, F₁ ≠ F₂ →
+      ExtendedFlowAdmissible F₁ → ExtendedFlowAdmissible F₂ →
+      proj.keyFlow F₁ ≠ proj.keyFlow F₂) := by
+  constructor
+  · intro hRes F₁ F₂ hne h1 h2 hkey
+    exact no_extendedFlowResolutionAlternative A M0 (hRes F₁ F₂ hne h1 h2 hkey)
+  · intro hInj F₁ F₂ hne h1 h2 hkey
+    exact absurd hkey (hInj F₁ F₂ hne h1 h2)
+
+/-- **`twin_above_of_resolves` — ДОКАЗАНА (сертификат = twin-детектор).** `Resolves` на масштабе `M0`
+    ПРЕДЪЯВЛЯЕТ twin выше `M0`: иначе twin-bound + Resolves противоречивы
+    (`twinBound_impossible_with_semanticExtendedResolution`). Значит вход не слабее цели на M0. -/
+theorem twin_above_of_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (hRes : SemanticExtendedFlowLedgerCollisionResolves proj) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m := by
+  by_contra hno
+  push_neg at hno
+  have hBound : TwinBoundAbove M0 := fun m hm => hno m hm
+  exact twinBound_impossible_with_semanticExtendedResolution hBound proj hRes
+
+/-- **`twinLowersInfinite_of_cofinal_resolves` — ДОКАЗАНА (ослабление TheLastStep00Obligation).**
+    Достаточно `Resolves` на КОФИНАЛЬНО многих `M0` (не на всех): каждый такой `M0` даёт twin выше,
+    twin-центры неограничены ⟹ `TwinLowers.Infinite`. -/
+theorem twinLowersInfinite_of_cofinal_resolves {A : ℕ}
+    (hCof : ∀ N : ℕ, ∃ M0, N ≤ M0 ∧
+      ∃ proj : SemanticExtendedFlowLedgerProjection A M0,
+        SemanticExtendedFlowLedgerCollisionResolves proj) :
+    EuclidsPath.TwinLowers.Infinite := by
+  apply EuclidsPath.infinite_of_unbounded_centers
+  intro N
+  obtain ⟨M0, hNM0, proj, hRes⟩ := hCof N
+  obtain ⟨m, hM0m, hTwin⟩ := twin_above_of_resolves proj hRes
+  refine ⟨m, by omega, ?_⟩
+  simpa [EuclidsPath.Residuals.TwinCenterZ, EuclidsPath.IsTwinCenter] using hTwin
+
 end GeneratedFlowFormulation
 
 

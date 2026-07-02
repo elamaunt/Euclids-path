@@ -856,6 +856,27 @@ infinite-load версия — через пиджонхол. Комбиниро
 seam-честность: поле `stable` пакует «коллизий нет вовсе» вместе с самой коллизией; двигательный
 маршрут кирпича — тот же ex-falso, поднятый на поверхность (оба пути — один факт).
 
+### Нет внутреннего решения; архитектурно-относительная независимость
+
+Кирпич no-internal-decision пакует вывод: `InternalStableDecisionAttempt` (Prop-индуктив трёх
+маршрутов: prove / refuteLocal / refuteInfinite) — каждый строит двигатель
+(**`internalStableDecisionAttempt_builds_engine`**), двигателей нет
+(**`noInternalDecisionWithoutForbiddenEngine`**). Кирпич сам маркирует (§4): это **объектный** факт,
+не Гёдель-независимость. **Честность (машинно):** «proof attempt» несёт **буквально те же поля**,
+что infinite-load «refutation attempt» — дихотомия «доказать/опровергнуть» здесь номинальна
+(**`internalStableProofAttempt_empty`**); все три ветви пусты напрямую через seam-честность
+(**`internalStableDecisionAttempt_empty_directly`**).
+
+Кирпич relative-independence — сильнейшая честная форма: если сертификаты внешней системы
+факторизуются через Step00-попытки (`Step00DecisionInterface`, `Step00MediatedStatement`), то
+системе недоступны ни доказательство, ни опровержение (**`architectureRelativeIndependence`**,
+**`mediatedStatement_noProof_noRefutation`**); охват явно ограничен (§3–§4: не ZFC/PA/Lean).
+**Честность (машинно):** **`translation_to_decisionAttempt_iff_empty`** — транслятор в (пустой) тип
+попыток существует ⟺ домен пуст: гипотеза моста **уже содержит** вывод; сила утверждения —
+целиком в предпосылке медиируемости.
+
+*Фиксы кирпичей:* `SomeConcreteEuclideanEngine` → ∃-Prop; attempt-невозможности → `→ False`.
+
 ### Диссипативный cascade: capacity/overflow декомпозиция Лиувилль-узла
 
 `Engine/DissipativeCascade` (единый blueprint Step00/RH/Навье–Стокс): «дефект не исчезает; не закрылся —

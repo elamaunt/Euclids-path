@@ -6906,6 +6906,211 @@ theorem internalStableDecisionAttempt_empty_directly :
   | refuteLocal R => exact localStableRefutationAttempt_empty R
   | refuteInfinite R => exact infiniteLoadStableRefutationAttempt_empty R
 
+/-#############################################################################
+  АРХИТЕКТУРНО-ОТНОСИТЕЛЬНАЯ НЕЗАВИСИМОСТЬ (кирпич:
+  architecture_relative_independence).
+  Сильнейшая честная форма: если proof/refutation-сертификаты внешней
+  системы факторизуются через аудированные Step00-попытки, то у системы нет
+  ни тех, ни других (оба строят запрещённый двигатель). Кирпич сам честно
+  ограничивает охват (§3-§4: НЕ Гёдель-независимость для ZFC/PA/Lean).
+  Ниже — кирпич + машинная честность: транслятор в пустой тип попыток
+  существует ⟺ домен пуст — сила утверждения целиком в предпосылке моста.
+#############################################################################-/
+
+/-#############################################################################
+  §1. Abstract proof/refutation interfaces that factor through Step00
+#############################################################################-/
+
+/--
+A formal decision interface for the finite-twin branch, relative to this Step00
+architecture.
+
+`Proof` and `Refutation` are *not* arbitrary mathematical proofs.  They are the
+proof/refutation certificates of whatever external system one wants to study,
+under the explicit assumption that each such certificate can be translated into
+an audited `InternalStableDecisionAttempt`.
+
+Thus the fields `proofToInternal` and `refutationToInternal` are the whole
+bridge from the external proof system to the Step00 graph.  Without such a
+bridge, no independence conclusion about the external system is claimed.
+-/
+structure Step00DecisionInterface where
+  Proof : Type
+  Refutation : Type
+  proofToInternal : Proof → InternalStableDecisionAttempt
+  refutationToInternal : Refutation → InternalStableDecisionAttempt
+
+/--
+Every relative proof certificate constructs the forbidden concrete engine.
+-/
+theorem step00Proof_builds_engine
+    (S : Step00DecisionInterface) (p : S.Proof) :
+    SomeConcreteEuclideanEngine := by
+  exact internalStableDecisionAttempt_builds_engine (S.proofToInternal p)
+
+/--
+Every relative refutation certificate constructs the forbidden concrete engine.
+-/
+theorem step00Refutation_builds_engine
+    (S : Step00DecisionInterface) (r : S.Refutation) :
+    SomeConcreteEuclideanEngine := by
+  exact internalStableDecisionAttempt_builds_engine (S.refutationToInternal r)
+
+/--
+Therefore the relative proof type is empty.
+-/
+theorem no_step00RelativeProof
+    (S : Step00DecisionInterface) :
+    IsEmpty S.Proof := by
+  refine ⟨?_⟩
+  intro p
+  exact no_someConcreteEuclideanEngine (step00Proof_builds_engine S p)
+
+/--
+Therefore the relative refutation type is empty.
+-/
+theorem no_step00RelativeRefutation
+    (S : Step00DecisionInterface) :
+    IsEmpty S.Refutation := by
+  refine ⟨?_⟩
+  intro r
+  exact no_someConcreteEuclideanEngine (step00Refutation_builds_engine S r)
+
+/-#############################################################################
+  §2. Relative independence statement
+#############################################################################-/
+
+/--
+Architecture-relative independence of the finite-twin branch for an interface
+`S`: there is neither an `S.Proof` nor an `S.Refutation`.
+-/
+abbrev ArchitectureRelativeIndependence
+    (S : Step00DecisionInterface) : Prop :=
+  IsEmpty S.Proof ∧ IsEmpty S.Refutation
+
+/--
+The formal relative-independence theorem.
+
+If proof and refutation certificates of an external system factor through the
+audited Step00 internal decision attempts, then the system has neither kind of
+certificate.
+-/
+theorem architectureRelativeIndependence
+    (S : Step00DecisionInterface) :
+    ArchitectureRelativeIndependence S := by
+  exact ⟨no_step00RelativeProof S, no_step00RelativeRefutation S⟩
+
+/--
+Equivalent proposition phrased as “no internal proof or refutation”.
+-/
+abbrev NoRelativeDecision
+    (S : Step00DecisionInterface) : Prop :=
+  (¬ Nonempty S.Proof) ∧ (¬ Nonempty S.Refutation)
+
+/--
+The same result with `Nonempty` rather than `IsEmpty`.
+-/
+theorem noRelativeDecision
+    (S : Step00DecisionInterface) :
+    NoRelativeDecision S := by
+  constructor
+  · intro hp
+    rcases hp with ⟨p⟩
+    exact no_someConcreteEuclideanEngine (step00Proof_builds_engine S p)
+  · intro hr
+    rcases hr with ⟨r⟩
+    exact no_someConcreteEuclideanEngine (step00Refutation_builds_engine S r)
+
+/-#############################################################################
+  §3. What a genuine metamathematical independence theorem would require
+#############################################################################-/
+
+/--
+A marker for an external proof theory.  This is intentionally only a structure of
+interfaces, not a theorem about ZFC/PA/Lean/etc.
+
+To turn the architecture-relative theorem into a true metamathematical
+independence theorem for a concrete theory `T`, one would have to instantiate
+this structure with actual proof codes and prove the two translation fields.
+-/
+structure ExternalProofTheory where
+  Sentence : Type
+  proves : Sentence → Type
+  refutes : Sentence → Type
+
+/--
+A concrete statement inside an external proof theory is Step00-mediated if both
+proofs and refutations of that statement translate into internal Step00 decision
+attempts.
+-/
+structure Step00MediatedStatement
+    (T : ExternalProofTheory) (φ : T.Sentence) where
+  proofToInternal : T.proves φ → InternalStableDecisionAttempt
+  refutationToInternal : T.refutes φ → InternalStableDecisionAttempt
+
+/--
+The induced Step00 decision interface for a mediated external statement.
+-/
+def Step00MediatedStatement.toInterface
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00MediatedStatement T φ) :
+    Step00DecisionInterface where
+  Proof := T.proves φ
+  Refutation := T.refutes φ
+  proofToInternal := M.proofToInternal
+  refutationToInternal := M.refutationToInternal
+
+/--
+A mediated external statement is independent relative to the Step00 architecture.
+-/
+theorem mediatedStatement_relativeIndependence
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00MediatedStatement T φ) :
+    ArchitectureRelativeIndependence M.toInterface := by
+  exact architectureRelativeIndependence M.toInterface
+
+/--
+Same result, explicitly: no proof and no refutation codes exist for a statement
+whose proof/refutation mechanisms are Step00-mediated.
+-/
+theorem mediatedStatement_noProof_noRefutation
+    {T : ExternalProofTheory} {φ : T.Sentence}
+    (M : Step00MediatedStatement T φ) :
+    (IsEmpty (T.proves φ)) ∧ (IsEmpty (T.refutes φ)) := by
+  exact mediatedStatement_relativeIndependence M
+
+/-#############################################################################
+  §4. Scope guard
+#############################################################################-/
+
+/--
+Scope marker: this file proves only architecture-relative independence.
+
+It does not assert absolute independence of the twin-prime conjecture from any
+standard foundational theory.  The only claim is conditional: once proofs and
+refutations are forced to pass through the audited Step00 no-engine decision
+interface, both sides are impossible because both construct a forbidden engine.
+-/
+abbrev ThisIsOnlyArchitectureRelativeIndependence : Prop := True
+
+theorem thisIsOnlyArchitectureRelativeIndependence :
+    ThisIsOnlyArchitectureRelativeIndependence := by
+  trivial
+
+/-! Машинная честность relative-independence-формы -/
+
+/-- ЧЕСТНОСТЬ: медиируемость = пустота. Транслятор в (пустой) тип решающих
+    попыток существует ⟺ домен пуст. Гипотеза «сертификаты факторизуются через
+    Step00» уже СОДЕРЖИТ вывод «сертификатов нет»: мост и есть пустота.
+    Относительная независимость корректна, но её сила — целиком в предпосылке. -/
+theorem translation_to_decisionAttempt_iff_empty (P : Type) :
+    Nonempty (P → InternalStableDecisionAttempt) ↔ IsEmpty P := by
+  constructor
+  · rintro ⟨f⟩
+    exact ⟨fun p => (internalStableDecisionAttempt_empty_directly (f p)).elim⟩
+  · intro hEmpty
+    exact ⟨fun p => (hEmpty.false p).elim⟩
+
 end GeneratedFlowFormulation
 
 

@@ -7111,6 +7111,325 @@ theorem translation_to_decisionAttempt_iff_empty (P : Type) :
   · intro hEmpty
     exact ⟨fun p => (hEmpty.false p).elim⟩
 
+/-#############################################################################
+  ВНЕШНИЙ ПРИНЦИП ВСЕЛЕННОЙ / САМОЗАВЕРЯЮЩИЙСЯ ДВИГАТЕЛЬ (кирпич:
+  external_universe_self_engine_contradiction).
+  Три «внешних принципа» (strict / no-energy / finite-energy обязательства)
+  как входы дают близнецов; их интернализация как Step00-попытки строит
+  запрещённый двигатель — «двигатель доказывает себя» = противоречие.
+  Фиксы: обе self-proof структуры объявлены : Prop. Ниже — кирпич +
+  машинная честность: BoundaryCrossingSelfProof P ⟺ P ∧ ¬P (тавтологический
+  запрет для ЛЮБОГО P); external-only ⟺ сам P; плюс недостающее звено —
+  strict-обязательство ⟺ старый узел.
+#############################################################################-/
+
+/-#############################################################################
+  §1. External universe-generating principles
+#############################################################################-/
+
+/--
+The strict external Step00 principle.
+
+This is exactly the return-path version of the last Step00 obligation.  It is
+called “external” here because the previous no-internal-decision patches show
+that it cannot be manufactured by the stable no-engine decision interface
+without constructing the forbidden engine.
+-/
+abbrev ExternalUniverseGeneratingPrinciple : Prop :=
+  TheStrictLastStep00Obligation
+
+/--
+As an external input, the strict universe-generating principle produces the
+Step00 conclusion: infinitude of lower twin centres.
+-/
+theorem externalUniverseGeneratingPrinciple_generates_twins
+    (H : ExternalUniverseGeneratingPrinciple) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_strictLastStep00Obligation H
+
+/--
+The no-energy version of the external universe principle.  This is the form in
+which the system is asked to hold the universe together without a payment
+channel: same-key collisions must be geometrically supported, not paid for.
+-/
+abbrev NoEnergyUniverseGeneratingPrinciple : Prop :=
+  TheNoEnergyStableUniverseLastStep00Obligation
+
+/--
+As an external input, the no-energy stable universe principle also generates
+infinitely many lower twin centres.
+-/
+theorem noEnergyUniverseGeneratingPrinciple_generates_twins
+    (H : NoEnergyUniverseGeneratingPrinciple) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_noEnergyStableUniverseLastStep00Obligation H
+
+/--
+The finite-energy version of the external universe principle.  This is the
+version where every non-returning absorption must consume a token from a finite
+energy ledger.
+-/
+abbrev FiniteEnergyUniverseGeneratingPrinciple : Prop :=
+  EnergyLastStep00Obligation
+
+/--
+As an external input, the finite-energy principle also generates infinitely many
+lower twin centres.
+-/
+theorem finiteEnergyUniverseGeneratingPrinciple_generates_twins
+    (H : FiniteEnergyUniverseGeneratingPrinciple) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_energyLastStep00Obligation H
+
+/-#############################################################################
+  §2. Self-proof across the boundary of the system
+#############################################################################-/
+
+/--
+A boundary-crossing self-proof attempt for an external principle.
+
+The field `external` is a principle treated as an outside input.  The field
+`internalize` says that this same principle can be converted into an internal
+Step00 decision attempt.  The latter is exactly what the previous audit forbids:
+any internal decision attempt builds a concrete Euclidean engine.
+-/
+structure BoundaryCrossingSelfProof
+    (P : Prop) : Prop where
+  external : P
+  internalize : P → InternalStableDecisionAttempt
+
+/--
+Any boundary-crossing self-proof attempt builds the forbidden concrete engine.
+-/
+theorem boundaryCrossingSelfProof_builds_engine
+    {P : Prop} (B : BoundaryCrossingSelfProof P) :
+    SomeConcreteEuclideanEngine :=
+  internalStableDecisionAttempt_builds_engine (B.internalize B.external)
+
+/--
+Therefore no boundary-crossing self-proof attempt exists.
+
+This is the formal version of:
+
+  if the external universe-generating principle tries to prove itself from
+  inside the no-engine Step00 system, it creates the forbidden engine.
+-/
+theorem no_boundaryCrossingSelfProof
+    {P : Prop} : ¬ BoundaryCrossingSelfProof P := by
+  intro B
+  exact no_someConcreteEuclideanEngine
+    (boundaryCrossingSelfProof_builds_engine B)
+
+/-- The strict external Step00 principle cannot be internally self-certified. -/
+theorem no_strictExternalUniverse_selfProof :
+    ¬ BoundaryCrossingSelfProof ExternalUniverseGeneratingPrinciple :=
+  no_boundaryCrossingSelfProof
+
+/-- The no-energy external universe principle cannot be internally self-certified. -/
+theorem no_noEnergyUniverse_selfProof :
+    ¬ BoundaryCrossingSelfProof NoEnergyUniverseGeneratingPrinciple :=
+  no_boundaryCrossingSelfProof
+
+/-- The finite-energy external universe principle cannot be internally self-certified. -/
+theorem no_finiteEnergyUniverse_selfProof :
+    ¬ BoundaryCrossingSelfProof FiniteEnergyUniverseGeneratingPrinciple :=
+  no_boundaryCrossingSelfProof
+
+/-#############################################################################
+  §3. The self-certifying perpetual engine contradiction
+#############################################################################-/
+
+/--
+A self-certifying perpetual engine is, in this architecture, an internal decision
+attempt that certifies its own engine.  It is deliberately not given any extra
+power: the engine is extracted by the already proved theorem
+`internalStableDecisionAttempt_builds_engine`.
+-/
+structure SelfCertifyingPerpetualEngine : Prop where
+  attempt : InternalStableDecisionAttempt
+
+/-- A self-certifying perpetual engine builds the concrete forbidden engine. -/
+theorem selfCertifyingPerpetualEngine_builds_engine
+    (E : SelfCertifyingPerpetualEngine) : SomeConcreteEuclideanEngine :=
+  internalStableDecisionAttempt_builds_engine E.attempt
+
+/--
+No self-certifying perpetual engine exists.
+
+This is the precise formal reading of:
+
+  “the perpetual engine proves itself” collapses into contradiction,
+  because the proof itself is the forbidden engine witness.
+-/
+theorem no_selfCertifyingPerpetualEngine :
+    ¬ SelfCertifyingPerpetualEngine := by
+  intro E
+  exact no_someConcreteEuclideanEngine
+    (selfCertifyingPerpetualEngine_builds_engine E)
+
+/-- If one nevertheless assumes such a self-proof, contradiction follows. -/
+theorem selfCertifyingPerpetualEngine_contradiction
+    (E : SelfCertifyingPerpetualEngine) : False :=
+  no_selfCertifyingPerpetualEngine E
+
+/-#############################################################################
+  §4. “The engine can prove itself only outside the system, but lacks energy”
+#############################################################################-/
+
+/--
+An outside Step00 principle closes the universe only as an external input.  The
+moment a map back into the internal decision interface is supplied, it becomes a
+forbidden engine construction.
+-/
+abbrev ExternalOnlyUniversePrinciple
+    (P : Prop) : Prop :=
+  P ∧ ¬ BoundaryCrossingSelfProof P
+
+/-- The strict last principle is external-only relative to this architecture. -/
+theorem strictUniversePrinciple_is_externalOnly
+    (H : ExternalUniverseGeneratingPrinciple) :
+    ExternalOnlyUniversePrinciple ExternalUniverseGeneratingPrinciple := by
+  exact ⟨H, no_strictExternalUniverse_selfProof⟩
+
+/-- The no-energy universe principle is external-only relative to this architecture. -/
+theorem noEnergyUniversePrinciple_is_externalOnly
+    (H : NoEnergyUniverseGeneratingPrinciple) :
+    ExternalOnlyUniversePrinciple NoEnergyUniverseGeneratingPrinciple := by
+  exact ⟨H, no_noEnergyUniverse_selfProof⟩
+
+/-- The finite-energy universe principle is external-only relative to this architecture. -/
+theorem finiteEnergyUniversePrinciple_is_externalOnly
+    (H : FiniteEnergyUniverseGeneratingPrinciple) :
+    ExternalOnlyUniversePrinciple FiniteEnergyUniverseGeneratingPrinciple := by
+  exact ⟨H, no_finiteEnergyUniverse_selfProof⟩
+
+/--
+A no-energy self-support attempt: the system tries to use a no-energy universe
+principle and also internalise it as its own proof.  This is exactly the case
+where the universe is supposed to be held together without an energy/payment
+channel.
+-/
+abbrev NoEnergySelfSupportAttempt : Prop :=
+  BoundaryCrossingSelfProof NoEnergyUniverseGeneratingPrinciple
+
+/-- No no-energy self-support attempt exists. -/
+theorem no_noEnergySelfSupportAttempt :
+    ¬ NoEnergySelfSupportAttempt :=
+  no_noEnergyUniverse_selfProof
+
+/--
+If a no-energy self-support attempt is assumed, it builds the forbidden engine.
+-/
+theorem noEnergySelfSupportAttempt_builds_engine
+    (B : NoEnergySelfSupportAttempt) : SomeConcreteEuclideanEngine :=
+  boundaryCrossingSelfProof_builds_engine B
+
+/--
+And therefore a no-energy self-support attempt is contradictory.
+-/
+theorem noEnergySelfSupportAttempt_contradiction
+    (B : NoEnergySelfSupportAttempt) : False :=
+  no_noEnergySelfSupportAttempt B
+
+/-#############################################################################
+  §5. Final audit slogans as propositions
+#############################################################################-/
+
+/--
+Slogan 1: an external universe-generating principle may generate the Step00
+conclusion, but it is not internally self-certifying without a forbidden engine.
+-/
+abbrev ExternalPrincipleGeneratesButDoesNotSelfCertify : Prop :=
+  (ExternalUniverseGeneratingPrinciple → TwinLowers.Infinite) ∧
+  ¬ BoundaryCrossingSelfProof ExternalUniverseGeneratingPrinciple
+
+/-- Realisation of slogan 1. -/
+theorem externalPrincipleGeneratesButDoesNotSelfCertify :
+    ExternalPrincipleGeneratesButDoesNotSelfCertify := by
+  exact ⟨externalUniverseGeneratingPrinciple_generates_twins,
+         no_strictExternalUniverse_selfProof⟩
+
+/--
+Slogan 2: the no-energy universe cannot prove its own stability from inside the
+system.  If it tries, the proof is the forbidden engine.
+-/
+abbrev NoEnergyUniverseCannotSelfSupport : Prop :=
+  ¬ NoEnergySelfSupportAttempt
+
+/-- Realisation of slogan 2. -/
+theorem noEnergyUniverseCannotSelfSupport :
+    NoEnergyUniverseCannotSelfSupport :=
+  no_noEnergySelfSupportAttempt
+
+/--
+Slogan 3: “the perpetual engine proves itself” is not a proof; in the audited
+Step00 graph it is a contradiction.
+-/
+abbrev PerpetualEngineSelfProofIsContradiction : Prop :=
+  ¬ SelfCertifyingPerpetualEngine
+
+/-- Realisation of slogan 3. -/
+theorem perpetualEngineSelfProofIsContradiction :
+    PerpetualEngineSelfProofIsContradiction :=
+  no_selfCertifyingPerpetualEngine
+
+/-#############################################################################
+  §6. Scope guard
+#############################################################################-/
+
+/--
+Scope marker.  This is an object-level Step00 theorem, not a global statement
+about all possible mathematical proof systems.  To turn it into a metatheorem
+about a concrete theory, one still needs an explicit translation from that
+external theory into `InternalStableDecisionAttempt`, as in
+`Step00DecisionInterface`.
+-/
+abbrev ThisIsExternalPrincipleNotAbsoluteIndependence : Prop := True
+
+theorem thisIsExternalPrincipleNotAbsoluteIndependence :
+    ThisIsExternalPrincipleNotAbsoluteIndependence := by
+  trivial
+
+/-! Машинная честность external-universe-формы -/
+
+/-- ЧЕСТНОСТЬ: self-proof ⟺ `P ∧ ¬P`. Интернализация в пустой тип попыток —
+    это в точности отрицание, потому «внутренняя самозаверяемость запрещена»
+    для ЛЮБОГО утверждения — и для истинных тоже. Несущая часть слоганов —
+    только импликации generates_twins (уже известные). -/
+theorem boundaryCrossingSelfProof_iff_and_not {P : Prop} :
+    BoundaryCrossingSelfProof P ↔ (P ∧ ¬ P) := by
+  constructor
+  · intro B
+    exact ⟨B.external,
+      fun hp => internalStableDecisionAttempt_empty_directly (B.internalize hp)⟩
+  · intro h
+    exact (h.2 h.1).elim
+
+/-- «External-only» не добавляет к P ничего: второй конъюнкт бесплатен. -/
+theorem externalOnlyUniversePrinciple_iff {P : Prop} :
+    ExternalOnlyUniversePrinciple P ↔ P := by
+  constructor
+  · exact fun h => h.1
+  · intro hp
+    exact ⟨hp, no_boundaryCrossingSelfProof⟩
+
+/-- Недостающее звено семейства форм: strict-резолвер ⟺ старый резолвер. -/
+theorem strictResolves_iff_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    StrictSemanticExtendedFlowLedgerCollisionResolves proj ↔
+      SemanticExtendedFlowLedgerCollisionResolves proj := by
+  constructor
+  · exact strictSemanticExtended_resolves_old
+  · intro hOld F₁ F₂ hne h1 h2 hkey
+    exact ((no_extendedFlowResolutionAlternative A M0)
+      (hOld F₁ F₂ hne h1 h2 hkey)).elim
+
+/-- Strict-обязательство ⟺ старый узел (замыкает семейство эквивалентностей). -/
+theorem strictLastStep00Obligation_iff_lastStep00Obligation :
+    TheStrictLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 => (strictResolves_iff_resolves (projOf M0)).mp (h M0)⟩
+  · rintro ⟨A, projOf, h⟩
+    exact ⟨A, projOf, fun M0 => (strictResolves_iff_resolves (projOf M0)).mpr (h M0)⟩
+
 end GeneratedFlowFormulation
 
 

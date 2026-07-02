@@ -4592,6 +4592,391 @@ theorem twin_above_of_seamAudit {A M0 : ℕ}
   twin_above_of_resolves proj
     (noSingularity_noDangling_resolves_old hNoSing hNoDangling)
 
+/-#############################################################################
+  ВЕРНАЯ ПРОЕКЦИЯ / БЕЗ ПОТЕРИ ПРИЧИННОЙ ИНФОРМАЦИИ (кирпич:
+  faithful_projection_no_information_loss).
+  «Ключ может забывать только gauge-информацию»: склейка двух различных
+  admissible-генеалогий обязана иметь причинное объяснение (возврат /
+  вложение / оплата). Потеря информации ⟺ сингулярность шва (доказано
+  кирпичом). Ниже — кирпич + машинная честность: пара (gauge-верность,
+  no-dangling) ⟺ старый резолвер, obligation ⟺ старый узел, twin-детектор.
+#############################################################################-/
+
+/-#############################################################################
+  §1. Causal alternatives and information loss
+#############################################################################-/
+
+/--
+The broad causal explanations allowed for a same-key collision before we decide
+whether a one-way nesting is a final explanation or only a dangling descent.
+-/
+def CausalCollisionAlternative {A M0 : ℕ}
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  ExtendedFlowReturnCertificate F₁ F₂ ∨
+  NestedUniverseEmbedding F₁ F₂ ∨
+  NestedUniverseEmbedding F₂ F₁ ∨
+  ImpossiblePayment
+
+/--
+A projection has lost causal information at a pair of flows if it identifies two
+distinct admissible genealogies by one key, but no causal explanation exists for
+that identification.
+-/
+def CausalInformationLoss {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0)
+    (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
+  LedgerSeamCollision proj F₁ F₂ ∧
+  ¬ CausalCollisionAlternative F₁ F₂
+
+/--
+A same-key collision without causal explanation is exactly a ledger seam
+singularity.  This theorem is pure propositional bookkeeping: it certifies that
+"forgotten causal information" and "broken seam" are the same audit failure.
+-/
+theorem causalInformationLoss_iff_ledgerSeamSingularity {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
+    CausalInformationLoss proj F₁ F₂ ↔ LedgerSeamSingularity proj F₁ F₂ := by
+  constructor
+  · intro h
+    rcases h with ⟨hColl, hNoAlt⟩
+    refine ⟨hColl, ?_, ?_, ?_, ?_⟩
+    · intro hReturn
+      exact hNoAlt (Or.inl hReturn)
+    · intro hNest₁₂
+      exact hNoAlt (Or.inr (Or.inl hNest₁₂))
+    · intro hNest₂₁
+      exact hNoAlt (Or.inr (Or.inr (Or.inl hNest₂₁)))
+    · intro hPay
+      exact hNoAlt (Or.inr (Or.inr (Or.inr hPay)))
+  · intro h
+    rcases h with ⟨hColl, hNoReturn, hNoNest₁₂, hNoNest₂₁, hNoPay⟩
+    refine ⟨hColl, ?_⟩
+    intro hAlt
+    rcases hAlt with hReturn | hRest
+    · exact hNoReturn hReturn
+    · rcases hRest with hNest₁₂ | hRest
+      · exact hNoNest₁₂ hNest₁₂
+      · rcases hRest with hNest₂₁ | hPay
+        · exact hNoNest₂₁ hNest₂₁
+        · exact hNoPay hPay
+
+/-- A projection has no causal information loss if no same-key collision is an
+unexplained identification. -/
+def NoCausalInformationLoss {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    ¬ CausalInformationLoss proj F₁ F₂
+
+/-- No causal-information loss is equivalent to the previous no-singularity
+audit condition. -/
+theorem noCausalInformationLoss_iff_noLedgerSeamSingularity {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    NoCausalInformationLoss proj ↔ NoLedgerSeamSingularity proj := by
+  constructor
+  · intro hNoLoss F₁ F₂ hSing
+    exact hNoLoss F₁ F₂
+      ((causalInformationLoss_iff_ledgerSeamSingularity
+        (proj := proj) (F₁ := F₁) (F₂ := F₂)).2 hSing)
+  · intro hNoSing F₁ F₂ hLoss
+    exact hNoSing F₁ F₂
+      ((causalInformationLoss_iff_ledgerSeamSingularity
+        (proj := proj) (F₁ := F₁) (F₂ := F₂)).1 hLoss)
+
+/-- Existence of lost causal information is exactly creation of a broken seam. -/
+def ProjectionForgetsCausalInformation {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∃ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    CausalInformationLoss proj F₁ F₂
+
+/-- The existential diagnostic is the same as the previous broken-seam marker. -/
+theorem projectionForgetsCausalInformation_iff_brokenSeam {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    ProjectionForgetsCausalInformation proj ↔ ProjectionCreatesBrokenSeam proj := by
+  constructor
+  · intro h
+    rcases h with ⟨F₁, F₂, hLoss⟩
+    exact ⟨F₁, F₂,
+      (causalInformationLoss_iff_ledgerSeamSingularity
+        (proj := proj) (F₁ := F₁) (F₂ := F₂)).1 hLoss⟩
+  · intro h
+    rcases h with ⟨F₁, F₂, hSing⟩
+    exact ⟨F₁, F₂,
+      (causalInformationLoss_iff_ledgerSeamSingularity
+        (proj := proj) (F₁ := F₁) (F₂ := F₂)).2 hSing⟩
+
+/-#############################################################################
+  §2. Faithfulness: same key means same genealogy or causal relation
+#############################################################################-/
+
+/--
+A causally faithful projection is one where every same-key seam collision of
+distinct admissible flows has a causal explanation.
+-/
+def CausallyFaithfulProjection {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    LedgerSeamCollision proj F₁ F₂ →
+      CausalCollisionAlternative F₁ F₂
+
+/-- Causal faithfulness is exactly absence of causal information loss. -/
+theorem causallyFaithful_iff_noCausalInformationLoss {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    CausallyFaithfulProjection proj ↔ NoCausalInformationLoss proj := by
+  classical
+  constructor
+  · intro hFaith F₁ F₂ hLoss
+    exact hLoss.2 (hFaith F₁ F₂ hLoss.1)
+  · intro hNoLoss F₁ F₂ hColl
+    by_contra hNoAlt
+    exact hNoLoss F₁ F₂ ⟨hColl, hNoAlt⟩
+
+/-- Therefore causal faithfulness is equivalent to forbidding seam
+singularities. -/
+theorem causallyFaithful_iff_noLedgerSeamSingularity {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    CausallyFaithfulProjection proj ↔ NoLedgerSeamSingularity proj := by
+  exact (causallyFaithful_iff_noCausalInformationLoss
+      (proj := proj)).trans
+    (noCausalInformationLoss_iff_noLedgerSeamSingularity
+      (proj := proj))
+
+/--
+This is the strict "information may only be gauge" condition in direct form.
+If two admissible flows have the same key, then either they are literally the
+same genealogy or the key equality has a causal explanation.
+-/
+def KeyEqualityForgetsOnlyGaugeInformation {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
+    ExtendedFlowAdmissible F₁ →
+    ExtendedFlowAdmissible F₂ →
+    proj.keyFlow F₁ = proj.keyFlow F₂ →
+      F₁ = F₂ ∨ CausalCollisionAlternative F₁ F₂
+
+/-- The direct gauge condition implies causal faithfulness on distinct
+same-key collisions. -/
+theorem keyEqualityGauge_implies_causallyFaithful {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hGauge : KeyEqualityForgetsOnlyGaugeInformation proj) :
+    CausallyFaithfulProjection proj := by
+  intro F₁ F₂ hColl
+  rcases hColl with ⟨hne, hAdm₁, hAdm₂, hkey⟩
+  rcases hGauge F₁ F₂ hAdm₁ hAdm₂ hkey with hEq | hAlt
+  · exact False.elim (hne hEq)
+  · exact hAlt
+
+/-- Conversely, causal faithfulness gives the direct gauge condition by splitting
+on literal equality of genealogies. -/
+theorem causallyFaithful_implies_keyEqualityGauge {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hFaith : CausallyFaithfulProjection proj) :
+    KeyEqualityForgetsOnlyGaugeInformation proj := by
+  classical
+  intro F₁ F₂ hAdm₁ hAdm₂ hkey
+  by_cases hEq : F₁ = F₂
+  · exact Or.inl hEq
+  · exact Or.inr (hFaith F₁ F₂ ⟨hEq, hAdm₁, hAdm₂, hkey⟩)
+
+/-- The direct gauge formulation and the collision formulation are equivalent. -/
+theorem keyEqualityGauge_iff_causallyFaithful {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    KeyEqualityForgetsOnlyGaugeInformation proj ↔ CausallyFaithfulProjection proj := by
+  constructor
+  · exact keyEqualityGauge_implies_causallyFaithful
+  · exact causallyFaithful_implies_keyEqualityGauge
+
+/-- The direct gauge formulation is also equivalent to the no-singularity audit. -/
+theorem keyEqualityGauge_iff_noLedgerSeamSingularity {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    KeyEqualityForgetsOnlyGaugeInformation proj ↔ NoLedgerSeamSingularity proj := by
+  exact (keyEqualityGauge_iff_causallyFaithful (proj := proj)).trans
+    (causallyFaithful_iff_noLedgerSeamSingularity (proj := proj))
+
+/-#############################################################################
+  §3. From faithful projection to the nested resolver
+#############################################################################-/
+
+/--
+Causal faithfulness plus the no-dangling audit yields the nested-universe
+resolver.  This is the strict form of "the projection forgets only gauge data".
+-/
+theorem causallyFaithful_noDangling_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hFaith : CausallyFaithfulProjection proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj := by
+  intro F₁ F₂ hne hAdm₁ hAdm₂ hkey
+  have hColl : LedgerSeamCollision proj F₁ F₂ :=
+    ⟨hne, hAdm₁, hAdm₂, hkey⟩
+  have hAlt : CausalCollisionAlternative F₁ F₂ :=
+    hFaith F₁ F₂ hColl
+  rcases hAlt with hReturn | hRest
+  · exact Or.inl hReturn
+  · rcases hRest with hNest₁₂ | hRest
+    · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+      · exact Or.inl hReturn
+      · by_cases hPay : ImpossiblePayment
+        · exact Or.inr (Or.inr hPay)
+        · have hMut : MutuallyNestedUniverses F₁ F₂ :=
+            oneWayNesting_forces_mutual_of_noDangling
+              (proj := proj) hNoDangling hColl hReturn hPay (Or.inl hNest₁₂)
+          exact Or.inr (Or.inl hMut)
+    · rcases hRest with hNest₂₁ | hPay
+      · by_cases hReturn : ExtendedFlowReturnCertificate F₁ F₂
+        · exact Or.inl hReturn
+        · by_cases hPay' : ImpossiblePayment
+          · exact Or.inr (Or.inr hPay')
+          · have hMut : MutuallyNestedUniverses F₁ F₂ :=
+              oneWayNesting_forces_mutual_of_noDangling
+                (proj := proj) hNoDangling hColl hReturn hPay' (Or.inr hNest₂₁)
+            exact Or.inr (Or.inl hMut)
+      · exact Or.inr (Or.inr hPay)
+
+/-- Direct key-equality gauge faithfulness plus no-dangling also gives the nested
+resolver. -/
+theorem keyEqualityGauge_noDangling_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hGauge : KeyEqualityForgetsOnlyGaugeInformation proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj :=
+  causallyFaithful_noDangling_resolves_nested
+    (proj := proj)
+    (keyEqualityGauge_implies_causallyFaithful hGauge)
+    hNoDangling
+
+/-- Direct key-equality gauge faithfulness plus no-dangling gives the old
+cycle-or-payment resolver through the nested-universe bridge. -/
+theorem keyEqualityGauge_noDangling_resolves_old {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (hGauge : KeyEqualityForgetsOnlyGaugeInformation proj)
+    (hNoDangling : NoDanglingOneWayNesting proj) :
+    SemanticExtendedFlowLedgerCollisionResolves proj :=
+  nestedSemanticExtended_resolves_old
+    (keyEqualityGauge_noDangling_resolves_nested
+      (proj := proj) hGauge hNoDangling)
+
+/-#############################################################################
+  §4. Faithful projection packages and final obligation
+#############################################################################-/
+
+/-- A candidate projection together with the exact two audit certificates needed
+for the existing Step00 machine. -/
+structure FaithfulGaugeProjectionPackage (A M0 : ℕ) where
+  proj : SemanticExtendedFlowLedgerProjection A M0
+  forgetsOnlyGauge : KeyEqualityForgetsOnlyGaugeInformation proj
+  noDangling : NoDanglingOneWayNesting proj
+
+/-- A faithful gauge package supplies the nested resolver. -/
+theorem faithfulGaugePackage_resolves_nested {A M0 : ℕ}
+    (P : FaithfulGaugeProjectionPackage A M0) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves P.proj :=
+  keyEqualityGauge_noDangling_resolves_nested
+    (proj := P.proj) P.forgetsOnlyGauge P.noDangling
+
+/-- A faithful gauge package supplies the old resolver. -/
+theorem faithfulGaugePackage_resolves_old {A M0 : ℕ}
+    (P : FaithfulGaugeProjectionPackage A M0) :
+    SemanticExtendedFlowLedgerCollisionResolves P.proj :=
+  nestedSemanticExtended_resolves_old
+    (faithfulGaugePackage_resolves_nested P)
+
+/--
+Final obligation in the faithful-projection form.
+
+For one fixed scale `A`, every hypothetical last-twin bound `M0` must admit a
+finite semantic flow-ledger projection which forgets only gauge information and
+has no dangling one-way nesting.
+-/
+abbrev TheFaithfulGaugeLastStep00Obligation : Prop :=
+  ∃ A : ℕ,
+    ∃ POf : ∀ M0 : ℕ, FaithfulGaugeProjectionPackage A M0,
+      True
+
+/-- Faithful-gauge last obligation implies the nested-universe last obligation. -/
+theorem faithfulGaugeLastStep00Obligation_implies_nestedUniverseLast
+    (H : TheFaithfulGaugeLastStep00Obligation) :
+    TheNestedUniverseLastStep00Obligation := by
+  rcases H with ⟨A, POf, _⟩
+  refine ⟨A, (fun M0 => (POf M0).proj), ?_⟩
+  intro M0
+  exact faithfulGaugePackage_resolves_nested (POf M0)
+
+/-- Therefore the faithful-projection last obligation is sufficient for infinitude
+of lower twin centres. -/
+theorem twinLowersInfinite_of_faithfulGaugeLastStep00Obligation
+    (H : TheFaithfulGaugeLastStep00Obligation) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_nestedUniverseLastStep00Obligation
+    (faithfulGaugeLastStep00Obligation_implies_nestedUniverseLast H)
+
+/-#############################################################################
+  §5. Audit markers
+#############################################################################-/
+
+/-- The exact local certificate still required from a proposed `proj.keyFlow`: key
+equality must identify only literal sameness or causally related histories. -/
+abbrev RemainingNoInformationLossCertificate {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  KeyEqualityForgetsOnlyGaugeInformation proj
+
+/-- A bad projection is one which creates a same-key collision that has no causal
+explanation. -/
+def ProjectionLosesCausalData {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  ProjectionForgetsCausalInformation proj
+
+/-- Losing causal data is the same audit failure as creating a broken seam. -/
+theorem projectionLosesCausalData_iff_brokenSeam {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0} :
+    ProjectionLosesCausalData proj ↔ ProjectionCreatesBrokenSeam proj :=
+  projectionForgetsCausalInformation_iff_brokenSeam (proj := proj)
+
+/-- The finite key may be non-injective.  What it may not do is identify two
+distinct admissible flows without a return/nesting/payment explanation. -/
+def ProjectionIsAllowedToForget {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
+  KeyEqualityForgetsOnlyGaugeInformation proj ∧
+  NoDanglingOneWayNesting proj
+
+/-- Allowed forgetting is exactly the pair of certificates consumed by the
+faithful-gauge package. -/
+theorem allowedForgetting_resolves_nested {A M0 : ℕ}
+    {proj : SemanticExtendedFlowLedgerProjection A M0}
+    (h : ProjectionIsAllowedToForget proj) :
+    NestedSemanticExtendedFlowLedgerCollisionResolves proj :=
+  keyEqualityGauge_noDangling_resolves_nested
+    (proj := proj) h.1 h.2
+
+/-! Машинная честность faithful-gauge-формы -/
+
+/-- Пара (gauge-верность, no-dangling) ⟺ старый резолвер (через seam-аудит). -/
+theorem gaugePair_iff_resolves {A M0 : ℕ}
+    (proj : SemanticExtendedFlowLedgerProjection A M0) :
+    (KeyEqualityForgetsOnlyGaugeInformation proj ∧ NoDanglingOneWayNesting proj) ↔
+      SemanticExtendedFlowLedgerCollisionResolves proj := by
+  rw [keyEqualityGauge_iff_noLedgerSeamSingularity]
+  exact seamAudit_iff_resolves proj
+
+/-- Faithful-gauge-обязательство ⟺ старый узел (переформулировка, не обход). -/
+theorem faithfulGaugeLastStep00Obligation_iff_lastStep00Obligation :
+    TheFaithfulGaugeLastStep00Obligation ↔ TheLastStep00Obligation := by
+  constructor
+  · rintro ⟨A, POf, _⟩
+    exact ⟨A, fun M0 => (POf M0).proj,
+      fun M0 => faithfulGaugePackage_resolves_old (POf M0)⟩
+  · rintro ⟨A, projOf, h⟩
+    refine ⟨A, fun M0 =>
+      { proj := projOf M0
+        forgetsOnlyGauge := ((gaugePair_iff_resolves (projOf M0)).mpr (h M0)).1
+        noDangling := ((gaugePair_iff_resolves (projOf M0)).mpr (h M0)).2 },
+      trivial⟩
+
+/-- Faithful-gauge-пакет на масштабе M0 — тоже twin-детектор. -/
+theorem twin_above_of_faithfulGaugePackage {A M0 : ℕ}
+    (P : FaithfulGaugeProjectionPackage A M0) :
+    ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twin_above_of_resolves P.proj (faithfulGaugePackage_resolves_old P)
+
 end GeneratedFlowFormulation
 
 

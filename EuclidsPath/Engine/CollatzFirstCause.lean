@@ -1,6 +1,6 @@
 /-
   CollatzFirstCause — ПОТРЕБИТЕЛЬ первопричины для КОЛЛАТЦА (зеркало DyadicFirstCause).
-  Разбор: prose/F_CollatzFirstCause.md. Зелёная машина: Engine/CollatzTugOfWar.lean.
+  Разбор: prose/56_CollatzFirstCause.md. Зелёная машина: Engine/CollatzTugOfWar.lean.
 
   СТАТУС (после слияния в основную линию): Коллатц ЗАЗЕМЛЁН на ЕДИНСТВЕННУЮ аксиому
   репозитория `step00FirstCause` — его закон каната стал ЧЕТВЁРТОЙ границей

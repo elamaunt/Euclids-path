@@ -1,7 +1,7 @@
-# Приложение B. Дискретная модель жидкости: где двигатель работает и где взрывается
+# 52. Дискретная модель жидкости: где двигатель работает и где взрывается
 
 <!--navtop-->
-[← A. Численные данные](A_NumericalEvidence.md) · [Оглавление](00_Overview.md) · [C. Бёрч–Свиннертон-Дайер →](C_BirchSwinnertonDyer.md)
+[← 51. Численные данные](51_NumericalEvidence.md) · [Оглавление](00_Overview.md) · [53. Бёрч–Свиннертон-Дайер →](53_BirchSwinnertonDyer.md)
 <!--/navtop-->
 
 > Lean-источник: `Engine/CascadeBudget.lean` (бюджет-лемма + конечная шелл-модель), `Engine/DyadicBlowup.lean`
@@ -140,5 +140,5 @@
 
 ---
 
-[← A. Численные данные](A_NumericalEvidence.md) · [Оглавление](00_Overview.md) · [C. Бёрч–Свиннертон-Дайер →](C_BirchSwinnertonDyer.md)
+[← 51. Численные данные](51_NumericalEvidence.md) · [Оглавление](00_Overview.md) · [53. Бёрч–Свиннертон-Дайер →](53_BirchSwinnertonDyer.md)
 <!--/navbot-->

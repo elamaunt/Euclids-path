@@ -1,6 +1,6 @@
 /-
   Collatz как ПЕРЕТЯГИВАНИЕ КАНАТА (tug-of-war): двигатель против каната.
-  Разбор: prose/E_Collatz.md. Числа: tools/collatz_engine_harness.py, tools/collatz_fuel_harness.py.
+  Разбор: prose/55_Collatz.md. Числа: tools/collatz_engine_harness.py, tools/collatz_fuel_harness.py.
 
   Чтение автора: «соревнование двигателя и каната: двигатель продвигается НЕ БОЛЕЕ чем на
   1 ранг вперёд за шаг, канат тянет на 1 или 2 ранга назад; топливо кончается — двигатель

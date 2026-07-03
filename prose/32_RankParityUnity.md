@@ -9,7 +9,7 @@
 > Lean: `Engine/RiemannLiouville.lean` (`liouville_eq_neg_one_pow_rank`,
 > `liouville_flip_of_mul_prime`, `riemann_of_liouville_bound`), `Engine/MkNode.lean`,
 > `Engine/CarrierBridge.lean`, `Engine/ProductCore.lean`. Числа: `tools/RESULTS_final_gap.md`,
-> `prose/A_NumericalEvidence.md`. Это финальная глава прозы.
+> `prose/51_NumericalEvidence.md`. Это финальная глава прозы.
 
 В [27. ProductCore](27_ProductCore.md) мы довели редукцию близнецов до конечного product-rank descent, а в
 [30. RiemannBranch](30_RiemannBranch.md) построили независимую ветку к гипотезе Римана через тот же двигатель; аудит
@@ -78,7 +78,7 @@ $$\lambda(n) \;=\; (-1)^{\Omega(n)} \;=\; -(-1)^{\Omega(m)} \;=\; -\lambda(m).$$
 
 ## Стена близнецов как баланс рангов сторон
 
-Вернёмся к близнецам и запишем их стену в терминах ранга. Блочная статистика [A. NumericalEvidence]
+Вернёмся к близнецам и запишем их стену в терминах ранга. Блочная статистика [глава 51](51_NumericalEvidence.md)
 классифицирует центры по паре $(\mathrm{rank}_{-},\mathrm{rank}_{+})$ рангов двух сторон
 $6m-1,\ 6m+1$, огрублённой до $\{0,3\}$ (простая сторона / «богатая» составная). Клетки:
 

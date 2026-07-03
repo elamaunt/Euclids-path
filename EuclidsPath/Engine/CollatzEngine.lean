@@ -1,6 +1,6 @@
 /-
   Collatz как ОСОБЫЙ СЛУЧАЙ вечного двигателя Евклида — структурные факты (core Lean, без Mathlib).
-  Разбор: prose/E_Collatz.md. Числа: tools/collatz_engine_harness.py.
+  Разбор: prose/55_Collatz.md. Числа: tools/collatz_engine_harness.py.
 
   Двигатель Евклида: КАЖДЫЙ шаг — строгий спуск `A·h' < h` (A≥1) ⟹ `no_infinite_descent` ⟹ ВСЕГДА
   останавливается; высота `StrictAnti` ⟹ не возвращается (нет цикла).

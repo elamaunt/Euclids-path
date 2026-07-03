@@ -1,5 +1,9 @@
 # 20. NOPSL: нет sink значит twin
 
+<!--navtop-->
+[← 19. Old-peel](19_OldPeel.md) · [Оглавление](00_Overview.md) · [21. Регенерация →](21_Regeneration.md)
+<!--/navtop-->
+
 > Источник: `snol_old_peel_closure_ru_2026-06-30.md` (§5–14). Lean: `Engine/NOPSL.lean`
 > (`OldPeelLedger`, `no_old_peel_sink`, `snol_of_nopsl`, `twin_primes_of_nopsl`; стандартные аксиомы).
 
@@ -189,3 +193,10 @@ quotients. Всё остальное — от строгого падения в
 [21 Дихотомия] мы формализуем Лемму 6.1 о регенерации и покажем, что её элементарное ядро
 — полная дихотомия quotient-центра плюс sign law — доказывается в Lean без распределения, оставляя
 явным входом лишь fan-in/Hall и rigid-подпись цикла.
+
+<!--navbot-->
+
+---
+
+[← 19. Old-peel](19_OldPeel.md) · [Оглавление](00_Overview.md) · [21. Регенерация →](21_Regeneration.md)
+<!--/navbot-->

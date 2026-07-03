@@ -1,5 +1,9 @@
 # 28. Факторизация: RankNode из составной стороны
 
+<!--navtop-->
+[← 27. Product-core](27_ProductCore.md) · [Оглавление](00_Overview.md) · [29. Последнее звено →](29_CarrierBridge.md)
+<!--/navtop-->
+
 > Lean-источник: `Engine/MkNode.lean` (пространство имён `EuclidsPath.MkNode`, `open EuclidsPath.ProductCore`).
 > Вся арифметика этой главы доказана без аксиом и без `sorry`.
 
@@ -263,3 +267,10 @@ $$
 её через факторизацию этой главы, применит infinite-pigeonhole по рангу и предъявит тот самый
 `FactorizationData`, из которого product-core собирает `Engine`. К этому мосту — от единичного узла к
 бесконечному потоку узлов одного ранга — мы и переходим.
+
+<!--navbot-->
+
+---
+
+[← 27. Product-core](27_ProductCore.md) · [Оглавление](00_Overview.md) · [29. Последнее звено →](29_CarrierBridge.md)
+<!--/navbot-->

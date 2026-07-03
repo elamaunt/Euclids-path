@@ -1,5 +1,9 @@
 # 31. Гипотеза Римана через функцию Лиувилля
 
+<!--navtop-->
+[← 30. Риман: контрапозиция](30_RiemannBranch.md) · [Оглавление](00_Overview.md) · [32. Rank-parity узел →](32_RankParityUnity.md)
+<!--/navtop-->
+
 > Lean: `Engine/RiemannLiouville.lean`. Числа: `|L(x)|/\sqrt{x}` ограничено (классический
 > Liouville-эквивалент RH). Связь с двигателем: знак Лиувилля = `(−1)^rank`, флип при `deleteFactor`.
 
@@ -191,3 +195,10 @@ $\zeta$) и арифметический `LiouvilleBound` (эта глава, ч
 `coreSigOf` и `deleteFactor` собираются в честный спуск `core_step_proved` и где именно (сшивка с
 `deleteFactor` на residual-рангах) остаётся вход, — то есть смотрим на ту же parity/extensionality-стену
 уже не через $\lambda$, а изнутри самой структуры ядра.
+
+<!--navbot-->
+
+---
+
+[← 30. Риман: контрапозиция](30_RiemannBranch.md) · [Оглавление](00_Overview.md) · [32. Rank-parity узел →](32_RankParityUnity.md)
+<!--/navbot-->

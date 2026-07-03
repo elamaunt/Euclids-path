@@ -1,5 +1,9 @@
 # 30. Гипотеза Римана: контрапозиция через двигатель
 
+<!--navtop-->
+[← 29. Последнее звено](29_CarrierBridge.md) · [Оглавление](00_Overview.md) · [31. Риман через Лиувилля →](31_RiemannLiouville.md)
+<!--/navtop-->
+
 > Lean: `Engine/RiemannBranch.lean` (`NontrivialZeroM`, `no_zero_of_one_le_re`,
 > `TrivialBelowZeroClassification`, `nontrivialZero_in_strip`, `EngineBridge`,
 > `riemannHypothesis_of_engine_bridge`, `not_RH_gives_engine`, `TwoTransportLaw`, `twoTransportLaw_holds`,
@@ -233,7 +237,7 @@ theorem riemannHypothesis_of_two_transport
    спутников вдоль descent — использовать явную форму $qrs = abv + 2$ из `twoTransportLaw_holds` как
    точку баланса, отклонение от которой оценивается через положение нуля.
 2. Показать, что этот дисбаланс не поглощается boundary-выходом (см. декомпозицию boundary из
-   [24]), то есть цепь остаётся clean на каждом шаге.
+   [24](24_BoundaryDecomp.md)), то есть цепь остаётся clean на каждом шаге.
 3. Собрать из шагов явный свидетель $H$ и константу $A\ge 1$, замкнув `EngineBridge`; далее вся
    работа делается наличным `no_infinite_descent`.
 
@@ -248,3 +252,10 @@ theorem riemannHypothesis_of_two_transport
 берём функцию Лиувилля $\lambda(n)=(-1)^{\Omega(n)}$ и её сумматор — и показываем, как тот же
 descent-механизм и та же дихотомия «баланс либо двигатель» переносятся на дефект чётности $\Omega$,
 давая ещё одну контрапозиционную ветвь на общем EPMI-ядре.
+
+<!--navbot-->
+
+---
+
+[← 29. Последнее звено](29_CarrierBridge.md) · [Оглавление](00_Overview.md) · [31. Риман через Лиувилля →](31_RiemannLiouville.md)
+<!--/navbot-->

@@ -1,5 +1,9 @@
 # Второй закон: необратимость и стрела времени
 
+<!--navtop-->
+[← 04. Спуск и boundary-law](04_Descent.md) · [Оглавление](00_Overview.md) · [06. Нет хода назад →](06_NoBackward.md)
+<!--/navtop-->
+
 > Lean-источник: `EuclidsPath/Engine/Irreversibility.lean` (поверх `EuclidsPath/Engine/EPMI.lean`).
 > Ключевые теоремы главы: `engine_never_returns`, `no_infinite_engine_descent`,
 > `fuel_ascent_strictMono`, `turned_engine_halts`. Без анализа, распределения и сита —
@@ -179,4 +183,11 @@ $$\forall\, t \le k,\qquad H(t) + t \;\le\; H(0).$$
 `\sum_p X_p Y_p` исчезает, а произведение рангов оказывается целиком внедиагональным. Если в этой главе
 необратимость запрещала возврат по стреле времени, то в следующей эксклюзивность запретит «работу назад»
 на паре — и именно эта исчезнувшая диагональ станет точным источником отрицательной ассоциации `(r_-,r_+)`,
-которую позднее эксплуатирует four-corner [12].
+которую позднее эксплуатирует four-corner [12](12_FourCorner.md).
+
+<!--navbot-->
+
+---
+
+[← 04. Спуск и boundary-law](04_Descent.md) · [Оглавление](00_Overview.md) · [06. Нет хода назад →](06_NoBackward.md)
+<!--/navbot-->

@@ -1,5 +1,9 @@
 # 15. Цепь к близнецам из four-corner (условно)
 
+<!--navtop-->
+[← 14. Декомпозиция остатка](14_RealFourCorner.md) · [Оглавление](00_Overview.md) · [16. От противного →](16_FiniteContradiction.md)
+<!--/navtop-->
+
 > Lean-источник: `EuclidsPath/Engine/ToTwins.lean` (`twin_primes_of_four_corner`).
 > Опирается на: `EuclidsPath/Engine/FourCorner.lean`, `EuclidsPath/Engine/TwoTransport.lean`,
 > `EuclidsPath/Engine/NonCover.lean`, `EuclidsPath/Step00_Overview.lean`.
@@ -163,7 +167,7 @@ $$
 разрозненные звенья в единый артефакт — импликацию, которую машина проверяет целиком.
 
 > **Примечание.** Гипотеза $H$ в этой формулировке — прямой предшественник более поздней,
-> не-счётной переформулировки узла (линия [18], SNOL: `twin_primes_of_SNOL` в `SNOL.lean`
+> не-счётной переформулировки узла (линия [18](18_SNOL.md), SNOL: `twin_primes_of_SNOL` в `SNOL.lean`
 > использует тот же мост `twin_prime_conjecture_of_blocks`). Там открытое ядро вынесено из
 > счётного языка рангов в структурный предикат; но логический скелет — «блок $\Rightarrow$
 > выживший $\Rightarrow$ twin $\Rightarrow$ бесконечность» — остаётся тем же, что собран здесь.
@@ -185,3 +189,10 @@ twin. Первый конъюнкт — задача о чётности и ос
 нового рычага — оно перекодирует ту же самую four-corner/carrier/parity-стену, — но зато даёт
 чистый верифицированный вердикт: конечность близнецов противоречива по модулю $H$, а $H$ —
 единственный, точно локализованный открытый вход.
+
+<!--navbot-->
+
+---
+
+[← 14. Декомпозиция остатка](14_RealFourCorner.md) · [Оглавление](00_Overview.md) · [16. От противного →](16_FiniteContradiction.md)
+<!--/navbot-->

@@ -1,5 +1,9 @@
 # 27. Product-core: снятие трилеммы и вся машина
 
+<!--navtop-->
+[← 26. Separating scale](26_SeparatingScale.md) · [Оглавление](00_Overview.md) · [28. MkNode →](28_MkNode.md)
+<!--/navtop-->
+
 > Источник: `step00_product_core_rank_descent_corrected_ru_2026-07-01.md`. Lean:
 > `Engine/ProductCore.lean` (`no_mismatch_core_eq`, `core_step_proved`,
 > `coreCollision_of_infinite`, `product_core_engine_of_carrier` — без `sorry`; открытым
@@ -281,3 +285,10 @@ carrier-границы, разбираемая в следующей главе;
 Именно эту факторизацию clean composite side в конкретный `RankNode` — с доказанной
 арифметикой $a_i > A$, `AmbientLegal` и $r \le 4$ — мы строим в следующей главе (§28, mkNode),
 сводя открытый `CarrierData` к единственному внешнему факту: бесконечности nodeable-центров.
+
+<!--navbot-->
+
+---
+
+[← 26. Separating scale](26_SeparatingScale.md) · [Оглавление](00_Overview.md) · [28. MkNode →](28_MkNode.md)
+<!--/navbot-->

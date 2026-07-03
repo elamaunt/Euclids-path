@@ -1,10 +1,14 @@
 # 37. Римановы фронты сессии
 
+<!--navtop-->
+[← 36. Навье–Стокс: уравнение](36_NavierStokes.md) · [Оглавление](00_Overview.md) · [38. Риман через первопричину →](38_RiemannFirstCause.md)
+<!--/navtop-->
+
 > Lean: `Engine/RiemannTrivialZeros.lean` (вход №1 закрыт — 🟢), `Engine/RiemannRankProjection.lean` +
 > `Engine/RiemannRankProjectionAudit.lean` (эпизод вакуумности №2), `Engine/RiemannTwoTransportFront.lean`,
 > `Engine/RiemannArithmeticTwoTransport.lean`, `Engine/RiemannSpectralAnchorAudit.lean`,
 > `Engine/RiemannLayerBoxFront.lean` (25 кирпичей), `Engine/RiemannTerminalRankFront.lean` (18 кирпичей).
-> Проза-контекст: [30. Гипотеза Римана], [24] (диссипативный cascade). Все процитированные теоремы —
+> Проза-контекст: [30. Гипотеза Римана](30_RiemannBranch.md), [24](24_BoundaryDecomp.md) (диссипативный cascade). Все процитированные теоремы —
 > 🟢 при стандартных аксиомах, без `step00FirstCause`; сама RH — 🔴 открыта, и ниже это не смягчается.
 
 Риманова ветка репозитория — контрапозиция через двигатель: нетривиальный нуль вне критической прямой
@@ -124,3 +128,10 @@ no-zeros-часть приходит из assumption-полей (`contradiction 
 (`riemannManifestation_asserts_RH`: при границе закон ⟺ RH). Оба живых входа этой главы остаются
 🔴 и нетронутыми: фронты — карты обязательств для безаксиомного пути, декрет — намеренный обход по
 цене, объявленной вслух. См. [38_RiemannFirstCause.md](38_RiemannFirstCause.md).
+
+<!--navbot-->
+
+---
+
+[← 36. Навье–Стокс: уравнение](36_NavierStokes.md) · [Оглавление](00_Overview.md) · [38. Риман через первопричину →](38_RiemannFirstCause.md)
+<!--/navbot-->

@@ -1,5 +1,9 @@
 # Old-peel: catch как шаг спуска
 
+<!--navtop-->
+[← 18. SNOL](18_SNOL.md) · [Оглавление](00_Overview.md) · [20. NOPSL →](20_NOPSL.md)
+<!--/navtop-->
+
 > Lean-источник: `EuclidsPath/Engine/OldPeel.lean` (теоремы `catch_is_opposite`, `old_peel_sign`,
 > `old_peel_height_drop`, `no_infinite_old_peel`, `old_peel_terminates`). Числа:
 > `tools/RESULTS_oldpeel.md` (3000 реальных rank-1 catch'ей, `A=200`).
@@ -34,7 +38,7 @@ $$6n - \varepsilon = (6n+\varepsilon) - 2\varepsilon = a - 2\varepsilon.$$
 $$p \mid a - 2\varepsilon \iff p \mid 6n - \varepsilon.$$
 
 > **Примечание.** Отсюда сразу видно, *почему* SNOL нельзя опровергнуть счётом (что и было отмечено в
-> [18]): `p \mid 6n - \varepsilon` — это не редкое совпадение, а норма для составной стороны клина.
+> [18](18_SNOL.md)): `p \mid 6n - \varepsilon` — это не редкое совпадение, а норма для составной стороны клина.
 > Ловля соседа — обычное дело; содержательным должно быть не *попадание*, а то, *что происходит
 > после* него. Ниже мы извлекаем из попадания структуру, а не вероятность.
 
@@ -104,7 +108,7 @@ $$t < n.$$
 ## Почему спуск — это противоречие: старый двигатель
 
 Соберём три закона в один динамический вывод. Предположим противное SNOL: терминала *нет*, то есть у
-каждого активного центра его catch раскрывается old-peel'ом (`regenerate` — см. [20]). Тогда из
+каждого активного центра его catch раскрывается old-peel'ом (`regenerate` — см. [20](20_NOPSL.md)). Тогда из
 любого старта строится последовательность центров
 $$z_0 > z_1 > z_2 > \cdots,\qquad z_{k+1} = t\big(z_k\big),$$
 где каждое неравенство `z_{k+1} < z_k` дано `old_peel_height_drop`. Это **бесконечная строго
@@ -163,3 +167,10 @@ four-corner `H`, он не зовёт Мертенса и распределен
 `OldPeelLedger` (высота, sink, шаг, `step_drops`, `regenerate`) и докажем машинно полное замыкание
 `OldPeelLedger \Rightarrow \mathrm{TwinLowers.Infinite}` через ту же логику строгого спуска — тем
 самым переведя всю редукцию SNOL/NOPSL из прозы в верифицированный вывод.
+
+<!--navbot-->
+
+---
+
+[← 18. SNOL](18_SNOL.md) · [Оглавление](00_Overview.md) · [20. NOPSL →](20_NOPSL.md)
+<!--/navbot-->

@@ -125,3 +125,4 @@ import EuclidsPath.Engine.FermatManifestationFront      -- Ферма-фронт
 -- twin_prime_conjecture НЕ замыкается через этот модуль и остаётся sorry;
 -- riemannHypothesis_from_firstCause — редукция, закрытая декретом, НЕ доказательство RH.
 import EuclidsPath.Engine.CausalClosureAxiom
+import EuclidsPath.Engine.GeometryFront -- ГЕОМЕТРИЯ ПУТИ: стрела времени (lexRank ↓), кривизна κ=1−outdeg ВЫЧИСЛЕНА (спектр −8…+1, χ(cone3)=−5), плоскость всюду ⟹ двигатель; прямые конечны — падает ВТОРОЙ постулат Евклида, параллельных нет; паутина через могилу нуля; пересечение прямых 🟡 из той же первопричины, но знать изнутри нельзя 🟢 (ровно 2 tainted-декларации)

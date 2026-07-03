@@ -6,6 +6,7 @@
 
 
 
+
 > Lean-источник: `EuclidsPath/Engine/EPMI.lean`, `EuclidsPath/Engine/Irreversibility.lean`.
 
 ## Где мы

@@ -4,6 +4,7 @@
 [← 44. Стороны и Полиньяк](44_SidesAndPolignac.md) · [Оглавление](00_Overview.md) · [46. Гольдбах и Лежандр →](46_GoldbachLegendre.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/SophieGermainBranch.lean` — ветвь с классической теоремой, вся 🟢;
 > `Engine/SophieGermainManifestationFront.lean` — зелёный манифестационный фронт (зеркало Мерсенна)
 > с рестрикт-секцией 3 (mod 4). Обозначения статуса: 🟢 — доказано при стандартных аксиомах;

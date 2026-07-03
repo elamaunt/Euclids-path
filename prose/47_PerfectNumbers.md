@@ -4,6 +4,7 @@
 [← 46. Гольдбах и Лежандр](46_GoldbachLegendre.md) · [Оглавление](00_Overview.md) · [48. Числа Ферма →](48_Fermat.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/PerfectNumberBranch.lean` — зелёная ветвь Евклида–Эйлера, вся 🟢
 > (обе стороны — реэкспорт из mathlib Archive: `Theorems100`, автор Aaron Anderson, Apache 2.0);
 > `Engine/OddPerfectManifestationFront.lean` — манифестационный фронт нечётной стороны, аксиомо-свободный, вся 🟢.

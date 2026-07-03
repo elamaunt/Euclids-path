@@ -1,8 +1,9 @@
 # A. Численная опора
 
 <!--navtop-->
-[← 50. Кода](50_Coda.md) · [Оглавление](00_Overview.md)
+[← 50. Кода](50_Coda.md) · [Оглавление](00_Overview.md) · [B. Дискретная модель жидкости →](B_DyadicModel.md)
 <!--/navtop-->
+
 
 
 > Источники данных: `f:/Primes/twin_stats_21_27.csv`, `f:/Primes/twin_stats_28_detail.csv` (исходные,
@@ -154,5 +155,5 @@ mathlib. Оценка `|L(x)| = O(√x · x^ε)` (`LiouvilleBound`) остаёт
 
 ---
 
-[← 50. Кода](50_Coda.md) · [Оглавление](00_Overview.md)
+[← 50. Кода](50_Coda.md) · [Оглавление](00_Overview.md) · [B. Дискретная модель жидкости →](B_DyadicModel.md)
 <!--/navbot-->

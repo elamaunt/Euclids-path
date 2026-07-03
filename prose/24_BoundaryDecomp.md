@@ -6,6 +6,7 @@
 
 
 
+
 > Источник: `step00_boundary_exit_decomposition_global_absorber_fix_ru_2026-06-30.md`,
 > `step00_labelled_fanin_patch_ru_2026-07-01.md`.
 > Lean: `Engine/BoundaryDecomp.lean` (декомпозиция доказана; глобальный узел — явная гипотеза),

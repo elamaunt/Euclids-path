@@ -4,6 +4,7 @@
 [← 43. Мерсенн через первопричину](43_MersenneFirstCause.md) · [Оглавление](00_Overview.md) · [45. Софи Жермен →](45_SophieGermain.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/SideInfinitude.lean` — хребет честности, вся 🟢 (Дирихле из mathlib);
 > `Engine/PolignacBranch.lean` — классификация кузенов и секси в сетке, вся 🟢;
 > `Engine/PolignacManifestationFront.lean` — две манифестационные ветви, вся 🟢 (деклараций нет).

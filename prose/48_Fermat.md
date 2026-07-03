@@ -4,6 +4,7 @@
 [← 47. Совершенные числа](47_PerfectNumbers.md) · [Оглавление](00_Overview.md) · [49. Геометрия пути →](49_Geometry.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/FermatBranch.lean` — честный мост Ферма ↔ близнецы, вся 🟢;
 > `Engine/FermatManifestationFront.lean` — зелёный фронт манифестации, вся 🟢;
 > `Engine/CausalClosureAxiom.lean` §16–§17 — комментарий-вердикт (деклараций нет).

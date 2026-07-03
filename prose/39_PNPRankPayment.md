@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/PNPRankPaymentFront.lean` — зелёная цепь, вся 🟢;
 > `Engine/CausalClosureAxiom.lean` §11 — P/NP-язык декрета.
 > Обозначения статуса: 🟢 — доказано при

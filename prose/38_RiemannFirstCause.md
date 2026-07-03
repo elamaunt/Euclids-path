@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/RiemannManifestationFront.lean` — зелёная цепь (модуль не импортирует
 > карантин); `Engine/CausalClosureAxiom.lean` §10 — вторая граница декрета;
 > `Engine/RiemannDualEngineFront.lean` — дуальный маршрут-спутник.

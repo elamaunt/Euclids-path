@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/YangMillsFront.lean` — зелёная цепь и трилемма, всё 🟢;
 > `Engine/CausalClosureAxiom.lean` §12 — ЯМ-язык декрета.
 > Обозначения статуса: 🟢 — доказано при стандартных аксиомах;

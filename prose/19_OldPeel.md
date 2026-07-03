@@ -6,6 +6,7 @@
 
 
 
+
 > Lean-источник: `EuclidsPath/Engine/OldPeel.lean` (теоремы `catch_is_opposite`, `old_peel_sign`,
 > `old_peel_height_drop`, `no_infinite_old_peel`, `old_peel_terminates`). Числа:
 > `tools/RESULTS_oldpeel.md` (3000 реальных rank-1 catch'ей, `A=200`).

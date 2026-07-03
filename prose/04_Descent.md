@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `EuclidsPath/Engine/Descent.lean`
 > Теоремы главы: `two_carry_opposite`, `no_small_divisor`, `obstruction_on_opposite`.
 

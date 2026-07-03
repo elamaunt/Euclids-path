@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/NoBackward.lean` (`exclusive_diag_zero`, `exclusive_no_backward`).
 
 ## Где мы

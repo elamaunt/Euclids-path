@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `EuclidsPath/Engine/Irreversibility.lean` (поверх `EuclidsPath/Engine/EPMI.lean`).
 > Ключевые теоремы главы: `engine_never_returns`, `no_infinite_engine_descent`,
 > `fuel_ascent_strictMono`, `turned_engine_halts`. Без анализа, распределения и сита —

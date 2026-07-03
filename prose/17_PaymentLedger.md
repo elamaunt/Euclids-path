@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/PaymentLedger.lean` (5 теорем, стандартные аксиомы, без `sorry`).
 > Числовой стресс-тест: `tools/RESULTS_payment_budget.md`.
 

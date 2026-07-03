@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/MersenneManifestationFront.lean` — зелёная цепь, вся 🟢;
 > `Engine/CausalClosureAxiom.lean` §16 — комментарий-вердикт (деклараций нет).
 > Проза-контекст: [34. Ветка Мерсенна](34_MersenneBranch.md),

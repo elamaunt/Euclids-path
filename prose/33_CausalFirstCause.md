@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/CausalClosureAxiom.lean` — карантинный модуль с **единственной аксиомой
 > репозитория** `step00FirstCause`; `Engine/FiniteKnowledgeBarrier.lean` — барьер конечного знания
 > и главная теорема `higherEnergyIncompatibility_main`.

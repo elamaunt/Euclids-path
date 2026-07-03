@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Источник: `old_peel_regeneration_formal_proof_ru_2026-06-30.md` (Лемма 6.1 о регенерации). Lean:
 > `Engine/Regeneration.lean` (5 теорем, стандартные аксиомы, без `sorry`). Опирается на
 > `Engine/OldPeel.lean` (`old_peel_height_drop`) и питает `Engine/NOPSL.lean` (поле `regenerate`).

@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean-источник: `Engine/MkNode.lean` (пространство имён `EuclidsPath.MkNode`, `open EuclidsPath.ProductCore`).
 > Вся арифметика этой главы доказана без аксиом и без `sorry`.
 

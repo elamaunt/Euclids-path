@@ -4,6 +4,7 @@
 [← 48. Числа Ферма](48_Fermat.md) · [Оглавление](00_Overview.md) · [50. Кода →](50_Coda.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/GeometryFront` — зелёная часть, вся 🟢 (капстоун
 > `geometry_of_euclids_path`); §6-кода — ровно две декларации, 🟡.
 > Проза-контекст: [01. EPMI](01_EPMI.md), [33. Причина через первопричину](33_CausalFirstCause.md),

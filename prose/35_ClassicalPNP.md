@@ -5,6 +5,7 @@
 <!--/navtop-->
 
 
+
 > Lean: `Engine/LocalPNPNode.lean` (абстрактный узел + конкретная инстанциация),
 > `Engine/ClassicalPNPBridge.lean` (классический фрейм, мост, extraction-слой),
 > `Engine/CanonicalSelfReduction.lean` (faithful-фреймы, fuel-протокол, генерическое закрытие run),

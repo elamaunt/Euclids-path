@@ -1,7 +1,7 @@
 # Приложение D. Соседи за горизонтом: тени открытых задач
 
 <!--navtop-->
-[← C. Бёрч–Свиннертон-Дайер](C_BirchSwinnertonDyer.md) · [Оглавление](00_Overview.md)
+[← C. Бёрч–Свиннертон-Дайер](C_BirchSwinnertonDyer.md) · [Оглавление](00_Overview.md) · [E. Коллатц →](E_Collatz.md)
 <!--/navtop-->
 
 > Lean-источники: `Engine/ChowlaFront.lean`, `Engine/AbcFront.lean`, `Engine/BealFront.lean`,
@@ -105,5 +105,5 @@ mathlib плюс честный гейт**. Якорь — доказанная 
 
 ---
 
-[← C. Бёрч–Свиннертон-Дайер](C_BirchSwinnertonDyer.md) · [Оглавление](00_Overview.md)
+[← C. Бёрч–Свиннертон-Дайер](C_BirchSwinnertonDyer.md) · [Оглавление](00_Overview.md) · [E. Коллатц →](E_Collatz.md)
 <!--/navbot-->

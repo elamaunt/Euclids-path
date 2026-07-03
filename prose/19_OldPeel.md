@@ -4,6 +4,8 @@
 [← 18. SNOL](18_SNOL.md) · [Оглавление](00_Overview.md) · [20. NOPSL →](20_NOPSL.md)
 <!--/navtop-->
 
+
+
 > Lean-источник: `EuclidsPath/Engine/OldPeel.lean` (теоремы `catch_is_opposite`, `old_peel_sign`,
 > `old_peel_height_drop`, `no_infinite_old_peel`, `old_peel_terminates`). Числа:
 > `tools/RESULTS_oldpeel.md` (3000 реальных rank-1 catch'ей, `A=200`).
@@ -173,6 +175,7 @@ four-corner `H`, он не зовёт Мертенса и распределен
 `OldPeelLedger` (высота, sink, шаг, `step_drops`, `regenerate`) и докажем машинно полное замыкание
 `OldPeelLedger \Rightarrow \mathrm{TwinLowers.Infinite}` через ту же логику строгого спуска — тем
 самым переведя всю редукцию SNOL/NOPSL из прозы в верифицированный вывод.
+
 
 <!--navbot-->
 

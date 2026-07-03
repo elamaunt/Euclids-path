@@ -4,6 +4,7 @@
 [← 03. Сохранение двойки](03_TwoGap.md) · [Оглавление](00_Overview.md) · [05. Необратимость →](05_Irreversibility.md)
 <!--/navtop-->
 
+
 > Lean-источник: `EuclidsPath/Engine/Descent.lean`
 > Теоремы главы: `two_carry_opposite`, `no_small_divisor`, `obstruction_on_opposite`.
 

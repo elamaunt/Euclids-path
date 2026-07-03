@@ -4,6 +4,7 @@
 [← 04. Спуск и boundary-law](04_Descent.md) · [Оглавление](00_Overview.md) · [06. Нет хода назад →](06_NoBackward.md)
 <!--/navtop-->
 
+
 > Lean-источник: `EuclidsPath/Engine/Irreversibility.lean` (поверх `EuclidsPath/Engine/EPMI.lean`).
 > Ключевые теоремы главы: `engine_never_returns`, `no_infinite_engine_descent`,
 > `fuel_ascent_strictMono`, `turned_engine_halts`. Без анализа, распределения и сита —

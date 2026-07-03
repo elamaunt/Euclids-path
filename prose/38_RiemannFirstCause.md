@@ -4,6 +4,7 @@
 [← 37. Римановы фронты](37_RiemannFronts.md) · [Оглавление](00_Overview.md) · [39. P/NP: оплата сертификатов →](39_PNPRankPayment.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/RiemannManifestationFront.lean` — зелёная цепь (модуль не импортирует
 > карантин); `Engine/CausalClosureAxiom.lean` §10 — вторая граница декрета;
 > `Engine/RiemannDualEngineFront.lean` — дуальный маршрут-спутник.

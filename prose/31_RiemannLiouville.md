@@ -4,6 +4,7 @@
 [← 30. Риман: контрапозиция](30_RiemannBranch.md) · [Оглавление](00_Overview.md) · [32. Rank-parity узел →](32_RankParityUnity.md)
 <!--/navtop-->
 
+
 > Lean: `Engine/RiemannLiouville.lean`. Числа: `|L(x)|/\sqrt{x}` ограничено (классический
 > Liouville-эквивалент RH). Связь с двигателем: знак Лиувилля = `(−1)^rank`, флип при `deleteFactor`.
 

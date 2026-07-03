@@ -4,6 +4,7 @@
 [← 35. P/NP: локальный узел](35_ClassicalPNP.md) · [Оглавление](00_Overview.md) · [37. Римановы фронты →](37_RiemannFronts.md)
 <!--/navtop-->
 
+
 > Lean: `Engine/NavierStokes.lean` (само уравнение, mathlib-анализ; всё доказанное — 🟢 при
 > стандартных аксиомах, без step00), NS-часть `Engine/DissipativeCascade.lean` (§2: ℝ-предупреждение
 > `real_positive_work_not_wellfounded`; квантизация `no_infinite_uniform_dissipative_cascade`).

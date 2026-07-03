@@ -4,6 +4,7 @@
 [← 26. Separating scale](26_SeparatingScale.md) · [Оглавление](00_Overview.md) · [28. MkNode →](28_MkNode.md)
 <!--/navtop-->
 
+
 > Источник: `step00_product_core_rank_descent_corrected_ru_2026-07-01.md`. Lean:
 > `Engine/ProductCore.lean` (`no_mismatch_core_eq`, `core_step_proved`,
 > `coreCollision_of_infinite`, `product_core_engine_of_carrier` — без `sorry`; открытым

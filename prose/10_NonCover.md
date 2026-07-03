@@ -4,6 +4,7 @@
 [← 09. Factor-repeat rigidity](09_Cycle.md) · [Оглавление](00_Overview.md) · [11. Блочное ядро →](11_TwoTransport.md)
 <!--/navtop-->
 
+
 > Lean: `EuclidsPath/Engine/NonCover.lean` (`survivor_of_not_covered`, `infinite_of_unbounded_centers`);
 > `EuclidsPath/Engine/TwoTransport.lean` (`prime_of_no_small_prime_factor`, `isTwinCenter_of_root_sieve`).
 

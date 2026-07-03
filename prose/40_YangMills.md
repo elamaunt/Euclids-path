@@ -4,6 +4,7 @@
 [← 39. P/NP: оплата сертификатов](39_PNPRankPayment.md) · [Оглавление](00_Overview.md) · [41. Навье–Стокс: гладкость →](41_NSSmoothness.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/YangMillsFront.lean` — зелёная цепь и трилемма, всё 🟢;
 > `Engine/CausalClosureAxiom.lean` §12 — ЯМ-язык декрета.
 > Обозначения статуса: 🟢 — доказано при стандартных аксиомах;

@@ -4,6 +4,7 @@
 [← 19. Old-peel](19_OldPeel.md) · [Оглавление](00_Overview.md) · [21. Регенерация →](21_Regeneration.md)
 <!--/navtop-->
 
+
 > Источник: `snol_old_peel_closure_ru_2026-06-30.md` (§5–14). Lean: `Engine/NOPSL.lean`
 > (`OldPeelLedger`, `no_old_peel_sink`, `snol_of_nopsl`, `twin_primes_of_nopsl`; стандартные аксиомы).
 

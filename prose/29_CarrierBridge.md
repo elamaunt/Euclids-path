@@ -4,6 +4,7 @@
 [← 28. MkNode](28_MkNode.md) · [Оглавление](00_Overview.md) · [30. Риман: контрапозиция →](30_RiemannBranch.md)
 <!--/navtop-->
 
+
 > Lean-источник: `EuclidsPath/Engine/CarrierBridge.lean` (namespace `EuclidsPath.CarrierBridge`),
 > опирается на `EuclidsPath/Engine/ProductCore.lean` и `EuclidsPath/Engine/Residuals.lean`.
 > Ключевые имена: `cleanCenters_infinite`, `exists_infinite_fiber`, `factorizationData_of_carrier`,

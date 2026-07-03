@@ -4,6 +4,7 @@
 [← 16. От противного](16_FiniteContradiction.md) · [Оглавление](00_Overview.md) · [18. SNOL →](18_SNOL.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/PaymentLedger.lean` (5 теорем, стандартные аксиомы, без `sorry`).
 > Числовой стресс-тест: `tools/RESULTS_payment_budget.md`.
 

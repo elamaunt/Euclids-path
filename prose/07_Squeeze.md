@@ -4,6 +4,7 @@
 [← 06. Нет хода назад](06_NoBackward.md) · [Оглавление](00_Overview.md) · [08. Ограниченный цикл →](08_BK.md)
 <!--/navtop-->
 
+
 > Lean: `EuclidsPath/Engine/Squeeze.lean` (`cubic_squeeze`, `cubic_squeeze_sq_lt`).
 
 ## Где мы

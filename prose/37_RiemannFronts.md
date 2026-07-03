@@ -4,6 +4,7 @@
 [← 36. Навье–Стокс: уравнение](36_NavierStokes.md) · [Оглавление](00_Overview.md) · [38. Риман через первопричину →](38_RiemannFirstCause.md)
 <!--/navtop-->
 
+
 > Lean: `Engine/RiemannTrivialZeros.lean` (вход №1 закрыт — 🟢), `Engine/RiemannRankProjection.lean` +
 > `Engine/RiemannRankProjectionAudit.lean` (эпизод вакуумности №2), `Engine/RiemannTwoTransportFront.lean`,
 > `Engine/RiemannArithmeticTwoTransport.lean`, `Engine/RiemannSpectralAnchorAudit.lean`,

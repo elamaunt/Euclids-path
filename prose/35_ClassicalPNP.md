@@ -4,6 +4,7 @@
 [← 34. Ветка Мерсенна](34_MersenneBranch.md) · [Оглавление](00_Overview.md) · [36. Навье–Стокс: уравнение →](36_NavierStokes.md)
 <!--/navtop-->
 
+
 > Lean: `Engine/LocalPNPNode.lean` (абстрактный узел + конкретная инстанциация),
 > `Engine/ClassicalPNPBridge.lean` (классический фрейм, мост, extraction-слой),
 > `Engine/CanonicalSelfReduction.lean` (faithful-фреймы, fuel-протокол, генерическое закрытие run),

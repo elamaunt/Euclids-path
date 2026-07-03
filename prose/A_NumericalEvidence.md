@@ -1,8 +1,9 @@
 # A. Численная опора
 
 <!--navtop-->
-[← 44. Кода](44_Coda.md) · [Оглавление](00_Overview.md)
+[← 50. Кода](50_Coda.md) · [Оглавление](00_Overview.md)
 <!--/navtop-->
+
 
 > Источники данных: `f:/Primes/twin_stats_21_27.csv`, `f:/Primes/twin_stats_28_detail.csv` (исходные,
 > не редактируются) и харнессы `tools/*_harness.py` с протоколами `tools/RESULTS_*.md`. Lean-аналога у
@@ -153,5 +154,5 @@ mathlib. Оценка `|L(x)| = O(√x · x^ε)` (`LiouvilleBound`) остаёт
 
 ---
 
-[← 44. Кода](44_Coda.md) · [Оглавление](00_Overview.md)
+[← 50. Кода](50_Coda.md) · [Оглавление](00_Overview.md)
 <!--/navbot-->

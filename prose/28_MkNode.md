@@ -4,6 +4,7 @@
 [← 27. Product-core](27_ProductCore.md) · [Оглавление](00_Overview.md) · [29. Последнее звено →](29_CarrierBridge.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/MkNode.lean` (пространство имён `EuclidsPath.MkNode`, `open EuclidsPath.ProductCore`).
 > Вся арифметика этой главы доказана без аксиом и без `sorry`.
 

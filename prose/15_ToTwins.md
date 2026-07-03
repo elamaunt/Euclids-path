@@ -4,6 +4,7 @@
 [← 14. Декомпозиция остатка](14_RealFourCorner.md) · [Оглавление](00_Overview.md) · [16. От противного →](16_FiniteContradiction.md)
 <!--/navtop-->
 
+
 > Lean-источник: `EuclidsPath/Engine/ToTwins.lean` (`twin_primes_of_four_corner`).
 > Опирается на: `EuclidsPath/Engine/FourCorner.lean`, `EuclidsPath/Engine/TwoTransport.lean`,
 > `EuclidsPath/Engine/NonCover.lean`, `EuclidsPath/Step00_Overview.lean`.

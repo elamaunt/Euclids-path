@@ -1,8 +1,9 @@
 # Мерсенн через манифестацию: опровержение предъявляет двигатель — и граница, которую мы не взяли
 
 <!--navtop-->
-[← 42. Ходж](42_Hodge.md) · [Оглавление](00_Overview.md) · [44. Кода →](44_Coda.md)
+[← 42. Ходж](42_Hodge.md) · [Оглавление](00_Overview.md) · [44. Стороны и Полиньяк →](44_SidesAndPolignac.md)
 <!--/navtop-->
+
 
 > Lean-источник: `Engine/MersenneManifestationFront.lean` — зелёная цепь, вся 🟢;
 > `Engine/CausalClosureAxiom.lean` §16 — комментарий-вердикт (деклараций нет).
@@ -160,5 +161,5 @@
 
 ---
 
-[← 42. Ходж](42_Hodge.md) · [Оглавление](00_Overview.md) · [44. Кода →](44_Coda.md)
+[← 42. Ходж](42_Hodge.md) · [Оглавление](00_Overview.md) · [44. Стороны и Полиньяк →](44_SidesAndPolignac.md)
 <!--/navbot-->

@@ -4,6 +4,7 @@
 [← 33. Первопричина и главная теорема](33_CausalFirstCause.md) · [Оглавление](00_Overview.md) · [35. P/NP: локальный узел →](35_ClassicalPNP.md)
 <!--/navtop-->
 
+
 > Lean: `Engine/MersenneBranch.lean` (`mersenneCenter`, `mersenne_eq_sixCenter_add_one`,
 > `isTwinCenter_mersenneCenter_iff`, `mersenne_twin_instances`, `twinLowersInfinite_of_mersenneTwins`,
 > `NoTwinsToMersenneImplicationClaimed`), `Engine/MersennePaymentConflict.lean` (платёжный маршрут,

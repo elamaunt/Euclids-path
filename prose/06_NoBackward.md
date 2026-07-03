@@ -4,6 +4,7 @@
 [← 05. Необратимость](05_Irreversibility.md) · [Оглавление](00_Overview.md) · [07. Короткий train →](07_Squeeze.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/NoBackward.lean` (`exclusive_diag_zero`, `exclusive_no_backward`).
 
 ## Где мы

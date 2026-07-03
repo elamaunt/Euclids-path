@@ -4,6 +4,7 @@
 [← 38. Риман через первопричину](38_RiemannFirstCause.md) · [Оглавление](00_Overview.md) · [40. Янг–Миллс →](40_YangMills.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/PNPRankPaymentFront.lean` — зелёная цепь, вся 🟢;
 > `Engine/CausalClosureAxiom.lean` §11 — P/NP-язык декрета.
 > Обозначения статуса: 🟢 — доказано при

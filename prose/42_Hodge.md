@@ -4,6 +4,7 @@
 [← 41. Навье–Стокс: гладкость](41_NSSmoothness.md) · [Оглавление](00_Overview.md) · [43. Мерсенн через первопричину →](43_MersenneFirstCause.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/HodgeFront.lean` — зелёная цепь и трилемма, всё 🟢;
 > `Engine/CausalClosureAxiom.lean` §14 — одна растяжка.
 > Обозначения статуса: 🟢 — доказано при стандартных аксиомах;

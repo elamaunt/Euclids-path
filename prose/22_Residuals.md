@@ -4,6 +4,7 @@
 [← 21. Регенерация](21_Regeneration.md) · [Оглавление](00_Overview.md) · [23. Clean-граф →](23_CleanGraph.md)
 <!--/navtop-->
 
+
 > Источник: `step00_residuals_formal_proofs_ru_2026-06-30-1.md`. Lean: `Engine/Residuals.lean`
 > (namespace `EuclidsPath.Residuals`, стандартные аксиомы, без `sorry`).
 

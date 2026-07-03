@@ -4,6 +4,7 @@
 [← 32. Rank-parity узел](32_RankParityUnity.md) · [Оглавление](00_Overview.md) · [34. Ветка Мерсенна →](34_MersenneBranch.md)
 <!--/navtop-->
 
+
 > Lean-источник: `Engine/CausalClosureAxiom.lean` — карантинный модуль с **единственной аксиомой
 > репозитория** `step00FirstCause`; `Engine/FiniteKnowledgeBarrier.lean` — барьер конечного знания
 > и главная теорема `higherEnergyIncompatibility_main`.

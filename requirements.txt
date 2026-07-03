@@ -1,0 +1,3 @@
+# Documentation site (GitHub Pages). Build: `mkdocs build`, serve: `mkdocs serve`.
+mkdocs-material>=9.5
+mkdocs-static-i18n>=1.2

@@ -1,0 +1,163 @@
+site_name: Путь Евклида
+site_url: https://elamaunt.github.io/Euclids-path/
+site_description: Один запрещённый вечный двигатель под восемью задачами тысячелетия — одна rank-parity программа, машинно проверенная в Lean 4.
+site_author: elamaunt
+repo_url: https://github.com/elamaunt/Euclids-path
+repo_name: elamaunt/Euclids-path
+copyright: © elamaunt · CC BY 4.0
+docs_dir: prose
+
+theme:
+  name: material
+  language: ru
+  features:
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tooltips
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Тёмная тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Светлая тема
+  icon:
+    repo: fontawesome/brands/github
+
+extra_javascript:
+  - assets/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: ru
+          default: true
+          name: Русский
+          build: true
+          site_name: Путь Евклида
+        - locale: en
+          name: English
+          build: true
+          site_name: Euclid's Path
+
+nav:
+  - Главная: index.md
+  - Пролог и карта: 00_Overview.md
+  - I. Двигатель и его законы:
+      - 01. Двигатель Евклида (EPMI): 01_EPMI.md
+      - 02. Носитель двойки: 02_Carrier.md
+      - 03. Первый закон — сохранение двойки: 03_TwoGap.md
+      - 04. Спуск и граничный закон: 04_Descent.md
+      - 05. Необратимость и стрела времени: 05_Irreversibility.md
+      - 06. Нет хода назад: 06_NoBackward.md
+      - 07. Cubic squeeze: 07_Squeeze.md
+      - 08. Ограниченный аддитивный цикл: 08_BK.md
+      - 09. Factor-repeat rigidity: 09_Cycle.md
+  - II. Редукция к близнецам:
+      - 10. Survivor значит twin: 10_NonCover.md
+      - 11. Близнецы из блочного ядра: 11_TwoTransport.md
+  - III. Линии-атаки и чётность:
+      - 12. Four-corner: 12_FourCorner.md
+      - 13. Фрактальный слой: 13_FractalLayer.md
+      - 14. Модель против реальности: 14_RealFourCorner.md
+      - 15. Цепь к близнецам: 15_ToTwins.md
+      - 16. Finite и H дают False: 16_FiniteContradiction.md
+      - 17. Закон оплаты и дефект: 17_PaymentLedger.md
+  - IV. Финальная редукция twin-линии:
+      - 18. SNOL — редукция к rank-1: 18_SNOL.md
+      - 19. Old-peel: 19_OldPeel.md
+      - 20. NOPSL: 20_NOPSL.md
+      - 21. Дихотомия регенерации: 21_Regeneration.md
+      - 22. Снятие плотности и чётности: 22_Residuals.md
+      - 23. Clean-boundary split: 23_CleanGraph.md
+      - 24. Декомпозиция boundary и узел: 24_BoundaryDecomp.md
+      - 25. Rigid closure: 25_RigidClose.md
+  - V. Product-core rank descent:
+      - 26. Separating scale: 26_SeparatingScale.md
+      - 27. Product-core: 27_ProductCore.md
+      - 28. Факторизация — RankNode: 28_MkNode.md
+      - 29. Последнее звено: 29_CarrierBridge.md
+  - VI. Риман и rank-parity:
+      - 30. Риман — контрапозиция: 30_RiemannBranch.md
+      - 31. Риман через Лиувилля: 31_RiemannLiouville.md
+      - 32. Единый rank-parity узел: 32_RankParityUnity.md
+  - VII. Первопричина и фронты:
+      - 33. Первопричина и главная теорема: 33_CausalFirstCause.md
+      - 34. Ветка Мерсенна: 34_MersenneBranch.md
+      - 35. P/NP — локальный узел: 35_ClassicalPNP.md
+      - 36. Навье–Стокс — уравнение: 36_NavierStokes.md
+      - 37. Римановы фронты: 37_RiemannFronts.md
+      - 38. Риман через первопричину: 38_RiemannFirstCause.md
+      - 39. P/NP — полная оплата: 39_PNPRankPayment.md
+      - 40. Янг–Миллс: 40_YangMills.md
+      - 41. Навье–Стокс — гладкость: 41_NSSmoothness.md
+      - 42. Ходж: 42_Hodge.md
+      - 43. Мерсенн через манифестацию: 43_MersenneFirstCause.md
+      - 44. Стороны и Полиньяк: 44_SidesAndPolignac.md
+      - 45. Софи Жермен: 45_SophieGermain.md
+      - 46. Гольдбах и Лежандр: 46_GoldbachLegendre.md
+      - 47. Совершенные числа: 47_PerfectNumbers.md
+      - 48. Числа Ферма: 48_Fermat.md
+  - VIII. Геометрия и кода:
+      - 49. Геометрия пути: 49_Geometry.md
+      - 50. Кода: 50_Coda.md
+  - Приложения:
+      - 51. Численная опора: 51_NumericalEvidence.md
+      - 52. Дискретная модель жидкости: 52_DyadicModel.md
+      - 53. Бёрч–Свиннертон-Дайер: 53_BirchSwinnertonDyer.md
+      - 54. Соседи за горизонтом: 54_OpenNeighbors.md
+      - 55. Коллатц: 55_Collatz.md
+      - 56. Первопричина Коллатца: 56_CollatzFirstCause.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/elamaunt/Euclids-path

@@ -10,3 +10,7 @@
 Thumbs.db
 .DS_Store
 .vscode/
+
+# MkDocs site build
+/site/
+.cache/

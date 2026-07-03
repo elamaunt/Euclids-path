@@ -93,6 +93,7 @@ import EuclidsPath.Engine.PNPRankPaymentFront
 import EuclidsPath.Engine.YangMillsFront
 import EuclidsPath.Engine.NavierStokesFront
 import EuclidsPath.Engine.HodgeFront
+import EuclidsPath.Engine.CollatzTugOfWar
 
 set_option autoImplicit false
 
@@ -122,7 +123,7 @@ abbrev Step00CausalClosureAxiom : Prop :=
 /--
 **СТРУКТУРА ПЕРВОПРИЧИНЫ** — намеренно принимаемое внешнее начало Step00-мира.
 
-Четыре поля — точная структура события `0 → 1` и его причинные границы:
+Шесть полей — точная структура события `0 → 1` и его причинные границы:
 * `origin` — маркер сингулярности `0` (до-кадровое состояние; несёт `True`:
   до первого кадра внутреннего языка нет, утверждать нечего);
 * `firstFrame` — маркер первого причинного кадра `1` (с него доступен язык
@@ -131,7 +132,14 @@ abbrev Step00CausalClosureAxiom : Prop :=
 * `riemannBoundary` — причинная граница РИМАНА (расширение декрета, §10):
   закон манифестации — каждое off-critical отклонение нуля обязано проявиться
   неоплатимой поставкой потоков там, где леджер сводит книги
-  (`RiemannManifestationLaw`, зелёная машина — RiemannManifestationFront).
+  (`RiemannManifestationLaw`, зелёная машина — RiemannManifestationFront);
+* `nsBoundary` — причинная граница НАВЬЕ–СТОКСА (§15): гейт-закон энергобаланса
+  бессиловых решений (`NsSolutionBalanceLaw`, зелёная машина — NavierStokesFront);
+* `collatzBoundary` — причинная граница КОЛЛАТЦА (§18): универсальный закон
+  доминирования каната (`RopeCountingLaw` для всех n ≥ 1) — в каждой позиции
+  выше цикла остановки есть окно, где рывков каната строго больше ходов
+  двигателя; зелёная машина — Engine/CollatzTugOfWar, потребитель —
+  Engine/CollatzFirstCause.
 
 Интернализация первопричины невозможна (доказано ранее: внутренняя
 первопричина = запрещённый двигатель, `no_internalisedHorizonBoundary`) —
@@ -143,6 +151,7 @@ structure Step00FirstCause : Prop where
   causalBoundary : Step00CausalClosureAxiom
   riemannBoundary : RiemannManifestationLaw
   nsBoundary : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw
+  collatzBoundary : ∀ n : ℕ, 1 ≤ n → EuclidsPath.Collatz.TugOfWar.RopeCountingLaw n
 
 /--
 **ЕДИНСТВЕННАЯ АКСИОМА РЕПОЗИТОРИЯ — ПЕРВОПРИЧИНА (намеренно, структурой).**
@@ -164,15 +173,17 @@ theorem step00CausalClosure : Step00CausalClosureAxiom :=
   step00FirstCause.causalBoundary
 
 /-- **ЧЕСТНОСТЬ (машинно): структура первопричины ⟺ конъюнкция её границ.**
-    Маркеры origin/firstFrame — `True`, вся сила — в двух границах: twin-узле
-    и римановском законе манифестации. Намеренное включение первопричины
-    меняет ПРОИСХОЖДЕНИЕ (корень архитектуры и имя аксиомы в таинте), но не
-    математическую силу декрета — она ровно сумма принятых границ. -/
+    Маркеры origin/firstFrame — `True`, вся сила — в ЧЕТЫРЁХ границах: twin-узле,
+    римановском законе манифестации, НС-гейт-энергобалансе и законе каната
+    Коллатца (§18). Намеренное включение первопричины меняет ПРОИСХОЖДЕНИЕ
+    (корень архитектуры и имя аксиомы в таинте), но не математическую силу
+    декрета — она ровно сумма принятых границ. -/
 theorem step00FirstCause_iff_causalClosure :
     Step00FirstCause ↔ (Step00CausalClosureAxiom ∧ RiemannManifestationLaw ∧
-      EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw) :=
-  ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary, F.nsBoundary⟩,
-   fun h => ⟨trivial, trivial, h.1, h.2.1, h.2.2⟩⟩
+      EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw ∧
+      (∀ n : ℕ, 1 ≤ n → EuclidsPath.Collatz.TugOfWar.RopeCountingLaw n)) :=
+  ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary, F.nsBoundary, F.collatzBoundary⟩,
+   fun h => ⟨trivial, trivial, h.1, h.2.1, h.2.2.1, h.2.2.2⟩⟩
 
 /-#############################################################################
   §2. What the axiom generates (⚠️ conditional on the axiom, NOT proofs)
@@ -2631,6 +2642,32 @@ theorem quarantine_inconsistent_if_nsGatedViolation_exhibited
   SG-простые при p ≡ 3 (mod 4) делят и компрометируют mersenne p — формальный
   фрагмент той самой эвристики, по знаку которой §16 отложил mersenneBoundary.
   См. prose/44–48.
+#############################################################################-/
+
+/-#############################################################################
+  §18. КОЛЛАТЦ: ЧЕТВЁРТАЯ ГРАНИЦА — ВЗЯТА (поле `collatzBoundary`)
+
+  В отличие от §16 (Мерсенн) и §17 (зоопарк), где поля НЕ добавлены, здесь
+  граница ПРИНЯТА: `collatzBoundary : ∀ n ≥ 1, RopeCountingLaw n` — новое поле
+  структуры `Step00FirstCause` выше. Обоснование — как у Римана/НС: знак
+  эвристики БЛАГОПРИЯТНЫЙ (ускоренная карта сжимающая: средний дрейф ×0.864 < 1,
+  halvings/triplings = 2.016 > log₂3 = 1.585, дно 1→2→1 поглощающе; все
+  проверенные орбиты достигают 1). Трилемма пройдена честно: кованого
+  опровержения закона каната НЕТ (оно требовало бы траекторию с вечно
+  уравновешенными счётами — неизвестно), зелёного доказательства НЕТ (оно
+  влекло бы Коллатца). Тот же эпистемический статус, что у twin-узла и
+  римановского закона манифестации.
+
+  Зелёная машина — Engine/CollatzTugOfWar (бюджет окна ⟹ спуск при перевесе
+  каната; ГЕРОЙ reaches_one_of_countingLaw; «опровержение = вечный двигатель»
+  nonHalting_carries_perpetual_engine и collatz_iff_no_perpetual_tail).
+  Жёлтый вывод и растяжки — в ПОТРЕБИТЕЛЕ Engine/CollatzFirstCause
+  (collatz_from_firstCause 🟡; collatzQuarantine_inconsistent_if_* — детекторы
+  взрыва). ЧЕСТНАЯ ЦЕНА (как у НС, §15): доказана лишь стрелка граница ⟹
+  гипотеза; обратная НЕИЗВЕСТНА — счётный закон может быть строго сильнее
+  (бюджет окна односторонен; ⟺-формой обладает лишь ценностный «мост
+  приговорённого») — декрет, возможно, ПЕРЕПЛАЧИВАЕТ
+  (firstCause_implies_but_maybe_overpays в потребителе).
 #############################################################################-/
 
 end GeneratedFlowFormulation

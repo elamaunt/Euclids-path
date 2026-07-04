@@ -31,6 +31,7 @@ the verifier tracks each case.
 
 ## Where to start
 
+- **[Programme glossary](GLOSSARY.md)** — all key notions in one list.
 - **[Prologue and map](00_Overview.md)** — what is proven, what is decreed, what is open; the map of all parts.
 - **[Euclid's engine (ch. 01)](01_EPMI.md)** — the prohibition itself: why no perpetual descent exists.
 - **[First cause and the main theorem (ch. 33)](33_CausalFirstCause.md)** — why the node cannot be closed from within.

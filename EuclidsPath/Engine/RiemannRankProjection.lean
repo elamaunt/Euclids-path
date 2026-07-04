@@ -1,30 +1,30 @@
 /-
-  RiemannRankProjection — строгая + градуальная декомпозиция живого узла №8
-  RH-ветки (`TwinCarrierPairing.unpaired_gives_jump`).
-  Кирпичи: Riemann_rank_projection_strict_patch + Riemann_gradual_rank_overflow_patch.
-  Проза: prose/30_RiemannBranch.md (живой фронт).
+  RiemannRankProjection — strict + gradual decomposition of live node №8
+  of the RH branch (`TwinCarrierPairing.unpaired_gives_jump`).
+  Bricks: Riemann_rank_projection_strict_patch + Riemann_gradual_rank_overflow_patch.
+  Prose: prose/30_RiemannBranch.md (live front).
 
-  ЗДЕСЬ ДОКАЗАНО (std аксиомы, без sorry):
+  PROVED HERE (std axioms, no sorry):
     * `rankProjectionSoundness` — (overflow ⟹ unpaired) + (unpaired ⟹ rank-jump)
-      ⟹ (overflow ⟹ rank-jump): строгая проекция;
-    * `exists_firstOverflowCrossing` — ДИСКРЕТНАЯ first-crossing лемма (Nat.find):
-      положительный дефект где-то ⟹ ПЕРВОЕ пересечение порога с глобальной
-      минимальностью; + переход к одношаговой форме (prev_safe ∧ now_pos);
-    * `gradualOverflow_forces_rankJump` — градуальная цепь: safe-старт +
+      ⟹ (overflow ⟹ rank-jump): strict projection;
+    * `exists_firstOverflowCrossing` — DISCRETE first-crossing lemma (Nat.find):
+      positive defect somewhere ⟹ FIRST threshold crossing with global
+      minimality; + transition to one-step form (prev_safe ∧ now_pos);
+    * `gradualOverflow_forces_rankJump` — gradual chain: safe-start +
       overflow ⟹ first crossing ⟹ unpaired ⟹ rank-jump;
-    * СТЫКОВКА (`RiemannRankProjectionBridge`): интерфейс/route-сертификат с
-      endpoint-картами поставляет НАСТОЯЩИЙ `TwinCarrierPairing` репо —
-      `unpaired_gives_jump` выводится, а не постулируется.
+    * BRIDGE (`RiemannRankProjectionBridge`): interface/route-certificate with
+      endpoint-maps supplies a GENUINE `TwinCarrierPairing` for the repo —
+      `unpaired_gives_jump` is derived, not postulated.
 
-  ЧЕСТНАЯ ГРАНИЦА. RH НЕ доказана; вход №8 НЕ закрыт — он РАСПАЛСЯ на меньшие:
-  (A) window-бухгалтерия (RelevantViolation ⟹ градуальное окно конкретного
-  ledger'а), (B) first-crossing ⟹ unpaired carrier (локальная capacity/pairing),
-  (C) rank-видимость unpaired-carrier'а, (D) endpoint-карты. RH-круговорот
-  сюда не втащен: файлы кирпичей не упоминают RiemannHypothesis/LiouvilleBound/
-  IrrelevantCancellation. «No-RH-leak аудиты» — документирующие маркеры, НЕ
-  проверки (машинно: `rankProjectionAudit_is_free`, `gradualAudit_is_free`).
-  Фиксы кирпичей: ASCII `exists` → `∃`; `Nat.pred_lt` → omega; `subst` двух
-  проекций → транспорт `▸`.
+  HONEST BOUNDARY. RH is NOT proved; node №8 is NOT closed — it has DECOMPOSED into smaller ones:
+  (A) window ledger (RelevantViolation ⟹ gradual window of a specific
+  ledger), (B) first-crossing ⟹ unpaired carrier (local capacity/pairing),
+  (C) rank-visibility of unpaired-carrier, (D) endpoint-maps. The RH cycle
+  has not been dragged in here: the brick files do not mention RiemannHypothesis/LiouvilleBound/
+  IrrelevantCancellation. "No-RH-leak audits" are documentary markers, NOT
+  machine checks (machine: `rankProjectionAudit_is_free`, `gradualAudit_is_free`).
+  Brick fixes: ASCII `exists` → `∃`; `Nat.pred_lt` → omega; `subst` of two
+  projections → transport `▸`.
 -/
 import Mathlib
 import EuclidsPath.Engine.DissipativeCascade
@@ -519,17 +519,17 @@ theorem nextBrickStatus_of_route
 
 end RiemannGradualRankOverflow
 
-/-! Соединительный слой + машинная честность -/
+/-! Bridge layer + machine honesty -/
 
 namespace EuclidsPath.RiemannRankProjectionBridge
 
 open EuclidsPath.DissipativeCascade
 open EuclidsPath.RankJumpBridge (RankParitySystem)
 
-/-- **СТЫКОВКА (строгая форма):** интерфейс проекции с endpoint-картами
-    поставляет НАСТОЯЩИЙ `TwinCarrierPairing` репо — вход №8
-    `unpaired_gives_jump` выводится, а не постулируется. Остаток: сам
-    сертификат (capacity + видимость) и две endpoint-карты. -/
+/-- **BRIDGE (strict form):** the projection interface with endpoint-maps
+    supplies a GENUINE `TwinCarrierPairing` for the repo — node №8
+    `unpaired_gives_jump` is derived, not postulated. Remainder: the
+    certificate itself (capacity + visibility) and two endpoint-maps. -/
 def twinCarrierPairing_of_projectionInterface
     (P : LiouvilleTwinPartition) (TwinSystem : RankParitySystem)
     (encode : ∀ {X : ℕ}, {n : ℕ // n ∈ P.relevant X} → TwinSystem.State)
@@ -544,10 +544,10 @@ def twinCarrierPairing_of_projectionInterface
   paired_flips_sign := paired_flips_sign
   unpaired_gives_jump := fun hRel => hJ (I.projection (hO hRel))
 
-/-- **СТЫКОВКА (градуальная форма):** градуальный route-сертификат с
-    endpoint-картами тоже поставляет `TwinCarrierPairing`. Остаток входа №8
-    распался на: (A) window-бухгалтерию, (B) first-crossing ⟹ unpaired,
-    (C) rank-видимость, (D) две endpoint-карты. -/
+/-- **BRIDGE (gradual form):** the gradual route-certificate with
+    endpoint-maps also supplies `TwinCarrierPairing`. The remainder of node №8
+    has decomposed into: (A) window ledger, (B) first-crossing ⟹ unpaired,
+    (C) rank-visibility, (D) two endpoint-maps. -/
 def twinCarrierPairing_of_gradualRoute
     (P : LiouvilleTwinPartition) (TwinSystem : RankParitySystem)
     (encode : ∀ {X : ℕ}, {n : ℕ // n ∈ P.relevant X} → TwinSystem.State)
@@ -565,15 +565,15 @@ def twinCarrierPairing_of_gradualRoute
     hJ (RiemannGradualRankOverflow.relevantOverflow_forces_rankJump_of_gradualRoute
       R (hO hRel))
 
-/-- ЧЕСТНОСТЬ: no-RH-leak «аудит» выполним ТРИВИАЛЬНО для любого сертификата
-    (поля-пропозиции свободны) — это документирующий маркер, где искать
-    протечку, а НЕ машинная проверка её отсутствия. -/
+/-- HONESTY: the no-RH-leak "audit" is TRIVIALLY satisfiable for any certificate
+    (proposition fields are free) — this is a documentary marker indicating where
+    to look for a leak, NOT a machine check of its absence. -/
 theorem rankProjectionAudit_is_free
     (P : RiemannRankProjection.RankProjectionCertificate) :
     Nonempty RiemannRankProjection.RankProjectionNoRHLeakAudit :=
   ⟨⟨P, True, True, trivial, trivial⟩⟩
 
-/-- Тот же честный факт для градуального аудита. -/
+/-- The same honest fact for the gradual audit. -/
 theorem gradualAudit_is_free
     (R : RiemannGradualRankOverflow.GradualProjectionRouteCertificate) :
     Nonempty RiemannGradualRankOverflow.GradualRankProjectionNoRHLeakAudit :=

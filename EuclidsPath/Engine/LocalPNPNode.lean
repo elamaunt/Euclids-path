@@ -1,21 +1,21 @@
 /-
-  LocalPNPNode — строгий локальный P/NP-узел (кирпич: local_pnp_node_strict)
-  + КОНКРЕТНАЯ ИНСТАНЦИАЦИЯ из объектов репо (добавлена при интеграции).
-  Проза: prose/24 (§12-аналогия). НЕ утверждение о классических P/NP:
-  ни машин Тьюринга, ни редукций, ни теоремы «P ≠ NP» (scope guard кирпича).
+  LocalPNPNode — strict local P/NP node (brick: local_pnp_node_strict)
+  + CONCRETE INSTANTIATION from repo objects (added during integration).
+  Prose: prose/24 (§12-analogy). NOT a claim about classical P/NP:
+  no Turing machines, no reductions, no theorem "P ≠ NP" (scope guard of the brick).
 
-  Кирпич (абстрактно, всё доказано): ранжированный граф со строгим спуском;
-  сертификаты-генеалогии; P-сторона (verificationEasy_always, длина ≤ lexRank);
-  конечноключевая компрессия и коллизии; LocalPSuccess/incompressibility;
-  twin-детектор-мост; small-scale firewall; семантический интерфейс.
+  Brick (abstract, all proved): ranked graph with strict descent;
+  genealogy certificates; P-side (verificationEasy_always, length ≤ lexRank);
+  finite-key compression and collisions; LocalPSuccess/incompressibility;
+  twin-detector bridge; small-scale firewall; semantic interface.
 
-  КОНКРЕТНАЯ ИНСТАНЦИАЦИЯ (LocalPNP.Concrete): граф = САМ Step00-граф
-  (State, RealStep, lexRank); сертификаты флоу ИНЪЕКТИВНЫ (данные-поля +
-  proof irrelevance); интерфейс: LocalPSuccess ⟺ ∃ резолвящая проекция;
-  детектор — twin_above_of_resolves; **при A ≤ 4 collision principle и
-  несжимаемость БЕЗУСЛОВНЫ** (5-адическая цепь) — полный статус-пакет
-  LocalPNPStatus инстанциирован машинно.
-  Фикс кирпича: induction-имена в len_le_lexRank (inaccessible vars).
+  CONCRETE INSTANTIATION (LocalPNP.Concrete): graph = THE Step00-graph itself
+  (State, RealStep, lexRank); flow certificates ARE INJECTIVE (data fields +
+  proof irrelevance); interface: LocalPSuccess ⟺ ∃ resolving projection;
+  detector — twin_above_of_resolves; **at A ≤ 4 collision principle and
+  incompressibility are UNCONDITIONAL** (5-adic chain) — full status package
+  LocalPNPStatus instantiated mechanically.
+  Brick fix: induction names in len_le_lexRank (inaccessible vars).
 -/
 import Mathlib
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -477,7 +477,7 @@ theorem localPNP_status_slogan
 
 end LocalPNP
 
-/-! Конкретная инстанциация из объектов репо + машинная честность -/
+/-! Concrete instantiation from repo objects + machine honesty -/
 
 namespace LocalPNP
 namespace Concrete
@@ -486,14 +486,14 @@ open EuclidsPath.ConcreteStep00Graph
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 open EuclidsPath.LabelledFanIn
 
-/-- Конкретный ранжированный граф: САМ Step00-граф репо. -/
+/-- Concrete ranked forward graph: the Step00-graph of the repo itself. -/
 def concreteGraph (A M0 : ℕ) : RankedForwardGraph where
   State := State
   Step := RealStep A M0
   lexRank := lexRank
   step_decreases := fun h => lexRank_strict_decrease_on_RealStep h
 
-/-- Конвертация путей репо в пути локального узла. -/
+/-- Conversion of repo paths into local-node paths. -/
 theorem toLocalPathN {A M0 : ℕ} :
     ∀ {n : ℕ} {X Y : State},
       EuclidsPath.LabelledFanIn.PathN (RealStep A M0) n X Y →
@@ -510,7 +510,7 @@ theorem toLocalPathN {A M0 : ℕ} :
       obtain ⟨Z, hXZ, hZY⟩ := h
       exact PathN.cons hXZ (ih hZY)
 
-/-- Сертификат конкретной генеалогии. -/
+/-- Concrete genealogy certificate. -/
 def concreteCertificate {A M0 : ℕ} (F : ExtendedProperGeneratedFlow A M0) :
     GenealogyCertificate (concreteGraph A M0) where
   start := State.center F.start
@@ -518,8 +518,8 @@ def concreteCertificate {A M0 : ℕ} (F : ExtendedProperGeneratedFlow A M0) :
   len := F.steps
   path := toLocalPathN (properPath_to_realPath F.properPath)
 
-/-- Инъективность: данные-поля флоу восстановимы из сертификата,
-    Prop-поля — proof irrelevance. -/
+/-- Injectivity: the data fields of a flow are recoverable from its certificate;
+    Prop-fields are identified by proof irrelevance. -/
 theorem concreteCertificate_injective {A M0 : ℕ} :
     Function.Injective (concreteCertificate (A := A) (M0 := M0)) := by
   intro F G h
@@ -533,18 +533,18 @@ theorem concreteCertificate_injective {A M0 : ℕ} :
   subst h1'; subst h2; subst h3
   rfl
 
-/-- Конкретная семья генеалогий. -/
+/-- Concrete genealogy family. -/
 def concreteFamily (A M0 : ℕ) : GenealogyFamily (concreteGraph A M0) where
   Index := ExtendedProperGeneratedFlow A M0
   cert := concreteCertificate
   distinct_cert := concreteCertificate_injective
 
-/-- Конкретная задача поиска: резолюция = альтернатива репо (цикл ∨ оплата). -/
+/-- Concrete local search problem: collision resolution = repo alternative (cycle ∨ payment). -/
 def concreteProblem (A M0 : ℕ) : Step00LocalSearchProblem (concreteGraph A M0) where
   family := concreteFamily A M0
   CollisionResolution := fun _ _ => ExtendedFlowResolutionAlternative A M0
 
-/-- Семантический интерфейс: локальный P-успех ⟺ ∃ резолвящая проекция репо. -/
+/-- Semantic interface: local P-success ⟺ ∃ resolving projection of the repo. -/
 noncomputable def concreteSemanticInterface (A M0 : ℕ) :
     SemanticCollisionInterface (concreteProblem A M0) where
   SemanticFlowLedgerCollisionResolves :=
@@ -564,7 +564,7 @@ noncomputable def concreteSemanticInterface (A M0 : ℕ) :
         h.choose_spec i j hne
           (extendedFlow_admissible i) (extendedFlow_admissible j) hkey }
 
-/-- Конкретный twin-детектор: семантика ⟹ twin выше M0 (twin_above_of_resolves). -/
+/-- Concrete twin detector: semantics ⟹ twin above M0 (twin_above_of_resolves). -/
 noncomputable def concreteTwinDetector (A M0 : ℕ) :
     TwinDetectorBridge (concreteProblem A M0) :=
   (concreteSemanticInterface A M0).semanticTwinDetector M0
@@ -573,7 +573,7 @@ noncomputable def concreteTwinDetector (A M0 : ℕ) :
       obtain ⟨proj, hres⟩ := h
       exact twin_above_of_resolves proj hres)
 
-/-- **БЕЗУСЛОВНЫЙ collision principle при A ≤ 4** (5-адическая цепь). -/
+/-- **UNCONDITIONAL collision principle at A ≤ 4** (5-adic chain). -/
 theorem concrete_collisionPrinciple_smallScale {A : ℕ} (hA : A ≤ 4) :
     FiniteKeyCollisionPrinciple (concreteFamily A 1) := by
   intro C
@@ -584,7 +584,7 @@ theorem concrete_collisionPrinciple_smallScale {A : ℕ} (hA : A ≤ 4) :
   exact ⟨⟨fiveAdicChainFlow hA k₁, fiveAdicChainFlow hA k₂,
     fun h => hne (fiveAdicChainFlow_injective hA h), hkey⟩⟩
 
-/-- **БЕЗУСЛОВНАЯ локальная несжимаемость при A ≤ 4.** -/
+/-- **UNCONDITIONAL local search incompressibility at A ≤ 4.** -/
 theorem concrete_localSearchIncompressible_smallScale {A : ℕ} (hA : A ≤ 4) :
     LocalSearchIncompressible (concreteProblem A 1) := by
   rintro ⟨S⟩
@@ -592,8 +592,8 @@ theorem concrete_localSearchIncompressible_smallScale {A : ℕ} (hA : A ≤ 4) :
   exact no_extendedFlowResolutionAlternative A 1
     (S.resolves K.distinct K.same_key)
 
-/-- **ПОЛНЫЙ конкретный статус-пакет при A ≤ 4** — все четыре компоненты
-    инстанциированы из объектов репо (collision principle безусловен). -/
+/-- **FULL concrete status package at A ≤ 4** — all four components
+    instantiated from repo objects (collision principle is unconditional). -/
 noncomputable def concreteLocalPNPStatus_smallScale {A : ℕ} (hA : A ≤ 4) :
     LocalPNPStatus (concreteProblem A 1) where
   collision_principle := concrete_collisionPrinciple_smallScale hA

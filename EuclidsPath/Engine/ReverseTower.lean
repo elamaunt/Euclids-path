@@ -1,25 +1,25 @@
 /-
-  ReverseTower — reverse engine как finitely-branching дерево предков (Part III кирпича).
-  Источник: new_structural_routes_reverse_parity_barrier_ru_2026-07-01.md (§12–24).
-  Проза: prose/24_BoundaryDecomp.md (раздел «Reverse engine»).
+  ReverseTower — reverse engine as a finitely-branching ancestor tree (Part III of the brick).
+  Source: new_structural_routes_reverse_parity_barrier_ru_2026-07-01.md (§12–24).
+  Prose: prose/24_BoundaryDecomp.md (section «Reverse engine»).
 
-  ИДЕЯ. Reverse engine — НЕ путь из бесконечности (это не формально в ℕ), а finitely-branching дерево
-  обратных предков `ReverseAncestorTree`. Бесконечный рост вверх сам по себе не противоречив;
-  противоречие даёт ПОВТОР конечной cut-подписи на одном обратном луче ⟹ cross-level collision ⟹ Close.
+  IDEA. The reverse engine is NOT a path from infinity (that is not formal in ℕ), but a finitely-branching tree
+  of reverse ancestors `ReverseAncestorTree`. Unbounded upward growth is not contradictory by itself;
+  the contradiction comes from a REPEAT of a finite cut-signature on a single reverse ray ⟹ cross-level collision ⟹ Close.
 
-  ЗДЕСЬ ДОКАЗАНО (чистая логика/König, std аксиомы, без sorry):
-    * `ReverseRay` из дерева через уже проверенный `descend_along`-паттерн (König ветвь);
-    * `repeated_cutSig_on_ray` — pigeonhole повтора подписи на луче;
-    * `no_reverseAncestorTree_of_barrier` — при reverse-barrier (повтор подписи ⟹ Close) и `¬Close`
-      дерева нет. Это чистое абстрактное reverse-противоречие (§19).
+  PROVED HERE (pure logic/König, std axioms, no sorry):
+    * `ReverseRay` from the tree via the already-verified `descend_along`-pattern (König branch);
+    * `repeated_cutSig_on_ray` — pigeonhole for signature repetition on a ray;
+    * `no_reverseAncestorTree_of_barrier` — given a reverse-barrier (signature repeat ⟹ Close) and `¬Close`,
+      no tree exists. This is the pure abstract reverse-contradiction (§19).
 
-  ЧЕСТНАЯ ГРАНИЦА (§23, §25 кирпича). Абстрактный no-go корректен. Но Step00-инстанциация держится на
-  ДВУХ недоказанных входах, где стена возвращается:
-    * `step00_reverseBarrier` (повтор cut-подписи на обратном луче ⟹ Close) — cross-level labelled-fan-in,
-      тот же trap, что `snolHallSeed_bare_no_go`/`goal_implies_U4`;
-    * `noTwin_forces_reverseAncestorTree` — если требует clean-carrier supply / `SNOL.SNOLInput`, reverse
-      engine — переименование, не обход.
-  Здесь оба — входы. `Step00` остаётся `sorry`.
+  HONEST BOUNDARY (§23, §25 of the brick). The abstract no-go is correct. But the Step00 instantiation rests on
+  TWO unproved named inputs where the wall returns:
+    * `step00_reverseBarrier` (cut-signature repeat on a reverse ray ⟹ Close) — cross-level labelled-fan-in,
+      the same trap as `snolHallSeed_bare_no_go`/`goal_implies_U4`;
+    * `noTwin_forces_reverseAncestorTree` — if it requires clean-carrier supply / `SNOL.SNOLInput`, the reverse
+      engine is a goal renaming, not a bypass.
+  Both are named inputs here. `Step00` remains `sorry`.
 -/
 import Mathlib
 
@@ -28,36 +28,36 @@ set_option linter.unusedVariables false
 
 namespace EuclidsPath.ReverseTower
 
-/-! ### §14. ReverseAncestorTree: finitely-branching дерево обратных предков
+/-! ### §14. ReverseAncestorTree: finitely-branching tree of reverse ancestors
 
-Абстрактно: узлы `Node k` на уровне `k`, `parent` вниз, каждый уровень непуст. Для König-луча
-достаточно `parent`-функции и непустоты каждого уровня (`Node k` непуст). -/
+Abstractly: nodes `Node k` at level `k`, `parent` going down, every level non-empty. For a König ray
+it suffices to have a `parent`-function and non-emptiness of every level (`Node k` non-empty). -/
 
-/-- Дерево обратных предков: узлы по уровням, родитель, непустота каждого уровня. -/
+/-- Tree of reverse ancestors: nodes by level, parent, non-emptiness of every level. -/
 structure ReverseAncestorTree where
   Node : ℕ → Type
   parent : ∀ k, Node (k + 1) → Node k
   nonempty : ∀ k, Nonempty (Node k)
 
-/-! ### §15. ReverseRay: совместимый обратный луч (König-ветвь)
+/-! ### §15. ReverseRay: coherent reverse ray (König branch)
 
-Луч — выбор `node k` на каждом уровне с `parent (node (k+1)) = node k`. Строим König'ом: `Node k`
-непуст на каждом уровне, `parent` связывает. Но нужен ИМЕННО совместимый выбор. Для finitely-branching
-это König; здесь берём более прямой путь — совместимый луч ЗАДАЁТСЯ как данные (для reverse-barrier
-достаточно ЛЮБОГО луча). Существование луча из непустоты + parent — это König; подаём его входом-
-конструкцией, а НЕ выводим из голой непустоты (голая непустоза каждого уровня НЕ даёт совместимый луч
-без finitely-branching König). -/
+A ray is a choice of `node k` at every level with `parent (node (k+1)) = node k`. Built by König: `Node k`
+is non-empty at every level, `parent` connects them. But what is needed is PRECISELY a coherent choice. For finitely-branching
+trees this is König; here we take a more direct route — the coherent ray is GIVEN as data (for a reverse-barrier
+ANY ray suffices). Existence of a ray from non-emptiness + parent is König; we supply it as a named input
+construction, NOT derived from bare non-emptiness (bare non-emptiness of every level does NOT yield a coherent ray
+without finitely-branching König). -/
 
-/-- Совместимый обратный луч: узел на каждом уровне, согласованный с `parent`. -/
+/-- Coherent reverse ray: a node at every level, consistent with `parent`. -/
 structure ReverseRay (T : ReverseAncestorTree) where
   node : ∀ k, T.Node k
   coherent : ∀ k, T.parent k (node (k + 1)) = node k
 
-/-! ### §18. Pigeonhole: повтор конечной cut-подписи на луче -/
+/-! ### §18. Pigeonhole: repetition of a finite cut-signature on a ray -/
 
 /--
-  **`repeated_cutSig_on_ray` — ДОКАЗАНА (§18).** На обратном луче с конечной cut-подписью `sig` есть
-  два уровня `i < j` с равной подписью. Чистый pigeonhole (∞ → конечный тип). -/
+  **`repeated_cutSig_on_ray` — PROVED (§18).** On a reverse ray with a finite cut-signature `sig` there are
+  two levels `i < j` with equal signatures. Pure pigeonhole (∞ → finite type). -/
 theorem repeated_cutSig_on_ray {T : ReverseAncestorTree} {CutSig : Type*} [Finite CutSig]
     (R : ReverseRay T) (sig : ∀ k, T.Node k → CutSig) :
     ∃ i j, i < j ∧ sig i (R.node i) = sig j (R.node j) := by
@@ -67,21 +67,21 @@ theorem repeated_cutSig_on_ray {T : ReverseAncestorTree} {CutSig : Type*} [Finit
   · exact ⟨i, j, h, heq⟩
   · exact ⟨j, i, h, heq.symm⟩
 
-/-! ### §17, §19. ReverseBarrier и no-go -/
+/-! ### §17, §19. ReverseBarrier and no-go -/
 
-/-- Reverse-barrier: повтор cut-подписи `sig i = sig j` (`i<j`) на одном луче ⟹ `Close`. -/
+/-- Reverse-barrier: cut-signature repeat `sig i = sig j` (`i<j`) on a single ray ⟹ `Close`. -/
 def ReverseBarrier {CutSig : Type*} (Close : Prop)
     (sig : ∀ (T : ReverseAncestorTree) (k : ℕ), T.Node k → CutSig) : Prop :=
   ∀ (T : ReverseAncestorTree) (R : ReverseRay T) (i j : ℕ), i < j →
     sig T i (R.node i) = sig T j (R.node j) → Close
 
 /--
-  **`no_reverseAncestorTree_of_barrier` — ДОКАЗАНА (§19, чистое reverse-противоречие).** При наличии
-  reverse-barrier (повтор подписи ⟹ Close), конечной cut-подписи, ЛУЧА в дереве, и `¬Close`, дерева
-  нет: pigeonhole даёт повтор подписи на луче, barrier даёт Close — против `¬Close`.
+  **`no_reverseAncestorTree_of_barrier` — PROVED (§19, pure reverse-contradiction).** Given a
+  reverse-barrier (signature repeat ⟹ Close), a finite cut-signature, a RAY in the tree, and `¬Close`,
+  no tree exists: pigeonhole gives a signature repeat on the ray, the barrier gives Close — contradicting `¬Close`.
 
-  Замечание: мы требуем ЛУЧ (`hRay`) как вход — извлечение луча из finitely-branching дерева это König
-  (доказуемо при `finite_fibers`, но здесь подаётся конструкцией, чтобы no-go был чистой логикой). -/
+  Remark: we require a RAY (`hRay`) as a named input — extracting a ray from a finitely-branching tree is König
+  (provable with `finite_fibers`, but here it is supplied by construction so that the no-go is pure logic). -/
 theorem no_reverseAncestorTree_of_barrier {CutSig : Type*} [Finite CutSig] {Close : Prop}
     (sig : ∀ (T : ReverseAncestorTree) (k : ℕ), T.Node k → CutSig)
     (hBarrier : ReverseBarrier Close sig)

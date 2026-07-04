@@ -1,37 +1,37 @@
 /-
   RankJumpBridgeAround.lean
 
-  Цель файла:
-    формально закрыть "всё вокруг" узла
+  Goal of this file:
+    formally close off "everything around" the node
 
       LiouvilleViolation → TwinCarrierEnergyJump
 
-    и оставить сам узел как единственный явный bridge/localization input.
+    and leave the node itself as the sole explicit bridge/localization input.
 
-  Что доказано здесь:
-    1. Общий rank/parity язык.
-    2. Rank-one descent флипает знак.
-    3. RankParityHom переносит jumps.
-    4. Глобальный jump НЕ переносится в локальный carrier автоматически:
-       дана тривиальная контрмодель no_jump_unit.
+  What is proved here:
+    1. General rank/parity language.
+    2. Rank-one descent flips the sign.
+    3. RankParityHom transfers jumps.
+    4. A global jump does NOT transfer to the local carrier automatically:
+       a trivial countermodel no_jump_unit is given.
     5. RankJumpLocalization → LiouvilleViolation → TwinCarrierEnergyJump.
-    6. SpectralToTwinRankBridge строит TwinEngineFactory из OffCriticalZero.
-    7. Любой ClosedPaidFactory невозможен через no_infinite_closed_paid_run.
-    8. Следовательно, SpectralToTwinRankBridge запрещает OffCriticalZero.
-    9. Если есть эквивалентность `¬RH ↔ Nonempty OffCriticalZero`,
-       то bridge даёт RH.
+    6. SpectralToTwinRankBridge builds a TwinEngineFactory from OffCriticalZero.
+    7. Any ClosedPaidFactory is impossible via no_infinite_closed_paid_run.
+    8. Therefore, SpectralToTwinRankBridge rules out OffCriticalZero.
+    9. If the equivalence `¬RH ↔ Nonempty OffCriticalZero` holds,
+       then the bridge gives RH.
 
-  Сам мост, который остаётся содержательной математикой:
+  The bridge that remains substantive mathematics:
 
       buildRankJumpLocalization :
         RankJumpLocalization LiouvilleViolation TwinSystem
 
-  или в голой форме:
+  or in bare form:
 
       LiouvilleViolation → TwinCarrierEnergyJump TwinSystem
 
-  Этот файл не доказывает RH и не доказывает близнецов. Он строго изолирует
-  общий механизм вокруг bridge.
+  This file does not prove RH and does not prove twin primes. It strictly isolates
+  the general mechanism around the bridge.
 
   Assumes project module:
     EuclidsPath.Engine.ClosedUniverse
@@ -51,7 +51,7 @@ open ArithmeticFunction
 open EuclidsPath.ClosedUniverse
 
 /-!
-## 1. Общий rank/parity язык
+## 1. General rank/parity language
 -/
 
 /--
@@ -624,14 +624,14 @@ def RankJumpLocalizationTarget
 -/
 
 
-/-! ## 8bis. ЧЕСТНОСТЬ: скрытое содержание моста (машинно)
+/-! ## 8bis. HONESTY: hidden content of the bridge (machine-verified)
 
-`no_closedPaidFactory` безусловна ⟹ поле `jump_to_factory` эквивалентно `¬TwinJump`, а весь мост
-форсит `¬LiouvilleViolation` (= LiouvilleBound-содержание, RH-силы). Мост — не нейтральная редукция:
-он НЕСЁТ в себе и «джампа нет», и «дисбаланса нет». -/
+`no_closedPaidFactory` is unconditional ⟹ the field `jump_to_factory` is equivalent to `¬TwinJump`,
+and the entire bridge forces `¬LiouvilleViolation` (= LiouvilleBound content, RH-strength).
+The bridge is not a neutral reduction: it CARRIES within itself both "no jump" and "no imbalance". -/
 
-/-- **`jumpToFactory_iff_no_jump` — ДОКАЗАНА (честность).** Поле `jump_to_factory` ⟺ `¬TwinJump`
-    (factory безусловно невозможна, значит импликация выполнима лишь вакуумно). -/
+/-- **`jumpToFactory_iff_no_jump` — PROVED (honesty).** The field `jump_to_factory` ⟺ `¬TwinJump`
+    (factory is unconditionally impossible, so the implication holds only vacuously). -/
 theorem jumpToFactory_iff_no_jump (TwinSystem : RankParitySystem) :
     (TwinCarrierEnergyJump TwinSystem → Nonempty ClosedPaidFactory) ↔
     ¬ TwinCarrierEnergyJump TwinSystem := by
@@ -641,9 +641,9 @@ theorem jumpToFactory_iff_no_jump (TwinSystem : RankParitySystem) :
   · intro hNo hJump
     exact absurd hJump hNo
 
-/-- **`spectralBridge_forces_no_violation` — ДОКАЗАНА (честность).** Любой `SpectralToTwinRankBridge`
-    форсит `¬LiouvilleViolation`: localization даёт Violation→Jump, jump_to_factory даёт ¬Jump.
-    То есть мост скрыто содержит LiouvilleBound (арифметическую RH-форму) — не нейтральный вход. -/
+/-- **`spectralBridge_forces_no_violation` — PROVED (honesty).** Any `SpectralToTwinRankBridge`
+    forces `¬LiouvilleViolation`: localization gives Violation→Jump, jump_to_factory gives ¬Jump.
+    That is, the bridge covertly contains LiouvilleBound (the arithmetic RH-form) — not a neutral input. -/
 theorem spectralBridge_forces_no_violation {OffCriticalZero : Type}
     {TwinSystem : RankParitySystem}
     (B : SpectralToTwinRankBridge OffCriticalZero TwinSystem) :

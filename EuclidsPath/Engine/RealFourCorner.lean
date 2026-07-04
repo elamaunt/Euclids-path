@@ -1,13 +1,13 @@
 /-
-  Разделение модель→реальность для four-corner. Проза: prose/22_RealFourCorner.md.
+  Model→reality separation for four-corner. Prose: prose/22_RealFourCorner.md.
 
-  Контекст: модельный four-corner `N₀₀^CRT·N₃₃^CRT ≤ N₀₃^CRT·N₃₀^CRT` доказан по построению
-  (`ModelFourCorner`, конструкция G_q=∏(1+w_q(x+z)) + Маклорена). Реальные счёты отличаются на
-  ситовой остаток `e_ij = N_ij^real − N_ij^CRT`. Здесь зафиксирована ТОЧНАЯ формула разности и
-  условие, при котором реальный four-corner следует из модельного.
+  Context: the model four-corner `N₀₀^CRT·N₃₃^CRT ≤ N₀₃^CRT·N₃₀^CRT` is proved by construction
+  (`ModelFourCorner`, construction G_q=∏(1+w_q(x+z)) + Maclaurin). The real counts differ by
+  the sieve remainder `e_ij = N_ij^real − N_ij^CRT`. Here the EXACT difference formula is recorded
+  together with the condition under which the real four-corner follows from the model one.
 
-  Это и есть честная граница в коде: real four-corner ⟺ модельный + контроль остатка (одна формула).
-  Всё — кольцевая алгебра над ℤ (остаток может иметь знак). Без анализа/распределения/сита.
+  This is the honest boundary in the code: real four-corner ⟺ model + remainder control (one formula).
+  Everything is ring algebra over ℤ (the remainder may be signed). No analysis/distribution/sieve.
 -/
 import Mathlib
 
@@ -16,9 +16,9 @@ set_option autoImplicit false
 namespace EuclidsPath
 
 /--
-  **Точная декомпозиция four-corner (реальный = модельный + остаток).**
-  Разность реального four-corner равна модельной разности плюс явный остаточный член `R`
-  (кросс-термы остатка). Чистое тождество кольца.
+  **Exact four-corner decomposition (real = model + remainder).**
+  The difference of the real four-corner equals the model difference plus an explicit remainder term `R`
+  (cross-terms of the remainder). A pure ring identity.
 -/
 theorem real_four_corner_decomp (m00 m03 m30 m33 e00 e03 e30 e33 : ℤ) :
     (m00 + e00) * (m33 + e33) - (m03 + e03) * (m30 + e30)
@@ -27,12 +27,12 @@ theorem real_four_corner_decomp (m00 m03 m30 m33 e00 e03 e30 e33 : ℤ) :
   ring
 
 /--
-  **Реальный four-corner из модельного + контроля остатка.**
-  Если модельный four-corner `m₀₀·m₃₃ ≤ m₀₃·m₃₀` выполнен (доказано по построению), и остаточный
-  член `R` укладывается в модельный запас (`R ≤ m₀₃m₃₀ − m₀₀m₃₃`), то выполнен и РЕАЛЬНЫЙ four-corner
-  `(m₀₀+e₀₀)(m₃₃+e₃₃) ≤ (m₀₃+e₀₃)(m₃₀+e₃₀)`.
+  **Real four-corner from model + remainder control.**
+  If the model four-corner `m₀₀·m₃₃ ≤ m₀₃·m₃₀` holds (proved by construction), and the remainder
+  term `R` fits within the model supply (`R ≤ m₀₃m₃₀ − m₀₀m₃₃`), then the REAL four-corner
+  `(m₀₀+e₀₀)(m₃₃+e₃₃) ≤ (m₀₃+e₀₃)(m₃₀+e₃₀)` holds as well.
 
-  Это единственный открытый вход капстоуна `ToTwins`: контроль ситового остатка `e_ij`.
+  This is the sole open input of the capstone `ToTwins`: control of the sieve remainder `e_ij`.
 -/
 theorem real_four_corner_of_remainder
     (m00 m03 m30 m33 e00 e03 e30 e33 : ℤ)

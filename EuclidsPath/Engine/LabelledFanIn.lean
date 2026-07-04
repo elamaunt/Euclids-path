@@ -1,86 +1,86 @@
 /-
-  Labelled fan-in patch для GlobalOldAbsorption — Step00 финальный узел, версия v2.
-  Источник: step00_labelled_fanin_patch_ru_2026-07-01.md (словесная спецификация).
-  Проза: prose/24_BoundaryDecomp.md (обновить), README.
+  Labelled fan-in patch for GlobalOldAbsorption — Step00 final node, version v2.
+  Source: step00_labelled_fanin_patch_ru_2026-07-01.md (a prose specification).
+  Prose: prose/24_BoundaryDecomp.md (to update), README.
 
-  АРХИТЕКТУРНЫЙ ПАТЧ: заменить невозможный путь `InfiniteNodeableCenters ⟹ CoreCollision ⟹ Engine`
-  (невозможен, т.к. separating scale делает CoreSig ИНЪЕКТИВНЫМ — коллизии нет) на путь через
-  labelled fan-in по РЕАЛЬНЫМ арифметическим шагам:
+  ARCHITECTURAL PATCH: replace the impossible path `InfiniteNodeableCenters ⟹ CoreCollision ⟹ Engine`
+  (impossible, because the separating scale makes CoreSig INJECTIVE — no collisions) with a path via
+  labelled fan-in over REAL arithmetic steps:
 
-    GlobalOldAbsorption ⟹ LabelledFanIn ∨ InfiniteLegalDescent      (дихотомия — König)
+    GlobalOldAbsorption ⟹ LabelledFanIn ∨ InfiniteLegalDescent      (dichotomy — König)
     ¬InfiniteLegalDescent                                            (EPMI)
     LabelledFanIn ⟹ EuclideanEngine                                 (local label determinism)
 
-  ЧЕСТНЫЙ СТАТУС (аудит внутри файла):
-  Что ДОКАЗАНО здесь (абстрактно, стандартные аксиомы):
-    * дихотомия при ЯВНОМ входе `no_labelled_fanin ⟹ InfiniteLegalDescent` (König через
-      dependent choice) — сама König-конструкция;
-    * `labelledFanIn_to_engine` из `LocalLabelDeterminism` — чистая логика;
-    * `localLabelDeterminism` из `BoundaryLabelDeterminism` + `SNOLLabelDeterminism` + separating scale
-      — сборка case-split;
-    * `globalAbsorption_to_engine` — финальная упаковка.
-  Что ОСТАЁТСЯ ВХОДОМ (гипотезы, НЕ доказаны — новая локализация узла):
-    * `BoundaryLabelDeterminism` — что boundary-код детерминирует предшественника ∨ engine
-      (требует `boundaryStep_normalForm` — нормальную форму boundary-шага, НЕ доказана);
-    * `SNOLLabelDeterminism` — то же для SNOL (= SNOLHall ⟹ engine, старая SNOL-стена);
-    * finite `EdgeSig` — при фиксированном A: конечность кодов (правдоподобно, но каждый код-тип
-      нужно предъявить конечным — не сделано абстрактно).
+  HONEST STATUS (audit inside the file):
+  What is PROVEN here (abstractly, standard axioms):
+    * the dichotomy under the EXPLICIT input `no_labelled_fanin ⟹ InfiniteLegalDescent` (König via
+      dependent choice) — the König construction itself;
+    * `labelledFanIn_to_engine` from `LocalLabelDeterminism` — pure logic;
+    * `localLabelDeterminism` from `BoundaryLabelDeterminism` + `SNOLLabelDeterminism` + separating scale
+      — case-split assembly;
+    * `globalAbsorption_to_engine` — final packaging.
+  What REMAINS AN INPUT (hypotheses, NOT proven — the new localization of the node):
+    * `BoundaryLabelDeterminism` — that a boundary code determines the predecessor ∨ engine
+      (requires `boundaryStep_normalForm` — the normal form of a boundary step, NOT proven);
+    * `SNOLLabelDeterminism` — the same for SNOL (= SNOLHall ⟹ engine, the old SNOL wall);
+    * finite `EdgeSig` — for fixed A: finiteness of codes (plausible, but each code type
+      must be exhibited as finite — not done abstractly).
 
-  ВЫВОД (v3, brick `step00_hkonig_label_tree_closure...`, 2026-07-01): патч по-прежнему НЕ закрывает
-  Step00, НО узел СУЩЕСТВЕННО сузился. Ключевое отличие v3 от v2: **König-ветвь ТЕПЕРЬ ДОКАЗАНА**
-  (`absorption_labelled_dichotomy` — настоящая теорема, не вход). Осталась ровно ОДНА содержательная
-  стена — `hComp`, а точнее её SNOL-случай `hHallSeed`:
-    • ДОКАЗАНО (König закрыт, §7): `GlobalOldAbsorption` + конечность absorber'ов + конечный алфавит
-      меток ⟹ `LabelledFanIn ∨ InfiniteLegalDescent`. Способ — state-level backward König: инвариант
-      `ManyRoute V` (∞ источников доходят до V), пигонхол по КОНЕЧНЫМ предшественникам (`preds_finite`
-      из ¬fanin + finite Lbl), итерация через dependent choice. Mathlib-König НЕ нужен — только два
-      инфинит-фиберных пигонхола. Ложная посылка v1 «у каждого состояния есть предшественник» больше
-      не фигурирует нигде.
-    • ОСТАЛОСЬ (единственный содержательный вход): `hComp = ComponentDeterminism`, чьи четыре
-      exact-компонента (active/oldPeel/boundary/corridor) — арифметика инстанциации, а пятый (`snol`)
-      сводится (§24, `snol_kindDeterminism_of_normalForm` — ДОКАЗАНА сборка) к `hHallSeed`: «SNOL
-      hall-seed с различными предшественниками ⟹ engine». Это РОВНО старая SNOL/Hall стена, та же
-      нагрузка, что `pump` в `BoundaryDecomp.global_absorber_forces_engine`.
-    • НЕ предъявлено: привязка `σ`/`RealStep`/`edgeSig` к конкретному графу `6m±1`/`TwinCenterZ`
-      (машина абстрактна); `hOldFin`/`[Finite Lbl]`/`hAll` — правдоподобные, но в этой абстрактной
-      форме принятые допущения инстанциации.
-  Доказаны без аксиом: `labelledFanIn_to_engine`, `descent_from_manyRoute`, `localLabelDeterminism`,
-  `componentDeterminism_of_components`, `snol_kindDeterminism_of_normalForm`. Красная линия НЕ пересечена
-  (нет вероятностей/плотности — König чисто комбинаторный). Step00.twin_prime_conjecture остаётся
-  `sorry` — узел не закрыт, но сведён к одной SNOL-импликации.
+  CONCLUSION (v3, brick `step00_hkonig_label_tree_closure...`, 2026-07-01): the patch still does NOT close
+  Step00, BUT the node has narrowed SUBSTANTIALLY. The key difference of v3 from v2: **the König branch is NOW PROVEN**
+  (`absorption_labelled_dichotomy` — a genuine theorem, not an input). Exactly ONE substantive
+  wall remains — `hComp`, and more precisely its SNOL case `hHallSeed`:
+    • PROVEN (König closed, §7): `GlobalOldAbsorption` + finiteness of the absorbers + a finite alphabet
+      of labels ⟹ `LabelledFanIn ∨ InfiniteLegalDescent`. The method — state-level backward König: the invariant
+      `ManyRoute V` (∞ sources reach V), pigeonhole over the FINITE predecessors (`preds_finite`
+      from ¬fanin + finite Lbl), iteration via dependent choice. Mathlib's König is NOT needed — only two
+      infinite-fiber pigeonholes. The false premise of v1 "every state has a predecessor" no longer
+      figures anywhere.
+    • WHAT REMAINS (the sole substantive input): `hComp = ComponentDeterminism`, whose four
+      exact components (active/oldPeel/boundary/corridor) are instantiation arithmetic, while the fifth (`snol`)
+      reduces (§24, `snol_kindDeterminism_of_normalForm` — the assembly is PROVEN) to `hHallSeed`: "a SNOL
+      hall-seed with distinct predecessors ⟹ engine". This is EXACTLY the old SNOL/Hall wall, the same
+      load as `pump` in `BoundaryDecomp.global_absorber_forces_engine`.
+    • NOT EXHIBITED: the binding of `σ`/`RealStep`/`edgeSig` to the concrete graph `6m±1`/`TwinCenterZ`
+      (the machine is abstract); `hOldFin`/`[Finite Lbl]`/`hAll` — plausible, but in this abstract
+      form they are accepted instantiation assumptions.
+  Proven without axioms: `labelledFanIn_to_engine`, `descent_from_manyRoute`, `localLabelDeterminism`,
+  `componentDeterminism_of_components`, `snol_kindDeterminism_of_normalForm`. The red line is NOT crossed
+  (no probabilities/density — König is purely combinatorial). Step00.twin_prime_conjecture remains
+  `sorry` — the node is not closed, but reduced to a single SNOL implication.
 
-  ВЫВОД v4 (brick `snol_hallseed_strict_closure`, 2026-07-01; уточнён аудитом): SNOL-стена сведена к
-  ЛЕГЧЕ сформулированному закону `SNOLHallSeedRegenerates` (seed ⟹ return-path — строго легче старой
-  seed⇒engine стены), но нагрузка НЕ сжимается «к одной лемме». Ключевые новые факты (§26–27):
-    • МАШИННО-ПРОВЕРЕННЫЙ NO-GO (`snolHallSeed_bare_no_go`): голая неинъективность SNOL-метки НЕ даёт
-      engine (конкретная 3-состояний модель, где seed есть, а спуска нет). Честность встроена в тип.
-    • ДОКАЗАНО закрытие SNOL при законе regeneration: `snolHallSeed_to_engine_of_regeneration`
-      (axiom-free), `snol_kindDeterminism_of_regeneration`. Механизм: seed `Uᵢ→V` + возврат `V→⁺Uᵢ`
-      = непустой цикл `Uᵢ→⁺Uᵢ`, запрещённый двигателем (`no_cycle_of_height`, единая ориентация высоты).
-    • ВАЖНАЯ ОГОВОРКА (`regen_under_hdrop_kills_seed`, ДОКАЗАНА): под тем же `hdrop`, что закрывает всё
-      остальное, seed и его regeneration ВЗАИМОИСКЛЮЧАЮЩИ (цикл). Значит `SNOLHallSeedRegenerates`
-      выполняется лишь ВАКУУМНО (seed-empty), а РЕАЛЬНОЕ арифметическое содержание МИГРИРУЕТ в сам
-      `hdrop` — существование строго-монотонной ко-высоты на `6m±1` (= ацикличность/EPMI), НЕ предъявлено.
-  Это НЕ закрытие Step00, и остаток ЧЕСТНО делится минимум на: (a) `SNOLHallSeedRegenerates`; (b) `hdrop`
-  (ко-высота/ацикличность на реальном графе — истинный носитель арифметики); (c) четыре компонента
-  инъективности (под `Engine:=False` не бесплатны); (d) инстанциация. Нельзя сжимать до «осталась только
-  SNOL-стена»:
-    • `hAll : ∀x, Legal x` — ЛОЖНО на конкретном графе `6m±1` (легальность там — реальное ограничение);
-      абстрактная дихотомия не инстанциируется напрямую без legality-restricted König (не сделан);
-    • `[Finite Lbl]` — это counting/fan-in содержание в обличье typeclass (правдоподобно при фикс. A);
-    • четыре exact-компонента + `hKindEq` — заявлены как арифметика инстанциации, но НЕ доказаны
-      (инстанциации нет);
-    • ГЛАВНОЕ: машина АБСТРАКТНА и не подключена — `EuclideanEngine` свободная `Prop`, `σ`/`RealStep`/
-      `edgeSig` не привязаны к `TwinCenterZ`/`CoreSig`/`6m±1`, и ни один файл вне этого модуля не
-      потребляет его теоремы. Поэтому закрытие `SNOLHallSeedRegenerates` само по себе НЕ закрыло бы
-      `twin_prime_conjecture` — нужна ещё инстанциация к реальному графу.
-  Step00.twin_prime_conjecture остаётся `sorry`. Прогресс реальный (König-вход стал теоремой), но
-  узел не закрыт — он сведён к одной SNOL-лемме ПЛЮС инстанциация абстрактной машины.
+  CONCLUSION v4 (brick `snol_hallseed_strict_closure`, 2026-07-01; refined by audit): the SNOL wall is reduced to
+  the MORE LIGHTLY stated law `SNOLHallSeedRegenerates` (seed ⟹ return-path — strictly lighter than the old
+  seed⇒engine wall), but the load does NOT compress "to a single lemma". Key new facts (§26–27):
+    • MACHINE-CHECKED NO-GO (`snolHallSeed_bare_no_go`): the bare non-injectivity of a SNOL label does NOT yield
+      engine (a concrete 3-state model where the seed exists, but there is no descent). Honesty is built into the type.
+    • PROVEN closure of SNOL under the regeneration law: `snolHallSeed_to_engine_of_regeneration`
+      (axiom-free), `snol_kindDeterminism_of_regeneration`. Mechanism: seed `Uᵢ→V` + return `V→⁺Uᵢ`
+      = a non-empty cycle `Uᵢ→⁺Uᵢ`, forbidden by the engine (`no_cycle_of_height`, a single orientation of height).
+    • IMPORTANT CAVEAT (`regen_under_hdrop_kills_seed`, PROVEN): under the same `hdrop` that closes all
+      the rest, the seed and its regeneration are MUTUALLY EXCLUSIVE (a cycle). Hence `SNOLHallSeedRegenerates`
+      holds only VACUOUSLY (seed-empty), while the REAL arithmetic content MIGRATES into the very
+      `hdrop` — the existence of a strictly monotone co-height on `6m±1` (= acyclicity/EPMI), NOT exhibited.
+  This is NOT a closure of Step00, and the remainder HONESTLY splits into at least: (a) `SNOLHallSeedRegenerates`; (b) `hdrop`
+  (co-height/acyclicity on the real graph — the true carrier of the arithmetic); (c) the four components
+  of injectivity (under `Engine:=False` they are not free); (d) instantiation. One must not compress it to "only the
+  SNOL wall remains":
+    • `hAll : ∀x, Legal x` — FALSE on the concrete graph `6m±1` (legality there is a real restriction);
+      the abstract dichotomy does not instantiate directly without a legality-restricted König (not done);
+    • `[Finite Lbl]` — this is counting/fan-in content in the guise of a typeclass (plausible for fixed A);
+    • the four exact components + `hKindEq` — declared as instantiation arithmetic, but NOT proven
+      (no instantiation);
+    • MAIN POINT: the machine is ABSTRACT and not connected — `EuclideanEngine` is a free `Prop`, `σ`/`RealStep`/
+      `edgeSig` are not bound to `TwinCenterZ`/`CoreSig`/`6m±1`, and no file outside this module
+      consumes its theorems. Therefore closing `SNOLHallSeedRegenerates` on its own would NOT close
+      `twin_prime_conjecture` — an instantiation to the real graph is still needed.
+  Step00.twin_prime_conjecture remains `sorry`. The progress is real (the König input became a theorem), but
+  the node is not closed — it is reduced to a single SNOL lemma PLUS the instantiation of the abstract machine.
 
-  ИСТОРИЯ: v1→v2 (аудит 8 агентов): убрана ложная `∀ s` посылка; `descend` переименован; настоящий
-  `localLabelDeterminism`; реальная конъюнкция `ComponentDeterminism`. v2→v3: König-ветвь ДОКАЗАНА
-  (state-level backward König); `hComp` локализован до SNOL hall-seed стены. v3→v4: SNOL-стена сведена
-  к `SNOLHallSeedRegenerates` (regeneration ⟹ cycle ⟹ ⊥) + машинно-проверенный no-go для голого seed.
+  HISTORY: v1→v2 (audit by 8 agents): the false `∀ s` premise removed; `descend` renamed; a genuine
+  `localLabelDeterminism`; a real conjunction `ComponentDeterminism`. v2→v3: the König branch PROVEN
+  (state-level backward König); `hComp` localized to the SNOL hall-seed wall. v3→v4: the SNOL wall reduced
+  to `SNOLHallSeedRegenerates` (regeneration ⟹ cycle ⟹ ⊥) + a machine-checked no-go for the bare seed.
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -92,43 +92,43 @@ set_option linter.dupNamespace false
 
 namespace EuclidsPath.LabelledFanIn
 
-/-! ### §2–3. Абстрактный real-step граф и path-absorbed
+/-! ### §2–3. The abstract real-step graph and path-absorbed
 
-Мы работаем в абстрактной модели: тип состояний `σ`, отношение реального шага `RealStep`,
-предикат old-absorber `OldAbsorber`. Конкретная инстанциация (ActiveDelete/OldPeel/BoundaryExit/
-SNOL/OldCorridor) даётся в прозе; здесь фиксируем только СВОЙСТВА, нужные для дихотомии.
+We work in an abstract model: a type of states `σ`, a real-step relation `RealStep`,
+an old-absorber predicate `OldAbsorber`. The concrete instantiation (ActiveDelete/OldPeel/BoundaryExit/
+SNOL/OldCorridor) is given in the prose; here we fix only the PROPERTIES needed for the dichotomy.
 
-`Absorbed` — это PATH-свойство (терминальное), а НЕ локальный конструктор шага: старт поглощён,
-если из него есть конечный real-step путь в absorber. Это ключевой архитектурный пункт §1: убрать
-примитивный `AbsorberStep`, который давал произвольный many-to-one collapse. -/
+`Absorbed` is a PATH property (terminal), NOT a local step constructor: a start is absorbed
+if there is a finite real-step path from it into an absorber. This is the key architectural point of §1: remove
+the primitive `AbsorberStep`, which allowed an arbitrary many-to-one collapse. -/
 
 variable {σ : Type*}
 
-/-- Рефлексивно-транзитивное замыкание `RealStep`: конечный путь `s → … → O`. -/
+/-- Reflexive-transitive closure of `RealStep`: a finite path `s → … → O`. -/
 def Path (RealStep : σ → σ → Prop) : σ → σ → Prop := Relation.ReflTransGen RealStep
 
-/-- `Absorbed s` — из `s` есть конечный real-step путь в старый absorber. Path-свойство, не шаг. -/
+/-- `Absorbed s` — from `s` there is a finite real-step path into an old absorber. A path property, not a step. -/
 def Absorbed (RealStep : σ → σ → Prop) (OldAbsorber : σ → Prop) (s : σ) : Prop :=
   ∃ O, OldAbsorber O ∧ Path RealStep s O
 
-/-- **`GlobalOldAbsorption`** — редукционная цель (§3): бесконечно много различных легальных свежих
-    стартов, каждый из которых поглощается (есть конечный real-step путь в absorber). Это абстрактная
-    форма `BoundaryDecomp.GlobalOldTwinAbsorption`; премисса König-ветви. -/
+/-- **`GlobalOldAbsorption`** — the reduction goal (§3): infinitely many distinct legal fresh
+    starts, each of which is absorbed (there is a finite real-step path into an absorber). This is the abstract
+    form of `BoundaryDecomp.GlobalOldTwinAbsorption`; the premise of the König branch. -/
 def GlobalOldAbsorption (RealStep : σ → σ → Prop) (OldAbsorber : σ → Prop) (Fresh : σ → Prop) : Prop :=
   { s : σ | Fresh s ∧ Absorbed RealStep OldAbsorber s }.Infinite
 
 /-! ### §6. InfiniteLegalDescent -/
 
-/-- Бесконечный real-step спуск: `X (n+1) → X n` для всех `n`. (Строгость/различность НЕ встроены —
-    определение допускает циклы/self-loop; строгость реализуется ВНЕШНЕ гипотезой высоты, см.
-    `no_infiniteLegalDescent_of_height`. Как лемма о строгом убывании нигде не используется.) -/
+/-- Infinite real-step descent: `X (n+1) → X n` for all `n`. (Strictness/distinctness is NOT built in —
+    the definition allows cycles/self-loops; strictness is realized EXTERNALLY by the height hypothesis, see
+    `no_infiniteLegalDescent_of_height`. As a lemma about strict decrease it is used nowhere.) -/
 def InfiniteLegalDescent (RealStep : σ → σ → Prop) : Prop :=
   ∃ X : ℕ → σ, ∀ n, RealStep (X (n + 1)) (X n)
 
 /-! ### §5. LabelledFanIn -/
 
-/-- `LabelledFanIn`: два РАЗНЫХ легальных предшественника `U₁ ≠ U₂` одного `V` с ОДИНАКОВОЙ меткой
-    ребра. Это то, что должно порождать engine (через label determinism). -/
+/-- `LabelledFanIn`: two DISTINCT legal predecessors `U₁ ≠ U₂` of a single `V` with the SAME edge
+    label. This is what should generate the engine (via label determinism). -/
 def LabelledFanIn {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) : Prop :=
   ∃ U₁ U₂ V, U₁ ≠ U₂ ∧ Legal U₁ ∧ Legal U₂ ∧ Legal V ∧
@@ -136,20 +136,20 @@ def LabelledFanIn {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → 
 
 /-! ### §14. LocalLabelDeterminism -/
 
-/-- `LocalLabelDeterminism`: совпадение метки ребра у двух предшественников одного `V` влечёт
-    их равенство ∨ engine. Это СОДЕРЖАТЕЛЬНЫЙ вход (boundary/SNOL/active нормальные формы). -/
+/-- `LocalLabelDeterminism`: coincidence of the edge label of two predecessors of a single `V` entails
+    their equality ∨ engine. This is a SUBSTANTIVE input (boundary/SNOL/active normal forms). -/
 def LocalLabelDeterminism {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) (EuclideanEngine : Prop) : Prop :=
   ∀ U₁ U₂ V, Legal U₁ → Legal U₂ → Legal V →
     RealStep U₁ V → RealStep U₂ V → edgeSig U₁ V = edgeSig U₂ V →
     U₁ = U₂ ∨ EuclideanEngine
 
-/-! ### §15. LabelledFanIn ⟹ Engine (ДОКАЗАНО — чистая логика) -/
+/-! ### §15. LabelledFanIn ⟹ Engine (PROVEN — pure logic) -/
 
 /--
-  **Theorem 15.1 (`labelledFanIn_to_engine`) — ДОКАЗАНА.** Если выполняется `LocalLabelDeterminism`,
-  то `LabelledFanIn ⟹ EuclideanEngine`. Доказательство: из fan-in берём `U₁ ≠ U₂` с равной меткой;
-  детерминизм даёт `U₁ = U₂ ∨ engine`; первое противоречит `U₁ ≠ U₂`, значит engine. -/
+  **Theorem 15.1 (`labelledFanIn_to_engine`) — PROVEN.** If `LocalLabelDeterminism` holds,
+  then `LabelledFanIn ⟹ EuclideanEngine`. Proof: from the fan-in we take `U₁ ≠ U₂` with equal label;
+  determinism gives `U₁ = U₂ ∨ engine`; the first contradicts `U₁ ≠ U₂`, hence engine. -/
 theorem labelledFanIn_to_engine {Lbl : Type*} {RealStep : σ → σ → Prop} {Legal : σ → Prop}
     {edgeSig : σ → σ → Lbl} {EuclideanEngine : Prop}
     (hDet : LocalLabelDeterminism RealStep Legal edgeSig EuclideanEngine)
@@ -159,32 +159,32 @@ theorem labelledFanIn_to_engine {Lbl : Type*} {RealStep : σ → σ → Prop} {L
   · exact absurd heq hne
   · exact heng
 
-/-! ### §7. Дихотомия — ТЕПЕРЬ ДОКАЗАНА (state-level backward König)
+/-! ### §7. The dichotomy — NOW PROVEN (state-level backward König)
 
-Утверждение §7.1: из `GlobalOldAbsorption` (∞ поглощённых стартов) + конечности absorbers + конечности
-`EdgeSig` следует `LabelledFanIn ∨ InfiniteLegalDescent`. В версии v2 это был вход `KonigBranchInput`;
-здесь (v3, brick `step00_hkonig_label_tree_closure...`) König-ветвь **доказана** без ложной посылки
-«у каждого состояния есть предшественник».
+Statement §7.1: from `GlobalOldAbsorption` (∞ absorbed starts) + finiteness of the absorbers + finiteness
+of `EdgeSig` it follows that `LabelledFanIn ∨ InfiniteLegalDescent`. In version v2 this was the input `KonigBranchInput`;
+here (v3, brick `step00_hkonig_label_tree_closure...`) the König branch is **proven** without the false premise
+"every state has a predecessor".
 
-СПОСОБ. Вместо label-prefix-tree + `stateAtPrefix`-реконструкции (хрупкой) мы ведём König прямо на
-состояниях, через инвариант `ManyRoute V` := «бесконечно много свежих источников имеют путь в `V`».
-Ключ — что при `¬LabelledFanIn` **предшественники любого `V` конечны** (метка ребра инъективна на
-предшественниках, `preds_finite`), поэтому из `ManyRoute V` пигонхолом получаем предшественника `U`
-(`RealStep U V`) с `ManyRoute U` (`manyRoute_pred`). Итерация (dependent choice) даёт бесконечный
-спуск. Начальный `ManyRoute O` — из пигонхола по конечным absorber'ам (`manyRoute_absorber`).
-Никакой mathlib-König не нужен: вся комбинаторика — два инфинит-фиберных пигонхола + рекурсия. -/
+METHOD. Instead of a label-prefix-tree + `stateAtPrefix` reconstruction (fragile), we run König directly on
+the states, via the invariant `ManyRoute V` := "infinitely many fresh sources have a path into `V`".
+The key — that under `¬LabelledFanIn` **the predecessors of any `V` are finite** (the edge label is injective on
+predecessors, `preds_finite`), so from `ManyRoute V` by pigeonhole we obtain a predecessor `U`
+(`RealStep U V`) with `ManyRoute U` (`manyRoute_pred`). Iteration (dependent choice) gives an infinite
+descent. The initial `ManyRoute O` — by pigeonhole over the finite absorbers (`manyRoute_absorber`).
+No mathlib König is needed: all the combinatorics is two infinite-fiber pigeonholes + recursion. -/
 
-/-- `PathR` — рефлексивно-транзитивное замыкание (тот же `Path`, локальный синоним для лемм König). -/
+/-- `PathR` — the reflexive-transitive closure (the same `Path`, a local synonym for the König lemmas). -/
 abbrev PathR (RealStep : σ → σ → Prop) : σ → σ → Prop := Path RealStep
 
-/-- `ManyRoute V` — бесконечно много свежих источников имеют real-step путь в `V`. Инвариант König. -/
+/-- `ManyRoute V` — infinitely many fresh sources have a real-step path into `V`. The König invariant. -/
 def ManyRoute (RealStep : σ → σ → Prop) (Fresh : σ → Prop) (V : σ) : Prop :=
   {s | Fresh s ∧ Path RealStep s V}.Infinite
 
 /--
-  **`preds_finite` — ДОКАЗАНА.** При `¬LabelledFanIn` (уникальность предшественника по метке) и
-  конечном алфавите меток предшественники любого `V` образуют конечное множество: отображение
-  `U ↦ edgeSig U V` инъективно на `{U | RealStep U V}`, а образ конечен. -/
+  **`preds_finite` — PROVEN.** Under `¬LabelledFanIn` (uniqueness of the predecessor by label) and
+  a finite alphabet of labels, the predecessors of any `V` form a finite set: the map
+  `U ↦ edgeSig U V` is injective on `{U | RealStep U V}`, and the image is finite. -/
 theorem preds_finite {Lbl : Type*} [Finite Lbl] {RealStep : σ → σ → Prop} {edgeSig : σ → σ → Lbl}
     {V : σ}
     (huniq : ∀ U₁ U₂, RealStep U₁ V → RealStep U₂ V → edgeSig U₁ V = edgeSig U₂ V → U₁ = U₂) :
@@ -193,7 +193,7 @@ theorem preds_finite {Lbl : Type*} [Finite Lbl] {RealStep : σ → σ → Prop} 
     huniq a b ha hb hab
   exact Set.Finite.of_finite_image (Set.toFinite _) hinj
 
-/-- Уникальность предшественника по метке — прямое переписывание `¬LabelledFanIn`. -/
+/-- Uniqueness of the predecessor by label — a direct rewriting of `¬LabelledFanIn`. -/
 theorem unique_predecessor_of_no_labelledFanIn {Lbl : Type*} {RealStep : σ → σ → Prop}
     {Legal : σ → Prop} {edgeSig : σ → σ → Lbl}
     (hNoFan : ¬ LabelledFanIn RealStep Legal edgeSig)
@@ -203,11 +203,11 @@ theorem unique_predecessor_of_no_labelledFanIn {Lbl : Type*} {RealStep : σ → 
   exact hNoFan ⟨U₁, U₂, V, hne, hAll U₁, hAll U₂, hAll V, hs1, hs2, hsig⟩
 
 /--
-  **`manyRoute_pred` — ДОКАЗАНА (ключевой шаг спуска König).** Если бесконечно много источников
-  доходят до `V` (`ManyRoute V`), то (при уникальности предшественника по метке и конечном алфавите)
-  найдётся предшественник `U` (`RealStep U V`), до которого доходит тоже бесконечно много (`ManyRoute U`).
-  Доказательство: источники `≠ V` факторизуются через предшественников `V` (`ReflTransGen.cases_tail`);
-  предшественников конечно (`preds_finite`); пигонхол по конечному множеству предшественников. -/
+  **`manyRoute_pred` — PROVEN (the key König descent step).** If infinitely many sources
+  reach `V` (`ManyRoute V`), then (given uniqueness of the predecessor by label and a finite alphabet)
+  there exists a predecessor `U` (`RealStep U V`) reached by infinitely many as well (`ManyRoute U`).
+  Proof: sources `≠ V` factor through the predecessors of `V` (`ReflTransGen.cases_tail`);
+  there are finitely many predecessors (`preds_finite`); pigeonhole over the finite set of predecessors. -/
 theorem manyRoute_pred {Lbl : Type*} [Finite Lbl] {RealStep : σ → σ → Prop} {Fresh : σ → Prop}
     {edgeSig : σ → σ → Lbl}
     (huniq : ∀ V U₁ U₂, RealStep U₁ V → RealStep U₂ V → edgeSig U₁ V = edgeSig U₂ V → U₁ = U₂)
@@ -241,9 +241,9 @@ theorem manyRoute_pred {Lbl : Type*} [Finite Lbl] {RealStep : σ → σ → Prop
   rw [hs.2] at hp; exact hp
 
 /--
-  **`manyRoute_absorber` — ДОКАЗАНА (начальный узел König).** Из `GlobalOldAbsorption` (∞ поглощённых
-  свежих источников) и конечности absorber'ов пигонхолом получаем ОДИН absorber `O`, до которого
-  доходит бесконечно много источников (`ManyRoute O`). -/
+  **`manyRoute_absorber` — PROVEN (the König starting node).** From `GlobalOldAbsorption` (∞ absorbed
+  fresh sources) and finiteness of the absorbers, pigeonhole gives ONE absorber `O` reached by
+  infinitely many sources (`ManyRoute O`). -/
 theorem manyRoute_absorber {RealStep : σ → σ → Prop} {OldAbsorber Fresh : σ → Prop}
     (hGlobal : GlobalOldAbsorption RealStep OldAbsorber Fresh)
     (hOldFin : {O | OldAbsorber O}.Finite) :
@@ -263,9 +263,9 @@ theorem manyRoute_absorber {RealStep : σ → σ → Prop} {OldAbsorber Fresh : 
   exact ⟨hs.1.1, by have := hΩ2 s hs.1; rwa [hs.2] at this⟩
 
 /--
-  **`descent_from_manyRoute` — ДОКАЗАНА (итерация König через dependent choice).** Если у каждого `V`
-  с `ManyRoute V` есть предшественник `U` с `ManyRoute U`, то из `ManyRoute O` строится бесконечный
-  real-step спуск. Рекурсия по `Nat` с носителем инварианта `ManyRoute`. -/
+  **`descent_from_manyRoute` — PROVEN (König iteration via dependent choice).** If every `V`
+  with `ManyRoute V` has a predecessor `U` with `ManyRoute U`, then from `ManyRoute O` an infinite
+  real-step descent is built. Recursion over `Nat` carrying the `ManyRoute` invariant. -/
 theorem descent_from_manyRoute {RealStep : σ → σ → Prop} {Fresh : σ → Prop}
     (step : ∀ V, ManyRoute RealStep Fresh V → ∃ U, RealStep U V ∧ ManyRoute RealStep Fresh U)
     {O : σ} (hO : ManyRoute RealStep Fresh O) : InfiniteLegalDescent RealStep := by
@@ -276,11 +276,11 @@ theorem descent_from_manyRoute {RealStep : σ → σ → Prop} {Fresh : σ → P
   exact ⟨fun n => (Y n).val, fun n => hpred1 (Y n).val (Y n).property⟩
 
 /--
-  **Дихотомия (`absorption_labelled_dichotomy`) — ТЕПЕРЬ ДОКАЗАНА (не вход!).** Из `GlobalOldAbsorption`
-  + конечности absorber'ов + конечности алфавита меток + всеобщей легальности следует
-  `LabelledFanIn ∨ InfiniteLegalDescent`. Если fan-in есть — левая ветвь. Если нет — уникальность
-  предшественника по метке (`unique_predecessor_of_no_labelledFanIn`) запускает state-level König:
-  `manyRoute_absorber → manyRoute_pred (итер.) → descent_from_manyRoute`. Это строгое закрытие `hKonig`. -/
+  **Dichotomy (`absorption_labelled_dichotomy`) — NOW PROVEN (not an input!).** From `GlobalOldAbsorption`
+  + finiteness of the absorbers + finiteness of the label alphabet + universal legality follows
+  `LabelledFanIn ∨ InfiniteLegalDescent`. If fan-in holds — the left branch. If not — uniqueness of
+  the predecessor by label (`unique_predecessor_of_no_labelledFanIn`) launches state-level König:
+  `manyRoute_absorber → manyRoute_pred (iter.) → descent_from_manyRoute`. This is a strict closure of `hKonig`. -/
 theorem absorption_labelled_dichotomy {Lbl : Type*} [Finite Lbl]
     {RealStep : σ → σ → Prop} {Legal OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     (hGlobal : GlobalOldAbsorption RealStep OldAbsorber Fresh)
@@ -290,17 +290,17 @@ theorem absorption_labelled_dichotomy {Lbl : Type*} [Finite Lbl]
   by_cases hfan : LabelledFanIn RealStep Legal edgeSig
   · exact Or.inl hfan
   · refine Or.inr ?_
-    -- ¬fanin ⟹ уникальность предшественника по метке
+    -- ¬fanin ⟹ uniqueness of the predecessor by label
     have huniq : ∀ V U₁ U₂, RealStep U₁ V → RealStep U₂ V → edgeSig U₁ V = edgeSig U₂ V → U₁ = U₂ :=
       fun V U₁ U₂ hs1 hs2 hsig => unique_predecessor_of_no_labelledFanIn hfan hAll hs1 hs2 hsig
     obtain ⟨O, _, hO⟩ := manyRoute_absorber hGlobal hOldFin
     exact descent_from_manyRoute (fun V hV => manyRoute_pred huniq hV) hO
 
-/-! ### §8. Убираем ветвь бесконечного спуска (EPMI) -/
+/-! ### §8. Removing the infinite-descent branch (EPMI) -/
 
 /--
-  **`globalAbsorption_to_labelledFanIn` — ДОКАЗАНА (König закрыт).** Если бесконечный спуск запрещён
-  (EPMI, `hNoInf`), доказанная дихотомия схлопывается в `LabelledFanIn`. König-ветвь больше не вход. -/
+  **`globalAbsorption_to_labelledFanIn` — PROVEN (König closed).** If infinite descent is forbidden
+  (EPMI, `hNoInf`), the proven dichotomy collapses to `LabelledFanIn`. The König branch is no longer an input. -/
 theorem globalAbsorption_to_labelledFanIn {Lbl : Type*} [Finite Lbl]
     {RealStep : σ → σ → Prop} {Legal OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     (hGlobal : GlobalOldAbsorption RealStep OldAbsorber Fresh)
@@ -312,41 +312,41 @@ theorem globalAbsorption_to_labelledFanIn {Lbl : Type*} [Finite Lbl]
   · exact hfan
   · exact absurd hinf hNoInf
 
-/-! ### §14.2. LocalLabelDeterminism из компонент (ДОКАЗАНА — сборка)
+/-! ### §14.2. LocalLabelDeterminism from components (PROVEN — assembly)
 
-`localLabelDeterminism` собирается из детерминизмов подтипов шага. Чтобы сборка была НАСТОЯЩЕЙ (а не
-переименованием), мы вводим классификатор шага `kind : σ → σ → Kind` (тег ребра: active/oldPeel/
-boundary/snol/corridor), согласованный с `edgeSig` (равные метки ⟹ равные теги — `kind_of_edgeSig`),
-и ПЯТЬ отдельных компонентных детерминизмов. Сборка `localLabelDeterminism` тогда — реальный
-case-split по тегу с mixed-case, закрытым согласованностью тегов. Содержательная нагрузка — в пяти
-компонентах (§11–13), особенно в `snol` (= старая SNOL/Hall стена); они здесь входы. -/
+`localLabelDeterminism` is assembled from the determinisms of the step's subtypes. To make the assembly
+GENUINE (rather than a renaming), we introduce a step classifier `kind : σ → σ → Kind` (edge tag: active/oldPeel/
+boundary/snol/corridor), consistent with `edgeSig` (equal labels ⟹ equal tags — `kind_of_edgeSig`),
+and FIVE separate component determinisms. The `localLabelDeterminism` assembly is then a real
+case-split by tag with the mixed-case closed by tag consistency. The substantive load is in the five
+components (§11–13), especially in `snol` (= the old SNOL/Hall wall); they are inputs here. -/
 
-/-- Тег real-step ребра: пять взаимоисключающих сортов шага (§2). -/
+/-- Tag of a real-step edge: five mutually exclusive step sorts (§2). -/
 inductive Kind | active | oldPeel | boundary | snol | corridor
 deriving DecidableEq
 
-/-- Один компонентный детерминизм: для ребер данного тега `k` равная метка ⟹ равенство ∨ engine. -/
+/-- A single component determinism: for edges of a given tag `k` an equal label ⟹ equality ∨ engine. -/
 def KindDeterminism {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) (kind : σ → σ → Kind) (EuclideanEngine : Prop) (k : Kind) : Prop :=
   ∀ U₁ U₂ V, Legal U₁ → Legal U₂ → Legal V →
     RealStep U₁ V → RealStep U₂ V → kind U₁ V = k → kind U₂ V = k →
     edgeSig U₁ V = edgeSig U₂ V → U₁ = U₂ ∨ EuclideanEngine
 
-/-- **`ComponentDeterminism` — настоящая конъюнкция пяти под-детерминизмов** (§11–13), а НЕ алиас
-    полного утверждения. Каждый сорт шага обслуживается своим компонентом. -/
+/-- **`ComponentDeterminism` — a genuine conjunction of five sub-determinisms** (§11–13), and NOT an alias
+    of the full statement. Each step sort is served by its own component. -/
 def ComponentDeterminism {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) (kind : σ → σ → Kind) (EuclideanEngine : Prop) : Prop :=
   (∀ k, KindDeterminism RealStep Legal edgeSig kind EuclideanEngine k)
 
 /--
-  **`localLabelDeterminism` — ДОКАЗАНА (НАСТОЯЩАЯ сборка, не алиас).** Дан классификатор `kind`,
-  согласованный с `edgeSig` (`hKindEq`: равные метки ⟹ равные теги), и пять компонентных детерминизмов
-  (`hComp`). Тогда `LocalLabelDeterminism` выводится case-split'ом: для пары `U₁,U₂ → V` с равной
-  меткой теги `kind U₁ V` и `kind U₂ V` РАВНЫ (из `hKindEq`), значит оба равны какому-то `k`, и
-  компонент `hComp k` даёт `U₁ = U₂ ∨ engine`. Mixed-case (разные теги) исключён самим `hKindEq`.
+  **`localLabelDeterminism` — PROVEN (a GENUINE assembly, not an alias).** Given a classifier `kind`,
+  consistent with `edgeSig` (`hKindEq`: equal labels ⟹ equal tags), and five component determinisms
+  (`hComp`). Then `LocalLabelDeterminism` is derived by a case-split: for a pair `U₁,U₂ → V` with an equal
+  label the tags `kind U₁ V` and `kind U₂ V` are EQUAL (from `hKindEq`), so both equal some `k`, and
+  the component `hComp k` gives `U₁ = U₂ ∨ engine`. The mixed-case (distinct tags) is excluded by `hKindEq` itself.
 
-  Это реальный вывод: он НЕ равен `hComp` синтаксически — он использует `hKindEq` и разбор тега.
-  Нагрузка — в пяти компонентах (входы), но СБОРКА доказана. -/
+  This is a real derivation: it is NOT syntactically equal to `hComp` — it uses `hKindEq` and a tag analysis.
+  The load is in the five components (inputs), but the ASSEMBLY is proven. -/
 theorem localLabelDeterminism {Lbl : Type*}
     {RealStep : σ → σ → Prop} {Legal : σ → Prop} {edgeSig : σ → σ → Lbl}
     {kind : σ → σ → Kind} {EuclideanEngine : Prop}
@@ -354,26 +354,26 @@ theorem localLabelDeterminism {Lbl : Type*}
     (hComp : ComponentDeterminism RealStep Legal edgeSig kind EuclideanEngine) :
     LocalLabelDeterminism RealStep Legal edgeSig EuclideanEngine := by
   intro U₁ U₂ V hL1 hL2 hLV hs1 hs2 hsig
-  -- теги совпадают из согласованности edgeSig↔kind
+  -- the tags coincide from the edgeSig↔kind consistency
   have htag : kind U₁ V = kind U₂ V := hKindEq U₁ U₂ V hsig
-  -- применяем компонент, отвечающий тегу kind U₁ V
+  -- apply the component responsible for the tag kind U₁ V
   exact hComp (kind U₁ V) U₁ U₂ V hL1 hL2 hLV hs1 hs2 rfl htag.symm hsig
 
-/-! ### §16. Global absorption ⟹ engine (ДОКАЗАНА при явных входах) -/
+/-! ### §16. Global absorption ⟹ engine (PROVEN under explicit inputs) -/
 
 /--
-  **Theorem 16.1 (`globalAbsorption_to_engine`) — ДОКАЗАНА (König закрыт; остался ОДИН вход `hComp`).**
-  Сборка всей цепи: доказанная дихотомия + EPMI (нет спуска) даёт `LabelledFanIn`; local label
-  determinism превращает его в engine. König-ветвь БОЛЬШЕ НЕ ВХОД (доказана в §7).
+  **Theorem 16.1 (`globalAbsorption_to_engine`) — PROVEN (König closed; ONE input `hComp` remains).**
+  Assembly of the whole chain: the proven dichotomy + EPMI (no descent) gives `LabelledFanIn`; local label
+  determinism turns it into an engine. The König branch is NO LONGER AN INPUT (proven in §7).
 
-  Входы теперь: `hGlobal` (редукционная цель), `hOldFin` (конечность absorber'ов — правдоподобно:
-  absorber'ы `≤ M₀`), `[Finite Lbl]` (конечность алфавита меток при фиксированном A), `hAll`
-  (всеобщая легальность в абстрактной модели), `hNoInf` (EPMI — ДОКАЗУЕМ через
-  `no_infiniteLegalDescent_of_height`), `hKindEq` (согласованность edgeSig↔kind), и — ЕДИНСТВЕННЫЙ
-  содержательный несведённый вход — `hComp : ComponentDeterminism`, чей SNOL-случай есть РОВНО старая
-  SNOL/Hall стена (`SNOLBoundary` неинъективен ⟹ engine, см. §23–24 brick).
+  The inputs now: `hGlobal` (the reduction goal), `hOldFin` (finiteness of the absorbers — plausible:
+  absorbers `≤ M₀`), `[Finite Lbl]` (finiteness of the label alphabet for a fixed A), `hAll`
+  (universal legality in the abstract model), `hNoInf` (EPMI — PROVABLE via
+  `no_infiniteLegalDescent_of_height`), `hKindEq` (edgeSig↔kind consistency), and — the ONLY
+  substantive unreduced input — `hComp : ComponentDeterminism`, whose SNOL case is EXACTLY the old
+  SNOL/Hall wall (`SNOLBoundary` non-injective ⟹ engine, see §23–24 brick).
 
-  ВЫВОД: узел сузился до `hComp` = `SNOLBoundaryLabelDeterminism`. König/counting часть — закрыта. -/
+  CONCLUSION: the node narrowed to `hComp` = `SNOLBoundaryLabelDeterminism`. The König/counting part is closed. -/
 theorem globalAbsorption_to_engine {Lbl : Type*} [Finite Lbl]
     {RealStep : σ → σ → Prop} {Legal OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     {kind : σ → σ → Kind} {EuclideanEngine : Prop}
@@ -388,44 +388,44 @@ theorem globalAbsorption_to_engine {Lbl : Type*} [Finite Lbl]
     globalAbsorption_to_labelledFanIn hGlobal hOldFin hAll hNoInf
   exact labelledFanIn_to_engine (localLabelDeterminism hKindEq hComp) hfan
 
-/-! ### §23–24. Локализация `hComp`: SNOL-стена как единственный содержательный вход
+/-! ### §23–24. Localizing `hComp`: the SNOL wall as the sole substantive input
 
-После закрытия König единственный содержательный несведённый вход — компонентный детерминизм.
-Четыре из пяти компонентов (`active`, `oldPeel`, `corridor`, `boundary`-exact) — exact-детерминизмы:
-метка хранит точные данные предшественника, поэтому равенство меток ⟹ равенство предшественников
-(в конкретной инстанциации — арифметика separating scale / exact old-prime / exact corridor). Пятый,
-`snol`, может быть неинъективным — и это РОВНО старая SNOL/Hall стена. Формализуем его нормальную форму.
+After closing König the only substantive unreduced input is the component determinism.
+Four of the five components (`active`, `oldPeel`, `corridor`, `boundary`-exact) are exact determinisms:
+the label stores the exact predecessor data, so equality of labels ⟹ equality of predecessors
+(in the concrete instantiation — the arithmetic of separating scale / exact old-prime / exact corridor). The fifth,
+`snol`, may be non-injective — and this is EXACTLY the old SNOL/Hall wall. We formalize its normal form.
 
-`SNOLBoundaryLabelDeterminism` — то, что осталось: у SNOL-ребра равная метка ⟹ равенство ∨ engine. -/
+`SNOLBoundaryLabelDeterminism` — what remains: for a SNOL edge an equal label ⟹ equality ∨ engine. -/
 
-/-- §23. Оставшийся SNOL-вход в явной форме: детерминизм метки SNOL-ребра (или engine). -/
+/-- §23. The remaining SNOL input in explicit form: determinism of the SNOL-edge label (or engine). -/
 def SNOLBoundaryLabelDeterminism {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) (kind : σ → σ → Kind) (EuclideanEngine : Prop) : Prop :=
   KindDeterminism RealStep Legal edgeSig kind EuclideanEngine Kind.snol
 
 /--
-  **§24 (`snol_kindDeterminism_of_normalForm`) — ДОКАЗАНА (нормальная форма SNOL).** SNOL-детерминизм
-  СВОДИТСЯ к двум под-случаям: `snolExact` (метка хранит точного предшественника ⟹ равенство) и
-  `snolHallSeed` (неинъективность ⟹ engine). Дан классификатор `snolMode : σ → σ → Bool`
-  (`true` = exact, `false` = hall-seed) и два под-детерминизма — собираем полный SNOL-детерминизм.
+  **§24 (`snol_kindDeterminism_of_normalForm`) — PROVEN (SNOL normal form).** SNOL determinism
+  REDUCES to two sub-cases: `snolExact` (the label stores the exact predecessor ⟹ equality) and
+  `snolHallSeed` (non-injectivity ⟹ engine). Given a classifier `snolMode : σ → σ → Bool`
+  (`true` = exact, `false` = hall-seed) and two sub-determinisms — we assemble the full SNOL determinism.
 
-  Это НАСТОЯЩАЯ сборка (case split по `snolMode`), а не алиас. Содержательная нагрузка — в
-  `hHallSeed` (hall-seed ⟹ engine): это несведённая SNOL/Hall стена (brick §24). -/
+  This is a GENUINE assembly (case split by `snolMode`), not an alias. The substantive load is in
+  `hHallSeed` (hall-seed ⟹ engine): this is the unreduced SNOL/Hall wall (brick §24). -/
 theorem snol_kindDeterminism_of_normalForm {Lbl : Type*}
     {RealStep : σ → σ → Prop} {Legal : σ → Prop} {edgeSig : σ → σ → Lbl} {kind : σ → σ → Kind}
     {EuclideanEngine : Prop} (snolMode : σ → σ → Bool)
-    -- exact/exact с равной меткой ⟹ равенство предшественников
+    -- exact/exact with an equal label ⟹ equality of predecessors
     (hExact : ∀ U₁ U₂ V, Legal U₁ → Legal U₂ → Legal V →
       RealStep U₁ V → RealStep U₂ V → kind U₁ V = Kind.snol → kind U₂ V = Kind.snol →
       snolMode U₁ V = true → snolMode U₂ V = true → edgeSig U₁ V = edgeSig U₂ V → U₁ = U₂)
-    -- любой hall-seed-случай (различные предшественники с равной меткой) ⟹ engine
+    -- any hall-seed case (distinct predecessors with an equal label) ⟹ engine
     (hHallSeed : ∀ U₁ U₂ V, Legal U₁ → Legal U₂ → Legal V →
       RealStep U₁ V → RealStep U₂ V → kind U₁ V = Kind.snol → kind U₂ V = Kind.snol →
       (snolMode U₁ V = false ∨ snolMode U₂ V = false) → edgeSig U₁ V = edgeSig U₂ V →
       U₁ = U₂ ∨ EuclideanEngine) :
     SNOLBoundaryLabelDeterminism RealStep Legal edgeSig kind EuclideanEngine := by
   intro U₁ U₂ V hL1 hL2 hLV hs1 hs2 hk1 hk2 hsig
-  -- case split по snolMode обоих
+  -- case split by snolMode of both
   by_cases hm1 : snolMode U₁ V = true
   · by_cases hm2 : snolMode U₂ V = true
     · exact Or.inl (hExact U₁ U₂ V hL1 hL2 hLV hs1 hs2 hk1 hk2 hm1 hm2 hsig)
@@ -433,10 +433,10 @@ theorem snol_kindDeterminism_of_normalForm {Lbl : Type*}
   · exact hHallSeed U₁ U₂ V hL1 hL2 hLV hs1 hs2 hk1 hk2 (Or.inl (by simpa using hm1)) hsig
 
 /--
-  **§25 (`componentDeterminism_of_components`) — ДОКАЗАНА (полная сборка `hComp`).** `ComponentDeterminism`
-  собирается из детерминизма каждого из пяти тегов. Четыре exact-компонента (`active`/`oldPeel`/
-  `boundary`/`corridor`) плюс SNOL-компонент (§24). Это финальная локализация: ЕДИНСТВЕННЫЙ содержательно
-  несведённый кусок — `hHallSeed` внутри SNOL (стена), всё остальное — exact-арифметика инстанциации. -/
+  **§25 (`componentDeterminism_of_components`) — PROVEN (full assembly of `hComp`).** `ComponentDeterminism`
+  is assembled from the determinism of each of the five tags. Four exact components (`active`/`oldPeel`/
+  `boundary`/`corridor`) plus the SNOL component (§24). This is the final localization: the ONLY substantively
+  unreduced piece is `hHallSeed` inside SNOL (the wall); everything else is exact arithmetic of the instantiation. -/
 theorem componentDeterminism_of_components {Lbl : Type*}
     {RealStep : σ → σ → Prop} {Legal : σ → Prop} {edgeSig : σ → σ → Lbl} {kind : σ → σ → Kind}
     {EuclideanEngine : Prop}
@@ -454,22 +454,22 @@ theorem componentDeterminism_of_components {Lbl : Type*}
   | snol => exact hSnol
   | corridor => exact hCorridor
 
-/-! ### §26. Строгое закрытие SNOL-компонента через regeneration (brick `snol_hallseed_strict_closure`)
+/-! ### §26. Strict closure of the SNOL component via regeneration (brick `snol_hallseed_strict_closure`)
 
-Здесь мы честно доводим SNOL-стену до её точной несводённой сердцевины. Сначала — **машинно-проверенный
-no-go** (§1 brick): голая неинъективность SNOL-метки НЕ даёт engine. Затем — минимальный локальный
-закон `SNOLHallSeedRegenerates`, которого достаточно, и который остаётся ЕДИНСТВЕННЫМ содержательным
-арифметическим входом всей программы. -/
+Here we honestly carry the SNOL wall down to its exact unreduced core. First — a **machine-checked
+no-go** (§1 brick): bare non-injectivity of the SNOL label does NOT yield an engine. Then — the minimal local
+law `SNOLHallSeedRegenerates`, which suffices, and which remains the ONLY substantive
+arithmetic input of the whole programme. -/
 
-/-- Путь длины `n` (число real-step рёбер). `PathN 0 X Y := X = Y`. -/
+/-- A path of length `n` (number of real-step edges). `PathN 0 X Y := X = Y`. -/
 def PathN (RealStep : σ → σ → Prop) : ℕ → σ → σ → Prop
   | 0,     X, Y => X = Y
   | (n+1), X, Y => ∃ Z, RealStep X Z ∧ PathN RealStep n Z Y
 
-/-- Непустой путь `X →⁺ Y`: длина `≥ 1`. -/
+/-- A nonempty path `X →⁺ Y`: length `≥ 1`. -/
 def NonemptyPath (RealStep : σ → σ → Prop) (X Y : σ) : Prop := ∃ n, 0 < n ∧ PathN RealStep n X Y
 
-/-- `SNOLHallSeed`: два РАЗНЫХ SNOL-предшественника одного `V` с одинаковой меткой `c`. -/
+/-- `SNOLHallSeed`: two DISTINCT SNOL predecessors of a single `V` with the same label `c`. -/
 def SNOLHallSeed {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) (kind : σ → σ → Kind) : Prop :=
   ∃ U₁ U₂ V, U₁ ≠ U₂ ∧ Legal U₁ ∧ Legal U₂ ∧ Legal V ∧
@@ -477,33 +477,33 @@ def SNOLHallSeed {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → P
     edgeSig U₁ V = edgeSig U₂ V
 
 /--
-  **§1 (`snolHallSeed_bare_no_go`) — ДОКАЗАН NO-GO (машинно).** Голая неинъективность SNOL-метки
-  НЕ влечёт engine. Формально: существует конкретная модель (три состояния `U₁,U₂,V`, два ребра
-  `U₁→V`, `U₂→V` одной метки, строго убывающая высота), в которой `SNOLHallSeed` есть, но
-  `InfiniteLegalDescent` НЕТ (высота строго падает ⟹ спуска нет). Значит из `SNOLHallSeed` в чистом
-  виде нельзя вывести ни `InfiniteLegalDescent`, ни (при `Engine := InfiniteLegalDescent`) engine —
-  нужна дополнительная арифметическая структура (§2). -/
+  **§1 (`snolHallSeed_bare_no_go`) — NO-GO PROVEN (machine).** Bare non-injectivity of the SNOL label
+  does NOT entail an engine. Formally: there exists a concrete model (three states `U₁,U₂,V`, two edges
+  `U₁→V`, `U₂→V` of the same label, strictly decreasing height) in which `SNOLHallSeed` holds, yet
+  `InfiniteLegalDescent` does NOT (height strictly drops ⟹ no descent). So from `SNOLHallSeed` in pure
+  form one can derive neither `InfiniteLegalDescent`, nor (under `Engine := InfiniteLegalDescent`) an engine —
+  additional arithmetic structure is needed (§2). -/
 theorem snolHallSeed_bare_no_go :
     ∃ (τ : Type) (RealStep : τ → τ → Prop) (Legal : τ → Prop)
       (edgeSig : τ → τ → Unit) (kind : τ → τ → Kind),
       SNOLHallSeed RealStep Legal edgeSig kind ∧ ¬ InfiniteLegalDescent RealStep := by
-  -- модель: τ = Bool ⊕ Unit? Проще: τ := Fin 3 (0=U₁,1=U₂,2=V), рёбра 0→2, 1→2, высота 2↦0 иначе 1.
+  -- model: τ = Bool ⊕ Unit? Simpler: τ := Fin 3 (0=U₁,1=U₂,2=V), edges 0→2, 1→2, height 2↦0 otherwise 1.
   refine ⟨Fin 3, fun a b => (a = 0 ∨ a = 1) ∧ b = 2, fun _ => True,
     fun _ _ => (), fun _ _ => Kind.snol, ?_, ?_⟩
   · -- SNOLHallSeed: U₁=0, U₂=1, V=2
     exact ⟨0, 1, 2, by decide, trivial, trivial, trivial,
       ⟨Or.inl rfl, rfl⟩, ⟨Or.inr rfl, rfl⟩, rfl, rfl, rfl⟩
-  · -- нет бесконечного спуска: высота h(2)=0, h(_)=1 строго падает на каждом ребре;
-    -- бесконечный спуск дал бы height (X 1) < height (X 0) и т.д., но множество высот {0,1} конечно —
-    -- прямее: любой real-step ведёт в 2, а из 2 real-step'а нет, значит цепи длины 2 не бывает.
+  · -- no infinite descent: height h(2)=0, h(_)=1 strictly drops on each edge;
+    -- an infinite descent would give height (X 1) < height (X 0) etc., but the set of heights {0,1} is finite —
+    -- more directly: every real-step leads into 2, and from 2 there is no real-step, so a chain of length 2 cannot exist.
     rintro ⟨X, hX⟩
     -- hX 0 : (X 1 = 0 ∨ X 1 = 1) ∧ X 0 = 2  ;  hX 1 : (X 2 = 0 ∨ X 2 = 1) ∧ X 1 = 2
     have h0 := (hX 0).1   -- X 1 = 0 ∨ X 1 = 1
     have h1 := (hX 1).2   -- X 1 = 2
     rcases h0 with h | h <;> rw [h] at h1 <;> exact absurd h1 (by decide)
 
-/-- `SNOLHallSeedRegenerates` (§2, форма A): всякий non-injective SNOL seed имеет return-путь от
-    общего target `V` обратно к одному из предшественников. Минимальный достаточный локальный закон. -/
+/-- `SNOLHallSeedRegenerates` (§2, form A): every non-injective SNOL seed has a return-path from
+    the common target `V` back to one of the predecessors. The minimal sufficient local law. -/
 def SNOLHallSeedRegenerates {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal : σ → Prop)
     (edgeSig : σ → σ → Lbl) (kind : σ → σ → Kind) : Prop :=
   ∀ U₁ U₂ V, U₁ ≠ U₂ → Legal U₁ → Legal U₂ → Legal V →
@@ -511,14 +511,14 @@ def SNOLHallSeedRegenerates {Lbl : Type*} (RealStep : σ → σ → Prop) (Legal
     edgeSig U₁ V = edgeSig U₂ V →
     NonemptyPath RealStep V U₁ ∨ NonemptyPath RealStep V U₂
 
-/-- Ребро `U→V` плюс возвратный путь `V →⁺ U` дают непустой цикл `U →⁺ U`. -/
+/-- An edge `U→V` plus a return-path `V →⁺ U` give a nonempty cycle `U →⁺ U`. -/
 theorem cons_step_to_nonempty_cycle {RealStep : σ → σ → Prop} {U V : σ}
     (hStep : RealStep U V) (hBack : NonemptyPath RealStep V U) : NonemptyPath RealStep U U := by
   obtain ⟨n, hn, hpath⟩ := hBack
   exact ⟨n + 1, Nat.succ_pos n, ⟨V, hStep, hpath⟩⟩
 
-/-- Путь длины `n` при СТРОГО РАСТУЩЕЙ вдоль ребра высоте (`RealStep u v ⟹ height u < height v`):
-    `height X + n ≤ height Y`. (Та же ориентация, что у `no_infiniteLegalDescent_of_height`.) -/
+/-- A path of length `n` under STRICTLY INCREASING height along the edge (`RealStep u v ⟹ height u < height v`):
+    `height X + n ≤ height Y`. (The same orientation as `no_infiniteLegalDescent_of_height`.) -/
 theorem pathN_height_le {RealStep : σ → σ → Prop} (height : σ → ℕ)
     (hdrop : ∀ {u v}, RealStep u v → height u < height v) :
     ∀ n X Y, PathN RealStep n X Y → height X + n ≤ height Y := by
@@ -533,9 +533,9 @@ theorem pathN_height_le {RealStep : σ → σ → Prop} (height : σ → ℕ)
     omega
 
 /--
-  **`no_cycle_of_height` — ДОКАЗАНА.** При строго растущей вдоль ребра высоте (та же ориентация, что
-  запрещает бесконечный спуск) непустой цикл `W →⁺ W` невозможен: путь длины `n ≥ 1` дал бы
-  `height W + n ≤ height W`. Один и тот же `hdrop` убивает И спуск, И цикл. -/
+  **`no_cycle_of_height` — PROVEN.** Under strictly increasing height along the edge (the same orientation that
+  forbids infinite descent) a nonempty cycle `W →⁺ W` is impossible: a path of length `n ≥ 1` would give
+  `height W + n ≤ height W`. One and the same `hdrop` kills BOTH descent AND cycle. -/
 theorem no_cycle_of_height {RealStep : σ → σ → Prop} (height : σ → ℕ)
     (hdrop : ∀ {u v}, RealStep u v → height u < height v)
     (W : σ) (hcyc : NonemptyPath RealStep W W) : False := by
@@ -543,14 +543,14 @@ theorem no_cycle_of_height {RealStep : σ → σ → Prop} (height : σ → ℕ)
   have := pathN_height_le height hdrop n W W hpath
   omega
 
-/-- Мост «цикл ⟹ engine»: непустой legal-цикл даёт `EuclideanEngine`. В EPMI-инстанциации
-    (`EuclideanEngine := False`) это ровно `no_cycle_of_height` — см. `cycleBridge_of_height`. -/
+/-- The bridge «cycle ⟹ engine»: a nonempty legal cycle yields `EuclideanEngine`. In the EPMI instantiation
+    (`EuclideanEngine := False`) this is exactly `no_cycle_of_height` — see `cycleBridge_of_height`. -/
 def CycleBridge {RealStep : σ → σ → Prop} (Legal : σ → Prop) (EuclideanEngine : Prop) : Prop :=
   (∃ W, Legal W ∧ NonemptyPath RealStep W W) → EuclideanEngine
 
-/-- **`cycleBridge_of_height` — ДОКАЗАНА.** При строго убывающей высоте мост «цикл ⟹ engine»
-    выполняется для `EuclideanEngine := False` (цикла просто нет). Это делает `CycleBridge` не
-    гипотезой, а следствием двигателя в реальной инстанциации. -/
+/-- **`cycleBridge_of_height` — PROVEN.** Under strictly decreasing height the bridge «cycle ⟹ engine»
+    holds for `EuclideanEngine := False` (there simply is no cycle). This makes `CycleBridge` not
+    a hypothesis but a consequence of the engine in the real instantiation. -/
 theorem cycleBridge_of_height {RealStep : σ → σ → Prop} {Legal : σ → Prop} (height : σ → ℕ)
     (hdrop : ∀ {u v}, RealStep u v → height u < height v) :
     CycleBridge (RealStep := RealStep) Legal False := by
@@ -558,10 +558,10 @@ theorem cycleBridge_of_height {RealStep : σ → σ → Prop} {Legal : σ → Pr
   exact no_cycle_of_height height hdrop W hcyc
 
 /--
-  **§5.1 (`snolHallSeed_to_engine_of_regeneration`) — ДОКАЗАНА при законе regeneration.** Если
-  выполняется минимальный локальный закон `SNOLHallSeedRegenerates` и мост `CycleBridge`, то любой
-  `SNOLHallSeed` даёт engine. Механизм: seed даёт два ребра `Uᵢ → V`; regeneration даёт возврат
-  `V →⁺ Uᵢ`; вместе — непустой цикл `Uᵢ →⁺ Uᵢ` (`cons_step_to_nonempty_cycle`); мост даёт engine. -/
+  **§5.1 (`snolHallSeed_to_engine_of_regeneration`) — PROVEN under the regeneration law.** If
+  the minimal local law `SNOLHallSeedRegenerates` and the `CycleBridge` bridge hold, then any
+  `SNOLHallSeed` yields an engine. Mechanism: the seed gives two edges `Uᵢ → V`; regeneration gives a return
+  `V →⁺ Uᵢ`; together — a nonempty cycle `Uᵢ →⁺ Uᵢ` (`cons_step_to_nonempty_cycle`); the bridge gives an engine. -/
 theorem snolHallSeed_to_engine_of_regeneration {Lbl : Type*}
     {RealStep : σ → σ → Prop} {Legal : σ → Prop} {edgeSig : σ → σ → Lbl} {kind : σ → σ → Kind}
     {EuclideanEngine : Prop}
@@ -575,9 +575,9 @@ theorem snolHallSeed_to_engine_of_regeneration {Lbl : Type*}
   · exact hBridge ⟨U₂, hL2, cons_step_to_nonempty_cycle hs2 hVU2⟩
 
 /--
-  **§6.1 (`snol_kindDeterminism_of_regeneration`) — ДОКАЗАНА.** Из `SNOLHallSeedRegenerates` + моста
-  следует полный SNOL-детерминизм (`SNOLBoundaryLabelDeterminism`): для пары SNOL-рёбер с равной меткой
-  либо предшественники равны, либо (различны ⟹ `SNOLHallSeed`) engine через §5.1. -/
+  **§6.1 (`snol_kindDeterminism_of_regeneration`) — PROVEN.** From `SNOLHallSeedRegenerates` + the bridge
+  follows the full SNOL determinism (`SNOLBoundaryLabelDeterminism`): for a pair of SNOL edges with an equal label
+  either the predecessors are equal, or (distinct ⟹ `SNOLHallSeed`) an engine via §5.1. -/
 theorem snol_kindDeterminism_of_regeneration {Lbl : Type*}
     {RealStep : σ → σ → Prop} {Legal : σ → Prop} {edgeSig : σ → σ → Lbl} {kind : σ → σ → Kind}
     {EuclideanEngine : Prop}
@@ -591,17 +591,17 @@ theorem snol_kindDeterminism_of_regeneration {Lbl : Type*}
       ⟨U₁, U₂, V, hEq, hL1, hL2, hLV, hs1, hs2, hk1, hk2, hsig⟩)
 
 /--
-  **§26bis (`regen_under_hdrop_kills_seed`) — ДОКАЗАНА (важная оговорка честности).** Под тем же `hdrop`
-  (ко-высота растёт вдоль ребра), которым закрывается всё остальное, `SNOLHallSeedRegenerates` и
-  СРАБОТАВШИЙ `SNOLHallSeed` ВЗАИМОИСКЛЮЧАЮЩИ: ребро seed'а `Uᵢ→V` даёт `height Uᵢ < height V`, а
-  возврат regeneration `V →⁺ Uᵢ` даёт `height V < height Uᵢ` — противоречие (цикл запрещён).
+  **§26bis (`regen_under_hdrop_kills_seed`) — PROVEN (an important honesty caveat).** Under the same `hdrop`
+  (co-height increases along the edge) that closes everything else, `SNOLHallSeedRegenerates` and
+  a FIRED `SNOLHallSeed` are MUTUALLY EXCLUSIVE: the seed edge `Uᵢ→V` gives `height Uᵢ < height V`, while
+  the regeneration return `V →⁺ Uᵢ` gives `height V < height Uᵢ` — a contradiction (the cycle is forbidden).
 
-  СЛЕДСТВИЕ (честное): в финальной сборке `hdrop` и `hRegen` совместимы лишь когда seed'ов НЕТ. То
-  есть под `hdrop` закон `SNOLHallSeedRegenerates` выполняется лишь ВАКУУМНО (seed-emptiness), а НЕ как
-  нетривиальный «fan-in ⟹ engine». Реальное арифметическое содержание при этом мигрирует в САМ `hdrop`
-  — существование строго-монотонной ко-высоты на `RealStep` графа `6m±1` (= ацикличность/EPMI/
-  well-foundedness), которая здесь НЕ предъявлена. Поэтому «узел сведён к ОДНОЙ лемме» — упрощение:
-  нагрузка делится между `hRegen` (seed⇒return-path, строго ЛЕГЧЕ старой seed⇒engine стены) и `hdrop`. -/
+  CONSEQUENCE (honest): in the final assembly `hdrop` and `hRegen` are compatible only when there are NO seeds. That
+  is, under `hdrop` the law `SNOLHallSeedRegenerates` holds only VACUOUSLY (seed-emptiness), NOT as a
+  nontrivial «fan-in ⟹ engine». The real arithmetic content then migrates into `hdrop` ITSELF
+  — the existence of a strictly-monotone co-height on the `RealStep` of the `6m±1` graph (= acyclicity/EPMI/
+  well-foundedness), which is NOT presented here. Hence «the node is reduced to ONE lemma» is a simplification:
+  the load is split between `hRegen` (seed⇒return-path, strictly EASIER than the old seed⇒engine wall) and `hdrop`. -/
 theorem regen_under_hdrop_kills_seed {Lbl : Type*}
     {RealStep : σ → σ → Prop} {Legal : σ → Prop} {edgeSig : σ → σ → Lbl} {kind : σ → σ → Kind}
     (height : σ → ℕ) (hdrop : ∀ {u v}, RealStep u v → height u < height v)
@@ -612,24 +612,24 @@ theorem regen_under_hdrop_kills_seed {Lbl : Type*}
   · exact no_cycle_of_height height hdrop U₁ (cons_step_to_nonempty_cycle hs1 hback)
   · exact no_cycle_of_height height hdrop U₂ (cons_step_to_nonempty_cycle hs2 hback)
 
-/-! ### EPMI-мост: `¬InfiniteLegalDescent` из высоты (ДОКАЗАНО)
+/-! ### The EPMI bridge: `¬InfiniteLegalDescent` from height (PROVEN)
 
-Показываем, что ветвь `hNoInf` — не гипотеза, а следствие двигателя: если каждый real-step строго
-уменьшает натуральную высоту, бесконечного спуска нет (`no_infinite_descent`). -/
+We show that the `hNoInf` branch is not a hypothesis but a consequence of the engine: if every real-step strictly
+decreases the natural height, there is no infinite descent (`no_infinite_descent`). -/
 
 /--
-  **`no_infiniteLegalDescent_of_height` — ДОКАЗАНА.** Если `RealStep u v ⟹ height u < height v`
-  (шаг вниз уменьшает высоту), то `InfiniteLegalDescent` невозможен. Здесь `X (n+1) → X n` даёт
-  `height (X (n+1)) < height (X n)` — строго убывающая цепь в ℕ, запрещена well-foundedness.
+  **`no_infiniteLegalDescent_of_height` — PROVEN.** If `RealStep u v ⟹ height u < height v`
+  (a downward step decreases the height), then `InfiniteLegalDescent` is impossible. Here `X (n+1) → X n` gives
+  `height (X (n+1)) < height (X n)` — a strictly decreasing chain in ℕ, forbidden by well-foundedness.
 
-  (Замечание о направлении: в `InfiniteLegalDescent` ребро идёт `X (n+1) → X n`, т.е. `X (n+1)` —
-  предшественник, поэтому его высота МЕНЬШЕ; убывает `height ∘ X`.) -/
+  (A remark on direction: in `InfiniteLegalDescent` the edge goes `X (n+1) → X n`, i.e. `X (n+1)` is the
+  predecessor, so its height is SMALLER; `height ∘ X` decreases.) -/
 theorem no_infiniteLegalDescent_of_height {RealStep : σ → σ → Prop} (height : σ → ℕ)
     (hdrop : ∀ {u v}, RealStep u v → height u < height v) :
     ¬ InfiniteLegalDescent RealStep := by
   rintro ⟨X, hX⟩
-  -- height (X (n+1)) < height (X n): строго убывающая ℕ-цепь ⟹ противоречие через
-  -- невозможность бесконечного спуска (тот же двигатель `no_infinite_descent`, A=1).
+  -- height (X (n+1)) < height (X n): a strictly decreasing ℕ-chain ⟹ contradiction via
+  -- the impossibility of infinite descent (the same engine `no_infinite_descent`, A=1).
   refine EuclidsPath.Engine.no_infinite_descent (A := 1) (le_refl 1)
     (fun k => height (X k)) (fun n => ?_)
   -- DescentStep 1 (height (X n)) (height (X (n+1))) := 1 * height (X (n+1)) < height (X n)
@@ -637,24 +637,24 @@ theorem no_infiniteLegalDescent_of_height {RealStep : σ → σ → Prop} (heigh
   have := hdrop (hX n)   -- height (X (n+1)) < height (X n)
   omega
 
-/-! ### §17. Мост к живому пути Step00 (честная связь, НЕ закрытие)
+/-! ### §17. Bridge to the live Step00 path (an honest link, NOT a closure)
 
-Абстрактная машина выше сама по себе — остров: `EuclideanEngine` — свободная `Prop`, `σ` абстрактно.
-Чтобы связь с реальным узлом была не декларацией, а типом, инстанциируем `EuclideanEngine := False`
-(EPMI: двигатель НЕВОЗМОЖЕН, `no_perpetual_engine`). Тогда `globalAbsorption_to_engine` даёт `False`
-из своих входов — то есть ОПРОВЕРГАЕТ `GlobalOldAbsorption`. Это ровно форма
-`BoundaryDecomp.no_global_absorption_under_epmi`: «глобальное поглощение + запрет двигателя ⟹ ⊥».
+The abstract machine above is by itself an island: `EuclideanEngine` is a free `Prop`, `σ` is abstract.
+To make the link with the real node a type rather than a declaration, we instantiate `EuclideanEngine := False`
+(EPMI: the engine is IMPOSSIBLE, `no_perpetual_engine`). Then `globalAbsorption_to_engine` gives `False`
+from its inputs — that is, it REFUTES `GlobalOldAbsorption`. This is exactly the form
+`BoundaryDecomp.no_global_absorption_under_epmi`: «global absorption + forbidding the engine ⟹ ⊥».
 
-Честный статус моста: он ЛОГИЧЕСКИ соединяет абстрактную машину с формой Step00-узла, но НЕ закрывает
-его — остаётся вход `hComp` (SNOL-стена), а привязка `σ`/`RealStep`/`edgeSig` к конкретному графу
-`6m±1` (`Residuals.TwinCenterZ`, `ProductCore.CoreSig`) здесь НЕ предъявлена. Мост показывает
-СОВМЕСТИМОСТЬ формы, а не выводимость twin. -/
+The honest status of the bridge: it LOGICALLY connects the abstract machine with the form of the Step00 node, but does NOT close
+it — the input `hComp` (the SNOL wall) remains, and the binding of `σ`/`RealStep`/`edgeSig` to the concrete graph
+`6m±1` (`Residuals.TwinCenterZ`, `ProductCore.CoreSig`) is NOT presented here. The bridge shows
+the COMPATIBILITY of the form, not the derivability of twin. -/
 
 /--
-  **`globalAbsorption_refutes_under_epmi` — ДОКАЗАНА (König закрыт; остался `hComp`).**
-  При `EuclideanEngine := False` (EPMI) абстрактная цепь опровергает `GlobalOldAbsorption`. Это
-  та же контрапозиция, что `no_global_absorption_under_epmi`, но выраженная через labelled-fan-in
-  машину, в которой König-ветвь уже доказана. Держится на одном содержательном входе `hComp` (SNOL). -/
+  **`globalAbsorption_refutes_under_epmi` — PROVEN (König closed; `hComp` remains).**
+  Under `EuclideanEngine := False` (EPMI) the abstract chain refutes `GlobalOldAbsorption`. This is
+  the same contraposition as `no_global_absorption_under_epmi`, but expressed through the labelled-fan-in
+  machine in which the König branch is already proven. It rests on a single substantive input `hComp` (SNOL). -/
 theorem globalAbsorption_refutes_under_epmi {Lbl : Type*} [Finite Lbl]
     {RealStep : σ → σ → Prop} {Legal OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     {kind : σ → σ → Kind}
@@ -667,35 +667,35 @@ theorem globalAbsorption_refutes_under_epmi {Lbl : Type*} [Finite Lbl]
     False :=
   globalAbsorption_to_engine hGlobal hOldFin hAll hNoInf hKindEq hComp
 
-/-! ### §27. Финальная сборка: всё сведено к ОДНОМУ закону `SNOLHallSeedRegenerates`
+/-! ### §27. Final assembly: everything reduced to ONE law `SNOLHallSeedRegenerates`
 
-Собираем всю цепь под EPMI (`EuclideanEngine := False`, высота строго падает на real-step). Тогда:
-König закрыт (§7), EPMI-мост даёт `hNoInf` и `CycleBridge`, четыре exact-компонента — арифметика
-инстанциации, а пятый (SNOL) закрывается `SNOLHallSeedRegenerates` (§26). Итог: при строго падающей
-высоте единственный содержательный вход — `SNOLHallSeedRegenerates`; он ОПРОВЕРГАЕТ `GlobalOldAbsorption`.
+We assemble the whole chain under EPMI (`EuclideanEngine := False`, height strictly drops on real-step). Then:
+König is closed (§7), the EPMI bridge gives `hNoInf` and `CycleBridge`, four exact components are the arithmetic
+of the instantiation, and the fifth (SNOL) is closed by `SNOLHallSeedRegenerates` (§26). Result: under strictly dropping
+height the only substantive input is `SNOLHallSeedRegenerates`; it REFUTES `GlobalOldAbsorption`.
 
-Это финальная локализация — но НЕ «к одной лемме»: см. честную оговорку в docstring теоремы. -/
+This is the final localization — but NOT «to one lemma»: see the honest caveat in the theorem docstring. -/
 
 /--
-  **§8–9 (`globalAbsorption_refutes_of_snolRegeneration`) — ДОКАЗАНА (финальная сборка под EPMI).**
-  При строго растущей вдоль ребра ко-высоте `GlobalOldAbsorption` невозможно, ЕСЛИ дан набор входов:
-    • `SNOLHallSeedRegenerates` — SNOL-закон (seed ⟹ return-path);
-    • четыре компонента `hActive/hOldPeel/hBoundary/hCorridor` — под `Engine := False` это НАСТОЯЩИЕ
-      обязательства инъективности метки на каждом сорте ребра, НЕ бесплатные;
-    • `hOldFin`, `[Finite Lbl]`, `hAll`, `hKindEq`, сам `hdrop` — допущения инстанциации графа.
-  Высота даёт `hNoInf` (нет спуска) И `CycleBridge` (нет цикла) — оба из одного `hdrop`.
+  **§8–9 (`globalAbsorption_refutes_of_snolRegeneration`) — PROVEN (final assembly under EPMI).**
+  Under strictly increasing co-height along the edge `GlobalOldAbsorption` is impossible, IF a set of inputs is given:
+    • `SNOLHallSeedRegenerates` — the SNOL law (seed ⟹ return-path);
+    • four components `hActive/hOldPeel/hBoundary/hCorridor` — under `Engine := False` these are GENUINE
+      commitments of label injectivity on each edge sort, NOT free;
+    • `hOldFin`, `[Finite Lbl]`, `hAll`, `hKindEq`, `hdrop` itself — assumptions of the graph instantiation.
+  The height gives `hNoInf` (no descent) AND `CycleBridge` (no cycle) — both from a single `hdrop`.
 
-  ЧЕСТНАЯ ОГОВОРКА (подтверждена адверсариальным аудитом v4, `regen_under_hdrop_kills_seed`). Нельзя
-  говорить «узел сведён к ОДНОЙ лемме `SNOLHallSeedRegenerates`». Под тем же `hdrop`, которым
-  закрывается всё остальное, seed и его regeneration ВЗАИМОИСКЛЮЧАЮЩИ (ребро + возврат = цикл, запрещён).
-  Значит `hRegen` под `hdrop` выполняется лишь ВАКУУМНО (когда seed'ов нет), а реальное арифметическое
-  содержание МИГРИРУЕТ в сам `hdrop` — существование строго-монотонной ко-высоты на `6m±1` RealStep
-  (= ацикличность/EPMI/well-foundedness), которая здесь НЕ предъявлена. Плюс `hAll` ЛОЖНО на реальном
-  графе, а машина абстрактна и не подключена к `TwinCenterZ`/`CoreSig`.
+  HONEST CAVEAT (confirmed by the v4 adversarial audit, `regen_under_hdrop_kills_seed`). One cannot
+  say «the node is reduced to ONE lemma `SNOLHallSeedRegenerates`». Under the same `hdrop` that
+  closes everything else, the seed and its regeneration are MUTUALLY EXCLUSIVE (edge + return = cycle, forbidden).
+  So `hRegen` under `hdrop` holds only VACUOUSLY (when there are no seeds), while the real arithmetic
+  content MIGRATES into `hdrop` itself — the existence of a strictly-monotone co-height on `6m±1` RealStep
+  (= acyclicity/EPMI/well-foundedness), which is NOT presented here. Plus `hAll` is FALSE on the real
+  graph, and the machine is abstract and not connected to `TwinCenterZ`/`CoreSig`.
 
-  ВЫВОД: это редукция МОДУЛО нескольких принятых арифметических фактов на АБСТРАКТНОМ графе
-  (`hRegen` — строго ЛЕГЧЕ старой seed⇒engine стены — ПЛЮС `hdrop`/ко-высота ПЛЮС четыре компонента
-  ПЛЮС инстанциация), а не «к одной лемме». Реальный прогресс есть; закрытия Step00 нет. -/
+  CONCLUSION: this is a reduction MODULO several accepted arithmetic facts on an ABSTRACT graph
+  (`hRegen` — strictly EASIER than the old seed⇒engine wall — PLUS `hdrop`/co-height PLUS four components
+  PLUS the instantiation), not «to one lemma». There is real progress; there is no closure of Step00. -/
 theorem globalAbsorption_refutes_of_snolRegeneration {Lbl : Type*} [Finite Lbl]
     {RealStep : σ → σ → Prop} {Legal OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     {kind : σ → σ → Kind} (height : σ → ℕ)
@@ -710,10 +710,10 @@ theorem globalAbsorption_refutes_of_snolRegeneration {Lbl : Type*} [Finite Lbl]
     (hCorridor : KindDeterminism RealStep Legal edgeSig kind False Kind.corridor)
     (hRegen : SNOLHallSeedRegenerates RealStep Legal edgeSig kind) :
     False := by
-  -- один и тот же hdrop (height растёт вдоль ребра) убивает И бесконечный спуск, И цикл
+  -- one and the same hdrop (height increases along the edge) kills BOTH infinite descent AND cycle
   have hNoInf : ¬ InfiniteLegalDescent RealStep := no_infiniteLegalDescent_of_height height hdrop
   have hBridge : CycleBridge (RealStep := RealStep) Legal False := cycleBridge_of_height height hdrop
-  -- SNOL-компонент из regeneration
+  -- the SNOL component from regeneration
   have hSnol : SNOLBoundaryLabelDeterminism RealStep Legal edgeSig kind False :=
     snol_kindDeterminism_of_regeneration hBridge hRegen
   have hComp : ComponentDeterminism RealStep Legal edgeSig kind False :=

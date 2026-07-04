@@ -1,32 +1,32 @@
 /-
-  JumpBarrier — быстрый расход энергии, скачки уровней и cut-barrier (jump-совместимый reverse-двигатель).
-  Источник: jump_reverse_engine_cut_barrier_formal_ru_2026-07-01.md.
-  Проза: prose/24_BoundaryDecomp.md (раздел «Jump engine и cut-barrier»).
+  JumpBarrier — rapid energy expenditure, level jumps, and cut-barrier (jump-compatible reverse engine).
+  Source: jump_reverse_engine_cut_barrier_formal_ru_2026-07-01.md.
+  Prose: prose/24_BoundaryDecomp.md (section "Jump engine and cut-barrier").
 
-  ИДЕЯ. Двигатель может тратить энергию быстрее и ПЕРЕПРЫГИВАТЬ уровни. Значит нельзя требовать
-  «посещать каждый уровень» (`∀A ∃k, level k = A` ломается на `level_k = 2k`) — правильная замена:
-  ПЕРЕСЕКАТЬ/ПРОЕЦИРОВАТЬСЯ на каждый cut. Для high-level state на уровне `B` и cut `A₀ ≤ B` есть
-  конечная signature `CutSig A₀`. Если reverse-луч бесконечно уходит вверх (cofinal), для фиксированного
-  `A₀` он даёт бесконечно много проекций на этот cut; при конечном `CutSig A₀` подпись ПОВТОРЯЕТСЯ, и
-  повтор ⟹ `CloseAt A₀`. Противоречие с `¬Close`.
+  IDEA. The engine can spend energy faster and SKIP levels. This means we cannot require
+  "visit every level" (`∀A ∃k, level k = A` breaks on `level_k = 2k`) — the correct replacement:
+  CROSS/PROJECT onto every cut. For a high-level state at level `B` and cut `A₀ ≤ B` there is
+  a finite signature `CutSig A₀`. If the reverse ray goes up indefinitely (cofinal), for a fixed
+  `A₀` it yields infinitely many projections onto that cut; with finite `CutSig A₀` the signature REPEATS, and
+  a repetition ⟹ `CloseAt A₀`. Contradiction with `¬Close`.
 
-  ЗДЕСЬ ДОКАЗАНО (чистая логика/пиджонхол/well-founded, std аксиомы, без sorry):
-    * `paidJump_decreases_energy` (§1) — оплаченный скачок строго роняет энергию (больший расход только
-      УСИЛИВА�ет конечность);
-    * `no_infinite_strict_energy_descent` (§2) — нет бесконечного строгого спуска энергии;
-    * `jump_breaks_visitsEveryLevel` (§3) — `level_k=2k` cofinal, но не посещает нечётные ⟹ правильная
-      цель = cofinal + cut-проекции, а не «каждый уровень»;
-    * `CutSystem`/`JumpReverseRay` (§5–6), `repeated_cutSig_on_jumpReverseRay` (§9, jump-пиджонхол);
-    * `no_jumpReverseRay_of_cutBarrier` / `..._fixedCut` (§11) — при cut-barrier и `¬Close` луча нет;
-    * `no_jumpAboveGapConflict` (§18) — скачок через twin-gap + возврат внутрь = порядковое противоречие.
+  PROVED HERE (pure logic / pigeonhole / well-founded, std axioms, no sorry):
+    * `paidJump_decreases_energy` (§1) — a paid jump strictly drops energy (a larger expenditure only
+      STRENGTHENS finiteness);
+    * `no_infinite_strict_energy_descent` (§2) — no infinite strictly descending energy chain;
+    * `jump_breaks_visitsEveryLevel` (§3) — `level_k=2k` cofinal, but does not visit odd levels ⟹ the correct
+      goal = cofinal + cut-projections, not "every level";
+    * `CutSystem`/`JumpReverseRay` (§5–6), `repeated_cutSig_on_jumpReverseRay` (§9, jump-pigeonhole);
+    * `no_jumpReverseRay_of_cutBarrier` / `..._fixedCut` (§11) — with cut-barrier and `¬Close` no ray exists;
+    * `no_jumpAboveGapConflict` (§18) — jump across twin-gap + return inside = ordinal contradiction.
 
-  ЧЕСТНАЯ ГРАНИЦА (§17, §19 red-tests кирпича — вскрыта и МАШИННО зафиксирована). Абстрактный no-go
-  корректен и не про-конкретен. Но Step00-инстанциация держится на ДВУХ недоказанных входах:
-    * `step00_jumpReverseBarrier` (повтор cut-подписи на jump-луче ⟹ Close) — cross-level labelled
-      fan-in, тот же trap, что `snolHallSeed_bare_no_go`;
-    * `noTwin_forces_jumpReverseRay` — red-test #5: если требует `SNOL.SNOLInput`/`CleanDensityBelowA2`,
-      это переименование стены. `red_test_forceRay_is_supply` фиксирует: force-ray = supply-теорема.
-  Здесь оба — входы. `Step00` остаётся `sorry`.
+  HONEST BOUNDARY (§17, §19 red-tests of the brick — exposed and MACHINE-FIXED). The abstract no-go
+  is correct and not about concrete arithmetic. But the Step00 instantiation rests on TWO unproved inputs:
+    * `step00_jumpReverseBarrier` (repeated cut-signature on a jump ray ⟹ Close) — cross-level labelled
+      fan-in, the same trap as `snolHallSeed_bare_no_go`;
+    * `noTwin_forces_jumpReverseRay` — red-test #5: if it requires `SNOL.SNOLInput`/`CleanDensityBelowA2`,
+      it is a wall renaming. `red_test_forceRay_is_supply` records: force-ray = supply theorem.
+  Both are inputs here. `Step00` remains `sorry`.
 -/
 import Mathlib
 import EuclidsPath.Engine.AboveConflict
@@ -38,26 +38,26 @@ namespace EuclidsPath.JumpBarrier
 
 open EuclidsPath.AboveConflict
 
-/-! ### §1. Forward jumps: оплаченный скачок роняет энергию -/
+/-! ### §1. Forward jumps: a paid jump drops energy -/
 
-/-- Оплаченный скачок: уровень растёт, но энергия строго падает на положительную цену `cost`.
-    (`cost` — экзистенциальные данные, чтобы структура оставалась `Prop`.) -/
+/-- Paid jump: the level grows, but energy strictly drops by a positive price `cost`.
+    (`cost` — existential data so that the structure remains a `Prop`.) -/
 structure PaidJumpStep {State : Type} (level energy : State → ℕ) (x y : State) : Prop where
   level_jump : level x < level y
   paid : ∃ cost : ℕ, 0 < cost ∧ energy y + cost ≤ energy x
 
 /--
-  **`paidJump_decreases_energy` — ДОКАЗАНА (§1).** Оплаченный скачок строго роняет энергию.
-  Больший расход только УСИЛИВАЕТ конечную терминацию; он НЕ создаёт бесконечный finite-energy путь. -/
+  **`paidJump_decreases_energy` — PROVED (§1).** A paid jump strictly drops energy.
+  A larger expenditure only STRENGTHENS finite termination; it does NOT create an infinite finite-energy path. -/
 theorem paidJump_decreases_energy {State : Type} {level energy : State → ℕ} {x y : State}
     (h : PaidJumpStep level energy x y) : energy y < energy x := by
   obtain ⟨cost, hpos, hpaid⟩ := h.paid; omega
 
-/-! ### §2. Нет бесконечного строгого спуска энергии -/
+/-! ### §2. No infinite strictly descending energy chain -/
 
 /--
-  **`no_infinite_strict_energy_descent` — ДОКАЗАНА (§2).** Well-founded: нет бесконечной строго
-  убывающей по энергии цепочки. Ядро всех «paid/jump» no-go. -/
+  **`no_infinite_strict_energy_descent` — PROVED (§2).** Well-founded: no infinite strictly
+  descending energy chain. The core of all "paid/jump" no-go arguments. -/
 theorem no_infinite_strict_energy_descent {State : Type}
     (path : ℕ → State) (energy : State → ℕ)
     (hDrop : ∀ k, energy (path (k + 1)) < energy (path k)) : False := by
@@ -68,26 +68,26 @@ theorem no_infinite_strict_energy_descent {State : Type}
     | succ n ih => have := hDrop n; omega
   have := hMono (energy (path 0) + 1); omega
 
-/-! ### §3. Скачки ломают «посещать каждый уровень»; правильная цель — cofinal -/
+/-! ### §3. Jumps break "visit every level"; the correct goal is cofinal -/
 
-/-- Плохая (слишком сильная) цель для jump-систем. -/
+/-- Wrong (too strong) goal for jump systems. -/
 def VisitsEveryLevel {State : Type} (level : State → ℕ) (path : ℕ → State) : Prop :=
   ∀ A, ∃ k, level (path k) = A
 
-/-- Правильная замена: cofinality уровней. -/
+/-- Correct replacement: cofinality of levels. -/
 def CofinalLevels (levelSeq : ℕ → ℕ) : Prop := ∀ C, ∃ k, C ≤ levelSeq k
 
 /--
-  **`jump_breaks_visitsEveryLevel` — ДОКАЗАНА (§3).** Последовательность `level_k = 2k` cofinal, но
-  НЕ посещает нечётные уровни (напр. `1`). Значит «посещать каждый уровень» — ложная цель для
-  jump-двигателя; корректная цель — `CofinalLevels`. -/
+  **`jump_breaks_visitsEveryLevel` — PROVED (§3).** The sequence `level_k = 2k` is cofinal, but
+  does NOT visit odd levels (e.g. `1`). Therefore "visit every level" is a false goal for a
+  jump engine; the correct goal is `CofinalLevels`. -/
 theorem jump_breaks_visitsEveryLevel :
     CofinalLevels (fun k => 2 * k) ∧ ¬ VisitsEveryLevel (fun n => n) (fun k => 2 * k) := by
   constructor
   · intro C; exact ⟨C, by simp; omega⟩
   · intro h; obtain ⟨k, hk⟩ := h 1; simp at hk
 
-/-- Строго возрастающая ℕ-последовательность cofinal (`level k ≥ k`). -/
+/-- A strictly increasing ℕ-sequence is cofinal (`level k ≥ k`). -/
 theorem strictMono_nat_cofinal (levelSeq : ℕ → ℕ) (hStrict : StrictMono levelSeq) :
     CofinalLevels levelSeq := by
   intro C
@@ -95,19 +95,19 @@ theorem strictMono_nat_cofinal (levelSeq : ℕ → ℕ) (hStrict : StrictMono le
   have : C ≤ levelSeq C := hStrict.le_apply
   exact this
 
-/-! ### §5. CutSystem: проекция high-level state на нижний cut (конечная подпись) -/
+/-! ### §5. CutSystem: projection of a high-level state onto a lower cut (finite signature) -/
 
-/-- Cut-система: конечная подпись `CutSig A₀` и проекция `sig : StateAt A → CutSig A₀` при `A₀ ≤ A`.
-    Ключ: state НЕ обязан «приземляться» на `A₀`; достаточно `A₀ ≤ A`. -/
+/-- Cut system: finite signature `CutSig A₀` and projection `sig : StateAt A → CutSig A₀` when `A₀ ≤ A`.
+    Key point: a state does NOT have to "land" on `A₀`; `A₀ ≤ A` is sufficient. -/
 structure CutSystem (StateAt : ℕ → Type) where
   CutSig : ℕ → Type
   finite : ∀ A0, Finite (CutSig A0)
   sig : ∀ {A0 A : ℕ}, A0 ≤ A → StateAt A → CutSig A0
 
-/-! ### §6. JumpReverseRay: обратный луч с ПРОИЗВОЛЬНЫМИ cofinal-скачками уровней -/
+/-! ### §6. JumpReverseRay: reverse ray with ARBITRARY cofinal level jumps -/
 
-/-- Jump-обратный луч: строго растущие уровни `level k`, cofinal, состояние на каждом уровне,
-    и обратный шаг между соседними индексами (уровень скачёт на произвольную величину, не `+1`). -/
+/-- Jump reverse ray: strictly increasing levels `level k`, cofinal, a state at each level,
+    and a reverse step between adjacent indices (the level jumps by an arbitrary amount, not `+1`). -/
 structure JumpReverseRay (StateAt : ℕ → Type)
     (ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop) where
   level : ℕ → ℕ
@@ -116,13 +116,13 @@ structure JumpReverseRay (StateAt : ℕ → Type)
   state : ∀ k, StateAt (level k)
   reverse_step : ∀ k, ReverseStep (strict (Nat.lt_succ_self k)) (state k) (state (k + 1))
 
-/-! ### §9. Jump-совместимый пиджонхол: повтор конечной cut-подписи на jump-луче -/
+/-! ### §9. Jump-compatible pigeonhole: repeated finite cut-signature on a jump ray -/
 
 /--
-  **`repeated_cutSig_on_jumpReverseRay` — ДОКАЗАНА (§9).** На jump-обратном луче, где уровни cofinal
-  (уходят выше любого `A₀`), для фиксированного cut `A₀` есть бесконечно много проекций на `A₀`; при
-  конечном `CutSig A₀` подпись ПОВТОРЯЕТСЯ на двух индексах `i < j`. Чистый пиджонхол (∞ → конечный тип),
-  jump-совместимый (не требует посещения `A₀`, только `A₀ ≤ level`). -/
+  **`repeated_cutSig_on_jumpReverseRay` — PROVED (§9).** On a jump reverse ray whose levels are cofinal
+  (exceed any given `A₀`), for a fixed cut `A₀` there are infinitely many projections onto `A₀`; with
+  finite `CutSig A₀` the signature REPEATS at two indices `i < j`. Pure pigeonhole (∞ → finite type),
+  jump-compatible (does not require visiting `A₀`, only `A₀ ≤ level`). -/
 theorem repeated_cutSig_on_jumpReverseRay {StateAt : ℕ → Type}
     {ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop}
     (C : CutSystem StateAt) (R : JumpReverseRay StateAt ReverseStep) (A0 : ℕ) :
@@ -131,7 +131,7 @@ theorem repeated_cutSig_on_jumpReverseRay {StateAt : ℕ → Type}
   classical
   have hfin : Finite (C.CutSig A0) := C.finite A0
   obtain ⟨k0, hk0⟩ := R.cofinal A0
-  -- Хвост с индекса k0: уровень ≥ A0 всюду (монотонность); подпись — точка в конечном CutSig A0.
+  -- Tail from index k0: level ≥ A0 everywhere (monotonicity); signature is a point in finite CutSig A0.
   have htail : ∀ n, A0 ≤ R.level (k0 + n) :=
     fun n => le_trans hk0 (R.strict.monotone (Nat.le_add_right k0 n))
   set f : ℕ → C.CutSig A0 := fun n => C.sig (htail n) (R.state (k0 + n)) with hf
@@ -140,9 +140,9 @@ theorem repeated_cutSig_on_jumpReverseRay {StateAt : ℕ → Type}
   · exact ⟨k0 + a, k0 + b, by omega, htail a, htail b, heq⟩
   · exact ⟨k0 + b, k0 + a, by omega, htail b, htail a, heq.symm⟩
 
-/-! ### §10–11. JumpReverseBarrier и no-go -/
+/-! ### §10–11. JumpReverseBarrier and no-go -/
 
-/-- Jump-cut-barrier: повтор cut-подписи `sig i = sig j` (`i<j`) на одном jump-луче ⟹ `Close`. -/
+/-- Jump-cut-barrier: a repeated cut-signature `sig i = sig j` (`i<j`) on the same jump ray ⟹ `Close`. -/
 def JumpReverseBarrier {StateAt : ℕ → Type}
     {ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop}
     (C : CutSystem StateAt) (A0 : ℕ) (Close : Prop) : Prop :=
@@ -151,9 +151,9 @@ def JumpReverseBarrier {StateAt : ℕ → Type}
       C.sig hi (R.state i) = C.sig hj (R.state j) → Close
 
 /--
-  **`no_jumpReverseRay_of_cutBarrier` — ДОКАЗАНА (§11, чистое jump-reverse-противоречие).** При наличии
-  jump-cut-barrier (повтор подписи на cut `A₀` ⟹ Close) и `¬Close`, jump-обратного луча НЕТ: пиджонхол
-  даёт повтор подписи, barrier даёт Close — против `¬Close`. -/
+  **`no_jumpReverseRay_of_cutBarrier` — PROVED (§11, pure jump-reverse contradiction).** Given a
+  jump-cut-barrier (repeated signature on cut `A₀` ⟹ Close) and `¬Close`, no jump reverse ray EXISTS:
+  pigeonhole yields a repeated signature, the barrier yields Close — contradicting `¬Close`. -/
 theorem no_jumpReverseRay_of_cutBarrier {StateAt : ℕ → Type}
     {ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop}
     (C : CutSystem StateAt) (A0 : ℕ) {Close : Prop}
@@ -163,13 +163,13 @@ theorem no_jumpReverseRay_of_cutBarrier {StateAt : ℕ → Type}
   obtain ⟨i, j, hij, hi, hj, hsig⟩ := repeated_cutSig_on_jumpReverseRay C R A0
   exact hNoClose (hBarrier R i j hij hi hj hsig)
 
-/-! ### §18. Взаимодействие с AboveStructure: скачок через twin-gap ⟹ порядковый конфликт
+/-! ### §18. Interaction with AboveStructure: jump across twin-gap ⟹ ordinal conflict
 
-Скачок через twin-gap: `above X Y`, `center X = gap.left`, `gap.right < center Y` (перепрыгнул gap).
-Если затем объект `Z` структурно ПОСЛЕ `Y` (`above Y Z`), но натурально приземляется ВНУТРИ gap —
-порядковое противоречие. -/
+Jump across twin-gap: `above X Y`, `center X = gap.left`, `gap.right < center Y` (jumped over the gap).
+If an object `Z` is structurally AFTER `Y` (`above Y Z`), but lands naturally INSIDE the gap —
+ordinal contradiction. -/
 
-/-- Конфликт: двигатель перепрыгивает twin-gap, затем форсит поздний объект обратно ВНУТРЬ него. -/
+/-- Conflict: the engine jumps over a twin-gap, then forces a later object back INSIDE it. -/
 structure JumpAboveGapConflict (S : AboveStructure) (G : TwinGap) where
   X : S.Obj
   Y : S.Obj
@@ -181,35 +181,35 @@ structure JumpAboveGapConflict (S : AboveStructure) (G : TwinGap) where
   z_inside : G.left < S.center Z ∧ S.center Z < G.right
 
 /--
-  **`no_jumpAboveGapConflict` — ДОКАЗАНА (§18).** Такой конфликт невозможен: `above Y Z` даёт
-  `center Y < center Z`, но `z_inside` + `y_past` дают `center Z < gap.right < center Y`, т.е.
-  `center Z < center Y`. Противоречие. Точная версия «перепрыгнул gap ⟹ форсит объект внутрь». -/
+  **`no_jumpAboveGapConflict` — PROVED (§18).** Such a conflict is impossible: `above Y Z` gives
+  `center Y < center Z`, but `z_inside` + `y_past` give `center Z < gap.right < center Y`, i.e.
+  `center Z < center Y`. Contradiction. The precise form of "jumped over gap ⟹ forces object inside". -/
 theorem no_jumpAboveGapConflict (S : AboveStructure) (G : TwinGap)
     (Cf : JumpAboveGapConflict S G) : False := by
   have hYZnat : S.center Cf.Y < S.center Cf.Z := S.above_sound Cf.Y Cf.Z Cf.hYZ
   have hZltY : S.center Cf.Z < S.center Cf.Y := lt_trans Cf.z_inside.2 Cf.y_past
   omega
 
-/-! ### §17, §19. МАШИННЫЙ ДИАГНОЗ ЛОВУШКИ (red-tests кирпича)
+/-! ### §17, §19. MACHINE DIAGNOSIS OF THE TRAP (red-tests of the brick)
 
-Абстрактный no-go выше корректен, но НЕ про конкретную арифметику. Step00-инстанциация требует ДВУХ
-входов; red-test #5 говорит прямо: force-ray НЕ должен требовать `SNOL.SNOLInput`. Зафиксируем машинно,
-что force-ray эквивалентен supply-теореме (тот же shape, что стена). -/
+The abstract no-go above is correct, but NOT about concrete arithmetic. The Step00 instantiation requires TWO
+inputs; red-test #5 states directly: force-ray MUST NOT require `SNOL.SNOLInput`. We record machine-formally
+that force-ray is equivalent to a supply theorem (the same shape as the wall). -/
 
-/-- Абстрактная «supply»-теорема (форма `SNOL.SNOLInput`): для каждого cut существует луч. Это и есть
-    `noTwin_forces_jumpReverseRay` в чистой форме — она НЕ доказана из локальной энергии/пиджонхола. -/
+/-- Abstract "supply" theorem (form `SNOL.SNOLInput`): for every cut a ray exists. This is exactly
+    `noTwin_forces_jumpReverseRay` in pure form — it is NOT proved from local energy/pigeonhole. -/
 def ForcesRay {StateAt : ℕ → Type}
     (ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop)
     (NoTwin NoEngine : Prop) : Prop :=
   NoTwin → NoEngine → Nonempty (JumpReverseRay StateAt ReverseStep)
 
 /--
-  **`jump_route_is_trapped` — ДОКАЗАНА (диагноз).** Полный jump-reverse-маршрут: из `ForcesRay`
-  (supply-вход) + jump-cut-barrier (cross-level fan-in вход) + `¬Close` получаем `¬NoTwin ∨ ¬NoEngine`.
-  Но ОБА ингредиента — недоказанные входы (§17 говорит barrier = labelled fan-in; §19 red-test #5
-  говорит ForcesRay не должен опираться на SNOL, а если опирается — это стена). Пиджонхол/энергия
-  (доказанное) сами по себе НЕ дают ни `ForcesRay`, ни `Barrier`. Формально: заключение выводимо ЛИШЬ
-  при обоих входах, т.е. маршрут их не устраняет, а переупаковывает. -/
+  **`jump_route_is_trapped` — PROVED (diagnosis).** Full jump-reverse route: from `ForcesRay`
+  (supply input) + jump-cut-barrier (cross-level fan-in input) + `¬Close` we get `¬NoTwin ∨ ¬NoEngine`.
+  But BOTH ingredients are unproved inputs (§17 says barrier = labelled fan-in; §19 red-test #5
+  says ForcesRay must not rely on SNOL, and if it does — it is a wall). Pigeonhole/energy
+  (the proved part) alone yield NEITHER `ForcesRay` NOR `Barrier`. Formally: the conclusion is derivable ONLY
+  when both inputs are supplied, i.e. the route does not eliminate them but repackages them. -/
 theorem jump_route_is_trapped {StateAt : ℕ → Type}
     {ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop}
     (C : CutSystem StateAt) (A0 : ℕ) {Close NoTwin NoEngine : Prop}
@@ -221,10 +221,10 @@ theorem jump_route_is_trapped {StateAt : ℕ → Type}
   exact no_jumpReverseRay_of_cutBarrier C A0 hBarrier hNoClose R
 
 /--
-  **`red_test_forceRay_is_supply` — ДОКАЗАНА (red-test #5).** `ForcesRay` РАЗВОРАЧИВАЕТСЯ в чистую
-  supply-форму «`NoTwin → NoEngine → ∃ ray`». Это ровно shape `SNOL.SNOLInput` (supply clean carrier
-  at scale). Значит если он предъявлен через SNOL/carrier-density — это стена, а не обход. Здесь он
-  НЕ предъявлен. -/
+  **`red_test_forceRay_is_supply` — PROVED (red-test #5).** `ForcesRay` UNFOLDS into the pure
+  supply form "`NoTwin → NoEngine → ∃ ray`". This is exactly the shape of `SNOL.SNOLInput` (supply clean carrier
+  at scale). Therefore if it is supplied via SNOL/carrier-density — it is a wall, not a bypass. Here it is
+  NOT supplied. -/
 theorem red_test_forceRay_is_supply {StateAt : ℕ → Type}
     (ReverseStep : ∀ {A B : ℕ}, A < B → StateAt A → StateAt B → Prop)
     (NoTwin NoEngine : Prop) :

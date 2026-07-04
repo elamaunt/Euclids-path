@@ -1,28 +1,28 @@
 /-
-  NavierStokes — САМО уравнение Навье–Стокса, формализованное через mathlib-анализ.
-  Проза: prose/24_BoundaryDecomp.md (раздел «Диссипативный cascade»).
+  NavierStokes — the Navier–Stokes equation itself, formalised via mathlib analysis.
+  Prose: prose/24_BoundaryDecomp.md (section «Dissipative cascade»).
 
-  ЗДЕСЬ ФОРМАЛИЗОВАНО (настоящий PDE-предикат, mathlib fderiv/gradient/∫):
-    * `NSdiv` (дивергенция = след Якобиана покомпонентно), `vectorLaplacian`, `convectiveTerm` ((u·∇)u);
-    * `IsNSSolution ν f u p` — несжимаемые уравнения НС в классической сильной форме:
+  FORMALISED HERE (genuine PDE predicate, mathlib fderiv/gradient/∫):
+    * `NSdiv` (divergence = trace of Jacobian componentwise), `vectorLaplacian`, `convectiveTerm` ((u·∇)u);
+    * `IsNSSolution ν f u p` — incompressible NS equations in classical strong form:
         ∂ₜu + (u·∇)u = ν·Δu − ∇p + f,   div u = 0;
-    * НЕ-ВАКУУМНОСТЬ: `zero_is_NSSolution` (нулевое поле — решение) — предикат обитаем;
-    * `kineticEnergy` (½∫‖u‖²), `dissipationRate` (ν∫Σᵢ‖∂ᵢu‖²) — интегралы Бохнера;
-    * СВЯЗКА С КАСКАДОМ: `ns_no_infinite_dissipative_cascade` — при энергетическом неравенстве
-      (ВХОД) бесконечная последовательность δ-диссипирующих временных интервалов невозможна
-      (через `DissipativeCascade.no_infinite_uniform_dissipative_cascade`);
-    * ЧЕСТНОСТЬ ИНТЕГРАЛОВ (§5bis): `FiniteKineticEnergy`/`FiniteEnstrophy` + `kineticEnergy_of_not_integrable`
-      — интеграл Бохнера МОЛЧА ноль на неинтегрируемом поле (`integral_undef`); предупреждение доказано;
-    * ДЕКОМПОЗИЦИЯ ВХОДА (§5ter): `twoTimeEnergyInequality_of_energyBalance` — ДОКАЗАНА (FTC-глюа);
-      монолитное неравенство сведено к УЗКОМУ точечному входу `EnergyBalanceLaw` (`dE/dt = −D`);
-      полная цепь `ns_no_infinite_dissipative_cascade_of_balance` — от узкого входа до каскада.
+    * NON-VACUITY: `zero_is_NSSolution` (zero field is a solution) — predicate is inhabited;
+    * `kineticEnergy` (½∫‖u‖²), `dissipationRate` (ν∫Σᵢ‖∂ᵢu‖²) — Bochner integrals;
+    * LINK TO CASCADE: `ns_no_infinite_dissipative_cascade` — under the energy inequality
+      (named input) an infinite sequence of δ-dissipating time intervals is impossible
+      (via `DissipativeCascade.no_infinite_uniform_dissipative_cascade`);
+    * INTEGRAL HONESTY (§5bis): `FiniteKineticEnergy`/`FiniteEnstrophy` + `kineticEnergy_of_not_integrable`
+      — Bochner integral is SILENTLY zero on a non-integrable field (`integral_undef`); warning proved;
+    * INPUT DECOMPOSITION (§5ter): `twoTimeEnergyInequality_of_energyBalance` — PROVED (FTC glue);
+      the monolithic inequality reduced to the NARROW pointwise named input `EnergyBalanceLaw` (`dE/dt = −D`);
+      full chain `ns_no_infinite_dissipative_cascade_of_balance` — from narrow input to cascade.
 
-  ЧЕСТНАЯ ГРАНИЦА. Формализовано УРАВНЕНИЕ и каркас; НЕ доказаны: существование/регулярность решений
-  (проблема тысячелетия) и точечный энергобаланс `EnergyBalanceLaw` (= дифференцирование под интегралом
-  `hasDerivAt_integral_of_dominated_loc_of_deriv_le` + интегрирование по частям + div u = 0; в mathlib
-  теорема о дивергенции есть лишь в box-форме `integral_divergence_of_hasFDerivAt_off_countable`,
-  предельный переход на ℝ³ не формализован — именованный ВХОД). Никакой связи с простыми числами —
-  красная линия нетронута.
+  HONEST BOUNDARY. The EQUATION and scaffolding are formalised; NOT proved: existence/regularity of solutions
+  (millennium problem) and the pointwise energy balance `EnergyBalanceLaw` (= differentiation under the integral
+  `hasDerivAt_integral_of_dominated_loc_of_deriv_le` + integration by parts + div u = 0; in mathlib
+  the divergence theorem exists only in box form `integral_divergence_of_hasFDerivAt_off_countable`,
+  the limiting passage to ℝ³ is not formalised — named input). No connection to prime numbers —
+  the red line is untouched.
 -/
 import Mathlib
 import EuclidsPath.Engine.DissipativeCascade
@@ -37,34 +37,34 @@ namespace EuclidsPath.NavierStokes
 open MeasureTheory
 open scoped BigOperators
 
-/-- Трёхмерное евклидово пространство. -/
+/-- Three-dimensional Euclidean space. -/
 abbrev E3 := EuclideanSpace ℝ (Fin 3)
 
-/-- Стандартный базисный вектор. -/
+/-- Standard basis vector. -/
 def e3 (i : Fin 3) : E3 := EuclideanSpace.single i 1
 
-/-! ### §1. Дифференциальные операторы -/
+/-! ### §1. Differential operators -/
 
-/-- Дивергенция векторного поля: `div u = Σᵢ ∂ᵢuᵢ` (след Якобиана). -/
+/-- Divergence of a vector field: `div u = Σᵢ ∂ᵢuᵢ` (trace of Jacobian). -/
 def NSdiv (u : E3 → E3) (x : E3) : ℝ :=
   ∑ i, fderiv ℝ u x (e3 i) i
 
-/-- Векторный лапласиан: `Δu = Σᵢ ∂ᵢ(∂ᵢu)` (покомпонентно вторые производные по направлениям). -/
+/-- Vector Laplacian: `Δu = Σᵢ ∂ᵢ(∂ᵢu)` (componentwise second directional derivatives). -/
 def vectorLaplacian (u : E3 → E3) (x : E3) : E3 :=
   ∑ i, fderiv ℝ (fun y => fderiv ℝ u y (e3 i)) x (e3 i)
 
-/-- Конвективный член `(u·∇)u`: производная `u` вдоль самого `u`. -/
+/-- Convective term `(u·∇)u`: derivative of `u` along `u` itself. -/
 def convectiveTerm (u : E3 → E3) (x : E3) : E3 :=
   fderiv ℝ u x (u x)
 
-/-! ### §2. Уравнения Навье–Стокса (несжимаемые, классическая сильная форма) -/
+/-! ### §2. Navier–Stokes equations (incompressible, classical strong form) -/
 
 /--
-**Уравнения Навье–Стокса.** `u : ℝ → E3 → E3` — поле скоростей, `p : ℝ → E3 → ℝ` — давление,
-`ν` — вязкость, `f` — внешняя сила:
+**Navier–Stokes equations.** `u : ℝ → E3 → E3` — velocity field, `p : ℝ → E3 → ℝ` — pressure,
+`ν` — viscosity, `f` — external force:
 
-  `∂ₜu + (u·∇)u = ν·Δu − ∇p + f`   (баланс импульса)
-  `div u = 0`                       (несжимаемость)
+  `∂ₜu + (u·∇)u = ν·Δu − ∇p + f`   (momentum balance)
+  `div u = 0`                       (incompressibility)
 -/
 structure IsNSSolution (ν : ℝ) (f : ℝ → E3 → E3)
     (u : ℝ → E3 → E3) (p : ℝ → E3 → ℝ) : Prop where
@@ -73,10 +73,10 @@ structure IsNSSolution (ν : ℝ) (f : ℝ → E3 → E3)
       = ν • vectorLaplacian (u t) x - gradient (p t) x + f t x
   incompressible : ∀ t x, NSdiv (u t) x = 0
 
-/-! ### §3. Не-вакуумность: нулевое решение -/
+/-! ### §3. Non-vacuity: zero solution -/
 
-/-- **`zero_is_NSSolution` — ДОКАЗАНА (не-вакуумность).** Нулевое поле с нулевым давлением и без
-    силы — решение НС для любой вязкости. Предикат обитаем — это настоящее уравнение, не пустышка. -/
+/-- **`zero_is_NSSolution` — PROVED (non-vacuity).** The zero field with zero pressure and no
+    force is a NS solution for any viscosity. The predicate is inhabited — this is a genuine equation, not a dummy. -/
 theorem zero_is_NSSolution (ν : ℝ) :
     IsNSSolution ν (fun _ _ => 0) (fun _ _ => 0) (fun _ _ => 0) := by
   constructor
@@ -91,69 +91,69 @@ theorem zero_is_NSSolution (ν : ℝ) :
   · intro t x
     simp [NSdiv, fderiv_const]
 
-/-! ### §4. Энергия и диссипация (интегралы Бохнера по объёму) -/
+/-! ### §4. Energy and dissipation (Bochner integrals over volume) -/
 
-/-- Кинетическая энергия: `E(u) = ½∫‖u(x)‖² dx`. -/
+/-- Kinetic energy: `E(u) = ½∫‖u(x)‖² dx`. -/
 def kineticEnergy (u : E3 → E3) : ℝ :=
   (1 / 2) * ∫ x : E3, ‖u x‖ ^ 2
 
-/-- Скорость диссипации: `D(u) = ν·∫ Σᵢ ‖∂ᵢu(x)‖² dx` (энстрофийная форма). -/
+/-- Dissipation rate: `D(u) = ν·∫ Σᵢ ‖∂ᵢu(x)‖² dx` (enstrophy form). -/
 def dissipationRate (ν : ℝ) (u : E3 → E3) : ℝ :=
   ν * ∫ x : E3, ∑ i, ‖fderiv ℝ u x (e3 i)‖ ^ 2
 
-/-- Энергия неотрицательна. -/
+/-- Energy is non-negative. -/
 theorem kineticEnergy_nonneg (u : E3 → E3) : 0 ≤ kineticEnergy u := by
   unfold kineticEnergy
   have : 0 ≤ ∫ x : E3, ‖u x‖ ^ 2 :=
     integral_nonneg (fun x => by positivity)
   linarith
 
-/-! ### §5. Энергетическое неравенство — именованный ВХОД
+/-! ### §5. Energy inequality — named input
 
-Для гладких быстро убывающих решений (f = 0): `E(u(t₂)) + ∫_{t₁}^{t₂} D(u(s)) ds ≤ E(u(t₁))`.
-Доказательство — интегрирование по частям + `div u = 0` (конвекция и давление не работают).
-Это АНАЛИТИЧЕСКИЙ ВХОД: здесь НЕ доказывается. -/
+For smooth rapidly decaying solutions (f = 0): `E(u(t₂)) + ∫_{t₁}^{t₂} D(u(s)) ds ≤ E(u(t₁))`.
+Proof — integration by parts + `div u = 0` (convection and pressure do no work).
+This is an ANALYTIC INPUT: it is NOT proved here. -/
 
-/-- Двухвременное энергетическое неравенство (кокоцикл-форма) — ВХОД. -/
+/-- Two-time energy inequality (cocycle form) — named input. -/
 def TwoTimeEnergyInequality (ν : ℝ) (u : ℝ → E3 → E3) : Prop :=
   ∀ t₁ t₂ : ℝ, t₁ ≤ t₂ →
     kineticEnergy (u t₂) + ∫ s in Set.Icc t₁ t₂, dissipationRate ν (u s)
       ≤ kineticEnergy (u t₁)
 
-/-! ### §5bis. ЧЕСТНОСТЬ ИНТЕГРАЛОВ: интегрируемость и «тихий ноль» Бохнера
+/-! ### §5bis. INTEGRAL HONESTY: integrability and the Bochner «silent zero»
 
-⚠️ Интеграл Бохнера в mathlib **молча равен нулю** на неинтегрируемой функции
-(`MeasureTheory.integral_undef`). Значит `kineticEnergy u = 0` может означать НЕ «энергия нулевая»,
-а «энергия бесконечна/не определена». Всякое энергетическое утверждение обязано идти в паре с
-именованной интегрируемостью — иначе оно хрупко-вакуумно. -/
+⚠️ The Bochner integral in mathlib **silently equals zero** on a non-integrable function
+(`MeasureTheory.integral_undef`). Hence `kineticEnergy u = 0` may mean NOT «energy is zero»
+but «energy is infinite/undefined». Every energy statement must be paired with a
+named integrability hypothesis — otherwise it is fragile-vacuous. -/
 
-/-- Конечная кинетическая энергия: `‖u‖²` интегрируема (Бохнер честен). -/
+/-- Finite kinetic energy: `‖u‖²` is integrable (Bochner is honest). -/
 def FiniteKineticEnergy (u : E3 → E3) : Prop :=
   Integrable (fun x : E3 => ‖u x‖ ^ 2)
 
-/-- Конечная энстрофия: `Σᵢ‖∂ᵢu‖²` интегрируема. -/
+/-- Finite enstrophy: `Σᵢ‖∂ᵢu‖²` is integrable. -/
 def FiniteEnstrophy (u : E3 → E3) : Prop :=
   Integrable (fun x : E3 => ∑ i, ‖fderiv ℝ u x (e3 i)‖ ^ 2)
 
-/-- **`kineticEnergy_of_not_integrable` — ДОКАЗАНА (предупреждение о тихом нуле).** Без
-    `FiniteKineticEnergy` интеграл Бохнера МОЛЧА выдаёт `0`: «нулевая энергия» неинтегрируемого поля —
-    артефакт определения, не физика. Потому интегрируемость — обязательная часть любого входа. -/
+/-- **`kineticEnergy_of_not_integrable` — PROVED (silent-zero warning).** Without
+    `FiniteKineticEnergy` the Bochner integral SILENTLY returns `0`: the «zero energy» of a non-integrable field is
+    an artefact of the definition, not physics. Therefore integrability is a mandatory part of any named input. -/
 theorem kineticEnergy_of_not_integrable {u : E3 → E3}
     (h : ¬ FiniteKineticEnergy u) : kineticEnergy u = 0 := by
   unfold kineticEnergy
   rw [integral_undef h]
   ring
 
-/-- Нулевое поле: энергия действительно `0` (не тихий ноль — честный). -/
+/-- Zero field: energy is genuinely `0` (not a silent zero — honest). -/
 theorem kineticEnergy_zero_field : kineticEnergy (fun _ : E3 => (0 : E3)) = 0 := by
   simp [kineticEnergy]
 
-/-- Нулевое поле: диссипация `0`. -/
+/-- Zero field: dissipation is `0`. -/
 theorem dissipationRate_zero_field (ν : ℝ) :
     dissipationRate ν (fun _ : E3 => (0 : E3)) = 0 := by
   simp [dissipationRate, fderiv_const]
 
-/-- Диссипация неотрицательна (при `ν ≥ 0`). -/
+/-- Dissipation is non-negative (when `ν ≥ 0`). -/
 theorem dissipationRate_nonneg {ν : ℝ} (hν : 0 ≤ ν) (u : E3 → E3) :
     0 ≤ dissipationRate ν u := by
   unfold dissipationRate
@@ -161,24 +161,24 @@ theorem dissipationRate_nonneg {ν : ℝ} (hν : 0 ≤ ν) (u : E3 → E3) :
     integral_nonneg fun x => Finset.sum_nonneg fun i _ => by positivity
   positivity
 
-/-! ### §5ter. ДЕКОМПОЗИЦИЯ ВХОДА: точечный энергобаланс ⟹ двухвременное неравенство
+/-! ### §5ter. INPUT DECOMPOSITION: pointwise energy balance ⟹ two-time inequality
 
-Монолитный вход §5 разложен: вся аналитика (дифференцирование под интегралом —
-`hasDerivAt_integral_of_dominated_loc_of_deriv_le`; интегрирование по частям / теорема о дивергенции —
-в mathlib есть лишь box-форма `integral_divergence_of_hasFDerivAt_off_countable`, предельный переход
-на ℝ³ не формализован) сжата в ОДИН точечный вход `EnergyBalanceLaw`: `dE/dt = −D`. Глюа от него до
-`TwoTimeEnergyInequality` — ДОКАЗАНА (FTC). Вход стал строго ýже: не интегральное неравенство, а
-классическое тождество баланса. -/
+The monolithic input §5 is split: all analysis (differentiation under the integral —
+`hasDerivAt_integral_of_dominated_loc_of_deriv_le`; integration by parts / divergence theorem —
+in mathlib only the box form `integral_divergence_of_hasFDerivAt_off_countable` exists, the limiting
+passage to ℝ³ is not formalised) is compressed into ONE pointwise named input `EnergyBalanceLaw`: `dE/dt = −D`.
+The glue from it to `TwoTimeEnergyInequality` — PROVED (FTC). The input became strictly narrower:
+not an integral inequality but the classical balance identity. -/
 
-/-- Точечный энергобаланс `dE/dt = −D(t)` — именованный ВХОД (узкая форма).
-    Для гладких быстро убывающих решений это тождество = дифференцирование под интегралом +
-    интегрирование по частям + `div u = 0` (конвекция и давление не работают). -/
+/-- Pointwise energy balance `dE/dt = −D(t)` — named input (narrow form).
+    For smooth rapidly decaying solutions this identity = differentiation under the integral +
+    integration by parts + `div u = 0` (convection and pressure do no work). -/
 def EnergyBalanceLaw (ν : ℝ) (u : ℝ → E3 → E3) : Prop :=
   ∀ t : ℝ, HasDerivAt (fun s => kineticEnergy (u s)) (-(dissipationRate ν (u t))) t
 
-/-- **`twoTimeEnergyInequality_of_energyBalance` — ДОКАЗАНА (глюа FTC).** Точечный баланс
-    `dE/dt = −D` + интегрируемость диссипации ⟹ двухвременное энергетическое НЕРАВЕНСТВО (на деле —
-    равенство). Старый монолитный вход §5 сведён к более узкому точечному входу `EnergyBalanceLaw`. -/
+/-- **`twoTimeEnergyInequality_of_energyBalance` — PROVED (FTC glue).** Pointwise balance
+    `dE/dt = −D` + integrability of dissipation ⟹ two-time energy INEQUALITY (in fact —
+    equality). The old monolithic input §5 is reduced to the narrower pointwise named input `EnergyBalanceLaw`. -/
 theorem twoTimeEnergyInequality_of_energyBalance
     (ν : ℝ) (u : ℝ → E3 → E3)
     (hBal : EnergyBalanceLaw ν u)
@@ -192,7 +192,7 @@ theorem twoTimeEnergyInequality_of_energyBalance
         = kineticEnergy (u t₂) - kineticEnergy (u t₁) :=
     intervalIntegral.integral_eq_sub_of_hasDerivAt
       (fun s _ => hBal s) ((hInt t₁ t₂).neg)
-  -- интервальный интеграл = интеграл по Icc (граница меры ноль)
+  -- interval integral = integral over Icc (boundary has measure zero)
   have hIcc :
       (∫ s in t₁..t₂, dissipationRate ν (u s))
         = ∫ s in Set.Icc t₁ t₂, dissipationRate ν (u s) := by
@@ -200,19 +200,19 @@ theorem twoTimeEnergyInequality_of_energyBalance
   rw [intervalIntegral.integral_neg, hIcc] at hftc
   linarith [hftc]
 
-/-! ### §6. СВЯЗКА С КАСКАДОМ: неравенство ⟹ конечность δ-диссипирующего каскада -/
+/-! ### §6. LINK TO CASCADE: inequality ⟹ finiteness of the δ-dissipating cascade -/
 
-/-- δ-диссипирующий временной шаг: интервал, на котором накопленная диссипация ≥ δ. -/
+/-- δ-dissipating time step: interval over which accumulated dissipation ≥ δ. -/
 def DissipativeStage (ν : ℝ) (u : ℝ → E3 → E3) (δ : ℝ) (t₁ t₂ : ℝ) : Prop :=
   t₁ ≤ t₂ ∧ δ ≤ ∫ s in Set.Icc t₁ t₂, dissipationRate ν (u s)
 
 /--
-**`ns_no_infinite_dissipative_cascade` — ДОКАЗАНА (условно на входе-неравенстве).** Если решение НС
-удовлетворяет энергетическому неравенству, то НЕ существует бесконечной последовательности моментов
-времени, каждый следующий шаг которой диссипирует ≥ δ > 0: накопленная диссипация превысила бы `E(u t₀)`.
-Прямое применение `DissipativeCascade.no_infinite_uniform_dissipative_cascade` — квантизация в действии
-на НАСТОЯЩЕМ уравнении. Это форма «нет бесконечного каскада к мелким масштабам при квантованной
-диссипации» — ровно тот сертификат, которого требует регулярность. -/
+**`ns_no_infinite_dissipative_cascade` — PROVED (conditional on the energy-inequality input).** If a NS solution
+satisfies the energy inequality, then there does NOT exist an infinite sequence of time instants
+each successive step of which dissipates ≥ δ > 0: the accumulated dissipation would exceed `E(u t₀)`.
+Direct application of `DissipativeCascade.no_infinite_uniform_dissipative_cascade` — quantisation in action
+on the GENUINE equation. This is the form «no infinite cascade to small scales under quantised
+dissipation» — exactly the certificate required for regularity. -/
 theorem ns_no_infinite_dissipative_cascade
     (ν : ℝ) (u : ℝ → E3 → E3) (δ : ℝ) (hδ : 0 < δ)
     (hE : TwoTimeEnergyInequality ν u) :
@@ -228,10 +228,10 @@ theorem ns_no_infinite_dissipative_cascade
     (fun t => kineticEnergy_nonneg (u t))
     ⟨times, hstage⟩
 
-/-- **`ns_no_infinite_dissipative_cascade_of_balance` — ДОКАЗАНА (полная цепь от узкого входа).**
-    Точечный энергобаланс `dE/dt = −D` + интегрируемость диссипации ⟹ нет бесконечного
-    δ-каскада. Композиция FTC-глюи (§5ter) и квантизации (§6): весь аналитический остаток НС-ветки
-    сжат в ОДИН точечный вход `EnergyBalanceLaw`. -/
+/-- **`ns_no_infinite_dissipative_cascade_of_balance` — PROVED (full chain from the narrow input).**
+    Pointwise energy balance `dE/dt = −D` + integrability of dissipation ⟹ no infinite
+    δ-cascade. Composition of the FTC glue (§5ter) and quantisation (§6): the entire analytic remainder of the NS branch
+    compressed into ONE pointwise named input `EnergyBalanceLaw`. -/
 theorem ns_no_infinite_dissipative_cascade_of_balance
     (ν : ℝ) (u : ℝ → E3 → E3) (δ : ℝ) (hδ : 0 < δ)
     (hBal : EnergyBalanceLaw ν u)

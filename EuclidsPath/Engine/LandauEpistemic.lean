@@ -1,66 +1,70 @@
 /-
-  LandauEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ 4-й проблемы Ландау (простые `n² + 1`).
-  Зелёный фронт: Engine/LandauFront.lean (мост, вычетный факт); хребет честности:
-  Engine/SideInfinitude.lean (Дирихле). Образцы эпистемики: PNPFirstCause,
-  TwinNodeEpistemic, LehmerEpistemic; двигательный шаблон: PolignacManifestationFront.
+  LandauEpistemic — EPISTEMIC COMPLEMENT of Landau's 4th problem (primes `n² + 1`).
+  Green front: Engine/LandauFront.lean (bridge, residue fact); honesty spine:
+  Engine/SideInfinitude.lean (Dirichlet). Epistemic templates: PNPFirstCause,
+  TwinNodeEpistemic, LehmerEpistemic; engine template: PolignacManifestationFront.
 
-  ЧТО ЭТО. Четыре слоя поверх LandauFront, ни один не решает открытую задачу:
-    (а) КАНОНИЗАЦИЯ ГЕЙТА: `landau4thUnbounded_iff_infinite` — неограниченность
-        простых `k² + 1` ⟺ бесконечность множества `LandauPrimes`; красный вход
-        остаётся ровно ОДНИМ, обе формы взаимозаменяемы;
-    (б) ЧЁТНЫЙ КАНАЛ: `landauPrime_even_of_two_lt` (всякое простое `k² + 1 > 2`
-        требует чётного `k`) и `landau4thUnbounded_iff_even_k` — гейт локализован
-        на чётный канал (прямая стрелка через `max N 1`: свидетель `k = 1` при
-        `N = 0` нечётен и честно обходится краевым сдвигом);
-    (в) МОСТ К ДИРИХЛЕ: `landau_lives_in_dirichlet_class` — простые Ландау лежат
-        в `{2} ∪ {p ≡ 1 mod 4}`, а объемлющий класс `1 mod 4` РЕАЛЬНО бесконечен
-        (тот же mathlib-Дирихле `Nat.forall_exists_prime_gt_and_modEq`, что в
-        SideInfinitude); плюс стена делителей `landauFactor_mod_four` — всякий
-        нечётный простой делитель `k² + 1` сравним с `1 mod 4` (квадратичная
-        взаимность mathlib). Дирихле даёт бесконечную объемлющую шеренгу,
-        открыта именно СЕЛЕКЦИЯ внутри неё (маркер `NoSelectionClaimed` — тот же
-        жанр честности, что `NoPairingClaimed` у сторон близнецов);
-    (г) ЭПИСТЕМИКА: `InternalisedLandauGround` (ground = гейт, beyondOwnHorizon =
-        свидетель отсутствия), `no_internalisedLandauGround`,
-        `landauCause_unknowable`; закон манифестации `LandauManifestationLaw`
-        (НЕ декретирован) и двигательный факт `landauRefutation_carries_engine`
-        полиньяк-класса.
+  WHAT THIS IS. Four layers on top of LandauFront, none solving the open problem:
+    (a) GATE CANONISATION: `landau4thUnbounded_iff_infinite` — unboundedness of
+        primes `k² + 1` ⟺ infinitude of the set `LandauPrimes`; the red input
+        stays exactly ONE, both forms interchangeable;
+    (b) EVEN CHANNEL: `landauPrime_even_of_two_lt` (every prime `k² + 1 > 2`
+        requires even `k`) and `landau4thUnbounded_iff_even_k` — the gate is
+        localised to the even channel (direct arrow via `max N 1`: the witness
+        `k = 1` at `N = 0` is odd and is honestly bypassed by an edge shift);
+    (c) BRIDGE TO DIRICHLET: `landau_lives_in_dirichlet_class` — Landau primes lie
+        in `{2} ∪ {p ≡ 1 mod 4}`, and the enclosing class `1 mod 4` is REALLY
+        infinite (the same mathlib-Dirichlet `Nat.forall_exists_prime_gt_and_modEq`
+        as in SideInfinitude); plus the divisor wall `landauFactor_mod_four` —
+        every odd prime divisor of `k² + 1` is congruent to `1 mod 4` (mathlib
+        quadratic reciprocity). Dirichlet gives an infinite enclosing front,
+        what is open is precisely the SELECTION within it (marker
+        `NoSelectionClaimed` — the same honesty genre as `NoPairingClaimed` on
+        the twin sides);
+    (d) EPISTEMICS: `InternalisedLandauGround` (ground = gate, beyondOwnHorizon =
+        absence witness), `no_internalisedLandauGround`,
+        `landauCause_unknowable`; the manifestation law `LandauManifestationLaw`
+        (NOT decreed) and the engine fact `landauRefutation_carries_engine`
+        of Polignac class.
 
-  ЧЕСТНОСТЬ (обязательные раскрытия, CORR учтён).
-  (1) НЕ решение 4-й проблемы Ландау и НЕ Гёдель: про открытую бесконечность
-      простых `n² + 1` НЕ утверждается НИЧЕГО (лучшее известное — Иванец 1978:
-      бесконечно много `n² + 1` с ≤ 2 простыми множителями, здесь отсутствует);
-      никакая независимость не заявляется — только самоуничтожение внутреннего
-      самообоснования.
-  (2) ПАРА ground/beyondOwnHorizon ТАВТОЛОГИЧНА: это `P ∧ ¬P` в свидетельской
-      упаковке (коллатц-класс упаковки, НЕ pnp-класс: у `InternalisedPNPGround`
-      противоречие поставляет ВНЕШНИЙ зелёный пижонхол
-      `no_fullPayment_of_unboundedSupply`, здесь — сами поля друг о друга).
-      Раскрыто машинно: `internalisedLandauGround_semantically_selfNegating`.
-  (3) ОПЛАТА СОДЕРЖАТЕЛЬНОСТИ ДВУХСЛОЙНАЯ, И ОБА СЛОЯ СЛАБЕЕ ЭТАЛОНОВ:
-      * `landauRefutation_carries_engine` — подлинная двигательная конструкция
-        (двигатель-свидетель как объект через
-        `infiniteFlows_in_stableNoEnergy_build_engine`), но ГЕЙЧЕНА
-        недекретированным `LandauManifestationLaw` — полиньяк-класс, слабее
-        безусловного `nonHalting_carries_perpetual_engine` Коллатца и
-        безусловного пижонхола `no_fullPayment_of_unboundedSupply` P/NP;
-      * `landau_supply_parityWalled` — БЕЗУСЛОВНАЯ зелёная стена, но закрывает
-        только НЕЧЁТНЫЙ канал; на чётном канале, где живёт вся открытая суть,
-        ни стены, ни поставки зелёно нет.
-      Без слоя двигателя связка выродилась бы в чистую тавтологию — поэтому
-      манифестационный слой (§4) встроен сюда как пререквизит эпистемики (§5).
-  (4) ЗАКОН НЕ ДЕКРЕТИРОВАН — при ПОЛОЖИТЕЛЬНОМ знаке эвристики (Харди–Литтлвуд
-      предсказывает бесконечность): прецедент Полиньяка — серийное расширение
-      декрета обесценило бы карантин; Ландау НЕ входит в четыре границы
-      step00FirstCause, и границы здесь НЕ добавляются.
-  (5) КОВАТЬ НЕЧЕГО: `k² + 1` — значения квадратичной формы на ВСЕЙ сетке `k`,
-      а не подпоследовательность-цепь (как 4c+1 у Мерсенна) — кованого свидетеля
-      в этой ветви не существует за отсутствием субстрата ковки (как у кузенов).
+  HONESTY (mandatory disclosures, CORR accounted for).
+  (1) NOT a solution of Landau's 4th problem and NOT Gödel: about the open
+      infinitude of primes `n² + 1` NOTHING is asserted (best known — Iwaniec
+      1978: infinitely many `n² + 1` with ≤ 2 prime factors, absent here);
+      no independence is claimed — only the self-destruction of internal
+      self-grounding.
+  (2) THE ground/beyondOwnHorizon PAIR IS TAUTOLOGICAL: it is `P ∧ ¬P` in
+      witness packaging (Collatz packaging class, NOT pnp class: in
+      `InternalisedPNPGround` the contradiction supplies an EXTERNAL green
+      pigeonhole `no_fullPayment_of_unboundedSupply`, here — the fields against
+      each other). Disclosed machine-wise:
+      `internalisedLandauGround_semantically_selfNegating`.
+  (3) THE PAYMENT OF SUBSTANCE IS TWO-LAYER, AND BOTH LAYERS ARE WEAKER THAN THE BENCHMARKS:
+      * `landauRefutation_carries_engine` — a genuine engine construction
+        (the engine-witness as an object via
+        `infiniteFlows_in_stableNoEnergy_build_engine`), but GATED by the
+        undecreed `LandauManifestationLaw` — Polignac class, weaker than the
+        unconditional `nonHalting_carries_perpetual_engine` of Collatz and the
+        unconditional pigeonhole `no_fullPayment_of_unboundedSupply` of P/NP;
+      * `landau_supply_parityWalled` — an UNCONDITIONAL green wall, but it closes
+        only the ODD channel; on the even channel, where the whole open essence
+        lives, there is no wall and no supply green.
+      Without the engine layer the bundle would degenerate into pure tautology —
+      so the manifestation layer (§4) is built in here as a prerequisite of the
+      epistemics (§5).
+  (4) THE LAW IS NOT DECREED — under a POSITIVE sign of the heuristic
+      (Hardy–Littlewood predicts infinitude): the Polignac precedent — a serial
+      extension of the decree would devalue the quarantine; Landau does NOT belong
+      to the four boundaries of step00FirstCause, and boundaries are NOT added here.
+  (5) THERE IS NOTHING TO FORGE: `k² + 1` — values of a quadratic form on the
+      WHOLE grid `k`, not a subsequence-chain (like 4c+1 for Mersenne) — a forged
+      witness does not exist in this branch for lack of a forging substrate (as
+      with the cousins).
 
-  Никакого sorry, никакой новой аксиомы, никакого native_decide; карантин
-  (Engine/CausalClosureAxiom) НЕ импортируется. Таинт репозитория (47) НЕ меняется.
+  No sorry, no new axiom, no native_decide; the quarantine
+  (Engine/CausalClosureAxiom) is NOT imported. The repository taint (47) does NOT change.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
+  Compilation: cd /f/Primes/Euclids-path &&
     "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/LandauEpistemic.lean
 -/
 import Mathlib
@@ -75,14 +79,14 @@ namespace EuclidsPath.LandauFront.Epistemic
 
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 
-/-! ## §1. Канонизация гейта: неограниченность ⟺ бесконечность (🟢) -/
+/-! ## §1. Gate canonisation: unboundedness ⟺ infinitude (🟢) -/
 
-/-- 🟢 **КАНОНИЗАЦИЯ ГЕЙТА (доказано):** `Landau4thUnbounded` ⟺
-    `LandauPrimes.Infinite`. Прямая стрелка — существующий мост
-    `landauPrimes_infinite_of_unbounded`; обратная — конечность `Set.Iic` на ℕ:
-    если выше `N` нет простых `k² + 1`, всё множество влезает под крышку
-    `N² + 1`. Красный вход остаётся ровно ОДНИМ — обе формы взаимозаменяемы,
-    гейт не двоится на «родственные» открытые входы. -/
+/-- 🟢 **GATE CANONISATION (proven):** `Landau4thUnbounded` ⟺
+    `LandauPrimes.Infinite`. Forward arrow — the existing bridge
+    `landauPrimes_infinite_of_unbounded`; reverse — finiteness of `Set.Iic` on ℕ:
+    if above `N` there are no primes `k² + 1`, the whole set fits under the cap
+    `N² + 1`. The red input stays exactly ONE — both forms interchangeable,
+    the gate does not split into "related" open inputs. -/
 theorem landau4thUnbounded_iff_infinite :
     Landau4thUnbounded ↔ LandauPrimes.Infinite := by
   constructor
@@ -99,23 +103,23 @@ theorem landau4thUnbounded_iff_infinite :
     have hle : k ^ 2 + 1 ≤ N ^ 2 + 1 := by nlinarith
     exact Set.mem_Iic.mpr hle
 
-/-! ## §2. Чётный канал: гейт локализован на чётные `k` (🟢) -/
+/-! ## §2. Even channel: the gate is localised to even `k` (🟢) -/
 
-/-- 🟢 **ЧЁТНЫЙ КАНАЛ (доказано):** всякое простое `k² + 1 > 2` требует
-    ЧЁТНОГО `k` — при нечётном `k` число `k² + 1` чётно и потому равно `2`
-    (реюз `oddLandauPrime_even_k`). -/
+/-- 🟢 **EVEN CHANNEL (proven):** every prime `k² + 1 > 2` requires
+    EVEN `k` — for odd `k` the number `k² + 1` is even and therefore equals `2`
+    (reuse `oddLandauPrime_even_k`). -/
 theorem landauPrime_even_of_two_lt {k : ℕ} (hp : (k ^ 2 + 1).Prime)
     (h2 : 2 < k ^ 2 + 1) : Even k := by
   rcases Nat.even_or_odd k with he | ho
   · exact he
   · exact absurd (oddLandauPrime_even_k ho hp) (ne_of_gt h2)
 
-/-- 🟢 **ГЕЙТ ⟺ ЧЁТНЫЙ ГЕЙТ (доказано):** неограниченность простых `k² + 1`
-    равносильна неограниченности по ЧЁТНЫМ `k`. Существующий вычетный факт
-    перестаёт быть украшением: область поиска гейта честно сужена вдвое, все
-    свидетели выше `1` вынуждены быть чётными. ТЕХНИКА (CORR): прямая стрелка
-    применяет гейт к `max N 1` — при `N = 0` свидетель `k = 1` (простое `2`)
-    нечётен, краевой сдвиг обходит его без потери неограниченности. -/
+/-- 🟢 **GATE ⟺ EVEN GATE (proven):** unboundedness of primes `k² + 1`
+    is equivalent to unboundedness over EVEN `k`. The existing residue fact
+    ceases to be decoration: the gate's search domain is honestly halved, all
+    witnesses above `1` are forced to be even. TECHNIQUE (CORR): the forward arrow
+    applies the gate to `max N 1` — at `N = 0` the witness `k = 1` (prime `2`)
+    is odd, an edge shift bypasses it without loss of unboundedness. -/
 theorem landau4thUnbounded_iff_even_k :
     Landau4thUnbounded ↔
       ∀ N : ℕ, ∃ k : ℕ, N < k ∧ Even k ∧ (k ^ 2 + 1).Prime := by
@@ -130,27 +134,27 @@ theorem landau4thUnbounded_iff_even_k :
     obtain ⟨k, hk, _, hp⟩ := H N
     exact ⟨k, hk, hp⟩
 
-/-- 🟢 **КЛАСС `1 mod 4` (доказано):** всякое простое `k² + 1 > 2` сравнимо с
-    `1` по модулю `4` — чётное `k = j + j` даёт `k² + 1 = 4j² + 1`. -/
+/-- 🟢 **CLASS `1 mod 4` (proven):** every prime `k² + 1 > 2` is congruent to
+    `1` modulo `4` — even `k = j + j` gives `k² + 1 = 4j² + 1`. -/
 theorem landauPrime_mod_four {k : ℕ} (hp : (k ^ 2 + 1).Prime)
     (h2 : 2 < k ^ 2 + 1) : (k ^ 2 + 1) % 4 = 1 := by
   obtain ⟨j, hj⟩ := landauPrime_even_of_two_lt hp h2
   have h : k ^ 2 + 1 = 4 * j ^ 2 + 1 := by subst hj; ring
   rw [h, Nat.mul_add_mod]
 
-/-! ## §3. Мост к SideInfinitude: объемлющий класс Дирихле `1 mod 4` (🟢) -/
+/-! ## §3. Bridge to SideInfinitude: enclosing Dirichlet class `1 mod 4` (🟢) -/
 
-/-- 🟢 **ОБЪЕМЛЮЩИЙ КЛАСС НЕОГРАНИЧЕН (доказано, РЕАЛЬНЫЙ Дирихле):** над любым
-    `n` есть простое `p ≡ 1 (mod 4)` — тот же mathlib-двигатель
-    `Nat.forall_exists_prime_gt_and_modEq` (аналитика L-рядов), что у
-    `minusSide_primes_unbounded` в SideInfinitude, при `q := 4`, `a := 1`. -/
+/-- 🟢 **ENCLOSING CLASS IS UNBOUNDED (proven, REAL Dirichlet):** above any
+    `n` there is a prime `p ≡ 1 (mod 4)` — the same mathlib engine
+    `Nat.forall_exists_prime_gt_and_modEq` (L-series analytics) as in
+    `minusSide_primes_unbounded` in SideInfinitude, with `q := 4`, `a := 1`. -/
 theorem onemodfour_primes_unbounded (n : ℕ) :
     ∃ p, n < p ∧ p.Prime ∧ p % 4 = 1 := by
   obtain ⟨p, hgt, hp, hmod⟩ :=
     Nat.forall_exists_prime_gt_and_modEq n (q := 4) (a := 1) (by norm_num) (by decide)
   exact ⟨p, hgt, hp, by simpa [Nat.ModEq] using hmod⟩
 
-/-- 🟢 Та же неограниченность в форме `Set.Infinite`. -/
+/-- 🟢 The same unboundedness in `Set.Infinite` form. -/
 theorem onemodfour_primes_infinite :
     {p : ℕ | p.Prime ∧ p % 4 = 1}.Infinite := by
   apply Set.infinite_of_not_bddAbove
@@ -159,8 +163,8 @@ theorem onemodfour_primes_infinite :
   have hmem : p ∈ {p : ℕ | p.Prime ∧ p % 4 = 1} := ⟨hp, hmod⟩
   exact absurd (hB hmem) (not_le.mpr hgt)
 
-/-- 🟢 **ВЛОЖЕНИЕ (доказано):** простые Ландау лежат в `{2} ∪ {p ≡ 1 mod 4}` —
-    класс объемлющего Дирихле; единственное исключение — `2 = 1² + 1`. -/
+/-- 🟢 **INCLUSION (proven):** Landau primes lie in `{2} ∪ {p ≡ 1 mod 4}` —
+    the enclosing Dirichlet class; the only exception is `2 = 1² + 1`. -/
 theorem landauPrimes_subset_onemodfour :
     LandauPrimes ⊆ {2} ∪ {p : ℕ | p.Prime ∧ p % 4 = 1} := by
   rintro p ⟨k, rfl, hp⟩
@@ -169,13 +173,13 @@ theorem landauPrimes_subset_onemodfour :
   · have h : k ^ 2 + 1 = 2 := le_antisymm h2 hp.two_le
     exact Set.mem_union_left _ (Set.mem_singleton_iff.mpr h)
 
-/-- 🟢 **СТЕНА ДЕЛИТЕЛЕЙ `mod 4` (доказано, настоящая теория формы):** всякий
-    НЕЧЁТНЫЙ простой делитель `q ∣ k² + 1` сравним с `1` по модулю `4` — из
-    `q ∣ k² + 1` следует, что `−1` — квадрат в `ZMod q`, а mathlib-критерий
-    квадратичной взаимности (`ZMod.exists_sq_eq_neg_one_iff`) запрещает это при
-    `q ≡ 3 (mod 4)`. Весь спектр делителей формы (не только сами простые
-    Ландау) прижат к классу `1 mod 4` — арифметический скелет, на котором стоят
-    почти-простые результаты типа Иванца. -/
+/-- 🟢 **DIVISOR WALL `mod 4` (proven, genuine theory of the form):** every
+    ODD prime divisor `q ∣ k² + 1` is congruent to `1` modulo `4` — from
+    `q ∣ k² + 1` it follows that `−1` is a square in `ZMod q`, and the mathlib
+    quadratic-reciprocity criterion (`ZMod.exists_sq_eq_neg_one_iff`) forbids
+    this when `q ≡ 3 (mod 4)`. The whole spectrum of divisors of the form (not
+    just the Landau primes themselves) is pinned to the class `1 mod 4` — the
+    arithmetic skeleton on which almost-prime results of the Iwaniec type stand. -/
 theorem landauFactor_mod_four {q k : ℕ} (hq : q.Prime) (hodd : Odd q)
     (hdvd : q ∣ k ^ 2 + 1) : q % 4 = 1 := by
   haveI : Fact q.Prime := ⟨hq⟩
@@ -191,40 +195,42 @@ theorem landauFactor_mod_four {q k : ℕ} (hq : q.Prime) (hodd : Odd q)
   have h2 : q % 2 = 1 := Nat.odd_iff.mp hodd
   omega
 
-/-- 🟢 **«ДИРИХЛЕ ДАЁТ ШЕРЕНГУ, НО НЕ СЕЛЕКЦИЮ» — ТОЧНАЯ ФОРМА:** простые
-    Ландау живут в классе `1 mod 4` объемлющего Дирихле (`⊆`), и этот класс
-    РЕАЛЬНО бесконечен (mathlib-Дирихле). Открыта именно СЕЛЕКЦИЯ значений
-    `k² + 1` внутри бесконечной шеренги — квадратичную форму Дирихле не
-    достаёт (см. `NoSelectionClaimed` ниже). -/
+/-- 🟢 **"DIRICHLET GIVES THE FILE, BUT NOT THE SELECTION" — EXACT FORM:** the
+    Landau primes live in the class `1 mod 4` of the ambient Dirichlet (`⊆`), and
+    this class is REALLY infinite (mathlib-Dirichlet). What is open is precisely
+    the SELECTION of values `k² + 1` inside the infinite file — Dirichlet does
+    not reach the quadratic form (see `NoSelectionClaimed` below). -/
 theorem landau_lives_in_dirichlet_class :
     LandauPrimes ⊆ {2} ∪ {p : ℕ | p.Prime ∧ p % 4 = 1} ∧
       {p : ℕ | p.Prime ∧ p % 4 = 1}.Infinite :=
   ⟨landauPrimes_subset_onemodfour, onemodfour_primes_infinite⟩
 
-/-- **ЧЕСТНОСТЬ (охват):** бесконечность ОБЪЕМЛЮЩЕГО класса `1 mod 4` зелёная
-    (Дирихле), но она НЕ даёт бесконечности СЕЛЕКЦИИ — простых, попадающих на
-    квадратичную форму `k² + 1`. Селекция — вся открытая суть 4-й проблемы
-    Ландау, и здесь она НЕ утверждается, НЕ доказана и ниоткуда не выводится.
-    Тот же жанр честности, что `NoPairingClaimed` у сторон близнецов
-    (SideInfinitude) — маркер намеренно оплачен тем же трюизмом. -/
+/-- **HONESTY (coverage):** the infinitude of the AMBIENT class `1 mod 4` is
+    green (Dirichlet), but it does NOT give infinitude of the SELECTION — the
+    primes landing on the quadratic form `k² + 1`. The selection is the whole
+    open essence of Landau's 4th problem, and here it is NOT asserted, NOT proven
+    and derived from nowhere. The same genre of honesty as `NoPairingClaimed` for
+    the twin sides (SideInfinitude) — the marker is intentionally paid for by the
+    same truism. -/
 abbrev NoSelectionClaimed : Prop := True
 
 theorem noSelectionClaimed : NoSelectionClaimed :=
   EuclidsPath.SideInfinitude.noPairingClaimed
 
-/-! ## §4. Свидетель отсутствия, закон манифестации, двигатель (🟢-плумбинг,
-    закон — гейт; зеркало кузен-семьи PolignacManifestationFront)
+/-! ## §4. Absence witness, manifestation law, engine (🟢-plumbing,
+    the law is a gate; a mirror of the cousin family PolignacManifestationFront)
 
-    ⚠️ Секции цепи (аналога ковки Мерсенна) здесь НЕТ намеренно: `k² + 1` —
-    значения формы на всей сетке, а не подпоследовательность-цепь; кованого
-    свидетеля не существует за отсутствием субстрата ковки (как у кузенов). -/
+    ⚠️ A chain section (an analogue of Mersenne forging) is intentionally ABSENT
+    here: `k² + 1` are values of the form on the whole grid, not a subsequence-
+    chain; no forged witness exists for lack of a forging substrate (as with the
+    cousins). -/
 
-/-- **Отсутствие простых Ландау выше `P`** (Π-свидетель, зеркало
-    `CousinAbsenceAbove`): каждый `k` с простым `k² + 1` сидит не выше `P`. -/
+/-- **Absence of Landau primes above `P`** (Π-witness, mirror of
+    `CousinAbsenceAbove`): every `k` with prime `k² + 1` sits no higher than `P`. -/
 def LandauAbsenceAbove (P : ℕ) : Prop :=
   ∀ k : ℕ, (k ^ 2 + 1).Prime → k ≤ P
 
-/-- 🟢 Плумбинг: из ограниченности извлекается свидетель отсутствия. -/
+/-- 🟢 Plumbing: from boundedness an absence witness is extracted. -/
 theorem exists_landauAbsence_of_not_unbounded (h : ¬ Landau4thUnbounded) :
     ∃ P : ℕ, LandauAbsenceAbove P := by
   unfold Landau4thUnbounded at h
@@ -234,8 +240,8 @@ theorem exists_landauAbsence_of_not_unbounded (h : ¬ Landau4thUnbounded) :
     by_contra hgt
     exact hP k (by omega) hk⟩
 
-/-- 🟢 Плумбинг: гейт ⟺ свидетелей отсутствия нет (свидетельская форма
-    отрицания — ею оплачено поле `beyondOwnHorizon` ниже). -/
+/-- 🟢 Plumbing: gate ⟺ there are no absence witnesses (a witness form of
+    negation — it is what pays for the field `beyondOwnHorizon` below). -/
 theorem landau4thUnbounded_iff_no_absence :
     Landau4thUnbounded ↔ ∀ P : ℕ, ¬ LandauAbsenceAbove P := by
   constructor
@@ -247,44 +253,45 @@ theorem landau4thUnbounded_iff_no_absence :
     obtain ⟨P, hAbs⟩ := exists_landauAbsence_of_not_unbounded h
     exact hNo P hAbs
 
-/-- 🟢 **M8 (локализация домена свидетеля):** всякая граница отсутствия ≥ 26 —
-    `26² + 1 = 677` просто (norm_num). Свидетель отсутствия зелёно непредъявим
-    в начальном сегменте. -/
+/-- 🟢 **M8 (localization of the witness domain):** every absence bound ≥ 26 —
+    `26² + 1 = 677` is prime (norm_num). The absence witness is green-unpresentable
+    in the initial segment. -/
 theorem landauAbsenceBound_ge_26 {P : ℕ}
     (hAbs : LandauAbsenceAbove P) : 26 ≤ P :=
   hAbs 26 (by norm_num)
 
-/-- Отсутствие выше `P` манифестирует арифметически: на каждом леджер-масштабе
-    не ниже `P`, всюду где проекция сводит книги, отсутствие проявляется
-    неоплатимой бесконечной поставкой потоков (объект заимствован у римановского
-    фронта — `DeviationFlowSupply`; свидетель содержательности L1 живёт ТАМ ЖЕ,
-    `deviationFlowSupply_of_twinBound`, и здесь НЕ передоказывается). -/
+/-- Absence above `P` manifests arithmetically: at every ledger scale no lower
+    than `P`, everywhere the projection reconciles the books, absence shows itself
+    as an unpayable infinite supply of flows (the object is borrowed from the
+    Riemann front — `DeviationFlowSupply`; the L1 substance witness lives THERE
+    TOO, `deviationFlowSupply_of_twinBound`, and is NOT re-proven here). -/
 def LandauAbsenceManifests (P : ℕ) : Prop :=
   ∀ (A M0 : ℕ), P ≤ M0 →
     ∀ proj : SemanticExtendedFlowLedgerProjection A M0,
       SemanticExtendedFlowLedgerCollisionResolves proj →
         DeviationFlowSupply A M0
 
-/-- **ЗАКОН МАНИФЕСТАЦИИ ЛАНДАУ** — гейчен свидетелем отсутствия (зеркало
-    `CousinManifestationLaw`). Негейченная форма `∀ P, LandauAbsenceManifests P`
-    при `P := 0` вместе с принятой границей дала бы поставку на разрешённом
-    масштабе — противоречие с зелёной `no_deviationFlowSupply_at_resolved_scale`
-    (точный механизм провала манифестационных кандидатов ЯМ/НС). ⚠️ ПОЛЕ НЕ
-    ДЕКРЕТИРОВАНО — при ПОЛОЖИТЕЛЬНОМ знаке Харди–Литтлвуда: прецедент
-    Полиньяка — серийное расширение декрета обесценило бы карантин;
-    единственность принятой границы и есть его содержание. -/
+/-- **LANDAU MANIFESTATION LAW** — gated by an absence witness (mirror of
+    `CousinManifestationLaw`). The ungated form `∀ P, LandauAbsenceManifests P`
+    at `P := 0`, together with the accepted boundary, would give a supply at the
+    resolved scale — a contradiction with the green
+    `no_deviationFlowSupply_at_resolved_scale` (the exact mechanism by which the
+    YM/NS manifestation candidates fail). ⚠️ THE FIELD IS NOT DECREED — under a
+    POSITIVE sign of Hardy–Littlewood: the Polignac precedent — a serial extension
+    of the decree would devalue the quarantine; the uniqueness of the accepted
+    boundary is precisely its content. -/
 def LandauManifestationLaw : Prop :=
   ∀ P : ℕ, LandauAbsenceAbove P → LandauAbsenceManifests P
 
-/-- 🟢 **«ОПРОВЕРЖЕНИЕ ПРЕДЪЯВЛЯЕТ ДВИГАТЕЛЬ» (M3⁺, полиньяк-класс):**
-    свидетель отсутствия + закон + сведённые книги на масштабе не ниже `P`
-    манифестируют вечный двигатель — как ОБЪЕКТ
-    (`ConcreteEuclideanEngineWitness`), до убийства lexRank'ом.
-    ЧЕСТНОСТЬ: конструкция подлинная (через
-    `infiniteFlows_in_stableNoEnergy_build_engine`), но ГЕЙЧЕНА
-    недекретированным `LandauManifestationLaw` — двигательный факт
-    ПОЛИНЬЯК-КЛАССА, слабее безусловного `nonHalting_carries_perpetual_engine`
-    Коллатца и безусловного пижонхола `no_fullPayment_of_unboundedSupply` P/NP. -/
+/-- 🟢 **"A REFUTATION PRESENTS AN ENGINE" (M3⁺, Polignac-class):**
+    absence witness + law + reconciled books at a scale no lower than `P`
+    manifest a perpetual engine — as an OBJECT
+    (`ConcreteEuclideanEngineWitness`), before being killed by lexRank.
+    HONESTY: the construction is genuine (via
+    `infiniteFlows_in_stableNoEnergy_build_engine`), but it is GATED by the
+    undecreed `LandauManifestationLaw` — a POLIGNAC-CLASS engine fact, weaker than
+    the unconditional `nonHalting_carries_perpetual_engine` of Collatz and the
+    unconditional pigeonhole `no_fullPayment_of_unboundedSupply` of P/NP. -/
 theorem landauRefutation_carries_engine
     (hLaw : LandauManifestationLaw)
     {P : ℕ} (hAbs : LandauAbsenceAbove P)
@@ -299,11 +306,11 @@ theorem landauRefutation_carries_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- 🟢 **M3 — ESSENCE (зеркало кузенов):** двигателей нет + принятая граница +
-    закон манифестации ⟹ гейт Ландау. Все три гипотезы потребляются
-    ПО-НАСТОЯЩЕМУ: из ограниченности извлекается свидетель `P`; граница даёт
-    разрешение ровно на масштабе `M0 := P`; закон поставляет семью (не ex
-    falso); из коллизии строится двигатель-СВИДЕТЕЛЬ; убивает его `hNoEngine`. -/
+/-- 🟢 **M3 — ESSENCE (mirror of the cousins):** no engines + accepted boundary +
+    manifestation law ⟹ Landau gate. All three hypotheses are consumed FOR REAL:
+    from boundedness a witness `P` is extracted; the boundary gives resolution
+    exactly at the scale `M0 := P`; the law supplies a family (not ex falso); from
+    the collision an engine-WITNESS is built; `hNoEngine` kills it. -/
 theorem landau4thUnbounded_of_noEngine_and_boundary_and_manifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -317,8 +324,9 @@ theorem landau4thUnbounded_of_noEngine_and_boundary_and_manifestation
   exact hNoEngine ⟨A, P,
     landauRefutation_carries_engine hLaw hAbs (le_refl P) (projOf P) hResolves⟩
 
-/-- 🟢 Зелёное доведение до цели программы: та же тройка ⟹ множество простых
-    Ландау бесконечно (композиция с мостом `landauPrimes_infinite_of_unbounded`). -/
+/-- 🟢 Green carry-through to the programme's goal: the same triple ⟹ the set of
+    Landau primes is infinite (composed with the bridge
+    `landauPrimes_infinite_of_unbounded`). -/
 theorem landauPrimesInfinite_of_noEngine_boundary_and_manifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -328,51 +336,52 @@ theorem landauPrimesInfinite_of_noEngine_boundary_and_manifestation
     (landau4thUnbounded_of_noEngine_and_boundary_and_manifestation
       hNoEngine hBoundary hLaw)
 
-/-! ## §5. Эпистемика: внутреннее решение = самообоснование за горизонтом -/
+/-! ## §5. Epistemics: an internal solution = self-grounding beyond the horizon -/
 
-/-- **Внутреннее самообоснование решения Ландау.** Поле `ground` — сам гейт
-    (`Landau4thUnbounded` — красный закон формы; у Ландау НЕТ границы в
-    step00FirstCause, и ground — не декрет-проекция, как у Коллатца);
-    поле `beyondOwnHorizon` — свидетель отсутствия (свидетельская форма
-    отрицания через `landau4thUnbounded_iff_no_absence`; оба поля потребляются
-    в `no_internalisedLandauGround`, запрет вакуумности №3 соблюдён).
+/-- **Internal self-grounding of the Landau solution.** The field `ground` is the
+    gate itself (`Landau4thUnbounded` — the red law of the form; Landau has NO
+    boundary in step00FirstCause, and ground is not a decree-projection, as with
+    Collatz); the field `beyondOwnHorizon` is an absence witness (a witness form of
+    negation via `landau4thUnbounded_iff_no_absence`; both fields are consumed in
+    `no_internalisedLandauGround`, the vacuity ban №3 is respected).
 
-    ⚠️ ЧЕСТНАЯ ОГОВОРКА (обязательная): пара ТАВТОЛОГИЧНА — это `P ∧ ¬P` в
-    свидетельской упаковке (коллатц-класс, НЕ pnp-класс: там противоречие
-    поставлял внешний зелёный пижонхол). Раскрыто машинно ниже
-    (`internalisedLandauGround_semantically_selfNegating`). Содержательность
-    оплачивается НЕ формой структуры, а двумя внешними слоями — двигательной
-    конструкцией `landauRefutation_carries_engine` (гейченной законом,
-    полиньяк-класс) и безусловной стеной нечётного канала
-    `landau_supply_parityWalled`; оба слоя слабее эталонов (см. шапку файла). -/
+    ⚠️ HONEST CAVEAT (mandatory): the pair is TAUTOLOGICAL — it is `P ∧ ¬P` in
+    witness packaging (Collatz-class, NOT pnp-class: there the contradiction was
+    supplied by an external green pigeonhole). Exposed machine-wise below
+    (`internalisedLandauGround_semantically_selfNegating`). The substance is paid
+    for NOT by the form of the structure, but by two external layers — the engine
+    construction `landauRefutation_carries_engine` (gated by the law, Polignac-
+    class) and the unconditional odd-channel wall `landau_supply_parityWalled`;
+    both layers are weaker than the reference standards (see the file header). -/
 structure InternalisedLandauGround : Prop where
   ground : Landau4thUnbounded
   beyondOwnHorizon : ∃ P : ℕ, LandauAbsenceAbove P
 
-/-- «Внутреннее знание причины Ландау» = внутреннее самообоснование решения. -/
+/-- "Internal knowledge of the Landau cause" = internal self-grounding of the solution. -/
 abbrev InternalKnowledgeOfLandauCause : Prop := InternalisedLandauGround
 
-/-- 🟢 Самообоснование самоуничтожается — одна строка через плумбинг
-    `landau4thUnbounded_iff_no_absence` (зеркало `no_internalisedPNPGround`;
-    честно: противоречие здесь поставляют САМИ поля, см. оговорку структуры). -/
+/-- 🟢 Self-grounding self-destructs — one line via the plumbing
+    `landau4thUnbounded_iff_no_absence` (mirror of `no_internalisedPNPGround`;
+    honestly: here the contradiction is supplied by the fields THEMSELVES, see the
+    structure caveat). -/
 theorem no_internalisedLandauGround : InternalisedLandauGround → False :=
   fun H => by
     obtain ⟨P, hAbs⟩ := H.beyondOwnHorizon
     exact landau4thUnbounded_iff_no_absence.mp H.ground P hAbs
 
-/-- 🟢 **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable`,
-    `pnpCause_unknowable`, `lehmerCause_unknowable`): внутреннее самообоснование
-    решения Ландау невозможно. НЕ утверждение о самой 4-й проблеме: гейт
-    остаётся открытым красным входом. -/
+/-- 🟢 **"CANNOT BE KNOWN FROM INSIDE" — THEOREM** (mirror of `collatzCause_unknowable`,
+    `pnpCause_unknowable`, `lehmerCause_unknowable`): internal self-grounding of the
+    Landau solution is impossible. NOT a statement about the 4th problem itself: the
+    gate remains an open red input. -/
 theorem landauCause_unknowable : ¬ InternalKnowledgeOfLandauCause :=
   no_internalisedLandauGround
 
-/-- 🟢 **МАШИННАЯ ЧЕСТНОСТЬ (тавтологичность раскрыта):** структура
-    `InternalisedLandauGround` доказуемо эквивалентна контрадикторной паре
-    «гейт ∧ ¬гейт» (обратная стрелка — ex falso, честно). Это СЛАБЕЕ
-    pnp-аналога `internalisedPNPGround_semantically_selfNegating`: там
-    эквивалентность оплачена внешним точным законом оплаты, здесь — прямой
-    перепаковкой отрицания. Содержательность модуля живёт в §3–§4, не здесь. -/
+/-- 🟢 **MACHINE HONESTY (tautology exposed):** the structure
+    `InternalisedLandauGround` is provably equivalent to the contradictory pair
+    "gate ∧ ¬gate" (the reverse arrow is ex falso, honestly). This is WEAKER than
+    the pnp-analogue `internalisedPNPGround_semantically_selfNegating`: there the
+    equivalence is paid for by an external exact payment law, here — by a direct
+    repackaging of the negation. The module's substance lives in §3–§4, not here. -/
 theorem internalisedLandauGround_semantically_selfNegating :
     InternalisedLandauGround ↔ (Landau4thUnbounded ∧ ¬ Landau4thUnbounded) := by
   constructor
@@ -383,12 +392,13 @@ theorem internalisedLandauGround_semantically_selfNegating :
   · rintro ⟨hU, hnU⟩
     exact (hnU hU).elim
 
-/-- 🟢 **СТЕНА НЕЧЁТНОГО КАНАЛА (безусловная):** внутренний вывод, слепой к
-    рельсу чётности — «нечётные `k` неограниченно поставляют простые
-    `k² + 1`» — опровергается БЕСПЛАТНО (реюз `oddLandauPrime_even_k`).
-    ЧЕСТНОСТЬ: это аналог пижонхола P/NP лишь по ЖАНРУ — стена закрывает
-    ТОЛЬКО нечётный канал; на чётном канале, где живёт вся открытая суть,
-    зелёной стены нет и быть не может без решения самой задачи. -/
+/-- 🟢 **ODD-CHANNEL WALL (unconditional):** an internal inference blind to the
+    parity rail — "odd `k` supply primes `k² + 1` unboundedly" — is refuted FOR
+    FREE (reuse `oddLandauPrime_even_k`).
+    HONESTY: this is an analogue of the P/NP pigeonhole only by GENRE — the wall
+    closes ONLY the odd channel; on the even channel, where the whole open essence
+    lives, there is no green wall and there cannot be one without solving the
+    problem itself. -/
 theorem landau_supply_parityWalled :
     (∀ N : ℕ, ∃ k : ℕ, N < k ∧ Odd k ∧ (k ^ 2 + 1).Prime) → False := by
   intro h
@@ -397,19 +407,19 @@ theorem landau_supply_parityWalled :
   have h3 : 2 < k ^ 2 + 1 := by nlinarith
   exact absurd h2 (ne_of_gt h3)
 
-/-- 🟢 **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — 3-РАЗВИЛКА (зеркало
+/-- 🟢 **"THE SOLUTION IS LOCKED BEHIND THE ENGINE" — 3-PRONGED (mirror of
     `twin_no_internal_decision_without_engine`,
     `pnp_no_internal_decision_without_engine`):**
-    (1) ОПРОВЕРГНУТЬ при законе = предъявить двигатель-свидетель
-        (`landauRefutation_carries_engine`; цена честно видна: закон
-        `LandauManifestationLaw` НЕ декретирован — полиньяк-класс);
-    (2) САМООБОСНОВАТЬ решение изнутри — самоуничтожается
+    (1) to REFUTE under the law = to present an engine-witness
+        (`landauRefutation_carries_engine`; the price is honestly visible: the law
+        `LandauManifestationLaw` is NOT decreed — Polignac-class);
+    (2) to SELF-GROUND the solution from inside — self-destructs
         (`no_internalisedLandauGround`);
-    (3) единственный без-двигательный путь — ВНЕШНЕЕ ПРИНЯТИЕ гейта: оно влечёт
-        бесконечность простых Ландау (`landauPrimes_infinite_of_unbounded`;
-        сам гейт здесь НЕ утверждается).
-    НЕ утверждается гёделевская независимость и НЕ решение 4-й проблемы —
-    только: оба внутренних решения стоят вечного двигателя. -/
+    (3) the only engine-free path — EXTERNAL ACCEPTANCE of the gate: it entails
+        infinitude of Landau primes (`landauPrimes_infinite_of_unbounded`;
+        the gate itself is NOT asserted here).
+    Neither Gödelian independence NOR a solution of the 4th problem is asserted —
+    only: both internal solutions cost a perpetual engine. -/
 theorem landau_no_internal_decision_without_engine :
     (∀ P : ℕ, LandauAbsenceAbove P → LandauManifestationLaw →
       ∀ (A M0 : ℕ), P ≤ M0 →
@@ -423,15 +433,15 @@ theorem landau_no_internal_decision_without_engine :
    no_internalisedLandauGround,
    landauPrimes_infinite_of_unbounded⟩
 
-/-- 🟢 Итоговый эпистемический статус Ландау (зеркало
-    `pnp_locked_behind_engine_status` — БЕЗ декрет-конъюнкта: гейт НЕ принят,
-    границы у Ландау нет и она не добавляется):
-    (1) решить изнутри нельзя (теорема);
-    (2) нечётный канал стенирован безусловно (теорема);
-    (3) двигатель запрещён (`no_someConcreteEuclideanEngine`, lexRank);
-    (4) закон + граница ⟹ гейт (закон НЕ декретирован — вся цена видна);
-    (5) гейт канонизирован: неограниченность ⟺ бесконечность (теорема).
-    ЦЕЛИКОМ ЗЕЛЁНАЯ: конъюнкты 1–3, 5 безусловны; 4 — условная стрелка. -/
+/-- 🟢 Final epistemic status of Landau (mirror of
+    `pnp_locked_behind_engine_status` — WITHOUT the decree conjunct: the gate is
+    NOT accepted, Landau has no boundary and none is added):
+    (1) it cannot be decided from inside (theorem);
+    (2) the odd channel is walled unconditionally (theorem);
+    (3) the engine is forbidden (`no_someConcreteEuclideanEngine`, lexRank);
+    (4) law + boundary ⟹ gate (the law is NOT decreed — the whole price is visible);
+    (5) the gate is canonized: unboundedness ⟺ infinitude (theorem).
+    ENTIRELY GREEN: conjuncts 1–3, 5 are unconditional; 4 is a conditional arrow. -/
 theorem landau_locked_behind_engine_status :
     (¬ InternalKnowledgeOfLandauCause) ∧
     ((∀ N : ℕ, ∃ k : ℕ, N < k ∧ Odd k ∧ (k ^ 2 + 1).Prime) → False) ∧
@@ -446,8 +456,8 @@ theorem landau_locked_behind_engine_status :
        no_someConcreteEuclideanEngine hBoundary hLaw,
    landau4thUnbounded_iff_infinite⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (максимум стандартная тройка),
-    карантин не импортирован, таинт репо (47) НЕ меняется -/
+/-! ## Axiom audit: the whole module is green (at most the standard triple),
+    the quarantine is not imported, the repo taint (47) does NOT change -/
 #print axioms landau4thUnbounded_iff_infinite
 #print axioms landauPrime_even_of_two_lt
 #print axioms landau4thUnbounded_iff_even_k

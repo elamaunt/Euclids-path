@@ -8,6 +8,16 @@
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper,margin=1in]{geometry}
 
+% Map blackboard-bold letters and superscripts that occasionally slip into prose
+% as literal Unicode into proper math (both editions are then robust to them).
+\DeclareUnicodeCharacter{211D}{\ensuremath{\mathbb{R}}}
+\DeclareUnicodeCharacter{2115}{\ensuremath{\mathbb{N}}}
+\DeclareUnicodeCharacter{2124}{\ensuremath{\mathbb{Z}}}
+\DeclareUnicodeCharacter{211A}{\ensuremath{\mathbb{Q}}}
+\DeclareUnicodeCharacter{2102}{\ensuremath{\mathbb{C}}}
+\DeclareUnicodeCharacter{00B2}{\ensuremath{^{2}}}
+\DeclareUnicodeCharacter{00B3}{\ensuremath{^{3}}}
+
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{xcolor}
 \usepackage{graphicx}

@@ -23,14 +23,14 @@ the single divisibility by which the purity of a descended state can be violated
 Let us recall the working configuration. A centre `m` lies in the pure core `Ω_A` when both of its sides
 factor into primes strictly greater than the threshold `A`. Suppose one side — say,
 `6m+σ` with `σ∈{±1}` — turns out to be *composite* within the layer and carries an active factor `a>A`:
-$$6m+\sigma = a\,(6n+\varepsilon),\qquad a>A,\ \varepsilon\in\{-1,+1\}.$$
+$$6m+\sigma = a\,(6n+\varepsilon),\qquad a>A,\ \varepsilon\in\{-1,+1\}.\tag{4.1}$$
 Removing the active factor `a`, we declare the descended centre to be that `n` for which the remainder
 `6n+ε` equals the second bracket. This is one tick of the engine: from the scale `m` we pass to the
 scale `n`.
 
 The first observation is strict descent in height (the height is the rank of a state, the engine's finite fuel; see the [glossary](GLOSSARY.md)). Since `a>A` and `6m+σ = a(6n+ε)`, the factor `a`
 eats up at least a factor of `A` from the magnitude of the side, and hence from the centre:
-$$n < \frac{m}{A}.$$
+$$n < \frac{m}{A}.\tag{4.2}$$
 
 > **Note.** By the height `H` we mean the centre `m` itself (equivalently, the magnitude of the side on
 > a logarithmic scale). The strict inequality `n<m/A` is not an "on average" estimate but pointwise
@@ -47,8 +47,8 @@ two that carries the gap.
 
 For brevity, introduce `U := 6n+ε` — the remainder side of the descended centre.
 
-**Theorem (`two_carry_opposite`).** If `U = 6n+ε`, then
-$$6n-\varepsilon = U - 2\varepsilon.$$
+**Theorem 4.1** (`two_carry_opposite`). If $U = 6n+\varepsilon$, then
+$$6n-\varepsilon = U - 2\varepsilon.\tag{4.3}$$
 
 The proof in Lean takes one line (`linear_combination -hU`) and is entirely algebraic:
 $$6n-\varepsilon = (6n+\varepsilon) - 2\varepsilon = U - 2\varepsilon.$$
@@ -72,9 +72,8 @@ factors are greater than `A` by construction — removing the active `a>A` leave
 `b,v>A`. So the danger can come only from an *old small* prime `p≤A`. The next
 statement excludes such a prime from the product side.
 
-**Theorem (`no_small_divisor`).** Let `b,v` be primes with `A<b`, `A<v`, and let `p` be a prime with `p≤A`.
-Then
-$$p \nmid (b\cdot v).$$
+**Theorem 4.2** (`no_small_divisor`). Let $b, v$ be primes with $A < b$, $A < v$, and let $p$ be a prime with $p \le A$. Then
+$$p \nmid (b\cdot v).\tag{4.4}$$
 
 The proof is direct (in Lean, via `Nat.Prime.dvd_mul` and `Nat.prime_dvd_prime_iff_eq`): if
 `p ∣ b·v`, then by Euclid's lemma `p∣b` or `p∣v`; but a prime dividing a prime means
@@ -100,18 +99,18 @@ two. By an obstruction we mean the event "some prime `p` divides one of the side
 of the pure core, a boundary-exit). The following theorem shows that when `p∤U` this disjunction
 collapses into a *single* divisibility.
 
-**Theorem (`obstruction_on_opposite`).** Let `sideProd = U`, `sideOpp = U − 2ε` and `p∤U`. Then
-$$\bigl(p \mid sideProd \ \lor\ p \mid sideOpp\bigr)\ \Longleftrightarrow\ p \mid sideOpp.$$
+**Theorem 4.3** (`obstruction_on_opposite`). Let $\mathit{sideProd} = U$, $\mathit{sideOpp} = U - 2\varepsilon$ and $p \nmid U$. Then
+$$\bigl(p \mid \mathit{sideProd} \ \lor\ p \mid \mathit{sideOpp}\bigr)\ \Longleftrightarrow\ p \mid \mathit{sideOpp}.\tag{4.5}$$
 
 The proof is elementary. Left to right: if `p∣sideProd`, then `p∣U` (since `sideProd=U`) —
 a contradiction with `p∤U`; so `p∣sideOpp` remains. Right to left is trivial (the right disjunct). In
 Lean this is an `rintro` case split with `absurd h hpU` in the impossible branch.
 
-Combining with `no_small_divisor` (which yields exactly `p∤U` for a small `p≤A`, since `U=b·v` with
-`b,v>A`) and with `two_carry_opposite` (which identifies `sideOpp = U−2ε` as the carried two),
+Combining with Theorem 4.2 (`no_small_divisor`) (which yields exactly `p∤U` for a small `p≤A`, since `U=b·v` with
+`b,v>A`) and with Theorem 4.1 (`two_carry_opposite`) (which identifies `sideOpp = U−2ε` as the carried two),
 we obtain the programme's **boundary law**:
 
-$$\boxed{\ p\mid 6n-\varepsilon\ }\qquad(\text{equivalently } p\mid U-2\varepsilon).$$
+$$\boxed{\ p\mid 6n-\varepsilon\ }\qquad(\text{equivalently } p\mid U-2\varepsilon).\tag{4.6}$$
 
 **Conclusion.** The only divisibility capable of knocking the descended centre out of the pure core is the divisibility
 of the *opposite side* `6n−ε` by an old prime `p≤A`. The obstruction cannot sit on the
@@ -126,14 +125,14 @@ concentrated in a single point — on the carried two.
 
 ## What is proven and what it means
 
-Three machine-checked theorems (`two_carry_opposite`, `no_small_divisor`,
-`obstruction_on_opposite`) together establish that one tick of the engine works as follows:
+Three machine-checked theorems — Theorem 4.1 (`two_carry_opposite`), Theorem 4.2 (`no_small_divisor`),
+and Theorem 4.3 (`obstruction_on_opposite`) — together establish that one tick of the engine works as follows:
 
 1. **strict descent in height** — from `6m+σ=a(6n+ε)` with an active `a>A` it follows that `n<m/A`
    (divisibility arithmetic, with no distributional assumptions whatsoever);
-2. **conservation of the gap** — the two is not lost but carried over: `6n−ε = U−2ε`;
-3. **localization of the obstruction** — a small prime does not spoil the product side, so the boundary
-   is reached exactly when `p∣6n−ε`.
+2. **conservation of the gap** — the two is not lost but carried over: $6n-\varepsilon = U-2\varepsilon$ (Theorem 4.1);
+3. **localization of the obstruction** — a small prime does not spoil the product side (Theorem 4.2), so the boundary
+   is reached exactly when $p\mid 6n-\varepsilon$ (Theorem 4.3, equation (4.6)).
 
 The whole proof is elementary — ring arithmetic and divisibility; no analysis, no distribution, no sieve. This
 matters methodologically: descent and the boundary law are atomic facts on which the entire subsequent

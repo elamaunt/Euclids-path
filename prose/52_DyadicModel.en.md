@@ -25,13 +25,13 @@ What is formalised here is *known* mathematics (the budget principle; the Katz�
 
 ## Where the engine works: the budget versus uniform dissipation
 
-**Theorem** (`finite_budget_bounds_uniform_dissipation`, 🟢). *If the energy `E(t)` decreases at a rate no
+**Theorem 52.1** (`finite_budget_bounds_uniform_dissipation`, 🟢). *If the energy `E(t)` decreases at a rate no
 less than `β > 0` on all of `[0, T]` (i.e. `E'(t) ≤ −β`), and is still nonnegative at the endpoint, then `T ≤ E₀/β`.*
 "Why this is true." Pure calculus: a one-sided mean-value estimate gives `E(T) ≤ E₀ − βT`, and `0 ≤ E(T)` closes it. This is the machine form of our slogan: **a finite budget cannot sustain perpetual uniform dissipation** — the same principle that killed `ns_no_infinite_dissipative_cascade`.
 
 We tied it to a genuine finite shell model (of GOY/Sabra type): amplitudes `a : Fin N → ℝ → ℝ` with nonlinear energy transfer between neighbouring shells (conserving the total energy — a telescope) and dyadic dissipation `ν·λ^{2αn}`.
 
-**Theorem** (`no_uniform_dissipation_forever_on_shell`, 🟢). *On this model, uniform dissipation ≥ β
+**Theorem 52.2** (`no_uniform_dissipation_forever_on_shell`, 🟢). *On this model, uniform dissipation ≥ β
 entails `T ≤ E₀/β`.* The model is inhabited (the zero solution is an honest `ShellSolution`), the hypotheses are genuinely consumed. The engine reading is **valid** here — but only in the uniform regime.
 
 > **Note (an honest boundary — also by machine).** The budget does not catch a *nonuniform* cascade.
@@ -43,11 +43,11 @@ entails `T ≤ E₀/β`.* The model is inhabited (the zero solution is an honest
 
 Now a genuine model with no artificial uniformity. In Katz–Pavlović, under weak dissipation (`α < 1/4`) the energy cascades up the shells *super-linearly* and the solution blows up in finite time — proven (Katz–Pavlović 2005; Cheskidov–Friedlander, blow-up in `H^{5/6}` for the inviscid model). We formalised the core of this mechanism.
 
-**Theorem** (`superlinear_blowup_sq`, 🟢 — the rigorous core). *No global positive `C¹` function
+**Theorem 52.3** (`superlinear_blowup_sq`, 🟢 — the rigorous core). *No global positive `C¹` function
 can satisfy `y'(t) ≥ C·y(t)²` (`C > 0`): the assumption of a global solution yields `False`.*
 "Why this is true." Take `w(t) := 1/y(t) + C·t`; then `w'(t) = −y'/y² + C ≤ −C + C = 0`, so `w` is non-increasing, and `1/y = w − Ct` must go negative in finite time — a contradiction with `y > 0`. This is the machine transcript of the fact that **a super-linear cascade is a realised perpetual engine**: it exists exactly until the moment of blow-up.
 
-**Theorem** (`dyadic_blowup`, 🟢). *The Katz–Pavlović model `DyadicSolution` is globally empty — blow-up
+**Theorem 52.4** (`dyadic_blowup`, 🟢). *The Katz–Pavlović model `DyadicSolution` is globally empty — blow-up
 is inevitable.* We defined the genuine KP equations `aₙ' = λⁿaₙ₋₁² − λⁿ⁺¹aₙaₙ₊₁ − dₙaₙ` and proved the telescope of energy conservation for the nonlinear transfer; the blow-up follows from the core.
 
 ## The drive is no longer postulated: it is derived from the couplings
@@ -55,7 +55,7 @@ is inevitable.* We defined the genuine KP equations `aₙ' = λⁿaₙ₋₁² �
 Previously the linking property `y' ≥ C·y²` lived as a named hypothesis `superlinearDrive` of the structure
 `DyadicSolution` — honestly named, but not derived from the λⁿ-couplings. Now we have derived it, in two steps.
 
-**Theorem** (`ssLead_drive`, 🟢 — the drive from the coupling). *The exact self-similar solution
+**Theorem 52.5** (`ssLead_drive`, 🟢 — the drive from the coupling). *The exact self-similar solution
 `aₙ(t) = λ⁻ⁿ/((λ²−1)(T−t))` solves the bulk KP equations; for the leading mode `y = a₁` the drive holds
 with equality: `y' = C·y²` with `C = λ(λ²−1)`.*
 
@@ -67,7 +67,7 @@ computed from the right-hand side `kpRHS`.
 > in the amplitudes (`a₁` or `∑wₙaₙ`). A quadratic `∑wₙaₙ²` would give `y' ∼ g³` while `y² ∼ g⁴` — the inequality
 > `y' ≥ C·y²` is false for it as `t → T`. The linear functional is chosen deliberately.
 
-**Theorem** (`frontDrive_of_invariant`, 🟢 — the drive for a whole class). *Suppose a KP solution has one
+**Theorem 52.6** (`frontDrive_of_invariant`, 🟢 — the drive for a whole class). *Suppose a KP solution has one
 front shell pinched from below by its two neighbours — the invariant `FrontDomination`: `ρ·a_{J+1} ≤ a_J`,
 `a_{J+2} ≤ κ·a_{J+1}`, `m ≤ a_{J+1}`. Then the drive `C·y² ≤ y'` is derived directly from the λⁿ-couplings.*
 
@@ -92,7 +92,7 @@ pumping term. And this concession has an exact name.
 The largest shell `n=0` can only give: its inflow is zero (`kpInflow 0 = 0`), there is only an
 outflow up the cascade. Hence it cannot start itself — its origin cannot be begotten from inside the couplings.
 
-**Theorem** (`dyadicOrigin_uncausable_from_inside`, 🟢). *The self-similar origin does not satisfy
+**Theorem 52.7** (`dyadicOrigin_uncausable_from_inside`, 🟢). *The self-similar origin does not satisfy
 the unforced equation of shell `n=0`: its true dynamics carries a strictly positive surplus
 `bottomForcing > 0` on top of `kpRHS`.*
 
@@ -106,7 +106,7 @@ the first cause, and its `0` is the very singularity of the cosmological reading
 
 Hence — the single deliberate yellow layer of this appendix.
 
-**Theorem** (`dyadicBlowup_is_firstCauseManifestation`, 🟡 — ⚠️ AXIOM-TAINTED). *The same
+**Theorem 52.8** (`dyadicBlowup_is_firstCauseManifestation`, 🟡 — ⚠️ AXIOM-TAINTED). *The same
 first-cause decree that decrees the seven masks also supplies the origin of the cascade: the supply at scale
 `n=0` is drawn from the boundary `nsBoundary` of the axiom `step00FirstCause`.*
 

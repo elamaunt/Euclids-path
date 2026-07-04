@@ -22,12 +22,15 @@ neither proven nor hidden (see the [glossary](GLOSSARY.md)) — in explicit, typ
 
 ## 15.1. The setting: what exactly we are assembling
 
-Recall the working definitions fixed in the overview module `Step00_Overview.lean`. A centre $m$
-determines a twin pair if both sides of the six-fold window are prime:
+Recall the working definitions fixed in the overview module `Step00_Overview.lean`.
+
+**Definition 15.1** (`IsTwinCenter`)**.** A centre $m$ determines a twin pair if both sides of the
+six-fold window are prime:
 $$
 \mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.
 $$
-The set of lower members of twin pairs is
+
+**Definition 15.2** (`TwinLowers`)**.** The set of lower members of twin pairs is
 $$
 \mathrm{TwinLowers} \;=\; \{\,p \mid p\ \text{prime}\ \wedge\ (p+2)\ \text{prime}\,\},
 $$
@@ -47,12 +50,13 @@ separate modules; here they are joined into one derivation.
 The chain is assembled from four previously proven statements. Let us list them with their exact
 Lean names and explain what each one does.
 
-**Link 1 — the four-corner passage (strict).** In `FourCorner.lean` the lemma
-`N33_lt_N00_of_four_corner` is proven: given $N_{00}>0$, the strict four-corner
+**Link 1 — the four-corner passage (strict).**
+
+**Lemma 15.3** (`N33_lt_N00_of_four_corner`)**.** Given $N_{00}>0$, the strict four-corner
 $N_{00}\cdot N_{33} < N_{03}\cdot N_{30}$ and the side-corner $N_{03}\cdot N_{30} \le N_{00}^2$,
 it follows that
 $$
-N_{33} < N_{00}.
+N_{33} < N_{00}. \tag{15.1}
 $$
 The proof is elementary and purely arithmetical: from $N_{00}N_{33} < N_{03}N_{30} \le N_{00}^2$
 we get $N_{00}N_{33} < N_{00}N_{00}$, and cancelling the positive factor $N_{00}$ (the lemma
@@ -65,27 +69,32 @@ we get $N_{00}N_{33} < N_{00}N_{00}$, and cancelling the positive factor $N_{00}
 > the four-corner by itself does not control $N_{33}$ relative to $N_{00}$. This is why the
 > side-corner appears in the hypothesis `H` as a separate, "light" conjunct.
 
-**Link 2 — non-cover yields a survivor.** In `NonCover.lean` the lemma `survivor_of_not_covered`
-asserts: if for finite sets $\Omega$ (the carrier) and $\mathrm{bad}$ we have
-$|\mathrm{bad}| < |\Omega|$, then there exists $m\in\Omega$ with $m\notin\mathrm{bad}$. This is
+**Link 2 — non-cover yields a survivor.**
+
+**Lemma 15.4** (`survivor_of_not_covered`)**.** If for finite sets $\Omega$ (the carrier) and
+$\mathrm{bad}$ we have $|\mathrm{bad}| < |\Omega|$, then there exists $m\in\Omega$ with
+$m\notin\mathrm{bad}$. This is
 pure Finset combinatorics: were $\Omega\subseteq\mathrm{bad}$, we would have
 $|\Omega|\le|\mathrm{bad}|$ — a contradiction. Substantively: the "bad" centres are too few to
 cover the whole carrier, so at least one centre survives.
 
-**Link 3 — the block core.** In `TwoTransport.lean` the theorem
-`twin_prime_conjecture_of_blocks` assembles the survivor into a twin centre above every scale.
-Its premise:
+**Link 3 — the block core.**
+
+**Theorem 15.5** (`twin_prime_conjecture_of_blocks`)**.** From the premise
 $$
 \forall N,\ \exists\,\text{carrier},\ \text{bad}:\quad
 (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\
-(\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow\mathrm{IsTwinCenter}(m)).
+(\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow\mathrm{IsTwinCenter}(m)) \tag{15.2}
 $$
-Via the auxiliary `twin_center_of_block` it extracts the survivor (link 2), places it above $N$,
-and by the condition "survivor $\Rightarrow$ twin" recognizes it as a twin centre.
+it follows that `TwinLowers.Infinite`. Via the auxiliary `twin_center_of_block` it extracts the
+survivor (link 2, Lemma 15.4), places it above $N$, and by the condition "survivor $\Rightarrow$
+twin" recognizes it as a twin centre.
 
-**Link 4 — unboundedness yields infinitude.** Also in `NonCover.lean`, the theorem
-`infinite_of_unbounded_centers`: if for every $N$ there is a twin centre $m>N$, then
-`TwinLowers.Infinite`. Formally it uses `Set.infinite_of_not_bddAbove` — from a centre $m>N$ one
+**Link 4 — unboundedness yields infinitude.**
+
+**Theorem 15.6** (`infinite_of_unbounded_centers`)**.** If for every $N$ there is a twin centre
+$m>N$, then `TwinLowers.Infinite`. Formally it uses `Set.infinite_of_not_bddAbove` — from a
+centre $m>N$ one
 builds the pair member $6m-1$, which exceeds $N$, so the set of lower twins is not bounded above,
 and hence is infinite.
 
@@ -117,16 +126,16 @@ is identified with the rank-$(0,0)$ set, the bad set with the rank-$(3,3)$ set, 
 counts give the strict four-corner (plus the light side-corner), the whole carrier lies above
 $N$, and every surviving carrier centre is a twin.
 
-The theorem:
+**Theorem 15.7** (`twin_primes_of_four_corner`)**.** 🟡 (conditional)
 $$
-`twin\_primes\_of\_four\_corner` :\quad H \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite}.
+H \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite}. \tag{15.3}
 $$
 
-A walk through the proof. We apply `twin_prime_conjecture_of_blocks` — it remains, for every
-$N$, to exhibit a block with $|\mathrm{bad}| < |\mathrm{carrier}|$. We unfold $H\,N$, obtaining
-the ranks, the carrier, the bad set and all seven conjuncts.
+A walk through the proof. We apply Theorem 15.5 (`twin_prime_conjecture_of_blocks`) — it remains,
+for every $N$, to exhibit a block with $|\mathrm{bad}| < |\mathrm{carrier}|$. We unfold $H\,N$,
+obtaining the ranks, the carrier, the bad set and all seven conjuncts.
 
-The key step is link 1:
+The key step is link 1 (Lemma 15.3):
 $$
 |R_{33}| < |R_{00}| \quad\text{via}\quad `N33\_lt\_N00\_of\_four\_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
 $$
@@ -134,8 +143,8 @@ Then, by the identities $|\mathrm{carrier}|=|R_{00}|$ and $|\mathrm{bad}|=|R_{33
 this inequality as $|\mathrm{bad}| < |\mathrm{carrier}|$ — exactly the premise of the block core.
 
 The conditions "the carrier lies above $N$" and "survivor $\Rightarrow$ twin" are passed on from
-$H$ unchanged. At this point the machine chain closes: `twin_prime_conjecture_of_blocks` returns
-`TwinLowers.Infinite`.
+$H$ unchanged. At this point the machine chain closes: Theorem 15.5
+(`twin_prime_conjecture_of_blocks`) returns `TwinLowers.Infinite`.
 
 > **Note.** There is no `sorry` in the file. This is an honest *conditional* theorem: the
 > conclusion (the twin conjecture) follows from the explicit input $H$. We never pass this

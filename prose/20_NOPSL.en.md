@@ -25,8 +25,8 @@ it from all the illustrative scenery. From the intuition of the old descent it i
 pieces of data: the height of a state, the predicate of correct stopping, the step relation, and two laws binding
 them together. We gather these into a single structure.
 
-> **Definition (`OldPeelLedger`).** An old-peel ledger over a type of states $\sigma$ is a tuple
-> $$L=\bigl(h,\ \mathrm{Sink},\ \mathrm{Step},\ \texttt{step\_drops},\ \texttt{regenerate}\bigr),$$
+> **Definition 20.1** (`OldPeelLedger`). An old-peel ledger over a type of states $\sigma$ is a tuple
+> $$L=\bigl(h,\ \mathrm{Sink},\ \mathrm{Step},\ \texttt{step\_drops},\ \texttt{regenerate}\bigr), \tag{20.1}$$
 > where
 > - $h:\sigma\to\mathbb N$ is the **height** of a state (the scale of the current centre);
 > - $\mathrm{Sink}:\sigma\to\mathrm{Prop}$ is the predicate of **correct stopping** (a twin centre or
@@ -72,9 +72,9 @@ the non-existence of such a hanging terminal that we encode as `regenerate`.
 
 Now the main statement. It says that the abstract structure closes itself.
 
-> **Theorem (`no_old_peel_sink`, §11.1/13.1).** For every old-peel ledger $L$ over $\sigma$ and every
+> **Theorem 20.2** (`no_old_peel_sink`, §11.1/13.1). For every old-peel ledger $L$ over $\sigma$ and every
 > start $\mathrm{start}\in\sigma$ there exists a state $s$ with $\mathrm{Sink}(s)$:
-> $$\forall L,\ \forall\,\mathrm{start},\quad \exists\,s,\ L.\mathrm{Sink}(s).$$
+> $$\forall L,\ \forall\,\mathrm{start},\quad \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.2}$$
 
 Let us show why this is true, and follow the Lean proof at the same time — it is short and contains
 not a single loophole.
@@ -88,11 +88,11 @@ from the negation of the existence of a sink.
 Using a choice function (`choose next hnext`) we turn "every $s$ has a successor" into a concrete
 function $\mathrm{next}:\sigma\to\sigma$ with $\mathrm{Step}\,s\,(\mathrm{next}\,s)$ for all $s$. From
 it, by recursion, we build an infinite trajectory
-$$z(0)=\mathrm{start},\qquad z(k+1)=\mathrm{next}\,(z(k)),$$
+$$z(0)=\mathrm{start},\qquad z(k+1)=\mathrm{next}\,(z(k)), \tag{20.3}$$
 each link of which is a genuine old-peel step: $\mathrm{Step}\,(z\,k)\,(z\,(k{+}1))$.
 
 Applying `step_drops` to each link, we obtain a strictly decreasing sequence of heights:
-$$\forall k,\quad h\bigl(z(k+1)\bigr)<h\bigl(z(k)\bigr).$$
+$$\forall k,\quad h\bigl(z(k+1)\bigr)<h\bigl(z(k)\bigr). \tag{20.4}$$
 This is a sequence of natural numbers decreasing at every step, forever. No such thing
 exists — and this is exactly what `OldPeel.old_peel_terminates` asserts, which is in turn a
 repackaging of `no_infinite_engine_descent` (no infinite strict descent in $\mathbb N$ =
@@ -116,10 +116,10 @@ Before tying the sink to twins, let us record formally the disappearance of the 
 In [18 SNOL] the final node was the "terminal shifted-neighbour obstruction": a hypothetical
 carrier-scale catch that leads nowhere. Now we can say why it does not exist.
 
-> **Theorem (`snol_of_nopsl`, §13).** For every old-peel ledger $L$ and start there exists a sink:
-> $$\exists\,s,\ L.\mathrm{Sink}(s).$$
+> **Theorem 20.3** (`snol_of_nopsl`, §13). For every old-peel ledger $L$ and start there exists a sink:
+> $$\exists\,s,\ L.\mathrm{Sink}(s). \tag{20.5}$$
 
-Formally `snol_of_nopsl` is exactly `no_old_peel_sink L start`; the separate name is there to
+Formally `snol_of_nopsl` is exactly Theorem 20.2 (`no_old_peel_sink`) applied to $L$ and `start`; the separate name is there to
 emphasise the substantive reading. If the terminal SN-obstruction existed, its states
 would be simultaneously non-sink (no twin) and without regeneration (nowhere to go) — which directly contradicts
 the field `regenerate`. Hence the obstruction is impossible, and the flow is guaranteed to reach a correct
@@ -132,11 +132,11 @@ It remains to name the sink a twin. Here the abstraction meets Polignac's conjec
 a ledger of its own on every scale $N$ and demand that its correct stops be twin centres above
 $N$.
 
-> **Theorem (`twin_primes_of_nopsl`, §14.1).** Suppose we are given
+> **Theorem 20.4** (`twin_primes_of_nopsl`, §14.1). Suppose we are given
 > - a family of ledgers $L(N)$ and starts $\mathrm{start}(N)$ for every scale $N\in\mathbb N$;
 > - a centre function $\mathrm{center}(N,\cdot):\sigma\to\mathbb N$;
 > - a stop-on-twin condition
->   $$\texttt{sink\_is\_twin}:\quad \forall N,s,\ \ L(N).\mathrm{Sink}(s)\ \Rightarrow\ N<\mathrm{center}(N,s)\ \wedge\ \mathrm{IsTwinCenter}\bigl(\mathrm{center}(N,s)\bigr).$$
+>   $$\texttt{sink\_is\_twin}:\quad \forall N,s,\ \ L(N).\mathrm{Sink}(s)\ \Rightarrow\ N<\mathrm{center}(N,s)\ \wedge\ \mathrm{IsTwinCenter}\bigl(\mathrm{center}(N,s)\bigr). \tag{20.6}$$
 >
 > Then $\mathrm{TwinLowers.Infinite}$ — there are infinitely many twin primes.
 
@@ -145,7 +145,7 @@ twin centres via `infinite_of_unbounded_centers` (the §NonCover bridge: if for 
 twin centre $m>N$, then the set of twins is infinite).
 
 Next we fix an arbitrary $N$ and apply
-`no_old_peel_sink` to the ledger $L(N)$ with start $\mathrm{start}(N)$ — obtaining a sink $s$.
+Theorem 20.2 (`no_old_peel_sink`) to the ledger $L(N)$ with start $\mathrm{start}(N)$ — obtaining a sink $s$.
 
 Finally,
 by `sink_is_twin` this sink yields the centre $\mathrm{center}(N,s)$, which lies above $N$ and is a

@@ -26,13 +26,13 @@ $$
 
 Зафиксируем порог просеивания $A$ и работаем с центрами $m \in \mathbb{N}$ (сторона $6m-1$, $6m+1$). Основное свойство наследуется из [22](22_Residuals.md), но здесь мы берём его натуральную форму.
 
-**Определение (clean-центр).** Центр $m$ называется *clean* относительно $A$, если ни один простой $q \le A$ не делит ни одну из сторон:
+**Определение 23.1 (clean-центр).** Центр $m$ называется *clean* относительно $A$, если ни один простой $q \le A$ не делит ни одну из сторон:
 $$
 \mathrm{Clean}\,A\,m \;:\equiv\; \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).
 $$
 В Lean это `Clean` (ℕ-версия; её ℤ-двойник — `CleanZ` из `Residuals`, мост между ними мы предъявим ниже).
 
-**Определение (active-ребро).** Ребро $m \to n$ *активно*, если $n$ — меньший центр-цель спуска:
+**Определение 23.2 (active-ребро).** Ребро $m \to n$ *активно*, если $n$ — меньший центр-цель спуска:
 $$
 \mathrm{ActiveEdge}\,A\,m\,n \;:\equiv\; \top \ \land\ n < m .
 $$
@@ -40,9 +40,9 @@ $$
 
 Различие внутри active-рёбер и есть предмет главы:
 
-**Определение (clean-ребро).** $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — оба конца clean.
+**Определение 23.3 (clean-ребро).** $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — оба конца clean.
 
-**Определение (boundary-exit).** $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — исток clean, цель *не* clean.
+**Определение 23.4 (boundary-exit).** $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — исток clean, цель *не* clean.
 
 Boundary-exit — это ребро, покидающее clean-граф. Оно *не* sink: это вход в defect-ledger, где им занимаются old-peel и регенерация. Именно сюда уходит переход $18 \to \dots$ из разрыва выше.
 
@@ -50,9 +50,9 @@ Boundary-exit — это ребро, покидающее clean-граф. Оно
 
 Первая теорема — полная и безусловная классификация каждого active-ребра, выходящего из clean-центра.
 
-**Теорема** (`active_edge_clean_or_boundary`)**.** Если $m$ clean и есть active-ребро $m \to n$, то это ребро либо clean, либо boundary-exit:
+**Теорема 23.5** (`active_edge_clean_or_boundary`)**.** Если $m$ clean и есть active-ребро $m \to n$, то это ребро либо clean, либо boundary-exit:
 $$
-\mathrm{Clean}\,A\,m \ \land\ \mathrm{ActiveEdge}\,A\,m\,n \;\Longrightarrow\; \mathrm{CleanActiveEdge}\,A\,m\,n \ \lor\ \mathrm{BoundaryExit}\,A\,m\,n .
+\mathrm{Clean}\,A\,m \ \land\ \mathrm{ActiveEdge}\,A\,m\,n \;\Longrightarrow\; \mathrm{CleanActiveEdge}\,A\,m\,n \ \lor\ \mathrm{BoundaryExit}\,A\,m\,n . \tag{23.1}
 $$
 
 Доказательство тривиально по закону исключённого третьего для предиката $\mathrm{Clean}\,A\,n$: если $n$ clean — левая ветвь, иначе — правая. Содержательна не сложность, а *полнота*: третьего исхода у active-ребра из clean-центра нет. Это значит, что граница clean-графа замкнута — всякая стрелка, выходящая наружу, ровно одна из двух: остаётся внутри (clean-edge) или пробивает границу (boundary). Именно эта дихотомия позволяет строго отделить «внутреннюю работу» спуска от «выхода на границу», где начинает действовать другой аппарат.
@@ -63,15 +63,15 @@ $$
 
 Теперь — корректное понятие остановки.
 
-**Определение (clean-sink).** $m$ — *clean-sink*, если $m$ clean и у него вообще нет active-ребра:
+**Определение 23.6 (clean-sink).** $m$ — *clean-sink*, если $m$ clean и у него вообще нет active-ребра:
 $$
 \mathrm{CleanSink}\,A\,m \;:\equiv\; \mathrm{Clean}\,A\,m \ \land\ \neg\,\exists n,\ \mathrm{ActiveEdge}\,A\,m\,n .
 $$
 Ключевое слово — «вообще нет»: unclean-цель, к которой ведёт boundary-ребро, *не* считается sink. Спуск, упирающийся в $18 \to (107,109)$, active-ребро *имеет* (переход существует), поэтому он не clean-sink, а boundary-exit. Так разрыв «sink-is-clean» устранён на уровне определения.
 
-**Теорема** (`clean_sink_is_twin`, исправленная Лемма 3.1)**.** Если $m$ clean, обе стороны $6m-1,\,6m+1 \ge 2$ и обе $< A^2$, и $m$ — clean-sink, то $m$ — twin-центр:
+**Теорема 23.7** (`clean_sink_is_twin`, исправленная Лемма 3.1)**.** Если $m$ clean, обе стороны $6m-1,\,6m+1 \ge 2$ и обе $< A^2$, и $m$ — clean-sink, то $m$ — twin-центр:
 $$
-2 \le 6m-1,\ \ 2 \le 6m+1,\ \ 6m-1 < A^2,\ \ 6m+1 < A^2,\ \ \mathrm{CleanSink}\,A\,m \;\Longrightarrow\; \mathrm{TwinCenterZ}\,m .
+2 \le 6m-1,\ \ 2 \le 6m+1,\ \ 6m-1 < A^2,\ \ 6m+1 < A^2,\ \ \mathrm{CleanSink}\,A\,m \;\Longrightarrow\; \mathrm{TwinCenterZ}\,m . \tag{23.2}
 $$
 
 Доказательство опирается на `sink_is_twin` из [22](22_Residuals.md): clean-сторона ниже $A^2$ обязана быть простой, потому что её минимальный простой делитель либо $\le A$ (запрещено чистотой), либо $> A$, и тогда кофактор тоже $> A$, откуда $6m\pm1 > A^2$ — противоречие.
@@ -82,27 +82,27 @@ $$
 
 Сведём дихотомию рёбер и понятие sink в единую классификацию.
 
-**Теорема** (`clean_center_outcome`, §5)**.** Для любого clean-центра $m$ выполнено ровно одно из четырёх:
+**Теорема 23.8** (`clean_center_outcome`, §5)**.** Для любого clean-центра $m$ выполнено ровно одно из четырёх:
 $$
 \mathrm{TwinCenterZ}\,m
 \ \lor\ (\exists n,\ \mathrm{CleanActiveEdge}\,A\,m\,n)
 \ \lor\ (\exists n,\ \mathrm{BoundaryExit}\,A\,m\,n)
-\ \lor\ \mathrm{CleanSink}\,A\,m .
+\ \lor\ \mathrm{CleanSink}\,A\,m . \tag{23.3}
 $$
 
-Доказательство — вложенный разбор случаев: если $m$ уже twin, готово; иначе смотрим, есть ли у $m$ хоть какое-то active-ребро. Если есть — применяем `active_edge_clean_or_boundary` и попадаем в clean-edge или boundary. Если ни одного active-ребра нет — по определению это clean-sink.
+Доказательство — вложенный разбор случаев: если $m$ уже twin, готово; иначе смотрим, есть ли у $m$ хоть какое-то active-ребро. Если есть — применяем Теорему 23.5 (`active_edge_clean_or_boundary`) и попадаем в clean-edge или boundary. Если ни одного active-ребра нет — по определению это clean-sink.
 
 Значимость теоремы в том, что она *корректно отсекает* unclean малый twin от sink: центр $18$, будучи истоком boundary-exit-ребра, оседает в третьей ветви (boundary), а не в первой (twin) и не в четвёртой (sink). Раньше он ошибочно проваливался в «sink», ломая привязку по высоте; теперь классификация не пускает его туда.
 
-> **Примечание.** Четыре ветви — это не выбор, а исчерпание: twin (терминал-успех), clean-edge (продолжаем спуск внутри графа), boundary (передаём управление defect-ledger), clean-sink (остановились чисто $\Rightarrow$ twin по предыдущей теореме). Первая и четвёртая ветви — «выходы вверх» к результату; вторая — внутренняя динамика; третья — единственный канал, уводящий нагрузку прочь из clean-графа.
+> **Примечание.** Четыре ветви — это не выбор, а исчерпание: twin (терминал-успех), clean-edge (продолжаем спуск внутри графа), boundary (передаём управление defect-ledger), clean-sink (остановились чисто $\Rightarrow$ twin по Теореме 23.7). Первая и четвёртая ветви — «выходы вверх» к результату; вторая — внутренняя динамика; третья — единственный канал, уводящий нагрузку прочь из clean-графа.
 
 ## Clean-sink лежит выше $M_0$
 
 Осталось связать корректную остановку с высотой — то, ради чего вводилось ограничение «sink только в clean».
 
-**Теорема** (`clean_sink_above`, §4)**.** Если $6M_0+1 < A$, $m \ge 1$, $m$ clean и twin, то $m > M_0$:
+**Теорема 23.9** (`clean_sink_above`, §4)**.** Если $6M_0+1 < A$, $m \ge 1$, $m$ clean и twin, то $m > M_0$:
 $$
-6M_0+1 < A,\ \ 1 \le m,\ \ \mathrm{Clean}\,A\,m,\ \ \mathrm{TwinCenterZ}\,m \;\Longrightarrow\; M_0 < m .
+6M_0+1 < A,\ \ 1 \le m,\ \ \mathrm{Clean}\,A\,m,\ \ \mathrm{TwinCenterZ}\,m \;\Longrightarrow\; M_0 < m . \tag{23.4}
 $$
 
 Это мост к уже доказанной `Residuals.clean_twin_above`. Единственная работа здесь — перенос ℕ-делимости в ℤ-делимость сторон: равенства
@@ -115,14 +115,14 @@ $$
 
 ## Честная граница: clean-граф не самодостаточен
 
-Здесь мы обязаны быть точны и не выдать редукцию за доказательство. Формализованная clean-часть — `active_edge_clean_or_boundary`, `clean_sink_is_twin`, `clean_center_outcome`, `clean_sink_above` — доказана полностью, стандартными аксиомами, без `sorry`. Но она описывает лишь *внутренность и границу* clean-графа, а не его замкнутость. И измерения показывают, что граф далеко не замкнут.
+Здесь мы обязаны быть точны и не выдать редукцию за доказательство. Формализованная clean-часть — Теоремы 23.5 (`active_edge_clean_or_boundary`), 23.7 (`clean_sink_is_twin`), 23.8 (`clean_center_outcome`), 23.9 (`clean_sink_above`) — доказана полностью, стандартными аксиомами, без `sorry`. Но она описывает лишь *внутренность и границу* clean-графа, а не его замкнутость. И измерения показывают, что граф далеко не замкнут.
 
 Числа `RESULTS_clean_graph`: **59% clean-центров имеют все свои active-рёбра в boundary** — то есть у большинства clean-центров каждый выход из графа пробивает границу, ведя к unclean-цели. Это означает, что clean-граф *не самодостаточен*: спуск, стартовавший чисто, почти всегда вынужден покинуть clean-область, и почти вся нагрузка редукции уходит в ветвь `BoundaryExit` из `clean_center_outcome`.
 
 **Вывод.** Весь остаток программы концентрируется в единственном открытом входе — именованном 🔴-утверждении, которого не хватает до цели (см. [словарь](GLOSSARY.md)): boundary-состояние обязано *регенерировать* — порождать корректного преемника (clean-возврат либо шаг defect-ledger), а не быть висячим терминалом. В движке это гипотеза
 
 $$
-\textbf{(H)}\quad \mathrm{boundary\_exit\_regenerates}:\quad \mathrm{BoundaryExit}\,A\,m\,n \ \Longrightarrow\ (\text{boundary-state даёт engine / регенерирует}).
+\textbf{(H)}\quad \mathrm{boundary\_exit\_regenerates}:\quad \mathrm{BoundaryExit}\,A\,m\,n \ \Longrightarrow\ (\text{boundary-state даёт engine / регенерирует}). \tag{23.5}
 $$
 
 Подчеркнём прямо: **(H) не доказана.** Это явная гипотеза, а не лемма. Clean-часть честно локализовала трудность — она сузила весь открытый узел до одного структурного утверждения о boundary-выходах, — но не закрыла его.

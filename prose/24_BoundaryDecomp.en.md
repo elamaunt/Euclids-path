@@ -40,6 +40,17 @@ chapter we show how it breaks, and where the load moves to.
 the line itself the genealogies of Euclid's primes descending to their centers. It is exactly these genealogies and
 their collisions that are the subject of this chapter's node.*
 
+> **Generation algorithm (Figure 24.1).** Source: `tools/fractal/euclid_fractal.py::twin_line_genealogy`.
+> Centers $m=1,\dots,M$ ($M=2400$) are laid along the horizontal axis $y=0$. The side $6m+1$ is
+> marked by a point *above* the line at height $\mathrm{wing}(m)=0.9+0.25\sqrt{m/M}$, the side $6m-1$
+> by a symmetric point below the line, whenever the corresponding number is prime (sieve
+> `primes_upto(6M+2)`). A twin center (both sides prime) is marked by a golden vertical
+> $[-\mathrm{wing},\,+\mathrm{wing}]$ with points at its ends. Along the line, for each $m$ the
+> old-peel step is computed: if $6m\mp1 = p\cdot(6t\pm1)$ with a Euclid witness prime
+> $p\in[5,97]$, a semicircular arc $m\to t$ is drawn of height $h=0.06\,|m-t|^{0.85}+0.4$
+> (36 points, $x=\tfrac{m+t}{2}+\tfrac{|m-t|}{2}\cos\theta$, $y=h\sin\theta$, $\theta\in[0,\pi]$),
+> colored by $\log p$ in the `turbo` palette. Twin centers live *off* the line, the genealogy *on* it.
+
 ## Why pointwise boundary regeneration is false
 
 Recall the construction from [23](23_CleanGraph.md): an edge `m → n` is `BoundaryExit A m n` when `m` is clean, the edge is active
@@ -74,7 +85,7 @@ In Lean this is `inductive BoundaryOutcome` with two constructors: `peel (t) (ht
 strictly smaller center — and `absorber (h : n ≤ M0)` — the state has run into an old absorber below the
 threshold. The key theorem:
 
-> **`boundary_exit_decomposes`.** Let $1 \le n$, $\eta \in \{+1,-1\}$, and let a small prime $q$ with
+> **Theorem 24.1** (`boundary_exit_decomposes`)**.** Let $1 \le n$, $\eta \in \{+1,-1\}$, and let a small prime $q$ with
 > $q \ge 5$, $q \bmod 6 \in \{1,5\}$ divide the side $6n+\eta$. Then there exists a valid smaller center:
 > $$\exists\, t',\ (\exists\,\eta'\in\{\pm1\}) \ \land\ 0 \le t' \ \land\ t' < n.$$
 
@@ -91,7 +102,7 @@ The dichotomy `BoundaryOutcome` splits this by the criterion $n \le M_0$: either
 the presence of a divisor $\Rightarrow$ the presence of a smaller center. The pointwise counterexample $18 \mapsto (107,109)$
 does not contradict it — there the side has no divisor (both sides are prime), so the dichotomy assigns such an
 $n$ not to `peel` but to `absorber`: it is a finite endpoint below $M_0$, not a terminal in the open field. Thereby
-`boundary_exit_decomposes` *does not pretend* to be regeneration: it honestly records that an impure
+Theorem 24.1 (`boundary_exit_decomposes`) *does not pretend* to be regeneration: it honestly records that an impure
 target either continues the descent or settles into an old absorber. The second outcome is not a successor but precisely the
 place where pointwise logic is powerless.
 
@@ -108,8 +119,8 @@ $$\mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;:=\; \text{"all fresh clean starts 
 the flow of all clean starts above the threshold is absorbed by a finite old set.) Then
 the final node is formulated as an implication:
 
-> **`GlobalAbsorberNode` (§4) — not proven, an explicit hypothesis.**
-> $$\mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine} \;:=\; \mathrm{NoNewTwinAbove}\,M_0 \;\to\; \mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;\to\; \mathsf{Engine}.$$
+> **Definition 24.2** (`GlobalAbsorberNode`)**.** (§4 — not proven, an explicit hypothesis.)
+> $$\mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine} \;:=\; \mathrm{NoNewTwinAbove}\,M_0 \;\to\; \mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;\to\; \mathsf{Engine}. \tag{24.1}$$
 > Substantively: "a finite set of old twin absorbers cannot absorb all the fresh clean
 > starts above $M_0$ *without an engine*."
 
@@ -140,7 +151,7 @@ NOPSL §11.
 The global node is assembled with the law of impossibility of a perpetual engine (EPMI, [01](01_EPMI.md)) into a clean logical
 package that *does not* pretend to be a proof of the node:
 
-> **`no_global_absorption_under_epmi`.** If the global node holds
+> **Theorem 24.3** (`no_global_absorption_under_epmi`)**.** If the global node holds
 > (`hnode : GlobalAbsorberNode A M0 Engine`) and the engine is forbidden (`no_engine : ¬ Engine`), then
 > global absorption is impossible: from `NoNewTwinAbove M0` and `GlobalOldTwinAbsorption A M0` there follows
 > `False`.
@@ -148,17 +159,17 @@ package that *does not* pretend to be a proof of the node:
 The proof is one line: `no_engine (hnode hnoTwin habs)`. The meaning: since absorption $\Rightarrow$
 engine (the node), and the engine is forbidden (EPMI, proven), then absorption in the absence of new twins leads to a
 contradiction — hence above $M_0$ a new twin *must* be found. The entire honesty here is that the theorem
-is *conditional* on `hnode`: the passage `node + EPMI ⟹ new twin` is proven, but `GlobalAbsorberNode` itself is supplied
+is *conditional* on `hnode`: the passage `node + EPMI ⟹ new twin` is proven, but `GlobalAbsorberNode` (Definition 24.2) itself is supplied
 as a hypothesis, not derived.
 
 ## The pigeonhole skeleton: exactly where the Hall node is open
 
 To localize precisely what remains, the global node is unfolded into a combinatorial skeleton.
 
-> **`global_absorber_forces_engine` (combinatorics proven).** Let $S$ be an infinite set of
+> **Theorem 24.4** (`global_absorber_forces_engine`)**.** (Combinatorics proven.) Let $S$ be an infinite set of
 > fresh starts (`hInfStarts : S.Infinite`), let $\mathrm{Codom}$ be finite (`[Finite Codom]`), and let
 > $\mathrm{key} : \alpha \to \mathrm{Codom}$ be a start's passport $\mathrm{key}\,\gamma = (\text{absorber}\,\gamma,\ \mathrm{NormSig}\,\gamma)$. If given the node pump
-> $$\mathrm{pump} : \forall\, \gamma_1\,\gamma_2,\ \gamma_1 \ne \gamma_2 \to \mathrm{key}\,\gamma_1 = \mathrm{key}\,\gamma_2 \to \mathsf{Engine},$$
+> $$\mathrm{pump} : \forall\, \gamma_1\,\gamma_2,\ \gamma_1 \ne \gamma_2 \to \mathrm{key}\,\gamma_1 = \mathrm{key}\,\gamma_2 \to \mathsf{Engine}, \tag{24.2}$$
 > then $\mathsf{Engine}$.
 
 The proof is an honest pigeonhole: by contradiction, if there is no engine then `pump` is forbidden, so `key`
@@ -1192,13 +1203,13 @@ The red line is intact. `Step00` remains `sorry`.
 ## Where we are
 
 We have honestly decomposed the exit from the clean graph. Pointwise boundary regeneration is *refuted*
-($18 \mapsto (107,109)$); the provable dichotomy `boundary_exit_decomposes` shows that an impure
+($18 \mapsto (107,109)$); the provable dichotomy Theorem 24.1 (`boundary_exit_decomposes`) shows that an impure
 target either continues the old-peel descent or settles into a finite old absorber.
 
 **Section upshot.** All the nontrivial
-load is localized and *carried up to the global level*: `GlobalAbsorberNode` (not proven) plus
-the proven assembly `no_global_absorption_under_epmi` and the proven pigeonhole skeleton
-`global_absorber_forces_engine`, in which the only hole is the Hall node `pump` (fan-in $570 \to 1$
+load is localized and *carried up to the global level*: `GlobalAbsorberNode` (Definition 24.2, not proven) plus
+the proven assembly Theorem 24.3 (`no_global_absorption_under_epmi`) and the proven pigeonhole skeleton
+Theorem 24.4 (`global_absorber_forces_engine`), in which the only hole is the Hall node `pump` (fan-in $570 \to 1$
 $\Rightarrow$ engine). Nowhere do we pass off a reduction as a proof: the combinatorics of the collision
 is proven, and a hypothesis remains its interpretation as an engine.
 

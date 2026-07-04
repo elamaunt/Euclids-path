@@ -32,13 +32,13 @@ A small unclean twin such as $18$ is then honestly classified as boundary, not a
 
 Fix a sieving threshold $A$ and work with centres $m \in \mathbb{N}$ (sides $6m-1$, $6m+1$). The basic property is inherited from [22](22_Residuals.md), but here we take its natural-number form.
 
-**Definition (clean centre).** A centre $m$ is called *clean* with respect to $A$ if no prime $q \le A$ divides either side:
+**Definition 23.1 (clean centre).** A centre $m$ is called *clean* with respect to $A$ if no prime $q \le A$ divides either side:
 $$
 \mathrm{Clean}\,A\,m \;:\equiv\; \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).
 $$
 In Lean this is `Clean` (the ℕ-version; its ℤ-twin is `CleanZ` from `Residuals`, and we shall exhibit the bridge between them below).
 
-**Definition (active edge).** An edge $m \to n$ is *active* if $n$ is a smaller target centre of the descent:
+**Definition 23.2 (active edge).** An edge $m \to n$ is *active* if $n$ is a smaller target centre of the descent:
 $$
 \mathrm{ActiveEdge}\,A\,m\,n \;:\equiv\; \top \ \land\ n < m .
 $$
@@ -46,9 +46,9 @@ In `ActiveEdge` the carrier is abstract: the concrete mechanism (a composite sid
 
 The distinction within active edges is the subject of this chapter:
 
-**Definition (clean edge).** $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — both endpoints clean.
+**Definition 23.3 (clean edge).** $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — both endpoints clean.
 
-**Definition (boundary exit).** $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — the source is clean, the target is *not*.
+**Definition 23.4 (boundary exit).** $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — the source is clean, the target is *not*.
 
 A boundary exit is an edge leaving the clean graph. It is *not* a sink: it is an entry into the defect ledger, where old-peel and regeneration take over. This is exactly where the transition $18 \to \dots$ from the gap above is sent.
 
@@ -56,9 +56,9 @@ A boundary exit is an edge leaving the clean graph. It is *not* a sink: it is an
 
 The first theorem is a complete and unconditional classification of every active edge leaving a clean centre.
 
-**Theorem** (`active_edge_clean_or_boundary`)**.** If $m$ is clean and there is an active edge $m \to n$, then this edge is either clean or a boundary exit:
+**Theorem 23.5** (`active_edge_clean_or_boundary`)**.** If $m$ is clean and there is an active edge $m \to n$, then this edge is either clean or a boundary exit:
 $$
-\mathrm{Clean}\,A\,m \ \land\ \mathrm{ActiveEdge}\,A\,m\,n \;\Longrightarrow\; \mathrm{CleanActiveEdge}\,A\,m\,n \ \lor\ \mathrm{BoundaryExit}\,A\,m\,n .
+\mathrm{Clean}\,A\,m \ \land\ \mathrm{ActiveEdge}\,A\,m\,n \;\Longrightarrow\; \mathrm{CleanActiveEdge}\,A\,m\,n \ \lor\ \mathrm{BoundaryExit}\,A\,m\,n . \tag{23.1}
 $$
 
 The proof is trivial by the law of excluded middle applied to the predicate $\mathrm{Clean}\,A\,n$: if $n$ is clean — the left branch; otherwise — the right.
@@ -73,15 +73,15 @@ It is this dichotomy that lets us rigorously separate the "interior work" of the
 
 Now for the correct notion of a halt.
 
-**Definition (clean sink).** $m$ is a *clean sink* if $m$ is clean and has no active edge at all:
+**Definition 23.6 (clean sink).** $m$ is a *clean sink* if $m$ is clean and has no active edge at all:
 $$
 \mathrm{CleanSink}\,A\,m \;:\equiv\; \mathrm{Clean}\,A\,m \ \land\ \neg\,\exists n,\ \mathrm{ActiveEdge}\,A\,m\,n .
 $$
 The key phrase is "no edge at all": an unclean target reached by a boundary edge does *not* count as a sink. A descent that runs into $18 \to (107,109)$ *does* have an active edge (the transition exists), so it is not a clean sink but a boundary exit. Thus the "sink-is-clean" gap is eliminated at the level of the definition.
 
-**Theorem** (`clean_sink_is_twin`, the corrected Lemma 3.1)**.** If $m$ is clean, both sides $6m-1,\,6m+1 \ge 2$ and both $< A^2$, and $m$ is a clean sink, then $m$ is a twin centre:
+**Theorem 23.7** (`clean_sink_is_twin`, the corrected Lemma 3.1)**.** If $m$ is clean, both sides $6m-1,\,6m+1 \ge 2$ and both $< A^2$, and $m$ is a clean sink, then $m$ is a twin centre:
 $$
-2 \le 6m-1,\ \ 2 \le 6m+1,\ \ 6m-1 < A^2,\ \ 6m+1 < A^2,\ \ \mathrm{CleanSink}\,A\,m \;\Longrightarrow\; \mathrm{TwinCenterZ}\,m .
+2 \le 6m-1,\ \ 2 \le 6m+1,\ \ 6m-1 < A^2,\ \ 6m+1 < A^2,\ \ \mathrm{CleanSink}\,A\,m \;\Longrightarrow\; \mathrm{TwinCenterZ}\,m . \tag{23.2}
 $$
 
 The proof rests on `sink_is_twin` from [22](22_Residuals.md): a clean side below $A^2$ must be prime, because its least prime divisor is either $\le A$ (forbidden by cleanliness) or $> A$, in which case the cofactor is also $> A$, whence $6m\pm1 > A^2$ — a contradiction.
@@ -94,27 +94,27 @@ Old-free below $A^2 \Rightarrow$ prime; parity and divisibility by $3$ are eleme
 
 Let us merge the edge dichotomy and the notion of sink into a single classification.
 
-**Theorem** (`clean_center_outcome`, §5)**.** For every clean centre $m$, exactly one of four holds:
+**Theorem 23.8** (`clean_center_outcome`, §5)**.** For every clean centre $m$, exactly one of four holds:
 $$
 \mathrm{TwinCenterZ}\,m
 \ \lor\ (\exists n,\ \mathrm{CleanActiveEdge}\,A\,m\,n)
 \ \lor\ (\exists n,\ \mathrm{BoundaryExit}\,A\,m\,n)
-\ \lor\ \mathrm{CleanSink}\,A\,m .
+\ \lor\ \mathrm{CleanSink}\,A\,m . \tag{23.3}
 $$
 
-The proof is a nested case analysis: if $m$ is already a twin, we are done; otherwise we look at whether $m$ has any active edge at all. If it does, we apply `active_edge_clean_or_boundary` and land in a clean edge or a boundary. If there is no active edge whatsoever, then by definition $m$ is a clean sink.
+The proof is a nested case analysis: if $m$ is already a twin, we are done; otherwise we look at whether $m$ has any active edge at all. If it does, we apply Theorem 23.5 (`active_edge_clean_or_boundary`) and land in a clean edge or a boundary. If there is no active edge whatsoever, then by definition $m$ is a clean sink.
 
 The theorem's significance is that it *correctly excludes* the unclean small twin from the sink case: the centre $18$, being the source of a boundary-exit edge, settles in the third branch (boundary), not the first (twin) and not the fourth (sink). Previously it fell erroneously into "sink", breaking the height anchoring; now the classification does not let it in there.
 
-> **Note.** The four branches are not a choice but an exhaustion: twin (terminal success), clean edge (the descent continues inside the graph), boundary (control is handed to the defect ledger), clean sink (we halted cleanly $\Rightarrow$ twin by the previous theorem). The first and fourth branches are "upward exits" to the result; the second is the internal dynamics; the third is the only channel carrying the load away out of the clean graph.
+> **Note.** The four branches are not a choice but an exhaustion: twin (terminal success), clean edge (the descent continues inside the graph), boundary (control is handed to the defect ledger), clean sink (we halted cleanly $\Rightarrow$ twin by Theorem 23.7). The first and fourth branches are "upward exits" to the result; the second is the internal dynamics; the third is the only channel carrying the load away out of the clean graph.
 
 ## A clean sink lies above $M_0$
 
 It remains to tie the correct halt to height — the very thing for which the restriction "sink only in the clean graph" was introduced.
 
-**Theorem** (`clean_sink_above`, §4)**.** If $6M_0+1 < A$, $m \ge 1$, $m$ is clean and a twin, then $m > M_0$:
+**Theorem 23.9** (`clean_sink_above`, §4)**.** If $6M_0+1 < A$, $m \ge 1$, $m$ is clean and a twin, then $m > M_0$:
 $$
-6M_0+1 < A,\ \ 1 \le m,\ \ \mathrm{Clean}\,A\,m,\ \ \mathrm{TwinCenterZ}\,m \;\Longrightarrow\; M_0 < m .
+6M_0+1 < A,\ \ 1 \le m,\ \ \mathrm{Clean}\,A\,m,\ \ \mathrm{TwinCenterZ}\,m \;\Longrightarrow\; M_0 < m . \tag{23.4}
 $$
 
 This is a bridge to the already-proven `Residuals.clean_twin_above`. The only work here is transporting ℕ-divisibility of the sides to ℤ-divisibility: the equalities
@@ -127,7 +127,7 @@ Substantively it says: the prime $6m-1$ must be $> A$ (otherwise an old prime wo
 
 ## The honest boundary: the clean graph is not self-sufficient
 
-Here we must be precise and not pass the reduction off as a proof. The formalised clean part — `active_edge_clean_or_boundary`, `clean_sink_is_twin`, `clean_center_outcome`, `clean_sink_above` — is fully proven, under the standard axioms, without `sorry`. But it describes only the *interior and the boundary* of the clean graph, not its closedness. And the measurements show that the graph is far from closed.
+Here we must be precise and not pass the reduction off as a proof. The formalised clean part — Theorems 23.5 (`active_edge_clean_or_boundary`), 23.7 (`clean_sink_is_twin`), 23.8 (`clean_center_outcome`), 23.9 (`clean_sink_above`) — is fully proven, under the standard axioms, without `sorry`. But it describes only the *interior and the boundary* of the clean graph, not its closedness. And the measurements show that the graph is far from closed.
 
 The numbers from `RESULTS_clean_graph`: **59% of clean centres have all their active edges in the boundary** — that is, for the majority of clean centres every exit from the graph pierces the boundary, leading to an unclean target.
 
@@ -138,7 +138,7 @@ This means the clean graph is *not self-sufficient*: a descent that starts clean
 In the engine this is the hypothesis
 
 $$
-\textbf{(H)}\quad \mathrm{boundary\_exit\_regenerates}:\quad \mathrm{BoundaryExit}\,A\,m\,n \ \Longrightarrow\ (\text{boundary state yields an engine / regenerates}).
+\textbf{(H)}\quad \mathrm{boundary\_exit\_regenerates}:\quad \mathrm{BoundaryExit}\,A\,m\,n \ \Longrightarrow\ (\text{boundary state yields an engine / regenerates}). \tag{23.5}
 $$
 
 Let us stress it plainly: **(H) is NOT proven.** It is an explicit hypothesis, not a lemma.

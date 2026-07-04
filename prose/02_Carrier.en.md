@@ -31,25 +31,25 @@ The chapter's question is utterly concrete: how does a common divisor of the two
 We begin with the observation from which everything else grows. The sides stand exactly $2$ apart:
 
 $$
-(6m+1) - (6m-1) = 2 .
+(6m+1) - (6m-1) = 2 . \tag{2.1}
 $$
 
 It is natural to conjecture that precisely this fixed difference governs all joint divisibility of the sides. Let us formalise this.
 
-**Definition (common divisor of the sides).** A prime (or, in the general formulation, any natural number) $p$ is called a *common divisor of the sides* of the centre $m$ if simultaneously
+**Definition 2.1 (common divisor of the sides).** A prime (or, in the general formulation, any natural number) $p$ is called a *common divisor of the sides* of the centre $m$ if simultaneously
 $$
 p \mid (6m-1) \qquad \text{and} \qquad p \mid (6m+1).
 $$
 
 The chapter's first theorem asserts that every such $p$ is forced to divide two.
 
-> **Theorem (`twin_sides_shared_dvd_two`).** Let $m \ge 1$, and let $p \mid (6m+1)$ and $p \mid (6m-1)$. Then $p \mid 2$.
+> **Theorem 2.2** (`twin_sides_shared_dvd_two`). Let $m \ge 1$, and let $p \mid (6m+1)$ and $p \mid (6m-1)$. Then $p \mid 2$.
 
 The meaning of the statement: a common divisor of the sides cannot be larger than their difference permits. The proof is transparent and rests on one identity and one divisibility property.
 
 *Anatomy of the proof.* The key step is to rewrite the larger side through the smaller one:
 $$
-6m + 1 = (6m - 1) + 2 .
+6m + 1 = (6m - 1) + 2 . \tag{2.2}
 $$
 In Lean this equality is closed by the tactic `omega` (linear arithmetic over $\mathbb{N}$, accounting for truncated subtraction under $m \ge 1$). After the substitution, the hypothesis $p \mid (6m+1)$ turns into
 $$
@@ -63,11 +63,11 @@ Now a basic divisibility property applies: if $p$ divides a sum and divides one 
 
 From divisibility of two an informative consequence follows at once. Two is small: its only natural divisors are $1$ and $2$. So if a common divisor of the sides is nontrivial at all, it equals $2$; and no prime $p > 2$ can be a common divisor.
 
-> **Theorem (`no_large_shared_divisor`).** Let $m \ge 1$ and $p > 2$. Then it is impossible to have $p \mid (6m+1)$ and $p \mid (6m-1)$ simultaneously.
+> **Theorem 2.3** (`no_large_shared_divisor`). Let $m \ge 1$ and $p > 2$. Then it is impossible to have $p \mid (6m+1)$ and $p \mid (6m-1)$ simultaneously.
 
 In other words (and this is **exclusivity**): *a prime $p > 2$ divides at most one of the two sides.* It is free to divide $6m-1$, free to divide $6m+1$, but not both at once — both could be occupied only by a divisor of two, and $p>2$ is no such thing.
 
-*Anatomy of the proof.* The reasoning is a short chain from the previous theorem to a contradiction. From the assumption that $p$ divides both sides, the theorem `twin_sides_shared_dvd_two` yields $p \mid 2$. Next we use: a divisor of a positive number does not exceed it — in Lean this is `Nat.le_of_dvd` (the positivity $2 > 0$ is checked by `decide`), whence $p \le 2$. But by hypothesis $2 < p$. The inequalities $p \le 2$ and $2 < p$ are incompatible; the contradiction is closed by the tactic `omega`. $\qquad\blacksquare$
+*Anatomy of the proof.* The reasoning is a short chain from the previous theorem to a contradiction. From the assumption that $p$ divides both sides, Theorem 2.2 (`twin_sides_shared_dvd_two`) yields $p \mid 2$. Next we use: a divisor of a positive number does not exceed it — in Lean this is `Nat.le_of_dvd` (the positivity $2 > 0$ is checked by `decide`), whence $p \le 2$. But by hypothesis $2 < p$. The inequalities $p \le 2$ and $2 < p$ are incompatible; the contradiction is closed by the tactic `omega`. $\qquad\blacksquare$
 
 > **Note.** Both theorems of the file `Engine/Carrier.lean` are proven in the bare Lean 4 kernel — without `mathlib`, on three primitives: the identity (`omega`), moving a summand across (`Nat.dvd_add_right`), and the divisor bound (`Nat.le_of_dvd`). This makes the result part of the programme's strictly verified, self-contained foundation: there is no reduction to anything unproven here, no hidden hypothesis — only elementary divisibility.
 

@@ -24,12 +24,15 @@
 
 ## 15.1. Постановка: что именно мы собираем
 
-Напомним рабочие определения, зафиксированные в обзорном модуле `Step00_Overview.lean`. Центр
-$m$ задаёт пару близнецов, если обе стороны шестёрочного окна простые:
+Напомним рабочие определения, зафиксированные в обзорном модуле `Step00_Overview.lean`.
+
+**Определение 15.1** (`IsTwinCenter`)**.** Центр $m$ задаёт пару близнецов, если обе стороны
+шестёрочного окна простые:
 $$
 \mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{простое}\ \wedge\ (6m+1)\ \text{простое}.
 $$
-Множество младших членов пар близнецов
+
+**Определение 15.2** (`TwinLowers`)**.** Множество младших членов пар близнецов —
 $$
 \mathrm{TwinLowers} \;=\; \{\,p \mid p\ \text{простое}\ \wedge\ (p+2)\ \text{простое}\,\},
 $$
@@ -49,11 +52,12 @@ $$
 Цепь собирается из четырёх ранее доказанных утверждений. Перечислим их с точными Lean-именами и
 поясним, что делает каждое.
 
-**Звено 1 — четырёхугольный переход (строгий).** В `FourCorner.lean` доказана лемма
-`N33_lt_N00_of_four_corner`: при $N_{00}>0$, строгом four-corner
+**Звено 1 — четырёхугольный переход (строгий).**
+
+**Лемма 15.3** (`N33_lt_N00_of_four_corner`)**.** При $N_{00}>0$, строгом four-corner
 $N_{00}\cdot N_{33} < N_{03}\cdot N_{30}$ и side-corner $N_{03}\cdot N_{30} \le N_{00}^2$ следует
 $$
-N_{33} < N_{00}.
+N_{33} < N_{00}. \tag{15.1}
 $$
 Доказательство элементарно и чисто арифметично: из $N_{00}N_{33} < N_{03}N_{30} \le N_{00}^2$
 имеем $N_{00}N_{33} < N_{00}N_{00}$, а сокращение на положительный множитель $N_{00}$ (лемма
@@ -65,26 +69,32 @@ $$
 > $N_{33}<N_{00}$. Без side-corner four-corner сам по себе не контролирует $N_{33}$ относительно
 > $N_{00}$. Поэтому в гипотезе `H` side-corner фигурирует как отдельный, «лёгкий» конъюнкт.
 
-**Звено 2 — non-cover даёт выжившего.** В `NonCover.lean` лемма `survivor_of_not_covered`
-утверждает: если для конечных множеств $\Omega$ (carrier) и $\mathrm{bad}$ выполнено
-$|\mathrm{bad}| < |\Omega|$, то существует $m\in\Omega$ с $m\notin\mathrm{bad}$. Это чистая
+**Звено 2 — non-cover даёт выжившего.**
+
+**Лемма 15.4** (`survivor_of_not_covered`)**.** Если для конечных множеств $\Omega$ (carrier) и
+$\mathrm{bad}$ выполнено $|\mathrm{bad}| < |\Omega|$, то существует $m\in\Omega$ с
+$m\notin\mathrm{bad}$. Это чистая
 Finset-комбинаторика: будь $\Omega\subseteq\mathrm{bad}$, было бы $|\Omega|\le|\mathrm{bad}|$ —
 противоречие. Содержательно: «плохих» центров слишком мало, чтобы накрыть весь carrier, поэтому
 хотя бы один центр выживает.
 
-**Звено 3 — блочное ядро.** В `TwoTransport.lean` теорема `twin_prime_conjecture_of_blocks`
-собирает выжившего в twin-центр над каждым масштабом. Её посылка:
+**Звено 3 — блочное ядро.**
+
+**Теорема 15.5** (`twin_prime_conjecture_of_blocks`)**.** Из посылки
 $$
 \forall N,\ \exists\,\text{carrier},\ \text{bad}:\quad
 (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\
-(\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow\mathrm{IsTwinCenter}(m)).
+(\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow\mathrm{IsTwinCenter}(m)) \tag{15.2}
 $$
-Она через вспомогательную `twin_center_of_block` вытаскивает выжившего (звено 2), помещает его
-выше $N$ и по условию «survivor $\Rightarrow$ twin» опознаёт его как twin-центр.
+следует `TwinLowers.Infinite`. Она через вспомогательную `twin_center_of_block` вытаскивает
+выжившего (звено 2, лемма 15.4), помещает его выше $N$ и по условию «survivor $\Rightarrow$ twin»
+опознаёт его как twin-центр.
 
-**Звено 4 — неограниченность даёт бесконечность.** Также в `NonCover.lean` теорема
-`infinite_of_unbounded_centers`: если для любого $N$ найдётся twin-центр $m>N$, то
-`TwinLowers.Infinite`. Формально она использует `Set.infinite_of_not_bddAbove` — из центра $m>N$
+**Звено 4 — неограниченность даёт бесконечность.**
+
+**Теорема 15.6** (`infinite_of_unbounded_centers`)**.** Если для любого $N$ найдётся twin-центр
+$m>N$, то `TwinLowers.Infinite`. Формально она использует `Set.infinite_of_not_bddAbove` — из
+центра $m>N$
 строится член пары $6m-1$, больший $N$, поэтому множество младших близнецов не ограничено сверху,
 а значит бесконечно.
 
@@ -116,16 +126,16 @@ $$
 строгий four-corner (плюс лёгкий side-corner), весь carrier лежит выше $N$, а каждый выживший
 carrier-центр — twin.
 
-Теорема:
+**Теорема 15.7** (`twin_primes_of_four_corner`)**.** 🟡 (условная)
 $$
-`twin\_primes\_of\_four\_corner` :\quad H \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite}.
+H \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite}. \tag{15.3}
 $$
 
-Разбор доказательства. Применяем `twin_prime_conjecture_of_blocks` — остаётся для каждого $N$
-предъявить блок с $|\mathrm{bad}| < |\mathrm{carrier}|$. Раскрываем $H\,N$, получая ранги, carrier,
-bad и все семь конъюнктов.
+Разбор доказательства. Применяем теорему 15.5 (`twin_prime_conjecture_of_blocks`) — остаётся для
+каждого $N$ предъявить блок с $|\mathrm{bad}| < |\mathrm{carrier}|$. Раскрываем $H\,N$, получая
+ранги, carrier, bad и все семь конъюнктов.
 
-Ключевой шаг — звено 1:
+Ключевой шаг — звено 1 (лемма 15.3):
 $$
 |R_{33}| < |R_{00}| \quad\text{через}\quad `N33\_lt\_N00\_of\_four\_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
 $$
@@ -133,7 +143,7 @@ $$
 неравенство в $|\mathrm{bad}| < |\mathrm{carrier}|$ — ровно посылка блочного ядра.
 
 Условия «carrier выше $N$» и «survivor $\Rightarrow$ twin» передаются из $H$ без изменений.
-На этом машинная цепь замыкается: `twin_prime_conjecture_of_blocks` возвращает
+На этом машинная цепь замыкается: теорема 15.5 (`twin_prime_conjecture_of_blocks`) возвращает
 `TwinLowers.Infinite`.
 
 > **Примечание.** В файле нет `sorry`. Это честная *условная* теорема: заключение (гипотеза

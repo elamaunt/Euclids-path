@@ -39,22 +39,22 @@ of prime factors — and the number of prime factors is precisely our rank.
 
 Let us introduce the Liouville function and its summatory function.
 
-> **Definition (Liouville function).** For $n \ge 1$
+> **Definition 31.1** (Liouville function). For $n \ge 1$
 > $$\lambda(n) \;=\; (-1)^{\Omega(n)},$$
 > where $\Omega(n)$ is the number of prime factors of $n$ *counted with multiplicity* (for instance $\Omega(12)=\Omega(2^2\cdot 3)=3$).
 > In mathlib this is `ArithmeticFunction.liouville`, and $\Omega(n)$ is `cardFactors n`.
 
-> **Definition (summatory function).** $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
+> **Definition 31.2** (summatory function). $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
 > In Lean: `def L (x : ℕ) : ℤ := ∑ n ∈ Finset.Icc 1 x, liouville n`.
 
 The function $\lambda$ is completely multiplicative and takes values $\pm 1$; $L(x)$ is an alternating
 sum, the accumulated imbalance between the numbers with an even and an odd number of prime factors up to $x$.
 
-> **Definition (Liouville-bound).** $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
+> **Definition 31.3** (`LiouvilleBound`). $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
 > In Lean this is `LiouvilleBound : Prop`. In substance: a sum of $\pm 1$ of length $x$ behaves like
 > a random walk — growing no faster than $\sqrt{x}$ (up to $x^\varepsilon$), not linearly.
 
-> **The Riemann Hypothesis — from mathlib.** Following the principle "everything external comes from mathlib", `RiemannHypothesis` here is
+> **Definition 31.4** (`RiemannHypothesis`, from mathlib). Following the principle "everything external comes from mathlib", `RiemannHypothesis` here is
 > the **official mathlib formulation** (a quantifier over all zeros of `riemannZeta`, excluding the trivial ones
 > `-2(n+1)` and `s = 1`), and *not* a home-made `def`. The same goal as in `RiemannBranch`.
 
@@ -64,7 +64,7 @@ The supporting fact is a well-known theorem of analytic number theory (mathlib d
 introduce it as an **explicit input-bridge** — an input, or gate, is an honestly named unproven statement
 (see the [glossary](GLOSSARY.md)) — rather than postulating RH):
 
-> **Definition-input (the Liouville bridge $H_L$).** $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
+> **Definition 31.5** (the Liouville bridge $H_L$, `LiouvilleRHBridge`). $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
 > In Lean — `LiouvilleRHBridge : Prop`.
 
 This is the classical equivalence: the bound $L(x)=O(x^{1/2+\varepsilon})$ is equivalent to the absence of zeros
@@ -74,9 +74,9 @@ fact about the connection between two objects, not the thing sought.
 
 Given the bridge, the branch closes by a trivial implication.
 
-> **Theorem** (`riemann_of_liouville_bound`)**.** If the bridge `LiouvilleRHBridge` is given and
+> **Theorem 31.6** (`riemann_of_liouville_bound`). If the bridge `LiouvilleRHBridge` is given and
 > `LiouvilleBound` is proven, then `RiemannHypothesis`.
-> $$\texttt{LiouvilleRHBridge} \;\wedge\; \texttt{LiouvilleBound} \;\Rightarrow\; \texttt{RiemannHypothesis}.$$
+> $$\texttt{LiouvilleRHBridge} \;\wedge\; \texttt{LiouvilleBound} \;\Rightarrow\; \texttt{RiemannHypothesis}.\tag{31.1}$$
 > The Lean proof is a single line, `bridge.mp hbound`: all the analysis is isolated in the bridge,
 > and the arithmetic (`LiouvilleBound`) is the only substantive goal.
 
@@ -89,8 +89,8 @@ The key observation is a coincidence of objects. The number of prime factors $\O
 exactly **our rank** `RankNode`: with us, `RankNode r` has `factors : Fin r → ℕ`, so the rank $r$ is
 the node's number of factors. From this, instantly:
 
-> **Theorem** (`liouville_eq_neg_one_pow_rank`)**.** For $n\ne 0$
-> $$\lambda(n) \;=\; (-1)^{\mathrm{cardFactors} n} \;=\; (-1)^{\text{rank}}.$$
+> **Theorem 31.7** (`liouville_eq_neg_one_pow_rank`). For $n\ne 0$
+> $$\lambda(n) \;=\; (-1)^{\mathrm{cardFactors} n} \;=\; (-1)^{\text{rank}}.\tag{31.2}$$
 > In Lean this is simply `liouville_apply hn`: the Liouville sign is the parity of the rank.
 
 So $L(x)$ is the accumulated sum of the signs $(-1)^{\text{rank}}$ over all nodes up to $x$. `LiouvilleBound`
@@ -102,8 +102,8 @@ The second observation ties our **descent step** to the change of sign. With us,
 $r\to r-1$ by removing one role. In terms of numbers this is the passage from $n=p\cdot m$ to $m$ (stripping one
 prime factor). What happens to the sign?
 
-> **Theorem** (`liouville_flip_of_mul_prime`)**.** For a prime $p$ and $m\ne 0$
-> $$\lambda(p\cdot m) \;=\; -\,\lambda(m).$$
+> **Theorem 31.8** (`liouville_flip_of_mul_prime`). For a prime $p$ and $m\ne 0$
+> $$\lambda(p\cdot m) \;=\; -\,\lambda(m).\tag{31.3}$$
 > Proof (Lean): $\mathrm{cardFactors}(p\cdot m)=\mathrm{cardFactors} m + 1$
 > (via `cardFactors_mul` and `cardFactors_apply_prime`), whence $(-1)^{\Omega(m)+1}=-(-1)^{\Omega(m)}$.
 
@@ -159,7 +159,7 @@ second is exactly the unresolved node.
 
 Let us state the open node explicitly.
 
-> **Conjecture (rank balance).** The sign dynamics of the descent (`liouville_flip_of_mul_prime`) combined with
+> **Conjecture 31.9** (rank balance). The sign dynamics of the descent (Theorem 31.8, `liouville_flip_of_mul_prime`) combined with
 > our `no_infinite_descent` (the impossibility of a perpetual engine, ch. 28) entails a statistical balance
 > of rank parities, that is, `LiouvilleBound`.
 
@@ -188,11 +188,11 @@ The closing plan, step by step, with an honest assessment of each:
 
 The Liouville branch gives the shortest honest formulation of RH in our theory: we take the ready-made
 equivalence `LiouvilleBound \iff RH` (the bridge `LiouvilleRHBridge`), and RH reduces to a single
-arithmetic goal — the bound $|L(x)|=O(x^{1/2+\varepsilon})$ (`riemann_of_liouville_bound`).
+arithmetic goal — the bound $|L(x)|=O(x^{1/2+\varepsilon})$ (Theorem 31.6, `riemann_of_liouville_bound`).
 
 This goal
-fits our apparatus perfectly: $\lambda=(-1)^{\text{rank}}$ (`liouville_eq_neg_one_pow_rank`), and our
-`deleteFactor` flips the sign (`liouville_flip_of_mul_prime`), so that product-rank descent is
+fits our apparatus perfectly: $\lambda=(-1)^{\text{rank}}$ (Theorem 31.7, `liouville_eq_neg_one_pow_rank`), and our
+`deleteFactor` flips the sign (Theorem 31.8, `liouville_flip_of_mul_prime`), so that product-rank descent is
 literally the sign dynamics of Liouville.
 
 But `LiouvilleBound` is not proven: it is the control of the parity of $\Omega$,

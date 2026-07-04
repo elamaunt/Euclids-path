@@ -41,11 +41,11 @@ $$
 Suppose a prime `p > 3` catches the opposite side of the boundary, that is, `p ∣ 6n − ε`. The question
 is: in which residue class modulo `p` is the source `m` forced to lie?
 
-> **Definition (channel class).** For given `a, ε, σ` and a prime `p`, a source `m` is called a
+> **Definition 17.1** (channel class). For given `a, ε, σ` and a prime `p`, a source `m` is called a
 > *compatible channel modulo `p`* if the lift relation and the boundary condition
 > `p ∣ 6n − ε` hold. By a channel we mean the admissible residue class `6m \bmod p`.
 
-**Theorem (`channel_residue`).** If `p > 3`, `6m + σ = a(6n + ε)` and `p ∣ 6n − ε`, then
+**Theorem 17.2** (`channel_residue`). If `p > 3`, `6m + σ = a(6n + ε)` and `p ∣ 6n − ε`, then
 
 $$
 6m \;\equiv\; 2a\varepsilon - \sigma \pmod p.
@@ -75,11 +75,11 @@ Let us turn to the opposite side `6m − σ`. On it a small prime `q` may impose
 prohibition — a new excluded class — and that costs capacity. The key observation: this additional
 prohibition sometimes **vanishes**, namely when it coincides with an already-forbidden class.
 
-> **Definition (the shift θ).** We set `θ := σε`. A passage through `q` is called *tax-free* if the
+> **Definition 17.3** (the shift θ). We set `θ := σε`. A passage through `q` is called *tax-free* if the
 > additional prohibition modulo `q` on the side `6m − σ` coincides with a previously excluded class,
 > that is, takes away no new capacity.
 
-**Theorem (`no_tax_iff_shifted`).** Tax-freedom at `q` is equivalent to divisibility of the shift:
+**Theorem 17.4** (`no_tax_iff_shifted`). Tax-freedom at `q` is equivalent to divisibility of the shift:
 
 $$
 q \mid a - \theta \quad\Longleftrightarrow\quad a \equiv \theta \pmod q.
@@ -94,6 +94,7 @@ $$
 0, & q \mid a - \theta \quad(\text{compatible, the shift divides}),\\[4pt]
 \dfrac{q-3}{q-2}, & q \nmid a - \theta \quad(\text{a new prohibition, capacity drops}).
 \end{cases}
+\tag{17.1}
 $$
 
 The factor `(q-3)/(q-2)` is the fraction of surviving capacity after the additional prohibition
@@ -111,11 +112,11 @@ Let us gather the tax-free primes together. Let `G` be the set of small primes a
 passage is tax-free. Then all the divisibilities `q ∣ a − θ` add up, and — since distinct primes are
 pairwise coprime — their product divides the shift as well.
 
-> **Definition (primorial over `G`).** For a finite set of pairwise coprime `q` we write
+> **Definition 17.5** (primorial over `G`). For a finite set of pairwise coprime `q` we write
 > `P := \prod_{q \in G} q`. This is the primorial (product) of the small primes at which the passage
 > is tax-free.
 
-**Theorem (`primorial_dvd_shift`).** If `(G).Pairwise Nat.Coprime` and `∀ q ∈ G, q ∣ a − θ`, then
+**Theorem 17.6** (`primorial_dvd_shift`). If `(G).Pairwise Nat.Coprime` and `∀ q ∈ G, q ∣ a − θ`, then
 
 $$
 \Bigl(\prod_{q \in G} q\Bigr) \;\Bigm|\; a - \theta.
@@ -136,7 +137,7 @@ not the capacity of a single prime.
 Now the primorial comes into conflict with the size of the active prime. A divisor cannot exceed a
 nonzero dividend — whence a hard lower bound on the difference.
 
-**Theorem (`shifted_primorial_bound`).** If `P ∣ a − θ` and `a ≠ θ`, then
+**Theorem 17.7** (`shifted_primorial_bound`). If `P ∣ a − θ` and `a ≠ θ`, then
 
 $$
 P \;\le\; |a - \theta|.
@@ -153,14 +154,14 @@ primorial is bounded by the active divisor: `P_{<p} \le |a - θ|`.
 **Conclusion.** As soon as the primorial outgrows the active divisor, there simply *is no*
 nontrivial tax-free passage.
 
-> **Definition (the threshold `Y_A`).** Let `Z` be the upper bound on the active divisor at scale `A`
+> **Definition 17.8** (the threshold `Y_A`). Let `Z` be the upper bound on the active divisor at scale `A`
 > (`|a − θ| ≤ Z`). The threshold `Y_A` is the smallest prime `p` for which the primorial of the small
 > primes below `p` exceeds `Z`, that is, `P_{<p} > Z`. For `p ≥ Y_A` a free passage requires
 > `a = θ`.
 
-**Theorem (`late_boundary_not_free`).** If `P ∣ a − θ`, `|a − θ| ≤ Z` and `Z < P`, then `a = θ`.
+**Theorem 17.9** (`late_boundary_not_free`). If `P ∣ a − θ`, `|a − θ| ≤ Z` and `Z < P`, then `a = θ`.
 
-This is the contrapositive of the defect law: assuming `a ≠ θ`, from `shifted_primorial_bound` we get
+This is the contrapositive of the defect law: assuming `a ≠ θ`, from Theorem 17.7 (`shifted_primorial_bound`) we get
 `P ≤ |a − θ| ≤ Z < P` — a contradiction (closed in Lean by `omega`). Hence a **late boundary is not
 free**: beyond the threshold `Y_A` there is no nontrivial `a ≤ Z` divisible by the primorial, and so
 a tax-free (free) passage to a late `p` is impossible.
@@ -198,6 +199,7 @@ distribution-free:
 
   $$
   \prod_{q \le A} \frac{q-2}{q-1} \;\sim\; \frac{1}{\ln A}
+  \tag{17.2}
   $$
 
   (Mertens: divergence of `\sum 1/q`) — that is, the total capacity loss over the small primes is
@@ -207,7 +209,7 @@ distribution-free:
 **Section takeaway.** There is no `D = D(A)` for which *both* budgets are simultaneously `o(|S_0|)`
 without appealing to distribution.
 
-> **Conjecture (the payment route's single open input).** There exists a function `D(A)` for which
+> **Conjecture 17.10** (the payment route's single open input). There exists a function `D(A)` for which
 > both the shifted-charge and the tax simultaneously amount to `o(|S_0|)` on a real interval at
 > scale `A`. "Input" here is in the house sense: an honestly named unproven gate statement
 > (see the [glossary](GLOSSARY.md)).

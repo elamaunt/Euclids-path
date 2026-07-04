@@ -34,6 +34,21 @@ counting and no distribution theory whatsoever*.
 down along a branch. The branches do not sprawl outward but converge to the root: every branch is
 finite and breaks against the bottom — this is `no_infinite_descent` in a picture.*
 
+> **Generation algorithm (Figure 19.1).** Source: `tools/fractal/euclid_fractal.py::old_peel_tree`.
+> Fix $A=200$ and sieve all primes up to $4A^2$; let the caught-prime pool be the primes $p$ with
+> $3 < p \le A$. Seed a horizontal row of $460$ roots at abscissae $x$ evenly spaced over $[-30,30]$,
+> the $i$-th root carrying centre $n = \lfloor A^2/6\rfloor + 7i$. From each root run the recursive
+> descent $\mathrm{peel}(n,\varepsilon,d,x)$ for both signs $\varepsilon=\pm1$: it stops when depth
+> $d>7$ or $n<2$; it requires the side $a=6n+\varepsilon$ to be a prime with $a>A$; it takes the
+> opposite side $6n-\varepsilon$, finds the first pool prime $p$ dividing it, forms the quotient
+> $q=(6n-\varepsilon)/p$, reads its sign $\delta$ from $q\bmod 6$ ($\delta=+1$ if $q\equiv1$,
+> $\delta=-1$ if $q\equiv5$, and aborts otherwise), and sets the child centre $t=(q-\delta)/6$
+> (aborting if $t\le0$). The step draws a segment from $(x,\ \log_{10}(n+1))$ to
+> $(x+\varepsilon\cdot 0.55/(d+1),\ \log_{10}(t+1))$, then recurses into $t$ with both signs at depth
+> $d+1$. Vertical axis is height $\log_{10}(\text{centre})$; horizontal offset encodes the descent sign
+> $\varepsilon$. Segments are drawn as a line collection coloured by descent depth $d$ through the
+> turbo colour map, on a near-black background.
+
 ## The catch is the other side of the wedge
 
 We begin with an elementary observation that translates the SNOL divisibility into the language of the
@@ -41,12 +56,14 @@ engine. The active prime comes from a wedge centre `n`: one side of the wedge is
 $$6n + \varepsilon = a,\qquad \varepsilon \in \{\pm 1\}.$$
 The opposite side of the same centre is `6n - \varepsilon`. A direct computation gives
 
-**Definition (carrying the two).** For a centre `n` with side `a = 6n+\varepsilon` the opposite side
+**Definition 19.1** (carrying the two). For a centre `n` with side `a = 6n+\varepsilon` the opposite side
 equals
 $$6n - \varepsilon = (6n+\varepsilon) - 2\varepsilon = a - 2\varepsilon.$$
 
-This is exactly the content of the theorem `catch_is_opposite`: from `6 * n + ε = a` it follows that
-`6 * n - ε = a - 2 * ε` (in Lean — a single `omega` step). Hence the SNOL divisibility
+This carrying is recorded formally as follows.
+
+**Theorem 19.2** (`catch_is_opposite`). For integers $n,a,\varepsilon$, if $6n+\varepsilon = a$ then
+$6n-\varepsilon = a - 2\varepsilon$ (in Lean — a single `omega` step). Hence the SNOL divisibility
 `p \mid a - 2\varepsilon` is *literally* the divisibility of the opposite side of the wedge:
 $$p \mid a - 2\varepsilon \iff p \mid 6n - \varepsilon.$$
 
@@ -60,7 +77,7 @@ $$p \mid a - 2\varepsilon \iff p \mid 6n - \varepsilon.$$
 Since `p` divides `6n - \varepsilon`, the quotient can be written in the same wedge form `6t + \delta`.
 This is the central notation of the chapter.
 
-**Definition (old-peel).** The *old-peel* of an active centre `n` along a caught prime `p` is the
+**Definition 19.3** (old-peel). The *old-peel* of an active centre `n` along a caught prime `p` is the
 decomposition of the opposite side
 $$6n - \varepsilon = p\,(6t + \delta),\qquad p \le A,\ \varepsilon,\delta \in \{\pm 1\},$$
 producing a **new centre** `t` (the quotient centre) and its sign `\delta`. The prime `p` here is
@@ -77,9 +94,9 @@ be infinite (termination).
 The sign of the new centre is not arbitrary — it is rigidly determined by the signs of the input. Let
 `p \equiv \pi \pmod 6`, `\pi \in \{\pm 1\}` (every prime `> 3` gives `\pi = \pm 1`).
 
-**Theorem (`old_peel_sign`).** If `6n - \varepsilon = p(6t+\delta)`, `p \equiv \pi \pmod 6` and
+**Theorem 19.4** (`old_peel_sign`). If `6n - \varepsilon = p(6t+\delta)`, `p \equiv \pi \pmod 6` and
 `\varepsilon,\delta,\pi \in \{\pm 1\}`, then
-$$\boxed{\ \delta = -\,\pi\,\varepsilon\ }.$$
+$$\boxed{\ \delta = -\,\pi\,\varepsilon\ }.\tag{19.1}$$
 
 *Why.* Reduce the decomposition modulo 6. From `p \equiv \pi` we write `p = \pi + 6k`, whence
 $$p(6t+\delta) = \pi\delta + 6\big(\pi t + k(6t+\delta)\big) \equiv \pi\delta \pmod 6.$$
@@ -100,9 +117,9 @@ case sweep over the eight sign combinations via `omega`.
 Now the key point — that old-peel *lowers* the height. As the height of a centre it is natural to take
 `n` itself (the order of the wedge).
 
-**Theorem (`old_peel_height_drop`).** If `6n - \varepsilon = p(6t+\delta)` with `p \ge 5`,
+**Theorem 19.5** (`old_peel_height_drop`). If `6n - \varepsilon = p(6t+\delta)` with `p \ge 5`,
 `\varepsilon,\delta \in \{\pm 1\}`, `t \ge 1` and `n \ge 2`, then
-$$t < n.$$
+$$t < n.\tag{19.2}$$
 
 *Why.* Every prime `p \le A` caught at the carrier scale is a prime `> 3`, hence `p \ge 5`.
 Then `6t + \delta = (6n - \varepsilon)/p \le (6n+1)/5`, from which, for `n \ge 2`, immediately `t < n`.
@@ -125,17 +142,17 @@ Let us assemble the three laws into a single dynamical conclusion. Suppose, cont
 there is *no* terminal, i.e. for every active centre its catch unfolds by an old-peel (`regenerate` —
 see [20](20_NOPSL.md)). Then from any starting point one builds a sequence of centres
 $$z_0 > z_1 > z_2 > \cdots,\qquad z_{k+1} = t\big(z_k\big),$$
-where every inequality `z_{k+1} < z_k` is given by `old_peel_height_drop`. This is an **infinite
+where every inequality `z_{k+1} < z_k` is given by Theorem 19.5 (`old_peel_height_drop`). This is an **infinite
 strictly descending chain of natural heights** — and that we have already forbidden in Euclid's
 engine.
 
-**Theorem (`no_infinite_old_peel`).** For any `z : \mathbb{N} \to \mathbb{N}` with the property
+**Theorem 19.6** (`no_infinite_old_peel`). For any `z : \mathbb{N} \to \mathbb{N}` with the property
 `StrictAnti z`, `False` follows. In Lean this is literally `no_infinite_engine_descent z hdesc` —
 the old-peel height is used as the very same Lyapunov chain that drives the engine's downward motion
 into contradiction.
 
-**Theorem (`old_peel_terminates`).** If `\forall k,\ z(k+1) < z(k)`, then `False`
-(via `strictAnti_nat_of_succ_lt` and `no_infinite_old_peel`).
+**Theorem 19.7** (`old_peel_terminates`). If `\forall k,\ z(k+1) < z(k)`, then `False`
+(via `strictAnti_nat_of_succ_lt` and Theorem 19.6 (`no_infinite_old_peel`)).
 
 *What is proven and what it means.* Machine-verified is the *closure core*: any infinite strictly
 descending old-peel chain of centres yields `False`. The contraposition reads directly: an old-peel
@@ -165,7 +182,7 @@ To turn the contraposition into a complete
 proof, one needs to know that the quotient centre `t` is *always* classified — falls into one of the
 permitted categories rather than into a hidden "unclassifiable terminal":
 
-**Conjecture (old-peel regeneration, NOPSL).** For every non-sink centre `t` its catch unfolds into a
+**Conjecture 19.8** (old-peel regeneration, NOPSL). For every non-sink centre `t` its catch unfolds into a
 correct old-peel successor, i.e. `t` belongs to one of the categories:
 > 1. clean return (`t \in \Omega_A`; for `t < A^2` — a twin sink);
 > 2. the next old-peel (`t \notin \Omega_A \Rightarrow \exists\, q \le A,\ q \mid 6t + \eta`);

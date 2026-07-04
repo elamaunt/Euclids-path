@@ -113,14 +113,24 @@ structure Step00FirstCause : Prop where
 > `∀ n ≥ 1, RopeCountingLaw n`. This is not a refutation of the Collatz conjecture: the law was strictly stronger
 > than it, and its fall says only that Collatz cannot be closed by *such* a decree. The conjecture itself remains open.
 
-The decree's post-mortem is gathered in a single green summary `collatz_decree_postmortem` 🟢, with three leaves:
+The decree's post-mortem is gathered in a single green summary, with three leaves:
 (1) the universal rope law is false (`ropeLaw_universal_refuted`) — a decree boundary on it is impossible;
 (2) the per-n law still entails halting (`reaches_one_of_countingLaw`, the conditional mechanics is alive);
 (3) a refutation of the conjecture itself still carries a perpetual engine (`nonHalting_carries_perpetual_engine`).
 
-The implication that "may have overpaid" survived as true and useless: `ropeLaw_would_imply_collatz`
-🟢 — "the universal law ⟹ convergence everywhere" holds, but its premise is now machine-false, so it can no longer
-be fed universally. All the content has moved into the per-n form `reaches_one_of_countingLaw`.
+**Theorem 56.1** (`collatz_decree_postmortem`). 🟢 Three statements at once: (1) the universal law is false,
+$\neg\,\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$; (2) under the law an orbit converges,
+$\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)\Rightarrow \exists K,\ \mathrm{iter}\,K\,n = 1$; (3) every
+non-converging orbit carries a perpetual tail, $\forall n,\ (\forall K,\ \mathrm{iter}\,K\,n\neq 1)\Rightarrow
+\exists j,\ \mathrm{NonDescendingOrbit}(\mathrm{iter}\,j\,n)\wedge \forall K,\ \mathrm{iter}\,K\,(\mathrm{iter}\,j\,n)\neq 1$.
+
+The implication that "may have overpaid" survived as true and useless: "the universal law ⟹ convergence
+everywhere" holds, but its premise is now machine-false, so it can no longer be fed universally. All the
+content has moved into the per-n form `reaches_one_of_countingLaw`.
+
+**Theorem 56.2** (`ropeLaw_would_imply_collatz`). 🟢 $\bigl(\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)\bigr)
+\Rightarrow \forall n\ge 1,\ \exists K,\ \mathrm{iter}\,K\,n = 1$. The implication holds, but by Theorem 56.1
+its premise is machine-false.
 
 ## The vacuum and its missing gap
 
@@ -167,19 +177,29 @@ moves forever, never surrendering itself to the cycle (`nonHalting_carries_perpe
 And "learning the cause from inside" — deriving the universal rope law by an internal proof — would mean
 extracting from the system an infinite fact about the whole number line without ever leaving it.
 
-**Infinite information extraction is impossible.** Define an internal self-grounding of the law's foundation
-(`InternalisedCollatzGround`): a construction carrying the law itself AND a witness that it was derived from
-inside — crossing its own boundary.
+**Infinite information extraction is impossible.** Define an internal self-grounding of the law's foundation:
+a construction carrying the law itself AND a witness that it was derived from inside — crossing its own boundary.
 
-As with the twins, the form is honestly tautological ("to prove P while crossing the boundary of P" collapses into `P ∧ ¬P`);
+**Definition 56.3** (`InternalisedCollatzGround`). A structure with two fields: `ground` — the law itself,
+$\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$; `beyondOwnHorizon` — a witness of crossing the boundary,
+$\neg\,\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$. The abbreviation `InternalKnowledgeOfCollatzCause`
+identifies "internal knowledge of the cause" with this self-grounding.
+
+As with the twins, the form is honestly tautological ("to prove P while crossing the boundary of P" collapses into $P\wedge\neg P$);
 substantively it is an *identification*: the attempt at internal grounding is already a burnt engine
-construction. `collatzCause_unknowable` 🟢 (with no axioms at all): internal knowledge of the Collatz first cause
-is impossible. Formally this is `no_internalisedCollatzGround` — self-grounding self-destructs by its very form.
+construction. Formally the self-grounding self-destructs by its very form — `no_internalisedCollatzGround` —
+and this yields the unknowability of the first cause.
 
-And after the decree's fall — stronger still: `internalGround_impossible_a_fortiori` 🟢. Now even the very *ground*
-of the construction is false: its field `ground : ∀ n ≥ 1, RopeCountingLaw n` is refuted directly
-(`ropeLaw_universal_refuted`), not through the self-destruction of the form. Unknowability now holds doubly —
-both as an impossible form and as false content.
+**Theorem 56.4** (`collatzCause_unknowable`). 🟢 (with no axioms at all) $\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$:
+internal knowledge of the Collatz first cause is impossible. The proof is direct: the two fields of Definition 56.3
+contradict each other, $\texttt{beyondOwnHorizon}\ \texttt{ground} : \mathrm{False}$.
+
+And after the decree's fall — stronger still.
+
+**Theorem 56.5** (`internalGround_impossible_a_fortiori`). 🟢 $\mathrm{InternalisedCollatzGround}\Rightarrow
+\mathrm{False}$, but now *by content*: the field `ground` is refuted directly (`ropeLaw_universal_refuted`),
+not through the self-destruction of the form. Unknowability now holds doubly — both as an impossible form
+(Theorem 56.4) and as false content.
 
 This is the same law that forbids a perpetual engine on ℕ (`no_infinite_descent`) and that in the main programme
 takes the shape "knowledge from inside costs infinite energy" (the finite-knowledge barrier,
@@ -191,17 +211,21 @@ identified with "there is no perpetual engine", and internal knowledge of the ca
 perpetual engine remains the thing that can be neither exhibited nor excluded by internal derivation: if a
 counterexample exists — it is genuinely perpetual; and that none exists cannot be proven from inside.
 
-**Hence — verification only.** The substantive dichotomy `unknowable_or_collatz_fails` 🟢: *either the cause is
-unknowable, or Collatz is false* — and the left disjunct is proven. The right one is discovered not by derivation
-but by verification — by exhibiting a concrete non-converging orbit. All of this is gathered in one green theorem
-that machine-encodes the narrative:
+**Hence — verification only.**
 
-`collatz_verification_not_derivation` 🟢 — three links in a single statement:
-1. infinite internal extraction of the rope law is impossible (`collatzCause_unknowable`);
+**Theorem 56.6** (`unknowable_or_collatz_fails`). 🟢 The substantive dichotomy (no ex falso in the statement):
+$\neg\,\mathrm{InternalKnowledgeOfCollatzCause}\ \vee\ \exists n\ge 1,\ \forall K,\ \mathrm{iter}\,K\,n\neq 1$ —
+*either the cause is unknowable, or Collatz is false*. The left disjunct is proven (Theorem 56.4). The right one
+is discovered not by derivation but by verification — by exhibiting a concrete non-converging orbit. All of this
+is gathered in one green theorem that machine-encodes the narrative:
+
+**Theorem 56.7** (`collatz_verification_not_derivation`). 🟢 A conjunction of three links in a single statement:
+1. infinite internal extraction of the rope law is impossible, $\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$
+   (Theorem 56.4);
 2. therefore the only internal trace of a counterexample is a perpetual engine
    (`nonHalting_carries_perpetual_engine`);
 3. hence the solution is either unknowable from inside, or accessible only by *verification* of an orbit
-   (`unknowable_or_collatz_fails`).
+   (Theorem 56.6).
 
 **And verification finds-or-does-not-find exactly as far as we look.** The harnesses
 (`RESULTS_collatz.md`) are precisely the "how far": `n ∈ [2, 200000]`, a divergence guard at 100000 steps.
@@ -216,17 +240,22 @@ be found only by verification, and only up to the edge that the gaze can reach.
 
 ## Summary: the solution is locked behind the engine
 
-`collatz_no_internal_decision_without_engine` 🟢 (green, axiom-free) — three leaves:
-(1) *to refute = to build a perpetual engine* (`nonHalting_carries_perpetual_engine`, a genuine
-construction);
-(2) *to prove from inside = to self-ground* (`no_internalisedCollatzGround`) — it self-destructs;
-(3) *the per-n rope law would entail per-n halting* (`reaches_one_of_countingLaw`) — but the universal feed is
-gone: the universal law is refuted, the decree door is closed by a forged witness.
+**Theorem 56.8** (`collatz_no_internal_decision_without_engine`). 🟢 (green, axiom-free) A conjunction of three
+leaves: (1) *to refute = to build a perpetual engine* — $\forall n,\ (\forall K,\ \mathrm{iter}\,K\,n\neq 1)
+\Rightarrow \exists j,\ \mathrm{NonDescendingOrbit}(\mathrm{iter}\,j\,n)\wedge\forall K,\ \mathrm{iter}\,K\,(\mathrm{iter}\,j\,n)\neq 1$
+(a genuine construction); (2) *to prove from inside = to self-ground* — $\mathrm{InternalisedCollatzGround}\Rightarrow\mathrm{False}$,
+it self-destructs; (3) *the per-n rope law would entail per-n halting* — $\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)
+\Rightarrow\exists K,\ \mathrm{iter}\,K\,n = 1$. But the universal feed is gone: the universal law is refuted
+(Theorem 56.1), the decree door is closed by a forged witness.
 
-The final epistemic status of Collatz after the decree's fall is `collatz_open_status` 🟢 (the mirror of
-`pnp_locked_behind_engine_status`, but now **without the decree conjunct**): the universal law is refuted
-(theorem) / internal knowledge of the cause is impossible (theorem) / the per-n law entails halting (conditional) /
-a refutation of the conjecture would build a perpetual engine (theorem).
+**Theorem 56.9** (`collatz_open_status`). 🟢 The final epistemic status of Collatz after the decree's fall
+(the mirror of `pnp_locked_behind_engine_status`, but now **without the decree conjunct**) — a conjunction of four:
+$\neg\,\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$ (the universal law is refuted, theorem) $\wedge$
+$\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$ (internal knowledge is impossible, theorem) $\wedge$
+$\bigl(\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)\Rightarrow\exists K,\ \mathrm{iter}\,K\,n = 1\bigr)$
+(the per-n law entails halting, conditional) $\wedge$ $\bigl(\forall n,\ (\forall K,\ \mathrm{iter}\,K\,n\neq 1)
+\Rightarrow\exists j,\ \mathrm{NonDescendingOrbit}(\mathrm{iter}\,j\,n)\wedge\forall K,\ \mathrm{iter}\,K\,(\mathrm{iter}\,j\,n)\neq 1\bigr)$
+(a refutation of the conjecture would build a perpetual engine, theorem).
 
 > **Note (what we do not claim).** This is not Gödelian independence: we have not proven that Collatz is
 > unprovable in Peano arithmetic. What is proven is something else, inside our system and rigorously: both paths

@@ -32,7 +32,7 @@ $$6n+\varepsilon = a.$$
 
 Тогда противоположная сторона того же центра вычисляется без остатка.
 
-> **Теорема** (`rank1_opposite`). Если $6n+\varepsilon=a$, то
+> **Теорема 18.1** (`rank1_opposite`). Если $6n+\varepsilon=a$, то
 > $$6n-\varepsilon = a - 2\varepsilon.$$
 
 Доказательство — чистая арифметика переноса двойки (`omega`): вычитая $2\varepsilon$ из обеих сторон равенства $6n+\varepsilon=a$, получаем $6n-\varepsilon=a-2\varepsilon$. Содержательно это значит: как только одна сторона rank-1 клина *есть* активное простое, вторая сторона **жёстко фиксирована** как сдвинутый сосед $a-2\varepsilon$. Именно этот сдвинутый сосед и становится ареной всей дальнейшей борьбы — не сам $a$, а его сосед $a-2\varepsilon$ (при $\varepsilon=+1$ это $a-2$, при $\varepsilon=-1$ это $a+2$).
@@ -41,7 +41,7 @@ $$6n+\varepsilon = a.$$
 
 Пусть теперь активное простое лежит в neighbour-коридоре по конечному множеству $Q$ попарно взаимно простых малых модулей: для каждого $q\in Q$ выполнено $a\equiv 2\varepsilon\pmod q$, эквивалентно $q\mid a-2\varepsilon$. Тогда делимость поднимается до примориала.
 
-> **Теорема** (`neighbour_saturation`). Пусть $(Q)_{\mathrm{Set}}$ попарно взаимно просты и $q\mid a-2\varepsilon$ для всех $q\in Q$. Тогда
+> **Теорема 18.2** (`neighbour_saturation`). Пусть $(Q)_{\mathrm{Set}}$ попарно взаимно просты и $q\mid a-2\varepsilon$ для всех $q\in Q$. Тогда
 > $$\Bigl(\prod_{q\in Q} q\Bigr)\ \Big|\ a-2\varepsilon,$$
 > то есть $a = k\!\cdot\!\prod_{q\in Q} q + 2\varepsilon$ для некоторого $k$.
 
@@ -51,7 +51,7 @@ $$6n+\varepsilon = a.$$
 
 Насыщение $P\mid a-2\varepsilon$ вступает в конфликт с размером, как только примориал коридора перерастает величину сдвига.
 
-> **Теорема** (`neighbour_corridor_bound`). Если $P\mid a-2\varepsilon$ и $|a-2\varepsilon|<P$, то $a=2\varepsilon$.
+> **Теорема 18.3** (`neighbour_corridor_bound`). Если $P\mid a-2\varepsilon$ и $|a-2\varepsilon|<P$, то $a=2\varepsilon$.
 
 Доказательство разбирает два случая. Если $a-2\varepsilon=0$, утверждение тривиально. Иначе $a-2\varepsilon\neq 0$, и по $P\mid a-2\varepsilon$ имеем $P\le|a-2\varepsilon|$ (`Int.le_of_dvd` от ненулевого делимого) — противоречие с $|a-2\varepsilon|<P$, так что оставшийся случай замыкает `omega`.
 
@@ -63,16 +63,16 @@ $$6n+\varepsilon = a.$$
 
 Чтобы соединить rank-1 алгебру с гипотезой близнецов, зафиксируем **SNOL-вход** — тот же типизированный блочный предикат, что замыкает всю программу в [15 ToTwins].
 
-> **Определение** (`SNOLInput`). Утверждение
+> **Определение 18.4** (`SNOLInput`). Утверждение
 > $$\forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).$$
 
 То есть: на каждом масштабе $N$ существует carrier выше $N$, в котором «плохих» (носителей terminal shifted-neighbour obstruction) строго меньше, чем всех, и каждый выживший — twin-центр. SNOL как содержательное утверждение говорит ровно это: terminal shifted-neighbour current **не может быть carrier-scale**, то есть блочный вход выполнен.
 
-> **Теорема 21.1** (`twin_primes_of_SNOL`). Если выполнен `SNOLInput`, то `TwinLowers.Infinite` — простых-близнецов бесконечно много.
+> **Теорема 18.5** (`twin_primes_of_SNOL`). Если выполнен `SNOLInput`, то `TwinLowers.Infinite` — простых-близнецов бесконечно много.
 
 Доказательство — прямой мост `twin_prime_conjecture_of_blocks`: тот же капстоун-переход «блочное доминирование выживших $\Rightarrow$ неограниченность twin-центров $\Rightarrow$ бесконечность», что и в [15 ToTwins], только вход подан в форме SNOL, а не реального four-corner. Контрапозиция замыкает картину.
 
-> **Теорема** (`finite_contradicts_SNOL`). Если `TwinLowers` конечно и выполнен `SNOLInput`, то `False`.
+> **Теорема 18.6** (`finite_contradicts_SNOL`). Если `TwinLowers` конечно и выполнен `SNOLInput`, то `False`.
 
 Доказательство: `finite_contradicts_SNOL hfin H := hfin (twin_primes_of_SNOL H)`. Единственный открытый узел всей программы, таким образом, — именно SNOL: всё остальное машинно проверено.
 

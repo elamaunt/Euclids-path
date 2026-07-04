@@ -48,11 +48,12 @@ closure principle. In our architecture such a construction has an exact name,
 `InternalSelfDerivationOfStep00CausalClosure`: a proof that crosses its own
 boundary in order to ground that very boundary. And here is what happens to it.
 
-**Theorem** (`internalSelfDerivation_step00CausalClosure_builds_engine`, 🟢). *Every such
-internal self-certification builds a forbidden concrete Euclidean engine.*
+**Theorem 33.1** (`internalSelfDerivation_step00CausalClosure_builds_engine`, 🟢). *Every such
+internal self-certification builds a forbidden concrete Euclidean engine:
+$\texttt{InternalSelfDerivationOfStep00CausalClosure} \to \texttt{SomeConcreteEuclideanEngine}$.*
 
-**Theorem** (`no_internalSelfDerivation_step00CausalClosure`, 🟢). *Therefore it does not exist:
-the boundary does not self-certify.*
+**Theorem 33.2** (`no_internalSelfDerivation_step00CausalClosure`, 🟢). *Therefore it does not exist:
+the boundary does not self-certify, $\lnot\,\texttt{InternalSelfDerivationOfStep00CausalClosure}$.*
 
 **Why this is true.** We have no engines — that is the already-proven fact of the acyclicity of the
 rank `lexRank` (a strictly descending chain of natural ranks breaks off, [chapter 01](01_EPMI.md)).
@@ -60,8 +61,10 @@ The self-certification is identified — step by step, by machine check — with
 exactly such an infinitely running chain. Since there is no chain, there is no self-certification.
 
 The same in the language of the world's beginning: an internalised event "0 → 1", that is, *a first
-frame causing itself*, is impossible in a stable engine-free architecture
-(`no_internalisedHorizonBoundary`, 🟢).
+frame causing itself*, is impossible in a stable engine-free architecture.
+
+**Theorem 33.3** (`no_internalisedHorizonBoundary`, 🟢). *An internalised causal horizon boundary does
+not exist: $\lnot\,\texttt{InternalisedStep00HorizonBoundary}$.*
 
 > **Note (Baron Münchhausen and the perpetual engine of the first kind).** A system that grounds its
 > own foundation is the baron pulling himself out of the swamp by his own hair. The physical underside
@@ -101,7 +104,7 @@ The remaining three fields are **substantive causal boundaries**, one for each b
 
 All the mathematical weight of the first cause lives in these three fields; the markers assert nothing.
 
-**Theorem** (`step00FirstCause_iff_causalClosure`, 🟢). *The first cause is equivalent to the
+**Theorem 33.4** (`step00FirstCause_iff_causalClosure`, 🟢). *The first cause is equivalent to the
 conjunction of its boundaries: `Step00FirstCause ↔ (node ∧ Riemann law ∧ NS gate)`.*
 
 The meaning of this equivalence is honesty. It says: the intentional framing changes the *provenance*
@@ -123,21 +126,27 @@ The former "closure axiom" has now become a theorem, obtained from the first cau
 
 What follows from it along the twin branch:
 
-**Theorem** (`twinLowersInfinite_from_step00CausalClosure`, 🟡). *Under the accepted boundary the
+**Theorem 33.5** (`twinLowersInfinite_from_step00CausalClosure`, 🟡). *Under the accepted boundary the
 lower twin centres are infinitely many: `TwinLowers.Infinite`.*
 
 And immediately — the mandatory honest caveat. This is a **conditional derivation, NOT a proof of the
 twin prime conjecture**.
 
-Moreover, the decree is no weaker than its consequence: the theorem
-`causalClosureAxiom_asserts_twins_at_every_scale` 🟡 shows that the axiom exhibits a
-twin centre above any prescribed threshold — straight out of itself. In other words, *to accept this
-axiom = to accept the twins*; the decree creates no free strength.
+Moreover, the decree is no weaker than its consequence.
 
-And the axiom-free remainder is honest to the point of tautology:
-`nonAxiomaticRemainingObligation_iff_lastStep00Obligation` 🟢 confirms that no wrapper has lowered
-the open content below the old node 🔴. `twin_prime_conjecture` still remains
-`sorry` — and it does not close through the quarantine.
+**Theorem 33.6** (`causalClosureAxiom_asserts_twins_at_every_scale`, 🟡). *The axiom exhibits a twin
+centre above any prescribed threshold: $\forall M_0,\ \exists m,\ M_0 < m \wedge
+\texttt{TwinCenterZ}\,m$.*
+
+Straight out of itself. In other words, *to accept this axiom = to accept the twins*; the decree
+creates no free strength.
+
+And the axiom-free remainder is honest to the point of tautology.
+
+**Theorem 33.7** (`nonAxiomaticRemainingObligation_iff_lastStep00Obligation`, 🟢). *The axiom-free
+remaining obligation is equivalent to the old node: $\texttt{Step00NonAxiomaticRemainingObligation}
+\leftrightarrow \texttt{TheLastStep00Obligation}$ — no wrapper has lowered the open content below the
+node 🔴.* `twin_prime_conjecture` still remains `sorry` — and it does not close through the quarantine.
 
 ## Epistemics: the cause exists, it cannot be known, and knowledge breaks everything
 
@@ -149,28 +158,35 @@ It exists — that is `step00FirstCause` 🟡, accepted intentionally.
 
 It cannot be known — and this is a *theorem*, not a humble caveat:
 
-**Theorem** (`cause_unknowable`, 🟢). *Internal knowledge of the cause is impossible.*
+**Theorem 33.8** (`cause_unknowable`, 🟢). *Internal knowledge of the cause is impossible:
+$\lnot\,\texttt{InternalKnowledgeOfCause}$.*
 
 Why — we have essentially proven this above: to know the cause from inside would be to derive it from
-inside, and that builds a perpetual engine (`knowledge_builds_perpetualEngine` 🟢), which does not
+inside, and that builds a perpetual engine (`knowledge_builds_perpetualEngine` 🟢:
+$\texttt{InternalKnowledgeOfCause} \to \texttt{SomeConcreteEuclideanEngine}$), which does not
 exist. The unknowability of the cause is not our weakness but a conservation law.
 
 And, finally, the subtlest point: **knowledge of the cause would make the twins finite**. Utmost
 care is needed here.
 
-**Theorem** (`knowledge_finitizes_twins`, 🟢). *If the cause could be known from inside, the twins
-would be finitely many.*
+**Theorem 33.9** (`knowledge_finitizes_twins`, 🟢). *If the cause could be known from inside, the twins
+would be finitely many: $\texttt{InternalKnowledgeOfCause} \to \lnot\,\texttt{TwinLowers.Infinite}$.*
 
 The proof goes through the impossible engine — that is, formally *ex falso*: from the knowledge follows
 an engine, from the engine a contradiction, from the contradiction anything at all, including finiteness.
 
-So as not to pass the explosion off as content, an honest companion must stand beside it, `knowledge_proves_anything`
-🟢: from the same knowledge the *infinitude* of the twins is derived just as well. Knowledge of the
-cause, were it possible, would blow everything up.
+So as not to pass the explosion off as content, an honest companion must stand beside it.
 
-The substantive, non-explosive form is the dichotomy `unknowable_or_twins_finite` 🟢: *either
-the cause cannot be known, or the twins are finite* — and its left disjunct is a genuine theorem
-(`cause_unknowable`). We are always in the left world.
+**Theorem 33.10** (`knowledge_proves_anything`, 🟢). *From the same knowledge the *infinitude* of the
+twins is derived just as well: $\texttt{InternalKnowledgeOfCause} \to \texttt{TwinLowers.Infinite}$.*
+Knowledge of the cause, were it possible, would blow everything up.
+
+The substantive, non-explosive form is the dichotomy.
+
+**Theorem 33.11** (`unknowable_or_twins_finite`, 🟢). *Either the cause cannot be known, or the twins
+are finite: $\lnot\,\texttt{InternalKnowledgeOfCause} \vee \lnot\,\texttt{TwinLowers.Infinite}$ —* and
+its left disjunct is a genuine theorem (Theorem 33.8, `cause_unknowable`). We are always in the left
+world.
 
 > **Note (the machine complement of the node).** The same epistemic standard as for P/NP and Collatz
 > we have presented to the twin node itself — with the green module `Engine/TwinNodeEpistemic`. A
@@ -190,8 +206,10 @@ The previous formulation — "knowledge finitizes" — was proven by explosion. 
 substantive side, and it is load-bearing. It is expressed by an axiom-free lemma — **the heart of the
 entire causal line**.
 
-**Theorem** (`twins_infinite_of_noEngine_and_boundary`, 🟢). *The absence of engines together with the
-causal boundary entails the infinitude of the twins.*
+**Theorem 33.12** (`twins_infinite_of_noEngine_and_boundary`, 🟢). *The absence of engines together
+with the causal boundary entails the infinitude of the twins: $\lnot\,
+\texttt{SomeConcreteEuclideanEngine} \to \texttt{Step00CausalClosureAxiom} \to
+\texttt{TwinLowers.Infinite}$.*
 
 **Why this is true — and why the hypothesis "there are no engines" genuinely works here, not through
 an explosion.** Suppose the contrary: let the twins be finite; then there is a last boundary `M0`
@@ -202,17 +220,25 @@ collision a concrete witness engine is assembled.
 And it is this witness that the hypothesis `hNoEngine` kills — not an empty explosion but a direct hit:
 the witness is presented, and there are no engines. The hypothesis is consumed substantively.
 
-We instantiate by decree: `twins_because_unknowable` 🟡. The absence of engines `lexRank` supplies as a
-theorem, the boundary it takes from the axiom — and the twins are infinite. Unknowability and the
-infinitude of the twins turn out to be two consequences of one cause, and the derivation of the twins
-*visibly passes* through unknowability (through the very same "there are no engines").
+We instantiate by decree.
+
+**Theorem 33.13** (`twins_because_unknowable`, 🟡). *The twins are infinite: `TwinLowers.Infinite` —*
+here Theorem 33.12 is applied to the `lexRank`-supplied absence of engines and to the boundary from the
+axiom. Unknowability and the infinitude of the twins turn out to be two consequences of one cause, and
+the derivation of the twins *visibly passes* through unknowability (through the very same "there are no
+engines").
 
 > **Note (what "because" means here).** "The twins are infinite because the cause cannot be known" —
 > the formula is beautiful, and it is important not to misstate its strength. "Because" here means
 > "through a common cause and a load-bearing lemma", not "unknowability alone proves infinitude". All
 > the weight of *existence* still rests on the accepted boundary: unknowability alone, without the
 > boundary, yields no twins — otherwise they would already be proven. The overall summary of the
-> epistemic status is `epistemicFirstCauseStatus` 🟡.
+> epistemic status is given below.
+>
+> **Theorem 33.14** (`epistemicFirstCauseStatus`, 🟡). *The first cause exists, is unknowable, under
+> acceptance yields the twins, and knowledge would finitize them: $\texttt{Step00FirstCause} \wedge
+> \lnot\,\texttt{InternalKnowledgeOfCause} \wedge \texttt{TwinLowers.Infinite} \wedge
+> (\texttt{InternalKnowledgeOfCause} \to \lnot\,\texttt{TwinLowers.Infinite})$.*
 
 ## The second wall: finite knowledge sees only pure classes
 
@@ -223,23 +249,40 @@ unconditional (the core relies only on `propext`).
 Fix a correct knowledge certificate `FiniteSystemKnowsTwin`, depending only on the finite view of
 level `A` — that is, on what is distinguishable at a finite observation horizon. Then:
 
-**Theorem** (`knowledge_forces_pure_class`, 🟢). *A finite system knows about a twin `B` only if
-its entire finite equivalence class consists of twins.*
+**Theorem 33.15** (`knowledge_forces_pure_class`, 🟢). *A finite system knows about a twin `B` only if
+its entire finite equivalence class consists of twins: if
+$\texttt{FiniteSystemKnowsTwin}\,S\,A\,\mathrm{Cert}\,B$, then $\forall B',\
+\texttt{SieveEquivalent}\,S\,A\,B\,B' \to \texttt{IsTwin}\,B'$.*
 
 In other words, finite knowledge is knowledge *about a class*, not about an individual number. And
 that being so:
 
-**Theorem** (`mixed_class_twin_unknowable`, 🟢). *A twin that lands in a mixed class (with
-non-twins nearby) is invisible in principle to a finite system.*
+**Theorem 33.16** (`mixed_class_twin_unknowable`, 🟢). *A twin `B` that lands in a mixed class (some
+$\mathrm{bad}$ with $\texttt{SieveEquivalent}\,S\,A\,B\,\mathrm{bad}$ and $\lnot\,\texttt{IsTwin}\,
+\mathrm{bad}$) is invisible in principle to a finite system:
+$\lnot\,\texttt{FiniteSystemKnowsTwin}\,S\,A\,\mathrm{Cert}\,B$.*
 
-And globally: `infinitude_unknowable_of_eventually_mixed` 🟢 — the infinitude of the twins can be
-certified only with classes that are pure cofinally; with tail mixing it cannot. The sharpest special
-case: `trivialView_infinitude_unknowable` 🟢 — an utterly myopic observer knows nothing at all.
+And globally:
+
+**Theorem 33.17** (`infinitude_unknowable_of_eventually_mixed`, 🟢). *If the classes are tail-mixed
+(there is $N$ such that for all $B > N$ the class contains a non-twin), then the infinitude of the
+twins cannot be certified: $\lnot\,\texttt{FiniteSystemKnowsTwinsInfinite}\,S\,A\,\mathrm{Cert}$.*
+
+The infinitude can be certified only with classes that are pure cofinally. The sharpest special case:
+
+**Theorem 33.18** (`trivialView_infinitude_unknowable`, 🟢). *For the trivial view the infinitude is
+unconditionally uncertifiable: $\lnot\,\texttt{FiniteSystemKnowsTwinsInfinite}\,\texttt{trivialView}\,
+A\,\mathrm{Cert}$ —* an utterly myopic observer knows nothing at all.
 
 The honest boundary of the branch: that classes of *non-trivial* view mix at concrete levels is an
 arithmetic input 🔴; unconditional here are the structural theorems and the myopic instantiation. The
-picture is closed by `two_walls_one_nature` 🟢: from inside a finite view the twins cannot be seen,
-from inside the system the first cause cannot be seen — **two walls, one nature**.
+picture is closed by the following theorem.
+
+**Theorem 33.19** (`two_walls_one_nature`, 🟢). *From inside a finite view a twin with a mixed class
+cannot be seen, and from inside the system the first cause cannot be seen: $\bigl(\forall S,A,
+\mathrm{Cert},B,\mathrm{bad}:\ \texttt{SieveEquivalent}\,S\,A\,B\,\mathrm{bad} \to \lnot\,
+\texttt{IsTwin}\,\mathrm{bad} \to \lnot\,\texttt{FiniteSystemKnowsTwin}\,S\,A\,\mathrm{Cert}\,B\bigr)
+\wedge \lnot\,\texttt{InternalKnowledgeOfCause}$ — **two walls, one nature**.*
 
 > **Note (the observer's horizon).** This second wall has a direct physical analogy — a horizon. An
 > observer inside an expanding universe cannot see beyond their cosmological
@@ -253,8 +296,8 @@ from inside the system the first cause cannot be seen — **two walls, one natur
 Now we can gather everything said into a single statement — the main theorem of the programme. It glues
 the causal wall and the cognitive wall into one incompatibility, and does so entirely in the green core.
 
-**Theorem** (`higherEnergyIncompatibility_main`, 🟢 — the core without the axiom). *Five faces of one
-incompatibility:*
+**Theorem 33.20** (`higherEnergyIncompatibility_main`, 🟢 — the core without the axiom). *Five faces
+of one incompatibility — a conjunction:*
 
 1. knowledge of the first cause from inside builds a perpetual engine;
 2. therefore the first cause is unknowable from inside;
@@ -266,8 +309,11 @@ incompatibility:*
 The first four faces are our two walls, formulated side by side. The fifth is the bridge from them to
 the conclusion. And the whole is best read energetically: **"knowing from inside" costs a perpetual
 engine, which does not exist; while the infinitude of the twins is external knowledge, paid for by the
-first cause.** The corollary `higherEnergyIncompatibility_twins` 🟡 is exactly the fifth face
-instantiated by the decree: it is yellow, but the core above it remains green.
+first cause.**
+
+**Corollary 33.21** (`higherEnergyIncompatibility_twins`, 🟡). *The twins are infinite,
+`TwinLowers.Infinite` —* exactly the fifth face (Theorem 33.20) instantiated by the decree: it is
+yellow, but the core above it remains green.
 
 > **Note (Landauer's principle and Maxwell's demon).** The name "energy incompatibility" is not a
 > decoration. Landauer showed that information is physical: erasing one bit costs at least `kT·ln 2`
@@ -327,8 +373,9 @@ from `0` cannot be supplied from inside — and that is precisely the role of th
 collect the prohibitions together. To derive the causal boundary from inside is to self-certify it,
 and that builds a perpetual engine (step 4 and
 [above](#why-the-cause-cannot-be-derived-from-inside)). To *know* the first cause from inside is
-impossible as a theorem (`cause_unknowable`). And the dichotomy `unknowable_or_twins_finite` closes
-the loop: *either* the cause is unknowable, *or* the twins are finite — and the left disjunct is proven.
+impossible as a theorem (Theorem 33.8, `cause_unknowable`). And the dichotomy of Theorem 33.11
+(`unknowable_or_twins_finite`) closes the loop: *either* the cause is unknowable, *or* the twins are
+finite — and the left disjunct is proven.
 
 Inside a universe defined by the strict order of traversal, the first cause can be neither derived nor
 known; deciding the node from inside would mean building a perpetual engine. Therefore, if the
@@ -336,7 +383,7 @@ boundary is to be accepted at all, it can be accepted only from outside.
 
 And having accepted it, we obtain rigorously: **that the twins are infinite cannot be known; but if
 the unknowability of the first cause is accepted as truth, they are infinite, and rigorously so**
-(`twins_because_unknowable`, 🟡, through the load-bearing axiom-free lemma
+(Theorem 33.13, `twins_because_unknowable`, 🟡, through the load-bearing axiom-free Theorem 33.12,
 `twins_infinite_of_noEngine_and_boundary`). The axiom is neither a luxury nor a decoration:
 without it the infinitude of the twins can be neither proven nor refuted inside the system — both
 actions would require a perpetual engine.
@@ -372,7 +419,7 @@ an external axiom, not a claim of global independence.
 What does the axiom *cost* from the standpoint of consistency? We have made the price machine-visible.
 The tripwires of §9 of the quarantine are charges that detonate exactly where they should:
 
-**Theorem** (`quarantine_inconsistent_if_node_refuted`, 🟡). *If the node is ever refuted
+**Theorem 33.22** (`quarantine_inconsistent_if_node_refuted`, 🟡). *If the node is ever refuted
 (that is, if someone extends the `A ≤ 4` attack to all scales), `False` is derivable exactly here — and all 43
 tainted declarations are devalued at once.*
 
@@ -386,9 +433,10 @@ Thus **three worlds** are drawn out:
 Importantly, the small attack `A ≤ 4` has already succeeded — and succeeded independently of the truth
 of the twins: the decree lives only in `A ≥ 5`. This is not a declaration but a property of the data:
 
-**Theorem** (`strictPackage_scale_ge_five`, 🟢). *Every strict package `(A, projOf, resolves)`
-witnessing the axiom has scale `A ≥ 5`.* And the package itself is equivalent to the axiom and at every
-scale exhibits a twin — so here too the decree is no weaker than the conclusion.
+**Theorem 33.23** (`strictPackage_scale_ge_five`, 🟢). *Every strict package
+$C = (A, \mathrm{projOf}, \mathrm{resolves})$ witnessing the axiom has scale $5 \le A$.* And the
+package itself is equivalent to the axiom and at every scale exhibits a twin — so here too the decree
+is no weaker than the conclusion.
 
 Finally, the meta-level is honest about its own tautologousness: the dichotomy "the proof escapes or
 returns" is simply a renaming of `Nonempty`/`IsEmpty` (`proofEscapes_iff_proofExists` 🟢), while the

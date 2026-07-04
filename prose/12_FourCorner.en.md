@@ -19,9 +19,10 @@ is forced by the negative association of the two ranks, which in turn is a shado
 
 ## Tallies by rank and the matrix $N_{ij}$
 
-Fix a block of candidate centers `m` (indices of the survivor class at scale `A`). To each center
-assign the pair of side ranks
-$$r_-(m)=\bigl\lvert\{p\le A: p\mid 6m-1\}\bigr\rvert,\qquad r_+(m)=\bigl\lvert\{p\le A: p\mid 6m+1\}\bigr\rvert,$$
+Fix a block of candidate centers `m` (indices of the survivor class at scale `A`).
+
+**Definition 12.1** (side ranks). To each center `m` assign the pair of side ranks
+$$r_-(m)=\bigl\lvert\{p\le A: p\mid 6m-1\}\bigr\rvert,\qquad r_+(m)=\bigl\lvert\{p\le A: p\mid 6m+1\}\bigr\rvert,\tag{12.1}$$
 — the number of small prime divisors of the left and the right side respectively. A center is a twin
 center if and only if both sides are free of small divisors, that is, `r_-=r_+=0` (after the
 sieve-to-the-root this entails the primality of both sides; see [10](10_NonCover.md)).
@@ -59,17 +60,19 @@ N_{ij}\ \approx\ T\cdot u_i\, v_j,\qquad u=(1-\pi_-,\ \pi_-),\quad v=(1-\pi_+,\ 
 $$
 where `T` is the total number of centers. For a rank-1 matrix all four $2\times2$ minors vanish; in
 particular, the exact equality holds
-$$N_{00}\,N_{33}\ =\ N_{03}\,N_{30}.$$
+$$N_{00}\,N_{33}\ =\ N_{03}\,N_{30}.\tag{12.2}$$
 
 The observation: the real tally matrix is not of rank 1 — there is a **rank-2 correction**, and the whole
-question is its *sign*. Define the four-corner defect
-$$\boxed{\ \Delta_{\mathrm{fc}}\ :=\ N_{03}\,N_{30}-N_{00}\,N_{33}\ }$$
+question is its *sign*.
+
+**Definition 12.2** (four-corner defect). Set
+$$\boxed{\ \Delta_{\mathrm{fc}}\ :=\ N_{03}\,N_{30}-N_{00}\,N_{33}\ }\tag{12.3}$$
 — this is (up to normalization) the determinant of the tally matrix, that is, the amplitude of its rank-2 part.
 The sign of $\Delta_{\mathrm{fc}}$ is the sign of the covariance of the binary ranks:
 $$\mathrm{sgn}\,\Delta_{\mathrm{fc}}\ =\ -\,\mathrm{sgn}\,\mathrm{Cov}\big([r_-{>}0],[r_+{>}0]\big).$$
 
 The condition $\Delta_{\mathrm{fc}}\ge0$, that is,
-$$N_{00}\,N_{33}\ \le\ N_{03}\,N_{30},$$
+$$N_{00}\,N_{33}\ \le\ N_{03}\,N_{30},\tag{12.4}$$
 is called the **four-corner inequality** and is equivalent to the **negative association** of the ranks:
 the spoilage of one side makes the spoilage of the other *less* likely. It is precisely this sign that we
 need, and precisely this sign that is not accidental.
@@ -106,25 +109,23 @@ The negative covariance of the ranks is exactly the four-corner.
 The four-corner inequality by itself compares the diagonal `N_{00}N_{33}` with the mixed product
 `N_{03}N_{30}`. To obtain the desired `N_{33}<N_{00}`, a second, *lateral* ingredient is needed —
 the **side-corner**:
-$$N_{03}\,N_{30}\ \le\ N_{00}^{\,2}.$$
+$$N_{03}\,N_{30}\ \le\ N_{00}^{\,2}.\tag{12.5}$$
 It says that the mixed corners are small compared with the clean one: low rank is markedly more likely
 than high rank (the same survivor recursion `q\to q-2`), so the clean corner `N_{00}` dominates. Formally
 we have formalized precisely the *algebra of the passage* — that these two inequalities together force the conclusion.
 
-The non-strict passage is the lemma `N33_le_N00_of_four_corner`:
+The non-strict passage is the lemma:
 
-> If `0<N_{00}`, the four-corner `N_{00}\cdot N_{33}\le N_{03}\cdot N_{30}` and the side-corner
-> `N_{03}\cdot N_{30}\le N_{00}^{2}` hold, then `N_{33}\le N_{00}`.
+**Theorem 12.3** (`N33_le_N00_of_four_corner`). Let $N_{00},N_{03},N_{30},N_{33}\in\mathbb N$. If $0<N_{00}$, the four-corner $N_{00}\,N_{33}\le N_{03}\,N_{30}$ and the side-corner $N_{03}\,N_{30}\le N_{00}^{2}$ hold, then $N_{33}\le N_{00}$. 🟢
 
 The proof is elementary: the chain $N_{00}N_{33}\le N_{03}N_{30}\le N_{00}\cdot N_{00}$ gives
 $N_{00}N_{33}\le N_{00}N_{00}$, whence cancelling the positive factor `N_{00}`
 (`Nat.le_of_mul_le_mul_left`) yields `N_{33}\le N_{00}`.
 
 The strict form — what we actually need (a strict gap `B_5>0`, that is, *more* clean
-centers than fully spoiled ones) — is given by `N33_lt_N00_of_four_corner`:
+centers than fully spoiled ones) — is given by the lemma:
 
-> If `0<N_{00}`, the **strict** four-corner `N_{00}\cdot N_{33}<N_{03}\cdot N_{30}` and the side-corner
-> `N_{03}\cdot N_{30}\le N_{00}^{2}` hold, then `N_{33}<N_{00}`.
+**Theorem 12.4** (`N33_lt_N00_of_four_corner`). Let $N_{00},N_{03},N_{30},N_{33}\in\mathbb N$. If $0<N_{00}$, the **strict** four-corner $N_{00}\,N_{33}<N_{03}\,N_{30}$ and the side-corner $N_{03}\,N_{30}\le N_{00}^{2}$ hold, then $N_{33}<N_{00}$. 🟢
 
 Here the strict inequality $N_{00}N_{33}<N_{03}N_{30}$ is threaded through the side-corner up to
 $N_{00}N_{33}<N_{00}N_{00}$, and `lt_of_mul_lt_mul_left` cancels `N_{00}` on the left, giving the strict conclusion.
@@ -133,8 +134,7 @@ Finally, the $\pm$ symmetry of the sides substantially simplifies the side-corne
 enter the product symmetrically ($a_p=b_p$), the mixed corners are equal: $N_{03}=N_{30}$. The lemma
 `side_corner_of_le` records this simplification:
 
-> When `N_{03}=N_{30}`, the one-dimensional `N_{03}\le N_{00}` suffices to obtain the
-> side-corner `N_{03}\cdot N_{30}\le N_{00}^{2}`.
+**Theorem 12.5** (`side_corner_of_le`). Let $N_{00},N_{03},N_{30}\in\mathbb N$. If $N_{03}=N_{30}$ and $N_{03}\le N_{00}$, then the side-corner $N_{03}\,N_{30}\le N_{00}^{2}$ holds. 🟢
 
 Substituting the symmetry reduces the quadratic inequality `N_{03}N_{30}\le N_{00}^2` to a product of two
 identical factors `N_{03}\cdot N_{03}\le N_{00}\cdot N_{00}`, each of which is majorized via
@@ -169,8 +169,8 @@ $R_{\mathrm{fc}}\le1$, plus the smallness of $R_{\mathrm{sc}}$ suffice.
 The three formalized lemmas give the **passage**, but not the corner inequalities themselves for the *real*
 tallies. The honest boundary — in the house sense of an honestly named open node (see the [glossary](GLOSSARY.md)) — runs here.
 
-> **Conjecture (the real four-corner).** For the real CRT tallies of the survivor block at scale `A`,
-> the strict $N_{00}N_{33}<N_{03}N_{30}$ and the side-corner $N_{03}N_{30}\le N_{00}^2$ hold.
+**Conjecture 12.6** (the real four-corner). For the real CRT tallies of the survivor block at scale `A`,
+the strict $N_{00}N_{33}<N_{03}N_{30}$ and the side-corner $N_{03}N_{30}\le N_{00}^2$ hold. 🟡
 
 **Closing plan (distribution-free).** The model inequality for the product `c+ax+by` is provable
 elementarily (Maclaurin / negative association). One step **model→reality** remains:

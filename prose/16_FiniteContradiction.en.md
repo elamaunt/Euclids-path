@@ -22,18 +22,21 @@ which for sets is equivalent to `TwinLowers.Finite`. Substantively this means: t
 
 The second ingredient is the open input. In the file it is introduced as an abbreviation coinciding verbatim with the premise of `twin_primes_of_four_corner` from the previous chapter:
 
-> **Definition** (`FourCornerInput`). For every scale $N$ there exist finite sets $R_{00}, R_{03}, R_{30}, R_{33},\ \mathrm{carrier},\ \mathrm{bad}$ satisfying
-> $$
-> 0 < |R_{00}|,\qquad
-> |R_{00}|\cdot|R_{33}| \;<\; |R_{03}|\cdot|R_{30}| \;\le\; |R_{00}|^2,
-> $$
-> $$
-> |\mathrm{carrier}| = |R_{00}|,\qquad |\mathrm{bad}| = |R_{33}|,
-> $$
-> $$
-> (\forall m\in\mathrm{carrier})\; N < m,\qquad
-> (\forall m\in\mathrm{carrier})\; m\notin\mathrm{bad}\ \Rightarrow\ \mathtt{IsTwinCenter}\ m.
-> $$
+**Definition 16.1** (the open input of the programme). The abbreviation `FourCornerInput`: for every scale $N$ there exist finite sets $R_{00}, R_{03}, R_{30}, R_{33},\ \mathrm{carrier},\ \mathrm{bad}$ satisfying
+
+$$
+0 < |R_{00}|,\qquad
+|R_{00}|\cdot|R_{33}| \;<\; |R_{03}|\cdot|R_{30}| \;\le\; |R_{00}|^2, \tag{16.1}
+$$
+
+$$
+|\mathrm{carrier}| = |R_{00}|,\qquad |\mathrm{bad}| = |R_{33}|, \tag{16.2}
+$$
+
+$$
+(\forall m\in\mathrm{carrier})\; N < m,\qquad
+(\forall m\in\mathrm{carrier})\; m\notin\mathrm{bad}\ \Rightarrow\ \mathtt{IsTwinCenter}\ m. \tag{16.3}
+$$
 
 The first inequality $|R_{00}|\cdot|R_{33}| < |R_{03}|\cdot|R_{30}|$ is the strict *real* four-corner on the genuine rank counts; the second, $|R_{03}|\cdot|R_{30}| \le |R_{00}|^2$, is the easy side-corner. Together, as shown in [15 ToTwins] via `N33_lt_N00_of_four_corner`, they yield $|R_{33}| < |R_{00}|$ — the bad centres in the block are strictly fewer than the carrier slots — hence at least one survivor, and that survivor is a twin.
 
@@ -41,21 +44,21 @@ The first inequality $|R_{00}|\cdot|R_{33}| < |R_{03}|\cdot|R_{30}|$ is the stri
 
 The contradiction proper is stated in a single line.
 
-> **Theorem** (`twin_finite_contradiction`). If $\neg\,\mathtt{TwinLowers.Infinite}$ (the twins are finite) and `FourCornerInput` `H` holds, then `False`.
+**Theorem 16.2** (`twin_finite_contradiction`). If $\neg\,\mathtt{TwinLowers.Infinite}$ (the twins are finite) and `FourCornerInput` `H` holds, then `False`.
 
 The proof is transparent: from `H` the direct chain of the previous chapter (`twin_primes_of_four_corner`) produces `TwinLowers.Infinite`; applying the finiteness hypothesis `hfin` to it, we obtain `False`. In Lean this is literally `hfin (twin_primes_of_four_corner H)` — finiteness is a function "from infinitude into the void", and we feed it exactly the infinitude that the four-corner manufactures.
 
 The same fact is restated through explicit finiteness of the set:
 
-> **Theorem** (`twin_finite_contradiction_of_finite`). If `TwinLowers.Finite` and `H`, then `False`.
+**Theorem 16.3** (`twin_finite_contradiction_of_finite`). If `TwinLowers.Finite` and `FourCornerInput` `H`, then `False`.
 
 The only difference is the passage `Set.not_infinite.mpr`, which removes the gap between `Finite` and `¬ Infinite`; substantively it is the same theorem, written so as to be convenient wherever finiteness is given as `Finite` rather than as a negation.
 
 Finally, the contraposition is extracted in pure form:
 
-> **Theorem** (`twin_infinite_of_fourCorner`). From `H` follows `TwinLowers.Infinite`.
+**Theorem 16.4** (`twin_infinite_of_fourCorner`). From `FourCornerInput` `H` follows `TwinLowers.Infinite`.
 
-This is identical to `twin_primes_of_four_corner H` — we merely give the conclusion a name that underlines its logical role: `H` *refutes* finiteness. The three theorems are one and the same statement in three grammatical voices (contradiction, contradiction-via-`Finite`, direct derivation), and the presence of all three in the file is not redundancy but a map of how one implication plugs into different contexts of a proof.
+This is identical to `twin_primes_of_four_corner H` — we merely give the conclusion a name that underlines its logical role: `H` *refutes* finiteness. The three theorems (16.2, 16.3, 16.4) are one and the same statement in three grammatical voices (contradiction, contradiction-via-`Finite`, direct derivation), and the presence of all three in the file is not redundancy but a map of how one implication plugs into different contexts of a proof.
 
 > **Note.** Logically, contraposition adds nothing: $(\neg P \wedge H \to \bot)$ and $(H \to P)$ are equivalent. The value of the "by contradiction" form is methodological: it makes *tangible* exactly what breaks when the thesis is denied. If the twins are finite, the engine must process the entire infinite tail $(M_0,\infty)$ so that the bad centres cover it completely, leaving not a single survivor. `H` asserts the opposite — that at every scale a survivor exists. The two cannot be reconciled, and this irreconcilability is precisely `False`.
 
@@ -75,13 +78,13 @@ The reconnaissance verdict, verbatim: «No route escapes the four-corner/carrier
 
 ## What is honestly proven — and what is not
 
-Let us draw the line strictly. What is proven is the **conditional theorem** `finite ∧ H ⟹ False` — machine-checked, without `sorry`, on the standard axioms. It is a correctly assembled contradiction, complete at the level of the model: every link of the glue
+Let us draw the line strictly. What is proven is the **conditional theorem** (Theorem 16.2) `finite ∧ H ⟹ False` — machine-checked, without `sorry`, on the standard axioms. It is a correctly assembled contradiction, complete at the level of the model: every link of the glue (16.4)
 
 $$
-\texttt{N33\_lt\_N00\_of\_four\_corner}\ \to\ \texttt{survivor\_of\_not\_covered}\ \to\ \texttt{twin\_prime\_conjecture\_of\_blocks}\ \to\ \texttt{infinite\_of\_unbounded\_centers}
+\texttt{N33\_lt\_N00\_of\_four\_corner}\ \to\ \texttt{survivor\_of\_not\_covered}\ \to\ \texttt{twin\_prime\_conjecture\_of\_blocks}\ \to\ \texttt{infinite\_of\_unbounded\_centers} \tag{16.4}
 $$
 
-is verified and distribution-free. What remains open is *exactly* `H`, and inside `H` the only substantively open conjunct is the strict real four-corner (= parity + the model$\to$reality transfer) together with the lower bound on the carrier (= density). The model side (`four_corner_binom_strict`, `model_four_corner`) is already proven unconditionally; what fails to transfer is precisely the step from model to reality.
+is verified and distribution-free. What remains open is *exactly* `H` (Definition 16.1), and inside `H` the only substantively open conjunct is the strict real four-corner (= parity + the model$\to$reality transfer) together with the lower bound on the carrier (= density). The model side (`four_corner_binom_strict`, `model_four_corner`) is already proven unconditionally; what fails to transfer is precisely the step from model to reality.
 
 > **Conjecture** (open node). `FourCornerInput` `H` is true: at arbitrarily large scales the real rank counts yield a strict four-corner. **Closure plan:** control of the remainder $e_{ij}$ on the genuine interval, precise enough to keep the sign of the margin positive. From the ideas at hand this does *not* follow distribution-free — as confirmed numerically as well (margin$\to 0$, remainder $\sim 4\times$ the model). The honest status: `H` is a typed hypothesis, NOT a proven fact, and nowhere do we pass the reduction to it off as a proof of the thesis itself.
 

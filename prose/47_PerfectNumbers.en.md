@@ -41,7 +41,7 @@ Anderson on Wiedijk's hundred theorems, Apache 2.0 license. Our contribution her
 *embedding into the programme's language*: the linking with the Mersenne centres of [34](34_MersenneBranch.md) and with the manifestation
 architecture of Riemann.
 
-**Theorem** (`perfect_of_mersennePrime'`, 🟢). *For `2 ≤ p` with `mersenne p` prime, the number
+**Theorem 47.1** (`perfect_of_mersennePrime'`, 🟢). *For `2 ≤ p` with `mersenne p` prime, the number
 `2^(p−1) · mersenne p` is perfect — Euclid's direction, Elements IX.36.*
 
 **Why this is true.** This is exactly the construction Euclid wrote down twenty-three hundred years ago:
@@ -49,7 +49,7 @@ if `2^p − 1` is prime, the sum of the proper divisors of `2^(p−1)·(2^p−1)
 We do not rewrite Euclid's geometry of sums — we take its machine-checked form from the archive and
 translate it into the p-language of the Mersenne branch, where `2^p − 1 = 6m_p + 1` is the upper side of the centre.
 
-**Theorem** (`evenPerfect_eq`, 🟢). *Every even perfect number has the form `2^k · (2^(k+1) − 1)`
+**Theorem 47.2** (`evenPerfect_eq`, 🟢). *Every even perfect number has the form `2^k · (2^(k+1) − 1)`
 with a prime Mersenne factor — Euler's direction.*
 
 **Why this is true.** Euler closed the converse two thousand years later: even perfectness has no form
@@ -72,17 +72,17 @@ gone unanswered for two thousand years: do the perfect numbers continue without 
 this question about *even* perfect numbers turns out to be the very same as the question about Mersenne primes — and
 now this is not the rhetoric of prose but a green theorem.
 
-**Theorem** (`mersennePrimesInfinite_iff_evenPerfectUnbounded`, 🟢). *The goal marker
+**Theorem 47.3** (`mersennePrimesInfinite_iff_evenPerfectUnbounded`, 🟢). *The goal marker
 `MersennePrimesInfinite` is equivalent to the unboundedness of even perfect numbers
 (`EvenPerfectUnbounded`).*
 
 **Why this is true.** Forward — through Euclid's construction and a growth estimate. From a Mersenne prime
-`mersenne p` we build the perfect number `2^(p−1)·mersenne p` (the same `perfect_of_mersennePrime'`), and the
+`mersenne p` we build the perfect number `2^(p−1)·mersenne p` (the same Theorem 47.1, `perfect_of_mersennePrime'`), and the
 inequality `N < p < 2^p ≤ 2^(p−1)·mersenne p` drives the perfect numbers upward without a ceiling: each new
 Mersenne prime yields a perfect number strictly larger than any threshold fixed in advance.
 
 Backward — through Euler's classification plus Fermat's arithmetic. An unbounded even perfect number is
-dissected by `evenPerfect_eq` into the form `2^k·(2^(k+1)−1)`, and the primality of the Mersenne number `2^(k+1) − 1`
+dissected by Theorem 47.2 (`evenPerfect_eq`) into the form `2^k·(2^(k+1)−1)`, and the primality of the Mersenne number `2^(k+1) − 1`
 forces a prime exponent — this is `Nat.prime_of_pow_sub_one_prime` (a composite exponent would yield an
 algebraic divisor). The estimate `2^k·mersenne(k+1) < 2^(2k+1)` shows that a growing
 perfect number pulls a growing prime exponent behind it.
@@ -106,7 +106,7 @@ numbers do have an unknown inhabitant, it is *odd*. The geometry knows which sid
 The odd witness is built not like the Mersenne boundary (a Π-statement of absence) but like Riemann's
 deviation — an **object-datum**: a concrete odd perfect number.
 
-**Definition (`OddPerfectNumber`).** *The type of witnesses of the open problem: the subtype
+**Definition 47.4** (`OddPerfectNumber`). *The type of witnesses of the open problem: the subtype
 `{N // Odd N ∧ Nat.Perfect N}` — an odd number together with proofs of both properties.* The hypothesis
 "there are no odd perfect numbers" (`NoOddPerfect`) is exactly the emptiness of this type
 (`noOddPerfect_iff_no_witness` 🟢).
@@ -114,14 +114,14 @@ deviation — an **object-datum**: a concrete odd perfect number.
 The strength of unpresentability — that property of a witness whereby presenting it would cost a perpetual engine (see the [glossary](GLOSSARY.md)) — is here the strongest possible: **pointwise decidability**. Perfectness
 is decidable, so every *fake* dies by computation:
 
-**Theorem** (`not_perfect_945`, 🟢). *`945` — the smallest odd abundant number — is not perfect
+**Theorem 47.5** (`not_perfect_945`, 🟢). *`945` — the smallest odd abundant number — is not perfect
 (machine check `decide`).*
 
 **Why this is true.** The sum of the proper divisors of `945` is computable; the machine computes and compares it —
 and `945` fails. Any presented candidate for an odd perfect number is checked by the same
 `decide`; a fake will not survive the computation. We also know a lower bound of the true witness's domain:
 
-**Theorem** (`oddPerfect_ge_101`, 🟢). *Every odd perfect witness is ≥ 101 — all smaller
+**Theorem 47.6** (`oddPerfect_ge_101`, 🟢). *Every odd perfect witness is ≥ 101 — all smaller
 odd candidates are screened out by machine check.*
 
 **Why this is true.** For each odd `M < 101`, decidability delivers the verdict `¬ Nat.Perfect M`
@@ -138,11 +138,11 @@ would have exploded. Here the witness is the object itself, and the scale anchor
 **object-quantified** (`∀ W, OddPerfectManifests W`), the height of the deviation is the deviation itself, and
 an ungated explosive form simply does not exist. This is the mirror of Riemann, not of Mersenne.
 
-**Theorem** (`oddPerfectWitness_carries_engine`, 🟢 — readable form). *A concrete odd
+**Theorem 47.7** (`oddPerfectWitness_carries_engine`, 🟢 — readable form). *A concrete odd
 perfect number + the manifestation law + reconciled books at a scale no lower than the number itself
 present a perpetual engine — as an object,* `ConcreteEuclideanEngineWitness`, *before any killing.*
 
-**Theorem** (`noOddPerfect_of_manifestation_and_boundary`, 🟢 — essence). *No engines + an accepted
+**Theorem 47.8** (`noOddPerfect_of_manifestation_and_boundary`, 🟢 — essence). *No engines + an accepted
 boundary + the manifestation law ⟹ there are no odd perfect numbers.*
 
 **Why this is true.** The mirror of the Riemann and Mersenne essence lemmas, with the same standard of honesty.
@@ -208,21 +208,30 @@ has turned out to have a third slope, and it falls here, into the odd front: `En
 an entirely green module, says two things.
 
 First: **to present an odd witness is to
-present a perpetual engine**, and therefore the witness is greenly unpresentable
-(`oddPerfectWitness_green_unpresentable` 🟢).
+present a perpetual engine**, and therefore the witness is greenly unpresentable.
+
+**Theorem 47.9** (`oddPerfectWitness_green_unpresentable`, 🟢 — conditional). *Under the accepted
+`step00`-obligation boundary and the manifestation law the type of odd perfect witnesses is empty:*
+$\text{TheStrictLastStep00Obligation} \to \text{OddPerfectManifestationLaw} \to \neg\,\text{Nonempty}\,\text{OddPerfectNumber}.$
 
 The conditionality here is named as conditionality: both hypotheses are
 explicit — the manifestation law lives as a definition (the field is not decreed), the boundary is supplied from outside;
 a presented witness, under the law and with the books reconciled, would build an engine
-(`oddPerfectWitness_carries_engine`), and greenly there are no engines (`no_someConcreteEuclideanEngine`).
+(Theorem 47.7, `oddPerfectWitness_carries_engine`), and greenly there are no engines (`no_someConcreteEuclideanEngine`).
 This front has no unconditional form and cannot have one — it would be a solution of the problem itself.
 
 Second: self-grounding self-destructs. The structure `InternalisedOddPerfectGround` carries a witness
 *inside* its own verified horizon — and a machine unfolding of that very horizon,
 the kernel fact `oddPerfect_horizon_swept` 🟢, exactly the inside of the proof of `oddPerfect_ge_101`.
 
-From this pair `False` is derived — **self-grounding is exactly ⊥** (`no_internalisedOddPerfectGround` 🟢),
-whence `oddPerfectCause_unknowable` 🟢: "it cannot be known from inside" is not a slogan but a theorem, the mirror of
+From this pair `False` is derived — **self-grounding is exactly ⊥** (`no_internalisedOddPerfectGround` 🟢):
+
+**Theorem 47.10** (`oddPerfectCause_unknowable`, 🟢). *Internal knowledge of the cause for odd perfect
+numbers is impossible:* $\neg\,\text{InternalKnowledgeOfOddPerfectCause}$ — *equivalently,*
+$\text{InternalisedOddPerfectGround} \to \bot$ *(the structure carrying a witness inside its own verified
+horizon is contradictory).*
+
+"It cannot be known from inside" is not a slogan but a theorem, the mirror of
 `collatzCause_unknowable` and `pnpCause_unknowable`. The structure's legs are not logical complements of each
 other: the contradiction is mined by genuine mediation, by unpacking the witness and translating oddness into
 the language of residues, and the kernel payment of the horizon enters the refutation itself.
@@ -256,7 +265,7 @@ inhabitant has something the Mersenne absence witness did not have — a **machi
 anatomy**. Euler's classical theorem on odd perfect numbers is now green in full, in
 `Engine/OddPerfectEulerForm.lean`.
 
-**Theorem** (`odd_perfect_euler_form`, 🟢). *Every odd perfect `n` has the form `n = q^α · m²`,
+**Theorem 47.11** (`odd_perfect_euler_form`, 🟢). *Every odd perfect `n` has the form `n = q^α · m²`,
 where `q` is prime, `q ≡ 1 (mod 4)`, `α ≡ 1 (mod 4)`, and `q ∤ m`.* In the witness language the same form is
 `oddPerfect_euler_form`: every `W : OddPerfectNumber` is obliged to carry exactly this structure.
 

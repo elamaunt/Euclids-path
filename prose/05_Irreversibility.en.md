@@ -31,7 +31,7 @@ Both halves are machine-proven, without a single axiom beyond the standard ones.
 Let us recall the state model. The state of the engine is encoded entirely by a single natural number
 — its *height*.
 
-> **Definition (height).** To a state `S`, substantively corresponding to the centre `m` of the pair `(6m-1,\,6m+1)`,
+> **Definition 5.1** (height). To a state `S`, substantively corresponding to the centre `m` of the pair `(6m-1,\,6m+1)`,
 > we assign the height `H(S) := m \in \mathbb{N}`. A trajectory of the engine is a sequence of
 > heights `H : \mathbb{N} \to \mathbb{N}`, where the argument `t` plays the role of discrete time and `H(t)`
 > is the state at moment `t`.
@@ -43,15 +43,15 @@ the centre.
 
 One successful clean descent is a step that reduces the height by at least a factor of `A`.
 
-> **Definition (descent step).** For `A,h,h' \in \mathbb{N}`
-> $$\mathrm{DescentStep}(A,h,h') \;:\Longleftrightarrow\; A\cdot h' < h.$$
+> **Definition 5.2** (descent step). For `A,h,h' \in \mathbb{N}`
+> $$\mathrm{DescentStep}(A,h,h') \;:\Longleftrightarrow\; A\cdot h' < h. \tag{5.1}$$
 > Substantively: from a state of height `h` the engine passes to a state of height `h'`, with
 > `A\cdot h' < h`, that is, the height falls by at least a factor of `A` (`Engine/EPMI`).
 
 The key lemma on which everything else rests is that for `A\ge 1` such a step *strictly* lowers the
 height.
 
-> **Lemma** (`descent_strict`, `Engine/EPMI`). If `1 \le A` and `\mathrm{DescentStep}(A,h,h')`, then
+> **Lemma 5.3** (`descent_strict`, `Engine/EPMI`). If `1 \le A` and `\mathrm{DescentStep}(A,h,h')`, then
 > `h' < h`.
 >
 > **Why.** For `A\ge 1` we have `h' \le A\cdot h'` (multiplying by a positive factor does not
@@ -65,17 +65,17 @@ of time: every step of the engine irreversibly shifts it into a new, lower state
 The local strictness ("every next step is lower than the previous one") integrates into a global
 statement about the whole trajectory.
 
-> **Theorem** (`engine_never_returns`). Let `1 \le A` and let `H : \mathbb{N} \to \mathbb{N}` be a trajectory
+> **Theorem 5.4** (`engine_never_returns`). Let `1 \le A` and let `H : \mathbb{N} \to \mathbb{N}` be a trajectory
 > in which every step is a successful descent: `\forall t,\; \mathrm{DescentStep}(A,\,H(t),\,H(t+1))`.
 > Then `H` is **strictly antitone**:
-> $$\mathrm{StrictAnti}\,H \;:\Longleftrightarrow\; \bigl(\forall s\,t,\; s < t \Rightarrow H(t) < H(s)\bigr).$$
+> $$\mathrm{StrictAnti}\,H \;:\Longleftrightarrow\; \bigl(\forall s\,t,\; s < t \Rightarrow H(t) < H(s)\bigr). \tag{5.2}$$
 
 **What is proven.** Not merely that "adjacent states decrease", but that *any* later state is strictly
 lower than *any* earlier one. The engine never returns to any of the states already passed
 (the higher ones) — neither on the next step, nor a million steps later.
 
 **Why this is true.** The proof in Lean is a single line: `strictAnti_nat_of_succ_lt` lifts the
-*local* strict decrease `H(n+1) < H(n)` (which `descent_strict` supplies for every `n`) to
+*local* strict decrease `H(n+1) < H(n)` (which Lemma 5.3 (`descent_strict`) supplies for every `n`) to
 *global* strict antitonicity. This is a standard fact about `\mathbb{N}`: decrease on every
 unit step is equivalent to decrease over any interval, because the order on the natural numbers is
 discrete and transitive. Substantively: irreversibility at a single step, accumulated over all steps,
@@ -97,7 +97,7 @@ The second half of the law asserts that there is no infinite descent. This is th
 the impossibility of a perpetual engine (EPMI — the programme's core, proven on the bare Lean kernel; see the [glossary](GLOSSARY.md)), proven in the neighbouring module, and here we apply it to pure
 monotonicity.
 
-> **Theorem** (`no_infinite_engine_descent`). There is no strictly decreasing sequence of
+> **Theorem 5.5** (`no_infinite_engine_descent`). There is no strictly decreasing sequence of
 > natural numbers: if `f : \mathbb{N} \to \mathbb{N}` and `\mathrm{StrictAnti}\,f`, then `\bot`
 > (contradiction).
 
@@ -121,7 +121,7 @@ as thermodynamics: the system cannot lower its height forever, because the heigh
 Here the very essence of the arrow of time comes into view — the *asymmetry* of the two directions.
 Downward, the engine cannot ride forever (just shown). Upward, it can.
 
-> **Theorem** (`fuel_ascent_strictMono`). The map `n \mapsto n+1` is strictly monotone:
+> **Theorem 5.6** (`fuel_ascent_strictMono`). The map `n \mapsto n+1` is strictly monotone:
 > `\mathrm{StrictMono}\,(\lambda n.\,n+1)`.
 
 **Why this is true.** Trivially: `n < n+1` for all `n`, and adding `+1` preserves the strict order. But
@@ -146,9 +146,9 @@ is why there is an arrow.
 The last theorem of the chapter makes "always halts" quantitative: it gives an *explicit bound* on
 the length of any descent.
 
-> **Theorem** (`turned_engine_halts`). Let `H : \mathbb{N} \to \mathbb{N}` and suppose the engine has made `k`
+> **Theorem 5.7** (`turned_engine_halts`). Let `H : \mathbb{N} \to \mathbb{N}` and suppose the engine has made `k`
 > strict steps downward, that is, `H(t+1) < H(t)` for all `t < k`. Then
-> $$k \;\le\; H(0).$$
+> $$k \;\le\; H(0). \tag{5.3}$$
 
 **What is proven.** If the engine has turned into a descent, it will halt within at most `H(0)` steps — exactly
 as many as its initial height. The descent is not merely finite; it is finite *with an explicit, easily

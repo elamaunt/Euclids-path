@@ -29,14 +29,14 @@ As with Yang–Mills, the honest boundary is drawn immediately and loudly: *we d
 
 The first taking of the integral turns the old inequality into an *exact equality*.
 
-**Theorem** (`energy_identity_of_energyBalance`, 🟢). *The energy obeys the identity
+**Theorem 41.1** (`energy_identity_of_energyBalance`, 🟢). *The energy obeys the identity
 `E(t₂) = E(t₁) − ∫ D(s) ds`* — as an equality, not an inequality, via the second fundamental theorem of calculus.
 The two-time inequality of [chapter 36](36_NavierStokes.md) turns out to be a mere coarsening of this equality derived
 by integration.
 
 The second taking of the integral recovers the solution itself from the equation.
 
-**Theorem** (`isNSSolution_integral_form`, 🟢). *The solution is expressed as the integral of its right-hand side:*
+**Theorem 41.2** (`isNSSolution_integral_form`, 🟢). *The solution is expressed as the integral of its right-hand side:*
 `u(t,x) = u(0,x) + ∫₀ᵗ (νΔu − ∇p + f − (u·∇)u) ds`. This is the FTC for functions with values in `E3` (the Bochner
 integral, the Banach-space version). The caveat is honest: three hypotheses — that `u` is a solution, is differentiable in
 time, and the right-hand side is integrable — are named explicitly; non-vacuity is checked on the zero solution.
@@ -46,7 +46,7 @@ time, and the right-hand side is integrable — are named explicitly; non-vacuit
 
 Now the singular cascade and its death.
 
-**Theorem** (`no_singularCascade_of_energyInequality`, 🟢). *Under the energy inequality,
+**Theorem 41.3** (`no_singularCascade_of_energyInequality`, 🟢). *Under the energy inequality,
 singular cascades do not exist.* A direct application of the budget machine already built
 (`ns_no_infinite_dissipative_cascade`, [chapter 36](36_NavierStokes.md)): the budget forbids an infinite δ-cascade altogether, and
 one compressed to a finite time all the more so.
@@ -55,7 +55,7 @@ Hence the honest smoothness surrogate `NoSingularCascade`: for no quantisation `
 
 And the hero of the chapter:
 
-**Theorem** (`noSingularCascade_of_energyBalance`, 🟢). *The pointwise energy balance `dE/dt = −D` plus
+**Theorem 41.4** (`noSingularCascade_of_energyBalance`, 🟢). *The pointwise energy balance `dE/dt = −D` plus
 integrability ⟹ there are no rupture points of cascade type.* "The motion is smooth everywhere" — in the programme's language.
 
 ## An ℝ-warning: why the surrogate is precisely about uniformity
@@ -131,30 +131,30 @@ And as with Collatz and with the primes, the same wall stands here: on average t
 Above, the energy lived as an abstract profile `E : ℝ → ℝ`, handed over by hypothesis. The module
 `Engine/NavierStokesR3Assembly` brings this abstraction down to earth: it works on the genuine `E3 = EuclideanSpace ℝ (Fin 3)` and *assembles the spatial integral for real*, engaging mathlib's divergence theorem and differentiation under the integral sign.
 
-**Theorem** (`hasDerivAt_kineticEnergy_of_dominated`, 🟢). *Under honest domination gates,
+**Theorem 41.5** (`hasDerivAt_kineticEnergy_of_dominated`, 🟢). *Under honest domination gates,
 the derivative of the kinetic energy equals `dE/dt = ∫ ⟪u, ∂ₜu⟫` — an integral over all of space, not a
 profile.* "Why this is true." This is genuine differentiation under the integral sign
 (mathlib's `hasDerivAt_integral_of_dominated_loc_of_deriv_le`) plus the componentwise derivative
 of the density `‖u‖²` (`HasDerivAt.norm_sq`, exactly `2⟪u, ∂ₜu⟫`).
 
-**Theorem** (`divergence_integral_eq_zero`, 🟢). *For a C¹ field supported in an open box, the integral
+**Theorem 41.6** (`divergence_integral_eq_zero`, 🟢). *For a C¹ field supported in an open box, the integral
 of the divergence over all of ℝ³ equals zero.* "Why this is true." Here *the divergence theorem is engaged for real* (`integral_divergence_of_hasFDerivAt_off_countable`): the six face integrals
 die by support — the face coordinate equals `aᵢ` or `bᵢ`, outside the open box, where the field is zero — while
 the complement of the closed box is open, and there the derivative is honestly zero.
 
 Hence the head result, lifting part of the overpayment from the previous section:
 
-**Theorem** (`noSingularCascade_of_r3Assembly`, 🟢). *For a box-supported C² solution (force `f = 0`), cascade smoothness is derived in green — without the decree `nsBoundary`.* "Why this is true." On the box the energy balance law is no longer postulated: `energyBalance_of_boxSupported` *derives* `dE/dt = −D` from the derivative under the integral and three integrations by parts (pressure and convection die by divergence-freeness, viscosity yields `−`enstrophy), after which the already-proven budget machine takes over. On this class the decree `nsBoundary` is redundant (`nsBoundary_redundant_on_boxClass`).
+**Theorem 41.7** (`noSingularCascade_of_r3Assembly`, 🟢). *For a box-supported C² solution (force `f = 0`), cascade smoothness is derived in green — without the decree `nsBoundary`.* "Why this is true." On the box the energy balance law is no longer postulated: `energyBalance_of_boxSupported` *derives* `dE/dt = −D` from the derivative under the integral and three integrations by parts (pressure and convection die by divergence-freeness, viscosity yields `−`enstrophy), after which the already-proven budget machine takes over. On this class the decree `nsBoundary` is redundant (`nsBoundary_redundant_on_boxClass`).
 
 And — the "exactly so" completion: the three integration-by-parts identities are no longer inputs but theorems.
 
-**Theorem** (`integral_e3_divergence_eq_zero`, 🟢 — the carrying lemma). *The integral of the E3-divergence
+**Theorem 41.8** (`integral_e3_divergence_eq_zero`, 🟢 — the carrying lemma). *The integral of the E3-divergence
 of a box-supported `C¹` field over all of ℝ³ equals zero.* "Why this is true." The field is transported from `E3` to
 `Fin 3 → ℝ` by the linear isometry `eL3` (transport of the derivative — the chain rule
 `ContinuousLinearEquiv.hasFDerivAt` + `HasFDerivAt.comp`, the identity `eL3.symm (Pi.single i 1) = e3 i`),
 where the green divergence theorem of §2 lives. This is precisely the `fderiv` bridge that was missing.
 
-**Theorem** (`pressureKills_of_boxSupported` / `transportKills_of_boxSupported` /
+**Theorem 41.9** (`pressureKills_of_boxSupported` / `transportKills_of_boxSupported` /
 `viscosityIBP_of_boxSupported`, all 🟢). *For a box-supported `C²` solution, `∫ ⟪u, ∇p⟫ = 0`,
 `∫ ⟪u, (u·∇)u⟫ = 0`, `∫ ⟪u, Δu⟫ = −∫ ∑ᵢ ‖∂ᵢu‖²`.*
 
@@ -180,7 +180,7 @@ have verified this one layer closer to real water.
 
 The module `Engine/NavierStokesClayReduction` takes the last honest step: it *encodes the exact Clay-(A) statement* (Schwartz data, divergence-freeness, `∃` a smooth global solution with finite energy — via `ContDiff ℝ ⊤` and explicit decay estimates) and machine-checks the logical reduction to a single open statement.
 
-**Theorem** (`clayA_of_regularityTransfer_and_vorticityControl`, 🟢). *The known transfer theory
+**Theorem 41.10** (`clayA_of_regularityTransfer_and_vorticityControl`, 🟢). *The known transfer theory
 (Kato's local strong existence + the Beale–Kato–Majda continuation) plus the single criterion
 `GlobalVorticityControl` ⟹ Clay-(A).*
 

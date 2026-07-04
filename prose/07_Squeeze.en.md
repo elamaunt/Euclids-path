@@ -34,7 +34,7 @@ $$
 Expanding the brackets and passing to the honest integer form (with no root extraction, so as to stay in $\mathbb{N}$ and lose no rounding rigour), we obtain the input hypothesis
 $$
 12\,\bigl(h + 6h^2\bigr) < A.
-\tag{$\ast$}
+\tag{7.1}
 $$
 
 The left-hand side $12h + 72h^2$ is the exact integer record of the repetition's "energy": the linear term $12h$ accounts for the step along the line, the quadratic term $72h^2$ — for the self-similar doubling of scale at each level of nesting.
@@ -43,41 +43,44 @@ It is natural to expect (and below we prove it) that the quadratic term dominate
 
 ## Theorem: the cubic squeeze
 
-**Theorem (`cubic_squeeze`).** Let $A, h \in \mathbb{N}$ and suppose $(\ast)$ holds, that is, $12(h + 6h^2) < A$. Then
+**Theorem 7.1** (`cubic_squeeze`). Let $A, h \in \mathbb{N}$ and suppose $(7.1)$ holds, that is, $12(h + 6h^2) < A$. Then
 $$
 72\,h^2 < A.
+\tag{7.2}
 $$
 
 *What is proved.* From the full cost $12h + 72h^2 < A$ we discard the non-negative linear term $12h \ge 0$, and what remains is the bound on the pure quadratic contribution. In Lean this is a single line of `omega`: linear arithmetic over the atom $h^2$, taken as a variable in its own right. There is no rounding, no root is extracted — the conclusion stays an integer inequality.
 
-*Why this is true.* The key is that $12(h + 6h^2) = 12h + 72h^2$ and both summands are non-negative. The strict inequality $(\ast)$ is only strengthened by removing one of the positive summands on the left: $72h^2 \le 12h + 72h^2 < A$. This is exactly why the proof is elementary — all the work is done by expanding the brackets, and `omega` merely closes the trivial linear arithmetic.
+*Why this is true.* The key is that $12(h + 6h^2) = 12h + 72h^2$ and both summands are non-negative. The strict inequality $(7.1)$ is only strengthened by removing one of the positive summands on the left: $72h^2 \le 12h + 72h^2 < A$. This is exactly why the proof is elementary — all the work is done by expanding the brackets, and `omega` merely closes the trivial linear arithmetic.
 
-*What it means.* The inequality $72h^2 < A$ is equivalent (in the real-valued interpretation) to the bound
+*What it means.* The inequality $(7.2)$ is equivalent (in the real-valued interpretation) to the bound
 $$
 h < \sqrt{\frac{A}{72}}.
+\tag{7.3}
 $$
 The height of the repetition cannot exceed $\sqrt{A/72}$.
 
 **Conclusion.** The valid segment of the train has length of order $\sqrt{A}$, not $A$ and certainly not $\infty$. The affine line of indices is infinite, but the stretch of it the engine can actually traverse is compressed to the square root of the active scale. This is the *cubic squeeze* — the cubic cost squeezes the quadratic result into a square root.
 
-> **Note.** We deliberately work in the integers and with $72h^2 < A$, not with $h < \sqrt{A/72}$. The real-valued form with the root is only an interpretation; the load-bearing statement, the one the compiler checks, is the integer one. No appeal to irrationalities and no hidden rounding enters the proof.
+> **Note.** We deliberately work in the integers and with $(7.2)$, not with $(7.3)$. The real-valued form with the root is only an interpretation; the load-bearing statement, the one the compiler checks, is the integer one. No appeal to irrationalities and no hidden rounding enters the proof.
 
 ## Corollary: the repetition is even shorter
 
-**Theorem (`cubic_squeeze_sq_lt`).** Under the same input $(\ast)$ we have
+**Theorem 7.2** (`cubic_squeeze_sq_lt`). Under the same input $(7.1)$ we have
 $$
 h^2 < A, \qquad\text{and a fortiori}\qquad h < A.
+\tag{7.4}
 $$
 
-*Discussion.* This is a direct weakening of the squeeze: from $72h^2 < A$ and $h^2 \le 72h^2$ we get $h^2 < A$; in Lean — `have := cubic_squeeze hsq; omega`. The formulation $h^2 < A$ is more convenient for the gluings that follow, since it removes the numeric factor $72$ and gives the clean bound "the square of the height is less than the scale". Substantively it says the same thing: the atom's repetition is *extremely short* relative to $A$.
+*Discussion.* This is a direct weakening of the squeeze of Theorem 7.1: from $(7.2)$ and $h^2 \le 72h^2$ we get $h^2 < A$; in Lean — `have := cubic_squeeze hsq; omega`. The formulation $h^2 < A$ is more convenient for the gluings that follow, since it removes the numeric factor $72$ and gives the clean bound "the square of the height is less than the scale". Substantively it says the same thing: the atom's repetition is *extremely short* relative to $A$.
 
 ## What it means for the framework: self-similarity and scale compression
 
-The squeeze $h < \sqrt{A/72}$ is the quantitative form of the engine's self-similarity. Each level of repetition doubles the scale through the quadratic term $72h^2$, so the number of levels fitting into the budget $A$ is root-logarithmic, not linear. In the geometry of the fractal layer [13](13_FractalLayer.md) this manifests as the scale compression $P \to P^{1/3}$: the cubic cost of repetition turns one step along the line into a cube root in the parameter, and the repeated atom turns out to be "extremely short".
+The squeeze $(7.3)$ is the quantitative form of the engine's self-similarity. Each level of repetition doubles the scale through the quadratic term $72h^2$, so the number of levels fitting into the budget $A$ is root-logarithmic, not linear. In the geometry of the fractal layer [13](13_FractalLayer.md) this manifests as the scale compression $P \to P^{1/3}$: the cubic cost of repetition turns one step along the line into a cube root in the parameter, and the repeated atom turns out to be "extremely short".
 
 The connection with the overall picture is direct. The fuel $+1$ (the index step along the line) is indeed infinite, but this does not grant the engine an infinite run: the valid segment is squeezed. This is one more facet of the asymmetry recorded in the law of irreversibility ([05 Irreversibility]): upwards the line stretches without bound, but downwards — through the actually reachable centres — the engine covers only a short stretch of $O(\sqrt{A})$. The infinity of the carrier and the finiteness of the useful run are a matched pair, just like "time is not reversible / always halts".
 
-> **Note.** There is no reduction of the twin conjecture to anything here — this is an atomic, fully verified lemma about the geometry of repetition. `cubic_squeeze` and `cubic_squeeze_sq_lt` compile cleanly; `#print axioms` shows only the standard `[propext, Classical.choice, Quot.sound]`, with no `sorryAx` and no forbidden axioms. We do not pass this squeeze off as a proof of anything larger: it merely bounds the length of a single train. There are no open nodes inside the lemma itself.
+> **Note.** There is no reduction of the twin conjecture to anything here — this is an atomic, fully verified lemma about the geometry of repetition. Theorem 7.1 (`cubic_squeeze`) and Theorem 7.2 (`cubic_squeeze_sq_lt`) compile cleanly; `#print axioms` shows only the standard `[propext, Classical.choice, Quot.sound]`, with no `sorryAx` and no forbidden axioms. We do not pass this squeeze off as a proof of anything larger: it merely bounds the length of a single train. There are no open nodes inside the lemma itself.
 
 ## Bridge to the next chapter
 

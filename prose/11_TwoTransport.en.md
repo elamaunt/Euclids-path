@@ -16,7 +16,7 @@ The present chapter is a nodal one: it states a conditional reduction of the twi
 
 Let us recall the center form of a twin pair, fixed in the foundations of the programme. A center $m$ determines a twin pair if both sides are prime.
 
-**Definition (twin center).** For $m \in \mathbb{N}$ we set
+**Definition 11.1** (twin center). For $m \in \mathbb{N}$ we set
 $$\mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.$$
 In Lean this is `IsTwinCenter m := (6 * m - 1).Prime ∧ (6 * m + 1).Prime`. The set of lower members of twin pairs is denoted `TwinLowers`, and the goal of the whole chain is `TwinLowers.Infinite`, that is, the infinitude of the set $\{p : p, p+2\ \text{prime}\}$.
 
@@ -26,7 +26,7 @@ Restricting to centers of the form $6m\pm 1$ does not narrow the problem: every 
 
 The work proceeds block by block. At each scale $N$ we consider a finite set of candidates — the **carrier** — all of whose elements lie above $N$, and a finite set **bad** of those which are definitely not twin centers. The local step asserts: if the carrier numerically outweighs the bad and every non-bad element of the carrier is a twin center, then above $N$ a twin center is guaranteed to exist.
 
-**Theorem (`twin_center_of_block`).** Let $N \in \mathbb{N}$, and let $\mathit{carrier}, \mathit{bad} \subseteq \mathbb{N}$ be finite sets satisfying:
+**Theorem 11.2** (`twin_center_of_block`). Let $N \in \mathbb{N}$, and let $\mathit{carrier}, \mathit{bad} \subseteq \mathbb{N}$ be finite sets satisfying:
 $$(\mathrm{above})\ \forall m \in \mathit{carrier},\ N < m;\qquad (\mathrm{cov})\ |\mathit{bad}| < |\mathit{carrier}|;$$
 $$(\mathrm{twin})\ \forall m \in \mathit{carrier},\ m \notin \mathit{bad} \Rightarrow \mathrm{IsTwinCenter}(m).$$
 Then $\exists m,\ N < m\ \wedge\ \mathrm{IsTwinCenter}(m).$
@@ -43,11 +43,11 @@ exact ⟨m, habove m hm, htwin m hm hmb⟩
 
 The local lemma yields a twin center above a single $N$. To obtain infinitude, the block premise must hold at *every* scale. That is the block core.
 
-**Theorem (`twin_prime_conjecture_of_blocks`).** Suppose that
+**Theorem 11.3** (`twin_prime_conjecture_of_blocks`). Suppose that
 $$\forall N \in \mathbb{N},\ \exists\, \mathit{carrier}, \mathit{bad} \subseteq \mathbb{N}\ \text{finite},\quad (\mathrm{above}) \wedge (\mathrm{cov}) \wedge (\mathrm{twin}).$$
 Then $\mathrm{TwinLowers.Infinite}$ — there are infinitely many twin primes.
 
-The proof is assembled from parts already at hand. By `infinite_of_unbounded_centers` it suffices to show the unboundedness of twin centers: for an arbitrary $N$, to exhibit a center above $N$. We fix $N$, take from the premise a block $(\mathit{carrier}, \mathit{bad})$ for this $N$, and apply `twin_center_of_block`. Formally:
+The proof is assembled from parts already at hand. By `infinite_of_unbounded_centers` it suffices to show the unboundedness of twin centers: for an arbitrary $N$, to exhibit a center above $N$. We fix $N$, take from the premise a block $(\mathit{carrier}, \mathit{bad})$ for this $N$, and apply Theorem 11.2 (`twin_center_of_block`). Formally:
 ```
 apply infinite_of_unbounded_centers
 intro N
@@ -67,7 +67,7 @@ The point of the theorem is that it **isolates the open core** in a form fit for
 
 The remaining part of the chapter closes node (3) completely and thereby shifts all the difficulty into the counting pair (1)–(2). The key is the classical primality criterion via trial division up to the square root.
 
-**Theorem (`prime_of_no_small_prime_factor`).** Let $n \ge 2$ and suppose no prime $p$ with $p^2 \le n$ divides $n$:
+**Theorem 11.4** (`prime_of_no_small_prime_factor`). Let $n \ge 2$ and suppose no prime $p$ with $p^2 \le n$ divides $n$:
 $$\forall p\ \text{prime},\ p^2 \le n \Rightarrow p \nmid n.$$
 Then $n$ is prime.
 
@@ -79,26 +79,26 @@ $$p^2 = p \cdot p \le p \cdot (n / p) \le n$$
 
 Applying the criterion to both sides of a center, we obtain the desired survival criterion.
 
-**Theorem (`isTwinCenter_of_root_sieve`).** Suppose that for a center $m$ both sides are at least $2$ ($2 \le 6m-1$ and $2 \le 6m+1$), and no prime up to the root of each side divides it:
+**Theorem 11.5** (`isTwinCenter_of_root_sieve`). Suppose that for a center $m$ both sides are at least $2$ ($2 \le 6m-1$ and $2 \le 6m+1$), and no prime up to the root of each side divides it:
 $$\forall p\ \text{prime},\ p^2 \le 6m-1 \Rightarrow p \nmid (6m-1);\qquad \forall p\ \text{prime},\ p^2 \le 6m+1 \Rightarrow p \nmid (6m+1).$$
 Then $\mathrm{IsTwinCenter}(m)$.
 
-The proof is just a pair of applications of the previous theorem: `prime_of_no_small_prime_factor` gives the primality of $6m-1$ and $6m+1$ separately, and their conjunction is exactly $\mathrm{IsTwinCenter}(m)$. In Lean it is one line via the constructor:
+The proof is just a pair of applications of the previous theorem: Theorem 11.4 (`prime_of_no_small_prime_factor`) gives the primality of $6m-1$ and $6m+1$ separately, and their conjunction is exactly $\mathrm{IsTwinCenter}(m)$. In Lean it is one line via the constructor:
 ```
 ⟨prime_of_no_small_prime_factor h1 s1, prime_of_no_small_prime_factor h2 s2⟩
 ```
 
-The substantive conclusion: node (3) contains no difficulty. The condition "$m$ is not bad", in the right encoding, means exactly "no small prime (up to the root of a side) divides either side" — and by `isTwinCenter_of_root_sieve` this immediately implies twin-centrality. In other words, if the bad set is defined as the centers for which *at least one* side has a prime divisor below the root, then the implication $(\mathrm{twin})$ of the block core holds automatically, with no additional assumptions.
+The substantive conclusion: node (3) contains no difficulty. The condition "$m$ is not bad", in the right encoding, means exactly "no small prime (up to the root of a side) divides either side" — and by Theorem 11.5 (`isTwinCenter_of_root_sieve`) this immediately implies twin-centrality. In other words, if the bad set is defined as the centers for which *at least one* side has a prime divisor below the root, then the implication $(\mathrm{twin})$ of the block core holds automatically, with no additional assumptions.
 
-> **Note.** It is important here not to pass a reduction off as a proof. `isTwinCenter_of_root_sieve` proves only the *direction* survivor⟹twin: a non-bad survivor is a twin center. It does not assert that a survivor exists — that is the job of nodes (1)–(2). We have closed the third of the three nodes and thereby shown where the remaining difficulty definitely is *not* hiding.
+> **Note.** It is important here not to pass a reduction off as a proof. Theorem 11.5 (`isTwinCenter_of_root_sieve`) proves only the *direction* survivor⟹twin: a non-bad survivor is a twin center. It does not assert that a survivor exists — that is the job of nodes (1)–(2). We have closed the third of the three nodes and thereby shown where the remaining difficulty definitely is *not* hiding.
 
 ## What is proven and what remains
 
 Let us take stock of the chapter. Machine-verified and non-circular are:
 
-- the local transport `twin_center_of_block`: a block with a carrier overweight $\Rightarrow$ a twin center above $N$;
-- the global reduction `twin_prime_conjecture_of_blocks`: the block core at all scales $\Rightarrow$ the twin conjecture;
-- the elementarity of the third node: `prime_of_no_small_prime_factor` and `isTwinCenter_of_root_sieve` close survivor⟹twin without analysis.
+- the local transport Theorem 11.2 (`twin_center_of_block`): a block with a carrier overweight $\Rightarrow$ a twin center above $N$;
+- the global reduction Theorem 11.3 (`twin_prime_conjecture_of_blocks`): the block core at all scales $\Rightarrow$ the twin conjecture;
+- the elementarity of the third node: Theorem 11.4 (`prime_of_no_small_prime_factor`) and Theorem 11.5 (`isTwinCenter_of_root_sieve`) close survivor⟹twin without analysis.
 
 **Chapter takeaway.** What remains open is the **counting core** — nodes (1) and (2): at every $N$, the carrier above $N$ strictly outweighs the bad set, $|\mathit{bad}| < |\mathit{carrier}|$.
 

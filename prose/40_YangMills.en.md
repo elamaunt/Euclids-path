@@ -29,8 +29,8 @@ We abstract down to the necessary. A **spectral model** `SpectralModel` is a set
 
 On it, two notions. The **mass gap** `MassGap S` — the existence of a `Δ > 0` below all nonzero levels. **Masslessness** `Gapless S` — the presence of levels of arbitrarily small positive energy. They are exact negations of each other:
 
-**Theorem** (`not_massGap_iff_gapless`, 🟢). *The absence of a gap is equivalent to masslessness* (and,
-pleasingly, without any choice).
+**Theorem 40.1** (`not_massGap_iff_gapless`, 🟢). *The absence of a gap is equivalent to masslessness* (and,
+pleasingly, without any choice): $\neg\,\mathrm{MassGap}(S) \iff \mathrm{Gapless}(S)$, where $\mathrm{MassGap}(S) := \exists\,\Delta>0,\ \forall E\in S.\mathrm{Energy},\ E\neq 0 \Rightarrow \Delta \le E$ and $\mathrm{Gapless}(S) := \forall \varepsilon>0,\ \exists E\in S.\mathrm{Energy},\ 0<E<\varepsilon$.
 
 ## The engine: the ladder of masslessness
 
@@ -40,7 +40,7 @@ other than the ℝ-counterexample `real_positive_work_not_wellfounded` from the 
 positive work with no lower limit, an infinite multiplicative descent in the real numbers,
 where acyclicity *does not work*.
 
-**Theorem** (`gapless_iff_nonempty_ladder`, 🟢). *Masslessness is equivalent to the existence of a ladder.*
+**Theorem 40.2** (`gapless_iff_nonempty_ladder`, 🟢). *Masslessness is equivalent to the existence of a ladder:* $\mathrm{Gapless}(S) \iff$ the type of ladders $\mathrm{GaplessLadder}(S)$ is nonempty, where a ladder is a sequence $E:\mathbb{N}\to\mathbb{R}$ with $E(n)\in S.\mathrm{Energy}$, $E(n)>0$ and $2\cdot E(n+1)\le E(n)$ for all $n$.
 The forward direction builds the ladder by choice — a mirror of the zero extraction in the Riemann branch; the converse shows
 that a ladder refutes any candidate `Δ` (by a geometric majorant). The ladder is the engine, and
 as long as it lives in the real numbers, acyclicity cannot touch it.
@@ -50,27 +50,27 @@ as long as it lives in the real numbers, acyclicity cannot touch it.
 The engine is killed exactly when the ladder can be *reflected into the natural numbers*. This is
 the physical input of the branch — the quantization law.
 
-**Definition (`QuantizationLaw S`, 🔴 — an input, the `EnergyBalanceLaw` pattern).** Every positive
+**Definition 40.3** (`QuantizationLaw`, 🔴 — an input, the `EnergyBalanceLaw` pattern). Every positive
 state carries a natural rank, and multiplicative descent of energy is reflected into a *strict* descent
-of rank.
+of rank: $\mathrm{QuantizationLaw}(S) := \exists\,\mathrm{rank} : \mathrm{PositiveState}(S)\to\mathbb{N},\ \forall x,y,\ 2\cdot(y:\mathbb{R})\le(x:\mathbb{R}) \Rightarrow \mathrm{rank}(y) < \mathrm{rank}(x)$.
 
 Once this is in hand, the ladder turns from real into natural — and breaks off:
 
-**Theorem** (`no_quantizedLadder`, 🟢). *A quantized ladder does not exist.* It would be an infinite
+**Theorem 40.4** (`no_quantizedLadder`, 🟢). *A quantized ladder does not exist:* $\mathrm{QuantizationLaw}(S) \wedge \mathrm{GaplessLadder}(S) \Rightarrow \bot$. It would be an infinite
 strictly descending chain of natural ranks — that is, Euclid's perpetual engine — and that is killed by the root
 of the whole repository, `no_infinite_descent` ([chapter 01](01_EPMI.md)). Note the honestly inverted asymmetry: the killer
 here is the pure well-foundedness of the natural numbers, and we did not mix in a fake "there are no
 engines" hypothesis for the sake of beauty.
 
-**Theorem** (`massGap_of_quantizationLaw`, 🟢 — the hero of the chapter). *Quantization ⟹ mass gap.* No gap →
+**Theorem 40.5** (`massGap_of_quantizationLaw`, 🟢 — the hero of the chapter). *Quantization ⟹ mass gap:* $\mathrm{QuantizationLaw}(S) \Rightarrow \mathrm{MassGap}(S)$. No gap →
 masslessness → a ladder is built → quantization turns it into a natural descent → an EPMI contradiction.
 
 ## Why there is no fourth boundary of the decree
 
 As with P/NP, the temptation arises to add a fourth boundary of the first cause. And again — no, machine-verified. The reason runs deeper than for P/NP, and a single theorem exposes it.
 
-**Theorem** (`quantizationLaw_iff_massGap`, 🟢). *For every model, the quantization law is equivalent
-to the presence of a gap — green and without any boundary.*
+**Theorem 40.6** (`quantizationLaw_iff_massGap`, 🟢). *For every model, the quantization law is equivalent
+to the presence of a gap — green and without any boundary:* $\mathrm{QuantizationLaw}(S) \iff \mathrm{MassGap}(S)$.
 
 This is the shape of the *condemned* bridge (`offCriticalBridge_iff_RH`), not of the honest Riemann mirror. In the Riemann branch the equivalence "law ⟺ goal" was reached only *under* the boundary; here it is green on its own.
 
@@ -116,7 +116,7 @@ On ℝ such an engine is lawful (`perpetualEngine_on_real` 🟢) — the continu
 
 A caveat is mandatory: the pair "law + ladder" is jointly refuted in the repository (`no_quantizedLadder`), so logically this carrier is a repackaging of the killer; genuineness here is a property of the witness term, not of the antecedent, which for Collatz remained open.
 
-And the third pane of the fork, `ym_no_internal_decision_without_engine` 🟢, is the signature feature of this very branch. Only the per-model law decides the question, but `quantizationLaw_iff_massGap` 🟢 is green without any boundary: the law decides the question precisely because it *is* the question.
+And the third pane of the fork, `ym_no_internal_decision_without_engine` 🟢, is the signature feature of this very branch. Only the per-model law decides the question, but Theorem 40.6 (`quantizationLaw_iff_massGap`) 🟢 is green without any boundary: the law decides the question precisely because it *is* the question.
 
 Through this equivalence (together with `not_massGap_iff_nonempty_ladder`) the self-grounding bundle semantically collapses into `MassGap S ∧ ¬ MassGap S` — for Collatz and P/NP the sides were not greenly equivalent to the goal and its negation; for Yang–Mills they are.
 
@@ -138,7 +138,7 @@ Why must nature have a gap? Because a gapless spectrum is a perpetual engine, in
 
 Our halving ladder `2·E(n+1) ≤ E(n)` is exactly the "arbitrarily soft gluon", the tower of ever cheaper excitations that a gapless theory would permit. Quantization of the spectrum — the fact that energy comes in discrete portions ranked by a natural number — cuts the ladder off exactly the way a guitar string cannot sound arbitrarily quietly above its state of rest: it has a fundamental tone. A massless field is a string without a lowest note.
 
-Here lies the meaning of the central result `massGap_of_quantizationLaw`: **quantization forbids the perpetual engine, and the prohibition of the perpetual engine is mass**. The rank quantization that kills the ℝ-ladder through EPMI is the mathematical shadow of the physical fact that energy is quantized.
+Here lies the meaning of the central result Theorem 40.5 (`massGap_of_quantizationLaw`): **quantization forbids the perpetual engine, and the prohibition of the perpetual engine is mass**. The rank quantization that kills the ℝ-ladder through EPMI is the mathematical shadow of the physical fact that energy is quantized.
 
 Clay asks us to prove that for a genuine non-abelian gauge theory this quantization really holds (our 🔴 data anchor — a constructed QFT Hamiltonian). We have proven the structural half, the one that does not depend on the concrete theory: wherever there is a quantized rank, there is no gapless ladder — there is mass.
 

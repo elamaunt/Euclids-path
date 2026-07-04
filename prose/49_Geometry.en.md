@@ -36,7 +36,7 @@ Let us begin with time, because without it geometry has no orientation. On Eucli
 of proper time is played by `lexRank` — the lexicographic rank of a state, its "height" in the
 well-ordered line. And this time is not chosen but computed: it strictly drops along every edge.
 
-**Theorem** (`timeArrow_step`, 🟢). *Every real step strictly decreases `lexRank`:
+**Theorem 49.1** (`timeArrow_step`, 🟢). *Every real step strictly decreases `lexRank`:
 from `RealStep A M0 U V` it follows that `lexRank V < lexRank U`.*
 
 **Why this is true.** This is a re-export of the carrying theorem of the concrete graph: any of the
@@ -48,7 +48,7 @@ itself (`no_return` — time is not looped); an infinite run does not exist at a
 (`no_eternal_run` — a direct consequence of the root EPMI, `no_infinite_descent`). And more than
 that — time does not merely move forward, it is bounded above by its own start:
 
-**Theorem** (`every_journey_halts`, 🟢). *Every journey halts no later than the `lexRank` of the
+**Theorem 49.2** (`every_journey_halts`, 🟢). *Every journey halts no later than the `lexRank` of the
 starting state: `k` real steps are possible only when `k ≤ lexRank (run 0)`.*
 
 **Why this is true.** This is the qualified "second law", carried through
@@ -65,7 +65,7 @@ Now the shape of the space. Curvature is usually specified by a metric and tenso
 metric — only edges. But a directed graph has a curvature of its own, combinatorial, and it can be
 *computed*:
 
-**Definition (`curvature`).** *The curvature of a vertex is `κ(v) = 1 − outdeg(v)`, an integer,
+**Definition 49.3** (`curvature`). *The curvature of a vertex is `κ(v) = 1 − outdeg(v)`, an integer,
 where `outdeg` is the out-degree — the number of geodesic segments leaving `v` downward.*
 
 Let us say it at once and loudly, as in every chapter of the programme: this is the
@@ -80,7 +80,7 @@ counts real edges, not an abstraction.
 
 Why the curvature is oriented forward is likewise not a convenience but a theorem:
 
-**Theorem** (`inDegree_infinite_at_origin`, 🟢). *An infinite family of edges flows into the origin
+**Theorem 49.4** (`inDegree_infinite_at_origin`, 🟢). *An infinite family of edges flows into the origin
 `absorber 0`: every defect of the form `defect 0 q minus`, over all `q`, flows into the grave of
 zero.*
 
@@ -109,7 +109,7 @@ The pattern can be read with bare hands: the higher the centre, the more roads l
 the more negative the curvature. **The genealogy is hyperbolic; the bottom is spherical.** And the
 whole picture is drawn together by a discrete analogue of Gauss–Bonnet:
 
-**Theorem** (`gaussBonnet_cone3`, 🟢). *On the forward-closed light cone under centre 3 the total
+**Theorem 49.5** (`gaussBonnet_cone3`, 🟢). *On the forward-closed light cone under centre 3 the total
 curvature equals the Euler characteristic: `χ(cone3) = Σκ = −5`.*
 
 **Why this is true.** The combinatorial identity `Σκ = |W| − Σ outdeg` (`gaussBonnet_sum`) on the
@@ -128,7 +128,7 @@ Here geometry joins hands with the programme's central prohibition. Let us ask: 
 Euclid's path have been flat everywhere — `κ ≡ 0`, an even corridor with no poles? The answer is
 no, and the reason runs deep.
 
-**Theorem** (`nonpositive_curvature_forces_engine`, 🟢). *If the curvature were nowhere positive
+**Theorem 49.6** (`nonpositive_curvature_forces_engine`, 🟢). *If the curvature were nowhere positive
 (`∀ v, κ(v) ≤ 0`), a step would lead out of every vertex, iterating the choice would build an
 infinite run — the forbidden perpetual engine. Such a world does not exist.*
 
@@ -137,7 +137,7 @@ infinite run — the forbidden perpetual engine. Such a world does not exist.*
 continuations into an infinite geodesic, and that is exactly Euclid's perpetual engine, killed by
 `no_eternal_run`. Hence a conclusion worth setting apart:
 
-**Theorem** (`space_positively_curved_somewhere`, 🟢). *The space of Euclid's path is positively
+**Theorem 49.7** (`space_positively_curved_somewhere`, 🟢). *The space of Euclid's path is positively
 curved somewhere: `∃ v, 0 < κ(v)`.*
 
 Curvature here is **not decorative — it is forced**. A positively curved point (a pole, a bottom,
@@ -156,7 +156,7 @@ just as Euclid conceived it: a maximal descent path, extended as long as there i
 And let us ask whether the fifth postulate holds on this path.
 
 
-**Theorem** (`every_line_ends`, 🟢). *Every straight line runs into a terminal: from any state, in
+**Theorem 49.8** (`every_line_ends`, 🟢). *Every straight line runs into a terminal: from any state, in
 a finite number of steps you reach a vertex with no exit.*
 
 **Why this is true.** Strong induction on proper time `lexRank v`: if `v` is already terminal — the
@@ -164,7 +164,7 @@ path is empty; otherwise the first step strictly drops the rank (the arrow of ti
 induction hypothesis the tail is finite. The arrow of time directly begets the finiteness of
 straight lines. And from this:
 
-**Theorem** (`no_infinite_line`, 🟢). *There are no infinite straight lines at all: no line can be
+**Theorem 49.9** (`no_infinite_line`, 🟢). *There are no infinite straight lines at all: no line can be
 extended without bound.*
 
 And here is the genuine irony of the entire programme. The statement "a straight line can be
@@ -179,7 +179,7 @@ two infinite straight lines, and not even one exists.
 Here one must be scrupulously honest, and the Lean source insists on this loudest of all. This is a
 degenerate geometry, not an elliptic one. The naive "all lines meet" is false:
 
-**Theorem** (`bottom_not_unique` and `two_disjoint_lines`, 🟢). *The bottom is not unique —
+**Theorem 49.10** (`bottom_not_unique` and `two_disjoint_lines`, 🟢). *The bottom is not unique —
 `absorber 0` and `absorber 1` are both legal and terminal; and there exist two entirely disjoint
 finite lines (at `(5,4)`: the route `center 7 → defect 4 5 plus → absorber 4` and the route
 `center 3 → defect 0 2 minus → absorber 0`), all nine states of which are pairwise distinct.*
@@ -194,7 +194,7 @@ it becomes a lie.
 But there is also an honest, qualified form of meeting — and it is more beautiful than the naive
 one. It passes through the single special point of the graph.
 
-**Theorem** (`zeroPoint_absorbs_all_divisors`, 🟢). *The point 0 absorbs all divisors:
+**Theorem 49.11** (`zeroPoint_absorbs_all_divisors`, 🟢). *The point 0 absorbs all divisors:
 `sideValue minus 0 = 6·0 − 1 = 0` in ℕ, and everything divides zero; hence every `q` divides the
 side of zero.*
 
@@ -209,14 +209,14 @@ through which every downward road passes; it is the ℕ-trace of that very event
 first cause, the beginning of the arrow of time. The grave of zero lives on the ℕ-truncation — and
 it is also the mark of origin.
 
-**Theorem** (`line_to_origin`, 🟢). *From any clean centre `m ≥ 1` (given `2 ≤ A`) there is a path
+**Theorem 49.12** (`line_to_origin`, 🟢). *From any clean centre `m ≥ 1` (given `2 ≤ A`) there is a path
 of length 2 into the grave of zero: a boundary step into the defect `(0, 2, −)` — legal, since
 `2 ∣ 0` — then an absorb into `absorber 0`.*
 
 Two clean lines that arrived from arbitrarily far above meet in two steps at the common bottom. And
 clean sources exist above **every** horizon:
 
-**Theorem** (`web_above_every_horizon`, 🟢). *For `2 ≤ A` and any `N` there exists a clean centre
+**Theorem 49.13** (`web_above_every_horizon`, 🟢). *For `2 ≤ A` and any `N` there exists a clean centre
 `m > N` whose path leads into the grave of zero.*
 
 **Why this is true.** No density is needed — the primorial carrier
@@ -224,7 +224,7 @@ clean sources exist above **every** horizon:
 `clean_of_cleanZ` transfers its cleanness from ℤ to ℕ. Hence the only lawful sense of "the lines
 meet":
 
-**Theorem** (`lines_meet_at_origin`, 🟢). *Any two clean starts (given `2 ≤ A`) share a common
+**Theorem 49.14** (`lines_meet_at_origin`, 🟢). *Any two clean starts (given `2 ≤ A`) share a common
 terminal — the grave of zero, `absorber 0`.*
 
 Not "a unique meeting point" and not "any two paths intersect" — but: any pair of clean lines has a
@@ -242,7 +242,7 @@ not through a new axiom but through the already accepted causal boundary of the 
 (`twinLowersInfinite_from_step00CausalClosure`), translated into the language of the graph's
 vertices.
 
-**Theorem** (`twin_vertices_beyond_every_horizon`, 🟡). *Above every horizon there is a twin
+**Theorem 49.15** (`twin_vertices_beyond_every_horizon`, 🟡). *Above every horizon there is a twin
 vertex: for any `N` there exists a twin centre `m > N` both of whose sides `6m ± 1` are prime.*
 
 **Why this is true.** The bridge `twinCenter_of_twinLower` (itself 🟢, axiom-free) shows, by a case
@@ -251,7 +251,7 @@ twin centre `m`; and the infinitude of the twin lowers is exactly the accepted b
 decree content: the same first-cause axiom that holds the infinitude of the twins is here merely
 fitted onto the vertices.
 
-**Theorem** (`lines_meet_but_unknowable_from_inside`, 🟡). *The full summary in four facts: (1) the
+**Theorem 49.16** (`lines_meet_but_unknowable_from_inside`, 🟡). *The full summary in four facts: (1) the
 fact of the meeting is green; (2) twin vertices exist above every horizon (this line carries the
 taint); (3) there is no internal ground for the fact of the meeting; (4) were there one, it would
 be a forbidden Euclid engine.*
@@ -278,9 +278,9 @@ geometric fact is green; its internal grounding costs a perpetual engine.
 >    differential geometry.
 > 3. The grave of zero lives on the ℕ-truncation: `6·0 − 1 = 0` in ℕ, but `−1` in ℤ.
 > 4. Naive ellipticity is false: the bottom is not unique, disjoint lines exist; only the qualified
->    form `lines_meet_at_origin` holds.
+>    form of Theorem 49.14 (`lines_meet_at_origin`) holds.
 > 5. The carrying theorem for the absence of parallels is the fall of the **second** postulate
->    (`no_infinite_line`), not the fifth; the geometry is degenerate, not elliptic.
+>    (Theorem 49.9, `no_infinite_line`), not the fifth; the geometry is degenerate, not elliptic.
 > 6. The coda is exactly two 🟡 declarations, the taint through the existing twins boundary, with
 >    no new axiom.
 >

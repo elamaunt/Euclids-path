@@ -25,7 +25,7 @@ behind Riemann. Chowla's conjecture says: the parity of `Ω` does not correlate 
 `∑_{n≤x} λ(n)λ(n+h) = o(x)`. It is the same prohibition on parity collapsing into a single parity
 class that guards both the twins and Riemann.
 
-**Theorem** (`chowlaCorrelation_zero_eq_card`, 🟢). *The diagonal `h=0` yields perfect
+**Theorem 54.1** (`chowlaCorrelation_zero_eq_card`, 🟢). *The diagonal `h=0` yields perfect
 self-correlation: `∑_{n≤x} λ(n)² = x`.*
 
 "Why this is true." `λ(n)² = 1` for `n≥1` (`λ` takes values `±1`), so the diagonal degenerates into
@@ -54,7 +54,7 @@ The abc conjecture: for coprime `a+b=c` the number `c` is bounded by the radical
 `c < K_ε·rad(abc)^{1+ε}`. The polynomial analogue — the Mason–Stothers theorem — is **proven**, and
 it is in mathlib.
 
-**Theorem** (`polynomial_abc_shadow` = `Polynomial.abc`, 🟢). *For coprime polynomials `a+b+c=0`
+**Theorem 54.2** (`polynomial_abc_shadow` = `Polynomial.abc`, 🟢). *For coprime polynomials `a+b+c=0`
 over a field, the degree is bounded by the radical of the product (or else all the derivatives are
 zero).*
 
@@ -79,7 +79,7 @@ accepted by the community; the prize is unclaimed.
 
 Fermat's method of infinite descent is literally our engine. And its polynomial form is proven.
 
-**Theorem** (`polynomial_fermat_catalan_shadow` = `Polynomial.flt_catalan`, 🟢). *When
+**Theorem 54.3** (`polynomial_fermat_catalan_shadow` = `Polynomial.flt_catalan`, 🟢). *When
 `1/p+1/q+1/r<1`, the equation `u·aᵖ+v·bᵍ+w·cʳ=0` for coprime polynomials forces `a,b,c` to be
 constants.*
 
@@ -108,7 +108,7 @@ proved finiteness only for fixed exponents (via Faltings); the $1M prize is uncl
 
 The Mahler measure is a height, and the same Northcott that computed the rank in BSD works here.
 
-**Theorem** (`mahler_northcott_shadow` = `finite_mahlerMeasure_le`, 🟢). *There are only finitely
+**Theorem 54.4** (`mahler_northcott_shadow` = `finite_mahlerMeasure_le`, 🟢). *There are only finitely
 many polynomials of bounded degree and bounded Mahler measure.*
 
 "Why this is true." This is Northcott (a ready-made mathlib theorem): the height is well-founded,
@@ -148,7 +148,7 @@ open.* The smallest known value is Lehmer's number ≈ 1.17628; Kronecker closes
 Dirichlet (in mathlib, for real) gives primes in arithmetic progressions — the "sides" `6m±1` stand
 on it. But `n²+1` is not a progression, and its infinitude remains an honest gate.
 
-**Theorem** (`landauPrimes_infinite_of_unbounded`, 🟢). *If the primes `n²+1` are unbounded, then
+**Theorem 54.5** (`landauPrimes_infinite_of_unbounded`, 🟢). *If the primes `n²+1` are unbounded, then
 their set is infinite.* Plus `oddLandauPrime_even_k`: for odd `k` the number `k²+1` is even, so a
 prime `k²+1 > 2` requires an even `k` — a genuine residue fact, not an ornament.
 

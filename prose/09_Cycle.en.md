@@ -18,7 +18,7 @@ Let us recall the configuration inherited from the carrier of [02. Carrier of tw
 
 The centres of the engine (the engine is the forbidden infinite descent, see the [glossary](GLOSSARY.md)) along a single affine line form an arithmetic progression: the value "scanned" by a prime divisor at the point with coordinate $n$ has the form
 $$
-V(n) = N_0 + q\cdot n,
+V(n) = N_0 + q\cdot n, \tag{9.1}
 $$
 where $N_0$ is the base offset (the shift of the line) and $q$ is the step of the train (the common multiplier of the coordinate). This is a linear train in the programme's terminology: a single line in $\mathbb{Z}$, parametrised by an integer $n$, along which we ask which primes divide it and at which centres.
 
@@ -28,7 +28,7 @@ It is natural to expect that a "large" divisor, once used, cannot repeat cheaply
 
 ## Definition (repeat rigidity)
 
-**Definition.** Let a prime (or, more broadly, an integer) $\ell$ divide the values of the train at two centres $n_1, n_2$:
+**Definition 9.1** (repeat rigidity). Let a prime (or, more broadly, an integer) $\ell$ divide the values of the train at two centres $n_1, n_2$:
 $$
 \ell \mid N_0 + q\,n_1,\qquad \ell \mid N_0 + q\,n_2,
 $$
@@ -40,10 +40,10 @@ In other words, the set of centres at which $\ell$ "fires" is itself an arithmet
 
 ## The repeat-rigidity theorem
 
-**Theorem** (`factor_repeat_rigidity`). For integers $\ell, q, N_0, n_1, n_2$
+**Theorem 9.2** (`factor_repeat_rigidity`). For integers $\ell, q, N_0, n_1, n_2$
 $$
 \ell \mid N_0 + q\,n_1 \ \wedge\ \ell \mid N_0 + q\,n_2 \ \wedge\ \mathrm{IsCoprime}(\ell,q)
-\ \Longrightarrow\ \ell \mid (n_2 - n_1).
+\ \Longrightarrow\ \ell \mid (n_2 - n_1). \tag{9.2}
 $$
 
 *Walking through the proof.* It is elementary and fully constructive; in Lean it takes three lines. Subtracting one divisibility condition from the other, we find that $\ell$ divides the difference of the train's values, while the base offset $N_0$ cancels:
@@ -56,21 +56,21 @@ whence $\ell \mid q\,(n_2 - n_1)$. Now coprimality goes to work: $\ell$ divides 
 
 *What it means.* A large divisor "pins" its repeats to the lattice of step $\ell$. On a segment of the train of length $L$ (the coordinate $n$ ranging over an interval of length $L$), a prime $\ell > A$ can repeat at most $\lfloor L/\ell\rfloor + 1$ times. Divisibility thus becomes a *countable* resource: the larger the divisor, the more rarely it can return. This is the fuel-law in its pure form — the "fuel" of a repeat is spent in proportion to the divisor's size.
 
-> **Note.** Rigidity explains why the ban on "perpetual repetition" from [08. Bounded cycle](08_BK.md) closes up. BK bounds the *number* of repeats through the additive cycle; `factor_repeat_rigidity` constrains their *placement* — every repeat of a large divisor stands on a fixed step $\ell$. Together with the cubic squeeze of [07. Short train](07_Squeeze.md), which pinches the very length of a valid train segment down to $L < \sqrt{A/72}$, this makes the coverage by large divisors *finite and short*: a short segment, rare repeats, a countable budget.
+> **Note.** Rigidity explains why the ban on "perpetual repetition" from [08. Bounded cycle](08_BK.md) closes up. BK bounds the *number* of repeats through the additive cycle; Theorem 9.2 (`factor_repeat_rigidity`) constrains their *placement* — every repeat of a large divisor stands on a fixed step $\ell$. Together with the cubic squeeze of [07. Short train](07_Squeeze.md), which pinches the very length of a valid train segment down to $L < \sqrt{A/72}$, this makes the coverage by large divisors *finite and short*: a short segment, rare repeats, a countable budget.
 
 ## Transport of the two between sides (cross-side fuel)
 
 Repeat rigidity describes a single linear train. But a link of the engine is the Euclidean equation $XY - ZW = 2$ (the rank-$(3,3)$ form `abv + 2 = qrs`, see [05. Irreversibility](05_Irreversibility.md)), which has two sides, and the constant $+2$ lives precisely in the coupling between them. The second law of this chapter tracks how divisibility is transported through the two from one side of the star rectangle to the opposite one.
 
-**Definition (fuel-law, divisibility form).** Consider a prime $p$ dividing linear forms on opposite sides, differing by exactly the constant $2$ (the legacy of the $+2$ of the det-form). In its pure form: suppose that for parameters $a, c, \alpha, \beta$ we have
+**Definition 9.3** (fuel-law, divisibility form). Consider a prime $p$ dividing linear forms on opposite sides, differing by exactly the constant $2$ (the legacy of the $+2$ of the det-form). In its pure form: suppose that for parameters $a, c, \alpha, \beta$ we have
 $$
 p \mid a\,\alpha + c,\qquad p \mid a\,\beta + c - 2.
 $$
 The first is $p$ landing on the side $\alpha$; the second, on the opposite side $\beta$, shifted by $-2$ by the two of the equation.
 
-**Theorem** (`cross_side_fuel`). Under these conditions
+**Theorem 9.4** (`cross_side_fuel`). Under these conditions
 $$
-p \mid \bigl(a\,(\beta - \alpha) - 2\bigr).
+p \mid \bigl(a\,(\beta - \alpha) - 2\bigr). \tag{9.3}
 $$
 
 *Walking through the proof.* The mechanics are the same as for rigidity: subtract and cancel the free term $c$. Namely,
@@ -79,7 +79,7 @@ $$
 $$
 and the left-hand side is divisible by $p$ as a difference of two multiples of $p$. In Lean this is `dvd_sub h2 h1`, rewritten via the `ring` identity. No additional coprimality is needed here — the two does not cancel and remains explicitly on the right-hand side.
 
-*Why this is true, and what it means.* Unlike `factor_repeat_rigidity`, where after cancellation a "clean" $q\,(n_2-n_1)$ remained and the Euclidean transfer applied, here after cancelling $c$ a hard trace of $-2$ remains. Hence cross-side fuel yields not the congruence $a(\beta-\alpha)\equiv 0$ but the *shifted* congruence
+*Why this is true, and what it means.* Unlike Theorem 9.2 (`factor_repeat_rigidity`), where after cancellation a "clean" $q\,(n_2-n_1)$ remained and the Euclidean transfer applied, here after cancelling $c$ a hard trace of $-2$ remains. Hence Theorem 9.4 (`cross_side_fuel`) yields not the congruence $a(\beta-\alpha)\equiv 0$ but the *shifted* congruence
 $$
 a\,(\beta - \alpha) \equiv 2 \pmod{p}.
 $$
@@ -87,11 +87,11 @@ The two of the Euclidean equation "travels" between the sides: for a divisor $p$
 
 **Conclusion.** Geometrically (see the doc-string in `Cycle.lean`) this is a form of the condition $p \mid 2 + a\,q\,(\beta-\alpha)$ on the det-form of the star rectangle: two opposite sides cannot "catch" the same $p$ independently — their positions are tied through the two.
 
-> **Note.** Both theorems share the same elementary heart — "subtract and cancel the free term". The difference lies in the remainder: for rigidity it is zero (after which coprimality finishes the job), for cross-side fuel it equals $-2$ (and stays visible as the transport of the two). The first constrains a repeat *within* a side; the second ties *different* sides together. Both are about the fact that divisibility on a linear structure is not free but pinned to the step and to the constant $+2$.
+> **Note.** Both theorems — 9.2 and 9.4 — share the same elementary heart: "subtract and cancel the free term". The difference lies in the remainder: for Theorem 9.2 (`factor_repeat_rigidity`) it is zero (after which coprimality finishes the job), for Theorem 9.4 (`cross_side_fuel`) it equals $-2$ (and stays visible as the transport of the two). The first constrains a repeat *within* a side; the second ties *different* sides together. Both are about the fact that divisibility on a linear structure is not free but pinned to the step and to the constant $+2$.
 
 ## Status
 
-- 🟢 **Rigorous and compiler-checked.** Both theorems, `factor_repeat_rigidity` and `cross_side_fuel`, are proven in `EuclidsPath/Engine/Cycle.lean` elementarily (divisibility + coprimality), with no `sorry` and no non-standard axioms. These are solid tool-lemmas: rigidity of a repeat's placement and the cross-side congruence $a(\beta-\alpha)\equiv 2$.
+- 🟢 **Rigorous and compiler-checked.** Both theorems — Theorem 9.2 (`factor_repeat_rigidity`) and Theorem 9.4 (`cross_side_fuel`) — are proven in `EuclidsPath/Engine/Cycle.lean` elementarily (divisibility + coprimality), with no `sorry` and no non-standard axioms. These are solid tool-lemmas: rigidity of a repeat's placement and the cross-side congruence $a(\beta-\alpha)\equiv 2$.
 - 🔴 **Open (at the level of application).** The local rigidity of a single divisor does not by itself yield the global non-cover: it remains to show that the total budget of all large divisors on a short train is strictly less than the carrier. The explicit **hypothesis**: at every scale, the number of centres covered by old/large divisors is bounded above by $\sum_{\ell > A} (\lfloor L/\ell\rfloor + 1)$, and this sum over a short segment ($L < \sqrt{A/72}$ from [07. Short train](07_Squeeze.md)) stays below the size of the carrier. **Closure plan**: join the counting estimate of repeats (this chapter) with the carrier estimate and the bad-upper of [10. survivor ⇒ twin](10_NonCover.md), passing them on to the block bridge of [11. Block core](11_TwoTransport.md). We do NOT pass rigidity off as non-cover here — it merely makes the coverage budget finite and countable, rather than infinite.
 
 ## Bridge to the next chapter

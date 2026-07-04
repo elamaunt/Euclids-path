@@ -44,14 +44,14 @@ elements exceed `A`, and that it carries the certificate `AmbientLegal`.
 
 The first and most elementary fact is a lower bound on the product of the list of factors in terms of its length.
 
-> **Definition (list of large factors).** Let `L : List ℕ` be a list of natural numbers. We say
+> **Definition 28.1** (list of large factors). Let `L : List ℕ` be a list of natural numbers. We say
 > that `L` consists of factors greater than `A` if
 > $$ \forall a \in L,\quad A < a . $$
 
-**Theorem `prod_ge_of_factors_gt`.** If every element of the list `L` is strictly greater than `A`, then
+**Theorem 28.2** (`prod_ge_of_factors_gt`). If every element of the list `L` is strictly greater than `A`, then
 
 $$
-(A+1)^{\lvert L\rvert} \le \prod L ,
+(A+1)^{\lvert L\rvert} \le \prod L , \tag{28.1}
 $$
 
 where `|L|` is the length of the list, and `∏ L = L.prod` is the product of its elements.
@@ -82,7 +82,7 @@ side `N` of a legal centre does not exceed `6X_A + 1`, and the sieve is tuned so
 smaller than `A^5`. From the intuition of decomposition it is clear that "too many" large factors do not fit under
 such a ceiling.
 
-**Theorem `factor_rank_le_four`.** Let `1 ≤ A`, let the list `L` consist of factors `> A`, let its
+**Theorem 28.3** (`factor_rank_le_four`). Let `1 ≤ A`, let the list `L` consist of factors `> A`, let its
 product satisfy `∏ L ≤ 6X_A + 1`, and let the scale inequality `6X_A + 1 < A^5` hold.
 Then
 
@@ -92,10 +92,10 @@ $$
 
 *What is proven and why.* We argue by contradiction. Suppose `|L| ≥ 5` (in Lean this is written as
 `4 < |L|` after `not_le`). Then, combining the monotonicity of the power in the exponent
-(`Nat.pow_le_pow_right`) with the lower bound `prod_ge_of_factors_gt`, we obtain the chain
+(`Nat.pow_le_pow_right`) with the lower bound Theorem 28.2 (`prod_ge_of_factors_gt`), we obtain the chain
 
 $$
-(A+1)^5 \;\le\; (A+1)^{\lvert L\rvert} \;\le\; \prod L \;\le\; 6X_A + 1 \;<\; A^5 .
+(A+1)^5 \;\le\; (A+1)^{\lvert L\rvert} \;\le\; \prod L \;\le\; 6X_A + 1 \;<\; A^5 . \tag{28.2}
 $$
 
 On the other hand, since `A ≥ 1`, the power is strictly increasing in the base:
@@ -126,7 +126,7 @@ pigeonhole — the boxes principle (see the [glossary](GLOSSARY.md)) — rests.
 An upper bound on the rank is useless without a lower one: a node of rank `0` or `1` would not be a decomposition of a composite
 number. The lower bound is supplied by the very definition of compositeness.
 
-**Theorem `composite_rank_ge_two`.** If `1 < N` and `N` is not prime (`¬ N.Prime`), then the list of prime
+**Theorem 28.4** (`composite_rank_ge_two`). If `1 < N` and `N` is not prime (`¬ N.Prime`), then the list of prime
 factors has length at least two:
 
 $$
@@ -154,11 +154,11 @@ $2 \le r \le 4$ — the finite range of node ranks.
 It remains to explain *where* the condition "all factors `> A`", which we have used everywhere as
 a hypothesis, comes from. It follows from the cleanness of the centre.
 
-> **Definition (`Clean A m`).** The centre `m` is clean with respect to `A` if no prime `q ≤ A`
+> **Definition 28.5** (`Clean A m`). The centre `m` is clean with respect to `A` if no prime `q ≤ A`
 > divides either of its sides:
 > $$ \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr). $$
 
-**Theorems `prime_factor_gt_A_plus` and `prime_factor_gt_A_minus`.** Let the centre `m` be clean
+**Theorem 28.6** (`prime_factor_gt_A_plus`, `prime_factor_gt_A_minus`). Let the centre `m` be clean
 (`Clean A m`), and let `p` be prime. If `p ∣ (6m + 1)` (respectively `p ∣ (6m - 1)`), then
 
 $$
@@ -180,7 +180,7 @@ closes the fork `2 ≤ r ≤ 4` on a *concrete* decomposition of a concrete side
 Before building a node, we must choose *which* side to decompose. For a centre that missed,
 at least one of the two sides is composite — and that one we shall take.
 
-**Theorem `composite_side_of_not_twin`.** Let both sides be nontrivial, `1 < 6m - 1` and
+**Theorem 28.7** (`composite_side_of_not_twin`). Let both sides be nontrivial, `1 < 6m - 1` and
 `1 < 6m + 1`, and let the centre *not* be twin, that is, it is false that both sides are prime
 (`¬ ((6m-1).Prime ∧ (6m+1).Prime)`). Then there exists a composite nontrivial side:
 
@@ -204,28 +204,28 @@ All the ingredients are ready. The composite side `N` yields a list of prime fac
 length `≥ 2`, §28.3 — length `≤ 4`, §28.5 — that all factors are `> A`. It remains to pack this into a
 `RankNode` with the certificate `AmbientLegal`.
 
-> **Definition (`AmbientLegal`, a reminder from chapter 27).** The family `factors : Fin r → ℕ`
+> **Definition 28.8** (`AmbientLegal`, a reminder from chapter 27). The family `factors : Fin r → ℕ`
 > is legal in the ambient `X_A` if there exists a common top-side `N₀` which they all divide and which
 > does not exceed the sieve's ceiling:
 > $$ \exists N_0,\ 0 < N_0\ \land\ N_0 \le 6X_A + 1\ \land\ \forall i,\ \mathtt{factors}\,i \mid N_0 . $$
 
-**Theorem `mkNode_of_composite`.** Let `1 ≤ A`, `1 < N`, let the number `N` be composite, not exceeding
+**Theorem 28.9** (`mkNode_of_composite`). Let `1 ≤ A`, `1 < N`, let the number `N` be composite, not exceeding
 the ceiling `N ≤ 6X_A + 1`, let the scale inequality `6X_A + 1 < A^5` hold, and let every prime divisor
 of `N` be greater than `A` (`∀ p, p.Prime → p ∣ N → A < p`). Then for any sign `sgn : Sign` there exists a rank
 `r` with `2 ≤ r ≤ 4` and a node `X : RankNode r` such that
 
 $$
-\mathtt{AmbientLegal}\ X_A\ X.\mathtt{factors}\qquad\text{and}\qquad \prod \bigl(\mathrm{ofFn} X.\mathtt{factors}\bigr) = N .
+\mathtt{AmbientLegal}\ X_A\ X.\mathtt{factors}\qquad\text{and}\qquad \prod \bigl(\mathrm{ofFn} X.\mathtt{factors}\bigr) = N . \tag{28.3}
 $$
 
 *What is proven and why.* We build the node explicitly. Let `L = primeFactorsList N`. Then:
 
-- `hr2 : 2 ≤ |L|` — from `composite_rank_ge_two` (§28.4);
+- `hr2 : 2 ≤ |L|` — from Theorem 28.4 (`composite_rank_ge_two`, §28.4);
 - `hgt : ∀ a ∈ L, A < a` — every element of the list is a prime divisor of `N`
   (`Nat.prime_of_mem_primeFactorsList`, `Nat.dvd_of_mem_primeFactorsList`), and the hypothesis `hbig`
   makes it `> A` (this is §28.5, supplied as an input);
 - `hprodN : ∏ L = N` — the identity `Nat.prod_primeFactorsList`;
-- `hr4 : |L| ≤ 4` — from `factor_rank_le_four` (§28.3), where the premise `∏ L ≤ 6X_A+1` is obtained
+- `hr4 : |L| ≤ 4` — from Theorem 28.3 (`factor_rank_le_four`, §28.3), where the premise `∏ L ≤ 6X_A+1` is obtained
   by substituting `∏ L = N ≤ 6X_A+1`.
 
 As the rank we take `r = |L|`, and the node itself is `⟨sgn, fun i => L.get i⟩`: the sign is fixed from outside,

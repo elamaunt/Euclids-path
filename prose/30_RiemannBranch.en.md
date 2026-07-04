@@ -57,7 +57,7 @@ precisely `RiemannHypothesis` from mathlib: a quantifier over *all* zeros of `ri
 (`-2(n+1)`) and `s = 1`. This is strictly more general than "zeros only in the strip", and we are obliged to deliver `Re = 1/2` for
 every such zero.
 
-**Nontrivial zero (our predicate).** $\mathrm{NontrivialZeroM}(\rho) :\Longleftrightarrow \zeta(\rho)=0 \wedge (\neg\exists n,\ \rho = -2(n{+}1)) \wedge \rho \ne 1$ — exactly the premise of mathlib-RH, gathered into a single object.
+**Definition 30.1** (`NontrivialZeroM`, nontrivial zero). $\mathrm{NontrivialZeroM}(\rho) :\Longleftrightarrow \zeta(\rho)=0 \wedge (\neg\exists n,\ \rho = -2(n{+}1)) \wedge \rho \ne 1$ — exactly the premise of mathlib-RH, gathered into a single object.
 
 **Localizing the zero (proven + one input).** An input here is meant in the house sense: a named open
 statement still missing on the way to the goal (see the [glossary](GLOSSARY.md)). To apply the engine, we must drive a nontrivial zero
@@ -82,7 +82,7 @@ All the substantive difficulty of the branch is gathered into one proposition, w
 Note that the object described below is not an axiom in the narrow sense: it is an explicit premise of a conditional
 theorem, and we honestly keep it open.
 
-**Definition (engine bridge).**
+**Definition 30.2** (`EngineBridge`, engine bridge).
 
 $$\mathrm{EngineBridge}\ :\Longleftrightarrow\ \forall\,\rho,\
 \zeta(\rho)=0\ \wedge\ 0<\mathrm{Re}\,\rho\ \wedge\ \mathrm{Re}\,\rho<1\ \wedge\ \mathrm{Re}\,\rho \ne \tfrac12\ \Longrightarrow\
@@ -122,7 +122,7 @@ pumping is the engine forbidden by `no_infinite_descent`.
 
 Now let us assemble the chain. We claim that if the bridge is true, RH follows.
 
-**Theorem** (`riemannHypothesis_of_engine_bridge`). If `TrivialBelowZeroClassification` and
+**Theorem 30.3** (`riemannHypothesis_of_engine_bridge`). If `TrivialBelowZeroClassification` and
 `EngineBridge`, then (mathlib-)`RiemannHypothesis`.
 
 Let us prove it. Take an arbitrary zero $\rho$, nontrivial and $\ne 1$ (this is exactly the premise of mathlib-RH).
@@ -152,7 +152,7 @@ RH is obtained here *conditionally*, under the assumption of the bridge.
 
 It is useful to write out the contraposition in direct form as well — as "$\neg$RH begets an engine", without `by_contra`:
 
-**Theorem** (`not_RH_gives_engine`). If `EngineBridge` and $\neg\text{RH}$, then there exist $A\ge 1$ and
+**Theorem 30.4** (`not_RH_gives_engine`). If `EngineBridge` and $\neg\text{RH}$, then there exist $A\ge 1$ and
 $H:\mathbb N\to\mathbb N$ with $\mathrm{DescentStep}\,A\,(H\,t)\,(H(t{+}1))$ for all $t$.
 
 Here we unfold $\neg\text{RH}$ via `not_forall`, extract a witness zero $\rho$ off
@@ -167,7 +167,7 @@ We want to place the branch next to the twins not declaratively but structurally
 node of RH is not new independent analysis, but the same carrier of two already proven in the core. For this
 we introduce an abstract form of the transport law.
 
-**Definition (the two-transport law, abstractly).**
+**Definition 30.5** (`TwoTransportLaw`, the two-transport law abstractly).
 
 $$\mathrm{TwoTransportLaw}\ :\Longleftrightarrow\ \forall\,m,a,b,v,q,r,s\ge \text{(with }1\le m\text{)},\
 6m-1 = a b v\ \wedge\ 6m+1 = q r s\ \Longrightarrow\ q r s = a b v + 2.$$
@@ -175,7 +175,7 @@ $$\mathrm{TwoTransportLaw}\ :\Longleftrightarrow\ \forall\,m,a,b,v,q,r,s\ge \tex
 This is exactly the identity "the right companion exceeds the left by two" at the level of factorizations. And it is **already
 proven** — by the concrete identity `det_law_rank33` from `Engine/TwoGap.lean`:
 
-**Theorem** (`twoTransportLaw_holds`). `TwoTransportLaw` holds.
+**Theorem 30.6** (`twoTransportLaw_holds`). `TwoTransportLaw` holds.
 
 ```
 theorem twoTransportLaw_holds : TwoTransportLaw :=
@@ -188,7 +188,7 @@ Note: this is neither an axiom nor a hypothesis, but a witnessed proposition —
 Now we single out the *only* implication one would have to prove in order to connect the carrier of
 two with the engine bridge.
 
-**Definition (the linking node).**
+**Definition 30.7** (`TwoTransportBridge`, the linking node).
 
 $$\mathrm{TwoTransportBridge}\ :\Longleftrightarrow\ \bigl(\mathrm{TwoTransportLaw}\ \Rightarrow\
 \mathrm{EngineBridge}\bigr).$$
@@ -197,7 +197,7 @@ Let us stress: this is an **implication**, not an equivalence of hypotheses. We 
 do not transfer truth; we merely ask whether the very bridge RH needs follows from the already-proven core of the
 carrier of two. If `TwoTransportBridge` is proven, RH follows from what is already at hand:
 
-**Theorem** (`riemannHypothesis_of_two_transport`). If `TrivialBelowZeroClassification` and
+**Theorem 30.8** (`riemannHypothesis_of_two_transport`). If `TrivialBelowZeroClassification` and
 `TwoTransportBridge`, then (mathlib-)`RiemannHypothesis`.
 
 ```
@@ -207,8 +207,8 @@ theorem riemannHypothesis_of_two_transport
   riemannHypothesis_of_engine_bridge hClass (bridge twoTransportLaw_holds)
 ```
 
-The proof is transparent: we plug the already-proven `twoTransportLaw_holds` into the link, obtain
-`EngineBridge`, and apply `riemannHypothesis_of_engine_bridge`.
+The proof is transparent: we plug the already-proven `twoTransportLaw_holds` (Theorem 30.6) into the link, obtain
+`EngineBridge`, and apply Theorem 30.3 (`riemannHypothesis_of_engine_bridge`).
 
 **Section takeaway.** The value of the formulation is that it
 names **precisely** the price of the branches' "simultaneity": what remains open is exactly `TwoTransportBridge` —

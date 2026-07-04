@@ -31,13 +31,13 @@ twin — does not arise under the elementary case analysis.
 
 Fix a threshold $A$ (the scale of the "old" primes already peeled off) and introduce two predicates.
 
-> **Definition (old-free centre).** A centre $t$ is called *old-free* relative to the threshold $A$ if
+> **Definition 21.1** (old-free centre)**.** A centre $t$ is called *old-free* relative to the threshold $A$ if
 > no prime $q$ with $5\le q\le A$ divides either of the sides $6t\pm1$:
 > $$\mathrm{OldFree}(A,t)\ :\Longleftrightarrow\ \forall q\ \text{prime},\ 5\le q\le A\ \Longrightarrow\ \neg\bigl(q\mid 6t-1\ \lor\ q\mid 6t+1\bigr).$$
 > In Lean this is `def OldFree (A t : ℕ) : Prop`. Substantively, $\mathrm{OldFree}(A,t)$ is
 > membership of the centre in the "clean zone" $\Omega_A$: it is not caught by any of the primes already passed.
 
-> **Definition (twin centre).** A centre $t$ is a *twin* if both sides are prime:
+> **Definition 21.2** (twin centre)**.** A centre $t$ is a *twin* if both sides are prime:
 > $$\mathrm{Twin}(t)\ :\Longleftrightarrow\ (6t-1)\ \text{prime}\ \land\ (6t+1)\ \text{prime}.$$
 > In Lean this is `def Twin (t : ℕ) : Prop`. This is the only kind of legitimate sink: a pair of
 > twin primes $(6t-1,6t+1)$.
@@ -51,7 +51,7 @@ keeps track of.
 
 We begin with the logically simplest link — the negation of old-free.
 
-**Theorem (`not_oldfree_gives_peel`).** *If $\neg\,\mathrm{OldFree}(A,t)$, then there exists an old
+**Theorem 21.3** (`not_oldfree_gives_peel`)**.** *If $\neg\,\mathrm{OldFree}(A,t)$, then there exists an old
 divisor that generates an old-peel:*
 $$\neg\,\mathrm{OldFree}(A,t)\ \Longrightarrow\ \exists\,q\ \text{prime},\ 5\le q\le A\ \land\ \bigl(q\mid 6t-1\ \lor\ q\mid 6t+1\bigr).$$
 
@@ -70,7 +70,7 @@ classify the centre — it immediately supplies an outgoing downward edge with a
 
 Now the opposite branch: an old-free centre. Here we need a case split on the primality of the sides.
 
-**Theorem (`oldfree_twin_or_composite`).** *For every $t$*
+**Theorem 21.4** (`oldfree_twin_or_composite`)**.** *For every $t$*
 $$\mathrm{Twin}(t)\ \lor\ \neg\,(6t-1)\ \text{prime}\ \lor\ \neg\,(6t+1)\ \text{prime}.$$
 
 This is a constructive tautology: by the law of the excluded middle for the primality of each side, either
@@ -87,7 +87,7 @@ active descent (the next theorem).
 
 The key to case (2) being a descent rather than a dead end lies in the following observation.
 
-**Theorem (`composite_oldfree_has_big_divisor`).** *Let the side $side=6t+\eta\ge2$ be composite and
+**Theorem 21.5** (`composite_oldfree_has_big_divisor`)**.** *Let the side $side=6t+\eta\ge2$ be composite and
 old-free (no prime $q\le A$ divides it). Then it has a prime divisor $b$ with $b>A$:*
 $$\exists\,b\ \text{prime},\ A<b\ \land\ b\mid side.$$
 
@@ -112,7 +112,7 @@ with an outgoing edge.
 A separate link, yet necessary for gluing the chain together, is how the sign $\eta$ behaves upon passing to
 a smaller centre. It fixes that reprocessing a centre preserves the "polarity" of the neighbour predictably.
 
-**Theorem (`peel_sign`).** *Let $6t+\eta=q\,(6t_1+\eta_1)$ with $\eta,\eta_1,\omega\in\{\pm1\}$ and
+**Theorem 21.6** (`peel_sign`)**.** *Let $6t+\eta=q\,(6t_1+\eta_1)$ with $\eta,\eta_1,\omega\in\{\pm1\}$ and
 $q\equiv\omega\pmod 6$. Then*
 $$\eta_1=\omega\cdot\eta.$$
 
@@ -131,7 +131,7 @@ for the correctness of the ledger's entire rigid signature.
 
 The three elementary links assemble into one unconditional theorem — the heart of Lemma 6.1 on regeneration.
 
-**Theorem (`regeneration_dichotomy`).** *For every centre $t$ and threshold $A$, exactly one
+**Theorem 21.7** (`regeneration_dichotomy`)**.** *For every centre $t$ and threshold $A$, exactly one
 of the following outcomes holds:*
 $$
 \mathrm{Twin}(t)
@@ -143,11 +143,11 @@ $$
 
 The proof is `by_cases hof : OldFree A t`, and each branch is closed by a link already proven:
 
-- if the centre is *not* old-free — we take case (3) via `not_oldfree_gives_peel` (there is an old-peel edge);
-- if the centre is old-free — via `oldfree_twin_or_composite` either it is a twin (a sink), or one side
-  is composite (case (2), where `composite_oldfree_has_big_divisor` yields an active-descent edge).
+- if the centre is *not* old-free — we take case (3) via Theorem 21.3 (`not_oldfree_gives_peel`) (there is an old-peel edge);
+- if the centre is old-free — via Theorem 21.4 (`oldfree_twin_or_composite`) either it is a twin (a sink), or one side
+  is composite (case (2), where Theorem 21.5 (`composite_oldfree_has_big_divisor`) yields an active-descent edge).
 
-The upshot: `regeneration_dichotomy` is **complete and unconditional** (standard axioms, no `sorry`).
+The upshot: Theorem 21.7 (`regeneration_dichotomy`) is **complete and unconditional** (standard axioms, no `sorry`).
 Every quotient centre falls into exactly one of the three elementary classes, and in two of them — (2) and
 (3) — we have explicitly exhibited an outgoing descent edge, while in the third — (1) — a legitimate twin
 sink. This is precisely the elementary core for whose sake the whole reduction was undertaken: a
@@ -156,7 +156,7 @@ classification of the centre *without counting, without distribution, without th
 > **Note.** Let us stress what is proven and what is not. `regeneration_dichotomy` proves
 > the *classification* of $t$. From it the *existence of an edge* in cases (2), (3) follows immediately: for (3) the height
 > drop $t_1<t$ is `old_peel_height_drop` from [19](19_OldPeel.md), already proven; for (2) the edge
-> $6t+\eta=b\cdot U$ exists by `composite_oldfree_has_big_divisor`, and its strict height drop
+> $6t+\eta=b\cdot U$ exists by Theorem 21.5 (`composite_oldfree_has_big_divisor`), and its strict height drop
 > is a separate elementary lemma of Euclidean descent (of the same type as the height drop, and requiring no
 > counting). In none of (1), (2), (3) is there a dangling terminal.
 
@@ -165,13 +165,13 @@ classification of the centre *without counting, without distribution, without th
 The dichotomy exhausts three classes. But the full picture of regeneration in NOPSL included a *fourth*
 outcome — the one we honestly do not derive from the definition of $\Omega_A$.
 
-> **Hypothesis (fan-in / Hall, audit §13.C).** At the bounded scale, where the carrier-scale mass
+> **Hypothesis 21.8** (fan-in / Hall, audit §13.C)**.** At the bounded scale, where the carrier-scale mass
 > of pedigrees condenses into a bounded set of centres, a *fan-in defect* is possible: many distinct
 > pedigrees map to one and the same centre $t$. This is a statement *about the set of pedigrees*, not
 > about the divisibility of a single side, and therefore it is **not derivable** from the predicate $\mathrm{OldFree}(A,t)$.
 
 It is exactly this case (4) that remains the `regenerate` field of the abstract `OldPeelLedger` of [20](20_NOPSL.md). The difference
-is fundamental: cases (1)–(3) are a theorem (`regeneration_dichotomy`, proven by the compiler), while case
+is fundamental: cases (1)–(3) are Theorem 21.7 (`regeneration_dichotomy`, proven by the compiler), while case
 (4) is a structural premise of the payment ledger, requiring that the rigid cycle of [09](09_Cycle.md)/[11](11_TwoTransport.md) be
 a genuine engine — that very forbidden object of infinite descent (see the [glossary](GLOSSARY.md)) — with a rigid signature (audit §13.D).
 
@@ -189,8 +189,8 @@ a genuine engine — that very forbidden object of infinite descent (see the [gl
 ## Summary and a bridge to the next chapter
 
 We have opened up the premise `regenerate` from the inside. The author's Lemma 6.1 is formalized: the elementary core
-— the full dichotomy of the centre (`regeneration_dichotomy`), the sign law (`peel_sign`), and
-the active-divisor lemma (`composite_oldfree_has_big_divisor`) — is proven in Lean without distribution.
+— the full dichotomy of the centre (Theorem 21.7, `regeneration_dichotomy`), the sign law (Theorem 21.6, `peel_sign`), and
+the active-divisor lemma (Theorem 21.5, `composite_oldfree_has_big_divisor`) — is proven in Lean without distribution.
 
 **Conclusion.** Regeneration in cases (1)–(3) is a genuine theorem, not a reduction: a twin sink or an explicit descent edge
 at every centre. The nontrivial remainder is localized in exactly case (4) — fan-in/Hall — and in

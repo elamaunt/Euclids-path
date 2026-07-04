@@ -34,7 +34,7 @@ heuristic by which quarantine §16 (chapter 43) justified declining to take the 
 A Sophie Germain pair is `(p, 2p+1)`, both prime (`IsSophieGermain`). In the programme's coordinates, where
 every prime `> 3` sits on a side `6m ± 1`, this pair displays a rigid one-sidedness.
 
-**Theorem** (`not_sophieGermain_of_plusSide`, 🟢). *If `p = 6m + 1` with `m ≥ 1`, then `2p + 1` is not
+**Theorem 45.1** (`not_sophieGermain_of_plusSide`, 🟢). *If `p = 6m + 1` with `m ≥ 1`, then `2p + 1` is not
 prime.*
 
 **Why this is true.** We compute directly: `2(6m+1) + 1 = 12m + 3 = 3(4m+1)`, and three divides the companion
@@ -43,15 +43,15 @@ exactly. For `m ≥ 1` the companion exceeds three — hence composite. The plus
 
 The minus side remains, and it does not merely survive — it forces a residue:
 
-**Theorem** (`sophieGermain_minusSide`, 🟢). *An SG prime `p > 3` must satisfy `p ≡ 5 (mod 6)`.*
+**Theorem 45.2** (`sophieGermain_minusSide`, 🟢). *An SG prime `p > 3` must satisfy `p ≡ 5 (mod 6)`.*
 
 **Why this is true.** A prime `p > 3` is divisible by neither 2 nor 3, so `p % 6` is either 1 or 5.
-The first has just been excluded by the plus side. Hence `p ≡ 5 (mod 6)`, that is, `p = 6m − 1`.
+The first has just been excluded by the plus side (Theorem 45.1). Hence `p ≡ 5 (mod 6)`, that is, `p = 6m − 1`.
 
 And now — the essence for whose sake the branch entered this series at all. On the minus side the SG map, in the
 coordinates of centres, is pure **doubling**:
 
-**Theorem** (`sg_center_doubling`, 🟢). *`2(6m − 1) + 1 = 6(2m) − 1`.*
+**Theorem 45.3** (`sg_center_doubling`, 🟢). *`2(6m − 1) + 1 = 6(2m) − 1`.*
 
 **Why this is true.** Expand the brackets — the identity checks in one's head. But its meaning lies not in the
 arithmetic but in the lineage: the companion `2p+1` of a pair with centre `m` itself sits on the minus side, and its
@@ -69,7 +69,7 @@ member of the family growing from the doubled centre of the previous rank.
 Now — the only substantive classical theorem of the whole addition, machine-proven in its
 entirety.
 
-**Theorem** (`sophieGermain_divides_mersenne`, 🟢). *If `p` is prime, `p ≡ 3 (mod 4)`, `p > 3`, and
+**Theorem 45.4** (`sophieGermain_divides_mersenne`, 🟢). *If `p` is prime, `p ≡ 3 (mod 4)`, `p > 3`, and
 `q = 2p + 1` is prime, then `q ∣ M_p` and the Mersenne number `M_p = 2^p − 1` is composite.*
 
 **Why this is true.** The route is the classical Euler–Lagrange one, and it hangs on a single meshing of residues.
@@ -85,7 +85,7 @@ be prime.
 
 The demonstration is not abstract:
 
-**Theorem** (`mersenne_composite_examples`, 🟢). *`23 ∣ M_11 = 2047`, and `M_11` is composite.*
+**Theorem 45.5** (`mersenne_composite_examples`, 🟢). *`23 ∣ M_11 = 2047`, and `M_11` is composite.*
 
 Here `p = 11 ≡ 3 (mod 4)`, the companion `q = 23` is prime, and indeed `2047 = 23 · 89` — it splits into
 exactly the predicted divisor. The theorem does not merely deny primality; it points a finger at the
@@ -120,7 +120,7 @@ But this front has a section that no other has. It can work not over the whole f
 of SG primes but over the subfamily `p ≡ 3 (mod 4)` — exactly the one the pearl turns into killers of
 Mersenne primality. And then its conclusion changes sign:
 
-**Theorem** (`mersenneComposites_unbounded_of_noEngine_boundary_and_sgManifestation`, 🟢, conditional).
+**Theorem 45.6** (`mersenneComposites_unbounded_of_noEngine_boundary_and_sgManifestation`, 🟢, conditional).
 *No engines + an accepted boundary + the restricted 3 (mod 4) law ⟹ there are unboundedly many primes `p` with
 composite `M_p`.*
 
@@ -193,8 +193,14 @@ by a genuine construction, not ex falso, that is, not by "from falsehood, anythi
 `sgRefutation_carries_engine` does the work), — and what is built perishes against the lexRank wall
 `no_someConcreteEuclideanEngine`.
 
-Hence `no_internalisedSGGround` and `sgCause_unknowable` (🟢): **the manifestation
-law cannot be self-grounded** — "cannot be known from inside" is, for Sophie Germain too, a theorem and not a slogan.
+Hence **the manifestation law cannot be self-grounded** — "cannot be known from inside" is, for Sophie
+Germain too, a theorem and not a slogan.
+
+**Theorem 45.7** (`no_internalisedSGGround`, `sgCause_unknowable`, 🟢). *At no scale `(A, M0)` is internal
+self-grounding attainable: `InternalisedSGGround(A, M0) → False`, equivalently
+`¬ InternalKnowledgeOfSGCause(A, M0)`. (The statement is not about the SG pairs themselves but about the
+cost of an internal solution: the assembled bundle builds an engine-witness `SomeConcreteEuclideanEngine`
+and perishes against the lexRank wall `no_someConcreteEuclideanEngine`.)*
 
 The second internal path — to refute — costs the same. The summary `sg_no_internal_decision_without_engine`
 (🟢) lays out the fork: refutation from inside — an absence witness under the law on reconciled books —
@@ -220,9 +226,12 @@ question; over a classical theorem, solved here by the machine down to the last 
 > individually-unknown fields against the wall of well-foundedness; all the epistemics is model-internal. The grade
 > is below the P/NP benchmark: there one field is greenly inhabited, here — none; the bundle is paid for by two genuine
 > green facts — the construction of the engine-witness and the lexRank killer. The substantive form without
-> explosion is the dichotomy `unknowable_or_sg_unbounded` (🟢): either the cause is unknowable from inside, or there
-> are unboundedly many Sophie Germain pairs; we assert only the left disjunct. The quarantine is not imported by the
+> explosion is the dichotomy below; we assert only the left disjunct. The quarantine is not imported by the
 > module; the repository's taint does not change.
+
+**Theorem 45.8** (`unknowable_or_sg_unbounded`, 🟢). *At any scale `(A, M0)` one has
+`(¬ InternalKnowledgeOfSGCause(A, M0)) ∨ SophieGermainUnbounded`. The statement carries no ex falso; the
+left disjunct is a theorem (Theorem 45.7), the right is an open conjecture, not asserted here.*
 
 ## Place in the greater arc
 

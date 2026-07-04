@@ -22,7 +22,7 @@
 образуют нециркулярный мост от блочной комбинаторики к арифметической цели программы. Зафиксируем
 базовые определения, на которые опираемся (шаг 00).
 
-> **Примечание.** Индексная (центровая) форма пары близнецов: центр $m$ задаёт пару, если оба
+> **Определение 10.1** (twin-центр и `TwinLowers`). Индексная (центровая) форма пары близнецов: центр $m$ задаёт пару, если оба
 > соседа шестёрки просты. Формально `IsTwinCenter`:
 > $$\mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{простое}\ \wedge\ (6m+1)\ \text{простое}.$$
 > Целевое множество — младшие члены пар, `TwinLowers` $= \{\,p \mid p\ \text{и}\ p+2\ \text{просты}\,\}$;
@@ -46,13 +46,13 @@
 $6m\pm1$ составная, потому что её накрыл какой-то запрещающий делитель). Единственное, что нам нужно
 от комбинаторного ядра, — это строгое неравенство мощностей.
 
-> **Определение (non-cover).** Говорим, что `bad` *не покрывает* `Ω`, если
+> **Определение 10.2** (non-cover). Говорим, что `bad` *не покрывает* `Ω`, если
 > $$|\mathrm{bad}| < |\Omega|.$$
 
-**Теорема** (`survivor_of_not_covered`). *Если $|\mathrm{bad}| < |\Omega|$, то существует
+**Теорема 10.3** (`survivor_of_not_covered`). *Если $|\mathrm{bad}| < |\Omega|$, то существует
 $m \in \Omega$ с $m \notin \mathrm{bad}$.*
 
-$$ |\mathrm{bad}| < |\Omega| \;\Longrightarrow\; \exists\, m \in \Omega,\; m \notin \mathrm{bad}. $$
+$$ |\mathrm{bad}| < |\Omega| \;\Longrightarrow\; \exists\, m \in \Omega,\; m \notin \mathrm{bad}. \tag{10.1}$$
 
 Доказательство — принцип Дирихле в чистейшем виде. От противного: если бы каждый $m \in \Omega$
 лежал в $\mathrm{bad}$, то $\Omega \subseteq \mathrm{bad}$, откуда по монотонности мощности
@@ -75,11 +75,11 @@ $|\Omega| \le |\mathrm{bad}|$ — противоречие с посылкой. 
 делителями *в пределах масштаба*. Чтобы превратить «не накрыт» в «прост», нужен классический факт:
 пробное деление до квадратного корня решает вопрос простоты.
 
-**Теорема** (`prime_of_no_small_prime_factor`). *Пусть $n \ge 2$ и ни один простой $p$ с
+**Теорема 10.4** (`prime_of_no_small_prime_factor`). *Пусть $n \ge 2$ и ни один простой $p$ с
 $p^2 \le n$ не делит $n$. Тогда $n$ просто.*
 
 $$ n \ge 2 \;\wedge\; \bigl(\forall p\ \text{prime},\; p^2 \le n \Rightarrow p \nmid n\bigr)
-\;\Longrightarrow\; n\ \text{простое}. $$
+\;\Longrightarrow\; n\ \text{простое}. \tag{10.2}$$
 
 Доказательство от противного через минимальный простой делитель `Nat.minFac`. Если $n$ составное, то
 $p := \mathrm{minFac}(n)$ прост и делит $n$; из минимальности $p \le n/p$, откуда
@@ -94,15 +94,15 @@ $p^2 \le n$, что противоречит посылке. Ключевой ш
 
 Применяя это к обеим сторонам центра, получаем целевую импликацию **survivor $\Rightarrow$ twin**.
 
-**Теорема** (`isTwinCenter_of_root_sieve`). *Если $6m-1 \ge 2$ и $6m+1 \ge 2$, и ни один простой до
+**Теорема 10.5** (`isTwinCenter_of_root_sieve`). *Если $6m-1 \ge 2$ и $6m+1 \ge 2$, и ни один простой до
 корня не делит соответствующую сторону, то $m$ — twin-центр:*
 
 $$ \Bigl(\forall p\ \text{prime},\; p^2 \le 6m-1 \Rightarrow p \nmid (6m-1)\Bigr)
    \;\wedge\;
    \Bigl(\forall p\ \text{prime},\; p^2 \le 6m+1 \Rightarrow p \nmid (6m+1)\Bigr)
-   \;\Longrightarrow\; \mathrm{IsTwinCenter}(m). $$
+   \;\Longrightarrow\; \mathrm{IsTwinCenter}(m). \tag{10.3}$$
 
-Доказательство — просто пара обращений к `prime_of_no_small_prime_factor` для $6m-1$ и $6m+1$,
+Доказательство — просто пара обращений к Теореме 10.4 (`prime_of_no_small_prime_factor`) для $6m-1$ и $6m+1$,
 упакованная в конъюнкцию `IsTwinCenter`. Содержательно это и есть утверждение «выживший значит twin»
 из заголовка: если сито активной части двигателя дошло до корня и не срубило ни одну сторону, обе
 стороны просты — а это по определению twin-центр.
@@ -119,11 +119,11 @@ $$ \Bigl(\forall p\ \text{prime},\; p^2 \le 6m-1 \Rightarrow p \nmid (6m-1)\Bigr
 Осталось перейти от «на каждом масштабе есть twin-центр выше $N$» к безусловной бесконечности
 множества `TwinLowers`.
 
-**Теорема** (`infinite_of_unbounded_centers`). *Если для любого $N$ найдётся центр $m > N$ с
+**Теорема 10.6** (`infinite_of_unbounded_centers`). *Если для любого $N$ найдётся центр $m > N$ с
 $\mathrm{IsTwinCenter}(m)$, то `TwinLowers` бесконечно:*
 
 $$ \bigl(\forall N,\ \exists m,\ N < m \wedge \mathrm{IsTwinCenter}(m)\bigr)
-   \;\Longrightarrow\; \texttt{TwinLowers.Infinite}. $$
+   \;\Longrightarrow\; \texttt{TwinLowers.Infinite}. \tag{10.4}$$
 
 Доказательство порядковое, через `Set.infinite_of_not_bddAbove`: множество натуральных чисел
 бесконечно тогда и только тогда, когда оно не ограничено сверху. Развернув `not_bddAbove_iff`,
@@ -143,8 +143,8 @@ $6m-1 > N$ закрываются `omega`.
 Соберём три звена в один вывод. Предположим блочное ядро: для каждого $N$ существуют конечные
 $\mathrm{carrier}$ и $\mathrm{bad}$ такие, что все центры carrier лежат выше $N$,
 $|\mathrm{bad}| < |\mathrm{carrier}|$, и каждый выживший carrier есть twin-центр. Тогда
-`survivor_of_not_covered` даёт выжившего $m$, условие блока делает его twin-центром выше $N$
-(это `twin_center_of_block`), а `infinite_of_unbounded_centers` превращает произвольность $N$ в
+Теорема 10.3 (`survivor_of_not_covered`) даёт выжившего $m$, условие блока делает его twin-центром выше $N$
+(это `twin_center_of_block`), а Теорема 10.6 (`infinite_of_unbounded_centers`) превращает произвольность $N$ в
 `TwinLowers.Infinite`. Именно эта сборка и есть `twin_prime_conjecture_of_blocks` — предмет
 следующей главы.
 
@@ -155,7 +155,7 @@ $|\mathrm{bad}| < |\mathrm{carrier}|$, и каждый выживший carrier 
 
 Сформулируем открытый узел явно.
 
-> **Гипотеза (блочное non-cover, открыто).** На сколь угодно больших масштабах $N$ существует
+> **Гипотеза 10.7** (блочное non-cover, открыто). На сколь угодно больших масштабах $N$ существует
 > несущее множество центров $\mathrm{carrier}$ выше $N$, для которого множество «плохих» центров
 > $\mathrm{bad}$ (тех, у кого одна из сторон $6m\pm1$ имеет делитель до корня) строго меньше по
 > мощности: $|\mathrm{bad}| < |\mathrm{carrier}|$.

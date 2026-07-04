@@ -29,14 +29,13 @@ We work with the sides of a centre `m`, that is, with the pair $6m-1,\ 6m+1$. Th
 boundary of the "old" primes (the old primorial is built over `5 ≤ p ≤ A`), and `N` is the scale above
 which we want to find a centre.
 
-> **Definition (clean centre).** We call a centre `m` *clean* relative to `A` if no prime
-> `q \le A` divides either side:
-> $$\mathrm{CleanZ}\,A\,m \ :\equiv\ \forall q\ \text{prime},\ q \le A \ \Rightarrow\ \neg\big(q \mid 6m-1\ \lor\ q \mid 6m+1\big).$$
-> In Lean this is `CleanZ A m` (the sides are taken in `ℤ`, so that the subtraction `6m-1` is safe).
+**Definition 22.1** (clean centre). We call a centre $m$ *clean* relative to $A$ if no prime $q \le A$ divides either side:
+$$\mathrm{CleanZ}\,A\,m \ :\equiv\ \forall q\ \text{prime},\ q \le A \ \Rightarrow\ \neg\big(q \mid 6m-1\ \lor\ q \mid 6m+1\big). \tag{22.1}$$
+In Lean this is `CleanZ A m` (the sides are taken in `ℤ`, so that the subtraction $6m-1$ is safe).
 
-> **Definition (twin centre).** A centre `m \ge 1` is a *twin* if both sides are prime:
-> $$\mathrm{TwinCenterZ}\,m \ :\equiv\ (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.$$
-> In Lean this is `TwinCenterZ m` (the sides in `ℕ`).
+**Definition 22.2** (twin centre). A centre $m \ge 1$ is a *twin* if both sides are prime:
+$$\mathrm{TwinCenterZ}\,m \ :\equiv\ (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}. \tag{22.2}$$
+In Lean this is `TwinCenterZ m` (the sides in `ℕ`).
 
 The distinction between the two properties is the key to the whole chapter. Clean is a negation of
 divisibility by *small* primes; it is available constructively. Twin is a positive statement of
@@ -49,26 +48,26 @@ It is natural to suppose that clean centres are "rare", and hence their existenc
 density estimate. The observation that discharges this input is the opposite: a clean centre can be
 **written out by a formula**.
 
-> **Definition (old primorial).** We set
-> $$P_A \ :=\ \prod_{\substack{5 \le p \le A\\ p\ \text{prime}}} p,$$
-> in Lean — `oldPrimorial A := (Finset.range (A+1)).prod (fun p => if p.Prime ∧ 5 ≤ p then p else 1)`.
-> Each factor is either a prime `5 \le p \le A` or `1`; hence `oldPrimorial_pos` gives
-> $P_A \ge 1$, and `prime_dvd_oldPrimorial` — that every prime `5 \le q \le A` divides $P_A$ (it is
-> literally one of the factors of the product).
+**Definition 22.3** (old primorial). We set
+$$P_A \ :=\ \prod_{\substack{5 \le p \le A\\ p\ \text{prime}}} p, \tag{22.3}$$
+in Lean — `oldPrimorial A := (Finset.range (A+1)).prod (fun p => if p.Prime ∧ 5 ≤ p then p else 1)`.
+Each factor is either a prime $5 \le p \le A$ or $1$; hence `oldPrimorial_pos` gives
+$P_A \ge 1$, and `prime_dvd_oldPrimorial` — that every prime $5 \le q \le A$ divides $P_A$ (it is
+literally one of the factors of the product).
 
 The central lemma is that any multiple of this primorial is already clean.
 
-**`primorial_multiple_clean` (Lemma 2.2.1).** For all `A` and `k \ge 1` the centre `m = k\cdot P_A`
-is clean: `CleanZ A ((k * oldPrimorial A : ℕ) : ℤ)`. The case split goes by the size of `q`:
+**Lemma 22.4** (`primorial_multiple_clean`). For all $A$ and $k \ge 1$ the centre $m = k \cdot P_A$
+is clean: $\mathrm{CleanZ}\,A\,((k \cdot \mathrm{oldPrimorial}\,A : \mathbb{N}) : \mathbb{Z})$. The case split goes by the size of $q$:
 
-- **`q \ge 5`.** Then `q \mid P_A \mid m`, hence `q \mid 6m`. If `q` divided `6m-1`, then from
-  `q \mid 6m` and `q \mid 6m-1` we would get `q \mid 1` (the difference), that is `q \le 1` — a contradiction;
-  symmetrically for `6m+1`. Formally: $6m \equiv 0 \pmod q \Rightarrow 6m \pm 1 \equiv \pm 1 \not\equiv 0$.
-- **`q = 2`.** Both sides are odd (`6m` is even, `6m\pm1` odd), so there is no divisibility.
-- **`q = 3`.** $6m \equiv 0 \pmod 3 \Rightarrow 6m\pm1 \equiv \pm 1 \pmod 3 \not\equiv 0$.
+- **$q \ge 5$.** Then $q \mid P_A \mid m$, hence $q \mid 6m$. If $q$ divided $6m-1$, then from
+  $q \mid 6m$ and $q \mid 6m-1$ we would get $q \mid 1$ (the difference), that is $q \le 1$ — a contradiction;
+  symmetrically for $6m+1$. Formally: $6m \equiv 0 \pmod{q} \Rightarrow 6m \pm 1 \equiv \pm 1 \not\equiv 0$.
+- **$q = 2$.** Both sides are odd ($6m$ is even, $6m\pm1$ odd), so there is no divisibility.
+- **$q = 3$.** $6m \equiv 0 \pmod{3} \Rightarrow 6m\pm1 \equiv \pm 1 \pmod{3} \not\equiv 0$.
 
-The cases `q < 5` in Lean are closed by `interval_cases q` (the values `2,3` are handled by `omega`, the
-values `0,1,4` are discarded as non-prime).
+The cases $q < 5$ in Lean are closed by `interval_cases q` (the values $2,3$ are handled by `omega`, the
+values $0,1,4$ are discarded as non-prime).
 
 > **Note.** This is exactly why the old primorial is taken with lower bound `5`: the factors `2` and `3`
 > need not be excluded — their staying off the sides is guaranteed not by the divisibility of `m` but by
@@ -77,10 +76,10 @@ values `0,1,4` are discarded as non-prime).
 
 From the lemma we obtain the existence of a clean centre above an arbitrary scale.
 
-**`carrier_nonempty_above` (Corollary 2.3.1).** For any `A, N` there exists `m > N` with `CleanZ A m`.
+**Corollary 22.5** (`carrier_nonempty_above`). For any $A, N$ there exists $m > N$ with $\mathrm{CleanZ}\,A\,m$.
 The witness (a concrete object certifying a statement — see the [glossary](GLOSSARY.md)) is
-$m = (N+1)\cdot P_A$: it is clean by `primorial_multiple_clean` (with `k = N+1 \ge 1`), and the
-inequality `N < m` follows from $P_A \ge 1$ via the chain $N < N+1 = (N+1)\cdot 1 \le (N+1)\cdot P_A$.
+$m = (N+1)\cdot P_A$: it is clean by Lemma 22.4 (`primorial_multiple_clean`) (with $k = N+1 \ge 1$), and the
+inequality $N < m$ follows from $P_A \ge 1$ via the chain $N < N+1 = (N+1)\cdot 1 \le (N+1)\cdot P_A$.
 
 > **Note.** This is precisely the discharge of the "density of the carrier" input *in existential
 > form*. We do not claim how many clean centres lie in a segment — we exhibit *one* concrete centre,
@@ -95,21 +94,21 @@ derived from negative cleanliness plus a bound on the scale.
 
 We begin with an observation about what can possibly "hide" in a clean composite side.
 
-**`clean_side_composite_big_divisor` (Lemma 4.1.1, the core).** If a side `side \ge 2` is not prime and
-no prime `q \le A` divides it, then its least prime divisor is `> A`:
-$$\exists b\ \text{prime},\ A < b\ \wedge\ b \mid side.$$
-The witness is `side.minFac`. It is prime (`Nat.minFac_prime`, since `side \ge 2`) and divides `side`; and if
-it were `\le A`, that would contradict cleanliness. Such a large divisor is exactly the *active edge*
-of the dichotomy [21](21_Regeneration.md): a composite clean side is forced to carry a new prime `> A`.
+**Lemma 22.6** (`clean_side_composite_big_divisor`, the core). If a side $\mathit{side} \ge 2$ is not prime and
+no prime $q \le A$ divides it, then its least prime divisor is greater than $A$:
+$$\exists b\ \text{prime},\ A < b\ \wedge\ b \mid \mathit{side}.$$
+The witness is `side.minFac`. It is prime (`Nat.minFac_prime`, since $\mathit{side} \ge 2$) and divides $\mathit{side}$; and if
+it were $\le A$, that would contradict cleanliness. Such a large divisor is exactly the *active edge*
+of the dichotomy [21](21_Regeneration.md): a composite clean side is forced to carry a new prime $> A$.
 
 Hence — the bound that turns cleanliness into primality.
 
-**`oldfree_below_sq_prime` (Lemma 6.1).** If `n \ge 2`, `n < A^2`, and no prime `q \le A`
-divides `n` (an *old-free* number), then `n` is prime. Proof by contradiction: suppose `n` is composite.
-Then `p := n.minFac` is prime, `p \mid n`, and by cleanliness `p > A`. For composite `n` the minimality
-of the prime divisor gives `p \le n/p` (`Nat.minFac_le_div`), whence
-$$p^2 \ \le\ p \cdot (n/p) \ =\ n.$$
-But then $A^2 < p^2 \le n < A^2$ — a contradiction (`nlinarith`). Hence `n` is prime.
+**Lemma 22.7** (`oldfree_below_sq_prime`). If $n \ge 2$, $n < A^2$ and no prime $q \le A$
+divides $n$ (an *old-free* number), then $n$ is prime. Proof by contradiction: suppose $n$ is composite.
+Then $p := n\text{.minFac}$ is prime, $p \mid n$ and by cleanliness $p > A$. For composite $n$ the minimality
+of the prime divisor gives $p \le n/p$ (`Nat.minFac_le_div`), whence
+$$p^2 \ \le\ p \cdot (n/p) \ =\ n. \tag{22.4}$$
+But then $A^2 < p^2 \le n < A^2$ — a contradiction (`nlinarith`). Hence $n$ is prime.
 
 > **Note.** The threshold `A^2` is not a heuristic but the exact "sieve of Eratosthenes" boundary: a
 > number without prime divisors `\le A` and smaller than `A^2` cannot be composite, since a composite
@@ -119,9 +118,9 @@ But then $A^2 < p^2 \le n < A^2$ — a contradiction (`nlinarith`). Hence `n` is
 
 Joining the cleanliness of both sides with the threshold, we obtain the main conclusion of residue ③.
 
-**`sink_is_twin` (Theorem 4.2.1).** If both sides satisfy `2 \le 6m\pm1 < A^2` and the centre is
-clean (no `q \le A` divides either side), then `m` is a twin: `TwinCenterZ m`. The proof is
-two copies of `oldfree_below_sq_prime`, one per side; the old-freeness of each side is extracted
+**Theorem 22.8** (`sink_is_twin`). If both sides satisfy $2 \le 6m\pm1 < A^2$ and the centre is
+clean (no $q \le A$ divides either side), then $m$ is a twin: $\mathrm{TwinCenterZ}\,m$. The proof is
+two copies of Lemma 22.7 (`oldfree_below_sq_prime`), one per side; the old-freeness of each side is extracted
 from the shared cleanliness (`Or.inl` / `Or.inr`).
 
 > **Note.** This is how the "parity/distribution" input is discharged *in existential form*: we do not
@@ -134,17 +133,17 @@ from the shared cleanliness (`Or.inl` / `Or.inr`).
 It remains to close the loop with residue ②: to make sure the twin sink we found really lies above
 the scale `N`, rather than falling below.
 
-**`clean_twin_above` (§5).** If `6N+1 < A`, the centre `m \ge 1` is clean and is a twin, then `m > N`.
-The argument: the side `6m-1` is prime (from `TwinCenterZ`), and it is `> A` — otherwise it would be an
-old prime `\le A` dividing its own side, violating cleanliness (`hcl` with the divisibility `(6m-1) \mid (6m-1)`).
-Then from $A > 6N+1$ and $6m-1 > A$ it follows that $6m-1 > 6N+1$, that is `m > N` (`omega`). In Lean
-one carefully coerces `((6m-1 : ℕ) : ℤ) = 6\cdot m - 1` (`Nat.cast_sub`, `push_cast`), so that
-cleanliness, which lives in `ℤ`, applies to the natural-number side.
+**Theorem 22.9** (`clean_twin_above`). If $6N+1 < A$, the centre $m \ge 1$ is clean and is a twin, then $m > N$.
+The argument: the side $6m-1$ is prime (from $\mathrm{TwinCenterZ}$), and it is $> A$ — otherwise it would be an
+old prime $\le A$ dividing its own side, violating cleanliness (`hcl` with the divisibility $(6m-1) \mid (6m-1)$).
+Then from $A > 6N+1$ and $6m-1 > A$ it follows that $6m-1 > 6N+1$, that is $m > N$ (`omega`). In Lean
+one carefully coerces $((6m-1 : \mathbb{N}) : \mathbb{Z}) = 6 \cdot m - 1$ (`Nat.cast_sub`, `push_cast`), so that
+cleanliness, which lives in $\mathbb{Z}$, applies to the natural-number side.
 
-> **Note.** The condition `6N+1 < A` is the requirement "the old boundary `A` overlaps the scale `N`".
-> It is automatically compatible with ②: there we are free to take `A` as large as we like relative to `N`, and
-> the sink, being prime, is forced to lie above `A`, and hence above `N`. **Conclusion.** The pair ②+③ yields a
-> twin centre above any `N` with no reference to distribution.
+> **Note.** The condition $6N+1 < A$ is the requirement "the old boundary $A$ overlaps the scale $N$".
+> It is automatically compatible with Corollary 22.5: there we are free to take $A$ as large as we like relative to $N$, and
+> the sink, being prime, is forced to lie above $A$, and hence above $N$. **Conclusion.** The pair Corollary 22.5 + Theorem 22.8 yields a
+> twin centre above any $N$ with no reference to distribution.
 
 ## Residue ① — active descent strictly decreases the height
 
@@ -152,15 +151,15 @@ Finally, for the dichotomy to be a genuine *engine* (in the sense of the descent
 see the [glossary](GLOSSARY.md)), and not merely a classification, the outgoing edge in the
 active case must lead *downwards* in height. This is a purely algebraic fact of Euclidean descent.
 
-**`active_descent_height` (§3).** Let $6m+\sigma = a\,(6n+\varepsilon)$, where `a > A \ge 5`,
-$\sigma,\varepsilon \in \{\pm1\}$, and the centres `m, n \ge 1`. Then `n < m`.
+**Theorem 22.10** (`active_descent_height`). Let $6m+\sigma = a\,(6n+\varepsilon)$, where $a > A \ge 5$,
+$\sigma,\varepsilon \in \{\pm1\}$, and the centres $m, n \ge 1$. Then $n < m$.
 
 The case split: the side
-$6n+\varepsilon > 0$ (for both signs of `\varepsilon`, since `n \ge 1`), and from `a \ge 5` it follows that
-$$5\,(6n+\varepsilon)\ \le\ a\,(6n+\varepsilon)\ =\ 6m+\sigma.$$
-Hence $6n+\varepsilon \le (6m+\sigma)/5$, and for `m \ge 1` the fraction is strictly less than `6m-1`, which after
+$6n+\varepsilon > 0$ (for both signs of $\varepsilon$, since $n \ge 1$), and from $a \ge 5$ it follows that
+$$5\,(6n+\varepsilon)\ \le\ a\,(6n+\varepsilon)\ =\ 6m+\sigma. \tag{22.5}$$
+Hence $6n+\varepsilon \le (6m+\sigma)/5$, and for $m \ge 1$ the fraction is strictly less than $6m-1$, which after
 running through the four sign combinations is closed by `nlinarith`. Substantively: divisibility of the active side
-by a large `a > A` cannot fail to "compress" the centre — the new `n` is strictly lower.
+by a large $a > A$ cannot fail to "compress" the centre — the new $n$ is strictly lower.
 
 > **Note.** The factor `5` here is no accident: it is the smallest old prime, and `a > A \ge 5`
 > only strengthens the compression. It is the same coefficient `1/5` as in the height-drop of old-peel [19](19_OldPeel.md)
@@ -172,14 +171,14 @@ by a large `a > A` cannot fail to "compress" the centre — the new `n` is stric
 
 All seven links are checked by the compiler on the standard axioms, without `sorry`:
 
-| Link | Lean | What is discharged |
+| Link | Lean (number) | What is discharged |
 |---|---|---|
-| clean start above `N` | `carrier_nonempty_above` (via `primorial_multiple_clean`) | **density of the carrier** — replaced by the construction $m=(N+1)P_A$ |
-| old-free `< A^2` ⟹ prime | `oldfree_below_sq_prime` | the sieve threshold, elementary |
-| clean sink ⟹ twin | `sink_is_twin` | **parity/distribution** — replaced by cleanliness + the threshold |
-| active edge | `clean_side_composite_big_divisor` | a large divisor `> A` of a clean composite side |
-| twin sink above `N` | `clean_twin_above` | pinning the sink to the scale |
-| strict descent | `active_descent_height` | `n < m` on the active edge |
+| clean start above $N$ | `carrier_nonempty_above` (Corollary 22.5, via Lemma 22.4) | **density of the carrier** — replaced by the construction $m=(N+1)P_A$ |
+| old-free $< A^2$ ⟹ prime | `oldfree_below_sq_prime` (Lemma 22.7) | the sieve threshold, elementary |
+| clean sink ⟹ twin | `sink_is_twin` (Theorem 22.8) | **parity/distribution** — replaced by cleanliness + the threshold |
+| active edge | `clean_side_composite_big_divisor` (Lemma 22.6) | a large divisor $> A$ of a clean composite side |
+| twin sink above $N$ | `clean_twin_above` (Theorem 22.9) | pinning the sink to the scale |
+| strict descent | `active_descent_height` (Theorem 22.10) | $n < m$ on the active edge |
 
 The point of the chapter is not a new "proof of twins" but the **precise localisation of the inputs**. The two nodes
 that all the earlier prose carried as distributional — "is there a clean start high up" and "is a clean

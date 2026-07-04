@@ -29,8 +29,7 @@ must break off — and the break-off yields finite generation.
 
 This is exactly our prohibition: an infinite strictly descending chain of heights is a perpetual engine, and there is none.
 
-**Theorem** (`bsd_descent_has_no_engine`, 🟢). *On the real group of points `W.toAffine.Point` of an elliptic
-curve, the height descent has no perpetual engine: a chain of points strictly descending in height is impossible.*
+**Theorem 53.1** (`bsd_descent_has_no_engine`, 🟢). *On the real group of points `W.toAffine.Point` of an elliptic curve, the height descent has no perpetual engine: for every height descent model $M$ there is no `PerpetualEngine M.descentStep`, that is, no infinite chain of points strictly decreasing under a height function $h\colon W.\text{toAffine.Point}\to\mathbb{N}$ can exist.*
 
 "Why this is true." Height is an ℕ-rank, and rank imports the engine prohibition from the [universal
 form](00_Overview.md): `UniversalEngine.no_perpetual_engine_of_natRank`. The carrier here is the **genuine**
@@ -49,8 +48,7 @@ The parity of the rank is tied to the analytics: the parity conjecture asserts `
 the root number, the sign of the functional equation. And `(−1)^rank` is exactly the same rank-parity
 invariant that stands behind Riemann: the Liouville function `λ(n) = (−1)^Ω(n)`.
 
-**Theorem** (`bsd_parity_is_rankParity`, 🟢). *The parity of the rank `(−1)^r` coincides with Liouville's
-`(−1)^Ω`: for every `n` with `Ω(n) = r` we have `(−1)^r = λ(n)`.*
+**Theorem 53.2** (`bsd_parity_is_rankParity`, 🟢). *The parity of the rank coincides with Liouville's: for all $r, n \in \mathbb{N}$ with $n \neq 0$ and $\Omega(n) = r$ we have $(-1)^r = \lambda(n)$ in $\mathbb{Z}$.*
 
 "Why this is true." A direct bridge to `RiemannLiouville.liouville_eq_neg_one_pow_rank` — the same sign
 rule, the same flip when a prime factor is removed. BSD parity is not a new beast but our node, fitted
@@ -73,7 +71,7 @@ mathlib **already defines** the curve's `L`-function (`WeierstrassCurve.LSeries`
 and we honestly refer to it. But its analytic properties — continuation to `s=1`, the order of the zero, the
 functional equation — are proven nowhere.
 
-**Definition** (`WeakBSD`, 🔴). *`rank E(ℚ) = analytic rank` — an open input. We do not prove it.*
+**Definition 53.3** (`WeakBSD`, 🔴). *Open input: for an elliptic curve $W/K$ and natural numbers $\text{algRank},\, \text{aRank}$, the predicate $\mathrm{WeakBSD}(W,\text{algRank},\text{aRank})$ is $\mathrm{AnalyticRank}(W,\text{aRank}) \wedge \text{algRank} = \text{aRank}$. We do not prove it: it is a named input, not a theorem.*
 
 Humanity has covered only the edges: for analytic rank `≤ 1` (Gross–Zagier and Kolyvagin, via Heegner points and
 Euler systems) BSD is proven and Sha is finite; on average — over 66% of curves (Bhargava–Skinner–Zhang). For

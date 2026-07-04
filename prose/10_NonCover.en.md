@@ -25,7 +25,7 @@ The whole chapter is an examination of three lemmas, each elementary on its own,
 form a non-circular bridge from block combinatorics to the arithmetic goal of the programme. Let us
 fix the basic definitions we rely on (step 00).
 
-> **Note.** The index (center) form of a twin pair: a center $m$ defines a pair if both
+> **Definition 10.1** (twin center and `TwinLowers`). The index (center) form of a twin pair: a center $m$ defines a pair if both
 > neighbours of the sextuple are prime. Formally `IsTwinCenter`:
 > $$\mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.$$
 > The target set is the lower members of the pairs, `TwinLowers` $= \{\,p \mid p\ \text{and}\ p+2\ \text{prime}\,\}$;
@@ -49,13 +49,13 @@ finite set $\mathrm{bad}$ of "bad" centers — those that are certainly unfit (o
 $6m\pm1$ is composite, because some forbidding divisor has covered it). The only thing we need
 from the combinatorial core is a strict inequality of cardinalities.
 
-> **Definition (non-cover).** We say that `bad` *does not cover* `Ω` if
+> **Definition 10.2** (non-cover). We say that `bad` *does not cover* `Ω` if
 > $$|\mathrm{bad}| < |\Omega|.$$
 
-**Theorem** (`survivor_of_not_covered`). *If $|\mathrm{bad}| < |\Omega|$, then there exists
+**Theorem 10.3** (`survivor_of_not_covered`). *If $|\mathrm{bad}| < |\Omega|$, then there exists
 $m \in \Omega$ with $m \notin \mathrm{bad}$.*
 
-$$ |\mathrm{bad}| < |\Omega| \;\Longrightarrow\; \exists\, m \in \Omega,\; m \notin \mathrm{bad}. $$
+$$ |\mathrm{bad}| < |\Omega| \;\Longrightarrow\; \exists\, m \in \Omega,\; m \notin \mathrm{bad}. \tag{10.1}$$
 
 The proof is the pigeonhole principle in its purest form. By contradiction: if every $m \in \Omega$
 lay in $\mathrm{bad}$, then $\Omega \subseteq \mathrm{bad}$, whence by monotonicity of cardinality
@@ -79,11 +79,11 @@ The survivor $m \notin \mathrm{bad}$ is a center neither of whose sides was cove
 divisors *within the scale*. To turn "not covered" into "prime", one needs the classical fact:
 trial division up to the square root settles the question of primality.
 
-**Theorem** (`prime_of_no_small_prime_factor`). *Let $n \ge 2$ and suppose no prime $p$ with
+**Theorem 10.4** (`prime_of_no_small_prime_factor`). *Let $n \ge 2$ and suppose no prime $p$ with
 $p^2 \le n$ divides $n$. Then $n$ is prime.*
 
 $$ n \ge 2 \;\wedge\; \bigl(\forall p\ \text{prime},\; p^2 \le n \Rightarrow p \nmid n\bigr)
-\;\Longrightarrow\; n\ \text{prime}. $$
+\;\Longrightarrow\; n\ \text{prime}. \tag{10.2}$$
 
 The proof goes by contradiction via the minimal prime divisor `Nat.minFac`. If $n$ is composite, then
 $p := \mathrm{minFac}(n)$ is prime and divides $n$; by minimality $p \le n/p$, whence
@@ -98,15 +98,15 @@ $p^2 \le n$, contradicting the premise. The key step in Lean is `Nat.minFac_le_d
 
 Applying this to both sides of the center, we obtain the target implication **survivor $\Rightarrow$ twin**.
 
-**Theorem** (`isTwinCenter_of_root_sieve`). *If $6m-1 \ge 2$ and $6m+1 \ge 2$, and no prime up to
+**Theorem 10.5** (`isTwinCenter_of_root_sieve`). *If $6m-1 \ge 2$ and $6m+1 \ge 2$, and no prime up to
 the root divides the corresponding side, then $m$ is a twin center:*
 
 $$ \Bigl(\forall p\ \text{prime},\; p^2 \le 6m-1 \Rightarrow p \nmid (6m-1)\Bigr)
    \;\wedge\;
    \Bigl(\forall p\ \text{prime},\; p^2 \le 6m+1 \Rightarrow p \nmid (6m+1)\Bigr)
-   \;\Longrightarrow\; \mathrm{IsTwinCenter}(m). $$
+   \;\Longrightarrow\; \mathrm{IsTwinCenter}(m). \tag{10.3}$$
 
-The proof is simply a pair of appeals to `prime_of_no_small_prime_factor` for $6m-1$ and $6m+1$,
+The proof is simply a pair of appeals to Theorem 10.4 (`prime_of_no_small_prime_factor`) for $6m-1$ and $6m+1$,
 packaged into the conjunction `IsTwinCenter`. In substance this is exactly the claim "survivor means twin"
 from the title: if the sieve of the engine's active part has reached the root without felling either side, both
 sides are prime — and that is, by definition, a twin center.
@@ -123,11 +123,11 @@ sides are prime — and that is, by definition, a twin center.
 It remains to pass from "at every scale there is a twin center above $N$" to the unconditional
 infinitude of the set `TwinLowers`.
 
-**Theorem** (`infinite_of_unbounded_centers`). *If for every $N$ there is a center $m > N$ with
+**Theorem 10.6** (`infinite_of_unbounded_centers`). *If for every $N$ there is a center $m > N$ with
 $\mathrm{IsTwinCenter}(m)$, then `TwinLowers` is infinite:*
 
 $$ \bigl(\forall N,\ \exists m,\ N < m \wedge \mathrm{IsTwinCenter}(m)\bigr)
-   \;\Longrightarrow\; \texttt{TwinLowers.Infinite}. $$
+   \;\Longrightarrow\; \texttt{TwinLowers.Infinite}. \tag{10.4}$$
 
 The proof is order-theoretic, via `Set.infinite_of_not_bddAbove`: a set of natural numbers is
 infinite if and only if it is not bounded above. Unfolding `not_bddAbove_iff`,
@@ -149,8 +149,8 @@ $\mathrm{carrier}$ and $\mathrm{bad}$ such that all carrier centers lie above $N
 $|\mathrm{bad}| < |\mathrm{carrier}|$, and every carrier survivor is a twin center.
 
 Then
-`survivor_of_not_covered` yields a survivor $m$, the block condition makes it a twin center above $N$
-(this is `twin_center_of_block`), and `infinite_of_unbounded_centers` turns the arbitrariness of $N$ into
+Theorem 10.3 (`survivor_of_not_covered`) yields a survivor $m$, the block condition makes it a twin center above $N$
+(this is `twin_center_of_block`), and Theorem 10.6 (`infinite_of_unbounded_centers`) turns the arbitrariness of $N$ into
 `TwinLowers.Infinite`. This very assembly is `twin_prime_conjecture_of_blocks` — the subject of the
 next chapter.
 
@@ -161,7 +161,7 @@ next chapter.
 
 Let us state the open node explicitly.
 
-> **Conjecture (block non-cover, open).** At arbitrarily large scales $N$ there exists a
+> **Conjecture 10.7** (block non-cover, open). At arbitrarily large scales $N$ there exists a
 > carrier set of centers $\mathrm{carrier}$ above $N$ for which the set of "bad" centers
 > $\mathrm{bad}$ (those with one of the sides $6m\pm1$ having a divisor up to the root) is strictly smaller in
 > cardinality: $|\mathrm{bad}| < |\mathrm{carrier}|$.

@@ -126,6 +126,13 @@ golden angle): the centres *wind around a common origin*, twin-centres are golde
 screws around the centre instead of dispersing in straight rays — a vivid image of the inverted, inward-coiled
 self-similarity.*
 
+> **Generation algorithm (Figure 50.1).** Source: `tools/fractal/euclid_fractal.py::twin_spiral`.
+> For each centre $m = 1, \dots, M-1$ (default $M = 60000$) a point is placed on the golden spiral
+> $x = \sqrt{m}\,\cos(m\varphi)$, $y = \sqrt{m}\,\sin(m\varphi)$, where $\varphi = \pi(3-\sqrt5)$ is the
+> golden angle. A centre is marked as one-sided prime when $6m-1$ or $6m+1$ is prime (dim blue points),
+> and as a twin-centre when both sides $6m-1$ and $6m+1$ are prime (large golden points). The radius
+> $\sqrt{m}$ gives uniform density per unit area; the colour is fixed per class.
+
 And this is no ornament but the geometric twin of the main prohibition. A classical, "outward-running"
 fractal has trajectories that slip away outward forever — the Mandelbrot set is defined exactly that way:
 by what does *not* escape.
@@ -238,6 +245,17 @@ peel-descent `6k∓1 = p·(6t±1)`, coloured by the Euclid prime `p` of the step
 this arrow of time. The golden dots are twin-centres (empty genealogy). Everything flows down to the bottom, nothing
 returns — the irreversibility `engine_never_returns` on the real pattern of descent.*
 
+> **Generation algorithm (Figure 50.2).** Source: `tools/fractal/euclid_cosmology.py::observer_horizon`
+> ($M = 9000$, $\mathrm{PMAX} = 97$, $\mathrm{DEPTH} = 9$). Centre $k$ is placed on a golden spiral by
+> radius-height $r = \sqrt{k/M}$ and angle $k\varphi$ ($\varphi$ the golden angle): small $k$ near the
+> centre (the observer), large $k$ on the periphery. The full old-peel genealogy of each centre is built
+> by the step $6k\mp1 = p\cdot(6t\pm1)$ (smallest prime divisor $p \in [5, 97]$ of the composite side,
+> $t < k$), iterated to depth $9$. Each step $k \to t$ is drawn as a quadratic Bézier with control point
+> $\tfrac{1}{2}(P_k + P_t)\cdot 0{.}72$ pulled toward the origin (the arc dives inward); colour by
+> $\log p$ (turbo palette). Orange arrows are placed on real first steps with $r > 0{.}30$ and point from
+> $k$ to $t$ (inward). The dashed circles of radius $0{.}66$ and $0{.}34$ are the event horizon; golden
+> dots are twin-centres.
+
 > **Note (the verified skeleton of the conjecture — M6, 🟢).** One support under this picture is nonetheless rigorous,
 > and it is worth separating from the metaphor. If the arrow of time decreases **uniformly** (the instantaneous rate
 > stays below a single threshold `β > 0`), then from the finite "fuel" `H 0` it must reach the bottom in finite
@@ -265,6 +283,16 @@ The coloured arcs are genuine steps of the peel-genealogy as segments of great c
 small centres sit near the `0`-pole, large ones near the observer-pole, so the fractal issues from the point `0`
 and spreads over the whole surface, funnelling back toward the origin. The golden dots are twin-centres;
 the orange meridian-arrows are the generative direction of time from `0` to the observer.*
+
+> **Generation algorithm (Figure 50.3).** Source: `tools/fractal/euclid_cosmology.py::time_sphere`
+> ($M = 7000$, $\mathrm{PMAX} = 97$, $\mathrm{DEPTH} = 9$). Centre $k$ maps to a unit vector on the sphere:
+> height $z = -1 + 2(k-1)/(M-1)$ (so $k=1$ is at the `0`-pole, $z=-1$; $k=M$ at the observer-pole,
+> $z=+1$), longitude $k\varphi$ by the golden angle, $\rho = \sqrt{1-z^2}$. The full old-peel genealogy
+> $6k\mp1 = p\cdot(6t\pm1)$ (depth $9$) is drawn as great-circle arcs (spherical slerp between $V_k$ and
+> $V_t$); front-hemisphere arcs are bright, back-hemisphere faint; colour by $\log p$ (turbo). The
+> projection is a $20°$ rotation about the $x$-axis. Orange meridian arrows mark the generative direction
+> of time from the `0`-pole to the observer-pole; golden dots are twin-centres; the two poles are labelled
+> "observer (now)" and "start of time · singularity 0".
 
 Let us repeat the boundary without evasion: only the irreversibility of time and the curvature of
 space are rigorously proven here (plus the verified M6 fork above). Mass-as-depth, light-along-curves, shadow-as-lack
@@ -297,15 +325,22 @@ The skeleton is this. We have now defined the perpetual engine not on the twins 
 relation: this is `PerpetualEngine` — an infinite strictly descending chain, wherever it may live
 (`Engine/UniversalEngine.lean`). And its impossibility turns out to be *intrinsic*, independent of the
 space: the definition of the engine is infinite descent, and well-foundedness is exactly the prohibition of
-such descent. That is why `no_perpetual_engine_of_wellFounded` is almost tautological — the engine is impossible
+such descent. That is why the following statement is almost tautological — the engine is impossible
 where it contradicts itself.
 
-**Theorem** (`no_perpetual_engine_of_rank`, 🟢). *If a space has a rank into any
-well-founded one — for instance, a height into the number line `ℕ` — then an engine in it is impossible.*
+**Theorem 50.1** (`no_perpetual_engine_of_wellFounded`). *Let `r` be a relation on a set `α`. If `r`
+is well-founded, then it carries no perpetual engine: there is no sequence `f : ℕ → α` with
+`r (f (n+1)) (f n)` for all `n`. (🟢)*
+
+**Theorem 50.2** (`no_perpetual_engine_of_rank`). *Let `r` be a relation on `α`, and let `ρ : α → β`
+be a rank valued in a well-founded `(β, s)` such that every engine step strictly lowers the rank:
+`r x y → s (ρ x) (ρ y)`. Then `r` carries no perpetual engine. In particular, a strictly decreasing
+rank into the number line `ℕ` (a height) forbids the engine. (🟢)*
 
 From here comes a simple but strong corollary: all seven masks are **one theorem**. The heights of the twins, the Liouville
 rank, the quantised Hodge charge, the Yang–Mills ladder, the shells of the dyadic cascade — all of them are
-ℕ-valued, and the engine prohibition transfers to each by one and the same transfer.
+ℕ-valued, and the engine prohibition transfers to each by one and the same transfer of Theorem 50.2
+(`no_perpetual_engine_of_rank`).
 
 **Conclusion.** We did not prove seven times; we proved once and transferred.
 
@@ -371,6 +406,14 @@ exactly as much as we have honestly laid upon it. The rest is open, and that too
 as chords on the circle of centres (colour — the Euclid prime of the step). All threads pull inward, toward the centres — a pattern
 of return, not of dispersal. The yellow dots on the rim are twin-centres with empty genealogy: those whose descent
 breaks off at once. It is precisely their infinitude that is the open line held by the first cause.*
+
+> **Generation algorithm (Figure 50.4).** Source: `tools/fractal/euclid_fractal.py::genealogy_ornament`
+> ($M = 4200$, $\mathrm{PMAX} = 97$, $\mathrm{DEPTH} = 10$). Centres $1, \dots, M$ sit on the unit circle
+> at angle $2\pi m/M$. For each centre the full old-peel genealogy $m \to t_1 \to t_2 \to \cdots$ (to depth
+> $10$) is built by the step $6k\mp1 = p\cdot(6t\pm1)$: each step is a Bézier chord with control point
+> $\tfrac12(P_a+P_b)\cdot(1 - 0{.}92\min(2\,\Delta\theta,1))$, where $\Delta\theta = |a-b|/M$ (long chords
+> dive deeper toward the centre); colour by $\log p$ (turbo). Twin-centres (empty genealogy) sit on the rim
+> as golden points.
 
 <!--navbot-->
 

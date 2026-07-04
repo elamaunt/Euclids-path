@@ -20,6 +20,8 @@ very self-similar generating function from which the four-corner grows. The self
 *contracting*, not diverging: the pattern repeats on ever finer scales as one moves toward the
 centre, rather than branching outward (more in the [coda, chapter 50](50_Coda.md)).*
 
+> **Generation algorithm (Figure 13.1).** Source: `tools/fractal/euclid_fractal.py::rank_field`. Parameters $A=60$, $W=900$; the prime layer is $\{p:\ A<p\le A^2\}$. For each centre index $m\in\{0,\dots,W^2-1\}$ two ranks are counted: $r_-(m)$, the number of layer primes dividing the lower side $6m-1$, and $r_+(m)$, the upper side $6m+1$. Technically, for each $p$ the congruence $6m\equiv\pm1\pmod p$ is solved: the inverse $6^{-1}\bmod p$ gives the root $r\equiv\pm 6^{-1}\pmod p$, the start offset $(r-1)\bmod p$, and a unit is added to every $p$-th position of the array $r_\mp$. The "charge" $r_-(m)-r_+(m)$ is imaged; the length-$W^2$ vector is reshaped into a $W\times W$ matrix (row $=\lfloor m/W\rfloor$, column $=m\bmod W$) and drawn as an image with the diverging *twilight-shifted* palette (negative and positive charge at opposite ends, zero at the centre), lower origin.
+
 ## The fractal generating function of rank
 
 We begin with an observation about the structure of rank (on rank as the "height" of a state — see the [glossary](GLOSSARY.md)). By the rank of a centre $m$ we mean the pair $(r_-,r_+)$, where $r_-$ is the number of prime divisors of the lower side $6m-1$, and $r_+$ of the upper side $6m+1$ (within the layer $A$ under consideration). Each prime $p$ of the layer contributes to the rank *independently* by CRT, and its contribution obeys two structural laws that we established earlier.
@@ -41,7 +43,7 @@ $$
 
 The key **self-similarity**: the factor $G_p$ depends on $x$ and $y$ only through the symmetric combination, so the product $G(x,y)$ is a function of a single variable $s=x+y$. In the equilibrium (homogeneous) model, where all $n$ primes of the layer share a common weight $w$ and a common constant term normalised to one, this gives
 $$
-G(x,y)\;=\;\prod_{k=1}^{n}\bigl(1 + w(x+y)\bigr)\;=\;\bigl(1+w\,s\bigr)^{n},\qquad s=x+y.
+G(x,y)\;=\;\prod_{k=1}^{n}\bigl(1 + w(x+y)\bigr)\;=\;\bigl(1+w\,s\bigr)^{n},\qquad s=x+y.\tag{13.1}
 $$
 The expansion in $s$ is the Maclaurin binomial:
 $$
@@ -70,25 +72,25 @@ $$
 $$
 and after cancelling $w^6$ — a purely binomial inequality:
 $$
-\boxed{\,20\,\binom{n}{6}\le\binom{n}{3}^2\,.}
+\boxed{\,20\,\binom{n}{6}\le\binom{n}{3}^2\,.}\tag{13.2}
 $$
 
 ## The binomial four-corner: `four_corner_binom`
 
-**Definition (model four-corner).** By the model four-corner we mean the inequality
+**Definition 13.1** (model four-corner). By the model four-corner we mean the inequality
 $$
 20\,\binom{n}{6}\le\binom{n}{3}^2\qquad\text{for all }n\in\mathbb N,
 $$
 understood over $\mathbb N$ (for $n<6$ the left-hand side is trivially zero).
 
-It is proven as `four_corner_binom`:
+**Theorem 13.2** (`four_corner_binom`). 🟢 For all $n\in\mathbb N$, $20\,\binom{n}{6}\le\binom{n}{3}^2$.
 ```
 theorem four_corner_binom (n : ℕ) : 20 * n.choose 6 ≤ (n.choose 3) ^ 2
 ```
 
 The proof is elementary and rests on the **"choice-within-choice" identity**. In Mathlib this is `Nat.choose_mul`:
 $$
-\binom{n}{6}\binom{6}{3}=\binom{n}{3}\binom{n-3}{3}.
+\binom{n}{6}\binom{6}{3}=\binom{n}{3}\binom{n-3}{3}.\tag{13.3}
 $$
 On the left we choose $6$ primes out of $n$, then $3$ of those six (for the upper side); on the right, we choose $3$ out of $n$ straight away, then $3$ more out of the remaining $n-3$. Both ways count the same thing — an ordered pair of disjoint triples — hence they are equal. Substituting $\binom{6}{3}=20$ (`decide` in Lean) and $6-3=3$, we obtain
 $$
@@ -109,18 +111,22 @@ In Lean the step `_ ≤ _` is closed by the tactic `gcongr` (monotonicity of mul
 
 ## The model four-corner in the original coordinates: `model_four_corner`
 
-So as not to lose contact with the rank counts (in which the weight $w$ remains), the same inequality is also proven before the cancellation of $w^6$, as `model_four_corner`:
+So as not to lose contact with the rank counts (in which the weight $w$ remains), the same inequality is also proven before the cancellation of $w^6$, as `model_four_corner`.
+
+**Theorem 13.3** (`model_four_corner`). 🟢 For all $n,w\in\mathbb N$, $1\cdot\bigl(20\,\binom{n}{6}w^6\bigr)\le\bigl(\binom{n}{3}w^3\bigr)\bigl(\binom{n}{3}w^3\bigr)$.
 ```
 theorem model_four_corner (n w : ℕ) :
     1 * (20 * n.choose 6 * w ^ 6) ≤ (n.choose 3 * w ^ 3) * (n.choose 3 * w ^ 3)
 ```
-Here the left-hand side is $N_{00}\cdot N_{33}$, the right-hand side $N_{03}\cdot N_{30}$, literally in the form of the model counts. The proof is a direct consequence of `four_corner_binom`: we multiply the inequality $20\binom{n}{6}\le\binom{n}{3}^2$ by $w^6\ge0$ (again `gcongr`) and regroup the factors (`ring`).
+Here the left-hand side is $N_{00}\cdot N_{33}$, the right-hand side $N_{03}\cdot N_{30}$, literally in the form of the model counts. The proof is a direct consequence of Theorem 13.2 (`four_corner_binom`): we multiply the inequality $20\binom{n}{6}\le\binom{n}{3}^2$ by $w^6\ge0$ (again `gcongr`) and regroup the factors (`ring`).
 
 **Conclusion.** Substantively, this confirms that the weight $w$ is a common positive factor which does not affect the *direction* of the four-corner; the sign is carried exclusively by the binomial part.
 
 ## Strict positivity and the unreachable singularity: `four_corner_binom_strict`
 
-The inequality $20\binom{n}{6}\le\binom{n}{3}^2$ is non-strict, and equality is indeed attained — but only in the degenerate cases $n\le6$, where the left-hand side vanishes. The substantive question is whether the inequality is strict on a *non-trivial* layer, where the ranks can genuinely reach three on both sides, that is, for $n\ge7$. The answer is yes — `four_corner_binom_strict`:
+The inequality $20\binom{n}{6}\le\binom{n}{3}^2$ is non-strict, and equality is indeed attained — but only in the degenerate cases $n\le6$, where the left-hand side vanishes. The substantive question is whether the inequality is strict on a *non-trivial* layer, where the ranks can genuinely reach three on both sides, that is, for $n\ge7$. The answer is yes — `four_corner_binom_strict`.
+
+**Theorem 13.4** (`four_corner_binom_strict`). 🟢 For $7\le n$ the strict inequality $20\,\binom{n}{6}<\binom{n}{3}^2$ holds.
 ```
 theorem four_corner_binom_strict {n : ℕ} (hn : 7 ≤ n) :
     20 * n.choose 6 < (n.choose 3) ^ 2

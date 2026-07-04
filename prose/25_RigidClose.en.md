@@ -26,7 +26,7 @@ This chapter formalizes that observation as an abstract "rigid" graph with a hei
 
 Let us abstract away from the arithmetic. All that the descent mechanism needs is a height, a transition relation, and a sink predicate.
 
-> **Definition (`HeightGraph`).** A rigid graph with a height over a type of states $\sigma$ is a triple
+> **Definition 25.1** (`HeightGraph`). A rigid graph with a height over a type of states $\sigma$ is a triple
 > $$G = \bigl(\mathrm{height} : \sigma \to \mathbb{N},\; \mathrm{Twin} : \sigma \to \mathrm{Prop},\; \mathrm{Step} : \sigma \to \sigma \to \mathrm{Prop}\bigr),$$
 > subject to a single axiom of strict fall:
 > $$\forall\, s\, t,\quad \mathrm{Step}\,s\,t \;\Longrightarrow\; \mathrm{height}\,t < \mathrm{height}\,s.$$
@@ -35,7 +35,7 @@ In Lean this is the structure `HeightGraph` with the field `step_drops : ∀ {s 
 
 The single substantive input to the construction we isolate as a separate property.
 
-> **Definition (`Regenerates`).** The graph $G$ **regenerates** if every non-twin state has a descending successor:
+> **Definition 25.2** (`Regenerates`). The graph $G$ **regenerates** if every non-twin state has a descending successor:
 > $$\mathrm{Regenerates}(G) \;:\equiv\; \forall\, s,\; \neg\,\mathrm{Twin}\,s \;\Longrightarrow\; \exists\, t,\; \mathrm{Step}\,s\,t.$$
 
 In Lean this is `def Regenerates (G : HeightGraph σ) : Prop`. Note the asymmetry of the burden: the axiom `step_drops` about the height falling comes "for free" with the structure itself (it is built into the definition of an edge), whereas `Regenerates` is the only property that will have to be proven in the application.
@@ -46,7 +46,7 @@ The entire theorem to come lives over these two givens and demands nothing more.
 
 Now the chapter's central statement.
 
-> **Theorem (`reaches_twin`).** If $G$ regenerates, then a twin is reached from any start:
+> **Theorem 25.3** (`reaches_twin`). If $G$ regenerates, then a twin is reached from any start:
 > $$\mathrm{Regenerates}(G) \;\Longrightarrow\; \forall\, s : \sigma,\; \exists\, t,\; \mathrm{Twin}\,t.$$
 
 Let us take apart what is proven here and *why* it goes this way. The proof is strong induction on the height of the start (`Nat.strong_induction_on`). The auxiliary statement:
@@ -66,7 +66,7 @@ The rigidity of the graph — the fact that *every* step strictly drops the heig
 
 The same well-foundedness we also record in an explicit, "graph-theoretic" form — as a direct replacement of the old rigid cycle.
 
-> **Theorem (`no_cycle`).** In a graph with strictly decreasing height, a directed cycle does not exist. More precisely, for any chain $z : \mathbb{N} \to \sigma$
+> **Theorem 25.4** (`no_cycle`). In a graph with strictly decreasing height, a directed cycle does not exist. More precisely, for any chain $z : \mathbb{N} \to \sigma$
 > $$\bigl(\forall\, k,\; \mathrm{Step}\,(z\,k)\,(z\,(k{+}1))\bigr) \;\Longrightarrow\; \bot.$$
 
 The proof is one line: from the chain $z$ we obtain the sequence of heights $k \mapsto \mathrm{height}\,(z\,k)$, which by `step_drops` strictly decreases at every step, and `OldPeel.old_peel_terminates` (the same core as `no_infinite_engine_descent` from [19 old-peel]) asserts that a strictly descending infinite chain in $\mathbb{N}$ does not exist. That is, `no_cycle` is a repackaging of an already-proven impossibility of the engine: we do not prove it anew, we point out that "an infinite $\mathrm{Step}$-chain" is a special case of "infinite strict descent".
@@ -77,7 +77,7 @@ The proof is one line: from the chain $z$ we obtain the sequence of heights $k \
 
 One thing remains: to show that the abstract edge `Step` is, in the arithmetic application, actually **constructed**, not postulated. This is exactly where a hole used to hide — from "a divisor $q$ exists" it does not follow automatically that the quotient is a *valid smaller center* of the required form $6t'+\eta'$. This construction we prove by algebra.
 
-> **Theorem (`cofactor_is_center`).** Let $t,q,\eta \in \mathbb{Z}$, with $t \ge 1$, $\eta \in \{+1,-1\}$, a prime divisor $q \ge 5$ coprime to $6$ (that is, $q \bmod 6 \in \{1,5\}$) and $q \mid 6t+\eta$. Then there exist $t',\eta'$ such that
+> **Theorem 25.5** (`cofactor_is_center`). Let $t,q,\eta \in \mathbb{Z}$, with $t \ge 1$, $\eta \in \{+1,-1\}$, a prime divisor $q \ge 5$ coprime to $6$ (that is, $q \bmod 6 \in \{1,5\}$) and $q \mid 6t+\eta$. Then there exist $t',\eta'$ such that
 > $$\eta' \in \{+1,-1\},\qquad 6t'+\eta' = \frac{6t+\eta}{q},\qquad 0 \le t' \;<\; t.$$
 
 This is the chapter's key substantive lemma: it turns divisibility into a **state**. Let us see why the conclusion has exactly this shape.
@@ -103,28 +103,28 @@ Let us take stock of what is proven and what is open. The regeneration dichotomy
 Here it is important to draw an honest line.
 
 - **The fall of the height $t'<t$ is proven** separately in both cases: `active_descent_height` (composite side) and `old_peel_height_drop` (old-peel).
-- **The center form $6t'+\eta'$ is proven** exactly now — by the theorem `cofactor_is_center`. It is this theorem that closes the nontrivial passage "a divisor $q\mid 6t+\eta$" $\Rightarrow$ "there exists a center $t'$ of the form $6t'+\eta'$", which does not follow from divisibility alone automatically (the cofactor could have been a multiple of $2$ or $3$ — the lemma shows that it cannot).
+- **The center form $6t'+\eta'$ is proven** exactly now — by Theorem 25.5 (`cofactor_is_center`). It is this theorem that closes the nontrivial passage "a divisor $q\mid 6t+\eta$" $\Rightarrow$ "there exists a center $t'$ of the form $6t'+\eta'$", which does not follow from divisibility alone automatically (the cofactor could have been a multiple of $2$ or $3$ — the lemma shows that it cannot).
 
 With that in place we record the remaining input — in the house sense: an honestly named unproven link (see the [glossary](GLOSSARY.md)) — as an **honest reduction**, not passed off as a proof:
 
-> **Theorem (`regenerates_needs_target_center`).** If for every non-twin center a downward edge is built, then the graph regenerates:
+> **Theorem 25.6** (`regenerates_needs_target_center`). If for every non-twin center a downward edge is built, then the graph regenerates:
 > $$\bigl(\forall\, t,\; \neg\,\mathrm{Twin}\,t \Rightarrow \exists\, t',\; \mathrm{Step}\,t\,t'\bigr) \;\Longrightarrow\; \mathrm{Regenerates}(G).$$
 
 This theorem is tautological by construction (in Lean its body is simply `build_target`), and that is precisely its value: it **explicitly names the single remaining constructive input**. Not "there is a hole somewhere", but exactly: what is needed is that for every non-twin center the divisor produce a valid smaller center.
 
-Half of this input — the form and the fall — we have already closed (`cofactor_is_center` plus the height-drop lemmas); what remains is to assemble this into a single `build_target` over the full dichotomy, that is, to make sure the dichotomy really delivers a divisor in *all* non-twin cases with no unclassifiable terminal.
+Half of this input — the form and the fall — we have already closed (Theorem 25.5 (`cofactor_is_center`) plus the height-drop lemmas); what remains is to assemble this into a single `build_target` over the full dichotomy, that is, to make sure the dichotomy really delivers a divisor in *all* non-twin cases with no unclassifiable terminal.
 
 > **Hypothesis and closure plan.** Hypothesis: for every non-twin center $t$ the dichotomy (`regeneration_dichotomy`) delivers either an old-peel divisor $q\ge5$, $q\mid 6t\pm1$, or a composite side with a large divisor — that is, in either case there exists a $q$ to which `cofactor_is_center` applies.
 >
-> Plan: (i) from `not_oldfree_gives_peel` extract $q$ in the case $t\notin\Omega_A$; (ii) from `composite_oldfree_has_big_divisor` — in the active case; (iii) apply `cofactor_is_center` to each $q$, obtaining $\mathrm{Step}\,t\,t'$; (iv) plug the result as `build_target` into `regenerates_needs_target_center` and, via `reaches_twin`, close onto the existence of a twin.
+> Plan: (i) from `not_oldfree_gives_peel` extract $q$ in the case $t\notin\Omega_A$; (ii) from `composite_oldfree_has_big_divisor` — in the active case; (iii) apply Theorem 25.5 (`cofactor_is_center`) to each $q$, obtaining $\mathrm{Step}\,t\,t'$; (iv) plug the result as `build_target` into Theorem 25.6 (`regenerates_needs_target_center`) and, via Theorem 25.3 (`reaches_twin`), close onto the existence of a twin.
 >
 > The node that remains genuinely open here is not the arithmetic of the edge (that is built), but the **completeness of the dichotomy on the required set of centers**: that fan-in/Hall does not introduce a hidden unclassifiable class. It is this input that moves on to the next chapter.
 
 ## Where we are now and the bridge onward
 
-**Chapter takeaway.** Strict fall of the height makes the cycle logically superfluous. We replaced the chain "no sinks ⟹ directed cycle ⟹ rigid engine ⟹ ⊥" with a direct strong induction on the height (`reaches_twin`), and kept the impossibility of a cycle only as a repackaging of the already-proven well-foundedness (`no_cycle`). The engine branch and the rigid signature as separate inputs are gone.
+**Chapter takeaway.** Strict fall of the height makes the cycle logically superfluous. We replaced the chain "no sinks ⟹ directed cycle ⟹ rigid engine ⟹ ⊥" with a direct strong induction on the height (Theorem 25.3 (`reaches_twin`)), and kept the impossibility of a cycle only as a repackaging of the already-proven well-foundedness (Theorem 25.4 (`no_cycle`)). The engine branch and the rigid signature as separate inputs are gone.
 
-Moreover, the single arithmetically nontrivial link — that the divisor produces a *valid* smaller center — is now proven by algebra (`cofactor_is_center`, 100% on 307010 cases), and the remaining input is honestly localized in one tautological reduction, `regenerates_needs_target_center`.
+Moreover, the single arithmetically nontrivial link — that the divisor produces a *valid* smaller center — is now proven by algebra (Theorem 25.5 (`cofactor_is_center`), 100% on 307010 cases), and the remaining input is honestly localized in one tautological reduction, Theorem 25.6 (`regenerates_needs_target_center`).
 
 What remains unclosed we have named explicitly: the completeness of the dichotomy, that is, the absence of an unclassifiable terminal at carrier-scale. This is no longer a question about the edge of a single center, but a question about the *set of ancestries* converging into a bounded set of centers — that very fan-in/Hall.
 

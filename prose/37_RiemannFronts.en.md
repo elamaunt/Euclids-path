@@ -25,7 +25,8 @@ honesty criterion provably wrong — and, in the remainder, two live inputs.
 
 ## Input No. 1 closed: the trivial zeros
 
-**`trivialBelowZeroClassification`** 🟢: every zero of $\zeta$ with $\mathrm{Re}\,s \le 0$ equals $-2(n+1)$.
+**Theorem 37.1** (`trivialBelowZeroClassification`) 🟢. Every zero of $\zeta$ with $\mathrm{Re}\,s \le 0$ is a trivial zero:
+$$\forall s \in \mathbb{C},\quad \zeta(s) = 0 \wedge \mathrm{Re}\,s \le 0 \;\Rightarrow\; \exists n \in \mathbb{N},\; s = -2(n+1). \tag{37.1}$$
 The route comes entirely from mathlib: $s=0$ is excluded (`riemannZeta_zero` $= -1/2$); for $s \ne 0$ the functional
 equation `riemannZeta_one_sub` at the point $w = 1-s$ (where $\mathrm{Re}\,w \ge 1$), the nontrivial factors
 are nonzero (`riemannZeta_ne_zero_of_one_le_re`, `Gamma_ne_zero_of_re_pos`, `cpow_ne_zero`), so it is
@@ -70,7 +71,11 @@ is discharged for free (`trivialVisibility`: the pair $\langle 0,1\rangle$ for a
 "cancellation + pairing" was false: the pairing side carried no weight.
 
 The honest remainder is
-**`wall_relevant`** / **`wall_global`** 🟢: for any system usable downstream (jump-free),
+
+**Theorem 37.2** (`wall_relevant` / `wall_global`) 🟢. For any jump-free system $S$ (no twin-carrier jump) with a pairing $P$, there is no Liouville violation:
+$$\lnot\,\mathrm{TwinCarrierEnergyJump}(S) \wedge \mathrm{TwinCarrierPairing}(P,S) \;\Rightarrow\; \lnot\,\mathrm{LiouvilleViolation}. \tag{37.2}$$
+
+That is, for any system usable downstream (jump-free),
 pairing is exactly $\lnot$`LiouvilleViolation`, i.e. the wall of route No. 8 is the RH-strength bound on $L$ itself.
 Nothing is lost except an illusion: RH is not proven, the wrapper is cracked open, and the target demands a reformulation
 tied to the violation.
@@ -79,12 +84,14 @@ tied to the violation.
 
 Live input No. 1 (the bridge) is decomposed into `TwoTransportLaw` — a non-opaque replacement for `EngineBridge` in which all
 paid-dynamics obligations are exposed as fields. The machine honesty of the concrete layer is merciless:
-**`no_coherent_twoTransportLaw`** 🟢 — a coherent law (`CoherentLaw`: the law's universe coincides
-with the universe of its paid dynamics) for a real zero is empty, since it would build a factory, and a factory
-is unconditionally empty (the engine-killer).
+**Theorem 37.3** (`no_coherent_twoTransportLaw`) 🟢. For any off-critical zero $Z$ a coherent law is impossible (`CoherentLaw`: the law's universe coincides with the universe of its paid dynamics):
+$$\forall Z,\; \forall\, T : \mathrm{TwoTransportLaw}(Z),\quad \mathrm{CoherentLaw}(T) \;\Rightarrow\; \bot, \tag{37.3}$$
+since $T$ would build a factory, and a factory is unconditionally empty (the engine-killer).
 
-And the main point, **`coherentTwoTransportBridge_iff_RH`** 🟢 — a coherent
-two-transport bridge ⟺ RH *verbatim*. The decomposition is a map of obligations, not a non-circular path;
+And the main point,
+
+**Theorem 37.4** (`coherentTwoTransportBridge_iff_RH`) 🟢. A coherent two-transport bridge is equivalent to RH *verbatim*:
+$$\mathrm{CoherentTwoTransportBridge} \;\Longleftrightarrow\; \mathrm{RiemannHypothesis}. \tag{37.4}$$ The decomposition is a map of obligations, not a non-circular path;
 the audit gates `zero_anchored`/`non_circular` are free (`regateTrivially` regates them into `True`) —
 markers, not checks.
 
@@ -95,12 +102,14 @@ the twin-layer identity $qrs = abv + 2$ (`natGap_eq_two`: the gap is exactly 2).
 
 But the integration audit
 showed that here too the tie to the zero is not yet load-bearing: `trivialAtom` ($3 = 1 + 2$) exists for free, and
-**`law_iff_admissibleAtom`** 🟢 — the inhabitedness of the law at a given $Z$ ⟺ the Z-*independent* question
-`AdmissibleAtomExists`.
+**Theorem 37.5** (`law_iff_admissibleAtom`) 🟢. The inhabitedness of the arithmetic two-transport law at a given $Z$ is equivalent to the $Z$-*independent* question `AdmissibleAtomExists`:
+$$\forall Z,\quad \mathrm{Nonempty}\big(\mathrm{ArithmeticTwoTransportLaw}(Z)\big) \;\Longleftrightarrow\; \mathrm{AdmissibleAtomExists}. \tag{37.5}$$
 
 Both inputs of the front — `bridge_iff` and `impossible_iff` — are one and the same
 arithmetic question, split by polarity under the zero hypothesis, and
-**`front_pair_iff_no_zero`** 🟢: the pair of inputs is jointly satisfiable ⟺ there are no zeros. The circularity
+
+**Theorem 37.6** (`front_pair_iff_no_zero`) 🟢. The pair of inputs (bridge and impossibility) is jointly satisfiable if and only if there are no zeros:
+$$\big(\mathrm{ArithmeticTwoTransportBridge} \wedge \mathrm{ArithmeticTwoTransportImpossible}\big) \;\Longleftrightarrow\; \lnot\,\mathrm{Nonempty}(\mathrm{OffCriticalZero}). \tag{37.6}$$ The circularity
 persists as long as the anchor is free. The assembly with genuine extraction from the repository
 (`RH_of_concreteArithmeticFront`) is ready — but there is nothing to feed it yet.
 
@@ -109,9 +118,9 @@ persists as long as the anchor is free. The assembly with genuine extraction fro
 The next layer (`RiemannSpectralAnchorAudit`) formalizes the exposed collapse itself (`FreeLawCollapse`;
 the splice `concrete_freeLawCollapse`: my `law_iff_admissibleAtom` is precisely the free collapse of the concrete
 route) and proves a subtle negative result:
-**`propLevel_nonvacuity_incompatible_with_bridge`** 🟢 — a Prop-level criterion "the law never
-collapses into a Z-independent statement" is incompatible with the bridge itself (a proven bridge collapses
-the law into `True`).
+**Theorem 37.7** (`propLevel_nonvacuity_incompatible_with_bridge`) 🟢. A Prop-level criterion "the law never collapses into a $Z$-independent statement" is incompatible with the bridge itself:
+$$\big(\forall P : \mathrm{Prop},\; \lnot\,\mathrm{PropFreeCollapse}(\mathrm{Law}, P)\big) \wedge \mathrm{PropBridge}(\mathrm{Law}) \;\Rightarrow\; \bot, \tag{37.7}$$
+since a proven bridge collapses the law into `True`.
 
 The honesty criterion must live at the level of *data* — that is, be a data anchor, an anchor in data:
 a real object tying the propositional law to the genuine problem
@@ -130,8 +139,11 @@ The series `RiemannLayerBoxFront` (25 bricks) and `RiemannTerminalRankFront` (18
 massive delivery, and here the assembly-audit flags matter more than the volume.
 
 The arithmetic actually proven consists of
-mod-6 residue facts: **`no_identity_with_residues_555_111_plus_two`** 🟢 (the polarity
-$q,r,s \equiv 5$, $a,b,v \equiv 1 \pmod 6$ is incompatible with $qrs = abv+2$: residue 5 on the left, 3 on the right),
+mod-6 residue facts:
+
+**Theorem 37.8** (`no_identity_with_residues_555_111_plus_two`) 🟢. The polarity $q,r,s \equiv 5$, $a,b,v \equiv 1 \pmod 6$ is incompatible with the twin-layer identity:
+$$q,r,s \equiv 5 \pmod 6 \;\wedge\; a,b,v \equiv 1 \pmod 6 \;\wedge\; qrs = abv + 2 \;\Rightarrow\; \bot \tag{37.8}$$
+(residue $qrs \equiv 5$ on the left, $abv+2 \equiv 3 \pmod 6$ on the right),
 `tuple555_111_unbalanced_mod6`, `tuple511_511_balanced_mod6` (kernel-checked `decide`;
 `native_decide` has been thrown out of the bricks — trust in `ofReduceBool` is not introduced), plus generic
 well-founded descent / finite-cover assemblies.

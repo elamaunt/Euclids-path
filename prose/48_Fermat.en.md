@@ -36,7 +36,7 @@ For the first time in the programme, refusal by the sign of the heuristic become
 
 Mersenne lived on the plus side: $2^p - 1 = 6m + 1$ ([34](34_MersenneBranch.md)). Fermat lives exactly opposite.
 
-**Theorem** (`six_mul_fermatCenter`, 🟢). *For $k \ge 1$ the division at the centre $c_k = (F_k + 1)/6$ is exact:*
+**Theorem 48.1** (`six_mul_fermatCenter`, 🟢). *For $k \ge 1$ the division at the centre $c_k = (F_k + 1)/6$ is exact:*
 $\;6\,c_k = F_k + 1$, *that is,* $F_k = 6\,c_k - 1$ — *a Fermat number is the* minus *side of the centre, the lower
 member of the pair.*
 
@@ -58,7 +58,7 @@ twins, and not a word about Fermat primes follows from the twin conjecture.
 Mersenne's centres grew linearly, base-4 repunits $m \to 4m + 1$; the five-adic chain of
 [24](24_BoundaryDecomp.md) had $c \to 5c + 1$. Fermat breaks even this linearity.
 
-**Theorem** (`fermatCenter_chain`, 🟢). *The chain of centres is* quadratic: $c_{k+1} = 6\,c_k^2 - 4\,c_k + 1$,
+**Theorem 48.2** (`fermatCenter_chain`, 🟢). *The chain of centres is* quadratic: $c_{k+1} = 6\,c_k^2 - 4\,c_k + 1$,
 *written without subtraction as* $c_{k+1} + 4\,c_k = 6\,c_k^2 + 1$.
 
 **Why this is true.** The mathlib recurrence $F_{k+1} = (F_k - 1)^2 + 1$, translated through $6c = F + 1$,
@@ -71,7 +71,7 @@ factor, sides do not map onto sides.
 
 There is nothing to forge — the chain can grow (`fermatCenter_strictMono_from_one` 🟢), but it cannot saw.
 
-**Theorem** (`isEmpty_properCenterPeel_three_one`, 🟢). *The chain step $3 \to 1$ carries no proper peel
+**Theorem 48.3** (`isEmpty_properCenterPeel_three_one`, 🟢). *The chain step $3 \to 1$ carries no proper peel
 at any scale.*
 
 **Why this is true.** Everything is visible with bare hands already at the first step, just as with Mersenne, only the numbers
@@ -91,7 +91,7 @@ exactly: Fermat twins are unbounded $\iff$ there are no absence witnesses
 (`fermatTwinCentersUnbounded_iff_no_absence` 🟢). About the witness's domain we know a lower bound — and it
 is a record.
 
-**Theorem** (`fermatAbsenceBound_ge_65537`, 🟢). *Every absence bound is at least 65537.*
+**Theorem 48.4** (`fermatAbsenceBound_ge_65537`, 🟢). *Every absence bound is at least 65537.*
 
 **Why this is true.** Here the Fermat branch delivers the strongest concrete localisation of twins in the entire
 programme. The concrete Fermat twins (`fermat_twin_instances` 🟢) are $k = 1$: the pair $(5, 7)$;
@@ -117,7 +117,7 @@ The gate by a greenly-unpresentable witness is a load-bearing wall, not an ornam
 that the Yang–Mills and Navier–Stokes candidates blew up. And now — the two main theorems, both green, both with
 genuine consumption of hypotheses.
 
-**Theorem** (`fermatRefutation_carries_engine`, 🟢 — the readable form). *An absence witness + the manifestation
+**Theorem 48.5** (`fermatRefutation_carries_engine`, 🟢 — the readable form). *An absence witness + the manifestation
 law + reconciled books at a scale no lower than $P$ present a perpetual engine — as an object,*
 `ConcreteEuclideanEngineWitness`, *before any killing.*
 
@@ -126,7 +126,7 @@ turns the absence into an infinite family of flows; a finite key is forced to co
 from the collision an engine-witness is assembled. To refute Fermat twins where the books are reconciled is —
 literally — to build a perpetual engine.
 
-**Theorem** (`fermatTwinsUnbounded_of_noEngine_and_boundary_and_manifestation`, 🟢 — essence). *No
+**Theorem 48.6** (`fermatTwinsUnbounded_of_noEngine_and_boundary_and_manifestation`, 🟢 — essence). *No
 engines + an accepted boundary + the manifestation law $\Rightarrow$ Fermat twins are unbounded.*
 
 The mirror of the Mersenne and Riemann essence lemmas, with the same standard of honesty: from finiteness
@@ -144,7 +144,7 @@ rejected the Yang–Mills, Navier–Stokes, P/NP and Hodge candidates, the field
 
 And here is its price:
 
-**Theorem** (`fermatManifestationLaw_iff_unbounded_of_boundary`, 🟢 — the main price audit). *Under
+**Theorem 48.7** (`fermatManifestationLaw_iff_unbounded_of_boundary`, 🟢 — the main price audit). *Under
 an accepted boundary the manifestation law is equivalent to the unboundedness of Fermat twins.*
 
 The decree would be of exactly Fermat-twin strength — no weaker and no stronger, as with Riemann and Mersenne. But the sign
@@ -218,8 +218,13 @@ inside oneself and perish against the `lexRank` wall: the package `InternalisedF
 the Mersenne mirror `InternalisedMersenneGround` builds and perishes word for word the same
 (`internalisedMersenneGround_builds_engine`, `no_internalisedMersenneGround` — both 🟢).
 
-**"Cannot be known from inside" is now a theorem of both branches**: `fermatCause_unknowable` and `mersenneCause_unknowable`, mirrors
-of the Collatz and P/NP versions.
+"Cannot be known from inside" is now a theorem of both branches, mirrors of the Collatz and P/NP versions.
+
+**Theorem 48.8** (`fermatCause_unknowable`, `mersenneCause_unknowable`, 🟢). *No internal self-grounding
+of the cause exists in either branch:* $\neg\,\mathsf{InternalKnowledgeOfFermatCause}$ *and*
+$\neg\,\mathsf{InternalKnowledgeOfMersenneCause}$, *where* $\mathsf{InternalKnowledgeOfFermatCause}$ *is
+the package* `InternalisedFermatGround` — *the manifestation law together with its own beyond-horizon
+witness assembling an engine inside itself* — *and the Mersenne predicate is its mirror.*
 
 The summaries gather this into a single statement. `fermatMersenne_no_internal_decision_without_engine` 🟢 — three
 panels: refutation presents an engine; self-grounding self-destructs; the only

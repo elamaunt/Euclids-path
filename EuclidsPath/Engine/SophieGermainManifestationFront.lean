@@ -382,8 +382,8 @@ theorem sgThreeMod4Unbounded_of_noEngine_and_boundary_and_manifestation
     сторону величины `M_p` — той самой, на ПРОСТУЮ сторону которой
     Мерсенн-фронт (гл. 43) не поставил (знак его эвристики инвертирован
     в том числе ИЗ-ЗА этого механизма: p ≡ 3 (mod 4) с простым 2p+1 гасит
-    M_p). Безусловно бесконечность составных Мерсеннов известна литературе
-    другими методами; здесь честно фиксируется только SG-маршрут. -/
+    M_p). Бесконечность составных Мерсеннов в общем виде ОТКРЫТА (как и
+    бесконечность простых); здесь честно фиксируется только SG-маршрут. -/
 theorem mersenneComposites_unbounded_of_noEngine_boundary_and_sgManifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)

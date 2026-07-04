@@ -20,7 +20,10 @@
   КЛЮЧЕВОЕ ОТЛИЧИЕ ОТ КОЛЛАТЦА: у P/NP декрета НЕТ — трилемма (`pnpLawUniversal_refuted`,
   `pnpLawExistential_green`) машинно доказала, что честной третьей границы `step00FirstCause`
   не существует. Поэтому весь этот файл ЗЕЛЁНЫЙ, БЕЗ импорта карантина, без `step00FirstCause`:
-  таинт репозитория НЕ меняется. Всё при A ≤ 4 (граница `PNPRankPaymentFront`).
+  таинт репозитория НЕ меняется. Безусловное ядро — при A ≤ 4 (граница
+  `PNPRankPaymentFront`); расширение в конце файла добавляет точный закон оплаты
+  (`fullPayment_iff_boundedSupply`) и замки на ВИДИМЫХ гипотезах — twin-bound на
+  всех масштабах и декретный масштаб A ≥ 5 (граница гипотезой, стиль L14–L16).
 -/
 
 import EuclidsPath.Engine.PNPRankPaymentFront
@@ -39,10 +42,15 @@ open EuclidsPath.UniversalEngine
 
 /-- **Внутреннее самообоснование решения P/NP на конечном топливе.** Машина
     одновременно (a) ОПЛАЧИВАЕТ инъективно конечным ключом всю поставку сертификатов
-    (`resolves`) и (b) эта поставка НЕОГРАНИЧЕНА (`beyondOwnHorizon`). Форма содержательна
-    (не тавтология `P ∧ ¬P`): `beyondOwnHorizon` — зелёный факт неограниченности, а
-    противоречие поставляет пижонхол `no_fullPayment_of_unboundedSupply`. Это в точности
-    попытка «дотянуться взглядом» за собственный конечнотопливный горизонт. -/
+    (`resolves`) и (b) эта поставка НЕОГРАНИЧЕНА (`beyondOwnHorizon`).
+    ЧЕСТНОСТЬ (уточнена после точного закона `fullPayment_iff_boundedSupply` ниже):
+    поля ДОКАЗУЕМО точные дополнения, семантически структура эквивалентна паре
+    «оплата ∧ ¬оплата» (машинно: `internalisedPNPGround_semantically_selfNegating`).
+    Содержательность живёт НЕ в форме структуры, а в том, чем контрадикция ОПЛАЧЕНА:
+    `beyondOwnHorizon` — независимо доказанный зелёный факт (5-адическая цепь
+    `fiveAdicChainFlow_injective`), противоречие поставляет пижонхол
+    `no_fullPayment_of_unboundedSupply`. Это в точности попытка «дотянуться
+    взглядом» за собственный конечнотопливный горизонт. -/
 structure InternalisedPNPGround {G : RankedForwardGraph} (F : GenealogyFamily G) : Prop where
   resolves : FullRankCertificatePayment F
   beyondOwnHorizon : UnboundedCertificateSupply F
@@ -152,5 +160,124 @@ theorem pnp_locked_behind_engine_status {A : ℕ} (hA : A ≤ 4) :
 #print axioms pnp_no_internal_decision_without_engine
 #print axioms pnp_verification_not_derivation
 #print axioms pnp_locked_behind_engine_status
+
+/-! ## Расширение: точный закон оплаты и замки на видимых гипотезах (🟢)
+
+Карантин по-прежнему НЕ импортируется: `TwinBoundAbove` и
+`TheStrictLastStep00Obligation` входят ниже только как ВИДИМЫЕ гипотезы
+(стиль L14–L16 фронта `PNPRankPaymentFront`) — таинт репозитория не меняется. -/
+
+open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
+
+/-- **Оплата ограничивает поставку** — контрапозиция пижонхол-сердца
+    `no_fullPayment_of_unboundedSupply`: полная инъективная конечноключевая
+    оплата семьи сертификатов несовместима с её неограниченностью. ЗЕЛЁНАЯ,
+    для любого ранжированного графа и любой семьи. -/
+theorem fullPayment_implies_boundedSupply {G : RankedForwardGraph}
+    {F : GenealogyFamily G} :
+    FullRankCertificatePayment F → ¬ UnboundedCertificateSupply F :=
+  fun hPay hInf => no_fullPayment_of_unboundedSupply hInf hPay
+
+/-- **ТОЧНЫЙ ЗАКОН ОПЛАТЫ (пижонхол становится iff):** оплатить всю семью
+    инъективным конечным ключом МОЖНО ⟺ поставка сертификатов ОГРАНИЧЕНА.
+    Прямая стрелка — контрапозиция сердца L5 (`fullPayment_implies_boundedSupply`);
+    обратная — конструкция: при конечном `F.Index` ключом служит сам индекс
+    (`Key := F.Index`, `keyOf := id`, инъективность даром). ЧЕСТНОСТЬ:
+    (1) обратная сторона использует `Fintype.ofFinite` (noncomputable) — внутри
+    ∃-Prop это законно, классический выбор входит в стандартную тройку аксиом;
+    (2) это модель-внутренний закон ранговой машины — о классическом P/NP
+    НИЧЕГО не утверждается (фрейм-слой пластичен: `allPFrame`/`constantsFrame`). -/
+theorem fullPayment_iff_boundedSupply {G : RankedForwardGraph}
+    {F : GenealogyFamily G} :
+    FullRankCertificatePayment F ↔ ¬ UnboundedCertificateSupply F := by
+  classical
+  constructor
+  · exact fullPayment_implies_boundedSupply
+  · intro hBound
+    haveI : Finite F.Index := not_infinite_iff_finite.mp hBound
+    exact ⟨⟨F.Index, Fintype.ofFinite F.Index, id⟩, Function.injective_id⟩
+
+/-- **Самообоснование — семантически «оплата ∧ ¬оплата» (машинная честность):**
+    после точного закона `fullPayment_iff_boundedSupply` поля
+    `resolves`/`beyondOwnHorizon` — доказуемо точные дополнения, и вся структура
+    `InternalisedPNPGround` эквивалентна контрадикторной паре. Содержательность
+    живёт НЕ в форме, а в оплате контрадикции: зелёный iff + 5-адическая цепь
+    (`fiveAdicChainFlow_injective`). Обратная стрелка — ex falso (честно). -/
+theorem internalisedPNPGround_semantically_selfNegating {G : RankedForwardGraph}
+    {F : GenealogyFamily G} :
+    InternalisedPNPGround F ↔
+      (FullRankCertificatePayment F ∧ ¬ FullRankCertificatePayment F) :=
+  ⟨fun H => ⟨H.resolves, no_fullPayment_of_unboundedSupply H.beyondOwnHorizon⟩,
+   fun h => (h.2 h.1).elim⟩
+
+/-- **ЭПИСТЕМИЧЕСКИЙ ЗАМОК НА ВСЕХ МАСШТАБАХ (twin-условный):** при
+    `TwinBoundAbove M0` (выше M0 центров близнецов нет) на ЛЮБОМ масштабе (A, M0):
+    двигатель проезжает ранг быстро / поставка неограниченна / решить изнутри
+    нельзя / полная оплата — стена двигателя. ЧЕСТНОСТЬ (обязательная): конъюнкты
+    1 и 3 БЕЗУСЛОВНЫ (`concrete_rankFastTraversal` и `pnpCause_unknowable` — без
+    единой гипотезы); twin-гипотеза питает ТОЛЬКО конъюнкты 2 и 4 — это бандлинг
+    существующих фактов, вскрытый прямо. Ценность пары: машинно видно, что
+    единственный вход, разблокирующий ОПЛАТУ на больших масштабах, —
+    бесконечность близнецов (сторона декрета), а непознаваемость изнутри
+    (конъюнкт 3) не разблокируется вообще ничем. -/
+theorem pnp_locked_behind_engine_status_of_twinBound {A M0 : ℕ}
+    (hTwinBound : TwinBoundAbove M0) :
+    RankFastTraversal (concreteGraph A M0) ∧
+    UnboundedCertificateSupply (concreteFamily A M0) ∧
+    (¬ InternalKnowledgeOfPNPCause (concreteFamily A M0)) ∧
+    (FullRankCertificatePayment (concreteFamily A M0) → False) :=
+  ⟨concrete_rankFastTraversal A M0,
+   concreteSupply_unbounded_of_twinBound hTwinBound,
+   pnpCause_unknowable,
+   fun hPay => fullPayment_implies_boundedSupply hPay
+     (concreteSupply_unbounded_of_twinBound hTwinBound)⟩
+
+/-- **ДЕКРЕТ ПЛАТИТ, НО НЕ САМООБОСНОВЫВАЕТ (жёлтая по видимой гипотезе):** даже
+    на декретно-оплаченном масштабе A ≥ 5, где `TheStrictLastStep00Obligation`
+    принуждает полную оплату на каждом M0
+    (`boundary_forces_fullPayment_at_decreed_scale`), внутреннее самообоснование
+    остаётся невозможным. ЧЕСТНОСТЬ: второй конъюнкт БЕЗУСЛОВЕН
+    (`no_internalisedPNPGround` — без гипотез); содержание — в ПАРЕ: оплата без
+    неограниченного горизонта НЕ есть самообоснование, непознаваемость держит
+    ОБА берега раскола по масштабам. Карантин НЕ импортирован — граница входит
+    гипотезой. -/
+theorem decree_pays_but_no_selfGrounding
+    (hBoundary : TheStrictLastStep00Obligation) :
+    ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
+      FullRankCertificatePayment (concreteFamily A M0) ∧
+      ¬ InternalisedPNPGround (concreteFamily A M0) := by
+  obtain ⟨A, hA, hPay⟩ := boundary_forces_fullPayment_at_decreed_scale hBoundary
+  exact ⟨A, hA, fun M0 => ⟨hPay M0, no_internalisedPNPGround⟩⟩
+
+/-- **ЭПИСТЕМИЧЕСКИЙ ЗАМОК НА ДЕКРЕТНОМ МАСШТАБЕ (жёлтая по видимой гипотезе;
+    зеркало `pnp_locked_behind_engine_status` на ДРУГОМ берегу раскола):** на
+    масштабе декрета A ≥ 5 двигатель по-прежнему проезжает ранг быстро, оплата
+    ПРИНУЖДЕНА границей, поставка потому ОГРАНИЧЕНА (точный закон
+    `fullPayment_iff_boundedSupply` в форме `fullPayment_implies_boundedSupply`),
+    и всё же решить ИЗНУТРИ нельзя. ЧЕСТНОСТЬ: конъюнкты 1 и 4 безусловны
+    (`concrete_rankFastTraversal`, `pnpCause_unknowable`); гипотеза границы питает
+    конъюнкты 2–3. НЕ Гёдель и НЕ P≠NP: модель-внутренняя эпистемика, граница —
+    видимая гипотеза (стиль L14–L16), карантин не импортирован, таинт не меняется. -/
+theorem pnp_locked_behind_engine_status_at_decreed_scale
+    (hBoundary : TheStrictLastStep00Obligation) :
+    ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
+      RankFastTraversal (concreteGraph A M0) ∧
+      FullRankCertificatePayment (concreteFamily A M0) ∧
+      (¬ UnboundedCertificateSupply (concreteFamily A M0)) ∧
+      (¬ InternalKnowledgeOfPNPCause (concreteFamily A M0)) := by
+  obtain ⟨A, hA, hPay⟩ := boundary_forces_fullPayment_at_decreed_scale hBoundary
+  exact ⟨A, hA, fun M0 =>
+    ⟨concrete_rankFastTraversal A M0,
+     hPay M0,
+     fullPayment_implies_boundedSupply (hPay M0),
+     pnpCause_unknowable⟩⟩
+
+/-! ## Аудит аксиом расширения: максимум стандартная тройка, таинт НЕ меняется -/
+#print axioms fullPayment_implies_boundedSupply
+#print axioms fullPayment_iff_boundedSupply
+#print axioms internalisedPNPGround_semantically_selfNegating
+#print axioms pnp_locked_behind_engine_status_of_twinBound
+#print axioms decree_pays_but_no_selfGrounding
+#print axioms pnp_locked_behind_engine_status_at_decreed_scale
 
 end EuclidsPath.PNPRankPayment.FirstCause

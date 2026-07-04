@@ -148,12 +148,13 @@ def counter_check(files):
         for m in re.finditer(r"(\d{2,3})\s*(?:AXIOM-TAINTED|таких деклараци|деклараци[йяи][^.]{0,40}аксиом)", txt):
             if m.group(1) != str(EXPECTED_TAINT):
                 issues.append((base, f"taint count {m.group(1)} != {EXPECTED_TAINT}: …{txt[max(0,m.start()-30):m.start()+40]}…"))
-        for stale in ("ровно 52", "ровно 45", "с четырьмя границами", "четырьмя причинными границами"):
+        for stale in ("ровно 52", "ровно 45", "с четырьмя границами", "четырьмя причинными границами",
+                      "exactly 52", "exactly 45", "four causal boundaries", "four decree boundaries"):
             if stale in txt:
                 issues.append((base, f"stale phrase: {stale!r}"))
     return issues
 
-CONJ = r"(Риман|Коллатц|близнец|Ходж|Бёрч|Свиннертон|Янг|Навье|P/NP|P\\?/NP)"
+CONJ = r"(Риман|Riemann|Коллатц|Collatz|близнец|twin|Ходж|Hodge|Бёрч|Birch|Свиннертон|Swinnerton|Янг|Yang|Навье|Navier|P/NP|P\\?/NP)"
 CLAIM = r"(доказал|доказана|доказано|решена|решено|solved|proven|proof of|мы доказали)"
 DISCLAIM = r"(не\s|not\s|без\s|условно|редукц|reduction|decree|декрет|sorry|🟡|🔴)"
 def overclaim_check(files):
@@ -174,7 +175,8 @@ def main():
     full, last, decls, src = load_oracles(args.data, args.root)
     files_set = repo_files(args.root)
     files = sorted(glob.glob(os.path.join(args.root, "prose", "*.md"))) + \
-            [os.path.join(args.root, "README.md")]
+            [os.path.join(args.root, "README.md"),
+             os.path.join(args.root, "README.ru.md")]
     files = [f for f in files if os.path.exists(f)]
     cited, phantoms, missing_files, mislabels, ambiguous = audit(files, full, last, decls, src, files_set)
     counters = counter_check(files)

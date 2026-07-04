@@ -1,26 +1,26 @@
 /-
-  PerfectNumberBranch — совершенные числа: зелёный Евклид–Эйлер и нечётный свидетель.
+  PerfectNumberBranch — perfect numbers: the green Euclid–Euler theorem and the odd witness.
 
-  ЗЕЛЁНЫЙ МОДУЛЬ (всё доказано, без sorry/axiom):
-    * Евклид (гл. 34 нити «Начал», IX.36): простое Мерсенна ⟹ чётное совершенное —
+  GREEN MODULE (everything proved, no sorry/axiom):
+    * Euclid (ch. 34 of the Elements thread, IX.36): Mersenne prime ⟹ even perfect —
       perfect_of_mersennePrime / perfect_of_mersennePrime';
-    * Эйлер (гл. 43 нити): чётное совершенное ⟹ вид 2^k · (2^(k+1) − 1) с простым
-      Мерсенна — evenPerfect_eq. Обе стороны — реэкспорт из mathlib Archive
-      (Archive.Wiedijk100Theorems.PerfectNumbers, автор Aaron Anderson, Apache 2.0);
-    * поточечная разрешимость совершенности: instance DecidablePred Nat.Perfect,
-      perfect_6, perfect_28, not_perfect_945 (машинная проверка);
-    * нечётный свидетель: OddPerfectNumber — тип свидетелей открытой проблемы;
-      noOddPerfect_iff_no_witness; oddPerfect_ge_101 — любой нечётный совершенный
-      свидетель ≥ 101 (машинная проверка малых случаев);
-    * мост к MersenneBranch: mersennePrimesInfinite_iff_evenPerfectUnbounded —
-      цель-маркер MersennePrimesInfinite ⟺ неограниченность чётных совершенных.
+    * Euler (ch. 43 of the thread): even perfect ⟹ form 2^k · (2^(k+1) − 1) with a Mersenne
+      prime — evenPerfect_eq. Both sides are re-exports from the mathlib Archive
+      (Archive.Wiedijk100Theorems.PerfectNumbers, author Aaron Anderson, Apache 2.0);
+    * pointwise decidability of perfection: instance DecidablePred Nat.Perfect,
+      perfect_6, perfect_28, not_perfect_945 (machine-checked);
+    * odd witness: OddPerfectNumber — the type of witnesses to the open problem;
+      noOddPerfect_iff_no_witness; oddPerfect_ge_101 — every odd perfect witness
+      is ≥ 101 (machine-checked for small cases);
+    * bridge to MersenneBranch: mersennePrimesInfinite_iff_evenPerfectUnbounded —
+      goal-marker MersennePrimesInfinite ⟺ unboundedness of even perfect numbers.
 
-  ⚠️ ЧЕСТНОСТЬ: обе стороны эквивалентности — ОТКРЫТЫЕ проблемы. Зелёное здесь —
-  только САМА эквивалентность: вопрос «Начал» о бесконечности чётных совершенных
-  чисел = вопрос о бесконечности простых Мерсенна, машинно. Бесконечность простых
-  Мерсенна НЕ утверждается (маркер NoMersenneInfinitudeClaimed); существование или
-  несуществование нечётного совершенного числа НЕ утверждается — но сам предикат
-  поточечно разрешим, и каждый конкретный кандидат проверяется вычислением.
+  ⚠️ HONESTY: both sides of the equivalence are OPEN problems. What is green here is
+  only the equivalence ITSELF: the Elements question about infinitely many even perfect
+  numbers = the question about infinitely many Mersenne primes, machine-verified. Infinitely many
+  Mersenne primes is NOT claimed (marker NoMersenneInfinitudeClaimed); existence or
+  non-existence of an odd perfect number is NOT claimed — but the predicate itself is
+  pointwise decidable, and every concrete candidate is checked by computation.
 -/
 import Mathlib
 import Archive.Wiedijk100Theorems.PerfectNumbers
@@ -32,33 +32,33 @@ namespace EuclidsPath.PerfectNumberBranch
 
 open EuclidsPath
 
-/-! ### Поточечная разрешимость совершенности -/
+/-! ### Pointwise decidability of perfection -/
 
-/-- Совершенность разрешима: `Nat.Perfect n` — это по определению
-    `∑ i ∈ properDivisors n, i = n ∧ 0 < n`, и обе части вычислимы. -/
+/-- Perfection is decidable: `Nat.Perfect n` is by definition
+    `∑ i ∈ properDivisors n, i = n ∧ 0 < n`, and both parts are computable. -/
 instance : DecidablePred Nat.Perfect :=
   fun n => decidable_of_iff (∑ i ∈ Nat.properDivisors n, i = n ∧ 0 < n) Iff.rfl
 
-/-- `6 = 2^1 · (2^2 − 1)` — первое совершенное число (машинная проверка). -/
+/-- `6 = 2^1 · (2^2 − 1)` — the first perfect number (machine-checked). -/
 theorem perfect_6 : Nat.Perfect 6 := by decide
 
-/-- `28 = 2^2 · (2^3 − 1)` — второе совершенное число (машинная проверка). -/
+/-- `28 = 2^2 · (2^3 − 1)` — the second perfect number (machine-checked). -/
 theorem perfect_28 : Nat.Perfect 28 := by decide
 
 set_option maxRecDepth 4000 in
-/-- `945` — наименьшее нечётное избыточное — не совершенно (машинная проверка). -/
+/-- `945` — the smallest odd abundant number — is not perfect (machine-checked). -/
 theorem not_perfect_945 : ¬ Nat.Perfect 945 := by decide
 
-/-! ### Нечётный совершенный свидетель -/
+/-! ### Odd perfect witness -/
 
-/-- Гипотеза «нечётных совершенных чисел нет» (открытая проблема, ВХОД). -/
+/-- The conjecture "there are no odd perfect numbers" (open problem, INPUT). -/
 def NoOddPerfect : Prop := ∀ N : ℕ, Odd N → ¬ Nat.Perfect N
 
-/-- Тип свидетелей открытой проблемы: нечётное совершенное число вместе
-    с доказательствами обоих свойств. -/
+/-- The type of witnesses to the open problem: an odd perfect number together
+    with proofs of both properties. -/
 abbrev OddPerfectNumber : Type := {N : ℕ // Odd N ∧ Nat.Perfect N}
 
-/-- Гипотеза `NoOddPerfect` ⟺ тип свидетелей пуст. -/
+/-- The conjecture `NoOddPerfect` ⟺ the witness type is empty. -/
 theorem noOddPerfect_iff_no_witness :
     NoOddPerfect ↔ ¬ Nonempty OddPerfectNumber := by
   constructor
@@ -67,8 +67,8 @@ theorem noOddPerfect_iff_no_witness :
   · intro h N hodd hperf
     exact h ⟨⟨N, hodd, hperf⟩⟩
 
-/-- Любой нечётный совершенный свидетель ≥ 101: все меньшие нечётные числа
-    отсеиваются машинной проверкой (поточечная разрешимость в действии). -/
+/-- Every odd perfect witness is ≥ 101: all smaller odd numbers are
+    eliminated by machine-checking (pointwise decidability in action). -/
 theorem oddPerfect_ge_101 (W : OddPerfectNumber) : 101 ≤ W.1 := by
   obtain ⟨N, hodd, hperf⟩ := W
   show 101 ≤ N
@@ -76,42 +76,42 @@ theorem oddPerfect_ge_101 (W : OddPerfectNumber) : 101 ≤ W.1 := by
   exact (by decide : ∀ M, M < 101 → M % 2 = 1 → ¬ Nat.Perfect M) N (by omega)
     (Nat.odd_iff.mp hodd) hperf
 
-/-! ### Евклид: простое Мерсенна ⟹ чётное совершенное (зелёное, «Начала» IX.36) -/
+/-! ### Euclid: Mersenne prime ⟹ even perfect (green, Elements IX.36) -/
 
-/-- **ЕВКЛИД (доказано, реэкспорт из mathlib Archive):** если `2^(k+1) − 1` просто,
-    то `2^k · (2^(k+1) − 1)` совершенно. -/
+/-- **EUCLID (proved, re-export from mathlib Archive):** if `2^(k+1) − 1` is prime,
+    then `2^k · (2^(k+1) − 1)` is perfect. -/
 theorem perfect_of_mersennePrime {k : ℕ} (pr : (mersenne (k + 1)).Prime) :
     Nat.Perfect (2 ^ k * mersenne (k + 1)) :=
   Theorems100.Nat.perfect_two_pow_mul_mersenne_of_prime k pr
 
-/-- Евклид в p-форме: при `2 ≤ p` и простом `mersenne p` число
-    `2^(p−1) · mersenne p` совершенно. -/
+/-- Euclid in p-form: for `2 ≤ p` and prime `mersenne p` the number
+    `2^(p−1) · mersenne p` is perfect. -/
 theorem perfect_of_mersennePrime' {p : ℕ} (hp : 2 ≤ p) (pr : (mersenne p).Prime) :
     Nat.Perfect (2 ^ (p - 1) * mersenne p) := by
   have h : p - 1 + 1 = p := by omega
   simpa [h] using perfect_of_mersennePrime (k := p - 1) (by rwa [h])
 
-/-! ### Эйлер: чётное совершенное ⟹ форма Евклида (зелёное) -/
+/-! ### Euler: even perfect ⟹ Euclid form (green) -/
 
-/-- **ЭЙЛЕР (доказано, реэкспорт из mathlib Archive):** каждое чётное совершенное
-    число имеет вид `2^k · (2^(k+1) − 1)` с простым множителем Мерсенна. -/
+/-- **EULER (proved, re-export from mathlib Archive):** every even perfect
+    number has the form `2^k · (2^(k+1) − 1)` with a prime Mersenne factor. -/
 theorem evenPerfect_eq {n : ℕ} (ev : Even n) (perf : Nat.Perfect n) :
     ∃ k : ℕ, (mersenne (k + 1)).Prime ∧ n = 2 ^ k * mersenne (k + 1) :=
   Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect ev perf
 
-/-! ### Мост к MersenneBranch: маркер ⟺ неограниченность чётных совершенных -/
+/-! ### Bridge to MersenneBranch: marker ⟺ unboundedness of even perfect numbers -/
 
-/-- Неограниченность чётных совершенных чисел (вопрос «Начал», открыт). -/
+/-- Unboundedness of even perfect numbers (the Elements question, open). -/
 def EvenPerfectUnbounded : Prop :=
   ∀ N : ℕ, ∃ n : ℕ, N < n ∧ Even n ∧ Nat.Perfect n
 
-/-- **МОСТ (доказан):** цель-маркер `MersennePrimesInfinite` из MersenneBranch ⟺
-    неограниченность чётных совершенных чисел. Обе стороны открыты; зелёное —
-    сама эквивалентность: два вопроса — один и тот же, машинно. -/
+/-- **BRIDGE (proved):** goal-marker `MersennePrimesInfinite` from MersenneBranch ⟺
+    unboundedness of even perfect numbers. Both sides are open; what is green is
+    the equivalence itself: two questions are the same one, machine-verified. -/
 theorem mersennePrimesInfinite_iff_evenPerfectUnbounded :
     MersenneBranch.MersennePrimesInfinite ↔ EvenPerfectUnbounded := by
   constructor
-  · -- бесконечность простых Мерсенна ⟹ чётные совершенные не ограничены
+  · -- infinitely many Mersenne primes ⟹ even perfect numbers are unbounded
     intro H N
     obtain ⟨p, hNp, hp, hmp⟩ := H N
     refine ⟨2 ^ (p - 1) * mersenne p, ?_, ?_, perfect_of_mersennePrime' hp.two_le hmp⟩
@@ -124,20 +124,20 @@ theorem mersennePrimesInfinite_iff_evenPerfectUnbounded :
         _ < 2 ^ p := p.lt_two_pow_self
         _ = 2 ^ (p - 1) * 2 := hsplit
         _ ≤ 2 ^ (p - 1) * mersenne p := Nat.mul_le_mul (Nat.le_refl _) hm2
-    · -- p ≥ 2 ⟹ 2^(p−1) чётно ⟹ произведение чётно
+    · -- p ≥ 2 ⟹ 2^(p−1) is even ⟹ the product is even
       have h1 : p - 1 ≠ 0 := by have := hp.two_le; omega
       exact (Nat.even_pow.mpr ⟨even_two, h1⟩).mul_right _
-  · -- чётные совершенные не ограничены ⟹ бесконечность простых Мерсенна
+  · -- even perfect numbers are unbounded ⟹ infinitely many Mersenne primes
     intro H N
     obtain ⟨n, hn, hev, hperf⟩ := H (2 ^ (2 * N + 2))
     obtain ⟨k, hkpr, rfl⟩ := evenPerfect_eq hev hperf
     have hk0 : k ≠ 0 := Theorems100.Nat.ne_zero_of_prime_mersenne k hkpr
-    -- показатель k+1 прост (Ферма: простота 2^m − 1 требует простого m)
+    -- exponent k+1 is prime (Fermat: primality of 2^m − 1 requires prime m)
     have hpow : (2 ^ (k + 1) - 1).Prime := hkpr
     have hkp : (k + 1).Prime :=
       (Nat.prime_of_pow_sub_one_prime (a := 2) (n := k + 1) (by omega) hpow).2
     refine ⟨k + 1, ?_, hkp, hkpr⟩
-    -- N < k+1: иначе n = 2^k·(2^(k+1)−1) < 2^(2k+1) ≤ 2^(2N+2) < n
+    -- N < k+1: otherwise n = 2^k·(2^(k+1)−1) < 2^(2k+1) ≤ 2^(2N+2) < n
     by_contra hle
     have h1 : mersenne (k + 1) < 2 ^ (k + 1) :=
       Nat.sub_lt (Nat.two_pow_pos _) Nat.one_pos
@@ -154,12 +154,12 @@ theorem mersennePrimesInfinite_iff_evenPerfectUnbounded :
         _ ≤ 2 ^ (2 * N + 2) := h4
     exact absurd hcontra (lt_irrefl _)
 
-/-! ### Честность -/
+/-! ### Honesty -/
 
-/-- **ЧЕСТНОСТЬ (охват):** бесконечность простых Мерсенна (⟺ неограниченность
-    чётных совершенных, мост выше) НЕ утверждается и НЕ доказана — обе стороны
-    эквивалентности открыты. Существование нечётного совершенного числа также
-    открыто: здесь лишь показано, что свидетель поточечно проверяем и ≥ 101. -/
+/-- **HONESTY (scope):** infinitely many Mersenne primes (⟺ unboundedness of
+    even perfect numbers, bridge above) is NOT claimed and NOT proved — both sides
+    of the equivalence are open. Existence of an odd perfect number is likewise
+    open: it is only shown here that any witness is pointwise checkable and ≥ 101. -/
 abbrev NoMersenneInfinitudeClaimed : Prop := True
 
 theorem noMersenneInfinitudeClaimed : NoMersenneInfinitudeClaimed := trivial

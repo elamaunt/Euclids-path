@@ -1,25 +1,25 @@
 /-
-  MersennePaymentConflict — платёжный маршрут к Мерсенн-близнецам
-  (кирпич: mersenne_prime_payment_conflict) + стыковка с MersenneBranch.
-  Проза: prose/24 (Мерсенн-ветка).
+  MersennePaymentConflict — prime-payment route to Mersenne twins
+  (brick: mersenne_prime_payment_conflict) + integration with MersenneBranch.
+  Prose: prose/24 (Mersenne branch).
 
-  Маршрут кирпича (вся сборка доказана): sound-леджер платежей + обычная
-  twin-бесконечность + КОФИНАЛЬНОЕ ДАВЛЕНИЕ (несущий вход:
-  CofinalMersennePrimePaymentPressure — обычные близнецы навязывают
-  оплаченные пары на repunit-центрах) ⟹ ∞ Мерсенн-близнецов; дихотомия
-  дефектов при tail-отсутствии (cofinality vs extraction).
+  Brick route (entire assembly proved): sound payment ledger + ordinary
+  twin infinity + COFINAL PRESSURE (named input:
+  CofinalMersennePrimePaymentPressure — ordinary twins force
+  paid pairs at repunit centers) ⟹ ∞ Mersenne twins; defect
+  dichotomy under tail absence (cofinality vs extraction).
 
-  СТЫКОВКА (при интеграции): repunit-центры кирпича = центры MersenneBranch
-  при p = 2k+1 (sixCenter_add_one_eq_mersenne, без деления); ЦЕПЬ ДОВЕДЕНА
-  ДО НАСТОЯЩЕЙ ЦЕЛИ: twinLowersInfinite_of_primePaymentRoute — платёжный
+  INTEGRATION (on integration): repunit centers of the brick = centers of MersenneBranch
+  at p = 2k+1 (sixCenter_add_one_eq_mersenne, no division); CHAIN CARRIED
+  TO THE ACTUAL GOAL: twinLowersInfinite_of_primePaymentRoute — payment
   route ⟹ TwinLowers.Infinite.
 
-  ⚠️ МАШИННАЯ ЧЕСТНОСТЬ: pressure_iff_supply_for_everythingPrimeLedger —
-  для канонического ledger'а «плати всё простое» pressure ⟺ переименованный
-  ВЫВОД. Несущий вход честен только для НАСТОЯЩЕГО Step00-леджера генеалогий,
-  где платежи навязаны структурой графа; его построение — живой фронт
-  Мерсенн-ветки. Направление «близнецы ⟹ Мерсенн» по-прежнему НЕ утверждается:
-  pressure сильнее обычной twin-бесконечности.
+  ⚠️ MACHINE HONESTY: pressure_iff_supply_for_everythingPrimeLedger —
+  for the canonical ledger "pay everything prime" pressure ⟺ renamed
+  CONCLUSION. The named input is honest only for the ACTUAL Step00 genealogy ledger,
+  where payments are forced by the graph structure; its construction is the live front
+  of the Mersenne branch. The direction "twins ⟹ Mersenne" is still NOT asserted:
+  pressure is stronger than ordinary twin infinity.
 -/
 import Mathlib
 import EuclidsPath.Engine.MersenneBranch
@@ -420,15 +420,15 @@ end PrimePaymentConflict
 end Mersenne
 end EuclidsPath
 
-/-! Стыковка с MersenneBranch + машинная честность -/
+/-! Integration with MersenneBranch + machine honesty -/
 
 namespace EuclidsPath
 namespace Mersenne
 
 open PrimePaymentConflict
 
-/-- Соответствие индексов: repunit-центр кирпича = центр MersenneBranch
-    при p = 2k+1 (без деления: через 6c+1 = 2^p − 1). -/
+/-- Index correspondence: repunit center of the brick = center of MersenneBranch
+    at p = 2k+1 (no division: via 6c+1 = 2^p − 1). -/
 theorem sixCenter_add_one_eq_mersenne :
     ∀ k : ℕ,
       6 * PrimePaymentConflict.mersenneCenter k + 1 = mersenne (2 * k + 1)
@@ -443,13 +443,13 @@ theorem sixCenter_add_one_eq_mersenne :
       rw [PrimePaymentConflict.mersenneCenter_succ]
       omega
 
-/-- Twin-центр кирпича = IsTwinCenter программы (дефинициально). -/
+/-- Twin center of the brick = IsTwinCenter of the program (definitionally). -/
 theorem twinCenter_iff_isTwinCenter (m : ℕ) :
     TwinCenter Nat.Prime m ↔ EuclidsPath.IsTwinCenter m :=
   Iff.rfl
 
-/-- **ЦЕПЬ ДО НАСТОЯЩЕЙ ЦЕЛИ:** ∞ Мерсенн-близнецов (в форме кирпича) ⟹
-    TwinLowers.Infinite (через мост MersenneBranch). -/
+/-- **CHAIN TO THE ACTUAL GOAL:** ∞ Mersenne twins (in brick form) ⟹
+    TwinLowers.Infinite (via the MersenneBranch bridge). -/
 theorem twinLowersInfinite_of_infiniteMersenneSupply
     (h : InfinitelyManyMersenneTwinCenters Nat.Prime) :
     EuclidsPath.TwinLowers.Infinite := by
@@ -459,27 +459,27 @@ theorem twinLowersInfinite_of_infiniteMersenneSupply
   have hsix := sixCenter_add_one_eq_mersenne k
   have h1 : 1 ≤ (2 : ℕ) ^ (2 * k + 1) := Nat.one_le_two_pow
   refine ⟨2 * k + 1, ?_, ?_, ?_⟩
-  · -- N < 2^(2k+1) − 3 при k ≥ N+1
+  · -- N < 2^(2k+1) − 3 when k ≥ N+1
     have hgrow : N + 3 < 2 ^ (N + 3) := Nat.lt_two_pow_self
     have hmono : (2 : ℕ) ^ (N + 3) ≤ 2 ^ (2 * k + 1) :=
       Nat.pow_le_pow_right (by norm_num) (by omega)
     unfold mersenne at hsix
     omega
-  · -- (2^(2k+1) − 3).Prime = нижняя сторона
+  · -- (2^(2k+1) − 3).Prime = lower side
     have : PrimePaymentConflict.lowerSide (PrimePaymentConflict.mersenneCenter k)
         = 2 ^ (2 * k + 1) - 3 := by
       unfold PrimePaymentConflict.lowerSide
       unfold mersenne at hsix
       omega
     rwa [this] at hlo
-  · -- mersenne (2k+1) — верхняя сторона
+  · -- mersenne (2k+1) — upper side
     have : PrimePaymentConflict.upperSide (PrimePaymentConflict.mersenneCenter k)
         = mersenne (2 * k + 1) := by
       unfold PrimePaymentConflict.upperSide
       omega
     rwa [this] at hhi
 
-/-- Полная цепь маршрута: платёжный route ⟹ гипотеза близнецов. -/
+/-- Full route chain: payment route ⟹ twin conjecture. -/
 theorem twinLowersInfinite_of_primePaymentRoute
     {TwinAbove : OrdinaryTwinSupplyAbove}
     (R : MersennePrimePaymentRoute Nat.Prime TwinAbove) :
@@ -487,7 +487,7 @@ theorem twinLowersInfinite_of_primePaymentRoute
   twinLowersInfinite_of_infiniteMersenneSupply
     (infinite_mersenne_supply_of_primePaymentRoute R)
 
-/-- Канонический ledger «плати всё простое». -/
+/-- Canonical ledger "pay everything prime". -/
 def everythingPrimeLedger : RawPrimePaymentLedger where
   Genealogy := Unit
   PaysPrime := fun _ n => Nat.Prime n
@@ -496,10 +496,10 @@ theorem everythingPrimeLedger_sound :
     PrimePaymentSound Nat.Prime everythingPrimeLedger :=
   fun _ _ h => h
 
-/-- **ЧЕСТНОСТЬ:** для канонического ledger'а pressure ⟺ переименованный
-    ВЫВОД (∞ Мерсенн-близнецов). Несущий вход — pressure для НАСТОЯЩЕГО
-    Step00-леджера генеалогий (где платежи навязаны структурой графа),
-    а не для произвольного; иначе вход = заключение. -/
+/-- **HONESTY:** for the canonical ledger pressure ⟺ renamed
+    CONCLUSION (∞ Mersenne twins). The named input is pressure for the ACTUAL
+    Step00 genealogy ledger (where payments are forced by the graph structure),
+    not for an arbitrary one; otherwise the input equals the conclusion. -/
 theorem pressure_iff_supply_for_everythingPrimeLedger
     {TwinAbove : OrdinaryTwinSupplyAbove}
     (hInh : TwinAbove 0) :

@@ -1,55 +1,57 @@
 /-
-  OddPerfectManifestationFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль ветви
-  совершенных чисел программы вечного двигателя: «предъявить нечётное
-  совершенное число = предъявить вечный двигатель», проведённое
-  манифестационной архитектурой Римана. Продолжение нити Евклида–Эйлера
-  (гл. 34/43/47; ветвь PerfectNumberBranch).
+  OddPerfectManifestationFront — GREEN (axiom-free) module of the perfect-number
+  branch of the perpetual engine program: "to exhibit an odd perfect number =
+  to exhibit a perpetual engine", realised through the Riemann manifestation
+  architecture. Continuation of the Euclid–Euler thread
+  (ch. 34/43/47; branch PerfectNumberBranch).
 
-  Отклонение здесь — ОБЪЕКТ-ДАННЫЕ, как off-critical нуль Римана (и в отличие
-  от Π-свидетеля Мерсенна): КОНКРЕТНОЕ нечётное совершенное число
-  `W : OddPerfectNumber` (subtype {N // Odd N ∧ Nat.Perfect N} из ветви).
-  Потому закон манифестации ОБЪЕКТ-КВАНТИФИЦИРОВАН (∀ W, Manifests W) — гейт
-  не нужен: якорь масштаба M0 := W.1 привязан к самому числу (высота
-  отклонения = само отклонение), и негейченной «взрывной» формы здесь просто
-  не существует.
+  The deviation here is OBJECT-DATA, like an off-critical zero of Riemann (and
+  unlike the Π-witness of Mersenne): a CONCRETE odd perfect number
+  `W : OddPerfectNumber` (subtype {N // Odd N ∧ Nat.Perfect N} from the branch).
+  Therefore the manifestation law is OBJECT-QUANTIFIED (∀ W, Manifests W) — no
+  gate is needed: the scale anchor M0 := W.1 is tied to the number itself (the
+  height of the deviation = the deviation itself), and an ungated "explosive"
+  form simply does not exist here.
 
-  ПОТОЧЕЧНАЯ РАЗРЕШИМОСТЬ (сильнейшая форма непредъявимости): Nat.Perfect
-  разрешим (instance DecidablePred в ветви) — всякая фальшивка умирает
-  decide'ом (ср. not_perfect_945), а предъявить НАСТОЯЩЕГО свидетеля =
-  решить старейшую открытую задачу математики. Литературная граница
-  (> 10^2200) НЕ формализована — зелёно здесь только ≥ 101
-  (oddPerfect_ge_101, реэкспортирована как OP8).
+  POINTWISE DECIDABILITY (strongest form of unpresentability): Nat.Perfect is
+  decidable (instance DecidablePred in the branch) — every forgery dies by
+  decide (cf. not_perfect_945), while exhibiting a GENUINE witness =
+  solving the oldest open problem in mathematics. The literary boundary
+  (> 10^2200) is NOT formalised — green here only means ≥ 101
+  (oddPerfect_ge_101, re-exported as OP8).
 
-  КОНТРАСТ РАСКРЫТ (машинно, evenSide_constructible): ЧЁТНАЯ сторона
-  СТРОИТСЯ зелёно из простых Мерсенна (perfect_of_mersennePrime', Евклид
-  IX.36), и Эйлер (evenPerfect_eq) запирает её в форме Евклида — отклонение
-  этого фронта живёт СТРОГО на нечётной стороне.
+  CONTRAST EXPOSED (machine-verified, evenSide_constructible): the EVEN side
+  IS CONSTRUCTED green from Mersenne primes (perfect_of_mersennePrime', Euclid
+  IX.36), and Euler (evenPerfect_eq) locks it into Euclid's form — the
+  deviation of this front lives STRICTLY on the odd side.
 
-  ЗНАК ЭВРИСТИКИ — ЗА («их нет» ожидаемо): квантор закона пробегает ожидаемо
-  ПУСТОЙ тип — закон ожидаемо ВАКУУМНО-ИСТИНЕН, точное зеркало RH (Риман был
-  ставкой на ожидаемо-истинное; здесь та же ориентация, в отличие от
-  инвертированного знака Мерсенна). При границе закон ⟺ NoOddPerfect (OP7).
+  HEURISTIC SIGN — FOR ("none exist" is expected): the law's quantifier ranges
+  over an expectedly EMPTY type — the law is expectedly VACUOUSLY TRUE, an
+  exact mirror of RH (Riemann was a bet on the expectedly-true; here the same
+  orientation, unlike the inverted sign of Mersenne). Given the boundary the
+  law ⟺ NoOddPerfect (OP7).
 
-  КОВАТЬСЯ НЕЧЕМУ: у совершенных чисел нет выделенной цепи центров вовсе —
-  ни пила, ни cookedLadder (ЯМ), ни cookedProfileCascade (НС); паттерн V3
-  пуст по построению (сильнее Мерсенна, где хотя бы цепь есть, но не пилится).
+  NOTHING TO FORGE: perfect numbers have no distinguished chain of centres at
+  all — no saw, no cookedLadder (YM), no cookedProfileCascade (NS); pattern V3
+  is empty by construction (stronger than Mersenne, where at least a chain
+  exists but cannot be sawed).
 
-  НО ПОЛЕ НЕ ДОБАВЛЕНО — НАМЕРЕННО (§17-вердикт карантина): серийное
-  расширение декрета обесценило бы карантин — аксиома, растущая полем на
-  каждую пройденную трилемму, перестаёт быть исключением и становится
-  приёмом. Закон живёт здесь ОПРЕДЕЛЕНИЕМ (прецедент §16 / Мерсенна);
-  непротиворечивость карантина на него НЕ ставится.
+  BUT THE FIELD WAS NOT ADDED — INTENTIONALLY (§17 quarantine verdict): serial
+  extension of the decree would devalue the quarantine — an axiom that grows
+  by a field for every trilemma passed ceases to be an exception and becomes a
+  technique. The law lives here BY DEFINITION (precedent §16 / Mersenne);
+  consistency of the quarantine is NOT staked on it.
 
-  ОДОЛЖЕННЫЕ L1/L2 (раскрыто): объект поставки DeviationFlowSupply — ТОТ ЖЕ,
-  что twin-bound строит зелёно (L1 римановского фронта,
-  deviationFlowSupply_of_twinBound) — форма не пустая; Impossible-сторона на
-  разрешённых масштабах — зелёная теорема
-  no_deviationFlowSupply_at_resolved_scale (переиспользована), НЕ декрет.
+  BORROWED L1/L2 (disclosed): the supply object DeviationFlowSupply is THE
+  SAME one that twin-bound constructs green (L1 of the Riemann front,
+  deviationFlowSupply_of_twinBound) — the form is non-empty; the
+  Impossible-side at resolved scales is the green theorem
+  no_deviationFlowSupply_at_resolved_scale (reused), NOT a decree.
 
-  ЗАПРЕТ ВАКУУМНОСТИ: никаких свободных Prop-полей, свободных гейтов и
-  переименованных выводов — каждая гипотеза именована арифметически;
-  вакуумная обратная сторона закона раскрыта аудитом OP5. Модуль карантин
-  НЕ импортирует; axiom/sorry нет.
+  VACUITY BAN: no free Prop-fields, free gates, or renamed conclusions —
+  every hypothesis is named arithmetically; the vacuous reverse side of the
+  law is exposed by audit OP5. The module does NOT import the quarantine;
+  no axiom/sorry.
 -/
 import Mathlib
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -63,23 +65,22 @@ namespace ConcreteStep00Graph
 namespace GeneratedFlowFormulation
 
 /-#############################################################################
-  §1. Свидетель отклонения: конкретное нечётное совершенное число
-      (объект-данные) — локализация и раскрытый контраст
+  §1. Deviation witness: a concrete odd perfect number
+      (object-data) — localisation and the exposed contrast
 #############################################################################-/
 
-/-- **OP8 (локализация домена свидетеля, зеркало M8/L8; реэкспорт из ветви):**
-    всякий нечётный совершенный свидетель ≥ 101 — все меньшие нечётные
-    кандидаты отсеяны машинной проверкой (поточечная разрешимость в
-    действии). Литературная граница (> 10^2200) НЕ формализована — зелёно
-    только это. -/
+/-- **OP8 (witness domain localisation, mirror M8/L8; re-export from branch):**
+    every odd perfect witness is ≥ 101 — all smaller odd candidates are
+    eliminated by machine verification (pointwise decidability in action).
+    The literary boundary (> 10^2200) is NOT formalised — only this is green. -/
 theorem oddPerfect_witness_ge_101
     (W : EuclidsPath.PerfectNumberBranch.OddPerfectNumber) : 101 ≤ W.1 :=
   EuclidsPath.PerfectNumberBranch.oddPerfect_ge_101 W
 
-/-- **КОНТРАСТ (зелёный, Евклид IX.36 из ветви):** ЧЁТНАЯ сторона совершенных
-    чисел СТРОИТСЯ — каждое простое Мерсенна зелёно поставляет чётное
-    совершенное число. Отклонение этого фронта живёт СТРОГО на нечётной
-    стороне — там, где за две с половиной тысячи лет не построено ничего. -/
+/-- **CONTRAST (green, Euclid IX.36 from branch):** the EVEN side of perfect
+    numbers IS CONSTRUCTED — every Mersenne prime green-supplies an even perfect
+    number. The deviation of this front lives STRICTLY on the odd side — where
+    nothing has been constructed in two and a half thousand years. -/
 theorem evenSide_constructible {p : ℕ} (hp : 2 ≤ p)
     (pr : (mersenne p).Prime) :
     Even (2 ^ (p - 1) * mersenne p) ∧ Nat.Perfect (2 ^ (p - 1) * mersenne p) := by
@@ -87,17 +88,17 @@ theorem evenSide_constructible {p : ℕ} (hp : 2 ≤ p)
   exact (Nat.even_pow.mpr ⟨even_two, by omega⟩).mul_right _
 
 /-#############################################################################
-  §2. Закон манифестации (объект-квантифицирован; поле НЕ декретировано)
+  §2. Manifestation law (object-quantified; field NOT decreed)
 #############################################################################-/
 
-/-- Конкретное нечётное совершенное число манифестирует арифметически: на
-    каждом леджер-масштабе не ниже самого числа, всюду где проекция сводит
-    книги (коллизии разрешаются), свидетель проявляется неоплатимой
-    бесконечной поставкой потоков. Якорь `W.1 ≤ M0` потребляется ниже только
-    через `le_refl` (паттерн Римана: масштаб = высота отклонения; здесь
-    высота отклонения — само число). Причинная форма: «отклонение обязано
-    проявиться там, где книги сведены» — НЕ утверждение о (не)существовании
-    нечётных совершенных чисел. -/
+/-- A concrete odd perfect number manifests arithmetically: at every ledger
+    scale no lower than the number itself, everywhere the projection balances
+    the books (collisions resolve), the witness appears as an unpayable infinite
+    supply of flows. The anchor `W.1 ≤ M0` is consumed below only via
+    `le_refl` (Riemann pattern: scale = height of deviation; here the height
+    of the deviation is the number itself). Causal form: "the deviation must
+    manifest where the books are balanced" — NOT a statement about the
+    (non-)existence of odd perfect numbers. -/
 def OddPerfectManifests
     (W : EuclidsPath.PerfectNumberBranch.OddPerfectNumber) : Prop :=
   ∀ (A M0 : ℕ), W.1 ≤ M0 →
@@ -105,22 +106,22 @@ def OddPerfectManifests
       SemanticExtendedFlowLedgerCollisionResolves proj →
         DeviationFlowSupply A M0
 
-/-- **ЗАКОН МАНИФЕСТАЦИИ НЕЧЁТНЫХ СОВЕРШЕННЫХ** — объект-квантифицирован по
-    типу свидетелей (зеркало `RiemannManifestationLaw`, а НЕ гейченной формы
-    Мерсенна): квантор пробегает ожидаемо ПУСТОЙ тип, закон ожидаемо
-    вакуумно-истинен — точное зеркало RH. ПОЛЕ НЕ ДЕКРЕТИРОВАНО
-    (§17-вердикт: серийность обесценила бы карантин). -/
+/-- **ODD PERFECT MANIFESTATION LAW** — object-quantified over the witness type
+    (mirror of `RiemannManifestationLaw`, NOT the gated Mersenne form): the
+    quantifier ranges over an expectedly EMPTY type, the law is expectedly
+    vacuously true — an exact mirror of RH. THE FIELD IS NOT DECREED
+    (§17 verdict: seriality would devalue the quarantine). -/
 def OddPerfectManifestationLaw : Prop :=
   ∀ W : EuclidsPath.PerfectNumberBranch.OddPerfectNumber, OddPerfectManifests W
 
 /-#############################################################################
-  §3. ESSENCE и читаемая форма: предъявление свидетеля предъявляет двигатель
+  §3. ESSENCE and human-readable form: exhibiting the witness exhibits the engine
 #############################################################################-/
 
-/-- **OP3⁺ — ЧИТАЕМАЯ ФОРМА «предъявить свидетеля = предъявить двигатель»:**
-    конкретное нечётное совершенное число + закон + сведённые книги на
-    масштабе не ниже самого числа МАНИФЕСТИРУЮТ вечный двигатель — как
-    ОБЪЕКТ, до убийства lexRank'ом. -/
+/-- **OP3⁺ — HUMAN-READABLE FORM "exhibit the witness = exhibit the engine":**
+    a concrete odd perfect number + law + balanced books at a scale no lower
+    than the number itself MANIFEST a perpetual engine — as an OBJECT, before
+    it is killed by lexRank. -/
 theorem oddPerfectWitness_carries_engine
     (hLaw : OddPerfectManifestationLaw)
     (W : EuclidsPath.PerfectNumberBranch.OddPerfectNumber)
@@ -135,12 +136,12 @@ theorem oddPerfectWitness_carries_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- **OP3 — ESSENCE (зеркало M3 и римановской L3):** двигателей нет +
-    принятая граница + закон манифестации ⟹ нечётных совершенных чисел НЕТ.
-    Все три гипотезы потребляются ПО-НАСТОЯЩЕМУ: гипотетический свидетель W
-    даёт масштаб M0 := W.1, граница — разрешение ровно на нём (le_refl);
-    закон поставляет семью 𝓕 (не ex falso); из коллизии строится
-    двигатель-СВИДЕТЕЛЬ; убивает его именно hNoEngine. -/
+/-- **OP3 — ESSENCE (mirror of M3 and the Riemann L3):** no engines +
+    accepted boundary + manifestation law ⟹ NO odd perfect numbers.
+    All three hypotheses are consumed GENUINELY: hypothetical witness W
+    gives scale M0 := W.1, the boundary gives resolution exactly at it
+    (le_refl); the law supplies the family 𝓕 (not ex falso); from the
+    collision a WITNESS engine is built; it is killed by exactly hNoEngine. -/
 theorem noOddPerfect_of_manifestation_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -155,22 +156,22 @@ theorem noOddPerfect_of_manifestation_and_boundary
     oddPerfectWitness_carries_engine hLaw W (le_refl W.1) (projOf W.1) hResolves⟩
 
 /-#############################################################################
-  §4. Аудиты честности (OP5–OP9)
+  §4. Honesty audits (OP5–OP9)
 #############################################################################-/
 
-/-- **OP5 (вакуумная обратная сторона, зеркало M5/L5):** NoOddPerfect ⟹
-    закон — вакуумно: собственные данные свидетеля W.2 противоречат
-    H W.1 W.2.1 напрямую. Несущая сторона — OP3, и ей нужна граница. -/
+/-- **OP5 (vacuous reverse side, mirror M5/L5):** NoOddPerfect ⟹ law —
+    vacuously: the witness's own data W.2 contradicts H W.1 W.2.1 directly.
+    The load-bearing side is OP3, and it requires the boundary. -/
 theorem oddPerfectManifestationLaw_of_noOddPerfect
     (H : EuclidsPath.PerfectNumberBranch.NoOddPerfect) :
     OddPerfectManifestationLaw := fun W =>
   (H W.1 W.2.1 W.2.2).elim
 
-/-- **OP6 (точная зелёная характеризация, зеркало M6/L6):** закон ⟺
-    «нечётное совершенное число заморозило бы всякий разрешающий леджер на
-    масштабах не ниже себя». Обратное направление — ex falso от ¬resolves
-    (раскрыто); содержательная сторона — прямая (закон + разрешение ⟹
-    поставка ⟹ противоречие с зелёной L2). -/
+/-- **OP6 (exact green characterisation, mirror M6/L6):** law ⟺
+    "an odd perfect number would freeze every resolving ledger at scales no
+    lower than itself". The reverse direction is ex falso from ¬resolves
+    (disclosed); the substantive side is direct (law + resolution ⟹
+    supply ⟹ contradiction with green L2). -/
 theorem oddPerfectManifestationLaw_iff_no_resolution_above_witness :
     OddPerfectManifestationLaw ↔
       ∀ (W : EuclidsPath.PerfectNumberBranch.OddPerfectNumber) (A M0 : ℕ),
@@ -184,11 +185,12 @@ theorem oddPerfectManifestationLaw_iff_no_resolution_above_witness :
   · intro hFreeze W A M0 hle proj hres
     exact ((hFreeze W A M0 hle proj) hres).elim
 
-/-- **OP7 — ГЛАВНЫЙ АУДИТ ЦЕНЫ (зеркало M7/L7):** при границе закон ⟺
-    NoOddPerfect — поле было бы ровно силы старейшей открытой задачи. БЕЗ
-    границы «закон ⟹ NoOddPerfect» зелёно не собирается (OP3 требует
-    границу). Знак эвристики направлен ЗА правую часть этого ⟺ (как у
-    Римана, в отличие от Мерсенна) — и всё же поле не добавлено (§17). -/
+/-- **OP7 — MAIN PRICE AUDIT (mirror M7/L7):** given the boundary, law ⟺
+    NoOddPerfect — the field would be exactly the strength of the oldest open
+    problem. WITHOUT the boundary "law ⟹ NoOddPerfect" cannot be assembled
+    green (OP3 requires the boundary). The heuristic sign points FOR the
+    right-hand side of this ⟺ (as with Riemann, unlike Mersenne) — and yet
+    the field was not added (§17). -/
 theorem oddPerfectManifestationLaw_iff_noOddPerfect_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     OddPerfectManifestationLaw ↔ EuclidsPath.PerfectNumberBranch.NoOddPerfect :=
@@ -196,8 +198,9 @@ theorem oddPerfectManifestationLaw_iff_noOddPerfect_of_boundary
       no_someConcreteEuclideanEngine hBoundary,
    oddPerfectManifestationLaw_of_noOddPerfect⟩
 
-/-- Закон в Bridge-форме над типом свидетелей — здесь ПРЯМАЯ репаковка
-    (объект-квантификация и есть Bridge; ср. репаковку гейта у Мерсенна). -/
+/-- The law in Bridge form over the witness type — here it is a DIRECT
+    repacking (object-quantification is itself Bridge; cf. gate repacking in
+    Mersenne). -/
 theorem oddPerfectManifestationLaw_iff_bridge :
     OddPerfectManifestationLaw ↔
       EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
@@ -205,10 +208,10 @@ theorem oddPerfectManifestationLaw_iff_bridge :
           OddPerfectManifests W) :=
   ⟨fun hLaw W => hLaw W, fun hB W => hB W⟩
 
-/-- **OP9 (bundling-аудит, инстанциация осуждающей машины):** связка
-    Bridge∧Impossible ⟺ «нечётных совершенных свидетелей нет» —
-    декретироваться могла бы ТОЛЬКО Bridge-сторона; Impossible-сторона на
-    разрешённых масштабах — зелёная L2, никогда не декрет. -/
+/-- **OP9 (bundling audit, instantiation of the condemning machine):** the
+    bundle Bridge∧Impossible ⟺ "no odd perfect witnesses exist" — ONLY the
+    Bridge-side could be decreed; the Impossible-side at resolved scales is
+    the green L2, never a decree. -/
 theorem oddPerfectManifestation_bundling_audit :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun W : EuclidsPath.PerfectNumberBranch.OddPerfectNumber =>
@@ -219,9 +222,9 @@ theorem oddPerfectManifestation_bundling_audit :
       ¬ Nonempty EuclidsPath.PerfectNumberBranch.OddPerfectNumber :=
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_no_zero _
 
--- Машинная видимость чистоты в build-логе (ожидаемо [propext, Classical.choice,
--- Quot.sound] — теоремы транзитивно цитируют Archive-ветвь Евклида–Эйлера,
--- аксиомы при этом стандартны; БЕЗ step00FirstCause):
+-- Machine-visible purity in the build log (expected [propext, Classical.choice,
+-- Quot.sound] — theorems transitively cite the Euclid–Euler Archive branch,
+-- axioms are standard; WITHOUT step00FirstCause):
 #print axioms noOddPerfect_of_manifestation_and_boundary
 #print axioms oddPerfectWitness_carries_engine
 #print axioms oddPerfectManifestationLaw_iff_noOddPerfect_of_boundary

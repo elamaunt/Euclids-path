@@ -1,62 +1,62 @@
 /-
-  HodgeFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль ветви Ходжа в программе
-  вечного двигателя: класс Ходжа = КВАНТОВАННЫЙ (рациональный) заряд
-  когомологий выровненного типа (p,p); алгебраический цикл = ОПЛАТА;
-  гипотеза = каждый квантованный выровненный заряд оплачен. НЕОПЛАЧЕННЫЙ
-  заряд открыл бы бесконечный строгий спуск по ℕ-высоте (знаменатель /
-  сложность) — запрещённый вечный двигатель (EPMI).
+  HodgeFront — the GREEN (axiom-free) module of the Hodge branch in the
+  perpetual-engine programme: a Hodge class = a QUANTIZED (rational) charge
+  of cohomology of aligned type (p,p); an algebraic cycle = PAYMENT;
+  the conjecture = every quantized aligned charge is paid. An UNPAID
+  charge would open an infinite strict descent along the ℕ-height (denominator /
+  complexity) — a forbidden perpetual engine (EPMI).
 
-  ЧЕСТНАЯ ГРАНИЦА (громко, как в ЯМ/НС): в mathlib НЕТ теории Ходжа для
-  проективных многообразий — ни классов Ходжа, ни алгебраических циклов,
-  ни когомологий многообразий. Проверено по пину: слово «Hodge» встречается
-  ровно трижды — цитата книги W. Hodges по теории МОДЕЛЕЙ
-  (ModelTheory/Fraisse) и упоминания p-адической теории Ходжа в комментариях
-  периодных колец (RingTheory/Perfectoid/BDeRham, FontaineTheta); hodge-star
-  оператора тоже нет. `HodgeLedger` — АБСТРАКТНЫЙ ЛЕДЖЕР; НИКАКОГО
-  содержания алгебраической геометрии сверх намеренной будущей инстанциации
-  здесь нет. Проблема тысячелетия НЕ решается и НЕ заявляется.
+  HONEST BOUNDARY (loud, as in YM/NS): mathlib has NO Hodge theory for
+  projective varieties — no Hodge classes, no algebraic cycles,
+  no cohomology of varieties. Checked against the pin: the word "Hodge" occurs
+  exactly three times — a citation of W. Hodges's book on MODEL theory
+  (ModelTheory/Fraisse) and mentions of p-adic Hodge theory in comments
+  of period rings (RingTheory/Perfectoid/BDeRham, FontaineTheta); there is no
+  hodge-star operator either. `HodgeLedger` is an ABSTRACT LEDGER; NO
+  content of algebraic geometry beyond an intended future instantiation
+  is present here. The millennium problem is NOT solved and NOT claimed.
 
-  Архитектура:
-    * модель: `HodgeLedger` — классы, оплата, ℕ-высота, якорь квантования
-      «оплачен ⟺ высота 0» (`height_zero_iff`; потреблён по-настоящему:
-      `unpaid_height_pos` + V1-опровержение);
-    * двигатель: `UnpaidDescentChain` — бесконечная строго убывающая ℕ-цепь
-      неоплаченных зарядов; УБИТ БЕЗУСЛОВНО (`isEmpty_unpaidDescentChain`,
-      КОРЕНЬ репозитория — EPMI, A = 1). ИНВЕРСИЯ асимметрии ЯМ (раскрыта,
-      не подделана): у ЯМ ℝ-лестница ЖИЛА до прихода закона квантования
-      (gapless ⟺ Nonempty ladder), здесь квантование ВСТРОЕНО в модель
-      (height : ℕ) — двигатель мёртв в любой модели; вся содержательность
-      ветви — в существовании ШАГОВ спуска, т.е. в законе;
-    * закон спуска `DescentLaw` (per-model 🔴 ВХОД, NS/ЯМ-паттерн): каждый
-      неоплаченный ходжев заряд допускает платёжный шаг — строго меньший
-      неоплаченный ходжев заряд; для НАМЕРЕННОЙ (не построенной!)
-      инстанциации это и есть остаточный вход ветви;
-    * ГЕРОЙ: `hodgeProperty_of_descentLaw` — сильная индукция по высоте
-      (выбор НЕ нужен); цепной маршрут через выбор (зеркало ladderSeq) дан
-      отдельно (`hodgeProperty_of_descentLaw'`).
+  Architecture:
+    * model: `HodgeLedger` — classes, payment, ℕ-height, quantization anchor
+      "paid ⟺ height 0" (`height_zero_iff`; genuinely consumed:
+      `unpaid_height_pos` + V1 refutation);
+    * engine: `UnpaidDescentChain` — an infinite strictly decreasing ℕ-chain
+      of unpaid charges; KILLED UNCONDITIONALLY (`isEmpty_unpaidDescentChain`,
+      the repository's ROOT — EPMI, A = 1). INVERSION of the YM asymmetry (disclosed,
+      not forged): in YM the ℝ-ladder WAS ALIVE before the quantization law arrived
+      (gapless ⟺ Nonempty ladder), here quantization is BUILT INTO the model
+      (height : ℕ) — the engine is dead in any model; the whole substance of
+      the branch lies in the existence of descent STEPS, i.e. in the law;
+    * descent law `DescentLaw` (per-model 🔴 INPUT, NS/YM pattern): every
+      unpaid Hodge charge admits a payment step — a strictly smaller
+      unpaid Hodge charge; for the INTENDED (not constructed!)
+      instantiation this is precisely the residual input of the branch;
+    * HERO: `hodgeProperty_of_descentLaw` — strong induction on height
+      (choice NOT needed); the chain route via choice (mirror of ladderSeq) is given
+      separately (`hodgeProperty_of_descentLaw'`).
 
-  КОЛЛАПС стоимости (§4): `descentLaw_iff_hodgeProperty` — per-model закон
-  ⟺ гипотеза ЗЕЛЁНО и БЕЗ ВСЯКОЙ границы (форма осуждённого моста, как
-  `quantizationLaw_iff_massGap`); обратная сторона ВАКУУМНА (как римановская
-  L5 `manifestationLaw_of_RH`, в ОТЛИЧИЕ от ЯМ L8 с настоящим рангом) —
-  раскрыто. Потому ШЕСТОГО ПОЛЯ НЕТ: декретировать закон = декретировать
-  цель дословно.
+  COLLAPSE of cost (§4): `descentLaw_iff_hodgeProperty` — the per-model law
+  ⟺ the conjecture, GREEN and WITHOUT ANY boundary (the form of a condemned bridge, like
+  `quantizationLaw_iff_massGap`); the reverse side is VACUOUS (like the Riemann
+  L5 `manifestationLaw_of_RH`, in CONTRAST to YM L8 with a genuine rank) —
+  disclosed. That is why THERE IS NO SIXTH FIELD: to decree the law = to decree
+  the goal verbatim.
 
-  ТРИЛЕММА шестой границы декрета — все вердикты машинны (§6):
-    V1 универсальная форма ОПРОВЕРЖИМА (cookedUnpaid: заряд высоты 1 —
-       шаг спуска упёрся бы в оплаченность нулевой высоты);
-    V2 экзистенциальная форма УЖЕ ДОКАЗАНА (cookedPaid — закон вакуумен);
-    V2′ chain-манифестационная форма ВЫРОЖДЕНА В ЗЕЛЁНУЮ ТЕОРЕМУ
-       (`hodgeChainManifestationLaw_green`: цепей нет НИ В ОДНОЙ модели) —
-       вердикт V2-типа, декрет был бы вакуумен; уникальная структурная
-       точка ветви, раскрыта;
-    V3 манифестационная форма над ПРЕДЪЯВИМЫМ свидетелем (одиночный
-       неоплаченный класс, `cookedUnpaidClass`) НЕСОВМЕСТИМА с принятой
-       границей — зеркало ЯМ/НС V3.
-  Раскол по масштабам НЕ дублируется: он уже зафиксирован в §12 карантина
-  (`decreedScale_no_deviationSupply`) и в `YangMills.smallScale_deviationSupply`.
-  Модуль карантин НЕ импортирует; axiom/sorry нет — верификатор обязан
-  показать все декларации незаражёнными.
+  TRILEMMA of the sixth boundary of the decree — all verdicts are machine-made (§6):
+    V1 the universal form is REFUTABLE (cookedUnpaid: a charge of height 1 —
+       a descent step would run into the paidness of height zero);
+    V2 the existential form is ALREADY PROVEN (cookedPaid — the law is vacuous);
+    V2′ the chain-manifestation form is DEGENERATED INTO A GREEN THEOREM
+       (`hodgeChainManifestationLaw_green`: there are no chains IN ANY model) —
+       a V2-type verdict, the decree would be vacuous; the unique structural
+       point of the branch, disclosed;
+    V3 the manifestation form over a PRESENTABLE witness (a single
+       unpaid class, `cookedUnpaidClass`) is INCOMPATIBLE with the accepted
+       boundary — a mirror of YM/NS V3.
+  The split by scales is NOT duplicated: it is already fixed in §12 of the quarantine
+  (`decreedScale_no_deviationSupply`) and in `YangMills.smallScale_deviationSupply`.
+  The module does NOT import the quarantine; there is no axiom/sorry — the verifier must
+  show all declarations untainted.
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -70,22 +70,22 @@ namespace Hodge
 
 open EuclidsPath.ConcreteStep00Graph
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
--- EPMI и OriginAnchorAudit используем КВАЛИФИЦИРОВАННО (коллизии State/Step/Bridge).
+-- We use EPMI and OriginAnchorAudit QUALIFIED (collisions State/Step/Bridge).
 
 /-#############################################################################
-  §1. Абстрактный леджер когомологий, гипотеза, неоплаченные классы
+  §1. Abstract cohomology ledger, the conjecture, unpaid classes
 #############################################################################-/
 
-/-- **D1. Абстрактный леджер когомологий**: классы, выделенные квантованные
-    (рациональные) заряды выровненного типа (p,p) (`IsHodge`), оплаченные
-    циклами (`IsAlgebraic`), и ℕ-высота (знаменатель/сложность) с якорем
-    квантования `height_zero_iff` («оплачен ⟺ высота 0»). `zero` —
-    инвариантный якорь обитаемости (нулевой заряд оплачен нулевым циклом);
-    групповая структура НЕ навешивается — цепь убийцы не вычитает
-    (алгебра платежей принадлежит будущей инстанциации, раскрыто).
-    `IsAlgebraic` определим из высоты через якорь — оставлен именованным
-    полем ради леджер-прочтения. НИКАКОГО содержания алгебраической
-    геометрии (раскрыто в шапке). -/
+/-- **D1. Abstract cohomology ledger**: classes, distinguished quantized
+    (rational) charges of aligned type (p,p) (`IsHodge`), paid by
+    cycles (`IsAlgebraic`), and an ℕ-height (denominator/complexity) with the
+    quantization anchor `height_zero_iff` ("paid ⟺ height 0"). `zero` is
+    the invariant habitability anchor (the zero charge is paid by the zero cycle);
+    no group structure is imposed — the killer chain does not subtract
+    (the algebra of payments belongs to a future instantiation, disclosed).
+    `IsAlgebraic` is definable from the height via the anchor — kept as a named
+    field for the sake of the ledger reading. NO content of algebraic
+    geometry (disclosed in the header). -/
 structure HodgeLedger where
   Cls : Type
   zero : Cls
@@ -96,34 +96,34 @@ structure HodgeLedger where
   zero_algebraic : IsAlgebraic zero
   height_zero_iff : ∀ c, height c = 0 ↔ IsAlgebraic c
 
-/-- **D2. ГИПОТЕЗА ХОДЖА для модели** (направление Клэя; здесь — только
-    абстрактная форма): каждый квантованный выровненный заряд оплачен. -/
+/-- **D2. HODGE CONJECTURE for a model** (the Clay direction; here — only
+    the abstract form): every quantized aligned charge is paid. -/
 def HodgeProperty (S : HodgeLedger) : Prop :=
   ∀ c : S.Cls, S.IsHodge c → S.IsAlgebraic c
 
-/-- **D3. Неоплаченный ходжев класс** — объект отклонения (аналог
-    off-critical нуля / положительного состояния): ровно этот тип кован и
-    ПРЕДЪЯВИМ (топливо V3 и origin-anchor аудитов). -/
+/-- **D3. Unpaid Hodge class** — the deviation object (analogue of an
+    off-critical zero / a positive state): exactly this type is forged and
+    PRESENTABLE (fuel for V3 and origin-anchor audits). -/
 abbrev UnpaidClass (S : HodgeLedger) : Type :=
   {c : S.Cls // S.IsHodge c ∧ ¬ S.IsAlgebraic c}
 
-/-- Нулевой заряд оплачен — обитаемость мира оплат в каждой модели. -/
+/-- The zero charge is paid — habitability of the payment world in every model. -/
 theorem zero_paid (S : HodgeLedger) : S.IsHodge S.zero ∧ S.IsAlgebraic S.zero :=
   ⟨S.zero_hodge, S.zero_algebraic⟩
 
-/-- Высота нулевого заряда — 0 (якорь потреблён). -/
+/-- The height of the zero charge is 0 (the anchor is consumed). -/
 theorem height_zero (S : HodgeLedger) : S.height S.zero = 0 :=
   (S.height_zero_iff S.zero).mpr S.zero_algebraic
 
-/-- **L1 (квант неоплаченности):** неоплаченный заряд несёт СТРОГО
-    положительную высоту — «квантованность» честна: между «оплачен» и
-    «не оплачен» лежит целый квант. -/
+/-- **L1 (quantum of unpaidness):** an unpaid charge carries STRICTLY
+    positive height — "quantization" is honest: between "paid" and
+    "not paid" lies a whole quantum. -/
 theorem unpaid_height_pos {S : HodgeLedger} {c : S.Cls}
     (hna : ¬ S.IsAlgebraic c) : 0 < S.height c :=
   Nat.pos_of_ne_zero (fun h0 => hna ((S.height_zero_iff c).mp h0))
 
-/-- **L2 — точная классическая характеризация гипотезы:** гипотеза ⟺
-    неоплаченных классов нет (зеркало ЯМ `not_massGap_iff_gapless`). -/
+/-- **L2 — the exact classical characterization of the conjecture:** the conjecture ⟺
+    there are no unpaid classes (mirror of YM `not_massGap_iff_gapless`). -/
 theorem hodgeProperty_iff_no_unpaidClass (S : HodgeLedger) :
     HodgeProperty S ↔ ¬ Nonempty (UnpaidClass S) := by
   constructor
@@ -138,25 +138,25 @@ theorem not_hodgeProperty_iff_unpaidClass (S : HodgeLedger) :
   rw [hodgeProperty_iff_no_unpaidClass, not_not]
 
 /-#############################################################################
-  §2. ОБЪЕКТ-ДВИГАТЕЛЬ: цепь неоплаченного спуска — мертва БЕЗУСЛОВНО
+  §2. ENGINE OBJECT: the unpaid descent chain — dead UNCONDITIONALLY
 #############################################################################-/
 
-/-- **D4. ЦЕПЬ НЕОПЛАЧЕННОГО СПУСКА — вечный двигатель в ℕ**: бесконечная
-    последовательность неоплаченных ходжевых зарядов со строго убывающей
-    высотой (аналог `GaplessLadder` ЯМ, но над ℕ, где well-foundedness
-    РАБОТАЕТ — потому тип пуст безусловно, см. L3). -/
+/-- **D4. UNPAID DESCENT CHAIN — a perpetual engine in ℕ**: an infinite
+    sequence of unpaid Hodge charges with strictly decreasing
+    height (analogue of YM's `GaplessLadder`, but over ℕ, where well-foundedness
+    WORKS — hence the type is empty unconditionally, see L3). -/
 structure UnpaidDescentChain (S : HodgeLedger) where
   seq : ℕ → S.Cls
   hodge : ∀ n, S.IsHodge (seq n)
   unpaid : ∀ n, ¬ S.IsAlgebraic (seq n)
   descent : ∀ n, S.height (seq (n + 1)) < S.height (seq n)
 
-/-- **L3 — ЗЕЛЁНЫЙ УБИЙЦА (КОРЕНЬ РЕПОЗИТОРИЯ), БЕЗУСЛОВНЫЙ:** цепь
-    неоплаченного спуска = бесконечный ℕ-спуск = вечный двигатель Евклида;
-    убита `no_infinite_descent` (EPMI, A = 1). РАСКРЫТАЯ АСИММЕТРИЯ С ЯМ:
-    там лестницы жили ровно при безмассовости (`gapless_iff_nonempty_ladder`),
-    здесь квантование встроено в модель (height : ℕ) — двигатель мёртв В
-    ЛЮБОЙ модели, никакой гипотезы не потреблено. -/
+/-- **L3 — the GREEN KILLER (the repository's ROOT), UNCONDITIONAL:** the unpaid
+    descent chain = an infinite ℕ-descent = Euclid's perpetual engine;
+    killed by `no_infinite_descent` (EPMI, A = 1). DISCLOSED ASYMMETRY WITH YM:
+    there the ladders lived exactly under masslessness (`gapless_iff_nonempty_ladder`),
+    here quantization is built into the model (height : ℕ) — the engine is dead IN
+    ANY model, no conjecture is consumed. -/
 theorem no_unpaidDescentChain {S : HodgeLedger}
     (C : UnpaidDescentChain S) : False :=
   EuclidsPath.Engine.no_infinite_descent (le_refl 1)
@@ -166,29 +166,29 @@ theorem no_unpaidDescentChain {S : HodgeLedger}
       rw [Nat.one_mul]
       exact C.descent t)
 
-/-- **L3′ — EPMI-резонанс формой:** тип цепей ПУСТ в каждой модели.
-    (У ЯМ пустота лестниц была ⟺ гэпу; здесь — теорема без гипотез.) -/
+/-- **L3′ — EPMI resonance by form:** the type of chains is EMPTY in every model.
+    (In YM emptiness of ladders was ⟺ the gap; here — a theorem without hypotheses.) -/
 theorem isEmpty_unpaidDescentChain (S : HodgeLedger) :
     IsEmpty (UnpaidDescentChain S) :=
   ⟨no_unpaidDescentChain⟩
 
 /-#############################################################################
-  §3. Закон спуска (per-model 🔴 ВХОД) и ГЕРОЙ
+  §3. Descent law (per-model 🔴 INPUT) and the HERO
 #############################################################################-/
 
-/-- **D5. ЗАКОН СПУСКА/ПРИБЛИЖЕНИЯ — per-model 🔴 ВХОД (NS/ЯМ-паттерн, как
-    `EnergyBalanceLaw`/`QuantizationLaw`):** каждый неоплаченный ходжев
-    заряд допускает платёжный шаг — неоплаченный ходжев заряд СТРОГО
-    меньшей высоты (оплата лучшего приближения строго уменьшает
-    знаменатель остатка). Для НАМЕРЕННОЙ (не построенной!) инстанциации
-    S = рациональные (p,p)-классы гладкого проективного многообразия
-    это и есть остаточный математический вход ветви. -/
+/-- **D5. DESCENT/APPROXIMATION LAW — per-model 🔴 INPUT (NS/YM pattern, like
+    `EnergyBalanceLaw`/`QuantizationLaw`):** every unpaid Hodge
+    charge admits a payment step — an unpaid Hodge charge of STRICTLY
+    smaller height (paying the best approximation strictly decreases the
+    denominator of the remainder). For the INTENDED (not constructed!) instantiation
+    S = rational (p,p)-classes of a smooth projective variety
+    this is precisely the residual mathematical input of the branch. -/
 def DescentLaw (S : HodgeLedger) : Prop :=
   ∀ c : S.Cls, S.IsHodge c → ¬ S.IsAlgebraic c →
     ∃ c' : S.Cls, S.IsHodge c' ∧ ¬ S.IsAlgebraic c' ∧
       S.height c' < S.height c
 
-/-- Один шаг выбора: следующий неоплаченный заряд строго меньшей высоты. -/
+/-- One choice step: the next unpaid charge of strictly smaller height. -/
 noncomputable def descentNext {S : HodgeLedger} (hLaw : DescentLaw S)
     (p : UnpaidClass S) : UnpaidClass S :=
   ⟨(hLaw p.1 p.2.1 p.2.2).choose,
@@ -200,8 +200,8 @@ theorem descentNext_height_lt {S : HodgeLedger} (hLaw : DescentLaw S)
     S.height (descentNext hLaw p).1 < S.height p.1 :=
   (hLaw p.1 p.2.1 p.2.2).choose_spec.2.2
 
-/-- Рекурсивная последовательность выбора (`Classical.choice` честно виден;
-    зеркало `ladderSeq`). -/
+/-- The recursive choice sequence (`Classical.choice` honestly visible;
+    mirror of `ladderSeq`). -/
 noncomputable def descentSeq {S : HodgeLedger} (hLaw : DescentLaw S)
     (p : UnpaidClass S) : ℕ → UnpaidClass S
   | 0 => p
@@ -211,9 +211,9 @@ noncomputable def descentSeq {S : HodgeLedger} (hLaw : DescentLaw S)
     (p : UnpaidClass S) (n : ℕ) :
     descentSeq hLaw p (n + 1) = descentNext hLaw (descentSeq hLaw p n) := rfl
 
-/-- **L4 (свидетель содержательности, зеркало `gaplessLadder_of_gapless`):**
-    из закона + неоплаченного класса цепь СТРОИТСЯ (выбором). Поскольку
-    цепей не бывает (L3′), это уже приговор паре «закон + неоплаченность». -/
+/-- **L4 (substance witness, mirror of `gaplessLadder_of_gapless`):**
+    from the law + an unpaid class a chain is BUILT (by choice). Since
+    chains do not exist (L3′), this is already a verdict on the pair "law + unpaidness". -/
 noncomputable def unpaidDescentChain_of_descentLaw {S : HodgeLedger}
     (hLaw : DescentLaw S) (p : UnpaidClass S) : UnpaidDescentChain S where
   seq := fun n => (descentSeq hLaw p n).1
@@ -225,13 +225,13 @@ noncomputable def unpaidDescentChain_of_descentLaw {S : HodgeLedger}
     rw [descentSeq_succ]
     exact descentNext_height_lt hLaw (descentSeq hLaw p n)
 
-/-- **L5:** закон спуска и неоплаченный класс НЕСОВМЕСТНЫ (цепной маршрут). -/
+/-- **L5:** the descent law and an unpaid class are INCOMPATIBLE (chain route). -/
 theorem no_descentLaw_with_unpaid {S : HodgeLedger}
     (hLaw : DescentLaw S) (p : UnpaidClass S) : False :=
   no_unpaidDescentChain (unpaidDescentChain_of_descentLaw hLaw p)
 
-/-- Оплата на каждом этаже высоты: сильная индукция по ℕ-высоте (выбор НЕ
-    нужен — вторая, прямая форма того же EPMI-корня). -/
+/-- Payment on every floor of the height: strong induction on the ℕ-height (choice NOT
+    needed — a second, direct form of the same EPMI root). -/
 theorem algebraic_at_height_of_descentLaw {S : HodgeLedger}
     (hLaw : DescentLaw S) :
     ∀ n : ℕ, ∀ c : S.Cls, S.height c = n → S.IsHodge c → S.IsAlgebraic c := by
@@ -243,57 +243,57 @@ theorem algebraic_at_height_of_descentLaw {S : HodgeLedger}
     obtain ⟨c', hc', hna', hlt⟩ := hLaw c hc hna
     exact hna' (ih (S.height c') (by omega) c' rfl hc')
 
-/-- **L6 — ГЕРОЙ (зелёная условная цепь, NS/ЯМ-паттерн):** закон спуска ⟹
-    гипотеза Ходжа модели. Маршрут: сильная индукция по высоте. -/
+/-- **L6 — HERO (green conditional chain, NS/YM pattern):** the descent law ⟹
+    the model's Hodge conjecture. Route: strong induction on height. -/
 theorem hodgeProperty_of_descentLaw {S : HodgeLedger}
     (hLaw : DescentLaw S) : HodgeProperty S :=
   fun c hc => algebraic_at_height_of_descentLaw hLaw (S.height c) c rfl hc
 
-/-- **L6′ — тот же герой цепным маршрутом** (выбор + безусловная пустота
-    цепей; обе формы, как у ЯМ — прямой убийца и лестница). -/
+/-- **L6′ — the same hero via the chain route** (choice + unconditional emptiness
+    of chains; both forms, as in YM — the direct killer and the ladder). -/
 theorem hodgeProperty_of_descentLaw' {S : HodgeLedger}
     (hLaw : DescentLaw S) : HodgeProperty S := by
   intro c hc
   by_contra hna
   exact no_descentLaw_with_unpaid hLaw ⟨c, hc, hna⟩
 
-/-- **L7 (аналог ЯМ L7):** модели с законом и неоплаченным зарядом НЕ
-    существует. -/
+/-- **L7 (analogue of YM L7):** a model with the law and an unpaid charge does NOT
+    exist. -/
 theorem no_unpaid_lawful_model :
     ¬ ∃ S : HodgeLedger, DescentLaw S ∧ Nonempty (UnpaidClass S) := by
   rintro ⟨S, hLaw, ⟨p⟩⟩
   exact no_descentLaw_with_unpaid hLaw p
 
 /-#############################################################################
-  §4. Зеркало стоимости и его КОЛЛАПС (решающий аудит честности)
+  §4. The cost mirror and its COLLAPSE (the decisive honesty audit)
 #############################################################################-/
 
-/-- **L8 (обратная сторона — ВАКУУМНА, раскрыто):** гипотеза ⟹ закон:
-    квантор по неоплаченным зарядам пуст. Как римановская L5
-    (`manifestationLaw_of_RH`), в ОТЛИЧИЕ от ЯМ L8, где ранг строился
-    по-настоящему (`Nat.log 2 ⌊E/Δ⌋₊`). -/
+/-- **L8 (the reverse side — VACUOUS, disclosed):** the conjecture ⟹ the law:
+    the quantifier over unpaid charges is empty. Like the Riemann L5
+    (`manifestationLaw_of_RH`), in CONTRAST to YM L8, where the rank was built
+    genuinely (`Nat.log 2 ⌊E/Δ⌋₊`). -/
 theorem descentLaw_of_hodgeProperty {S : HodgeLedger}
     (hP : HodgeProperty S) : DescentLaw S :=
   fun c hc hna => (hna (hP c hc)).elim
 
-/-- **L9 — ГЛАВНЫЙ АУДИТ (коллапс зеркала стоимости):** per-model закон ⟺
-    гипотеза Ходжа модели — ЗЕЛЁНО и БЕЗ ВСЯКОЙ ГРАНИЦЫ. Форма ОСУЖДЁННОГО
-    моста (`offCriticalBridge_iff_RH`, `quantizationLaw_iff_massGap`):
-    декретировать закон для модели = декретировать её гипотезу дословно.
-    Потому per-model декретное поле невозможно ЧЕСТНО; недостающее —
-    data anchor (настоящие рациональные (p,p)-классы; в mathlib их НЕТ —
-    шапка), Prop-невакуумность — неверный критерий (SpectralAnchorAudit). -/
+/-- **L9 — THE MAIN AUDIT (collapse of the cost mirror):** the per-model law ⟺
+    the model's Hodge conjecture — GREEN and WITHOUT ANY BOUNDARY. The form of a CONDEMNED
+    bridge (`offCriticalBridge_iff_RH`, `quantizationLaw_iff_massGap`):
+    to decree the law for a model = to decree its conjecture verbatim.
+    That is why a per-model decree field is impossible HONESTLY; what is missing is a
+    data anchor (genuine rational (p,p)-classes; mathlib has NONE — the
+    header), Prop-nonvacuity is the wrong criterion (SpectralAnchorAudit). -/
 theorem descentLaw_iff_hodgeProperty (S : HodgeLedger) :
     DescentLaw S ↔ HodgeProperty S :=
   ⟨hodgeProperty_of_descentLaw, descentLaw_of_hodgeProperty⟩
 
 /-#############################################################################
-  §5. Кованые модели (свидетели трилеммы)
+  §5. Forged models (witnesses of the trilemma)
 #############################################################################-/
 
-/-- Кованая НЕОПЛАЧЕННАЯ модель: классы ℕ, ходжевы — `{0, 1}`, оплачен
-    только `0`, высота тождественная. Заряд `1` — квантованный, выровненный,
-    НЕОПЛАЧЕННЫЙ; шага спуска у него НЕТ. -/
+/-- Forged UNPAID model: classes ℕ, the Hodge ones are `{0, 1}`, only
+    `0` is paid, height is the identity. The charge `1` is quantized, aligned,
+    UNPAID; it has NO descent step. -/
 def cookedUnpaid : HodgeLedger where
   Cls := ℕ
   zero := 0
@@ -309,17 +309,17 @@ theorem cookedUnpaid_one_hodge : cookedUnpaid.IsHodge (1 : ℕ) := le_refl 1
 theorem cookedUnpaid_one_unpaid : ¬ cookedUnpaid.IsAlgebraic (1 : ℕ) :=
   Nat.one_ne_zero
 
-/-- Явный неоплаченный свидетель (зеркало `cookedLadder`: предъявлен
-    КОНСТРУКЦИЕЙ, без выбора) — топливо V3 и аудитов §7. -/
+/-- Explicit unpaid witness (mirror of `cookedLadder`: presented
+    by CONSTRUCTION, without choice) — fuel for V3 and the audits of §7. -/
 def cookedUnpaidClass : UnpaidClass cookedUnpaid :=
   ⟨(1 : ℕ), cookedUnpaid_one_hodge, cookedUnpaid_one_unpaid⟩
 
 theorem cookedUnpaid_not_hodgeProperty : ¬ HodgeProperty cookedUnpaid :=
   fun hP => cookedUnpaid_one_unpaid (hP (1 : ℕ) cookedUnpaid_one_hodge)
 
-/-- У кованого заряда `1` НЕТ шага спуска: шаг с высоты 1 дал бы
-    неоплаченный класс высоты 0 — оплаченный по якорю квантования
-    (`height_zero_iff` потреблён ПО-НАСТОЯЩЕМУ). -/
+/-- The forged charge `1` has NO descent step: a step from height 1 would give
+    an unpaid class of height 0 — paid by the quantization anchor
+    (`height_zero_iff` consumed FOR REAL). -/
 theorem cookedUnpaid_no_descent_step :
     ¬ ∃ c' : cookedUnpaid.Cls, cookedUnpaid.IsHodge c' ∧
         ¬ cookedUnpaid.IsAlgebraic c' ∧
@@ -334,8 +334,8 @@ theorem cookedUnpaid_not_descentLaw : ¬ DescentLaw cookedUnpaid :=
   fun hLaw => cookedUnpaid_no_descent_step
     (hLaw (1 : ℕ) cookedUnpaid_one_hodge cookedUnpaid_one_unpaid)
 
-/-- Кованая ПОЛНОСТЬЮ ОПЛАЧЕННАЯ модель: всё ходжево, всё оплачено,
-    высота ≡ 0. -/
+/-- Forged FULLY PAID model: everything is Hodge, everything is paid,
+    height ≡ 0. -/
 def cookedPaid : HodgeLedger where
   Cls := ℕ
   zero := 0
@@ -349,8 +349,8 @@ def cookedPaid : HodgeLedger where
 theorem cookedPaid_hodgeProperty : HodgeProperty cookedPaid :=
   fun _ _ => trivial
 
-/-- Закон на оплаченной модели — ВАКУУМНО (неоплаченных зарядов нет).
-    Раскрыто: вот почему V2-декрет ничего не добавил бы. -/
+/-- The law on the paid model — VACUOUSLY (there are no unpaid charges).
+    Disclosed: this is why a V2 decree would add nothing. -/
 theorem cookedPaid_descentLaw : DescentLaw cookedPaid :=
   descentLaw_of_hodgeProperty cookedPaid_hodgeProperty
 
@@ -358,23 +358,23 @@ theorem cookedPaid_no_unpaidClass : ¬ Nonempty (UnpaidClass cookedPaid) :=
   (hodgeProperty_iff_no_unpaidClass cookedPaid).mp cookedPaid_hodgeProperty
 
 /-#############################################################################
-  §6. ТРИЛЕММА шестой границы декрета — все вердикты машинны
+  §6. TRILEMMA of the sixth boundary of the decree — all verdicts are machine-made
 #############################################################################-/
 
-/-- **D6a. КАНДИДАТ 1 (универсальная форма шестого поля).** -/
+/-- **D6a. CANDIDATE 1 (universal form of the sixth field).** -/
 def HodgeDescentLawUniversal : Prop :=
   ∀ S : HodgeLedger, DescentLaw S
 
-/-- **D6b. КАНДИДАТ 2 (экзистенциальная форма).** -/
+/-- **D6b. CANDIDATE 2 (existential form).** -/
 def HodgeDescentLawExistential : Prop :=
   ∃ S : HodgeLedger, DescentLaw S ∧ HodgeProperty S
 
-/-- **D6c. КАНДИДАТ 3 (манифестационная форма, риманово зеркало)** — над
-    ПРЕДЪЯВИМЫМ типом свидетелей: одиночный неоплаченный класс
-    (`UnpaidClass`), НЕ цепь — chain-форма вырождается в зелёную V2
-    (`hodgeChainManifestationLaw_green` ниже). Тот же объект поставки
-    `DeviationFlowSupply`, что у riemannBoundary/ЯМ/НС; семейство СВОБОДНО
-    от c — D-инертность вскрыта аудитами §7. -/
+/-- **D6c. CANDIDATE 3 (manifestation form, Riemann mirror)** — over a
+    PRESENTABLE type of witnesses: a single unpaid class
+    (`UnpaidClass`), NOT a chain — the chain form degenerates into a green V2
+    (`hodgeChainManifestationLaw_green` below). The same supply object
+    `DeviationFlowSupply` as in riemannBoundary/YM/NS; the family is FREE
+    of c — D-inertness exposed by the audits of §7. -/
 def UnpaidClassManifests {S : HodgeLedger} (_c : UnpaidClass S) : Prop :=
   ∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
     SemanticExtendedFlowLedgerCollisionResolves proj →
@@ -383,19 +383,19 @@ def UnpaidClassManifests {S : HodgeLedger} (_c : UnpaidClass S) : Prop :=
 def HodgeManifestationLaw : Prop :=
   ∀ (S : HodgeLedger) (c : UnpaidClass S), UnpaidClassManifests c
 
-/-- **V1: КАНДИДАТ 1 ЗЕЛЁНО-ОПРОВЕРЖИМ** — его декрет сделал бы карантин
-    противоречивым. Свидетель: cookedUnpaid (шаг спуска с высоты 1 упирается
-    в якорь квантования). -/
+/-- **V1: CANDIDATE 1 GREEN-REFUTABLE** — its decree would make the quarantine
+    inconsistent. Witness: cookedUnpaid (a descent step from height 1 runs
+    into the quantization anchor). -/
 theorem hodgeLawUniversal_refuted : ¬ HodgeDescentLawUniversal :=
   fun h => cookedUnpaid_not_descentLaw (h cookedUnpaid)
 
-/-- **V2: КАНДИДАТ 2 ЗЕЛЁНО-ДОКАЗУЕМ** — декрет был бы вакуумен.
-    Свидетель: cookedPaid (закон вакуумен, гипотеза дословно). -/
+/-- **V2: CANDIDATE 2 GREEN-PROVABLE** — the decree would be vacuous.
+    Witness: cookedPaid (the law is vacuous, the conjecture verbatim). -/
 theorem hodgeLawExistential_green : HodgeDescentLawExistential :=
   ⟨cookedPaid, cookedPaid_descentLaw, cookedPaid_hodgeProperty⟩
 
-/-- Chain-манифестационный кандидат (форма ЯМ D6c над лестницами,
-    механически перенесённая на цепи). -/
+/-- Chain-manifestation candidate (the YM D6c form over ladders,
+    mechanically transferred to chains). -/
 def ChainManifests {S : HodgeLedger} (_C : UnpaidDescentChain S) : Prop :=
   ∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
     SemanticExtendedFlowLedgerCollisionResolves proj →
@@ -404,21 +404,21 @@ def ChainManifests {S : HodgeLedger} (_C : UnpaidDescentChain S) : Prop :=
 def HodgeChainManifestationLaw : Prop :=
   ∀ (S : HodgeLedger) (C : UnpaidDescentChain S), ChainManifests C
 
-/-- **V2′: CHAIN-ФОРМА ВЫРОЖДЕНА — ЗЕЛЁНО-ДОКАЗУЕМА (вердикт V2-типа, НЕ
-    V3!):** цепей не существует ни в одной модели (L3), потому закон над
-    ними вакуумен. КЛЮЧЕВАЯ структурная асимметрия с ЯМ (раскрыта): там
-    лестница была условно обитаема и её манифестационная форма давала
-    настоящий V3; здесь квантованный двигатель мёртв безусловно — честный
-    V3-свидетель обязан быть одиночным классом (D6c). -/
+/-- **V2′: THE CHAIN FORM IS DEGENERATE — GREEN-PROVABLE (a V2-type verdict, NOT
+    V3!):** chains do not exist in any model (L3), hence the law over
+    them is vacuous. The KEY structural asymmetry with YM (disclosed): there
+    the ladder was conditionally habitable and its manifestation form gave
+    a genuine V3; here the quantized engine is dead unconditionally — an honest
+    V3 witness must be a single class (D6c). -/
 theorem hodgeChainManifestationLaw_green : HodgeChainManifestationLaw :=
   fun _S C => (no_unpaidDescentChain C).elim
 
-/-- **V3: КАНДИДАТ 3 НЕСОВМЕСТИМ С ПРИНЯТОЙ ГРАНИЦЕЙ** (зелёная условная
-    форма, taint-free, зеркало ЯМ/НС V3): кованый неоплаченный класс — в
-    отличие от off-critical нуля — зелёно ПРЕДЪЯВИМ; закон + граница ⟹
-    False (граница даёт разрешающую проекцию (M0 = 1) → закон поставляет
+/-- **V3: CANDIDATE 3 IS INCOMPATIBLE WITH THE ACCEPTED BOUNDARY** (green conditional
+    form, taint-free, mirror of YM/NS V3): the forged unpaid class — in
+    contrast to an off-critical zero — is greenly PRESENTABLE; law + boundary ⟹
+    False (the boundary gives a resolving projection (M0 = 1) → the law supplies
     `DeviationFlowSupply` → `no_deviationFlowSupply_at_resolved_scale`
-    сжигает). Потому шестое поле этой формы ВЗОРВАЛО бы карантин. -/
+    burns it). That is why the sixth field of this form would BLOW UP the quarantine. -/
 theorem hodgeManifestationLaw_refutes_boundary
     (hLaw : HodgeManifestationLaw) : ¬ TheStrictLastStep00Obligation := by
   rintro ⟨A, projOf, hres⟩
@@ -427,13 +427,13 @@ theorem hodgeManifestationLaw_refutes_boundary
   exact no_deviationFlowSupply_at_resolved_scale (projOf 1) hResolves
     (hLaw cookedUnpaid cookedUnpaidClass A 1 (projOf 1) hResolves)
 
-/-- Контрапозиция для читаемости: при принятой границе закона НЕТ. -/
+/-- Contraposition for readability: under the accepted boundary there is NO law. -/
 theorem not_hodgeManifestationLaw_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) : ¬ HodgeManifestationLaw :=
   fun hLaw => hodgeManifestationLaw_refutes_boundary hLaw hBoundary
 
-/-- **V3-характеризация (безусловная — квантор зелёно обитаем,
-    cookedUnpaidClass):** закон ⟺ глобальная заморозка всех леджеров. -/
+/-- **V3 characterization (unconditional — the quantifier is greenly habitable,
+    cookedUnpaidClass):** the law ⟺ a global freeze of all ledgers. -/
 theorem hodgeManifestationLaw_iff_no_resolution :
     HodgeManifestationLaw ↔
       ∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
@@ -446,11 +446,11 @@ theorem hodgeManifestationLaw_iff_no_resolution :
     exact ((hFreeze A M0 proj) hres).elim
 
 /-#############################################################################
-  §7. Origin-anchor аудиты (инстанциация осуждающей машины)
+  §7. Origin-anchor audits (instantiation of the condemning machine)
 #############################################################################-/
 
-/-- **A1 (bundling-аудит, инстанциация `front_pair_iff_no_zero`):**
-    Bridge∧Impossible для семейства манифестаций ⟺ неоплаченных классов нет. -/
+/-- **A1 (bundling audit, instantiation of `front_pair_iff_no_zero`):**
+    Bridge∧Impossible for the family of manifestations ⟺ there are no unpaid classes. -/
 theorem hodge_bundling_audit (S : HodgeLedger) :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun c : UnpaidClass S => UnpaidClassManifests c) ∧
@@ -459,8 +459,8 @@ theorem hodge_bundling_audit (S : HodgeLedger) :
       ¬ Nonempty (UnpaidClass S) :=
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_no_zero _
 
-/-- **A1′ (заострение через L2):** связка — ровно ГИПОТЕЗА ХОДЖА модели
-    (инстанциация `front_pair_iff_RH` при RH := HodgeProperty S). -/
+/-- **A1′ (sharpening via L2):** the bundle is exactly the HODGE CONJECTURE of the model
+    (instantiation of `front_pair_iff_RH` with RH := HodgeProperty S). -/
 theorem hodge_front_pair_iff_hodgeProperty (S : HodgeLedger) :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun c : UnpaidClass S => UnpaidClassManifests c) ∧
@@ -470,9 +470,9 @@ theorem hodge_front_pair_iff_hodgeProperty (S : HodgeLedger) :
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_RH
     (hodgeProperty_iff_no_unpaidClass S).symm
 
-/-- **A2 (асимметрия с Риманом, машинно):** на кованой модели связка
-    ОПРОВЕРГНУТА — неоплаченный класс предъявлен. Bridge-сторону
-    декретировать НЕЛЬЗЯ. -/
+/-- **A2 (asymmetry with Riemann, machine-wise):** on the forged model the bundle
+    is REFUTED — an unpaid class is presented. The Bridge side
+    MUST NOT be decreed. -/
 theorem hodge_bundle_refuted_at_cooked :
     ¬ (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
          (fun c : UnpaidClass cookedUnpaid => UnpaidClassManifests c) ∧
@@ -480,9 +480,9 @@ theorem hodge_bundle_refuted_at_cooked :
          (fun c : UnpaidClass cookedUnpaid => UnpaidClassManifests c)) :=
   fun h => (hodge_bundling_audit cookedUnpaid).mp h ⟨cookedUnpaidClass⟩
 
-/-- **A3 (Z-free collapse, урок SpectralAnchorAudit):** семейство
-    манифестаций СВОБОДНО от класса — коллапсирует к одному c-независимому
-    вопросу-«атому». -/
+/-- **A3 (Z-free collapse, lesson of SpectralAnchorAudit):** the family
+    of manifestations is FREE of the class — it collapses to a single c-independent
+    "atom" question. -/
 theorem hodgeLaw_freeCollapse (S : HodgeLedger) :
     EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.FreeLawCollapse
       (fun c : UnpaidClass S => UnpaidClassManifests c)
@@ -491,9 +491,9 @@ theorem hodgeLaw_freeCollapse (S : HodgeLedger) :
           DeviationFlowSupply A M0) :=
   fun _c => Iff.rfl
 
-/-- **A4:** потому семейство не разделяет неоплаченных классов — свободный
-    закон не несёт информации об отклонении (та же причина, по которой он
-    не годится в декретное поле). -/
+/-- **A4:** hence the family does not separate unpaid classes — a free
+    law carries no information about the deviation (the same reason it
+    is unfit for a decree field). -/
 theorem hodgeLaw_cannot_separate (S : HodgeLedger) :
     ¬ EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.ZeroSeparating
         (fun c : UnpaidClass S => UnpaidClassManifests c) :=
@@ -503,8 +503,8 @@ theorem hodgeLaw_cannot_separate (S : HodgeLedger) :
 end Hodge
 end EuclidsPath
 
--- Машинная видимость чистоты в build-логе
--- (ожидаемо [propext, Classical.choice, Quot.sound]):
+-- Machine-visible purity in the build log
+-- (expected [propext, Classical.choice, Quot.sound]):
 #print axioms EuclidsPath.Hodge.isEmpty_unpaidDescentChain
 #print axioms EuclidsPath.Hodge.hodgeProperty_of_descentLaw
 #print axioms EuclidsPath.Hodge.descentLaw_iff_hodgeProperty

@@ -1,31 +1,31 @@
 /-
-  TwinNodeEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ ГЛАВНОГО УЗЛА (близнецы),
-  зеркало CollatzFirstCause / PNPFirstCause. Зелёная машина: Engine/ConcreteStep00Graph.lean.
+  TwinNodeEpistemic — EPISTEMIC COMPLEMENT OF THE MAIN NODE (twins),
+  mirror of CollatzFirstCause / PNPFirstCause. Green machine: Engine/ConcreteStep00Graph.lean.
 
-  ЧТО ЭТО. Финальный узел близнецов — TheLastStep00Obligation: «существует масштаб A и
-  проекции леджера на все базы M0, резолвящие каждую same-key коллизию генеалогий».
-  «Решить узел изнутри на собственном горизонте» = предъявить A-срез узла при зелёно
-  видимом горизонте системы A ≤ 4. Это самоуничтожается НЕ подстановкой P ∧ ¬P, а
-  настоящим пижонхолом: 5-адическая цепь даёт бесконечную инъективную admissible-поставку
-  (`fiveAdicChainFlow`, инъективность через `fiveAdicChain_strictMono`), и
-  `Finite.exists_ne_map_eq_of_infinite` выбивает same-key пару из любого конечного ключа
-  (`no_projection_resolves_at_smallScale`) — ровно та же валюта, что
-  `no_fullPayment_of_unboundedSupply` у P/NP и стена вечного двигателя у Коллатца.
+  WHAT THIS IS. The final twin node — TheLastStep00Obligation: "there exists a scale A and
+  ledger projections onto all bases M0 that resolve every same-key genealogy collision".
+  "Solving the node from within on its own horizon" = exhibiting an A-slice of the node with
+  the system horizon A ≤ 4 visibly green. This self-destructs NOT by substituting P ∧ ¬P,
+  but by a genuine pigeonhole: the 5-adic chain yields an infinite injective admissible supply
+  (`fiveAdicChainFlow`, injectivity via `fiveAdicChain_strictMono`), and
+  `Finite.exists_ne_map_eq_of_infinite` extracts a same-key pair from any finite key
+  (`no_projection_resolves_at_smallScale`) — exactly the same currency as
+  `no_fullPayment_of_unboundedSupply` in P/NP and the perpetual-engine wall in Collatz.
 
-  ЧЕСТНОСТЬ. Это модель-внутренняя эпистемическая непознаваемость, а НЕ доказательство
-  и НЕ опровержение гипотезы близнецов, и НЕ Гёдель (пижонхол-самоуничтожение, а не
-  теорема о неполноте). Содержательность РАСКОЛОТА ПО МАСШТАБАМ: при A ≤ 4 связка
-  `ground` + `beyondOwnHorizon` содержательна (противоречие — теорема, оплаченная
-  пижонхолом); при A ≥ 5 структура `InternalisedTwinGround` пуста уже по полю горизонта
-  (A ≤ 4), т.е. там связка ФОРМАЛЬНА — и так и должно быть: зелёного противоречия при
-  A ≥ 5 нет и быть не может, иначе узел был бы решён. Непознаваемость twin-узла машинно
-  видима именно как этот раскол. В отличие от Коллатца, «опровержение ⟹ двигатель»
-  у близнецов НЕ безусловно: двигатель строится лишь в стабильной вселенной
-  (`NoEnergyStableUniverse`) — стабильность леджера и есть то, что открыто при A ≥ 5
-  и в карантинном слое поставляется декретом.
+  HONESTY. This is model-internal epistemic unknowability, NOT a proof
+  and NOT a refutation of the twin-prime conjecture, and NOT Gödel (pigeonhole self-destruction,
+  not an incompleteness theorem). Substantiveness IS SPLIT BY SCALE: at A ≤ 4 the bundle
+  `ground` + `beyondOwnHorizon` is substantive (contradiction — a theorem paid for by the
+  pigeonhole); at A ≥ 5 the structure `InternalisedTwinGround` is already empty on the horizon
+  field (A ≤ 4), i.e. there the bundle IS FORMAL — and so it should be: no green contradiction
+  exists at A ≥ 5, nor can it, otherwise the node would have been solved. The unknowability of
+  the twin node is machine-visible precisely as this split. Unlike Collatz, "refutation ⟹ engine"
+  for twins is NOT unconditional: the engine is built only in a stable universe
+  (`NoEnergyStableUniverse`) — ledger stability is exactly what is open at A ≥ 5
+  and is supplied by decree in the quarantine layer.
 
-  Файл ЦЕЛИКОМ ЗЕЛЁНЫЙ: не импортирует Engine/CausalClosureAxiom (карантин),
-  не трогает аксиому step00FirstCause и таинт-список из 52 деклараций.
+  The file IS ENTIRELY GREEN: it does not import Engine/CausalClosureAxiom (quarantine),
+  does not touch the axiom step00FirstCause or the taint list of 52 declarations.
 -/
 
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -36,15 +36,15 @@ namespace EuclidsPath.ConcreteStep00Graph.Epistemic
 
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 
-/-! ## (а) Опровержение близнецов несёт безусловную бесконечную поставку (🟢) -/
+/-! ## (a) Refutation of twins carries an unconditional infinite supply (🟢) -/
 
-/-- **«ОПРОВЕРЖЕНИЕ ПРЕДЪЯВЛЯЕТ ПОСТАВКУ» (зелёная, безусловная).** Если множество
-    нижних близнецов конечно, то существует twin-bound `M0`, и на КАЖДОМ масштабе `A`
-    из него строится бесконечная admissible-поставка генеалогий — аналог
-    `UnboundedCertificateSupply` у P/NP. Подлинная конструкция через
+/-- **"REFUTATION EXHIBITS SUPPLY" (green, unconditional).** If the set of
+    lower twins is finite, there exists a twin-bound `M0`, and at EVERY scale `A`
+    an infinite admissible supply of genealogies is constructed from it — analogous to
+    `UnboundedCertificateSupply` in P/NP. Genuine construction via
     cofactor-normalizer (`twinBoundForcesInfiniteExtendedGeneratedFlows_closed`),
-    не пустышка. ЧЕСТНОСТЬ: сама по себе поставка двигателя ещё НЕ строит —
-    см. следующую теорему и её цену. -/
+    not a placeholder. HONESTY: the supply alone does NOT yet build the engine —
+    see the next theorem and its price. -/
 theorem twinBound_carries_unbounded_supply
     (hfin : ¬ TwinLowers.Infinite) :
     ∃ M0 : ℕ, ∀ A : ℕ,
@@ -54,22 +54,22 @@ theorem twinBound_carries_unbounded_supply
   exact ⟨M0, fun A =>
     twinBoundForcesInfiniteExtendedGeneratedFlows_closed hBound⟩
 
-/-! ## (б) Опровержение в стабильной вселенной строит двигатель (🟢, условная) -/
+/-! ## (b) Refutation in a stable universe builds the engine (🟢, conditional) -/
 
-/-- **«ОПРОВЕРЖЕНИЕ В СТАБИЛЬНОЙ ВСЕЛЕННОЙ СТРОИТ ДВИГАТЕЛЬ» (зелёная).**
-    Конечность близнецов + стабильный no-energy леджер на каждом срезе ⟹
-    конкретный евклидов двигатель (`SomeConcreteEuclideanEngine`), который запрещён
-    (`no_someConcreteEuclideanEngine`, lexRank строго падает).
-    ЧЕСТНОСТЬ (три оговорки):
-    (1) это НЕ безусловное «опровержение = двигатель», как у Коллатца
-        (`nonHalting_carries_perpetual_engine`): нужна гипотеза `NoEnergyStableUniverse`,
-        и именно стабильность леджера — то, что открыто при A ≥ 5 и в карантинном
-        слое поставляется декретом;
-    (2) эта цепь дословно прогнана внутри `twins_infinite_of_noEngine_and_boundary`
-        (CausalClosureAxiom.lean, §8) — здесь ВЫНОС ЗЕЛЁНОГО ИМЕНИ из карантинного
-        файла в чистый модуль, а не новое содержание;
-    (3) половина «поставка + стабильность ⟹ двигатель» — тонкая обёртка над
-        существующей `infiniteFlows_in_stableNoEnergy_build_engine`. -/
+/-- **"REFUTATION IN A STABLE UNIVERSE BUILDS THE ENGINE" (green).**
+    Finiteness of twins + stable no-energy ledger at every slice ⟹
+    a concrete Euclidean engine (`SomeConcreteEuclideanEngine`), which is forbidden
+    (`no_someConcreteEuclideanEngine`, lexRank strictly decreases).
+    HONESTY (three caveats):
+    (1) this is NOT the unconditional "refutation = engine" as in Collatz
+        (`nonHalting_carries_perpetual_engine`): the hypothesis `NoEnergyStableUniverse`
+        is required, and ledger stability is exactly what is open at A ≥ 5 and
+        is supplied by decree in the quarantine layer;
+    (2) this chain is run verbatim inside `twins_infinite_of_noEngine_and_boundary`
+        (CausalClosureAxiom.lean, §8) — here it is an EXPORT OF THE GREEN NAME from the
+        quarantine file into a clean module, not new content;
+    (3) the half "supply + stability ⟹ engine" is a thin wrapper over the existing
+        `infiniteFlows_in_stableNoEnergy_build_engine`. -/
 theorem twinRefutation_in_stableUniverse_builds_engine
     (hfin : ¬ TwinLowers.Infinite)
     (hstable : ∀ A M0 : ℕ,
@@ -84,14 +84,14 @@ theorem twinRefutation_in_stableUniverse_builds_engine
   obtain ⟨_, _, _, W⟩ := infiniteFlows_in_stableNoEnergy_build_engine hstab h𝓕
   exact ⟨0, M0, W⟩
 
-/-! ## (в) Сужение узла в точной strict-форме декрета (🟢) -/
+/-! ## (c) Node confinement in the exact strict form of the decree (🟢) -/
 
-/-- **СУЖЕНИЕ УЗЛА, STRICT-ФОРМА.** `TheStrictLastStep00Obligation` — ровно та форма,
-    которую утверждает `causalBoundary` декрета (в карантинном слое; здесь сам декрет
-    НЕ используется) — машинно загнана в `A ≥ 5`: срез A ≤ 4 опровергнут 5-адической
-    цепью. Тривиальная композиция iff-моста
-    `strictLastStep00Obligation_iff_lastStep00Obligation` и уже доказанного сужения
-    `lastStep00Obligation_forces_scale_ge_five`; уточняет растяжку
+/-- **NODE CONFINEMENT, STRICT FORM.** `TheStrictLastStep00Obligation` — exactly the form
+    asserted by `causalBoundary` of the decree (in the quarantine layer; the decree itself
+    is NOT used here) — is machine-forced into `A ≥ 5`: the A ≤ 4 slice is refuted by the
+    5-adic chain. Trivial composition of the iff-bridge
+    `strictLastStep00Obligation_iff_lastStep00Obligation` and the already-proved confinement
+    `lastStep00Obligation_forces_scale_ge_five`; sharpens the stretch
     `quarantine_inconsistent_if_node_refuted`. -/
 theorem strictLastStep00Obligation_forces_scale_ge_five
     (H : TheStrictLastStep00Obligation) :
@@ -104,55 +104,55 @@ theorem strictLastStep00Obligation_forces_scale_ge_five
   exact ⟨A, hA5, projOf,
     fun M0 => (strictResolves_iff_resolves (projOf M0)).mpr (hRes M0)⟩
 
-/-! ## (г) Модель: внутреннее решение узла = самообоснование за горизонтом -/
+/-! ## (d) Model: internal resolution of the node = self-grounding beyond the horizon -/
 
-/-- **Внутреннее самообоснование twin-узла на собственном горизонте.** Несёт
-    (a) `ground` — A-срез финального узла: проекции на все базы `M0` резолвят каждую
-    коллизию (слайс `TheLastStep00Obligation` на фиксированном масштабе), и
-    (b) `beyondOwnHorizon` — сам масштаб лежит в зелёно видимом горизонте системы
-    (A ≤ 4, где работает 5-адическая цепь).
-    СОДЕРЖАТЕЛЬНОСТЬ: `ground` и `beyondOwnHorizon` — не `P` и `¬P`; противоречие
-    поставляет пижонхол `no_projection_resolves_at_smallScale`
-    (`Finite.exists_ne_map_eq_of_infinite` на инъективной семье `fiveAdicChainFlow`).
-    ЧЕСТНОСТЬ: при A ≥ 5 структура пуста уже по полю `beyondOwnHorizon` — там связка
-    формальна, и это правильно: зелёного противоречия при A ≥ 5 нет (иначе узел был
-    бы решён); непознаваемость видима как раскол по масштабам. -/
+/-- **Internal self-grounding of the twin node on its own horizon.** Carries
+    (a) `ground` — the A-slice of the final node: projections onto all bases `M0` resolve
+    every collision (a slice of `TheLastStep00Obligation` at a fixed scale), and
+    (b) `beyondOwnHorizon` — the scale itself lies within the system's visibly-green horizon
+    (A ≤ 4, where the 5-adic chain operates).
+    SUBSTANTIVENESS: `ground` and `beyondOwnHorizon` are not `P` and `¬P`; the contradiction
+    is supplied by the pigeonhole `no_projection_resolves_at_smallScale`
+    (`Finite.exists_ne_map_eq_of_infinite` on the injective family `fiveAdicChainFlow`).
+    HONESTY: at A ≥ 5 the structure is already empty on the `beyondOwnHorizon` field —
+    the bundle there is formal, and rightly so: no green contradiction exists at A ≥ 5
+    (otherwise the node would have been solved); unknowability is visible as the split by scale. -/
 structure InternalisedTwinGround (A : ℕ) : Prop where
   ground : ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
       ∀ M0 : ℕ, SemanticExtendedFlowLedgerCollisionResolves (projOf M0)
   beyondOwnHorizon : A ≤ 4
 
-/-- «Внутреннее знание причины близнецов» = внутреннее самообоснование узла. -/
+/-- "Internal knowledge of the twin cause" = internal self-grounding of the node. -/
 abbrev InternalKnowledgeOfTwinCause (A : ℕ) : Prop := InternalisedTwinGround A
 
-/-- Самообоснование самоуничтожается — оплачено пижонхолом
-    `no_projection_resolves_at_smallScale` (через
-    `smallScale_branch_of_lastStep00Obligation_refuted`), НЕ тавтологией. ЗЕЛЁНАЯ. -/
+/-- Self-grounding self-destructs — paid for by the pigeonhole
+    `no_projection_resolves_at_smallScale` (via
+    `smallScale_branch_of_lastStep00Obligation_refuted`), NOT by tautology. GREEN. -/
 theorem no_internalisedTwinGround {A : ℕ} :
     InternalisedTwinGround A → False :=
   fun H =>
     smallScale_branch_of_lastStep00Obligation_refuted H.beyondOwnHorizon H.ground
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable`,
-    `pnpCause_unknowable`): внутреннее решение twin-узла на собственном горизонте
-    невозможно. ЗЕЛЁНАЯ, вообще без гипотез. -/
+/-- **"UNKNOWABLE FROM WITHIN" — THEOREM** (mirror of `collatzCause_unknowable`,
+    `pnpCause_unknowable`): internal resolution of the twin node on its own horizon
+    is impossible. GREEN, with no hypotheses whatsoever. -/
 theorem twinNode_unknowable {A : ℕ} : ¬ InternalKnowledgeOfTwinCause A :=
   no_internalisedTwinGround
 
-/-! ## Сводки: решение заперто за двигателем (🟢) -/
+/-! ## Summary: solution is locked behind the engine (🟢) -/
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — 3-РАЗВИЛКА (зелёная; зеркало
+/-- **"SOLUTION LOCKED BEHIND THE ENGINE" — 3-WAY TRILEMMA (green; mirror of
     `collatz_no_internal_decision_without_engine`, `pnp_no_internal_decision_without_engine`):**
-    (1) ОПРОВЕРГНУТЬ близнецов против стабильного леджера = построить двигатель
-        (twin-bound ⟹ бесконечная поставка ⟹ same-key коллизия ⟹ `LegalCycle`,
-        запрещённый lexRank); цена честно видна: нужна `NoEnergyStableUniverse`;
-    (2) САМООБОСНОВАТЬ узел на своём горизонте — самоуничтожается
-        (`no_internalisedTwinGround`, пижонхол);
-    (3) единственный путь — ВНЕШНЯЯ ГРАНИЦА: strict-узел, честно принятый снаружи,
-        влечёт бесконечность близнецов (`twinLowersInfinite_of_strictLastStep00Obligation`,
-        зелёная условная стрелка; сам strict-узел здесь НЕ утверждается).
-    НЕ утверждается гёделевская независимость и НЕ решение гипотезы близнецов —
-    только: оба внутренних решения стоят вечного двигателя. -/
+    (1) REFUTE twins against a stable ledger = build the engine
+        (twin-bound ⟹ infinite supply ⟹ same-key collision ⟹ `LegalCycle`,
+        forbidden by lexRank); the price is honestly visible: `NoEnergyStableUniverse` is needed;
+    (2) SELF-GROUND the node on its own horizon — self-destructs
+        (`no_internalisedTwinGround`, pigeonhole);
+    (3) the only path — EXTERNAL BOUNDARY: the strict node, honestly accepted from outside,
+        implies infinitely many twins (`twinLowersInfinite_of_strictLastStep00Obligation`,
+        green conditional arrow; the strict node is NOT asserted here).
+    Neither Gödelian independence nor a solution to the twin-prime conjecture is asserted —
+    only: both internal resolutions cost a perpetual engine. -/
 theorem twin_no_internal_decision_without_engine (A : ℕ) :
     (∀ M0 : ℕ, TwinBoundAbove M0 →
       ∀ proj : SemanticExtendedFlowLedgerProjection A M0,
@@ -167,17 +167,17 @@ theorem twin_no_internal_decision_without_engine (A : ℕ) :
   obtain ⟨_, _, _, W⟩ := infiniteFlows_in_stableNoEnergy_build_engine hstab h𝓕
   exact W
 
-/-- Итоговый эпистемический статус twin-узла (зелёный; зеркало
-    `pnp_locked_behind_engine_status` — БЕЗ декрет-конъюнкта: жёлтая версия с
-    `step00FirstCause` добавила бы новые заражённые декларации и сюда не входит):
-    (1) поставка при A ≤ 4 существует безусловно (5-адическая цепь, инъективность);
-    (2) узел непознаваем изнутри (теорема);
-    (3) узел загнан в A ≥ 5 (`lastStep00Obligation_forces_scale_ge_five`);
-    (4) опровержение близнецов в стабильной вселенной строит двигатель;
-    (5) двигатель запрещён (`no_someConcreteEuclideanEngine`, lexRank).
-    Вместе (4)+(5) дают условную бесконечность близнецов в стабильной вселенной —
-    зелёное содержание, уже записанное как `twins_infinite_of_noEngine_and_boundary`
-    в карантинном файле; здесь оно живёт без карантина. -/
+/-- Final epistemic status of the twin node (green; mirror of
+    `pnp_locked_behind_engine_status` — WITHOUT the decree conjunct: the yellow version with
+    `step00FirstCause` would add newly tainted declarations and is excluded here):
+    (1) the supply at A ≤ 4 exists unconditionally (5-adic chain, injectivity);
+    (2) the node is unknowable from within (theorem);
+    (3) the node is forced into A ≥ 5 (`lastStep00Obligation_forces_scale_ge_five`);
+    (4) refutation of twins in a stable universe builds the engine;
+    (5) the engine is forbidden (`no_someConcreteEuclideanEngine`, lexRank).
+    Together (4)+(5) give conditional infinitude of twins in a stable universe —
+    green content already recorded as `twins_infinite_of_noEngine_and_boundary`
+    in the quarantine file; here it lives without quarantine. -/
 theorem twin_locked_behind_engine_status {A : ℕ} (hA : A ≤ 4) :
     InfiniteExtendedGeneratedFlowFamily A 1 (Set.range (fiveAdicChainFlow hA)) ∧
     (¬ InternalKnowledgeOfTwinCause A) ∧
@@ -198,7 +198,7 @@ theorem twin_locked_behind_engine_status {A : ℕ} (hA : A ≤ 4) :
    twinRefutation_in_stableUniverse_builds_engine,
    no_someConcreteEuclideanEngine⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
+/-! ## Axiom audit: the entire module is green (standard triple), repo taint does NOT change -/
 #print axioms twinBound_carries_unbounded_supply
 #print axioms twinRefutation_in_stableUniverse_builds_engine
 #print axioms strictLastStep00Obligation_forces_scale_ge_five

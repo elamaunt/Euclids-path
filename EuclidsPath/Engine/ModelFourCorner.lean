@@ -1,15 +1,15 @@
 /-
-  Модельный four-corner (фрактальная отрицательная ассоциация). Проза: prose/20_Fractality.md.
+  Model four-corner (fractal negative association). Prose: prose/20_Fractality.md.
 
-  Вывод из фрактальной структуры: при ± симметрии (вес на сторону одинаков) и эксклюзивности
-  (простой делит ≤ 1 стороны, `Carrier.no_large_shared_divisor`) ранговая производящая функция —
-  произведение `∏(c+w(x+y))`, т.е. функция от `s=x+y`. Тогда коэффициенты
-      N_{ij} = Q_{i+j} · C(i+j, i),     Q_k = коэф. при s^k.
-  В равновесной модели (n простых, вес w): Q_k = C(n,k)·w^k, и four-corner
+  Derivation from the fractal structure: under ± symmetry (equal weight on each side) and exclusivity
+  (a prime divides ≤ 1 side, `Carrier.no_large_shared_divisor`) the rank generating function is the
+  product `∏(c+w(x+y))`, i.e. a function of `s=x+y`. Then the coefficients are
+      N_{ij} = Q_{i+j} · C(i+j, i),     Q_k = coeff. of s^k.
+  In the equilibrium model (n primes, weight w): Q_k = C(n,k)·w^k, and the four-corner
       N₀₀·N₃₃ ≤ N₀₃·N₃₀
-  сводится к биномиальному `20·C(n,6) ≤ C(n,3)²` (20 = C(6,3) — константа из R_CRT=20e₆/e₃²).
+  reduces to the binomial `20·C(n,6) ≤ C(n,3)²` (20 = C(6,3) — constant from R_CRT=20e₆/e₃²).
 
-  Доказательство ЭЛЕМЕНТАРНО (тождество «выбор-в-выборе» + монотонность). Без распределения/сита.
+  The proof is ELEMENTARY (the "choose-within-choose" identity + monotonicity). No distribution/sieve.
 -/
 import Mathlib
 
@@ -18,8 +18,8 @@ set_option autoImplicit false
 namespace EuclidsPath
 
 /--
-  **Биномиальный four-corner.** Для всех `n`: `20·C(n,6) ≤ C(n,3)²` (при `n<6` слева 0).
-  Ключ: `C(n,6)·C(6,3) = C(n,3)·C(n−3,3)` (выбор-в-выборе) и `C(n−3,3) ≤ C(n,3)`.
+  **Binomial four-corner.** For all `n`: `20·C(n,6) ≤ C(n,3)²` (for `n<6` the left side is 0).
+  Key: `C(n,6)·C(6,3) = C(n,3)·C(n−3,3)` (choose-within-choose) and `C(n−3,3) ≤ C(n,3)`.
 -/
 theorem four_corner_binom (n : ℕ) : 20 * n.choose 6 ≤ (n.choose 3) ^ 2 := by
   have hid : n.choose 6 * (6 : ℕ).choose 3 = n.choose 3 * (n - 3).choose (6 - 3) :=
@@ -35,8 +35,8 @@ theorem four_corner_binom (n : ℕ) : 20 * n.choose 6 ≤ (n.choose 3) ^ 2 := by
     _ = (n.choose 3) ^ 2 := by ring
 
 /--
-  **Модельный four-corner** (равновесная симметричная эксклюзивная модель, вес `w`).
-  Счёты: `N₀₀ = 1`, `N₀₃ = N₃₀ = C(n,3)·w³`, `N₃₃ = 20·C(n,6)·w⁶`. Тогда `N₀₀·N₃₃ ≤ N₀₃·N₃₀`.
+  **Model four-corner** (equilibrium symmetric exclusive model, weight `w`).
+  Ledger: `N₀₀ = 1`, `N₀₃ = N₃₀ = C(n,3)·w³`, `N₃₃ = 20·C(n,6)·w⁶`. Then `N₀₀·N₃₃ ≤ N₀₃·N₃₀`.
 -/
 theorem model_four_corner (n w : ℕ) :
     1 * (20 * n.choose 6 * w ^ 6) ≤ (n.choose 3 * w ^ 3) * (n.choose 3 * w ^ 3) := by
@@ -46,10 +46,10 @@ theorem model_four_corner (n w : ℕ) :
     _ = (n.choose 3 * w ^ 3) * (n.choose 3 * w ^ 3) := by ring
 
 /--
-  **Сингулярность недостижима (строгая положительность).** Для `n ≥ 7`: `20·C(n,6) < C(n,3)²`
-  СТРОГО. Равенство `D=0` (равновесие/независимость = «двигатель работает») возможно лишь при
-  вырождении (мало простых); при нетривиальном слое (`n ≥ 7`) положительность строгая.
-  Ключ строгости: `C(n−3,3) < C(n,3)` (Паскаль: `C(n,3) = C(n−1,2) + C(n−1,3)`, `C(n−1,2) > 0`).
+  **Singularity is unreachable (strict positivity).** For `n ≥ 7`: `20·C(n,6) < C(n,3)²`
+  STRICTLY. Equality `D=0` (equilibrium/independence = "the perpetual engine runs") is only possible in
+  the degenerate case (few primes); at a non-trivial layer (`n ≥ 7`) the positivity is strict.
+  Key to strictness: `C(n−3,3) < C(n,3)` (Pascal: `C(n,3) = C(n−1,2) + C(n−1,3)`, `C(n−1,2) > 0`).
 -/
 theorem four_corner_binom_strict {n : ℕ} (hn : 7 ≤ n) :
     20 * n.choose 6 < (n.choose 3) ^ 2 := by

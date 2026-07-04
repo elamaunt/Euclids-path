@@ -1,28 +1,28 @@
 /-
-  RiemannLayerBoxFront — серия layerbox (25 кирпичей одной сборкой): спектральное
-  трио (fingerprint / anchor-recovers-zero / origin-blind firewall), zero-indexed
-  impossibility, decoded-kernel, same-zero descent, move-алгебра/полнота/матрица
-  блокировок, residue-таблицы (named rows / factor matrix / assignment rows /
-  concrete tuple table / decider / forced table), pressure/blocker-ядра,
-  maximal/terminal фронты, финальный checklist-компилятор.
+  RiemannLayerBoxFront — layerbox series (25 bricks in one build): spectral
+  trio (fingerprint / anchor-recovers-zero / origin-blind firewall), zero-indexed
+  impossibility, decoded-kernel, same-zero descent, move-algebra/completeness/blocker
+  matrix, residue tables (named rows / factor matrix / assignment rows /
+  concrete tuple table / decider / forced table), pressure/blocker cores,
+  maximal/terminal fronts, final checklist-compiler.
 
-  ЧЕСТНОСТЬ (флаги сборочного аудита, машинно):
-    * Реально доказанная арифметика серии: mod-6 residue-факты (555/111+2
-      невозможно; ориентация масс 5-в-1 проходит; кортеж 511/511 сбалансирован)
-      + генерические well-founded descent / finite-cover сборки. Остальное —
-      каркасы обязательств.
-    * LayerPressure/DeterminantPressure несут поле contradiction : False —
-      неинстанциируемые интерфейс-слоты, не доказательства.
-    * ResidueGate декодед-ядра был ill-typed placeholder (Prop := Prop) —
-      честная инертная починка := True; содержание в local_arithmetic_obstruction.
-    * NonEngineCoherenceFirewall (обе версии), Prop-слоты terminal_slot —
-      декоративные/инертные гейты; valid_atomOf/anchored_atomOf single-file
-      экстрактора — Prop-значные no-op поля (несущее — в ExtractorRealizes).
-    * native_decide (7 мест) заменён на kernel-checked decide — доверие
-      ofReduceBool НЕ введено.
-  Фиксы: ASCII в Unicode, Type-аскрипции, Nonempty-обёртки Or-нагрузок,
-  universe-аскрипции checklist, отрицание data-структур в (X -> False),
-  переупорядочение биндеров.
+  HONESTY (build-audit flags, machine-level):
+    * Actually proven arithmetic of the series: mod-6 residue facts (555/111+2
+      impossible; mass orientation 5-to-1 passes; tuple 511/511 balanced)
+      + generic well-founded descent / finite-cover builds. The rest —
+      obligation scaffolds.
+    * LayerPressure/DeterminantPressure carry the field contradiction : False —
+      non-instantiable interface slots, not proofs.
+    * ResidueGate of the decoded kernel was an ill-typed placeholder (Prop := Prop) —
+      honest inert fix := True; content in local_arithmetic_obstruction.
+    * NonEngineCoherenceFirewall (both versions), Prop-slots terminal_slot —
+      decorative/inert gates; valid_atomOf/anchored_atomOf single-file
+      extractor — Prop-valued no-op fields (the carrier is in ExtractorRealizes).
+    * native_decide (7 sites) replaced by kernel-checked decide — trust in
+      ofReduceBool NOT introduced.
+  Fixes: ASCII to Unicode, Type-ascriptions, Nonempty-wrappers for Or-loads,
+  universe-ascriptions checklist, negation of data-structures as (X -> False),
+  binder reordering.
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannSpectralAnchorAudit

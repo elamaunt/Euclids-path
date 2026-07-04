@@ -1,26 +1,26 @@
 /-
-  RiemannSpectralAnchorAudit — абстрактная формализация вскрытого коллапса
-  arithmetic-two-transport маршрута + ИСПРАВЛЕННОЕ следующее обязательство
-  (кирпичи: Riemann_arithmetic_law_origin_anchor_audit +
-  Riemann_spectral_anchor_data_nonvacuity). Проза: prose/30.
+  RiemannSpectralAnchorAudit — abstract formalisation of the exposed collapse
+  of the arithmetic-two-transport route + CORRECTED next obligation
+  (bricks: Riemann_arithmetic_law_origin_anchor_audit +
+  Riemann_spectral_anchor_data_nonvacuity). Prose: prose/30.
 
-  Слой 1 (origin-anchor audit): формализует мой аудит — FreeLawCollapse
-  (закон ⟺ Z-независимый атом), front_pair_iff_no_zero для ЛЮБОЙ law-family,
-  ZeroSeparating, «свободный закон = внешняя 0→1 поставка, не мост».
-  Слой 2 (data-nonvacuity) — ТОНЬШЕ: Prop-уровневая невакуумность —
-  НЕПРАВИЛЬНЫЙ критерий (доказано: мост ⟹ коллапс закона в True —
-  propLevel_nonvacuity_incompatible_with_bridge); аудит обязан жить на
-  уровне ДАННЫХ: DataAnchoredLaw (Admissible + Anchor), экстрактор атомов,
-  SpectralInvariantAnchor (respects: инвариант атома = инвариант нуля) —
-  NonVacuousDataAnchor запрещает free-origin поставку и константные
-  экстракторы. Исправленный фронт: SpectralAnchorStrictFront.
+  Layer 1 (origin-anchor audit): formalises the audit — FreeLawCollapse
+  (law ⟺ Z-independent atom), front_pair_iff_no_zero for ANY law-family,
+  ZeroSeparating, "free law = external 0→1 supply, not a bridge".
+  Layer 2 (data-nonvacuity) — SUBTLER: Prop-level non-vacuity is the
+  WRONG criterion (proved: bridge ⟹ law collapses to True —
+  propLevel_nonvacuity_incompatible_with_bridge); the audit must live at
+  the DATA level: DataAnchoredLaw (Admissible + Anchor), atom extractor,
+  SpectralInvariantAnchor (respects: atom invariant = zero invariant) —
+  NonVacuousDataAnchor forbids free-origin supply and constant extractors.
+  Corrected front: SpectralAnchorStrictFront.
 
-  СТЫКОВКА: concrete_freeLawCollapse — моя law_iff_admissibleAtom и есть
-  FreeLawCollapse конкретного маршрута ⟹ конкретный закон не разделяет нули;
-  concreteDataLaw — заготовка data-закона (Atom := ArithmeticTransportAtom,
-  Anchor — будущий спектральный вход).
-  Фиксы кирпичей: ASCII forall/exists/not/<-> → Unicode; Prop→Type
-  элиминация в constantExtractor → .choose (noncomputable); dot-call.
+  JUNCTION: concrete_freeLawCollapse — my law_iff_admissibleAtom is exactly
+  FreeLawCollapse for the concrete route law family ⟹ the concrete law does
+  not separate zeros; concreteDataLaw — scaffold of the data-law
+  (Atom := ArithmeticTransportAtom, Anchor — future spectral input).
+  Brick fixes: ASCII forall/exists/not/<-> → Unicode; Prop→Type
+  elimination in constantExtractor → .choose (noncomputable); dot-call.
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannArithmeticTwoTransport
@@ -602,14 +602,14 @@ end ArithmeticTwoTransport
 end Riemann
 end EuclidsPath
 
-/-! Стыковка audit-слоёв с конкретным маршрутом -/
+/-! Junction of audit layers with the concrete route -/
 
 namespace EuclidsPath
 namespace Riemann
 namespace ArithmeticTwoTransport
 
-/-- Конкретный free-collapse: моя law_iff_admissibleAtom — в точности
-    FreeLawCollapse для конкретного семейства законов маршрута. -/
+/-- Concrete free-collapse: my law_iff_admissibleAtom is exactly
+    FreeLawCollapse for the concrete route law family. -/
 theorem concrete_freeLawCollapse {OffCriticalZero : Type} :
     OriginAnchorAudit.FreeLawCollapse
       (fun Z : OffCriticalZero =>
@@ -617,8 +617,8 @@ theorem concrete_freeLawCollapse {OffCriticalZero : Type} :
       AdmissibleAtomExists :=
   fun Z => law_iff_admissibleAtom Z
 
-/-- Следствие: конкретный закон НЕ разделяет нули и НЕ является
-    non-vacuous spectral anchor (audit-слой применён к маршруту). -/
+/-- Corollary: the concrete law does NOT separate zeros and is NOT a
+    non-vacuous spectral anchor (audit layer applied to the route). -/
 theorem concrete_law_is_origin_boundary {OffCriticalZero : Type} :
     ¬ OriginAnchorAudit.ZeroSeparating
       (fun Z : OffCriticalZero =>
@@ -626,9 +626,9 @@ theorem concrete_law_is_origin_boundary {OffCriticalZero : Type} :
   OriginAnchorAudit.no_zero_separation_under_freeCollapse
     concrete_freeLawCollapse
 
-/-- Кандидат data-anchored закона для маршрута: Atom := ArithmeticTransportAtom,
-    Admissible := Nonempty (ArithmeticAdmissible ·); Anchor — БУДУЩИЙ
-    спектральный вход (здесь параметр). -/
+/-- Candidate data-anchored law for the route: Atom := ArithmeticTransportAtom,
+    Admissible := Nonempty (ArithmeticAdmissible ·); Anchor — FUTURE
+    spectral input (a parameter here). -/
 def concreteDataLaw (OffCriticalZero : Type)
     (Anchor : OffCriticalZero → ArithmeticTransportAtom → Prop) :
     SpectralAnchorData.DataAnchoredLaw OffCriticalZero ArithmeticTransportAtom where

@@ -141,6 +141,20 @@ theorem goldbachViolation_ge_52 (V : GoldbachViolation) : 52 ≤ V.1 := by
   by_contra hlt
   exact hno (goldbach_upTo_52 E (by omega) h4 (Nat.even_iff.mp hev))
 
+/-- **Анатомия свидетеля: все сдвиги на простое непросты.** У гипотетического
+    нарушения Гольдбаха при `E` для ЛЮБОГО простого `p < E` дополнение `E − p`
+    НЕ простое — прямая развёртка отрицания разложения `¬GoldbachRep E` через
+    ограниченную форму (`goldbachRep_iff_bounded`): будь `E − p` простым, пара
+    `(p, E − p)` дала бы разложение. ЧЕСТНОСТЬ (CORR-исправление скептика):
+    «составное» НЕ утверждается — при простом `p = E − 1` дополнение
+    `E − p = 1` не простое И не составное; зелёно ровно `¬(E − p).Prime`
+    (имя серии из отчёта сохранено, утверждение — исправленное). Это свойство
+    ГИПОТЕТИЧЕСКОГО свидетеля (тип ожидаемо пуст), не решение задачи 1742 г. -/
+theorem goldbachViolation_all_shifts_composite {E : ℕ}
+    (hE : GoldbachViolationAt E) :
+    ∀ p, p.Prime → p < E → ¬ (E - p).Prime := fun p hp hlt hq =>
+  hE.2.2 ((goldbachRep_iff_bounded E).mpr ⟨p, hlt, hp, hq⟩)
+
 end EuclidsPath.GoldbachBranch
 
 /-#############################################################################
@@ -315,6 +329,7 @@ theorem goldbachManifestation_bundling_audit :
 #print axioms goldbachManifestationLaw_iff_conjecture_of_boundary
 #print axioms EuclidsPath.GoldbachBranch.goldbach_upTo_52
 #print axioms EuclidsPath.GoldbachBranch.goldbachViolation_ge_52
+#print axioms EuclidsPath.GoldbachBranch.goldbachViolation_all_shifts_composite
 
 end GeneratedFlowFormulation
 end ConcreteStep00Graph

@@ -31,7 +31,10 @@
   тогда как Бертран покрывает лишь [m, 2m]. Потому Бертран НЕ решает Лежандра:
   зелёное «пустыня не удваивается» бессильно на квадратичной щели, и
   NoBertrandToLegendreImplicationClaimed = True явно фиксирует, что НИКАКОЙ
-  импликации Бертран ⟹ Лежандр здесь не заявлено.
+  импликации Бертран ⟹ Лежандр здесь не заявлено. Позитивная сторона той же
+  честности (bertrand_localizes_desert, §3b): на ГИПОТЕТИЧЕСКОМ свидетеле
+  пустыни Бертран всё же работает — выталкивает следующее простое в слой
+  [(n+1)², 2n²+2]; это локализация последствий нарушения, не его исключение.
 
   ЗНАК ЭВРИСТИКИ — ЗА (нарушений Лежандра нет ожидаемо): квантор закона
   пробегает ожидаемо ПУСТОЙ тип LegendreViolation — закон ожидаемо
@@ -183,11 +186,60 @@ abbrev NoBertrandToLegendreImplicationClaimed : Prop := True
 theorem noBertrandToLegendreImplicationClaimed_holds :
     NoBertrandToLegendreImplicationClaimed := trivial
 
+/-#############################################################################
+  §3b. БЕРТРАН-ЛОКАЛИЗАЦИЯ ПУСТЫНИ: единственная безусловная стена фронта
+       впервые РАБОТАЕТ на гипотетическом свидетеле Лежандра
+#############################################################################-/
+
+/-- Зелёная арифметика слоя: `(n+1)² ≤ 2n²+2` для ВСЕХ `n` (это в точности
+    `n² ≥ 2n−1`, т.е. `(n−1)² ≥ 0`). Слой `[(n+1)², 2n²+2]` теоремы
+    `bertrand_localizes_desert` невырожден без всяких предусловий — граница
+    аккуратна даже при `n = 0`. -/
+theorem legendre_layer_nonempty (n : ℕ) : (n + 1) ^ 2 ≤ 2 * n ^ 2 + 2 := by
+  cases n with
+  | zero => decide
+  | succ m => nlinarith [Nat.zero_le m]
+
+/-- **БЕРТРАН-ЛОКАЛИЗАЦИЯ ПУСТЫНИ (позитивная сторона честности §3):** если
+    между `n²` и `(n+1)²` лежит простая пустыня (гипотетическое нарушение
+    Лежандра), то Бертран ВЫТАЛКИВАЕТ следующее простое в узкий слой
+    `[(n+1)², 2n²+2]`. Доказательство: Бертран на `n²+1` (mathlib,
+    `Nat.exists_prime_lt_and_le_two_mul`; `n²+1 ≠ 0` всегда — предусловий нет)
+    даёт простое `p ∈ (n²+1, 2n²+2]`; пустыня — ОТКРЫТЫЙ интервал, потому
+    `p < (n+1)²` запрещено и `p ≥ (n+1)²`; слой невырожден зелёной арифметикой
+    (`legendre_layer_nonempty`). ЧЕСТНОСТЬ: это НЕ импликация Бертран ⟹ Лежандр
+    (флаг `NoBertrandToLegendreImplicationClaimed` в силе — Бертран пустыню НЕ
+    исключает) и НЕ решение задачи 1808 г.: теорема лишь точно квантифицирует,
+    КУДА нарушение обязано сместить следующее простое. Оплачено целиком
+    безусловным mathlib-Бертраном — открытых входов нет. -/
+theorem bertrand_localizes_desert (n : ℕ)
+    (hdes : PrimeDesertBetween (n ^ 2) ((n + 1) ^ 2)) :
+    ∃ p, p.Prime ∧ (n + 1) ^ 2 ≤ p ∧ p ≤ 2 * n ^ 2 + 2 := by
+  obtain ⟨p, hp, hlt, hle⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul (n ^ 2 + 1) (Nat.succ_ne_zero _)
+  refine ⟨p, hp, ?_, ?_⟩
+  · by_contra hsmall
+    exact hdes p (Nat.lt_of_succ_lt hlt) (Nat.not_le.mp hsmall) hp
+  · calc p ≤ 2 * (n ^ 2 + 1) := hle
+      _ = 2 * n ^ 2 + 2 := by ring
+
+/-- **Следствие для объект-свидетеля (мост к блоку 2):** всякое гипотетическое
+    нарушение Лежандра `V` выталкивает простое в слой `[(V.1+1)², 2·V.1²+2]` —
+    прямая инстанциация `bertrand_localizes_desert` данными свидетеля `V.2.2`.
+    Тип `LegendreViolation` ожидаемо пуст (знак эвристики — ЗА), потому это
+    свойство ГИПОТЕТИЧЕСКОГО свидетеля, а не предъявленного числа. -/
+theorem legendreViolation_forces_prime_in_gap (V : LegendreViolation) :
+    ∃ p, p.Prime ∧ (V.1 + 1) ^ 2 ≤ p ∧ p ≤ 2 * V.1 ^ 2 + 2 :=
+  bertrand_localizes_desert V.1 V.2.2
+
 -- Машинная видимость чистоты блока 1
 -- (ожидаемо [propext, Classical.choice, Quot.sound]):
 #print axioms no_desert_doubles
 #print axioms legendre_holds_upTo_10
 #print axioms legendre_interval_shorter_than_bertrand
+#print axioms legendre_layer_nonempty
+#print axioms bertrand_localizes_desert
+#print axioms legendreViolation_forces_prime_in_gap
 
 end PrimeDeserts
 end EuclidsPath

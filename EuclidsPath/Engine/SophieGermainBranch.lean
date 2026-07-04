@@ -27,7 +27,14 @@
     * sophieGermain_divides_mersenne — ЖЕМЧУЖИНА (см. выше);
     * mersenne_composite_examples — 23 ∣ M₁₁ = 2047 = 23·89, M₁₁ составное;
     * mersenneComposites_unbounded_of_sg — УСЛОВНО: неограниченность
-      SG-простых с p ≡ 3 (mod 4) ⟹ неограниченность p с M_p составным.
+      SG-простых с p ≡ 3 (mod 4) ⟹ неограниченность p с M_p составным;
+    * sophieGermain_divides_fermat_side — КОМПЛЕМЕНТ жемчужины: p ≡ 1 (mod 4),
+      q = 2p+1 простое ⟹ q ∣ 2^p + 1 (q ≡ 3 (mod 8) ⟹ 2 — невычет ⟹
+      по Эйлеру 2^p = −1 в ZMod q);
+    * sophieGermain_dichotomy / sg_dichotomy_exclusive — полная дихотомия:
+      для всякой SG-пары q ∣ M_p ∨ q ∣ 2^p + 1, и стороны несовместимы;
+    * sg_two_pow_p_eq_one_zmod / sg_orderOf_two_eq_p — крипто-лемма:
+      orderOf (2 : ZMod (2p+1)) = p при p ≡ 3 (mod 4) (safe primes).
 
   ⚠️ ЧЕСТНОСТЬ: гипотеза Софи Жермен (SophieGermainUnbounded,
   SGThreeMod4Unbounded) ОТКРЫТА — здесь она только ВХОД-маркер, ниоткуда
@@ -190,9 +197,184 @@ abbrev NoSGToTwinsImplicationClaimed : Prop := True
 
 theorem noSGToTwinsImplicationClaimed : NoSGToTwinsImplicationClaimed := trivial
 
+/-
+  ────────────────────────────────────────────────────────────────────
+  ПОЛНАЯ ДИХОТОМИЯ p mod 4: комплемент жемчужины и крипто-лемма порядка
+  ────────────────────────────────────────────────────────────────────
+
+  Жемчужина выше покрывает класс p ≡ 3 (mod 4): спутник q = 2p+1 делит M_p.
+  Ниже — вторая половина классической картины Эйлера–Лагранжа: при
+  p ≡ 1 (mod 4) спутник делит НЕ M_p, а 2^p + 1 = M_p + 2. Вместе — полная
+  дихотомия: для всякой SG-пары спутник забирает ровно одну из сторон
+  2^p ∓ 1, и стороны несовместимы (несовместимость доказана отдельно).
+
+  ⚠️ ЧЕСТНОСТЬ: всё ниже — классика XVIII века, оплаченная эйлеровым
+  критерием и малым Ферма из mathlib; никакие открытые задачи не решаются
+  и не затрагиваются, гипотеза SG остаётся входом-маркером.
+-/
+
+/-- **Вспомогательное (доказано):** при `p ≥ 1` двойка ненулевая
+    в `ZMod (2p+1)` — иначе `2p+1 ∣ 2`, что тесно при `2p+1 ≥ 3`. -/
+theorem sg_two_ne_zero_zmod {p : ℕ} (hp1 : 1 ≤ p) :
+    (2 : ZMod (2 * p + 1)) ≠ 0 := by
+  intro h0
+  have hcast : ((2 : ℕ) : ZMod (2 * p + 1)) = 0 := by exact_mod_cast h0
+  have hdvd2 : (2 * p + 1) ∣ 2 := (ZMod.natCast_eq_zero_iff 2 (2 * p + 1)).mp hcast
+  have := Nat.le_of_dvd (by norm_num) hdvd2
+  omega
+
+/-- **КОМПЛЕМЕНТ ЖЕМЧУЖИНЫ (Эйлер–Лагранж, вторая половина, доказано):**
+    если `p ≡ 1 (mod 4)`, `p` простое и `q = 2p+1` простое, то `q ∣ 2^p + 1`.
+
+    Маршрут: `q ≡ 3 (mod 8)` ⟹ `2` — квадратичный НЕвычет в `ZMod q`
+    (`ZMod.exists_sq_eq_two_iff`) ⟹ по критерию Эйлера
+    `2^p = 2^((q−1)/2) ≠ 1`; малый Ферма даёт `(2^p − 1)(2^p + 1) =
+    2^(q−1) − 1 = 0` в поле `ZMod q`, значит обнуляется правая скобка:
+    `2^p = −1`, т.е. `q ∣ 2^p + 1`. Классика, не решение открытых задач;
+    вместе с `sophieGermain_divides_mersenne` — полная дихотомия
+    по `p mod 4`. -/
+theorem sophieGermain_divides_fermat_side {p : ℕ}
+    (hp : p.Prime) (hmod : p % 4 = 1) (hq : (2 * p + 1).Prime) :
+    (2 * p + 1) ∣ 2 ^ p + 1 := by
+  haveI : Fact (2 * p + 1).Prime := ⟨hq⟩
+  -- `p.Prime` — часть классической формулировки (SG-пара); для самой
+  -- делимости хватает p ≡ 1 (mod 4) и простоты q.
+  have _ := hp.two_le
+  have h2ne : (2 : ZMod (2 * p + 1)) ≠ 0 := sg_two_ne_zero_zmod (by omega)
+  -- q = 2p+1 ≡ 3 (mod 8), значит 2 — НЕ квадрат mod q
+  have hnsq : ¬ IsSquare (2 : ZMod (2 * p + 1)) := by
+    intro hsq
+    rcases (ZMod.exists_sq_eq_two_iff (by omega : 2 * p + 1 ≠ 2)).mp hsq
+      with h | h <;> omega
+  -- критерий Эйлера: 2^p = 2^((q−1)/2) ≠ 1 в ZMod q
+  have hne1 : (2 : ZMod (2 * p + 1)) ^ p ≠ 1 := by
+    intro h1
+    exact hnsq ((ZMod.euler_criterion (2 * p + 1) h2ne).mpr
+      (by rw [show (2 * p + 1) / 2 = p by omega]; exact h1))
+  -- малый Ферма: (2^p)² = 2^(q−1) = 1
+  have hferm : (2 : ZMod (2 * p + 1)) ^ (2 * p) = 1 := by
+    simpa using ZMod.pow_card_sub_one_eq_one h2ne
+  have hsq2 : ((2 : ZMod (2 * p + 1)) ^ p) ^ 2 = 1 := by
+    rw [← pow_mul, mul_comm p 2]; exact hferm
+  -- разложение в поле: (2^p − 1)(2^p + 1) = 0, левая скобка исключена
+  have hmul : ((2 : ZMod (2 * p + 1)) ^ p - 1) *
+      ((2 : ZMod (2 * p + 1)) ^ p + 1) = 0 := by
+    linear_combination hsq2
+  rcases mul_eq_zero.mp hmul with h1 | h1
+  · exact absurd (sub_eq_zero.mp h1) hne1
+  · -- 2^p + 1 = 0 в ZMod q ⟹ q ∣ 2^p + 1 в ℕ
+    have hcast : ((2 ^ p + 1 : ℕ) : ZMod (2 * p + 1)) = 0 := by
+      push_cast
+      exact h1
+    exact (ZMod.natCast_eq_zero_iff _ _).mp hcast
+
+/-- **ДЕМОНСТРАЦИЯ (доказано):** пара (29, 59) из `sg_instances`:
+    `29 ≡ 1 (mod 4)`, и действительно `59 ∣ 2²⁹ + 1 = 536870913 = 59·9099507`. -/
+theorem fermat_side_example : (2 * 29 + 1) ∣ 2 ^ 29 + 1 :=
+  sophieGermain_divides_fermat_side (by norm_num) (by norm_num) (by norm_num)
+
+/-- **ПОЛНАЯ ДИХОТОМИЯ (доказано):** для всякой SG-пары `(p, 2p+1)` спутник
+    делит одну из сторон: `q ∣ M_p` (реализуется при `p ≡ 3 (mod 4)`) или
+    `q ∣ 2^p + 1 = M_p + 2` (при `p ≡ 1 (mod 4)`).
+
+    Дешёвый безусловный маршрут, без разбора классов: малый Ферма
+    (`ZMod.pow_card_sub_one_eq_one`) даёт `2^(q−1) = 2^(2p) = 1` в `ZMod q`,
+    а разложение `(2^p − 1)(2^p + 1) = 0` в поле обнуляет одну из скобок. -/
+theorem sophieGermain_dichotomy {p : ℕ} (h : IsSophieGermain p) :
+    (2 * p + 1) ∣ mersenne p ∨ (2 * p + 1) ∣ 2 ^ p + 1 := by
+  haveI : Fact (2 * p + 1).Prime := ⟨h.2⟩
+  have hp2 : 2 ≤ p := h.1.two_le
+  have h2ne : (2 : ZMod (2 * p + 1)) ≠ 0 := sg_two_ne_zero_zmod (by omega)
+  have hferm : (2 : ZMod (2 * p + 1)) ^ (2 * p) = 1 := by
+    simpa using ZMod.pow_card_sub_one_eq_one h2ne
+  have hsq2 : ((2 : ZMod (2 * p + 1)) ^ p) ^ 2 = 1 := by
+    rw [← pow_mul, mul_comm p 2]; exact hferm
+  have hmul : ((2 : ZMod (2 * p + 1)) ^ p - 1) *
+      ((2 : ZMod (2 * p + 1)) ^ p + 1) = 0 := by
+    linear_combination hsq2
+  rcases mul_eq_zero.mp hmul with h1 | h1
+  · -- 2^p = 1 в ZMod q ⟹ q ∣ 2^p − 1 = M_p (как в жемчужине)
+    left
+    have hcast : ((2 ^ p : ℕ) : ZMod (2 * p + 1)) = ((1 : ℕ) : ZMod (2 * p + 1)) := by
+      push_cast
+      exact sub_eq_zero.mp h1
+    have hmodeq := (ZMod.natCast_eq_natCast_iff _ _ _).mp hcast
+    have h1le : 1 ≤ 2 ^ p := Nat.one_le_pow _ _ (by norm_num)
+    have hdvd := (Nat.modEq_iff_dvd' h1le).mp hmodeq.symm
+    simpa [mersenne] using hdvd
+  · right
+    have hcast : ((2 ^ p + 1 : ℕ) : ZMod (2 * p + 1)) = 0 := by
+      push_cast
+      exact h1
+    exact (ZMod.natCast_eq_zero_iff _ _).mp hcast
+
+/-- **НЕСОВМЕСТИМОСТЬ СТОРОН (доказано):** при `p ≥ 1` спутник не может
+    делить обе стороны сразу — иначе он делил бы их разность `2`, а
+    `2p+1 ≥ 3`. Дихотомия выше — точная развилка, без перекрытия. -/
+theorem sg_dichotomy_exclusive {p : ℕ} (hp1 : 1 ≤ p) :
+    ¬ ((2 * p + 1) ∣ mersenne p ∧ (2 * p + 1) ∣ 2 ^ p + 1) := by
+  rintro ⟨h1, h2⟩
+  have h1le : 1 ≤ 2 ^ p := Nat.one_le_pow _ _ (by norm_num)
+  have hM : mersenne p = 2 ^ p - 1 := rfl
+  rw [hM] at h1
+  have hdvd : (2 * p + 1) ∣ 2 ^ p + 1 - (2 ^ p - 1) := Nat.dvd_sub h2 h1
+  rw [show 2 ^ p + 1 - (2 ^ p - 1) = 2 by omega] at hdvd
+  have := Nat.le_of_dvd (by norm_num) hdvd
+  omega
+
+/-- **Вспомогательное (доказано, шаг жемчужины, вынесенный наружу):**
+    при `p ≡ 3 (mod 4)` и простом `q = 2p+1` в `ZMod q` выполняется
+    `2^p = 1`: `q ≡ 7 (mod 8)` ⟹ `2` — квадрат ⟹ критерий Эйлера. -/
+theorem sg_two_pow_p_eq_one_zmod {p : ℕ} (hmod : p % 4 = 3)
+    (hq : (2 * p + 1).Prime) : (2 : ZMod (2 * p + 1)) ^ p = 1 := by
+  haveI : Fact (2 * p + 1).Prime := ⟨hq⟩
+  have h8 : (2 * p + 1) % 8 = 7 := by omega
+  have hsq : IsSquare (2 : ZMod (2 * p + 1)) :=
+    (ZMod.exists_sq_eq_two_iff (by omega : 2 * p + 1 ≠ 2)).mpr (Or.inr h8)
+  have h2ne : (2 : ZMod (2 * p + 1)) ≠ 0 := sg_two_ne_zero_zmod (by omega)
+  have heuler := (ZMod.euler_criterion (2 * p + 1) h2ne).mp hsq
+  rwa [show (2 * p + 1) / 2 = p by omega] at heuler
+
+/-- **КРИПТО-ЛЕММА ПОРЯДКА (доказано):** при простых `p ≡ 3 (mod 4)` и
+    `q = 2p+1` порядок двойки в `ZMod q` равен в точности `p`.
+
+    Из `2^p = 1` порядок делит простое `p`, а `2 ≠ 1` в `ZMod q` (здесь
+    `q ≥ 7`) исключает порядок 1 — `orderOf_eq_prime` закрывает. Это
+    машинная версия ремарки прозы о safe primes (Диффи–Хеллман): двойка
+    порождает подгруппу гарантированно большого простого порядка.
+    Формальная связка оплачена критерием Эйлера (лемма выше) и mathlib-леммой
+    `orderOf_eq_prime`; криптографическая СТОЙКОСТЬ, разумеется, ничем
+    не утверждается и не доказывается. -/
+theorem sg_orderOf_two_eq_p {p : ℕ} (hp : p.Prime) (hmod : p % 4 = 3)
+    (hq : (2 * p + 1).Prime) : orderOf (2 : ZMod (2 * p + 1)) = p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have h2p := sg_two_pow_p_eq_one_zmod hmod hq
+  have h2ne1 : (2 : ZMod (2 * p + 1)) ≠ 1 := by
+    intro h1
+    have hcast : ((2 : ℕ) : ZMod (2 * p + 1)) = ((1 : ℕ) : ZMod (2 * p + 1)) := by
+      exact_mod_cast h1
+    have hmodeq := (ZMod.natCast_eq_natCast_iff _ _ _).mp hcast
+    have hdvd := (Nat.modEq_iff_dvd' (by norm_num : 1 ≤ 2)).mp hmodeq.symm
+    have := Nat.le_of_dvd (by norm_num) hdvd
+    omega
+  exact orderOf_eq_prime h2p h2ne1
+
+/-- **ДЕМОНСТРАЦИЯ (доказано):** порядок двойки в `ZMod 23` равен 11 —
+    пара (11, 23) из `sg_instances`, `11 ≡ 3 (mod 4)`. -/
+theorem sg_orderOf_example : orderOf (2 : ZMod (2 * 11 + 1)) = 11 :=
+  sg_orderOf_two_eq_p (by norm_num) (by norm_num) (by norm_num)
+
 #print axioms sophieGermain_divides_mersenne
 #print axioms mersenne_composite_examples
 #print axioms sophieGermain_minusSide
 #print axioms mersenneComposites_unbounded_of_sg
+#print axioms sg_two_ne_zero_zmod
+#print axioms sophieGermain_divides_fermat_side
+#print axioms fermat_side_example
+#print axioms sophieGermain_dichotomy
+#print axioms sg_dichotomy_exclusive
+#print axioms sg_two_pow_p_eq_one_zmod
+#print axioms sg_orderOf_two_eq_p
+#print axioms sg_orderOf_example
 
 end EuclidsPath.SophieGermainBranch

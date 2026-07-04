@@ -36,7 +36,7 @@
   ср. `not_perfect_945`); предъявить НАСТОЯЩЕГО свидетеля при законе и книгах =
   предъявить двигатель — потому свидетель зелёно непредъявим
   (`oddPerfectWitness_green_unpresentable`). Модуль ЦЕЛИКОМ ЗЕЛЁНЫЙ:
-  карантин НЕ импортируется, axiom/sorry/native_decide нет, таинт 52 не меняется.
+  карантин НЕ импортируется, axiom/sorry/native_decide нет, таинт 47 не меняется.
 -/
 
 import EuclidsPath.Engine.OddPerfectManifestationFront

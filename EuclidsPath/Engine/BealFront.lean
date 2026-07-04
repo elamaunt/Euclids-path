@@ -235,6 +235,163 @@ theorem notAProofOfBeal : NotAProofOfBeal := trivial
 
 /-!
 ################################################################################
+  🟢 ЗЕЛЁНЫЕ КЛАССЫ ПОКАЗАТЕЛЕЙ БИЛА — диагонали (3,3,3) и (4,4,4) закрыты.
+################################################################################
+-/
+
+/-- **🟢 ЗЕЛЁНЫЙ КЛАСС БИЛА (3,3,3):** при показателях `x = y = z = 3` решений
+    уравнения Била НЕТ ВООБЩЕ — даже без взаимной простоты: `A^3 + B^3 = C^3`
+    невозможно для положительных `A, B, C`. Прямой вывод из
+    `flt_three_is_descent` (спуск Ферма, mathlib). В частности, диагональный
+    класс гейта `BealConjecture` при `(3,3,3)` зелёный: взаимно простых решений
+    нет, потому что нет никаких. -/
+theorem beal_no_solution_exponent_three
+    (A B C : ℕ) (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (heq : A ^ 3 + B ^ 3 = C ^ 3) : False :=
+  flt_three_is_descent A B C hA.ne' hB.ne' hC.ne' heq
+
+/-- **🟢 ЗЕЛЁНЫЙ КЛАСС БИЛА (4,4,4):** при показателях `x = y = z = 4` решений
+    нет вообще (из `flt_four_is_descent` — исторический бесконечный спуск Ферма).
+    Диагональный класс гейта `BealConjecture` при `(4,4,4)` зелёный, взаимная
+    простота не нужна. -/
+theorem beal_no_solution_exponent_four
+    (A B C : ℕ) (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (heq : A ^ 4 + B ^ 4 = C ^ 4) : False :=
+  flt_four_is_descent A B C hA.ne' hB.ne' hC.ne' heq
+
+/-!
+################################################################################
+  🟢 НЕВАКУУМНЫЕ СВИДЕТЕЛИ ГЕЙТОВ — множество обитаемо, гипотеза простоты несуща.
+################################################################################
+-/
+
+/-- **🟢 НЕ-ВАКУУМНОСТЬ FC-ГЕЙТА:** тройка ЗНАЧЕНИЙ `(1, 8, 9)` — наименьшее
+    решение Ферма–Каталана `1^7 + 2^3 = 3^2` — принадлежит множеству, конечность
+    которого утверждает `FermatCatalanConjecture` (тот же сет-литерал дословно).
+    Показатели `(x, y, z) = (7, 3, 2)`: `y·z + z·x + x·y = 41 < 42 = x·y·z`,
+    попарная взаимная простота оснований `1, 2, 3` очевидна. Гейт говорит о
+    НЕПУСТОМ множестве — вопрос о его конечности не вакуумен. -/
+theorem fermatCatalan_value_witness :
+    ((1, 8, 9) : ℕ × ℕ × ℕ) ∈
+      {t : ℕ × ℕ × ℕ |
+        ∃ a b c x y z : ℕ, t = (a ^ x, b ^ y, c ^ z) ∧
+          0 < a ∧ 0 < b ∧ 0 < c ∧ 0 < x ∧ 0 < y ∧ 0 < z ∧
+          y * z + z * x + x * y < x * y * z ∧
+          Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c ∧
+          a ^ x + b ^ y = c ^ z} :=
+  ⟨1, 2, 3, 7, 3, 2, by norm_num,
+    one_pos, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num,
+    by norm_num,
+    Nat.coprime_one_left 2, by decide, Nat.coprime_one_left 3,
+    by norm_num⟩
+
+/-- **🟢 ГИПОТЕЗА ВЗАИМНОЙ ПРОСТОТЫ — НЕСУЩАЯ:** без неё Бил-уравнение обитаемо:
+    `2^3 + 2^3 = 2^4` (то есть 8 + 8 = 16) с показателями `x = y = 3 > 2`,
+    `z = 4 > 2` и ОБЩИМ ДЕЛИТЕЛЕМ 2 у всех трёх оснований. Условие взаимной
+    простоты в `BealConjecture` — не украшение: убрать его нельзя, контрпример
+    предъявлен. -/
+theorem beal_common_factor_witness :
+    ∃ A B C x y z : ℕ,
+      0 < A ∧ 0 < B ∧ 0 < C ∧ 2 < x ∧ 2 < y ∧ 2 < z ∧
+      A ^ x + B ^ y = C ^ z ∧
+      ¬ Nat.Coprime A B ∧ 2 ∣ A ∧ 2 ∣ B ∧ 2 ∣ C :=
+  ⟨2, 2, 2, 3, 3, 4, by decide⟩
+
+/-!
+################################################################################
+  🟢 ПОЛИНОМИАЛЬНЫЙ БИЛ — именованная тень (все показатели ≥ 3, поле char 0).
+################################################################################
+-/
+
+/-- **🟢 АРИФМЕТИКА БИЛ-ПОКАЗАТЕЛЕЙ:** при `3 ≤ p, q, r` выполнено
+    FC-условие `q·r + r·p + p·q ≤ p·q·r` — каждое слагаемое слева не превышает
+    трети правой части. Именно это неравенство отделяет Бил-показатели от
+    сферических/эллиптических троек. -/
+theorem fc_ineq_of_three_le {p q r : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q) (hr : 3 ≤ r) :
+    q * r + r * p + p * q ≤ p * q * r := by
+  have h1 : 3 * (q * r) ≤ p * (q * r) := Nat.mul_le_mul hp le_rfl
+  have h2 : 3 * (r * p) ≤ q * (r * p) := Nat.mul_le_mul hq le_rfl
+  have h3 : 3 * (p * q) ≤ r * (p * q) := Nat.mul_le_mul hr le_rfl
+  nlinarith [h1, h2, h3]
+
+/-- **🟢 ПОЛИНОМИАЛЬНЫЙ БИЛ (доказано; специализация `Polynomial.flt_catalan`
+    при `u = v = 1, w = −1`):** над полем характеристики 0 из `a^x + b^y = c^z`
+    при взаимно простых `a, b`, ненулевых `a, b, c` и показателях
+    `x, y, z ≥ 3` следует, что `a, b, c` — КОНСТАНТЫ. Буквально «теорема Била
+    над `k[X]»`: нетривиальных полиномиальных решений нет. ЧЕСТНОСТЬ:
+    целочисленный Бил отсюда НЕ следует (полиномиальная тень, не решение
+    гейта); равные показатели `x = y = z = n ≥ 3` дают полиномиальный FLT
+    как частный случай. -/
+theorem polynomial_beal_shadow
+    {k : Type*} [Field k] [CharZero k]
+    {x y z : ℕ} (hx : 3 ≤ x) (hy : 3 ≤ y) (hz : 3 ≤ z)
+    {a b c : k[X]} (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) (hab : IsCoprime a b)
+    (heq : a ^ x + b ^ y = c ^ z) :
+    a.natDegree = 0 ∧ b.natDegree = 0 ∧ c.natDegree = 0 := by
+  have h0 : C (1 : k) * a ^ x + C (1 : k) * b ^ y + C (-1 : k) * c ^ z = 0 := by
+    simp only [map_one, map_neg, one_mul, neg_one_mul]
+    rw [heq]; ring
+  exact polynomial_fermat_catalan_shadow (k := k)
+    (p := x) (q := y) (r := z) (u := (1 : k)) (v := (1 : k)) (w := (-1 : k))
+    (by omega) (by omega) (by omega)
+    (fc_ineq_of_three_le hx hy hz)
+    (Nat.cast_ne_zero.mpr (by omega))
+    (Nat.cast_ne_zero.mpr (by omega))
+    (Nat.cast_ne_zero.mpr (by omega))
+    ha hb hc hab
+    one_ne_zero one_ne_zero (neg_ne_zero.mpr one_ne_zero)
+    h0
+
+/-!
+################################################################################
+  ЭПИСТЕМИЧЕСКАЯ СВЯЗКА БИЛА — ФОРМА КОЛЛАТЦА, ЧЕСТНО ФОРМАЛЬНАЯ.
+################################################################################
+-/
+
+/-- **Внутреннее самообоснование Била — форма Коллатца, ЧЕСТНО ФОРМАЛЬНАЯ.**
+    Несёт сам гейт (`ground : BealConjecture`) и свидетельство собственной
+    запредельности (`beyondOwnHorizon : ¬ BealConjecture`).
+
+    ГРОМКАЯ ЧЕСТНОСТЬ (обязательная, по вердикту скептика «завышена на
+    полступени»): это буквально пара `P` / `¬P` — та же вырожденная форма, что
+    `InternalisedCollatzGround`, и НИЖЕ P/NP-механики (`InternalisedPNPGround`,
+    где `beyondOwnHorizon` — независимо оплаченный зелёный факт). ОПЛАТЫ
+    ДВИГАТЕЛЬНЫМ ФАКТОМ ЗДЕСЬ НЕТ И БЫТЬ НЕ МОЖЕТ в известной математике:
+    опровержение Била — одиночный контрпример `(A, B, C, x, y, z)`, конечная
+    точка; он не порождает ни нисходящей цепи (спуска Ферма для общего Била не
+    существует), ни неограниченной поставки — если что и возникает, то
+    ВОСХОДЯЩИЙ побег размеров, а не спуск, и стена
+    `no_perpetual_solution_descent` его не кусает. Связка формальна;
+    содержательное — РЯДОМ, отдельными теоремами: полиномиальная тень
+    `polynomial_beal_shadow` и зелёные диагональные классы
+    `beal_no_solution_exponent_three` / `beal_no_solution_exponent_four`. -/
+structure InternalisedBealGround : Prop where
+  ground : BealConjecture
+  beyondOwnHorizon : ¬ BealConjecture
+
+/-- «Внутреннее знание причины Била» = внутреннее самообоснование гейта
+    (зеркало `InternalKnowledgeOfCollatzCause`; та же честная оговорка). -/
+abbrev InternalKnowledgeOfBealCause : Prop := InternalisedBealGround
+
+/-- Самообоснование самоуничтожается — ПО ФОРМЕ
+    (`fun H => H.beyondOwnHorizon H.ground`), как у Коллатца; двигательной
+    оплаты честно НЕТ — см. докстроку `InternalisedBealGround`. ЗЕЛЁНАЯ;
+    из аксиом — только `propext` (тянется через `Nat.Coprime` внутри гейта
+    `BealConjecture`), ни `Classical.choice`, ни `Quot.sound`. -/
+theorem no_internalisedBealGround : InternalisedBealGround → False :=
+  fun H => H.beyondOwnHorizon H.ground
+
+/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — теорема ФОРМЫ** (зеркало
+    `collatzCause_unknowable`): внутреннее самообоснование Била невозможно.
+    ЧЕСТНОСТЬ: в отличие от `pnpCause_unknowable`, противоречие не оплачено
+    пижонхолом/поставкой — это формальная связка; её содержательные соседи —
+    `polynomial_beal_shadow` и классы (3,3,3)/(4,4,4). НЕ Гёдель и НЕ решение
+    Била. -/
+theorem bealCause_unknowable : ¬ InternalKnowledgeOfBealCause :=
+  no_internalisedBealGround
+
+/-!
+################################################################################
   ИТОГ (LOUD HONEST): что зелёное, что переиспользовано, что ОТКРЫТО.
 ################################################################################
 
@@ -247,7 +404,19 @@ theorem notAProofOfBeal : NotAProofOfBeal := trivial
      · `no_fermat_four` — развёрнутая форма n = 4;
      · `no_perpetual_solution_descent` — коралларий `no_perpetual_engine_of_natRank`;
      · `no_perpetual_solution_descent_epmi` — коралларий `EPMI.no_infinite_descent`;
-     · `solution_rank_finite_descent_witness` — не-вакуумность ранг-модели.
+     · `solution_rank_finite_descent_witness` — не-вакуумность ранг-модели;
+     · `beal_no_solution_exponent_three` / `beal_no_solution_exponent_four` —
+       зелёные диагональные классы Била (3,3,3)/(4,4,4): решений нет вовсе,
+       взаимная простота не нужна (спуск Ферма);
+     · `fermatCatalan_value_witness` — FC-гейт не вакуумен: (1,8,9) = 1^7+2^3=3^2
+       лежит в множестве значений;
+     · `beal_common_factor_witness` — гипотеза взаимной простоты несуща:
+       2^3+2^3=2^4 с общим делителем 2;
+     · `fc_ineq_of_three_le` + `polynomial_beal_shadow` — «теорема Била над k[X]»
+       (специализация `flt_catalan`, u=v=1, w=−1, char 0);
+     · `no_internalisedBealGround` / `bealCause_unknowable` — эпистемическая
+       СВЯЗКА-ФОРМА (честно: пара ground/¬ground БЕЗ двигательной оплаты, форма
+       Коллатца, ниже P/NP-механики — см. докстроку `InternalisedBealGround`).
 
   🟢 ПЕРЕИСПОЛЬЗОВАНО (цитируется, НЕ пере-выводится):
      · `Polynomial.flt_catalan` (полиномиальный Ферма–Каталан, mathlib);
@@ -273,5 +442,13 @@ theorem notAProofOfBeal : NotAProofOfBeal := trivial
 #print axioms no_perpetual_solution_descent
 #print axioms no_perpetual_solution_descent_epmi
 #print axioms solution_rank_finite_descent_witness
+#print axioms beal_no_solution_exponent_three
+#print axioms beal_no_solution_exponent_four
+#print axioms fermatCatalan_value_witness
+#print axioms beal_common_factor_witness
+#print axioms fc_ineq_of_three_le
+#print axioms polynomial_beal_shadow
+#print axioms no_internalisedBealGround
+#print axioms bealCause_unknowable
 
 end EuclidsPath.BealFront

@@ -36,10 +36,12 @@
       отклонение предъявляет двигатель только там, где книги сведены, — а
       разрешение и есть открытый twin-узел/граница.
   Модуль ЦЕЛИКОМ ЗЕЛЁНЫЙ: без axiom/sorry, без импорта карантина
-  (CausalClosureAxiom), таинт репозитория (52) НЕ меняется.
+  (CausalClosureAxiom), таинт репозитория (47 после снятия четвёртой границы,
+  1936826) НЕ меняется.
 -/
 
 import EuclidsPath.Engine.RiemannManifestationFront
+import EuclidsPath.Engine.RiemannLiouville
 
 set_option autoImplicit false
 
@@ -169,6 +171,134 @@ theorem riemann_locked_behind_engine_status :
       riemannHypothesis_of_manifestation_and_boundary
         no_someConcreteEuclideanEngine hBoundary hLaw⟩
 
+/-! ## Twin-сторона: twin-граница замораживает всякий разрешающий леджер (🟢) -/
+
+/-- **Twin-граница замораживает разрешение**: если выше масштаба `M0` близнецов
+    нет (`TwinBoundAbove M0`), то НИКАКАЯ леджер-проекция на этом масштабе не
+    сводит книги — twin-bound зелёно поставляет бесконечное семейство потоков
+    (L1, `deviationFlowSupply_of_twinBound`), а разрешённый масштаб такой
+    поставки не терпит (L2, `no_deviationFlowSupply_at_resolved_scale`:
+    коллизия ⟹ двигатель ⟹ lexRank). Именует twin-сторону характеризации L6
+    (`manifestationLaw_iff_no_resolution_above_zero`) явной леммой.
+    ЧЕСТНОСТЬ: логически это переупаковка композиции L1 ∘ L2 — НЕ
+    `twins_infinite_of_noEngine_and_boundary` (та лемма живёт в карантинном
+    модуле и выводит бесконечность близнецов из ¬двигателей + границы —
+    другое утверждение). Про сами близнецы здесь НИЧЕГО не утверждается:
+    `TwinBoundAbove` — гипотеза. ЗЕЛЁНАЯ, без аксиом. -/
+theorem twinBound_freezes_resolution {M0 : ℕ}
+    (hTwinBound : TwinBoundAbove M0) :
+    ∀ (A : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
+      ¬ SemanticExtendedFlowLedgerCollisionResolves proj :=
+  fun _A proj hres =>
+    no_deviationFlowSupply_at_resolved_scale proj hres
+      (deviationFlowSupply_of_twinBound hTwinBound)
+
+/-! ## Лиувиллева ветвь: обе RH-ветви сходятся к одному декрету (🟢-условно) -/
+
+/-- **Лиувилль вшит в декрет (зелёно-условная цепь):** классический мост
+    Лиувилля (гипотезой) + ¬двигателей + граница (гипотезой) + закон
+    манифестации ⟹ `LiouvilleBound` (`|L(x)| ≤ C·x^{1/2+ε}`). Композиция:
+    тройка essence-гипотез даёт RH (L4,
+    `riemannHypothesis_of_manifestation_and_boundary`), мост переносит RH в
+    арифметический bound (`bridge.mpr`). ЧЕМ ОПЛАЧЕНО (честно, по слоям):
+    (1) `LiouvilleRHBridge` — КРАСНЫЙ вход: классическая эквивалентность
+        `LiouvilleBound ⟺ RH` аналитической теории чисел, в mathlib
+        отсутствует — здесь строго ГИПОТЕЗОЙ;
+    (2) граница — ГИПОТЕЗОЙ (`TheStrictLastStep00Obligation`), не аксиомой;
+    (3) закон манифестации при границе ровно RH-силы (L7,
+        `manifestationLaw_iff_RH_of_boundary`) — теорема НЕ добывает bound,
+        а показывает СХОДИМОСТЬ обеих RH-ветвей (нулевой и лиувиллевой)
+        к одному и тому же декрету. НЕ решение RH и не новый bound. -/
+theorem liouvilleBound_of_manifestation_and_boundary
+    (hBridge : EuclidsPath.RiemannLiouville.LiouvilleRHBridge)
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine)
+    (hBoundary : TheStrictLastStep00Obligation)
+    (hManifest : RiemannManifestationLaw) :
+    EuclidsPath.RiemannLiouville.LiouvilleBound :=
+  hBridge.mpr
+    (riemannHypothesis_of_manifestation_and_boundary
+      hNoEngine hBoundary hManifest)
+
+/-! ## Минимизация второй границы: закон только на собственной высоте нуля (🟢) -/
+
+/-- **МИНИМАЛЬНЫЙ закон манифестации (law-at-own-height):** от каждого
+    off-critical нуля требуется манифестация ТОЛЬКО на масштабе его
+    собственной высоты `M0 = zeroHeight Z` — а не на всех масштабах
+    `M0 ≥ zeroHeight Z`, как в полном `RiemannManifestationLaw`. Синтаксически
+    строго слабее полного закона (тот навешивает ∀-хвост по масштабам);
+    essence-лемма L3 содержательно использует РОВНО этот один масштаб
+    (`le_refl` в `noOffCriticalZero_of_manifestation_and_boundary`) — поэтому
+    минимальной формы достаточно (`minimalLaw_suffices` ниже). Документирует
+    минимальное логическое содержание декретного поля `riemannBoundary`;
+    здесь НЕ принимается — только определён. -/
+def MinimalRiemannManifestationLaw : Prop :=
+  ∀ (Z : RiemannOffCriticalZero) (A : ℕ)
+    (proj : SemanticExtendedFlowLedgerProjection A (zeroHeight Z)),
+    SemanticExtendedFlowLedgerCollisionResolves proj →
+      DeviationFlowSupply A (zeroHeight Z)
+
+/-- Полный закон влечёт минимальный: инстанциация `M0 := zeroHeight Z`,
+    `le_refl`. Тривиальное направление — ослабление синтаксическое. -/
+theorem minimalLaw_of_manifestationLaw
+    (hLaw : RiemannManifestationLaw) : MinimalRiemannManifestationLaw :=
+  fun Z A proj hres => hLaw Z A (zeroHeight Z) (le_refl _) proj hres
+
+/-- Essence-лемма при МИНИМАЛЬНОМ законе (переигранное L3): ¬двигателей +
+    граница (гипотезой) + минимальный закон ⟹ off-critical нулей нет.
+    Дословно тот же вывод, что L3, — подтверждение, что полный закон нигде
+    не использовался сверх собственной высоты нуля. Все гипотезы потребляются
+    по-настоящему (двигатель-свидетель убит именно `hNoEngine`). -/
+theorem noOffCriticalZero_of_minimalLaw_and_boundary
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine)
+    (hBoundary : TheStrictLastStep00Obligation)
+    (hMinimal : MinimalRiemannManifestationLaw) :
+    ¬ Nonempty RiemannOffCriticalZero := by
+  rintro ⟨Z⟩
+  obtain ⟨A, projOf, hres⟩ := hBoundary
+  have hResolves :
+      SemanticExtendedFlowLedgerCollisionResolves (projOf (zeroHeight Z)) :=
+    strictSemanticExtended_resolves_old (hres (zeroHeight Z))
+  have hStable : NoEnergyStableUniverse (projOf (zeroHeight Z)) :=
+    (noEnergyStableUniverse_iff_resolves (projOf (zeroHeight Z))).mpr hResolves
+  obtain ⟨𝓕, h𝓕⟩ := hMinimal Z A (projOf (zeroHeight Z)) hResolves
+  obtain ⟨_, _, _, hEngine⟩ :=
+    infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
+  exact hNoEngine ⟨A, zeroHeight Z, hEngine⟩
+
+/-- **Минимальной формы достаточно:** ¬двигателей + граница (гипотезой) +
+    минимальный закон ⟹ RH. Зеркало L4 над `MinimalRiemannManifestationLaw`;
+    экстракция нуля из ¬RH — mathlib-точная (`offCriticalZero_of_not_RH`).
+    ГРАНИЦА ГИПОТЕЗОЙ, не аксиомой — конъюнкт зелёный, таинт не растёт. -/
+theorem minimalLaw_suffices
+    (hNoEngine : ¬ SomeConcreteEuclideanEngine)
+    (hBoundary : TheStrictLastStep00Obligation)
+    (hMinimal : MinimalRiemannManifestationLaw) :
+    RiemannHypothesis := by
+  by_contra hNotRH
+  exact noOffCriticalZero_of_minimalLaw_and_boundary
+    hNoEngine hBoundary hMinimal
+    (EuclidsPath.RiemannImpossibleEngineOff.offCriticalZero_of_not_RH hNotRH)
+
+/-- **ОБЯЗАТЕЛЬНЫЙ АУДИТ ЦЕНЫ (зеркало L7):** при границе минимальный закон
+    ⟺ RH — та же RH-сила, что у полного закона. -/
+theorem minimalManifestationLaw_iff_RH_of_boundary
+    (hBoundary : TheStrictLastStep00Obligation) :
+    MinimalRiemannManifestationLaw ↔ RiemannHypothesis :=
+  ⟨minimalLaw_suffices no_someConcreteEuclideanEngine hBoundary,
+   fun hRH => minimalLaw_of_manifestationLaw (manifestationLaw_of_RH hRH)⟩
+
+/-- **ЧЕСТНАЯ ОГОВОРКА МАШИННО:** при границе минимальный закон ⟺ полный —
+    «ослабление» СИНТАКСИЧЕСКОЕ, не силовое (по L7 и аудиту выше обе формы
+    ровно RH-силы). Это УТОЧНЕНИЕ цены декрета — какое именно логическое
+    содержание поля `riemannBoundary` несёт всю нагрузку, — а НЕ снижение
+    этой цены. БЕЗ границы доказана только тривиальная половина
+    (`minimalLaw_of_manifestationLaw`). -/
+theorem minimalLaw_iff_manifestationLaw_of_boundary
+    (hBoundary : TheStrictLastStep00Obligation) :
+    MinimalRiemannManifestationLaw ↔ RiemannManifestationLaw :=
+  (minimalManifestationLaw_iff_RH_of_boundary hBoundary).trans
+    (manifestationLaw_iff_RH_of_boundary hBoundary).symm
+
 /-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка максимум),
 таинт репозитория НЕ меняется -/
 #print axioms InternalisedRiemannGround
@@ -179,5 +309,13 @@ theorem riemann_locked_behind_engine_status :
 #print axioms internalisedRiemannGround_builds_engine
 #print axioms riemann_no_internal_decision_without_engine
 #print axioms riemann_locked_behind_engine_status
+#print axioms twinBound_freezes_resolution
+#print axioms liouvilleBound_of_manifestation_and_boundary
+#print axioms MinimalRiemannManifestationLaw
+#print axioms minimalLaw_of_manifestationLaw
+#print axioms noOffCriticalZero_of_minimalLaw_and_boundary
+#print axioms minimalLaw_suffices
+#print axioms minimalManifestationLaw_iff_RH_of_boundary
+#print axioms minimalLaw_iff_manifestationLaw_of_boundary
 
 end EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation.Epistemic

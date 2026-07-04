@@ -36,9 +36,15 @@
      тавтологизация через L9 — фирменная особенность ЯМ, и она же — причина,
      почему единственный выход конъюнкта (3) развилки — внешний data anchor,
      а не декрет.
-  4) Количественный «герой» massGap_lower_bound сюда НЕ добавлен: скептик
-     опроверг его контрпримером (Energy = {0, E₀/8, E₀}); честная замена
-     (chain-bound) — отдельная работа, не эпистемика.
+  4) Количественный «герой» massGap_lower_bound (заявка: ограниченность ранга
+     B на энергиях ≤ E₀ давала бы Δ ≥ E₀/2^(B+1)) сюда НЕ добавлен: лемма
+     ЛОЖНА, скептик опроверг её контрпримером (Energy = {0, E₀/8, E₀}, B = 1,
+     всякий валидный Δ ≤ E₀/8 < E₀/4). Честная замена — CHAIN-BOUND (последняя
+     секция): всякая halving-цепочка в спектре имеет длину ≤ ранга старта, а
+     при ранге, ограниченном B на энергиях ≤ E₀, — длину ≤ B. Это прямое
+     следствие строгого спуска ранга; нижней оценки Δ отсюда НЕ следует —
+     для неё нужны уровни на КАЖДОМ промежуточном масштабе (halving-плотность),
+     которых ограниченный ранг не поставляет.
 -/
 
 import EuclidsPath.Engine.YangMillsFront
@@ -217,6 +223,79 @@ theorem ym_locked_behind_engine_status (S : SpectralModel) :
    cookedGapped_massGap,
    no_perpetual_engine_on_nat⟩
 
+/-! ## Честная количественная граница: chain-bound вместо ложного massGap_lower_bound (🟢)
+
+    Скептик опроверг заявку «ограниченность ранга ⟹ Δ ≥ E₀/2^(B+1)»
+    контрпримером Energy = {0, E₀/8, E₀} (rank(E₀) = 1, rank(E₀/8) = 0 —
+    закон соблюдён, ранг ограничен B = 1, но валидный Δ ≤ E₀/8 < E₀/4).
+    Ошибка заявки: halving-цепочка от E₀ вниз требует уровней на КАЖДОМ
+    промежуточном масштабе (это Gapless), а ограниченный ранг их не поставляет.
+    ЧЕСТНОЕ содержание строгого спуска ранга — граница ДЛИНЫ ЦЕПОЧКИ, и только
+    она: конечные halving-цепочки в квантованном спектре не длиннее ранга
+    старта. Про величину Δ здесь НЕ утверждается ничего. -/
+
+/-- **Конечная halving-цепочка в спектре**: `L` шагов по положительным
+    состояниям, каждый шаг — как минимум деление энергии пополам
+    (`2·c(i+1) ≤ c(i)`; то же отношение, что в `GaplessLadder.halving` и в
+    антецеденте `QuantizationLaw`). Хвост `c` за пределами `L` свободен —
+    цепочкой являются только первые `L` шагов. -/
+def IsHalvingChain {S : SpectralModel} (L : ℕ) (c : ℕ → PositiveState S) : Prop :=
+  ∀ i < L, 2 * ((c (i + 1) : ℝ)) ≤ ((c i : ℝ))
+
+/-- **CHAIN-BOUND (общая форма): длина ≤ ранг старта.** Всякая ранговая
+    функция со строгим спуском на halving-парах (ровно поле `QuantizationLaw`)
+    падает на каждом шаге цепочки минимум на 1, поэтому `L` шагов требуют
+    ранга старта ≥ `L`. Прямое следствие вполне-фундированности ℕ — та же
+    стена, что `no_quantizedLadder`, но в конечной, количественной форме.
+    Для канонического ранга гэпнутой модели (`quantizationLaw_of_massGap`,
+    rank = `Nat.log 2 ⌊E/Δ⌋₊`) это даёт «длина ≤ log₂ старта в единицах Δ» —
+    но каноничный ранг циркулярен по Δ, поэтому экспортируется абстрактная
+    форма. -/
+theorem halvingChain_length_le_rank {S : SpectralModel}
+    {rank : PositiveState S → ℕ}
+    (hrank : ∀ x y : PositiveState S, 2 * (y : ℝ) ≤ (x : ℝ) → rank y < rank x)
+    {L : ℕ} {c : ℕ → PositiveState S} (hc : IsHalvingChain L c) :
+    L ≤ rank (c 0) := by
+  have key : ∀ i, i ≤ L → rank (c i) + i ≤ rank (c 0) := by
+    intro i
+    induction i with
+    | zero => intro _; omega
+    | succ n ih =>
+        intro hn
+        have hdrop : rank (c (n + 1)) < rank (c n) :=
+          hrank (c n) (c (n + 1)) (hc n (Nat.lt_of_succ_le hn))
+        have hprev := ih (Nat.le_of_succ_le hn)
+        omega
+  have := key L le_rfl
+  omega
+
+/-- **CHAIN-BOUND (форма CORR-замены): старт ≤ E₀ и ранг ≤ B на энергиях ≤ E₀
+    ⟹ длина ≤ B.** Ровно та честная замена ложного `massGap_lower_bound`,
+    которую потребовал вердикт скептика: «всякая halving-цепочка в спектре,
+    стартующая с энергии ≤ E₀, имеет длину ≤ B». НЕ нижняя оценка Δ (она
+    опровергнута — см. шапку секции): ограниченный ранг режет ДЛИНУ спуска,
+    а не глубину спектра. -/
+theorem halvingChain_length_le_of_rank_bound {S : SpectralModel}
+    {rank : PositiveState S → ℕ}
+    (hrank : ∀ x y : PositiveState S, 2 * (y : ℝ) ≤ (x : ℝ) → rank y < rank x)
+    {E₀ : ℝ} {B : ℕ}
+    (hB : ∀ x : PositiveState S, (x : ℝ) ≤ E₀ → rank x ≤ B)
+    {L : ℕ} {c : ℕ → PositiveState S} (hc : IsHalvingChain L c)
+    (h0 : ((c 0 : ℝ)) ≤ E₀) : L ≤ B :=
+  le_trans (halvingChain_length_le_rank hrank hc) (hB (c 0) h0)
+
+/-- **Chain-bound в языке красного входа:** закон квантования (D5, per-model
+    🔴 вход) поставляет ранговую функцию, ограничивающую ДЛИНУ всякой конечной
+    halving-цепочки её значением на старте. Конечное зеркало
+    `no_quantizedLadder`: бесконечная лестница даёт цепочки всякой длины и
+    потому сгорает; конечная цепочка не сгорает, а получает честный потолок. -/
+theorem quantizationLaw_chain_bound {S : SpectralModel}
+    (hQ : QuantizationLaw S) :
+    ∃ rank : PositiveState S → ℕ,
+      ∀ (L : ℕ) (c : ℕ → PositiveState S), IsHalvingChain L c → L ≤ rank (c 0) := by
+  obtain ⟨rank, hrank⟩ := hQ
+  exact ⟨rank, fun _ _ hc => halvingChain_length_le_rank hrank hc⟩
+
 /-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
 #print axioms ladder_carries_real_engine
 #print axioms not_massGap_carries_real_engine
@@ -229,5 +308,9 @@ theorem ym_locked_behind_engine_status (S : SpectralModel) :
 #print axioms unknowable_or_no_massGap
 #print axioms ym_no_internal_decision_without_engine
 #print axioms ym_locked_behind_engine_status
+#print axioms IsHalvingChain
+#print axioms halvingChain_length_le_rank
+#print axioms halvingChain_length_le_of_rank_bound
+#print axioms quantizationLaw_chain_bound
 
 end EuclidsPath.YangMills.Epistemic

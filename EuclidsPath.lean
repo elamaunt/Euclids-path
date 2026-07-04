@@ -3,7 +3,6 @@
   (Euclid's engine → its laws → reduction to twins → attack lines → final node SNOL).
 
   Path map: prose/00_ProofPath.md. Paired prose for each module — prose/NN_*.md.
-  The old analytic line (PMKLS/DASC/G2/O4C) — studied and bypassed, see archive/.
 
   Status legend:
     * proven modules — without `sorry` (standard axioms);

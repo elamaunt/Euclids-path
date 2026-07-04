@@ -161,8 +161,6 @@ Tao barrier); the novelty is in the formalisation. NS is not solved.
   conceptual cosmological views for the coda: an observer with an event horizon and an arrow of time
   pointing inward, a time-sphere with observer/singularity antipodes; the last two are a superstructure
   over the real substrate, `euclid_cosmology.py`).
-- **`archive/`** — the first **analytic** line (PMKLS/DASC/G2/O4C, `B₅=N₀₀−N₃₃`), studied and
-  **bypassed**. Kept for the visible train of thought (see `archive/README.md`).
 
 ## The path (prose ↔ Lean)
 
@@ -306,8 +304,6 @@ lake exe cache get    # precompiled mathlib oleans (v4.31.0)
 lake build            # the whole Engine line; exit 0 = checked
 lake env lean EuclidsPath/Engine/EPMI.lean   # a quick check of the engine core
 ```
-
-`archive/` is not part of the main build (historical context).
 
 ## Verification
 

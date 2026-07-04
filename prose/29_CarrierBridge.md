@@ -26,7 +26,7 @@
 
 Введём множество clean-центров при фиксированном пороге $A$.
 
-> **Определение (CleanCenters).** Для $A\in\mathbb{N}$ полагаем
+> **Определение 29.1** (CleanCenters). Для $A\in\mathbb{N}$ полагаем
 > $$\mathrm{CleanCenters}(A)\;:=\;\{\,m\in\mathbb{N}\;\mid\;\mathrm{CleanZ}\,A\,(m:\mathbb{Z})\,\},$$
 > где `CleanZ A m` означает, что ни одно простое $q\le A$ не делит ни одну из сторон $6m-1$, $6m+1$
 > (в $\mathbb{Z}$). Это clean-центр: центр, свободный от «старых» простых $\le A$.
@@ -35,7 +35,7 @@
 доказанного в `Residuals` факта `carrier_nonempty_above`, который для любых $A,N$ предъявляет clean-центр
 строго выше $N$ (конструктивно, $m=(N+1)\cdot\mathrm{oldPrimorial}\,A$; плотность не нужна).
 
-> **Теорема (`cleanCenters_infinite`).** Для всякого $A$ множество $\mathrm{CleanCenters}(A)$ бесконечно:
+> **Теорема 29.2** (`cleanCenters_infinite`). Для всякого $A$ множество $\mathrm{CleanCenters}(A)$ бесконечно:
 > $$(\mathrm{CleanCenters}\,A).\mathrm{Infinite}.$$
 
 Доказательство простое по форме и содержательное по смыслу. Мы применяем
@@ -59,7 +59,7 @@ Pump-машина `ProductCore` (теорема `product_core_engine_of_carrier`
 названное, но пока не доказанное недостающее утверждение (см. [словарь](GLOSSARY.md)), — который должен
 прийти от арифметики сита, и называем его явно.
 
-> **Определение (`FactorizationData A X_A`).** Пакет данных, состоящий из:
+> **Определение 29.3** (`FactorizationData A X_A`). Пакет данных, состоящий из:
 > - ранга $r$ с $1\le r\le 4$;
 > - бесконечного множества стартов $S\subseteq\mathbb{N}$ одного ранга $r$;
 > - карты `node : ℕ → RankNode r`, инъективной на $S$ (`hinj : Set.InjOn node S`);
@@ -74,9 +74,9 @@ Pump-машина `ProductCore` (теорема `product_core_engine_of_carrier`
 pigeonhole — пижонхол, принцип ящиков (см. ниже и [словарь](GLOSSARY.md)). Собрав такой пакет, мы
 немедленно получаем двигатель.
 
-> **Теорема (`engine_of_factorization`).** При separating scale $6X_A+1<P_A$ и наличии
+> **Теорема 29.4** (`engine_of_factorization`). При separating scale $6X_A+1<P_A$ и наличии
 > $F:\mathrm{FactorizationData}\,A\,X_A$ выполняется `Engine`:
-> $$6X_A+1<P_A\;\wedge\;F\;\Longrightarrow\;\mathrm{Engine}.$$
+> $$6X_A+1<P_A\;\wedge\;F\;\Longrightarrow\;\mathrm{Engine}.\tag{29.1}$$
 
 Это буквально `product_core_engine_of_carrier`, которому подставлены поля пакета $F$: ранг `F.r`, множество
 `F.S`, бесконечность `F.hS`, карта `F.node`, инъективность `F.hinj`, легальность `F.hamb`.
@@ -97,7 +97,7 @@ descent-по-рангу (`core_step_proved`) и rank-1 база (`rank_one_coreC
 Чтобы построить `FactorizationData` из «сырых» центров, нужно из бесконечного носителя выделить бесконечное
 подмножество *одного* ранга. Это чистый комбинаторный факт, и он доказан полностью.
 
-> **Теорема (`exists_infinite_fiber`).** Пусть $S$ бесконечно и $f:S\to \mathrm{Fin}(n+1)$. Тогда некоторый
+> **Теорема 29.5** (`exists_infinite_fiber`). Пусть $S$ бесконечно и $f:S\to \mathrm{Fin}(n+1)$. Тогда некоторый
 > слой бесконечен:
 > $$\exists c,\;\{x\mid x\in S\wedge f\,x=c\}.\mathrm{Infinite}.$$
 
@@ -109,7 +109,7 @@ $S\subseteq\bigcup_c\{x\in S\mid f\,x=c\}$ было бы конечным объ
 
 Теперь склеиваем pigeonhole с картами факторизации.
 
-> **Определение/конструкция (`factorizationData_of_carrier`).** Даны:
+> **Определение 29.6** (`factorizationData_of_carrier`). Даны:
 > - бесконечный носитель $C\subseteq\mathbb{N}$ (`hC : C.Infinite`);
 > - ранг-функция `rankOf : ℕ → Fin 4` (число больших простых факторов, сдвинутое; арифметика главы 28);
 > - карта узлов `mkNode : (r:ℕ) → ℕ → RankNode r`;
@@ -128,14 +128,14 @@ $S\subseteq\bigcup_c\{x\in S\mid f\,x=c\}$ было бы конечным объ
 
 Соединяя всё, получаем итоговую теорему звена.
 
-> **Теорема (`engine_of_carrier_and_factorize`).** При separating scale $6X_A+1<P_A$, бесконечном носителе
+> **Теорема 29.7** (`engine_of_carrier_and_factorize`). При separating scale $6X_A+1<P_A$, бесконечном носителе
 > $C$ и наличии ранг-функции `rankOf` и карты узлов `mkNode`, инъективной и `AmbientLegal` на каждом ранге,
 > — выполняется `Engine`:
-> $$6X_A+1<P_A,\;C.\mathrm{Infinite},\;\mathrm{rankOf},\;\mathrm{mkNode},\;\mathrm{hinj},\;\mathrm{hamb}\;\Longrightarrow\;\mathrm{Engine}.$$
+> $$6X_A+1<P_A,\;C.\mathrm{Infinite},\;\mathrm{rankOf},\;\mathrm{mkNode},\;\mathrm{hinj},\;\mathrm{hamb}\;\Longrightarrow\;\mathrm{Engine}.\tag{29.2}$$
 
-Она есть композиция `engine_of_factorization ∘ factorizationData_of_carrier`. **Что доказано полностью
-внутри звена:** бесконечность носителя (`cleanCenters_infinite`), выбор бесконечного слоя одного ранга
-(`exists_infinite_fiber`), и вся pump-машина, к которой мы подключаемся (`product_core_engine_of_carrier`).
+Она есть композиция `engine_of_factorization ∘ factorizationData_of_carrier` (Теорема 29.4 ∘ Определение 29.6). **Что доказано полностью
+внутри звена:** бесконечность носителя (Теорема 29.2, `cleanCenters_infinite`), выбор бесконечного слоя одного ранга
+(Теорема 29.5, `exists_infinite_fiber`), и вся pump-машина, к которой мы подключаемся (`product_core_engine_of_carrier`).
 
 **Единственный вход** — карты факторизации `rankOf`/`mkNode`/`hinj`/`hamb`. Иначе говоря, звено переводит
 задачу «доказать бесконечность близнецов» в задачу «предъявить бесконечное семейство clean-центров,

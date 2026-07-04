@@ -40,7 +40,7 @@ chapter: both are **control of the rank-parity balance** at a growing scale, and
 
 Let us introduce exactly the objects on which the generalisation rests. A descent state at rank $r$ is
 
-> **Definition (`RankNode`).** `RankNode r` is a structure with a field `sign : Sign` (the carrier of two
+> **Definition 32.1** (`RankNode`). `RankNode r` is a structure with a field `sign : Sign` (the carrier of two
 > $\sigma\in\{+1,-1\}$, the side $6m+\sigma$) and a field `factors : Fin r → ℕ` (an ordered tuple
 > of $r$ prime factors of the active side, all $> A$ on the legal layer). The type is *extensional* in
 > the pair `(sign, factors)` (`RankNode.ext` in `ProductCore.lean`): two nodes are equal if and only if
@@ -58,7 +58,7 @@ side has $r\ge 2$. So on the carrier the rank lives in the finite range $1\le r\
 
 The second object is rank lowering. Removing one factor is
 
-> **Definition (`deleteFactor`).** `deleteFactor : RankNode (r+1) → Fin (r+1) → RankNode r`,
+> **Definition 32.2** (`deleteFactor`). `deleteFactor : RankNode (r+1) → Fin (r+1) → RankNode r`,
 > $X \mapsto \langle X.\mathrm{sign},\ i\mapsto X.\mathrm{factors}(k.\mathrm{succAbove}\,i)\rangle$ —
 > it discards the $k$-th factor, preserving the sign and the order of the rest. This is precisely the product-rank descent step
 > $r\to r-1$ from [27](27_ProductCore.md).
@@ -68,10 +68,15 @@ $n = p\cdot m$ with $p$ prime, then $\Omega(n) = \Omega(m)+1$, hence
 
 $$\lambda(n) \;=\; (-1)^{\Omega(n)} \;=\; -(-1)^{\Omega(m)} \;=\; -\lambda(m).$$
 
-In Lean these are two theorems. The identity `liouville_eq_neg_one_pow_rank` (with no inputs of ours, a consequence of
-`liouville_apply` from mathlib): $\lambda(n) = (-1)^{\texttt{cardFactors}\,n}$ for $n\ne 0$. And the flip
-`liouville_flip_of_mul_prime`: $\lambda(p\cdot m) = -\lambda(m)$, proven via
-`cardFactors_mul` + `cardFactors_apply_prime`.
+In Lean these are two theorems.
+
+> **Theorem 32.3** (`liouville_eq_neg_one_pow_rank`). For every $n\ne 0$
+> $$\lambda(n) \;=\; (-1)^{\texttt{cardFactors}\,n}. \tag{32.1}$$
+> Proven with no inputs of ours, as a consequence of `liouville_apply` from mathlib. 🟢
+
+> **Theorem 32.4** (`liouville_flip_of_mul_prime`). For a prime $p$ and every $m$
+> $$\lambda(p\cdot m) \;=\; -\,\lambda(m). \tag{32.2}$$
+> Proven via `cardFactors_mul` + `cardFactors_apply_prime`. 🟢
 
 > **Note.** The meaning of these two lines is larger than their proof. They say that **the Liouville
 > sign is the rank parity of our `RankNode`**, and `deleteFactor` is the operator that flips the Liouville
@@ -168,7 +173,7 @@ through the already-proven machines (the EPMI engine / the classical bridge). Wh
 
 Now — the chapter's central statement, presented as what it is.
 
-> **Conjecture (Rank-Parity Unity).** There exists a single mechanism controlling the distribution of the rank
+> **Conjecture 32.5** (Rank-Parity Unity). There exists a single mechanism controlling the distribution of the rank
 > $\mathrm{rank}(n) = \texttt{cardFactors}\,n$ at a growing scale — the same one required for
 > `GlobalOldAbsorption` from [29](29_CarrierBridge.md)/[24](24_BoundaryDecomp.md) (the fan-in $570\to 1$ yields an engine) — from which
 > *both* bounds follow:
@@ -205,7 +210,7 @@ is control of how $r$ decreases along the branches from the leaves to the root.
 $\mathrm{rank}(n)\bmod 2$ over the fiber of each absorber. Here the already-proven
 `exists_infinite_fiber` does the work: an infinite fiber splits over the $\mathrm{Fin}\,4$ rank classes.
 The key that must be exhibited: **how `deleteFactor` along a branch changes the parity** (the proven flip
-$\lambda\mapsto-\lambda$) induces an almost-uniform distribution of parities on the fiber — this is
+$\lambda\mapsto-\lambda$, Theorem 32.4 (`liouville_flip_of_mul_prime`)) induces an almost-uniform distribution of parities on the fiber — this is
 exactly the shared rank-parity control.
 
 **Step 3a — twins.** From the rank distribution over the fiber, derive the carrier balance: that the fraction of centres with

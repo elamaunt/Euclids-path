@@ -42,28 +42,37 @@ direction; we will reach it through the embedding.
 
 ## Embedding into the programme's language
 
-The first genuine result: Mersenne lives on the plus side of the $6m+1$ grid. Define the Mersenne
-center $m_p = (2^{p-1}-1)/3$ (for odd $p$ the division is exact). Then:
+The first genuine result: Mersenne lives on the plus side of the $6m+1$ grid.
 
-> 🟢 **`mersenne_eq_sixCenter_add_one`.** For odd $p$: $\;2^p - 1 = 6\,m_p + 1$.
+**Definition 34.1** (the Mersenne center `mersenneCenter`). For $p \in \mathbb{N}$ set
+$m_p = (2^{p-1}-1)/3$ (for odd $p$ the division is exact).
+
+Then:
+
+> 🟢 **Theorem 34.2** (`mersenne_eq_sixCenter_add_one`). For odd $p$: $\;2^p - 1 = 6\,m_p + 1$.
 
 That is, every odd Mersenne number is precisely the upper side of the center `mersenneCenter p`.
 The lower side of the same center is $6m_p - 1 = 2^p - 3$, whence an immediate twin criterion:
 
-> 🟢 **`isTwinCenter_mersenneCenter_iff`.** For odd $p \ge 2$ the center $m_p$ is a twin center
-> $\iff$ both numbers $2^p-3$ and $2^p-1$ are prime.
+> 🟢 **Theorem 34.3** (`isTwinCenter_mersenneCenter_iff`). For odd $p \ge 2$ the center $m_p$ is a
+> twin center $\iff$ both numbers $2^p-3$ and $2^p-1$ are prime.
 
-Such "Mersenne twins" do exist: 🟢 **`mersenne_twin_instances`** verifies $p=3$ (center $1$,
-pair $(5,7)$) and $p=5$ (center $5$, pair $(29,31)$). Further along $p$ the coincidences dry up
-quickly — and nobody here promises that they will not dry up forever.
+Such "Mersenne twins" do exist:
+
+> 🟢 **Theorem 34.4** (`mersenne_twin_instances`). The centers $m_3$ and $m_5$ are twin centers:
+> $p=3$ gives center $1$ with pair $(5,7)$, and $p=5$ gives center $5$ with pair $(29,31)$.
+
+Further along $p$ the coincidences dry up quickly — and nobody here promises that they will not dry
+up forever.
 
 ## The correct implication: Mersenne ⟹ twins
 
-If there are infinitely many Mersenne twins (the input hypothesis `MersenneTwinCentersUnbounded` —
-manifestly *stronger* than the ordinary twin conjecture), then the twin pairs $(2^p-3,\,2^p-1)$
-are unbounded, and:
+**Definition 34.5** (unboundedness of Mersenne twins `MersenneTwinCentersUnbounded`). The
+hypothesis `MersenneTwinCentersUnbounded` asserts that above every threshold there is an odd $p$ for
+which $m_p$ is a twin center; it is manifestly *stronger* than the ordinary twin conjecture. If it
+holds, then the twin pairs $(2^p-3,\,2^p-1)$ are unbounded, and:
 
-> 🟢 **`twinLowersInfinite_of_mersenneTwins`.** `MersenneTwinCentersUnbounded` ⟹
+> 🟢 **Theorem 34.6** (`twinLowersInfinite_of_mersenneTwins`). `MersenneTwinCentersUnbounded` ⟹
 > `TwinLowers.Infinite`.
 
 This is the only honest arrow between the topics: a subsequence of twins is still twins. The arrow
@@ -107,12 +116,15 @@ All this architecture is proven *conditionally on the load-bearing inputs*, and 
 measures how much they weigh. For the canonical "pay every prime" ledger (`everythingPrimeLedger`,
 whose soundness is definitional) it is proven:
 
-> 🟢 **`pressure_iff_supply_for_everythingPrimeLedger`.** Pressure ⟺ the renamed **conclusion**
-> (the infinitude of Mersenne twins).
+> 🟢 **Theorem 34.7** (`pressure_iff_supply_for_everythingPrimeLedger`). For an inhabited ordinary
+> twin-supply input: cofinal pressure $\iff$ the infinitude of Mersenne twin centers
+> (`InfinitelyManyMersenneTwinCenters`) — that is, pressure ⟺ the renamed **conclusion**.
 
 Similarly for the canonical peel system `canonicalPeelSystem` ("hit = already a twin", the payment
-law — 🟢 `canonical_paymentLaw` — definitional): 🟢 **`canonical_coverage_iff`** — coverage ⟺ the
-same conclusion.
+law — 🟢 `canonical_paymentLaw` — definitional):
+
+> 🟢 **Theorem 34.8** (`canonical_coverage_iff`). For an inhabited twin-supply input: coverage
+> $\iff$ the infinitude of Mersenne twin centers — the same conclusion.
 
 **Conclusion.** On an arbitrary ledger the inputs are empty: to assume pressure is to assume the
 conclusion — the "goal renaming" familiar from the trilemmas (see the [glossary](GLOSSARY.md)).

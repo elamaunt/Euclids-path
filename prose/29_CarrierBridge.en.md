@@ -26,7 +26,7 @@ against which it rests.
 
 Let us introduce the set of clean centers at a fixed threshold $A$.
 
-> **Definition (CleanCenters).** For $A\in\mathbb{N}$ we set
+> **Definition 29.1** (CleanCenters). For $A\in\mathbb{N}$ we set
 > $$\mathrm{CleanCenters}(A)\;:=\;\{\,m\in\mathbb{N}\;\mid\;\mathrm{CleanZ}\,A\,(m:\mathbb{Z})\,\},$$
 > where `CleanZ A m` means that no prime $q\le A$ divides either of the sides $6m-1$, $6m+1$
 > (in $\mathbb{Z}$). This is a clean center: a center free of the "old" primes $\le A$.
@@ -35,7 +35,7 @@ The first brick of the link is the infinitude of this set. It is not postulated:
 fact `carrier_nonempty_above`, already proven in `Residuals`, which for any $A,N$ exhibits a clean
 center strictly above $N$ (constructively, $m=(N+1)\cdot\mathrm{oldPrimorial}\,A$; no density is needed).
 
-> **Theorem (`cleanCenters_infinite`).** For every $A$ the set $\mathrm{CleanCenters}(A)$ is infinite:
+> **Theorem 29.2** (`cleanCenters_infinite`). For every $A$ the set $\mathrm{CleanCenters}(A)$ is infinite:
 > $$(\mathrm{CleanCenters}\,A).\mathrm{Infinite}.$$
 
 The proof is simple in form and substantive in meaning. We apply
@@ -59,7 +59,7 @@ but already factorized core nodes. So we separate out exactly that structural in
 sense: an honestly named but not yet proven missing statement (see the [glossary](GLOSSARY.md)) —
 which must arrive from sieve arithmetic, and name it explicitly.
 
-> **Definition (`FactorizationData A X_A`).** A data package consisting of:
+> **Definition 29.3** (`FactorizationData A X_A`). A data package consisting of:
 > - a rank $r$ with $1\le r\le 4$;
 > - an infinite set of starts $S\subseteq\mathbb{N}$ of one rank $r$;
 > - a map `node : ℕ → RankNode r`, injective on $S$ (`hinj : Set.InjOn node S`);
@@ -75,9 +75,9 @@ itself (chapter 28), while fixing a single rank comes from the pigeonhole — th
 below and the [glossary](GLOSSARY.md)). Once such a package is assembled, we
 obtain an engine at once.
 
-> **Theorem (`engine_of_factorization`).** Under the separating scale $6X_A+1<P_A$ and given
+> **Theorem 29.4** (`engine_of_factorization`). Under the separating scale $6X_A+1<P_A$ and given
 > $F:\mathrm{FactorizationData}\,A\,X_A$, `Engine` holds:
-> $$6X_A+1<P_A\;\wedge\;F\;\Longrightarrow\;\mathrm{Engine}.$$
+> $$6X_A+1<P_A\;\wedge\;F\;\Longrightarrow\;\mathrm{Engine}.\tag{29.1}$$
 
 This is literally `product_core_engine_of_carrier` with the fields of the package $F$ plugged in: the
 rank `F.r`, the set `F.S`, the infinitude `F.hS`, the map `F.node`, the injectivity `F.hinj`, the
@@ -101,7 +101,7 @@ in the chapters on `ProductCore` and `SeparatingScale`; here we merely hand it i
 To build `FactorizationData` from "raw" centers, one must carve out of the infinite carrier an
 infinite subset of *one* rank. This is a purely combinatorial fact, and it is proven in full.
 
-> **Theorem (`exists_infinite_fiber`).** Let $S$ be infinite and $f:S\to \mathrm{Fin}(n+1)$. Then some
+> **Theorem 29.5** (`exists_infinite_fiber`). Let $S$ be infinite and $f:S\to \mathrm{Fin}(n+1)$. Then some
 > fiber is infinite:
 > $$\exists c,\;\{x\mid x\in S\wedge f\,x=c\}.\mathrm{Infinite}.$$
 
@@ -113,7 +113,7 @@ becomes the set $S$ inside `FactorizationData`.
 
 Now we glue the pigeonhole to the factorization maps.
 
-> **Definition/construction (`factorizationData_of_carrier`).** Given:
+> **Definition 29.6** (`factorizationData_of_carrier`). Given:
 > - an infinite carrier $C\subseteq\mathbb{N}$ (`hC : C.Infinite`);
 > - a rank function `rankOf : ℕ → Fin 4` (the number of large prime factors, shifted; the arithmetic of chapter 28);
 > - a node map `mkNode : (r:ℕ) → ℕ → RankNode r`;
@@ -132,14 +132,14 @@ combinatorics (choosing an infinite fiber of one rank) we have already carried o
 
 Joining everything, we obtain the link's final theorem.
 
-> **Theorem (`engine_of_carrier_and_factorize`).** Under the separating scale $6X_A+1<P_A$, an infinite
+> **Theorem 29.7** (`engine_of_carrier_and_factorize`). Under the separating scale $6X_A+1<P_A$, an infinite
 > carrier $C$, and given a rank function `rankOf` and a node map `mkNode` that is injective and
 > `AmbientLegal` on each rank — `Engine` holds:
-> $$6X_A+1<P_A,\;C.\mathrm{Infinite},\;\mathrm{rankOf},\;\mathrm{mkNode},\;\mathrm{hinj},\;\mathrm{hamb}\;\Longrightarrow\;\mathrm{Engine}.$$
+> $$6X_A+1<P_A,\;C.\mathrm{Infinite},\;\mathrm{rankOf},\;\mathrm{mkNode},\;\mathrm{hinj},\;\mathrm{hamb}\;\Longrightarrow\;\mathrm{Engine}.\tag{29.2}$$
 
-It is the composition `engine_of_factorization ∘ factorizationData_of_carrier`. **What is proven in
-full inside the link:** the infinitude of the carrier (`cleanCenters_infinite`), the choice of an
-infinite fiber of one rank (`exists_infinite_fiber`), and the entire pump machine we plug into
+It is the composition `engine_of_factorization ∘ factorizationData_of_carrier` (Theorem 29.4 ∘ Definition 29.6). **What is proven in
+full inside the link:** the infinitude of the carrier (Theorem 29.2, `cleanCenters_infinite`), the choice of an
+infinite fiber of one rank (Theorem 29.5, `exists_infinite_fiber`), and the entire pump machine we plug into
 (`product_core_engine_of_carrier`).
 
 **The single input** is the factorization maps `rankOf`/`mkNode`/`hinj`/`hamb`. In other words, the

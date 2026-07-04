@@ -55,22 +55,25 @@ What does "a deviation manifests itself" mean? First, assign every zero the natu
 lives: `zeroHeight Z = ⌊|Im s|⌋` — the integer part of the modulus of the imaginary part. Then we
 introduce the key object.
 
-**Definition (`DeviationFlowSupply A M0`).** An "unpaid supply" at the ledger scale `(A, M0)` is an
-infinite admissible family of extended generated flows.
+**Definition 38.1** (`DeviationFlowSupply A M0`). An "unpaid supply" at the ledger scale `(A, M0)` is
+an infinite admissible family of extended generated flows:
+$$\mathrm{DeviationFlowSupply}(A, M_0) \;:=\; \exists\,\mathcal{F} \subseteq \mathrm{ExtProperFlow}(A, M_0),\ \mathrm{InfiniteFamily}(A, M_0, \mathcal{F}). \tag{38.1}$$
 
 Here one detail matters, the detail that makes everything work: this is **exactly the same object**
 that the conjecture about the last boundary of twin centres builds in the twin branch. The supply is
 no empty abstraction — it is delivered by the genuine rank machine:
 
-**Theorem** (`deviationFlowSupply_of_twinBound`, 🟢 — a witness of substance). *From the bound on
-twin centres, an infinite family of flows is built greenly.*
+**Theorem 38.2** (`deviationFlowSupply_of_twinBound`, 🟢 — a witness of substance). *For any
+$A, M_0$, from the bound on twin centres above scale $M_0$ (`TwinBoundAbove M0`), `DeviationFlowSupply A M0`
+follows greenly:* $\mathrm{TwinBoundAbove}(M_0) \Rightarrow \mathrm{DeviationFlowSupply}(A, M_0).$
 
 Now the law itself. It says that a deviation is obliged to give itself away by such a supply
 wherever the books are reconciled:
 
-**Definition (`RiemannManifestationLaw`).** For every deviation `Z` and every scale
-`M0 ≥ zeroHeight Z`: wherever the projection reconciles the books (resolves collisions), there is an
-unpaid supply `DeviationFlowSupply`.
+**Definition 38.3** (`RiemannManifestationLaw`). For every deviation $Z$ and every scale
+$M_0 \ge \mathrm{zeroHeight}(Z)$: wherever the projection $\mathrm{proj}$ reconciles the books
+(resolves collisions), there is an unpaid supply `DeviationFlowSupply`:
+$$\forall Z\ \forall A, M_0\ \big(\mathrm{zeroHeight}(Z) \le M_0 \Rightarrow \forall \mathrm{proj}\ (\mathrm{Resolves}(\mathrm{proj}) \Rightarrow \mathrm{DeviationFlowSupply}(A, M_0))\big). \tag{38.2}$$
 
 Note the form: the law asserts a *positive event* — "the deviation manifests itself", the causal
 link "zero → manifestation". It does **not** assert "there are no zeros". This is essential: the
@@ -92,8 +95,9 @@ not a conclusion.
 Here is the load-bearing green theorem of the whole chapter. It says that where the books are
 reconciled, an unpaid supply cannot exist.
 
-**Theorem** (`no_deviationFlowSupply_at_resolved_scale`, 🟢). *At a scale where the projection
-resolves collisions, `DeviationFlowSupply` does not exist.*
+**Theorem 38.4** (`no_deviationFlowSupply_at_resolved_scale`, 🟢). *For any projection
+$\mathrm{proj}$ at scale $(A, M_0)$ that resolves collisions, the supply does not exist:*
+$\mathrm{Resolves}(\mathrm{proj}) \Rightarrow \neg\,\mathrm{DeviationFlowSupply}(A, M_0).$
 
 **Why this is true.** A resolving projection yields a stable, energy-free universe. Throw an
 infinite family of flows into it — the finite key is forced to collide them (pigeonhole), the
@@ -118,16 +122,18 @@ absence of traces at a book-reconciling scale we derive from the engine prohibit
 Let us join the law, the boundary and the engine prohibition. What emerges is a precise mirror of
 the twin essence lemma.
 
-**Theorem** (`noOffCriticalZero_of_manifestation_and_boundary`, 🟢). *The absence of engines plus the
-accepted twin boundary plus the manifestation law ⟹ deviations do not exist.*
+**Theorem 38.5** (`noOffCriticalZero_of_manifestation_and_boundary`, 🟢). *The absence of engines
+($\neg\,\mathrm{SomeConcreteEuclideanEngine}$) plus the accepted twin boundary
+($\mathrm{TheStrictLastStep00Obligation}$) plus the manifestation law ($\mathrm{RiemannManifestationLaw}$)
+imply $\neg\,\mathrm{Nonempty}\ \mathrm{RiemannOffCriticalZero}$ — deviations do not exist.*
 
 All three hypotheses do real work, not through explosion: the boundary yields a resolving projection
 exactly at the scale of the zero's height; the law turns the zero into an infinite supply; from the
 supply a witness engine is assembled; and it is killed precisely by "engines do not exist". And then
 it is a short step to the goal:
 
-**Theorem** (`riemannHypothesis_of_manifestation_and_boundary`, 🟢). *The same triple ⟹ the Riemann
-Hypothesis (in the precise mathlib sense).*
+**Theorem 38.6** (`riemannHypothesis_of_manifestation_and_boundary`, 🟢). *The same triple of
+hypotheses implies $\mathrm{RiemannHypothesis}$ (in the precise mathlib sense).*
 
 Here the only heavy analysis enters, and it has already been done in the preceding chapters: the
 classification of the trivial zeros `trivialBelowZeroClassification` is proven by honest mathlib
@@ -154,8 +160,11 @@ its second boundary. The structure `Step00FirstCause` now carries the twin bound
 boundary `riemannBoundary` (plus, from [chapter 41](41_NSSmoothness.md), the Navier–Stokes boundary) — but **the axiom is still one**.
 Projecting the first cause onto its Riemann field, we obtain:
 
-**Theorem** (`riemannHypothesis_from_firstCause : RiemannHypothesis`, 🟡). *From the single extended
-decree, the Riemann Hypothesis follows.*
+**Theorem 38.7** (`riemannHypothesis_from_firstCause`, 🟡). *From the single extended decree the
+Riemann Hypothesis follows:* $\mathrm{riemannHypothesis\_from\_firstCause} : \mathrm{RiemannHypothesis}$ —
+obtained by applying Theorem 38.6 (`riemannHypothesis_of_manifestation_and_boundary`) to
+`no_someConcreteEuclideanEngine`, the first-cause projection `step00CausalClosure`, and the field
+`riemannManifestationLaw`.
 
 And immediately — the obligatory honesty. In the machine axiom list of this theorem stands
 `[propext, Classical.choice, Quot.sound, step00FirstCause]`: the last word betrays the taint. **This
@@ -183,8 +192,8 @@ the consistency of the extended theory now also requires the irrefutability of R
 A legitimate suspicion arises: have we not hidden the Riemann Hypothesis inside the manifestation
 law by simply renaming it? The answer is given machine-wise, and it is subtle.
 
-**Theorem** (`riemannManifestation_asserts_RH`, 🟡). *Under the accepted twin boundary, the
-manifestation law is equivalent to RH.*
+**Theorem 38.8** (`riemannManifestation_asserts_RH`, 🟡). *Under the accepted twin boundary, the
+manifestation law is equivalent to RH:* $\mathrm{RiemannManifestationLaw} \iff \mathrm{RiemannHypothesis}.$
 
 So yes: *accepting the extended first cause = accepting RH*; the decree is no weaker than the
 conclusion — and we do not hide this, we prove it.
@@ -262,20 +271,27 @@ horizon.
 
 The module `Engine/RiemannLawEpistemic.lean`
 records this literally: the bundle `InternalisedRiemannGround` holds the field `ground` — the law
-itself — and the field
-`beyondOwnHorizon`. And such a bundle self-destructs: `no_internalisedRiemannGround` 🟢, whence
-`riemannCause_unknowable` 🟢 (the mirror of `collatzCause_unknowable` and `pnpCause_unknowable`) —
-**"it cannot be known from inside" is here a theorem, not a slogan**.
+itself — and the field `beyondOwnHorizon`. And such a bundle self-destructs:
+
+**Theorem 38.9** (`no_internalisedRiemannGround`, 🟢). *Internal self-grounding of the manifestation
+law is impossible:* $\mathrm{InternalisedRiemannGround} \Rightarrow \mathrm{False}$, whence
+`riemannCause_unknowable` 🟢 — $\neg\,\mathrm{InternalKnowledgeOfRiemannCause}$ (the mirror of
+`collatzCause_unknowable` and `pnpCause_unknowable`). **"It cannot be known from inside" is here a
+theorem, not a slogan.**
 
 Honesty at once: the bundle is formal,
 `beyondOwnHorizon` is simply `¬ground`, a tautological pair of the form P ∧ ¬P, exactly as with
 Collatz, and we do not hide this.
 
 What pays for the form is a genuine construction. The only internal trace of a deviation is a
-perpetual engine: `deviation_carries_engine_at_resolved_scale` 🟢 assembles, from the deviation's
-supply at a resolved scale, a concrete Euclidean engine (a stable energy-free universe, an infinite
-family, the pigeonhole collision of a finite key), consuming its hypotheses genuinely, not through
-falsehood — it is the same chain as inside `no_deviationFlowSupply_at_resolved_scale`, but with the
+perpetual engine:
+
+**Theorem 38.10** (`deviation_carries_engine_at_resolved_scale`, 🟢). *From the deviation's supply at
+a resolving scale a concrete Euclidean engine is assembled:*
+$\mathrm{Resolves}(\mathrm{proj}) \wedge \mathrm{DeviationFlowSupply}(A, M_0) \Rightarrow
+\mathrm{SomeConcreteEuclideanEngine}$ (a stable energy-free universe, an infinite family, the
+pigeonhole collision of a finite key), consuming its hypotheses genuinely, not through falsehood. It
+is the same chain as inside Theorem 38.4 (`no_deviationFlowSupply_at_resolved_scale`), but with the
 engine made explicit in the conclusion.
 
 (There is also the ex-falso companion `internalisedRiemannGround_builds_engine` — a route whose only
@@ -289,9 +305,15 @@ node (for
 A ≤ 4 it is refuted by `no_projection_resolves_at_smallScale`). This is exactly the Collatz level —
 and below the P/NP benchmark, where `beyondOwnHorizon` is inhabited greenly.
 
-The summary is the three-way fork `riemann_no_internal_decision_without_engine` 🟢: to refute on
-reconciled books is to build an engine killed by the lexRank; to self-ground is to self-destruct;
-only the external decree decides: the law under the boundary yields RH. **Both internal paths cost
+The summary is the three-way fork:
+
+**Theorem 38.11** (`riemann_no_internal_decision_without_engine`, 🟢). *A conjunction of three
+statements:* (1) to refute on reconciled books is to build an engine
+($\mathrm{Resolves}(\mathrm{proj}) \wedge \mathrm{DeviationFlowSupply}(A, M_0) \Rightarrow
+\mathrm{SomeConcreteEuclideanEngine}$, killed by the lexRank); (2) to self-ground is to self-destruct
+($\mathrm{InternalisedRiemannGround} \Rightarrow \mathrm{False}$); (3) only the external decree
+decides — the law under the boundary yields RH ($\mathrm{TheStrictLastStep00Obligation} \Rightarrow
+\mathrm{RiemannManifestationLaw} \Rightarrow \mathrm{RiemannHypothesis}$). **Both internal paths cost
 an engine; one door is open, and it is external.**
 
 Moreover, in this module the boundary figures as

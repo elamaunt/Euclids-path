@@ -31,6 +31,19 @@ At the summit of the whole construction stands a single statement — `higherEne
 (`Engine/FiniteKnowledgeBarrier`), **the higher energy incompatibility**. Its core is entirely
 green, with no axiom at all.
 
+**Theorem 0.1** (`higherEnergyIncompatibility_main`). The five faces meet in a single conjunction:
+$$
+\bigl(\mathsf{KnowsCause}\Rightarrow\mathsf{Engine}\bigr)\ \wedge\ \neg\,\mathsf{KnowsCause}\ \wedge\ W_{\mathrm{fin}}\ \wedge\ W_{\infty}\ \wedge\ \bigl(\neg\,\mathsf{Engine}\wedge\mathsf{Step00}\Rightarrow \#\{\text{twin lowers}\}=\infty\bigr).\tag{0.1}
+$$
+Here $\mathsf{KnowsCause}\Rightarrow\mathsf{Engine}$ — internal knowledge of the first cause builds a
+concrete Euclidean engine; $\neg\,\mathsf{KnowsCause}$ — the cause is unknowable from inside
+(`cause_unknowable`); $W_{\mathrm{fin}}$ — for any sieving system $S$, scale $A$, certificate and class
+$B$: if $B$ is equivalent to an element $\mathit{bad}$ that is **not** a twin, the system does not certify
+$B$ as a twin; $W_{\infty}$ — if arbitrarily far out every class contains a non-twin, the system does not
+certify the infinitude of twins; and the fifth face: the absence of an engine together with the causal
+boundary `step00FirstCause` entails `TwinLowers.Infinite`. The first four faces are 🟢; the conclusion of
+the fifth is 🟡 (conditional on the boundary).
+
 It rests on a simple thought: *learning the cause from inside costs energy that a closed system
 does not have.*
 
@@ -52,10 +65,16 @@ which there is none; while the infinitude of twins is external knowledge, paid f
 
 Most briefly the theorem reads: *one cannot know that the twins are infinite; but if the
 unknowability of the first cause is accepted as truth — they are infinite, and rigorously so.* This
-is the corollary `higherEnergyIncompatibility_twins` (`TwinLowers.Infinite`) — 🟡: the fifth face,
-instantiated by the decree `step00FirstCause` (a decree is the intentional acceptance of a law by
-axiom rather than by proof; see the [glossary](GLOSSARY.md)). The core above it stays green, but the
-corollary itself is conditional — it is **not** a proof of the twin conjecture.
+is the corollary below.
+
+**Corollary 0.2** (`higherEnergyIncompatibility_twins`). Instantiating the fifth face of (0.1) by the
+decree `step00FirstCause` yields the form-unconditional
+$$
+\#\{\text{twin lowers}\}=\infty \qquad(\texttt{TwinLowers.Infinite}).\tag{0.2}
+$$
+🟡: the fifth face, instantiated by the decree `step00FirstCause` (a decree is the intentional
+acceptance of a law by axiom rather than by proof; see the [glossary](GLOSSARY.md)). The core above it
+stays green, but the corollary itself is conditional — it is **not** a proof of the twin conjecture.
 
 And the whole construction carries a rigorous cosmological reading — the theorems are rigorous, the
 cosmology is merely their translation (the full step-by-step account is in [chapter 33](33_CausalFirstCause.md)).
@@ -83,7 +102,8 @@ Euclid's engine is a hypothetical infinite sequence of heights in which every st
 is of this kind. It does not exist: $H(t)+t$ does not increase, and a strictly decreasing chain of
 natural heights breaks off — this is Fermat's infinite descent, rewritten multiplicatively.
 
-**Theorem (impossibility of the perpetual engine).** `no_infinite_descent`, the structural form
+**Theorem 0.3** (`no_infinite_descent`). Impossibility of the perpetual engine: a strictly decreasing
+chain of natural heights breaks off ($H(t)+t$ does not increase). The structural form
 `no_perpetual_engine`, the step dichotomy `boundary_dichotomy` — all 🟢, without `sorry`, on the bare
 Lean 4 kernel (without even mathlib). This is the hardest stone of the foundation: any construction
 presented as a perpetual engine is automatically false.

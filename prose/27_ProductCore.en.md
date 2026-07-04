@@ -49,8 +49,11 @@ what we do.
 We introduce the product-core node of rank $r$ — a side sign plus role-indexed factors, *without*
 genealogy and without absorber.
 
+**Definition 27.1** (product-core node). A node of rank $r$ is a pair of a side sign and a
+role-indexed family of factors:
+
 $$
-\texttt{RankNode}\;r \;:=\; \bigl\{\, \mathrm{sign} : \texttt{Sign},\;\; \mathrm{factors} : \mathrm{Fin}\,r \to \mathbb{N} \,\bigr\}.
+\texttt{RankNode}\;r \;:=\; \bigl\{\, \mathrm{sign} : \texttt{Sign},\;\; \mathrm{factors} : \mathrm{Fin}\,r \to \mathbb{N} \,\bigr\}. \tag{27.1}
 $$
 
 In Lean this is `structure RankNode (r : ℕ)` with fields `sign : Sign` and `factors : Fin r → ℕ`,
@@ -69,7 +72,7 @@ fan-in lived in the tail, and we did not put the tail into `RankNode`.
 The first defect is removed head-on. If two product-core nodes agree in sign and in *all*
 factors, they are equal.
 
-**Theorem** (`no_mismatch_core_eq`). For $X_1, X_2 : \texttt{RankNode}\,r$, if
+**Theorem 27.2** (`no_mismatch_core_eq`). For $X_1, X_2 : \texttt{RankNode}\,r$, if
 $X_1.\mathrm{sign} = X_2.\mathrm{sign}$ and $\forall k,\; X_1.\mathrm{factors}\,k = X_2.\mathrm{factors}\,k$,
 then $X_1 = X_2$.
 
@@ -85,17 +88,17 @@ pointwise equality of the factors is exactly the whole content of the state.
 The second defect (non-preservation of the bound) is removed by a certificate that survives the
 deletion of a role. We introduce a predicate.
 
-**Definition** (`AmbientLegal`). A family of factors $\mathrm{factors} : \mathrm{Fin}\,r \to \mathbb{N}$
+**Definition 27.3** (`AmbientLegal`). A family of factors $\mathrm{factors} : \mathrm{Fin}\,r \to \mathbb{N}$
 is *ambient-legal at scale* $X_A$ if there exists a common top legal side $N_0$ which all the
 factors divide and which does not exceed the carrier bound:
 
 $$
-\texttt{AmbientLegal}\;X_A\;\mathrm{factors} \;:=\; \exists\, N_0 : \mathbb{N},\;\; 0 < N_0 \;\wedge\; N_0 \le 6X_A + 1 \;\wedge\; \forall i,\; \mathrm{factors}\,i \mid N_0.
+\texttt{AmbientLegal}\;X_A\;\mathrm{factors} \;:=\; \exists\, N_0 : \mathbb{N},\;\; 0 < N_0 \;\wedge\; N_0 \le 6X_A + 1 \;\wedge\; \forall i,\; \mathrm{factors}\,i \mid N_0. \tag{27.2}
 $$
 
 From this certificate the bound follows immediately.
 
-**Theorem** (`ambient_factor_lt_primorial`). Under the separating scale $6X_A + 1 < P_A$ and
+**Theorem 27.4** (`ambient_factor_lt_primorial`). Under the separating scale $6X_A + 1 < P_A$ and
 `AmbientLegal X_A factors` we have $\forall i,\; \mathrm{factors}\,i < P_A$.
 
 Proof: $\mathrm{factors}\,i \mid N_0 \Rightarrow \mathrm{factors}\,i \le N_0$
@@ -106,7 +109,7 @@ single factor.
 Crucially, the certificate is preserved under role deletion. A residual is a subfamily of the
 factors, so *the same* $N_0$ still serves.
 
-**Theorem** (`ambientLegal_delete`). For $\mathrm{factors} : \mathrm{Fin}(r+1) \to \mathbb{N}$ and
+**Theorem 27.5** (`ambientLegal_delete`). For $\mathrm{factors} : \mathrm{Fin}(r+1) \to \mathbb{N}$ and
 a role $k$, `AmbientLegal X_A factors` implies
 `AmbientLegal X_A (fun i => factors (k.succAbove i))`.
 
@@ -121,14 +124,14 @@ The third defect (non-finiteness of $(\mathbb{Z}/P_A)^r$) is removed by fixing $
 duration of the pigeonhole* and taking the signature only with respect to the fixed $P_A$ and the
 fixed $r$.
 
-**Definition** (`CoreSig`). For fixed $P_A, r$, the core signature is a sign plus the residues of
+**Definition 27.6** (`CoreSig`). For fixed $P_A, r$, the core signature is a sign plus the residues of
 the factors mod $P_A$, *without* genealogy:
 
 $$
-\texttt{CoreSig}\;P_A\;r \;:=\; \bigl\{\, \mathrm{sign} : \texttt{Sign},\;\; \mathrm{residues} : \mathrm{Fin}\,r \to \mathbb{Z}/P_A \,\bigr\}.
+\texttt{CoreSig}\;P_A\;r \;:=\; \bigl\{\, \mathrm{sign} : \texttt{Sign},\;\; \mathrm{residues} : \mathrm{Fin}\,r \to \mathbb{Z}/P_A \,\bigr\}. \tag{27.3}
 $$
 
-**Theorem** (`coreSig_fintype`). Under $[\texttt{NeZero}\,P_A]$ (i.e. $P_A > 0$) and fixed
+**Theorem 27.7** (`coreSig_fintype`). Under $[\texttt{NeZero}\,P_A]$ (i.e. $P_A > 0$) and fixed
 $r$, the type `CoreSig P_A r` is finite.
 
 The instance is built via `Fintype.ofInjective` by the embedding
@@ -152,7 +155,7 @@ Let us tie the node to its signature. `coreSigOf X := ⟨X.sign, fun i => (X.fac
 is the node's passport. Now we transfer the argument of §26 to the product-core: equality of
 residues plus the bound yields equality of factors.
 
-**Theorem** (`no_productHall`). If at role $k$ both factors are $< P_A$ and congruent mod $P_A$,
+**Theorem 27.8** (`no_productHall`). If at role $k$ both factors are $< P_A$ and congruent mod $P_A$,
 yet $X_1.\mathrm{factors}\,k \ne X_2.\mathrm{factors}\,k$ — a contradiction ($\texttt{False}$).
 
 Proof: for $a < P_A$ we have $\texttt{ZMod.val}(a \bmod P_A) = a$
@@ -160,16 +163,16 @@ Proof: for $a < P_A$ we have $\texttt{ZMod.val}(a \bmod P_A) = a$
 themselves, and $\mathrm{hne}$ falls. From here — the final assembly "equal signatures + the bound
 $\Rightarrow$ equal nodes".
 
-**Theorem** (`factors_eq_of_coreSig`). If $\mathrm{coreSigOf}\,X_1 = \mathrm{coreSigOf}\,X_2$
-and all factors of both are $< P_A$, then the factors coincide pointwise (by `no_productHall`,
+**Theorem 27.9** (`factors_eq_of_coreSig`). If $\mathrm{coreSigOf}\,X_1 = \mathrm{coreSigOf}\,X_2$
+and all factors of both are $< P_A$, then the factors coincide pointwise (by Theorem 27.8 (`no_productHall`),
 arguing by contradiction).
 
-**Theorem** (`rankNode_eq_of_coreSig`). Under the same hypotheses, $X_1 = X_2$: the sign is taken
+**Theorem 27.10** (`rankNode_eq_of_coreSig`). Under the same hypotheses, $X_1 = X_2$: the sign is taken
 from the signature (`congrArg CoreSig.sign`), the factors from the bound, and
-`no_mismatch_core_eq` assembles the node.
+Theorem 27.2 (`no_mismatch_core_eq`) assembles the node.
 
-**Section takeaway.** The three fixes meet at one point: extensionality (`no_mismatch_core_eq`)
-gives sign-and-factors $\Rightarrow$ node; the bound (`ambient_factor_lt_primorial`) gives
+**Section takeaway.** The three fixes meet at one point: extensionality (Theorem 27.2, `no_mismatch_core_eq`)
+gives sign-and-factors $\Rightarrow$ node; the bound (Theorem 27.4, `ambient_factor_lt_primorial`) gives
 signature $\Rightarrow$ factors; finiteness will supply the existence of a collision. It remains
 to run this as an induction.
 
@@ -177,18 +180,18 @@ to run this as an induction.
 
 Let us define the object of descent.
 
-**Definition** (`CoreCollision`). $\texttt{CoreCollision}\;X_A\;P_A\;r$ is the existence of two
+**Definition 27.11** (`CoreCollision`). $\texttt{CoreCollision}\;X_A\;P_A\;r$ is the existence of two
 **distinct** ambient-legal RankNodes of rank $r$ with equal signature:
 
 $$
-\exists\, X_1\, X_2 : \texttt{RankNode}\,r,\;\; X_1 \ne X_2 \;\wedge\; \texttt{AmbientLegal}\,X_A\,X_1.\mathrm{factors} \;\wedge\; \texttt{AmbientLegal}\,X_A\,X_2.\mathrm{factors} \;\wedge\; \mathrm{coreSigOf}\,X_1 = \mathrm{coreSigOf}\,X_2.
+\exists\, X_1\, X_2 : \texttt{RankNode}\,r,\;\; X_1 \ne X_2 \;\wedge\; \texttt{AmbientLegal}\,X_A\,X_1.\mathrm{factors} \;\wedge\; \texttt{AmbientLegal}\,X_A\,X_2.\mathrm{factors} \;\wedge\; \mathrm{coreSigOf}\,X_1 = \mathrm{coreSigOf}\,X_2. \tag{27.4}
 $$
 
-**Theorem** (`rank_one_coreCollision_absurd`). Under the separating scale $6X_A+1 < P_A$, a
+**Theorem 27.12** (`rank_one_coreCollision_absurd`). Under the separating scale $6X_A+1 < P_A$, a
 collision of rank $1$ is impossible: $\texttt{CoreCollision}\,X_A\,P_A\,1 \Rightarrow \texttt{False}$.
 
-The proof is entirely arithmetic: `ambient_factor_lt_primorial` gives the bound for both,
-`rankNode_eq_of_coreSig` gives $X_1 = X_2$, contradicting $X_1 \ne X_2$. Let us stress: **the base
+The proof is entirely arithmetic: Theorem 27.4 (`ambient_factor_lt_primorial`) gives the bound for both,
+Theorem 27.10 (`rankNode_eq_of_coreSig`) gives $X_1 = X_2$, contradicting $X_1 \ne X_2$. Let us stress: **the base
 does not rely on an external SNOL** — it is closed by the same separating-scale arithmetic as the
 induction step. This removes §31's dependence on a separate rank-1 SNOL module.
 
@@ -197,38 +200,38 @@ induction step. This removes §31's dependence on a separate rank-1 SNOL module.
 The defect of §31 was that the step `core_step` remained an *input* (a hypothesis). Here we
 **prove** it. The instrument is role deletion.
 
-**Definition** (`deleteFactor`). Deleting role $k$ from a $\texttt{RankNode}(r+1)$ yields a
+**Definition 27.13** (`deleteFactor`). Deleting role $k$ from a $\texttt{RankNode}(r+1)$ yields a
 $\texttt{RankNode}\,r$: the same sign, the factors re-indexed via `Fin.succAbove`.
 
-**Theorem** (`delete_preserves_coreSig`). If the signatures of the full nodes are equal, then so
+**Theorem 27.14** (`delete_preserves_coreSig`). If the signatures of the full nodes are equal, then so
 are the signatures after deleting the same role $k$ from both (the signs are the same; the
 residues at the surviving roles are the same).
 
-**Theorem** (`core_step_succ`). Under the separating scale, a collision of rank $r'+1$ yields a
+**Theorem 27.15** (`core_step_succ`). Under the separating scale, a collision of rank $r'+1$ yields a
 collision of rank $r'$.
 
 The logic of the step is the heart of the whole chapter, so let us go through it in detail. From
 the equality of signatures and $X_1 \ne X_2$ there exists a mismatched role $k$ (otherwise
-`no_mismatch_core_eq` would give $X_1 = X_2$). We delete $k$, obtaining $Y_1, Y_2$. Their
-signatures are equal (`delete_preserves_coreSig`), the `AmbientLegal` certificates are preserved
-(`ambientLegal_delete`). Then comes the **residual dichotomy**:
+Theorem 27.2 (`no_mismatch_core_eq`) would give $X_1 = X_2$). We delete $k$, obtaining $Y_1, Y_2$. Their
+signatures are equal (Theorem 27.14, `delete_preserves_coreSig`), the `AmbientLegal` certificates are preserved
+(Theorem 27.5, `ambientLegal_delete`). Then comes the **residual dichotomy**:
 
 - if $Y_1 \ne Y_2$, then $(Y_1, Y_2)$ is a collision of rank $r'$ (the descent has taken place);
 - if $Y_1 = Y_2$, then the residual factors coincide and the entire mismatch is concentrated at
   role $k$: $X_1.\mathrm{factors}\,k \ne X_2.\mathrm{factors}\,k$, yet these factors are congruent
   mod $P_A$ and both are $< P_A$ — this is precisely a *ProductHall*, impossible by
-  `no_productHall`. The branch is false.
+  Theorem 27.8 (`no_productHall`). The branch is false.
 
 In both branches we have either descended a rank or reached a contradiction. Hence the packaging:
 
-**Theorem** (`core_step_proved`). Under the separating scale,
+**Theorem 27.16** (`core_step_proved`). Under the separating scale,
 $\forall r,\; 2 \le r \Rightarrow \texttt{CoreCollision}\,X_A\,P_A\,r \Rightarrow \texttt{CoreCollision}\,X_A\,P_A\,(r-1)$
-(from `core_step_succ` by the substitution $r = (r-1)+1$).
+(from Theorem 27.15 (`core_step_succ`) by the substitution $r = (r-1)+1$).
 
 > **Note.** Why does the trilemma not resurrect here? In §31 the step broke on the
 > extensionality of the residual: deleting the tail could glue distinct states together. In
-> `RankNode` there is no tail, so `no_mismatch_core_eq` (for the full node) and
-> `delete_preserves_coreSig` (for the residual) both hold, while `no_productHall` closes the
+> `RankNode` there is no tail, so Theorem 27.2 (`no_mismatch_core_eq`, for the full node) and
+> Theorem 27.14 (`delete_preserves_coreSig`, for the residual) both hold, while Theorem 27.8 (`no_productHall`) closes the
 > degenerate branch without any appeal to the passport as a "normal form". Induction over the
 > product-core **without a tail removes the fan-in from the object** — and with it the source of
 > the trilemma.
@@ -238,8 +241,8 @@ $\forall r,\; 2 \le r \Rightarrow \texttt{CoreCollision}\,X_A\,P_A\,r \Rightarro
 Recall: the Engine is the perpetual engine, the programme's central forbidden object
 (see the [glossary](GLOSSARY.md)); anything that builds one is thereby false.
 
-**Theorem** (`coreCollision_engine`). Under the separating scale and the step `core_step`
-(now exhibited as `core_step_proved`):
+**Theorem 27.17** (`coreCollision_engine`). Under the separating scale and the step `core_step`
+(now exhibited as Theorem 27.16 (`core_step_proved`)):
 $\forall r,\; 1 \le r \Rightarrow \texttt{CoreCollision}\,X_A\,P_A\,r \Rightarrow \texttt{Engine}$.
 
 The proof is strong induction (`Nat.strong_induction_on`): for $n < 2$ we have $n = 1$ and the
@@ -253,7 +256,7 @@ and the descent strictly decreases it.
 Now we exhibit the collision itself. Finiteness of the signature (`coreSig_fintype`) plus an
 infinite injective family of starts yield two distinct starts with equal signature.
 
-**Theorem** (`coreCollision_of_infinite`). Let $S \subseteq \iota$ be infinite,
+**Theorem 27.18** (`coreCollision_of_infinite`). Let $S \subseteq \iota$ be infinite,
 $\mathrm{node} : \iota \to \texttt{RankNode}\,r$ injective on $S$ (distinct starts $\Rightarrow$
 distinct cores), and let every $\mathrm{node}\,i$ ($i \in S$) be ambient-legal. Then
 $\texttt{CoreCollision}\,X_A\,P_A\,r$.
@@ -267,19 +270,19 @@ full**, with no inputs.
 
 Hence the packaging of the carrier data:
 
-**Theorem** (`freshStarts_to_coreCollision`). The carrier structure (infinitely many starts of
+**Theorem 27.19** (`freshStarts_to_coreCollision`). The carrier structure (infinitely many starts of
 one sign and rank $1 \le r \le 4$, each an ambient-legal RankNode, distinct starts $\Rightarrow$
 distinct cores) yields $\exists r',\; 1 \le r' \le 4 \wedge \texttt{CoreCollision}\,X_A\,P_A\,r'$.
 
 ## The whole machine: Engine from carrier data
 
-**Theorem** (`product_core_engine_of_carrier`). Under the separating scale $6X_A+1 < P_A$,
+**Theorem 27.20** (`product_core_engine_of_carrier`). Under the separating scale $6X_A+1 < P_A$,
 $1 \le r \le 4$, and an infinite $S$ with starts $\mathrm{node}$ injective on $S$ and everywhere
 ambient-legal — we obtain $\texttt{Engine}$.
 
 The assembly: `product_core_pump_closed` (the finale *without* the hypothesis `core_step`, since
 the step is proved as `core_step_proved` and the base is proved by arithmetic) is applied to
-`freshStarts_to_coreCollision`. All the internal content — extensionality, the bound, finiteness,
+Theorem 27.19 (`freshStarts_to_coreCollision`). All the internal content — extensionality, the bound, finiteness,
 the descent, the base, and the pigeonhole — is **proved in this file without `sorry`**.
 
 What this *means* for the programme. We have travelled the path from "the trilemma resurrects one

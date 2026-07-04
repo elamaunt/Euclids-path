@@ -36,7 +36,7 @@ The `6m ± 1` grid gives every centre `m` two sides — the minus-side `6m − 1
 the plus-side `6m + 1` (class `1 mod 6`). The question "are there infinitely many primes on each
 side separately" has long been closed, and closed by heavy analysis:
 
-**Theorem** (`minusSide_primes_unbounded`, `plusSide_primes_unbounded`, 🟢). *Above any `n` there
+**Theorem 44.1** (`minusSide_primes_unbounded`, `plusSide_primes_unbounded`, 🟢). *Above any `n` there
 is a prime `p > n` with `p % 6 = 5`; and there is a prime `p > n` with `p % 6 = 1`.*
 
 **Why this is true.** This is Dirichlet's theorem on primes in arithmetic progressions, borrowed
@@ -88,7 +88,7 @@ between two centres.
 
 This geometry imposes a rigid classification:
 
-**Theorem** (`cousin_mod_six`, 🟢). *Every junior member of a cousin pair with `p > 3` lies on the
+**Theorem 44.2** (`cousin_mod_six`, 🟢). *Every junior member of a cousin pair with `p > 3` lies on the
 plus-side of the grid: `p % 6 = 1`.*
 
 **Why this is true.** A prime `p > 3` is divisible by neither `2` nor `3`, so `p % 6` is either
@@ -108,7 +108,7 @@ minus-pair `(6m − 1, 6m + 5)` on the minus-sides of centres `m` and `m + 1`, o
 
 And when two geometries meet at one point, a constellation occurs:
 
-**Theorem** (`constellation_of_adjacent_twinCenters`, 🟢 — even without `Classical.choice`). *Two
+**Theorem 44.3** (`constellation_of_adjacent_twinCenters`, 🟢 — even without `Classical.choice`). *Two
 adjacent twin-centres `m` and `m + 1` simultaneously yield all three patterns: cousins on `m` and
 both sexy pairs on `m`.*
 
@@ -134,7 +134,7 @@ The plumbing connects them to the goal exactly — unboundedness of centres is e
 absence of absence-witnesses (`cousinCentersUnbounded_iff_no_absence`,
 `sexyCentersUnbounded_iff_no_absence`, 🟢) — and the witness domain is localised from below:
 
-**Theorem** (`cousinAbsenceBound_ge_37`, `sexyAbsenceBound_ge_17`, 🟢). *Every absence-bound for
+**Theorem 44.4** (`cousinAbsenceBound_ge_37`, `sexyAbsenceBound_ge_17`, 🟢). *Every absence-bound for
 cousins is at least 37; every absence-bound for sexies is at least 17.*
 
 **Why this is true.** The cousin-centre `m = 37` exists greenly — the pair `(223, 227)` of primes;
@@ -154,7 +154,7 @@ The manifestation object `DeviationFlowSupply` is borrowed from the Riemann fron
 together with its substantiveness witness; it is not re-proved here. The main theorems — both green,
 for each family:
 
-**Theorem** (`cousinCentersUnbounded_of_noEngine_and_boundary_and_manifestation`, and its sexy
+**Theorem 44.5** (`cousinCentersUnbounded_of_noEngine_and_boundary_and_manifestation`, and its sexy
 twin, 🟢 — essence). *No engines + accepted boundary + manifestation law ⟹ cousin-centres (resp.
 sexy-centres) are unbounded.*
 
@@ -193,7 +193,7 @@ section is absent from this module for substantive reasons, not from oversight: 
 because the forging substrate itself is absent. The door for an honest law stands wide open — and
 here the second reason arises.
 
-**Theorem** (`cousinManifestationLaw_iff_unbounded_of_boundary`, and its sexy twin, 🟢 — the
+**Theorem 44.6** (`cousinManifestationLaw_iff_unbounded_of_boundary`, and its sexy twin, 🟢 — the
 principal M7 price audit). *Given an accepted boundary, the manifestation law is equivalent to the
 unboundedness of centres.*
 
@@ -268,8 +268,13 @@ No field is the negation of another — that is the P/NP style, not the tautolog
 (what it shares with P/NP is precisely the style, not the arity: the P/NP template is two-field,
 our bundle is three-field); and, unlike P/NP, none of the three is greenly inhabited. Together,
 however, the triple is greenly incompatible: `no_internalisedCousinGround` and
-`no_internalisedSexyGround`, from which `cousinCause_unknowable` and `sexyCause_unknowable` (🟢) —
-**"cannot be known from inside" is here a theorem, not a slogan**.
+`no_internalisedSexyGround`, from which "cannot be known from inside" follows — here a theorem, not a
+slogan:
+
+**Theorem 44.7** (`cousinCause_unknowable`, `sexyCause_unknowable`, 🟢). *At any ledger scale
+`A, M0`, internal knowledge of the cause of cousins is impossible — `¬ InternalKnowledgeOfCousinCause
+A M0`; and, mirror-wise, `¬ InternalKnowledgeOfSexyCause A M0`. This is not a statement about cousins
+or sexies themselves: cases 4 and 6 are open, the law is not decreed.*
 
 What pays for this — a genuine construction, not ex falso. The theorems
 `internalisedCousinGround_builds_engine` and `internalisedSexyGround_builds_engine` are a direct
@@ -282,10 +287,17 @@ The price of honesty is named: the construction is **conditional on the gated, n
 on reconciled books** — both fields are individually unknown. This is weaker than the unconditional
 Collatz route and the green pigeonhole of P/NP, and we do not conceal this.
 
-The summary — `polignac_no_internal_decision_without_engine` (🟢), both families in one theorem:
+The summary — both families in one theorem:
 to self-ground is to build an engine; what is built self-destructs; what remains is an external
 decree, and its price has already been reckoned — under the hypothesis-boundary
 `TheStrictLastStep00Obligation` the law is equivalent to the unboundedness of centres.
+
+**Theorem 44.8** (`polignac_no_internal_decision_without_engine`, 🟢). *For each of the two families
+and any `A, M0`, a triple holds: (1) `InternalisedCousinGround A M0 → SomeConcreteEuclideanEngine`
+(self-grounding builds the engine); (2) `InternalisedCousinGround A M0 → False` (what is built
+self-destructs against the lexRank wall); (3) `TheStrictLastStep00Obligation → (CousinManifestationLaw
+↔ CousinCentersUnbounded)` (the external door is exactly case 4). The sexy conjunct is a mirror with
+`InternalisedSexyGround`, `SexyManifestationLaw`, `SexyCentersUnbounded`.*
 
 But here lies the difference from the neighbours on the horizon: for Riemann the external door was
 taken, for Collatz the decree fell, while for Polignac **there is no field and there will not be
@@ -293,9 +305,18 @@ one** — `cousinBoundary` and `sexyBoundary` are not decreed under the §17 ver
 decree would erase the uniqueness in which the entire meaning of the quarantine resides, as we
 worked out above.
 
-The outcome is collected in `polignac_locked_behind_engine_status` (🟢) — without a
+The outcome is collected without a
 decree-conjunct, not because the decree fell, but because it was never taken at all: from inside
 — an engine, from outside — a non-decreed law of exactly conjecture strength.
+
+**Theorem 44.9** (`polignac_locked_behind_engine_status`, 🟢). *For each of the two families and any
+`A, M0`, a quadruple holds: (1) `¬ InternalKnowledgeOfCousinCause A M0` — internal knowledge is
+impossible (Theorem 44.7); (2) `∀ P, CousinAbsenceAbove P → 37 ≤ P` — every absence-witness is no
+lower than 37 (Theorem 44.4); (3) `TheStrictLastStep00Obligation → (CousinManifestationLaw ↔
+CousinCentersUnbounded)` — the price of the non-decreed field (Theorem 44.6); (4)
+`CousinCentersUnbounded → CousinLowers.Infinite` — unboundedness would reach the programme's goal.
+The sexy conjunct is a mirror (threshold 17). There is no decree-conjunct: the fields
+`cousinBoundary`/`sexyBoundary` do not exist.*
 
 > **Note (what we do not claim).** This is not a solution to cases 4 and 6 of the Polignac
 > conjecture — both remain open 🔴, and the theorems of this section do not move their status. This

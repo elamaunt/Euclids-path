@@ -33,23 +33,35 @@ no encodings, no theorem "P ≠ NP" in the repository, and this is recorded mach
 ## The asymmetry as a theorem of a concrete graph
 
 On the `6m±1` graph both sides of the analogy are proven (🟢, `PvsNPAnalogy` in `ConcreteStep00Graph.lean`).
-The P-side: `pathN_len_le_lexRank` — any forward path of length $n$ from a state $X$ has
+The P-side: any forward path of length $n$ from a state $X$ has
 $n \le \mathrm{lexRank}(X)$, so every genealogy "is verified cheaply" (`VerificationEasy`,
 `verificationEasy_always` — a property of *all* flows, not a hypothesis).
+
+**Theorem 35.1** (`pathN_len_le_lexRank`). For all $A, M_0 \in \mathbb{N}$ and every forward path of
+length $n$ under the step `RealStep` $A\,M_0$ from $X$ to $Y$, one has $n \le \mathrm{lexRank}(X)$.
+The rank strictly decreases at each step, so its initial value bounds the length of any genealogy —
+verification is linear in the rank.
 
 The NP-side:
 `search_not_compressible_of_infinite` — on an infinite family of states a finite projection key
 loses information (`finite_key_cannot_determine_state_on_infinite`), that is, the backward search
-does not compress into a finite certificate. Both sides at once are given by
-`verify_easy_but_search_not_compressible` — the asymmetry "verification is easy / search is
-incompressible" is here not a slogan but a conjunction of two machine facts.
+does not compress into a finite certificate. Both sides at once are given by the next theorem.
 
-Moreover, at small scales the incompressibility is **unconditional**: `concrete_localSearchIncompressible_smallScale`
-(🟢, `LocalPNPNode.lean`) proves for $A \le 4$ that no finite-key resolver
-exists — the infinite 5-adic chain of flows (`fiveAdicChainFlow`) produces, by pigeonhole (a finite
-key cannot injectively label an infinite family, see the [glossary](GLOSSARY.md)), a
-same-key collision, while both resolution alternatives at $A \le 4$ are already refuted
-(`no_extendedFlowResolutionAlternative`).
+**Theorem 35.2** (`verify_easy_but_search_not_compressible`). For all $A, M_0$, every semantic
+projection $\mathrm{proj}$ and every infinite set of states $S$ the following hold simultaneously:
+(i) $\forall F,\ \mathrm{VerificationEasy}(F)$ — *every* generated flow is verified cheaply; and
+(ii) $\mathrm{SearchNotCompressible}(\mathrm{proj}, S)$ — the backward search on $S$ does not
+compress into a finite key. The asymmetry "verification is easy / search is incompressible" is here
+not a slogan but a conjunction of two machine facts.
+
+Moreover, at small scales the incompressibility is **unconditional**.
+
+**Theorem 35.3** (`concrete_localSearchIncompressible_smallScale`). At $A \le 4$ the concrete problem
+`concreteProblem` $A\,1$ satisfies $\mathrm{LocalSearchIncompressible}$: no finite-key resolver
+exists. Proof (🟢, `LocalPNPNode.lean`): the infinite 5-adic chain of flows (`fiveAdicChainFlow`)
+produces, by pigeonhole (a finite key cannot injectively label an infinite family, see the
+[glossary](GLOSSARY.md)), a same-key collision, while both resolution alternatives at $A \le 4$ are
+already refuted (`no_extendedFlowResolutionAlternative`).
 
 An irony that must be spoken out loud honestly: this is the very same
 5-adic chain that in [24](24_BoundaryDecomp.md) narrowed the final twin node down to $A \ge 5$. The unconditional
@@ -58,8 +70,12 @@ scale $A \ge 5$ the question is open 🔴.
 
 ## The twin node is a P/NP node
 
-§12bis pins down the link: `twin_reduction_is_pnp_node` (🟢) — `TheLastStep00Obligation`
-("a finite certificate of genealogy collision resolution suffices") implies `TwinLowers.Infinite`.
+§12bis pins down the link.
+
+**Theorem 35.4** (`twin_reduction_is_pnp_node`). `TheLastStep00Obligation` ("a finite certificate of
+genealogy collision resolution suffices") implies `TwinLowers.Infinite` (infinitude of the family of
+twin lowerings): formally $\mathrm{TheLastStep00Obligation} \Rightarrow \mathrm{TwinLowers.Infinite}$
+(🟢).
 
 This is a restatement of the already known `twinLowersInfinite_of_lastStep00Obligation`, but it
 gives the node a name in the new language: the sole remaining input of the whole twin branch (an
@@ -71,9 +87,9 @@ suffice", that is, `PolyCertificateSuffices` =
 The conditional side is proven too:
 `branch_closes_if_polyCertificateSuffices` — if the certificate suffices AND the family of
 genealogies is infinite, the branch collapses. The node itself is neither presented nor refuted
-(🔴), and the §2 theorem explains why it does not come for free: the certificate loses
-information, so "the certificate suffices" is additional fan-in arithmetic, not a consequence of
-compression.
+(🔴), and Theorem 35.2 (`verify_easy_but_search_not_compressible`) explains why it does not come for
+free: the certificate loses information, so "the certificate suffices" is additional fan-in
+arithmetic, not a consequence of compression.
 
 ## The local node: the abstraction and its habitability
 
@@ -101,15 +117,20 @@ unconditional theorem (`concrete_collisionPrinciple_smallScale`), not a paramete
 
 `ClassicalPNPBridge.lean` introduces `ClassicalComplexityFrame`: the predicates `InP`/`InNP` on
 languages plus closure of P under poly-preimages. And here the module exposes its own chief
-weakness itself: **InP and InNP are abstract**. The theorem `trivialFrame_separates_for_free`
-(🟢, a deliberate anti-theorem) shows that a frame with `InP := False`, `InNP := True` "separates
-the classes" *for free* — that is, `ClassesSeparate` relative to an arbitrary frame costs nothing.
+weakness itself: **InP and InNP are abstract**.
 
-The loop of honesty is closed in
-`CanonicalSelfReduction.lean`: `FaithfulPFrame` demands concrete deciders behind `InP` and
-membership of `TrueLanguage`/`FalseLanguage` in the class P — and `trivialFrame_not_faithful` (🟢)
-proves that the degenerate frame does not satisfy this. The degeneracy is cut off machine-wise,
-but the other side of the coin must be said aloud: until `FaithfulClassicalFrame` is instantiated
+**Theorem 35.5** (`trivialFrame_separates_for_free`). The trivial frame with `InP := False`,
+`InNP := True` satisfies `ClassesSeparate` (🟢, a deliberate anti-theorem): there is a language in
+NP but not in P — witnessed by any language, since `InP` is identically false. In other words,
+$\mathrm{ClassesSeparate}$ relative to an arbitrary frame costs nothing.
+
+The loop of honesty is closed in `CanonicalSelfReduction.lean`: `FaithfulPFrame` demands concrete
+deciders behind `InP` and membership of `TrueLanguage`/`FalseLanguage` in the class P.
+
+**Theorem 35.6** (`trivialFrame_not_faithful`). There is no `FaithfulPFrame` over the trivial frame:
+any such object yields `False` (🟢) — from `InP := False` the required membership of `TrueLanguage`
+in P immediately contradicts. The degenerate frame does not satisfy honesty. The degeneracy is cut
+off machine-wise, but the other side of the coin must be said aloud: until `FaithfulClassicalFrame` is instantiated
 with a real model of machines, no `ClassesSeparate` in these files speaks of the real P/NP.
 
 ## The bridge and its load-bearing field
@@ -135,9 +156,14 @@ Then `CanonicalSelfReduction.lean` turns the
 reconstruction into an algorithm: a bounded adaptive query protocol
 (`BoundedAdaptiveQueryProtocol`, the fuel strictly drops at a step), a terminal decoder
 (`TerminalResolverDecoder`), and — an important generic fact — the termination of the fuel
-executor is **proven**: `runSteps_done_of_fuel` (🟢, strict fuel descent + descent in ℕ), so the
-fields `run`/`run_done` are closed by the constructor `selfReduction_of_protocol_and_decoder`
-once and for all.
+executor is **proven**.
+
+**Theorem 35.7** (`runSteps_done_of_fuel`). For every protocol $P$ and every decider $D$: if
+$P.\mathrm{fuel}(s) \le n$, then $P.\mathrm{done}(\mathrm{runSteps}\,P\,D\,n\,s)$ (🟢). That is, an
+executor started with a fuel budget no smaller than the remaining fuel is guaranteed to terminate:
+the strict fuel drop at each step plus descent in $\mathbb{N}$ give termination. Hence the fields
+`run`/`run_done` are closed by the constructor `selfReduction_of_protocol_and_decoder` once and for
+all.
 
 The live remainder of the front is `FaithfulSelfReductionFront`: a protocol + a decoder + a
 faithful frame + the node's incompressibility; all of this is 🔴 not instantiated on the live

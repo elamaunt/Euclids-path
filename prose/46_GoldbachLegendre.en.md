@@ -52,14 +52,14 @@ decidable.
 
 From this comes the first pair of green theorems, both about pointwise decidability in action.
 
-**Theorem** (`goldbach_upTo_52`, 🟢). *Every even `E` in the range `4 ≤ E < 52` is a sum of two
+**Theorem 46.1** (`goldbach_upTo_52`, 🟢). *Every even `E` in the range `4 ≤ E < 52` is a sum of two
 primes.*
 
 **Why this is true.** `decide` iterates over all such `E` over the decidable bounded form and finds a
 decomposition for each; the result is transported to `GoldbachRep` through a proven equivalence. Not a
 single hypothesis, not a trace of the axiom — pure machine verification.
 
-**Theorem** (`goldbachViolation_ge_52`, 🟢). *Every witness of a Goldbach violation sits at
+**Theorem 46.2** (`goldbachViolation_ge_52`, 🟢). *Every witness of a Goldbach violation sits at
 `E ≥ 52`.*
 
 **Why this is true.** The smaller even candidates have already been screened out by the previous
@@ -85,7 +85,7 @@ No gate is needed for the witness here: the scale anchor `M0 := E` is tied to th
 height of the deviation is the deviation itself — and an ungated "explosive" form simply does not
 exist. And here is the load-bearing assembly.
 
-**Theorem** (`noGoldbachViolation_of_manifestation_and_boundary`, 🟢 — essence). *No engines + an
+**Theorem 46.3** (`noGoldbachViolation_of_manifestation_and_boundary`, 🟢 — essence). *No engines + an
 accepted boundary + the manifestation law ⟹ there are no Goldbach violations — that is, the Goldbach
 conjecture holds.*
 
@@ -112,13 +112,26 @@ means `1 ≤ n` and `PrimeDesertBetween (n²) ((n+1)²)`, that is, not a single 
 the squares.
 
 The predicate is again decidable — through a bounded-ball form (`Nat.decidableBallLT`, reducible under
-`decide`) — and everything repeats. `legendre_holds_upTo_10` (🟢, `decide`) screens out all candidates
-`1 ≤ n < 11`, `legendreViolation_ge_11` localises the witness's domain, and the literature bound far
-beyond `10^18` is not formalised. All just as with Goldbach.
+`decide`) — and everything repeats, mirroring the Goldbach pair.
+
+**Theorem 46.4** (`legendre_holds_upTo_10`, 🟢). *For all `n` with `1 ≤ n < 11` there is no Legendre
+violation: $\forall n,\ 1 \le n < 11 \Rightarrow \neg\,\mathrm{LegendreViolationAt}(n)$.*
+
+**Why this is true.** `decide` iterates over all candidates `1 ≤ n < 11` over the decidable
+bounded-ball form and finds, for each, a prime strictly between `n²` and `(n+1)²`; no axiom, no
+`native_decide`.
+
+**Theorem 46.5** (`legendreViolation_ge_11`, 🟢). *Every witness of a Legendre violation sits at
+`n ≥ 11`: $\forall V:\mathrm{LegendreViolation},\ 11 \le V.1$.*
+
+**Why this is true.** The smaller points are screened out by Theorem 46.4 (`legendre_holds_upTo_10`):
+a witness below 11 would receive a prime in its interval, while the witness denies it — a
+contradiction. The literature bound far beyond `10^18` is not formalised; only `≥ 11` is green. All
+just as with Goldbach.
 
 But this front has something found nowhere else in the series — a green unconditional companion.
 
-**Theorem** (`no_desert_doubles`, 🟢). *A prime desert cannot survive a doubling: between `n` and `2n`
+**Theorem 46.6** (`no_desert_doubles`, 🟢). *A prime desert cannot survive a doubling: between `n` and `2n`
 (for `n ≠ 0`) there is always a prime.*
 
 **Why this is true.** This is a direct repackaging of Bertrand's postulate
@@ -130,7 +143,7 @@ And exactly here comes the honest disclosure without which the green Bertrand wo
 inflated claim. Bertrand covers the doubling `[n, 2n]`, while Legendre needs the interval
 `(n², (n+1)²)`. Does the former suffice for the latter?
 
-**Theorem** (`legendre_interval_shorter_than_bertrand`, 🟢). *For `n ≥ 3` we have `(n+1)² < 2n²`.*
+**Theorem 46.7** (`legendre_interval_shorter_than_bertrand`, 🟢). *For `n ≥ 3` we have `(n+1)² < 2n²`.*
 
 **Why this is true.** A pure inequality, `nlinarith`. But the consequence is fundamental: Legendre's
 interval is **shorter** than Bertrand's doubling. Hence the green "a desert does not double" is
@@ -142,11 +155,19 @@ remains strictly weaker than the open Legendre, and we do not hide this but writ
 machine-checkably.
 
 From there the object front repeats the Riemann architecture verbatim. `LegendreManifestationLaw`
-is object-quantified over witnesses, the scale anchor `M0 := V.1²` is tied to the desert itself, and
-`noLegendreViolation_of_manifestation_and_boundary` (🟢, essence) assembles the same triple — no
-engines, an accepted boundary, the law — from which, through `legendreConjecture_iff_no_violation`,
-Legendre's conjecture itself follows. The witness is anchored exactly where the desert lives — at
-`n²`.
+is object-quantified over witnesses, the scale anchor `M0 := V.1²` is tied to the desert itself.
+
+**Theorem 46.8** (`noLegendreViolation_of_manifestation_and_boundary`, 🟢 — essence). *No engines + an
+accepted boundary + the manifestation law ⟹ there are no Legendre witnesses:
+$\neg\,\mathrm{SomeConcreteEuclideanEngine} \wedge \mathrm{TheStrictLastStep00Obligation} \wedge
+\mathrm{LegendreManifestationLaw} \Rightarrow \neg\,\mathrm{Nonempty}\ \mathrm{LegendreViolation}$.*
+
+**Why this is true.** The same triple as in Theorem 46.3 (`noGoldbachViolation_of_manifestation_and_boundary`):
+a hypothetical witness `V` yields the scale `M0 := V.1²`, the boundary supplies a resolving projection
+exactly at it (via `le_refl`), the law supplies the family of flows, an engine-witness is assembled
+from the collision — and it is killed by the hypothesis "there are no engines". Through the bridge
+`legendreConjecture_iff_no_violation` the same triple is carried all the way to Legendre's conjecture
+itself. The witness is anchored exactly where the desert lives — at `n²`.
 
 > **Note.** Neither front has a single free Prop field, free gate, or renamed conclusion —
 > every hypothesis is named arithmetically, the supply is the same strict object
@@ -235,7 +256,7 @@ open problem itself); to self-ground = to self-destruct; only the external bound
 hypothesis `TheStrictLastStep00Obligation` — together with the law.
 
 For Legendre a fourth panel is added to the three, an
-unconditional one: Bertrand's `no_desert_doubles` with the honest flag
+unconditional one: Bertrand's Theorem 46.6 (`no_desert_doubles`) with the honest flag
 `NoBertrandToLegendreImplicationClaimed` — strong, yet still not closing the quadratic crack.
 
 And here "verification, not derivation" sounds in its purest form in the whole series. For Collatz the
@@ -244,7 +265,8 @@ is pointwise decidable, and about every candidate the machine answers in finite 
 
 The theorems `goldbach_verification_not_derivation` and `legendre_verification_not_derivation` place
 three facts side by side: internal knowledge of the cause is impossible; the check is machine-swept
-(`goldbach_upTo_52`, `legendre_holds_upTo_10`); and therefore the witness is pushed back exactly to
+(Theorem 46.1 `goldbach_upTo_52`, Theorem 46.4 `legendre_holds_upTo_10`); and therefore the witness is
+pushed back exactly to
 the depth of the sweep — `≥ 52` and `≥ 11`, not a step further (the literature's `4·10^18` is not
 formalised; only this much is green). **The solution is findable exactly as far as the check reaches**
 — here this is not a figure of speech but the very structure of the theorem.

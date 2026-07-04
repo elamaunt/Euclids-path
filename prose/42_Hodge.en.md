@@ -35,9 +35,7 @@ remainder is a named input, `DescentLaw` — a gate: an honestly named missing s
 Hodge brings news that none of the other branches had, and it is worth starting there. The engine here
 is dead **always**, without a single hypothesis.
 
-**Theorem** (`isEmpty_unpaidDescentChain`, 🟢). *An infinite strictly descending chain of unpaid
-charges exists in no model whatsoever.* The axiom list is just `[propext, Quot.sound]`, without even
-choice: this is pure EPMI at `A = 1`.
+**Theorem 42.1** (`isEmpty_unpaidDescentChain`, 🟢). *For every Hodge ledger $S$ the type $\mathrm{UnpaidDescentChain}(S)$ is empty: an infinite strictly height-descending chain of unpaid charges exists in no model whatsoever.* The axiom list is just `[propext, Quot.sound]`, without even choice: this is pure EPMI at `A = 1`.
 
 Compare with Yang–Mills to see the asymmetry. There the real-valued ladder *lived* precisely at
 masslessness and was killed by a *decreeable* quantisation law — quantisation was a separate input.
@@ -51,17 +49,15 @@ existence of the payment *steps* themselves — that is, the law.
 The descent law is precisely the substantive input: every unpaid charge admits a *payment step* — a
 transition to an unpaid charge of strictly smaller height. As soon as it holds, the conjecture follows:
 
-**Theorem** (`hodgeProperty_of_descentLaw`, 🟢 — the hero). *Descent law ⟹ the model's Hodge
-conjecture.* The proof is strong induction on the height (no choice needed); the same can be done by
-the chain route through `descentSeq` — the mirror of Yang–Mills's ladderSeq. And symmetrically, a model
-of "the law plus an unpaid charge" does not exist (`no_unpaid_lawful_model` 🟢).
+**Theorem 42.2** (`hodgeProperty_of_descentLaw`, 🟢 — the hero). *If $\mathrm{DescentLaw}(S)$, then $\mathrm{HodgeProperty}(S)$: the descent law implies the model's Hodge conjecture.* The proof is strong induction on the height (no choice needed); the same can be done by the chain route through `descentSeq` — the mirror of Yang–Mills's ladderSeq.
+
+**Theorem 42.3** (`no_unpaid_lawful_model`, 🟢). *There is no ledger $S$ satisfying both $\mathrm{DescentLaw}(S)$ and $\mathrm{Nonempty}(\mathrm{UnpaidClass}(S))$: a model of "the law plus an unpaid charge" does not exist.*
 
 The converse is honestly vacuous: `descentLaw_of_hodgeProperty` is proven by an empty quantifier (if
 everything is paid, there are no unpaid charges) — unlike Yang–Mills, where the reverse rank was built
 for real. And from here — the decisive audit:
 
-**Theorem** (`descentLaw_iff_hodgeProperty`, 🟢). *For every model the descent law is equivalent to
-the Hodge conjecture — green, and with no boundary anywhere.*
+**Theorem 42.4** (`descentLaw_iff_hodgeProperty`, 🟢). *For every ledger $S$: $\mathrm{DescentLaw}(S) \iff \mathrm{HodgeProperty}(S)$ — green, and with no boundary anywhere.*
 
 This is once again the form of the condemned man's bridge: to decree the law for a model would be to
 decree its conjecture verbatim. There can be no sixth field of the decree; what is missing is not a
@@ -81,8 +77,9 @@ The existential form is *already proven* and depends on no axioms at all
 (`cookedPaid`: the law is vacuous, the conjecture verbatim) — the decree would be empty.
 
 The third face, though, is unique. Mechanically transplant the manifestation form from Yang–Mills, but
-over *chains* (over the engine). It **degenerates into a green theorem** (`hodgeChainManifestationLaw_green`
-🟢): chains simply do not exist in any model, so the law over them is vacuously true.
+over *chains* (over the engine). It degenerates into a green theorem:
+
+**Theorem 42.5** (`hodgeChainManifestationLaw_green`, 🟢). *$\mathrm{HodgeChainManifestationLaw}$: for every ledger $S$ and every chain $C : \mathrm{UnpaidDescentChain}(S)$ one has $\mathrm{ChainManifests}(C)$. Since by Theorem 42.1 no such chain exists in any model, the law over chains is vacuously true.*
 
 This is a verdict of V2 type, not V3 — and here is why it matters not to confuse them: from an *empty*
 type of witnesses one cannot assemble a V3 ("incompatible with the boundary"), because V3 needs a
@@ -90,9 +87,10 @@ witness *presented* in green.
 
 The honest V3 witness
 here must be not a chain but a single unpaid class, `cookedUnpaidClass` — it is presented by
-construction, without choice, and with it the manifestation form is already incompatible with the
-accepted boundary (`hodgeManifestationLaw_refutes_boundary` 🟢). The subtle difference between "the
-engine is presentable" and "the deviation is presentable" surfaces here more distinctly than anywhere else.
+construction, without choice. The subtle difference between "the engine is presentable" and "the
+deviation is presentable" surfaces here more distinctly than anywhere else.
+
+**Theorem 42.6** (`hodgeManifestationLaw_refutes_boundary`, 🟢). *If $\mathrm{HodgeManifestationLaw}$ holds, then $\neg\,\mathrm{TheStrictLastStep00Obligation}$: the manifestation form of the law is incompatible with the accepted quarantine boundary.*
 
 The branch's single honest 🟡 is a tripwire (an intentional explosion detector, see the [glossary](GLOSSARY.md)),
 `quarantine_inconsistent_if_hodgeManifestationLaw_decreed` (§14): a decree of the manifestation form would blow up the quarantine exactly here; its safety has been verified (the law
@@ -143,8 +141,9 @@ its own horizon.
 
 Such a pair (`InternalisedHodgeGround`) self-destructs in a single line
 (`no_internalisedHodgeGround`), and therefore **"cannot be known from inside" is a theorem, not a
-slogan**: `hodgeCause_unknowable` 🟢, with no axioms at all. Neither the status of the conjecture
-itself nor its independence is thereby asserted — only the impossibility of internal self-grounding.
+slogan**:
+
+**Theorem 42.7** (`hodgeCause_unknowable`, 🟢). *For every ledger $S$: $\neg\,\mathrm{InternalKnowledgeOfHodgeCause}(S)$ — internal self-grounding of the descent law is impossible in every model, unconditionally and without any axioms.* Neither the status of the conjecture itself nor its independence is thereby asserted — only the impossibility of internal self-grounding.
 
 The contradiction is paid for by more than the mere shape of the pair — it has a second, engine route.
 Under the per-model law an unpaid charge unfolds into a genuine infinite descent chain
@@ -161,12 +160,11 @@ And the third leaf is familiar verbatim: the universal form of the law has alrea
 forging — `hodgeUniversal_forged_refutation` (a re-export of `hodgeLawUniversal_refuted`), that very
 `cookedUnpaid` where the step from height 1 runs into the quantisation anchor. As with Yang–Mills and
 now Collatz, the decree path through the universal is closed machine-wise; the only living option is
-the per-model input — and it, by the collapse
-`descentLaw_iff_hodgeProperty`, equals the goal verbatim.
+the per-model input — and it, by Theorem 42.4 (`descentLaw_iff_hodgeProperty`), equals the goal verbatim.
 
-The summary is gathered in `hodge_locked_behind_engine_status` 🟢:
-the universal refuted / chains empty in every model / internal knowledge impossible / per-model law ⟺
-the model's conjecture — **entirely green, the repository's taint does not grow**.
+**Theorem 42.8** (`hodge_locked_behind_engine_status`, 🟢). *For every ledger $S$:*
+$$(\neg\,\mathrm{HodgeDescentLawUniversal})\;\land\;\mathrm{IsEmpty}(\mathrm{UnpaidDescentChain}(S))\;\land\;(\neg\,\mathrm{InternalKnowledgeOfHodgeCause}(S))\;\land\;(\mathrm{DescentLaw}(S)\iff\mathrm{HodgeProperty}(S)).$$
+*The universal refuted / chains empty in every model / internal knowledge impossible / per-model law ⟺ the model's conjecture — **entirely green, the repository's taint does not grow**.*
 
 > **Note (what we do NOT claim).** This is NOT a solution of the Hodge conjecture and NOT Gödel: no
 > incompleteness, no fixed point — only model-internal epistemics and ℕ-descent. The self-grounding

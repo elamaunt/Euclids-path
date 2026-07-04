@@ -32,7 +32,7 @@ Let us translate the metaphor into exact definitions — directly over the struc
 starting rank, `n ≤ lexRank x`. The engine does not visit all the states — it is bounded by the rank
 it started from. And this is not a hypothesis but a law of the machine itself:
 
-**Theorem** (`rankFastTraversal_holds`, 🟢). *Every ranked graph traverses the rank fast.*
+**Theorem 39.1** (`rankFastTraversal_holds`, 🟢). *Every ranked graph traverses the rank fast:* for any ranked graph $G$, every legal path `PathN` of length $n$ from $x$ satisfies $n \le \operatorname{lexRank}(x)$.
 A direct consequence of the fact that the length of a path does not exceed the starting rank (`len_le_lexRank`, [chapter 01](01_EPMI.md)).
 The P side is a gift of the construction itself.
 
@@ -49,8 +49,8 @@ of certificates is infinite.
 
 Now the key green theorem that makes everything work.
 
-**Theorem** (`no_fullPayment_of_unboundedSupply`, 🟢). *A fast finite-key engine cannot
-fully pay for an unbounded family of certificates.*
+**Theorem 39.2** (`no_fullPayment_of_unboundedSupply`, 🟢). *A fast finite-key engine cannot
+fully pay for an unbounded family of certificates:* if a genealogy family $F$ satisfies `UnboundedCertificateSupply` (is infinite), then `FullRankCertificatePayment` for $F$ fails, i.e. no injective finite-key compression of $F$ exists.
 
 **Why this is true.** It is pure pigeonhole. A finite key trying to compress an infinite supply
 is forced to collide two distinct witnesses into one — otherwise it would be distinguishing infinitely many objects
@@ -60,26 +60,25 @@ to traverse the rank, expensive to touch every state; and the second is incompat
 It remains to exhibit a scale where the supply really is infinite. There is one — and without a single hypothesis about
 the twins:
 
-**Theorem** (`concreteSupply_unbounded_smallScale`, 🟢). *For `A ≤ 4` the concrete family of certificates
-is infinite* — it is built by the pentadic chain (the very one that refuted the branch `A ≤ 4` in [chapter 24](24_BoundaryDecomp.md)).
-Hence `concrete_noFullPayment_smallScale` 🟢: on the small scale, full payment is impossible.
+**Theorem 39.3** (`concreteSupply_unbounded_smallScale`, 🟢). *For $A \le 4$ the concrete family of certificates
+is infinite:* the type `concreteFamily A 1`.Index is infinite, witnessed by the injection of the pentadic chain `fiveAdicChainFlow` (the very one that refuted the branch $A \le 4$ in [chapter 24](24_BoundaryDecomp.md)).
+
+**Corollary 39.4** (`concrete_noFullPayment_smallScale`, 🟢). *For $A \le 4$ full payment of the concrete family is impossible:* `FullRankCertificatePayment (concreteFamily A 1)` fails. Directly from Theorem 39.2 (`no_fullPayment_of_unboundedSupply`) applied to the infinite supply of Theorem 39.3.
 
 ## "NP = full payment" — a theorem, not a metaphor
 
 It remains to tie "full payment" to local P-success, so that the phrase in the title stops being
 an image. And it does tie together — at *every* scale:
 
-**Theorem** (`concrete_localPSuccess_iff_fullPayment`, 🟢). *Local P-success is equivalent to the full
-payment of certificates.*
+**Theorem 39.5** (`concrete_localPSuccess_iff_fullPayment`, 🟢). *Local P-success is equivalent to the full
+payment of certificates:* for all $A, M_0$, `LocalPSuccess (concreteProblem A M0)` $\iff$ `FullRankCertificatePayment (concreteFamily A M0)`.
 
 This works because both alternatives for resolving a collision (a legal cycle and an impossible payment)
 have already been burnt green (`no_extendedFlowResolutionAlternative`): the resolver cannot cheat, and
 the only way to resolve collisions is to honestly account for each one. Now the inequality can be assembled
 in its entirety, in a single theorem.
 
-**Theorem** (`pnp_rank_separation_smallScale`, 🟢 — the inequality itself). *For `A ≤ 4`, simultaneously:
-the engine traverses the rank fast, checking each certificate is easy, the supply is unbounded, full
-payment is impossible — and therefore local search is incompressible.*
+**Theorem 39.6** (`pnp_rank_separation_smallScale`, 🟢 — the inequality itself). *For $A \le 4$ five statements hold simultaneously:* `RankFastTraversal (concreteGraph A 1)` (the engine traverses the rank fast), `VerificationEasy` for every certificate `(concreteFamily A 1).cert i` (checking is easy), `UnboundedCertificateSupply (concreteFamily A 1)` (the supply is unbounded), $\lnot$ `FullRankCertificatePayment (concreteFamily A 1)` (full payment is impossible), *and* `LocalSearchIncompressible (concreteProblem A 1)` (local search is incompressible).
 
 **Section takeaway.** The five facets of the metaphor have converged in one green statement: fast traversal, easy verification,
 infinite supply, impossibility of full payment, incompressibility. This is "P ≠ NP" in the rank

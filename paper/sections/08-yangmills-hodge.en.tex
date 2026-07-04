@@ -5,8 +5,8 @@ prohibitions of a perpetual engine. In Yang--Mills the forbidden object is a mas
 an infinite tower of ever-cheaper excitations above the vacuum. In Hodge it is an unpaid charge
 descending forever along a natural height. In both branches we prove the structural half that does
 not depend on the concrete analytic object mathlib does not have, and we name the red data-anchor
-that alone remains. The Lean sources are \code{Engine/YangMillsFront.lean} and
-\code{Engine/HodgeFront.lean}.
+that alone remains. The Lean sources are \srcpath{Engine/YangMillsFront.lean} and
+\srcpath{Engine/HodgeFront.lean}.
 
 \subsection{Yang--Mills: masslessness as a perpetual engine}
 
@@ -107,7 +107,7 @@ first cause is gapped in the language of supplies. An intentional explosion dete
 \code{quarantine\_inconsistent\_if\_supply\_at\_every\_scale} (\yellow{}), keeps the point of
 explosion visible.
 
-The epistemic complement (\code{Engine/YangMillsEpistemic.lean}) closes the internal door as for
+The epistemic complement (\srcpath{Engine/YangMillsEpistemic.lean}) closes the internal door as for
 Collatz and P/NP: self-grounding the quantization law self-destructs
 (\code{no\_internalisedYMGround}, \green{}), whence \code{ymCause\_unknowable} (\green{}). What pays
 for the contradiction is a genuine construction: from the absence of a gap a halving ladder is built
@@ -200,7 +200,7 @@ The branch's single \yellow{} is a tripwire,
 decree of the manifestation form would blow up the quarantine exactly here, and its safety has been
 verified.
 
-The epistemic complement (\code{Engine/HodgeEpistemic.lean}) closes the internal door. Self-grounding
+The epistemic complement (\srcpath{Engine/HodgeEpistemic.lean}) closes the internal door. Self-grounding
 the per-model descent law self-destructs (\code{no\_internalisedHodgeGround}).
 
 \begin{theorem}[\code{hodgeCause\_unknowable}]\label{thm:hodgeCause_unknowable}
@@ -220,9 +220,10 @@ by \cref{thm:descentLaw_iff_hodgeProperty} equals the goal verbatim.
 \begin{theorem}[\code{hodge\_locked\_behind\_engine\_status}]\label{thm:hodge_locked_behind_engine_status}
 \green{}\ For every ledger $S$:
 \begin{equation}\label{eq:hodge_locked}
-  (\neg\,\mathrm{HodgeDescentLawUniversal})\ \wedge\ \mathrm{IsEmpty}(\mathrm{UnpaidDescentChain}(S))
-  \ \wedge\ (\neg\,\mathrm{InternalKnowledgeOfHodgeCause}(S))
-  \ \wedge\ \bigl(\mathrm{DescentLaw}(S)\iff\mathrm{HodgeProperty}(S)\bigr).
+\begin{aligned}
+  &(\neg\,\mathrm{HodgeDescentLawUniversal})\ \wedge\ \mathrm{IsEmpty}(\mathrm{UnpaidDescentChain}(S))\\
+  &\wedge\ (\neg\,\mathrm{InternalKnowledgeOfHodgeCause}(S))\ \wedge\ \bigl(\mathrm{DescentLaw}(S)\iff\mathrm{HodgeProperty}(S)\bigr).
+\end{aligned}
 \end{equation}
 The universal refuted, chains empty in every model, internal knowledge impossible, and the per-model
 law equivalent to the model's conjecture --- entirely green; the repository's taint does not grow.

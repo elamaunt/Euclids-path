@@ -5,7 +5,7 @@ family differently from the previous seven. There the engine \emph{stands guard}
 the norm is a disguised perpetual engine, and the prohibition kills it. For BSD the engine does not
 stand guard --- it \emph{works as the method}. The algebraic rank of an elliptic curve is proved
 finite precisely by Fermat's infinite descent, the very descent that underlies the whole programme.
-Here it is not a prohibition but a tool. The Lean source is \code{Engine/BSDFront.lean}; the core is
+Here it is not a prohibition but a tool. The Lean source is \srcpath{Engine/BSDFront.lean}; the core is
 grounded on genuine \code{mathlib} objects (\code{WeierstrassCurve.Affine.Point},
 \code{WeierstrassCurve.LSeries}, the class \code{Northcott}, \code{AddCommGroup.fg\_of\_descent}).
 This is \emph{not} a proof of BSD.
@@ -81,12 +81,12 @@ curves (Bhargava–Skinner–Zhang). For rank $\ge 2$ everything is open. Our en
 analytics: its role is the descent, not the bridge.
 
 BSD has no epistemic axis of its own, and this is fixed machine-wise
-(\code{Engine/BSDEpistemic.lean}): the proposed ground/beyondOwnHorizon pair degenerates, its second
+(\srcpath{Engine/BSDEpistemic.lean}): the proposed ground/beyondOwnHorizon pair degenerates, its second
 leg being the free field of height decrease, so the bundle coincides with the already-proved descent
 prohibition (\code{bsdGround\_coincides\_with\_engine}). The \code{AnalyticRank} gate is freely
 satisfiable (\code{analyticRank\_gate\_satisfiable}) and \code{WeakBSD} reduces to the bare
 $\text{algRank}=\text{aRank}$ (\code{weakBSD\_reduces\_to\_bare\_equality}) --- exactly where the
-honest \red{} openness remains. A contentful replacement (\code{Engine/BSDAnalyticAnchor.lean})
+honest \red{} openness remains. A contentful replacement (\srcpath{Engine/BSDAnalyticAnchor.lean})
 makes the analytic rank a genuine notion, $\code{analyticRankOf}\,L:=\code{analyticOrderAt}\,
 L.\code{Lambda}\,1$, but only \emph{when the datum is supplied}: the red input
 \code{ContinuedLFunction} carries a $\Lambda$ agreeing with \code{WeierstrassCurve.LSeries} on the
@@ -107,7 +107,7 @@ The engine prohibition --- descent, height, rank parity --- lives on in neighbou
 We cast a shadow of five with one device: \emph{a real \code{mathlib} anchor plus an honest gate}.
 The anchor is a proved theorem (a polynomial analogue, a finiteness, a structure) that is itself the
 reading through the engine; the gate is the open conjecture, named and not proved. Lean sources:
-\code{Engine/ChowlaFront.lean}, \code{AbcFront.lean}, \code{BealFront.lean}, \code{LehmerFront.lean},
+\srcpath{Engine/ChowlaFront.lean}, \code{AbcFront.lean}, \code{BealFront.lean}, \code{LehmerFront.lean},
 \code{LandauFront.lean}. None is solved; the novelty is formalizational.
 
 \paragraph{Chowla and Sarnak.}

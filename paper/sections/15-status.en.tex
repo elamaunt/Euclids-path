@@ -20,7 +20,7 @@ the first cause, or \red{}~an openly declared open input. A green module cannot 
 \paragraph{The taint census.}
 At the time of writing the verifier reports \yellow{}~exactly $47$ axiom-tainted declarations, and
 it recounts every one at each build. They fall into three groups. Forty-three live in the
-quarantine: the axiom \axiom{} and its theorem retinue in \code{Engine/CausalClosureAxiom.lean}
+quarantine: the axiom \axiom{} and its theorem retinue in \srcpath{Engine/CausalClosureAxiom.lean}
 ($42$ declarations), together with the twin corollary \code{higherEnergyIncompatibility\_twins}. Two
 more are the geometry declarations of \cref{sec:geometry} that inherit the taint through the twin
 boundary --- the meeting of straight lines that cannot be known from inside
@@ -32,15 +32,16 @@ printed but not pinned; it grows honestly as content is added, and only the two 
 must hold forever.
 
 \paragraph{The verifier and its two eternal invariants.}
-The script \code{scripts/VerifyAll.lean} enumerates every non-internal \code{EuclidsPath}
+The script \srcpath{scripts/VerifyAll.lean} enumerates every non-internal \code{EuclidsPath}
 theorem and definition in the built environment, collects with \code{collectAxioms} the axioms each
 one transitively depends on, and separates the standard three from everything else. It then
 \emph{self-asserts} two invariants and fails the run with a non-zero exit code if either is
 violated:
 \begin{equation}\label{eq:invariants}
-  \text{(1) the only non-standard axiom is }\axiom{};
-  \qquad
-  \text{(2) the only \code{sorry}-tainted declaration is }\code{twin\_prime\_conjecture}.
+\begin{aligned}
+  &\text{(1) the only non-standard axiom is }\axiom{};\
+  &\text{(2) the only \code{sorry}-tainted declaration is }\code{twin\_prime\_conjecture}.
+\end{aligned}
 \end{equation}
 Both invariants are structural, not numeric: they say \emph{which} axiom and \emph{which}
 \code{sorry} may exist, never how many tainted declarations there are. If a stray non-standard
@@ -77,7 +78,7 @@ is not a proof.
 \paragraph{Reproducibility.}
 Everything above can be re-derived from the public source. From the repository root,
 \code{lake exe cache get} fetches the \code{mathlib} build cache, \code{lake build} checks the whole
-development, and \code{lake env lean scripts/VerifyAll.lean} re-establishes the two invariants of
+development, and \srcpath{lake env lean scripts/VerifyAll.lean} re-establishes the two invariants of
 \cref{eq:invariants} and fails loudly if either is broken. The complete source is public at
 \url{https://github.com/elamaunt/Euclids-path}, and the identical content is browsable as a
 bilingual site at \url{https://elamaunt.github.io/Euclids-path/}; the two carry the same text, in

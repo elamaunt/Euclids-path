@@ -7,6 +7,11 @@
 
 \usepackage[T2A,T1]{fontenc}   % T2A also present so the Russian edition sets Cyrillic
 \usepackage[utf8]{inputenc}
+% amsart's default measure is narrow (journal column); for a preprint we widen it
+% modestly so long code strings and wide displayed formulas do not overflow.
+\usepackage[a4paper,margin=1in]{geometry}
+\emergencystretch=3em
+\tolerance=1200
 
 % Map blackboard-bold letters and superscripts that occasionally slip into prose
 % as literal Unicode into proper math (both editions are then robust to them).
@@ -28,6 +33,9 @@
 % make `_` print literally in text mode (Lean names like foo_bar need no escaping);
 % [strings] keeps `_` safe inside \label/\ref/\cite keys. Load last so it patches the rest.
 \usepackage[strings]{underscore}
+\usepackage{url}
+% breakable typewriter for FILE PATHS (breaks at / . : _), so long source paths wrap
+\DeclareUrlCommand\srcpath{\urlstyle{tt}}
 
 % ---- theorem-head names (English defaults; the Russian edition renews them) ----
 \providecommand{\nmTheorem}{Theorem}
@@ -61,7 +69,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\code}[1]{\texttt{#1}}                % Lean declaration name
+\newcommand{\code}[1]{\texttt{#1}}   % Lean declaration name (breaks at `_' via the underscore pkg)
 \newcommand{\Om}{\Omega}
 \DeclareMathOperator{\DescentStep}{DescentStep}
 \DeclareMathOperator{\Clean}{Clean}
@@ -70,3 +78,13 @@
 
 % the single quarantined axiom, referenced throughout
 \newcommand{\axiom}{\code{step00FirstCause}}
+
+% amsart runs the title through \uppercasenonmath, which mangles Cyrillic (T2A)
+% in the Russian edition. Print the title as written, in bold, in both editions.
+\makeatletter
+\def\@settitle{\begin{center}%
+  \baselineskip16\p@\relax
+  \Large\bfseries\boldmath
+  \@title
+\end{center}}
+\makeatother

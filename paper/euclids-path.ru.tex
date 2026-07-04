@@ -11,6 +11,19 @@
 \renewcommand{\nmConjecture}{Гипотеза}
 \renewcommand{\nmRemark}{Замечание}
 
+% Russian localisation of amsart's fixed labels (babel does not touch these)
+\makeatletter
+\def\@@and{и}
+\makeatother
+\renewcommand{\keywordsname}{Ключевые слова}
+\renewcommand{\datename}{\textit{Дата}:}
+% amsart mangles Cyrillic in its running head / author block: it uppercases the
+% title via \MakeUppercase (some T2A Cyrillic letters are not mapped) and uses small
+% caps elsewhere. Neutralise both in the Russian edition so headings read normally.
+\let\scshape\upshape
+\def\uppercasenonmath#1{#1}
+\def\MakeUppercase#1{#1}
+
 \title[Вечный двигатель Евклида]{Вечный двигатель Евклида:\\
   машинно-проверенное прочтение великих гипотез через единственную аксиому}
 \author{Д.~С.~Семёнов}

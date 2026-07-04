@@ -43,7 +43,7 @@ Since two has only the divisors $1$ and $2$, no prime above two can occupy both 
 \emph{Proof idea.} By \cref{thm:twin_sides_shared_dvd_two}, $p\mid 2$, whence $p\le 2$ by the
 divisor bound (\code{Nat.le\_of\_dvd}, positivity by \code{decide}); this contradicts $2<p$
 (\code{omega}). This is \emph{exclusivity}: a prime $p>2$ divides at most one side. Both theorems of
-\code{Engine/Carrier.lean} are proved in the bare Lean~4 kernel, without \code{mathlib}, on three
+\srcpath{Engine/Carrier.lean} are proved in the bare Lean~4 kernel, without \code{mathlib}, on three
 primitives. Exclusivity is what lets us treat the six active factors in a rank-$(3,3)$ splitting as
 distinct, and it is the arithmetic source of the negative association in
 \cref{thm:exclusive_no_backward}. Two is the \emph{carrier}: it separates the sides above and is

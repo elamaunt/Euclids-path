@@ -8,4 +8,9 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+# scratch compile jobnames used during debugging (not deliverables)
+ru_fixed.*
+ru_v2.*
+ru_v3.*
+en_fixed.*
 # Note: the compiled PDFs (euclids-path.en.pdf / .ru.pdf) ARE tracked on purpose.

@@ -5,9 +5,9 @@ development --- the centres $6m\pm1$, their prime ranks, the old-peel descent
 genealogy --- and each is reproducible from the public source. We collect them
 here, appendix-style, and give for every figure its generating function and the
 exact construction. Figures~\ref{fig:old-peel-tree}--\ref{fig:genealogy-ornament}
-come from \code{tools/fractal/euclid\_fractal.py}; the two cosmological views,
+come from \srcpath{tools/fractal/euclid\_fractal.py}; the two cosmological views,
 Figures~\ref{fig:observer-horizon}--\ref{fig:time-sphere}, from
-\code{tools/fractal/euclid\_cosmology.py}. Both draw the same mathematical
+\srcpath{tools/fractal/euclid\_cosmology.py}. Both draw the same mathematical
 object (the peel step $6k\mp1=p\,(6t\pm1)$); the second file only places it for
 a cosmological reading. All colours, palettes, and pixel geometry named below
 are matplotlib parameters, not mathematical claims.
@@ -21,7 +21,7 @@ are matplotlib parameters, not mathematical claims.
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:old-peel-tree}).} Source:
-\code{tools/fractal/euclid\_fractal.py::old\_peel\_tree}. Fix $A=200$ and sieve
+\srcpath{tools/fractal/euclid\_fractal.py::old\_peel\_tree}. Fix $A=200$ and sieve
 all primes up to $4A^2$; let the caught-prime pool be the primes $p$ with
 $3<p\le A$. Seed a horizontal row of $460$ roots at abscissae $x$ evenly spaced
 over $[-30,30]$, the $i$-th root carrying centre $n=\lfloor A^2/6\rfloor+7i$.
@@ -46,7 +46,7 @@ $\varepsilon$; segments are coloured by descent depth $d$ (turbo palette).
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:rank-field}).} Source:
-\code{tools/fractal/euclid\_fractal.py::rank\_field}. Parameters $A=60$,
+\srcpath{tools/fractal/euclid\_fractal.py::rank\_field}. Parameters $A=60$,
 $W=900$; the prime layer is $\{p:\ A<p\le A^2\}$. For each centre index
 $m\in\{0,\dots,W^2-1\}$ two ranks are counted: $r_-(m)$, the number of layer
 primes dividing the lower side $6m-1$, and $r_+(m)$, the upper side $6m+1$. For
@@ -66,7 +66,7 @@ zero at the centre), lower origin.
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:twin-spiral}).} Source:
-\code{tools/fractal/euclid\_fractal.py::twin\_spiral}. For each centre
+\srcpath{tools/fractal/euclid\_fractal.py::twin\_spiral}. For each centre
 $m=1,\dots,M-1$ (default $M=60000$) a point is placed on the golden spiral
 \begin{equation}\label{eq:golden-spiral}
   x=\sqrt{m}\,\cos(m\varphi),\qquad
@@ -87,7 +87,7 @@ density per unit area; the colour is fixed per class.
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:descent-landscape}).} Source:
-\code{tools/fractal/euclid\_fractal.py::descent\_landscape}. For every centre
+\srcpath{tools/fractal/euclid\_fractal.py::descent\_landscape}. For every centre
 $m=0,1,\dots,S^2-1$ laid on an $S\times S$ raster ($S=620$, row-major in $m$),
 compute the small-prime load
 \begin{equation}\label{eq:small-prime-load}
@@ -109,7 +109,7 @@ Chinese-remainder periodicity of the small primes.
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:twin-line-genealogy}).} Source:
-\code{tools/fractal/euclid\_fractal.py::twin\_line\_genealogy}. Centres
+\srcpath{tools/fractal/euclid\_fractal.py::twin\_line\_genealogy}. Centres
 $m=1,\dots,M$ ($M=2400$) are laid along the horizontal axis $y=0$. The side
 $6m+1$ is marked by a point \emph{above} the line at height
 $\mathrm{wing}(m)=0.9+0.25\sqrt{m/M}$, the side $6m-1$ by a symmetric point
@@ -132,7 +132,7 @@ $\theta\in[0,\pi]$), coloured by $\log p$ (turbo palette). Twin centres live
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:genealogy-ornament}).} Source:
-\code{tools/fractal/euclid\_fractal.py::genealogy\_ornament} ($M=4200$,
+\srcpath{tools/fractal/euclid\_fractal.py::genealogy\_ornament} ($M=4200$,
 $\mathrm{PMAX}=97$, $\mathrm{DEPTH}=10$). Centres $1,\dots,M$ sit on the unit
 circle at angle $2\pi m/M$. For each centre the full old-peel genealogy
 $m\to t_1\to t_2\to\cdots$ (to depth $10$) is built by the step
@@ -157,7 +157,7 @@ of the pictures as physics is a translation, not a theorem.
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:observer-horizon}).} Source:
-\code{tools/fractal/euclid\_cosmology.py::observer\_horizon} ($M=9000$,
+\srcpath{tools/fractal/euclid\_cosmology.py::observer\_horizon} ($M=9000$,
 $\mathrm{PMAX}=97$, $\mathrm{DEPTH}=9$). Centre $k$ is placed on a golden spiral
 by radius-height $r=\sqrt{k/M}$ and angle $k\varphi$ ($\varphi$ the golden
 angle): small $k$ near the centre (the observer), large $k$ on the periphery.
@@ -179,7 +179,7 @@ twin-centres.
 \end{figure}
 
 \emph{Generation algorithm (Figure~\ref{fig:time-sphere}).} Source:
-\code{tools/fractal/euclid\_cosmology.py::time\_sphere} ($M=7000$,
+\srcpath{tools/fractal/euclid\_cosmology.py::time\_sphere} ($M=7000$,
 $\mathrm{PMAX}=97$, $\mathrm{DEPTH}=9$). Centre $k$ maps to a unit vector on the
 sphere: height $z=-1+2(k-1)/(M-1)$ (so $k=1$ is at the $0$-pole, $z=-1$; $k=M$ at
 the observer-pole, $z=+1$), longitude $k\varphi$ by the golden angle,

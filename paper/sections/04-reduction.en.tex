@@ -246,9 +246,10 @@ The word ``regenerates'' hides an unconditional dichotomy of any centre $t$.
 \begin{theorem}[\code{regeneration\_dichotomy}]\label{thm:regeneration_dichotomy}
 For every centre $t$ and threshold $A$, exactly one holds:
 \[
-  \mathrm{Twin}(t)\ \lor\
-  \bigl(\neg\mathrm{OldFree}(A,t)\wedge\exists q\ \text{prime},\,5\le q\le A,\,q\mid 6t\pm1\bigr)\ \lor\
-  \bigl(\mathrm{OldFree}(A,t)\wedge(\neg(6t-1)\ \text{prime}\ \lor\ \neg(6t+1)\ \text{prime})\bigr).
+\begin{aligned}
+  &\mathrm{Twin}(t)\ \lor\ \bigl(\neg\mathrm{OldFree}(A,t)\wedge\exists q\ \text{prime},\,5\le q\le A,\,q\mid 6t\pm1\bigr)\
+  &\lor\ \bigl(\mathrm{OldFree}(A,t)\wedge(\neg(6t-1)\ \text{prime}\ \lor\ \neg(6t+1)\ \text{prime})\bigr).
+\end{aligned}
 \]
 \end{theorem}
 
@@ -461,9 +462,11 @@ records exactly one \code{sorry}-tainted declaration, \code{twin\_prime\_conject
 \begin{remark}
 We restate the honest verdict. The chain
 \[
-  \code{survivor\_of\_not\_covered}\to\code{twin\_prime\_conjecture\_of\_blocks}\to
-  \code{twin\_primes\_of\_nopsl}\to\code{product\_core\_engine\_of\_carrier}\to
-  \code{engine\_of\_carrier\_and\_factorize}
+\begin{aligned}
+  &\code{survivor\_of\_not\_covered}\to\code{twin\_prime\_conjecture\_of\_blocks}\\
+  &\to\code{twin\_primes\_of\_nopsl}\to\code{product\_core\_engine\_of\_carrier}\\
+  &\to\code{engine\_of\_carrier\_and\_factorize}
+\end{aligned}
 \]
 is \green{} machine-checked and distribution-free from end to end. The twin conjecture is
 \emph{not} proved. What is proved is the \emph{reduction} of it to the single node

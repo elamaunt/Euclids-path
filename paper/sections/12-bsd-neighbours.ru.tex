@@ -5,7 +5,7 @@
 двигатель, и запрет его убивает. У BSD движок не сторожит — он \emph{работает методом}.
 Алгебраический ранг эллиптической кривой доказан конечным ровно бесконечным спуском Ферма, тем самым
 спуском, что лежит в основании всей программы. Здесь он не запрет, а инструмент. Lean-источник —
-\code{Engine/BSDFront.lean}; ядро заземлено на реальные объекты \code{mathlib}
+\srcpath{Engine/BSDFront.lean}; ядро заземлено на реальные объекты \code{mathlib}
 (\code{WeierstrassCurve.Affine.Point}, \code{WeierstrassCurve.LSeries}, класс \code{Northcott},
 \code{AddCommGroup.fg\_of\_descent}). Это \emph{не} доказательство BSD.
 
@@ -81,12 +81,12 @@ $\operatorname{AnalyticRank}(W,\text{aRank})\wedge\text{algRank}=\text{aRank}$. 
 спуск, а не мост.
 
 У BSD нет собственной эпистемической оси, и это зафиксировано машинно
-(\code{Engine/BSDEpistemic.lean}): предложенная пара ground/beyondOwnHorizon вырождается, её вторая
+(\srcpath{Engine/BSDEpistemic.lean}): предложенная пара ground/beyondOwnHorizon вырождается, её вторая
 нога — свободное поле убывания высоты, так что связка совпадает с уже доказанным запретом спуска
 (\code{bsdGround\_coincides\_with\_engine}). Ворота \code{AnalyticRank} свободно выполнимы
 (\code{analyticRank\_gate\_satisfiable}), а \code{WeakBSD} сводится к голому
 $\text{algRank}=\text{aRank}$ (\code{weakBSD\_reduces\_to\_bare\_equality}) — именно там остаётся
-честная \red{}-открытость. Содержательная замена (\code{Engine/BSDAnalyticAnchor.lean}) делает
+честная \red{}-открытость. Содержательная замена (\srcpath{Engine/BSDAnalyticAnchor.lean}) делает
 аналитический ранг настоящим понятием, $\code{analyticRankOf}\,L:=\code{analyticOrderAt}\,
 L.\code{Lambda}\,1$, но лишь \emph{когда подана сама данность}: красный вход
 \code{ContinuedLFunction} несёт $\Lambda$, совпадающую с \code{WeierstrassCurve.LSeries} на области
@@ -106,7 +106,7 @@ L.\code{Lambda}\,1$, но лишь \emph{когда подана сама дан
 даём тень пяти из них одним приёмом: \emph{реальный якорь \code{mathlib} плюс честный гейт}. Якорь —
 доказанная теорема (полиномиальный аналог, конечность, структура), которая и есть прочтение через
 движок; гейт — сама открытая гипотеза, названная и не доказанная. Lean-источники:
-\code{Engine/ChowlaFront.lean}, \code{AbcFront.lean}, \code{BealFront.lean}, \code{LehmerFront.lean},
+\srcpath{Engine/ChowlaFront.lean}, \code{AbcFront.lean}, \code{BealFront.lean}, \code{LehmerFront.lean},
 \code{LandauFront.lean}. Ни одна не решена; новизна формализационная.
 
 \paragraph{Чоула и Сарнак.}

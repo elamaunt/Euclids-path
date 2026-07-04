@@ -13,4 +13,8 @@ ru_fixed.*
 ru_v2.*
 ru_v3.*
 en_fixed.*
+en_chk.*
+ru_chk.*
+*_all.txt
+rutext.txt
 # Note: the compiled PDFs (euclids-path.en.pdf / .ru.pdf) ARE tracked on purpose.

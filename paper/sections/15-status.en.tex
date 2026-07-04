@@ -38,10 +38,10 @@ one transitively depends on, and separates the standard three from everything el
 \emph{self-asserts} two invariants and fails the run with a non-zero exit code if either is
 violated:
 \begin{equation}\label{eq:invariants}
-\begin{aligned}
-  &\text{(1) the only non-standard axiom is }\axiom{};\
-  &\text{(2) the only \code{sorry}-tainted declaration is }\code{twin\_prime\_conjecture}.
-\end{aligned}
+\begin{gathered}
+\text{(1) the only non-standard axiom is }\axiom{};\\
+\text{(2) the only \code{sorry}-tainted declaration is }\code{twin\_prime\_conjecture}.
+\end{gathered}
 \end{equation}
 Both invariants are structural, not numeric: they say \emph{which} axiom and \emph{which}
 \code{sorry} may exist, never how many tainted declarations there are. If a stray non-standard

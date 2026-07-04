@@ -13,8 +13,10 @@ type: software
 authors:
   - family-names: Semenov
     given-names: "D. S."
+    affiliation: "Independent researcher"
   - family-names: Galieva
     given-names: "L. R."
+    affiliation: "Independent researcher"
 repository-code: "https://github.com/elamaunt/Euclids-path"
 url: "https://elamaunt.github.io/Euclids-path/"
 license: Apache-2.0

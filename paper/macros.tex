@@ -8,10 +8,11 @@
 \usepackage[T2A,T1]{fontenc}   % T2A also present so the Russian edition sets Cyrillic
 \usepackage[utf8]{inputenc}
 % amsart's default measure is narrow (journal column); for a preprint we widen it
-% modestly so long code strings and wide displayed formulas do not overflow.
-\usepackage[a4paper,margin=1in]{geometry}
+% so long code strings and wide displayed formulas do not overflow. geometry must be
+% applied after amsart has set its own layout, hence \AtBeginDocument{\geometry...}.
+\usepackage[a4paper,margin=1.7cm]{geometry}
 \emergencystretch=3em
-\tolerance=1200
+\tolerance=1500
 
 % Map blackboard-bold letters and superscripts that occasionally slip into prose
 % as literal Unicode into proper math (both editions are then robust to them).

@@ -16,6 +16,27 @@ same change** — never let them drift.
   default with fallback). Navigation headings are translated under `nav_translations` in
   `mkdocs.yml`. Validate with `mkdocs build --strict` (both locales must build with no warnings).
 
+## Prose is journal style (Tao / AMS level)
+
+The prose is written so a researcher follows every result WITHOUT opening the Lean code, and is the
+basis for a future LaTeX/arXiv compilation.
+
+- **Numbered blocks.** Every Definition/Theorem/Lemma/Proposition/Corollary uses ONE shared counter
+  per chapter, format `**Kind N.k** (descriptor).` — kind + number in bold, descriptor in parens
+  after (the Lean name in backticks for theorems, a short title for definitions). N = chapter number.
+- **Numbered equations.** Argument-carrying displays are tagged `\tag{N.k}` (a separate per-chapter
+  counter), portable to LaTeX.
+- **Cross-references** within a chapter cite the number AND the Lean name: "by Theorem N.2 (`name`)".
+- **Figures** carry a `> **Generation algorithm (Figure N.k).**` block: the source function
+  (`tools/fractal/*.py::function` path form), the construction as formulas, and parameters. Do NOT
+  backtick non-Lean tokens (Python identifiers, colormap names) — the auditor reads decl-shaped
+  backticks as Lean names and flags them as phantom.
+- **Honesty in labels.** A badge must match the Lean status: 🟢 = machine-proved under standard
+  axioms (INCLUDING a green conditional theorem whose condition is a named hypothesis); 🟡 =
+  AXIOM-TAINTED (depends on `step00FirstCause`); 🔴 = open. Never badge an axiom-clean result 🟡.
+- **Verification:** RU/EN numbering must match 1:1 (same N.k blocks, same equation tags); run the
+  prose↔Lean audit (phantom/label/counter all 0) and `mkdocs build --strict` before committing.
+
 ## Code is always English
 
 - All Lean code is English: comments, docstrings, identifiers, and the output string literals in

@@ -1,21 +1,21 @@
 /-
-  RiemannTrivialZeros — ВХОД №1 RH-ВЕТКИ ЗАКРЫТ.
-  Проза: prose/30_RiemannBranch.md.
+  RiemannTrivialZeros — GATE #1 OF THE RH BRANCH IS CLOSED.
+  Prose: prose/30_RiemannBranch.md.
 
-  ЗДЕСЬ ДОКАЗАНО (mathlib, std аксиомы, без sorry):
-    * trivialBelowZeroClassification — классификация нулей при Re ≤ 0:
-      всякий нуль ζ с Re s ≤ 0 есть −2(n+1). Маршрут: s=0 исключён
-      (riemannZeta_zero = −1/2); для s ≠ 0 функциональное уравнение
-      riemannZeta_one_sub при w := 1−s (Re w ≥ 1), нетривиальные факторы
-      не нули (riemannZeta_ne_zero_of_one_le_re, Gamma_ne_zero_of_re_pos,
-      cpow_ne_zero), значит cos(π(1−s)/2) = 0 ⟹ s = −2k, k ≥ 1.
-    * _proved / _branch_proved — точные Prop'ы RiemannEngine и RiemannBranch;
-    * БЕЗУСЛОВНЫЕ СЛЕДСТВИЯ: локализация нетривиального нуля в полосу больше
-      НЕ вход; RH теперь условна ТОЛЬКО на EngineBridge (или TwoTransportBridge).
+  PROVED HERE (mathlib, std axioms, no sorry):
+    * trivialBelowZeroClassification — classification of zeros at Re ≤ 0:
+      every zero ζ with Re s ≤ 0 is −2(n+1). Route: s=0 is excluded
+      (riemannZeta_zero = −1/2); for s ≠ 0 the functional equation
+      riemannZeta_one_sub at w := 1−s (Re w ≥ 1), non-trivial factors
+      are nonzero (riemannZeta_ne_zero_of_one_le_re, Gamma_ne_zero_of_re_pos,
+      cpow_ne_zero), hence cos(π(1−s)/2) = 0 ⟹ s = −2k, k ≥ 1.
+    * _proved / _branch_proved — exact Props of RiemannEngine and RiemannBranch;
+    * UNCONDITIONAL CONSEQUENCES: localization of a non-trivial zero to the strip
+      is no longer a gate; RH is now conditional ONLY on EngineBridge (or TwoTransportBridge).
 
-  Бывший «аналитический вход» оказался выводимым: mathlib давал значения
-  тривиальных нулей, но обратная классификация ИЗ mathlib же и следует.
-  Найдено воркфлоу-агентом (xhigh), перепроверено вручную, интегрировано.
+  The former "analytic gate" turned out to be derivable: mathlib supplied the values
+  of trivial zeros, and the reverse classification follows from mathlib itself.
+  Discovered by workflow agent (xhigh), verified manually, integrated.
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannEngine
@@ -124,23 +124,23 @@ theorem trivialBelowZeroClassification_branch_proved :
 #print axioms trivialBelowZeroClassification_branch_proved
 
 
-/-! Безусловные следствия: что закрылось вместе с входом -/
+/-! Unconditional consequences: what was closed along with the gate -/
 
-/-- **Локализация в полосу — теперь ТЕОРЕМА** (была условна на входе):
-    нетривиальный нуль лежит строго в 0 < Re ρ < 1. -/
+/-- **Localization to the strip — now a THEOREM** (was conditional on the gate):
+    a non-trivial zero lies strictly in 0 < Re ρ < 1. -/
 theorem nontrivialZero_in_strip_unconditional {ρ : ℂ}
     (hρ : EuclidsPath.RiemannBranch.NontrivialZeroM ρ) :
     0 < ρ.re ∧ ρ.re < 1 :=
   EuclidsPath.RiemannBranch.nontrivialZero_in_strip
     trivialBelowZeroClassification_branch_proved hρ
 
-/-- **RH условна ТОЛЬКО на EngineBridge** (вход классификации снят). -/
+/-- **RH is conditional ONLY on EngineBridge** (the classification gate is lifted). -/
 theorem riemannHypothesis_of_engineBridge_only
     (H : EuclidsPath.RiemannBranch.EngineBridge) : RiemannHypothesis :=
   EuclidsPath.RiemannBranch.riemannHypothesis_of_engine_bridge
     trivialBelowZeroClassification_branch_proved H
 
-/-- **RH условна ТОЛЬКО на TwoTransportBridge** (второй маршрут, вход снят). -/
+/-- **RH is conditional ONLY on TwoTransportBridge** (second route, gate lifted). -/
 theorem riemannHypothesis_of_twoTransportBridge_only
     (bridge : EuclidsPath.RiemannBranch.TwoTransportBridge) : RiemannHypothesis :=
   EuclidsPath.RiemannBranch.riemannHypothesis_of_two_transport

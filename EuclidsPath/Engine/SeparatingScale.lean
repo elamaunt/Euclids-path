@@ -1,13 +1,13 @@
 /-
-  Separating scale: ¬ProductHall на legal carrier layer. Формализация авторского файла.
-  Источник: step00_producthall_bridge_separating_scale_ru_2026-07-01.md. Проза: prose/30_SeparatingScale.md.
+  Separating scale: ¬ProductHall on the legal carrier layer. Formalisation of the author's file.
+  Source: step00_producthall_bridge_separating_scale_ru_2026-07-01.md. Prose: prose/30_SeparatingScale.md.
 
-  Идея (обходит трилемму UniqueLegalLift): если primorial `P_A > 6X_A+1`, то на legal-domain
-  `a < P_A`, значит `a ↦ a mod P_A` ИНЪЕКТИВНО там — coarse-паспорт автоматически fine. Тогда
-  два legal active factor с `a₁ ≡ a₂ (mod P_A)` РАВНЫ, что противоречит `a₁ ≠ a₂` в ProductHall.
-  Значит `¬ProductHall` на legal layer. Это ЧИСТАЯ АРИФМЕТИКА — не EPMI, не payment, не steering.
+  Idea (bypasses the trilemma UniqueLegalLift): if the primorial `P_A > 6X_A+1`, then on the legal-domain
+  `a < P_A`, so `a ↦ a mod P_A` is INJECTIVE there — the coarse passport is automatically fine. Then
+  two legal active factors with `a₁ ≡ a₂ (mod P_A)` are EQUAL, contradicting `a₁ ≠ a₂` in ProductHall.
+  Hence `¬ProductHall` on the legal layer. This is PURE ARITHMETIC — no EPMI, no payment, no steering.
 
-  Здесь — полная арифметика (БЕЗ sorry). Критическая проверка совместимости с pigeonhole — отдельно.
+  Here — complete arithmetic (WITHOUT sorry). Critical compatibility check with pigeonhole — separate.
 -/
 import Mathlib
 
@@ -16,24 +16,24 @@ set_option autoImplicit false
 namespace EuclidsPath.SeparatingScale
 
 /--
-  **Separating congruence (Lemma 3.1) — ПОЛНОСТЬЮ доказано.** Если `0 < a₁`, `0 < a₂`, оба `< P`,
-  и `a₁ ≡ a₂ (mod P)`, то `a₁ = a₂`. (Разность кратна `P`, но `|a₁−a₂| < P` ⟹ разность 0.) -/
+  **Separating congruence (Lemma 3.1) — FULLY PROVEN.** If `0 < a₁`, `0 < a₂`, both `< P`,
+  and `a₁ ≡ a₂ (mod P)`, then `a₁ = a₂`. (The difference is a multiple of `P`, but `|a₁−a₂| < P` ⟹ the difference is 0.) -/
 theorem eq_of_modEq_of_lt {P a₁ a₂ : ℕ} (h1 : a₁ < P) (h2 : a₂ < P)
     (hcong : a₁ ≡ a₂ [MOD P]) : a₁ = a₂ := by
-  -- a₁ % P = a₁ и a₂ % P = a₂ (т.к. < P); ModEq ⟹ равны
+  -- a₁ % P = a₁ and a₂ % P = a₂ (since < P); ModEq ⟹ equal
   rwa [Nat.ModEq, Nat.mod_eq_of_lt h1, Nat.mod_eq_of_lt h2] at hcong
 
 /--
-  **Legal lift bound (BoundedLegalLift §2) — доказано.** Если `a ∣ N` (`a > 0`), `N ≤ 6·X_A+1`,
-  и separating scale `6·X_A+1 < P_A`, то `a < P_A`. (`a ≤ N ≤ 6X_A+1 < P_A`.) -/
+  **Legal lift bound (BoundedLegalLift §2) — proven.** If `a ∣ N` (`a > 0`), `N ≤ 6·X_A+1`,
+  and separating scale `6·X_A+1 < P_A`, then `a < P_A`. (`a ≤ N ≤ 6X_A+1 < P_A`.) -/
 theorem legal_lift_lt_primorial {a N X_A P_A : ℕ}
     (hsep : 6 * X_A + 1 < P_A) (hN : N ≤ 6 * X_A + 1) (hdvd : a ∣ N) (_hpos : 0 < a) (hNpos : 0 < N) :
     a < P_A := by
   have haN : a ≤ N := Nat.le_of_dvd hNpos hdvd
   omega
 
-/-- ProductHall на legal layer (абстрактно): два РАЗНЫХ legal active factor `a₁ ≠ a₂` над одним
-    base, сравнимых по модулю `P_A`, оба ограниченных carrier'ом (`aᵢ ∣ Nᵢ ≤ 6X_A+1`, `aᵢ > 0`). -/
+/-- ProductHall on the legal layer (abstractly): two DISTINCT legal active factors `a₁ ≠ a₂` over one
+    base, congruent modulo `P_A`, both bounded by the carrier (`aᵢ ∣ Nᵢ ≤ 6X_A+1`, `aᵢ > 0`). -/
 structure LegalProductHall (X_A P_A : ℕ) where
   a₁ : ℕ
   a₂ : ℕ
@@ -49,9 +49,9 @@ structure LegalProductHall (X_A P_A : ℕ) where
   hN₂ : 0 < N₂ ∧ N₂ ≤ 6 * X_A + 1
 
 /--
-  **NoProductHall (Theorem 5.1) — ПОЛНОСТЬЮ доказано.** При separating scale `P_A > 6X_A+1`
-  legal ProductHall НЕВОЗМОЖЕН: оба фактора `< P_A`, сравнимы ⟹ равны ⟹ противоречие с `a₁ ≠ a₂`.
-  Это закрывает узел `ProductHall` на legal layer чистой арифметикой. -/
+  **NoProductHall (Theorem 5.1) — FULLY PROVEN.** Under separating scale `P_A > 6X_A+1`
+  a legal ProductHall is IMPOSSIBLE: both factors `< P_A`, congruent ⟹ equal ⟹ contradiction with `a₁ ≠ a₂`.
+  This closes the `ProductHall` node on the legal layer by pure arithmetic. -/
 theorem no_productHall {X_A P_A : ℕ} (hsep : 6 * X_A + 1 < P_A)
     (PH : LegalProductHall X_A P_A) : False := by
   have h1 : PH.a₁ < P_A :=
@@ -61,28 +61,28 @@ theorem no_productHall {X_A P_A : ℕ} (hsep : 6 * X_A + 1 < P_A)
   exact PH.hne (eq_of_modEq_of_lt h1 h2 PH.hcong)
 
 /--
-  **ProductHallBridge через пустоту (§7).** `ProductHall ⟹ что угодно` (`HeightEngine`/`Engine`)
-  по `False.elim`, т.к. legal ProductHall невозможен при separating scale. -/
+  **ProductHallBridge via vacuity (§7).** `ProductHall ⟹ anything` (`HeightEngine`/`Engine`)
+  by `False.elim`, since a legal ProductHall is impossible under the separating scale. -/
 theorem productHall_bridge {X_A P_A : ℕ} {Engine : Prop} (hsep : 6 * X_A + 1 < P_A)
     (PH : LegalProductHall X_A P_A) : Engine :=
   False.elim (no_productHall hsep PH)
 
-/-! ### Куда переехала трудность (честно): трихотомия сужается, но новые узлы открыты -/
+/-! ### Where the difficulty moved (honestly): the trichotomy narrows, but new nodes are open -/
 
 /--
-  **Трихотомия после ¬ProductHall (§8).** Если `¬ProductHall` (доказано выше), то energy-defect
-  трихотомия `LowerRankCollision ∨ ProductHall` сводится к ОДНОЙ ветви `LowerRankCollision`.
-  Здесь — логическая редукция: `(L ∨ PH) ∧ ¬PH ⟹ L`. (Сам `energy_defect_trichotomy` — открытый узел.) -/
+  **Trichotomy after ¬ProductHall (§8).** If `¬ProductHall` (proven above), then the energy-defect
+  trichotomy `LowerRankCollision ∨ ProductHall` reduces to the SINGLE branch `LowerRankCollision`.
+  Here — a logical reduction: `(L ∨ PH) ∧ ¬PH ⟹ L`. (`energy_defect_trichotomy` itself is an open node.) -/
 theorem trichotomy_collapses {L PH : Prop} (htri : L ∨ PH) (hno : ¬ PH) : L :=
   htri.resolve_right hno
 
 /--
-  **Bounded rank descent (§8) — скелет.** Если каждый energy-defect на ранге `r > 1` даёт
-  `LowerRankCollision` (rank `r−1`), а rank-1 закрывается (SNOL), то descent `r → … → 1` конечен.
-  Здесь — well-founded скелет на `r ≤ 4`; `lower_step` и `rank1_closes` — ОТКРЫТЫЕ узлы. -/
+  **Bounded rank descent (§8) — skeleton.** If every energy-defect at rank `r > 1` yields
+  `LowerRankCollision` (rank `r−1`), and rank-1 closes (SNOL), then the descent `r → … → 1` is finite.
+  Here — a well-founded skeleton for `r ≤ 4`; `lower_step` and `rank1_closes` are OPEN nodes. -/
 theorem rank_descent_terminates {Engine : Prop}
-    (lower_step : ∀ r, 1 < r → r ≤ 4 → (∃ r', r' = r - 1) )  -- редукция ранга (открыто: реальная)
-    (rank1_closes : Engine)                                   -- rank-1 ⟹ Engine (SNOL, открыто здесь)
+    (lower_step : ∀ r, 1 < r → r ≤ 4 → (∃ r', r' = r - 1) )  -- rank reduction (open: the real one)
+    (rank1_closes : Engine)                                   -- rank-1 ⟹ Engine (SNOL, open here)
     : Engine :=
   rank1_closes
 

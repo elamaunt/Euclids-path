@@ -1,39 +1,39 @@
 /-
-  RiemannManifestationFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль римановской
-  ветви первопричины: «двигатель не может позволить никакие отклонения
-  нетривиальных нулей», проведённое той же ранговой машиной, что близнецы на ℤ.
+  RiemannManifestationFront — GREEN (axiom-free) module of the Riemann branch
+  of the first cause: "the perpetual engine cannot permit any deviations of
+  non-trivial zeros", carried out by the same rank machine that handles twins on ℤ.
 
-  Архитектура (зеркало twin-цепи):
-    * off-critical нуль = НЕОПЛАЧЕННОЕ ОТКЛОНЕНИЕ;
-    * закон манифестации (`RiemannManifestationLaw`, БУДУЩЕЕ ПОЛЕ ДЕКРЕТА —
-      здесь только ОПРЕДЕЛЁН, не принят): каждый нуль на каждом масштабе не
-      ниже своей высоты, всюду где леджер сводит книги, манифестирует как
-      бесконечное допустимое семейство порождённых потоков — ровно тот объект,
-      который twin-bound строит зелёно (L1);
-    * ЗЕЛЁНАЯ невозможность (L2): на разрешённом масштабе такого семейства нет —
-      коллизия конечноключевой проекции строит двигатель, двигатель убит
-      lexRank'ом (`no_someConcreteEuclideanEngine`);
-    * essence-лемма (L3, зеркало `twins_infinite_of_noEngine_and_boundary`):
-      нет двигателей + принятая граница + закон манифестации ⟹ нулей нет;
-      все три гипотезы потребляются ПО-НАСТОЯЩЕМУ (не ex falso);
-    * L4: то же ⟹ RiemannHypothesis (экстракция нуля из ¬RH — mathlib-точная).
+  Architecture (mirror of the twin chain):
+    * off-critical zero = UNPAID DEVIATION;
+    * manifestation law (`RiemannManifestationLaw`, FUTURE FIELD OF THE DECREE —
+      here only DEFINED, not adopted): every zero at every scale no lower than
+      its height, wherever the ledger closes the books, manifests as an
+      infinite admissible family of generated flows — exactly the object that
+      twin-bound builds green (L1);
+    * GREEN impossibility (L2): at a resolved scale no such family exists —
+      the finite-key projection collision builds a perpetual engine, the engine is killed
+      by lexRank (`no_someConcreteEuclideanEngine`);
+    * essence lemma (L3, mirror of `twins_infinite_of_noEngine_and_boundary`):
+      no engines + accepted boundary + manifestation law ⟹ no zeros;
+      all three hypotheses are consumed GENUINELY (not ex falso);
+    * L4: same ⟹ RiemannHypothesis (zero extraction from ¬RH — mathlib-exact).
 
-  ЧЕСТНОСТЬ (машинно, обязательные аудиты):
-    * L5: RH ⟹ закон (вакуумно — нулей нет); раскрытая обратная сторона.
-    * L7: ПРИ границе закон ⟺ RH — декрет римановского поля НЕ СЛАБЕЕ вывода
-      (зеркало `causalClosureAxiom_asserts_twins_at_every_scale`: принять
-      расширенную первопричину = принять RH). БЕЗ границы «закон ⟹ RH»
-      зелёно НЕ доказуемо — в этом асимметрия с осуждённым мостом
-      (`offCriticalBridge_iff_RH`: тот ⟺ RH уже зелёно).
-    * L6: точная зелёная характеризация закона — «нуль заморозил бы всякий
-      разрешающий леджер выше своей высоты» (обратное направление — ex falso
-      от ¬resolves, раскрыто).
-    * L9: связка Bridge∧Impossible для семейства манифестаций ⟺ отсутствие
-      нулей (инстанциация осуждающего аудита `front_pair_iff_no_zero`) —
-      декретироваться будет ТОЛЬКО Bridge-сторона; Impossible-сторона на
-      разрешённых масштабах — ЗЕЛЁНАЯ ТЕОРЕМА L2, не декрет.
-  Этот модуль НЕ импортирует карантин и не содержит axiom/sorry: верификатор
-  обязан показать все декларации незаражёнными.
+  HONESTY (machine-checked, mandatory audits):
+    * L5: RH ⟹ law (vacuously — no zeros); the exposed reverse side.
+    * L7: WITH the accepted boundary law ⟺ RH — the Riemann decree field is
+      NO WEAKER than the theorem (mirror of `causalClosureAxiom_asserts_twins_at_every_scale`:
+      accepting the extended first cause = accepting RH). WITHOUT the boundary "law ⟹ RH"
+      is NOT provable green — this is the asymmetry with the condemned bridge
+      (`offCriticalBridge_iff_RH`: that one ⟺ RH is already green).
+    * L6: exact green characterisation of the law — "a zero would freeze every
+      resolving ledger above its height" (reverse direction — ex falso
+      from ¬resolves, exposed).
+    * L9: the Bridge∧Impossible bundle for the manifestation family ⟺ absence of
+      zeros (instantiation of the condemning audit `front_pair_iff_no_zero`) —
+      ONLY the Bridge side will be decreed; the Impossible side at
+      resolved scales — GREEN THEOREM L2, not a decree.
+  This module does NOT import the quarantine and contains no axiom/sorry: the verifier
+  must show all declarations AXIOM-TAINTED-free.
 -/
 import Mathlib
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -47,61 +47,61 @@ namespace EuclidsPath
 namespace ConcreteStep00Graph
 namespace GeneratedFlowFormulation
 
-/-- Off-critical нуль в точном mathlib-смысле (алиас для читаемости внутри
-    ранговой namespace). -/
+/-- Off-critical zero in the exact mathlib sense (alias for readability inside
+    the rank namespace). -/
 abbrev RiemannOffCriticalZero : Type :=
   EuclidsPath.RiemannImpossibleEngineOff.OffCriticalZero
 
 /-#############################################################################
-  §1. Высота нуля и объект манифестации
+  §1. Zero height and the manifestation object
 #############################################################################-/
 
-/-- Высота off-critical нуля: натуральный масштаб, на котором он живёт
-    (⌊|Im s|⌋). Содержательно ниже используется только `le_refl` — закон
-    привязывает манифестацию к масштабам НЕ НИЖЕ высоты нуля. -/
+/-- Height of an off-critical zero: the natural scale at which it lives
+    (⌊|Im s|⌋). Substantively only `le_refl` is used below — the law
+    binds the manifestation to scales NO LOWER than the zero's height. -/
 noncomputable def zeroHeight (Z : RiemannOffCriticalZero) : ℕ :=
   ⌊|Z.s.im|⌋₊
 
-/-- Неоплаченная поставка отклонения на леджер-масштабе (A, M0): бесконечное
-    допустимое семейство расширенных порождённых потоков — ТОТ ЖЕ объект,
-    который twin-bound поставляет зелёно
+/-- Unpaid deviation supply at ledger scale (A, M0): an infinite admissible
+    family of extended generated flows — THE SAME object that twin-bound
+    supplies green
     (`twinBoundForcesInfiniteExtendedGeneratedFlows_closed`). -/
 def DeviationFlowSupply (A M0 : ℕ) : Prop :=
   ∃ 𝓕 : Set (ExtendedProperGeneratedFlow A M0),
     InfiniteExtendedGeneratedFlowFamily A M0 𝓕
 
-/-- Один off-critical нуль манифестирует арифметически: на каждом леджер-
-    масштабе не ниже его высоты, всюду где проекция сводит книги (коллизии
-    разрешаются), нуль проявляется как неоплатимая бесконечная поставка
-    потоков. Причинная форма: «отклонение обязано проявиться там, где книги
-    сведены» — НЕ утверждение об отсутствии нулей. -/
+/-- A single off-critical zero manifests arithmetically: at every ledger scale
+    no lower than its height, wherever the projection closes the books (collisions
+    are resolved), the zero appears as an unpayable infinite supply of flows.
+    Causal form: "the deviation must appear where the books are closed" —
+    NOT a statement about the absence of zeros. -/
 def OffCriticalDeviationManifests (Z : RiemannOffCriticalZero) : Prop :=
   ∀ (A M0 : ℕ), zeroHeight Z ≤ M0 →
     ∀ proj : SemanticExtendedFlowLedgerProjection A M0,
       SemanticExtendedFlowLedgerCollisionResolves proj →
         DeviationFlowSupply A M0
 
-/-- **ЗАКОН МАНИФЕСТАЦИИ** — содержание будущего римановского поля декрета
-    (`riemannBoundary`). Здесь только определён; принимается ТОЛЬКО в
-    карантинном модуле, полем той же единственной аксиомы. -/
+/-- **MANIFESTATION LAW** — the content of the future Riemann decree field
+    (`riemannBoundary`). Here only defined; adopted ONLY in the quarantine
+    module, as a field of the same single axiom. -/
 def RiemannManifestationLaw : Prop :=
   ∀ Z : RiemannOffCriticalZero, OffCriticalDeviationManifests Z
 
 /-#############################################################################
-  §2. Зелёная цепь: свидетель содержательности и невозможность
+  §2. Green chain: witness of non-vacuity and impossibility
 #############################################################################-/
 
-/-- **L1 (свидетель содержательности):** объект манифестации — не пустая
-    форма: ровно его twin-bound строит ЗЕЛЁНО на каждом масштабе. Декретное
-    поле поставляет тот же тип объекта, что настоящая ранговая машина. -/
+/-- **L1 (non-vacuity witness):** the manifestation object is not an empty
+    form: twin-bound builds exactly it GREEN at every scale. The decree field
+    supplies the same type of object as the genuine rank machine. -/
 theorem deviationFlowSupply_of_twinBound {A M0 : ℕ}
     (hTwinBound : TwinBoundAbove M0) : DeviationFlowSupply A M0 :=
   twinBoundForcesInfiniteExtendedGeneratedFlows_closed hTwinBound
 
-/-- **L2 (ЗЕЛЁНАЯ невозможность — Impossible-сторона как ТЕОРЕМА):** на
-    разрешённом масштабе поставки отклонения нет: стабильная no-energy
-    вселенная + бесконечное семейство ⟹ коллизия ⟹ двигатель-свидетель ⟹
-    убит lexRank'ом. Именно потому Impossible НЕ декретируется (ср. L9). -/
+/-- **L2 (GREEN impossibility — Impossible side as THEOREM):** at a resolved
+    scale there is no deviation supply: stable no-energy universe + infinite
+    family ⟹ collision ⟹ engine witness ⟹ killed by lexRank.
+    This is exactly why Impossible is NOT decreed (cf. L9). -/
 theorem no_deviationFlowSupply_at_resolved_scale {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (hres : SemanticExtendedFlowLedgerCollisionResolves proj) :
@@ -114,15 +114,15 @@ theorem no_deviationFlowSupply_at_resolved_scale {A M0 : ℕ}
   exact no_someConcreteEuclideanEngine ⟨A, M0, hEngine⟩
 
 /-#############################################################################
-  §3. Essence-лемма и достаточность (зеркала twin-цепи)
+  §3. Essence lemma and sufficiency (mirrors of the twin chain)
 #############################################################################-/
 
-/-- **L3 — ESSENCE-ЛЕММА (зеркало `twins_infinite_of_noEngine_and_boundary`):**
-    двигателей нет + принятая причинная граница + закон манифестации ⟹
-    off-critical нулей нет. Все три гипотезы потребляются ПО-НАСТОЯЩЕМУ:
-    граница даёт разрешение на масштабе высоты нуля, закон поставляет
-    семейство 𝓕, из коллизии строится двигатель-СВИДЕТЕЛЬ, и убивает его
-    именно hNoEngine (не ex falso). -/
+/-- **L3 — ESSENCE LEMMA (mirror of `twins_infinite_of_noEngine_and_boundary`):**
+    no engines + accepted causal boundary + manifestation law ⟹
+    no off-critical zeros. All three hypotheses are consumed GENUINELY:
+    the boundary gives resolution at the scale of the zero's height, the law
+    supplies the family 𝓕, a perpetual engine WITNESS is built from the collision,
+    and it is killed by exactly hNoEngine (not ex falso). -/
 theorem noOffCriticalZero_of_manifestation_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -141,10 +141,10 @@ theorem noOffCriticalZero_of_manifestation_and_boundary
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hNoEngine ⟨A, zeroHeight Z, hEngine⟩
 
-/-- **L4 — достаточность как ТЕОРЕМА:** та же тройка гипотез ⟹ RH.
-    Экстракция нуля из ¬RH — mathlib-точная (`offCriticalZero_of_not_RH`);
-    классификация тривиальных нулей уже доказана
-    (`trivialBelowZeroClassification`) и сидит внутри экстракции. -/
+/-- **L4 — sufficiency as THEOREM:** the same triple of hypotheses ⟹ RH.
+    Zero extraction from ¬RH is mathlib-exact (`offCriticalZero_of_not_RH`);
+    the classification of trivial zeros is already proved
+    (`trivialBelowZeroClassification`) and sits inside the extraction. -/
 theorem riemannHypothesis_of_manifestation_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -156,20 +156,20 @@ theorem riemannHypothesis_of_manifestation_and_boundary
     (EuclidsPath.RiemannImpossibleEngineOff.offCriticalZero_of_not_RH hNotRH)
 
 /-#############################################################################
-  §4. Обязательные аудиты честности
+  §4. Mandatory honesty audits
 #############################################################################-/
 
-/-- **L5 (раскрытая вакуумная обратная сторона):** RH ⟹ закон — вакуумно
-    (off-critical нулей при RH нет, квантор пуст). Несущая сторона — L4,
-    и она требует границу. -/
+/-- **L5 (exposed vacuous reverse side):** RH ⟹ law — vacuously
+    (no off-critical zeros under RH, the quantifier is empty). The load-bearing
+    side is L4, and it requires the boundary. -/
 theorem manifestationLaw_of_RH (hRH : RiemannHypothesis) :
     RiemannManifestationLaw := fun Z =>
   (EuclidsPath.RiemannImpossibleEngineOff.not_RH_of_offCriticalZero Z hRH).elim
 
-/-- **L6 (точная зелёная характеризация закона):** закон ⟺ «off-critical нуль
-    заморозил бы всякий разрешающий леджер на масштабах выше своей высоты».
-    ⚠️ Обратное направление — ex falso от ¬resolves (раскрыто): содержательная
-    сторона — прямая (закон + разрешение ⟹ поставка ⟹ L2-противоречие). -/
+/-- **L6 (exact green characterisation of the law):** law ⟺ "an off-critical zero
+    would freeze every resolving ledger at scales above its height".
+    ⚠️ Reverse direction — ex falso from ¬resolves (exposed): the substantive
+    side is the forward one (law + resolution ⟹ supply ⟹ L2 contradiction). -/
 theorem manifestationLaw_iff_no_resolution_above_zero :
     RiemannManifestationLaw ↔
       ∀ (Z : RiemannOffCriticalZero) (A M0 : ℕ), zeroHeight Z ≤ M0 →
@@ -182,11 +182,12 @@ theorem manifestationLaw_iff_no_resolution_above_zero :
   · intro hFreeze Z A M0 hle proj hres
     exact ((hFreeze Z A M0 hle proj) hres).elim
 
-/-- **L7 (ГЛАВНЫЙ АУДИТ, зеркало «принять аксиому = принять близнецов»):**
-    ПРИ принятой границе закон манифестации ⟺ RH — римановское поле декрета
-    ровно RH-силы, декрет НЕ СЛАБЕЕ вывода. Машинная асимметрия с осуждённым
-    мостом: `offCriticalBridge_iff_RH` доказана зелёно БЕЗ всяких гипотез,
-    здесь же ⟺ достижимо ТОЛЬКО при границе (без неё L4 не собирается). -/
+/-- **L7 (MAIN AUDIT, mirror of "accepting the axiom = accepting twins"):**
+    WITH the accepted boundary, manifestation law ⟺ RH — the Riemann decree
+    field has exactly RH strength, the decree is NO WEAKER than the theorem.
+    Machine asymmetry with the condemned bridge: `offCriticalBridge_iff_RH` is
+    proved green WITHOUT any hypotheses, while here ⟺ is achievable ONLY with
+    the boundary (without it L4 does not assemble). -/
 theorem manifestationLaw_iff_RH_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     RiemannManifestationLaw ↔ RiemannHypothesis :=
@@ -194,19 +195,19 @@ theorem manifestationLaw_iff_RH_of_boundary
       no_someConcreteEuclideanEngine hBoundary,
    manifestationLaw_of_RH⟩
 
-/-- **L8 (локализация домена — теорема, не вход):** каждый off-critical нуль
-    лежит строго в критической полосе (через доказанную классификацию
-    тривиальных нулей). -/
+/-- **L8 (domain localisation — theorem, not input):** every off-critical zero
+    lies strictly in the critical strip (via the proved classification of
+    trivial zeros). -/
 theorem offCriticalZero_in_strip (Z : RiemannOffCriticalZero) :
     0 < Z.s.re ∧ Z.s.re < 1 :=
   EuclidsPath.TrivialZeros.nontrivialZero_in_strip_unconditional
     (⟨Z.zero, Z.nontrivial, Z.not_one⟩ :
       EuclidsPath.RiemannBranch.NontrivialZeroM Z.s)
 
-/-- **L9 (инстанциация осуждающего bundling-аудита):** для семейства
-    манифестаций связка Bridge∧Impossible ⟺ «нулей нет» — потому
-    ДЕКРЕТИРУЕТСЯ ТОЛЬКО Bridge-сторона (`RiemannManifestationLaw` = Bridge);
-    Impossible-сторона на разрешённых масштабах — зелёная теорема L2. -/
+/-- **L9 (instantiation of the condemning bundling audit):** for the family of
+    manifestations the Bridge∧Impossible bundle ⟺ "no zeros" — therefore
+    ONLY the Bridge side is decreed (`RiemannManifestationLaw` = Bridge);
+    the Impossible side at resolved scales is green theorem L2. -/
 theorem manifestation_bundling_audit :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun Z : RiemannOffCriticalZero => OffCriticalDeviationManifests Z) ∧
@@ -215,8 +216,8 @@ theorem manifestation_bundling_audit :
       ¬ Nonempty RiemannOffCriticalZero :=
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_no_zero _
 
--- Машинная видимость чистоты прямо в build-логе: НИ ОДНА из ключевых лемм
--- не заражена нестандартной аксиомой (ожидаемо [propext, Classical.choice, Quot.sound]).
+-- Machine-visible purity directly in the build log: NOT ONE of the key lemmas
+-- is AXIOM-TAINTED by a non-standard axiom (expected: [propext, Classical.choice, Quot.sound]).
 #print axioms no_deviationFlowSupply_at_resolved_scale
 #print axioms noOffCriticalZero_of_manifestation_and_boundary
 #print axioms riemannHypothesis_of_manifestation_and_boundary

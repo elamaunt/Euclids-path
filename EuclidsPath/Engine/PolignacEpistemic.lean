@@ -1,41 +1,41 @@
 /-
-  PolignacEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ ПОЛИНЬЯКА (кузены p, p+4 и
-  секси p, p+6 — случаи 4 и 6 гипотезы Полиньяка). Программа Яруса 1.
-  Зелёная машина обеих семей: Engine/PolignacManifestationFront.lean (M1–M9).
-  Ряд эталонов: CollatzFirstCause (эпистемика пост-мортема), PNPFirstCause
-  (комплемент P/NP); twin-версия живёт в §8 карантина и сюда НЕ импортируется.
+  PolignacEpistemic — EPISTEMIC COMPLEMENT OF POLIGNAC (cousin primes p, p+4 and
+  sexy primes p, p+6 — cases 4 and 6 of the Polignac conjecture). Tier 1 programme.
+  Green machine for both families: Engine/PolignacManifestationFront.lean (M1–M9).
+  Reference chain: CollatzFirstCause (post-mortem epistemic), PNPFirstCause
+  (P/NP complement); the twin version lives in §8 of the quarantine and is NOT imported here.
 
-  ЧТО ЭТО. «Решить случай 4/6 изнутри» моделируется трёхполевой связкой
-  `InternalisedCousinGround` / `InternalisedSexyGround`: закон манифестации
-  (`ground`), свидетель отсутствия центров не выше леджер-масштаба (`absence`)
-  и сведённые книги на этом масштабе (`beyondOwnHorizon`). Тройка НЕСОВМЕСТИМА
-  зелёно: она напрямую собирает вечный двигатель (`cousinRefutation_carries_engine` /
-  `sexyRefutation_carries_engine` — подлинная конструкция через
-  `infiniteFlows_in_stableNoEnergy_build_engine`, НЕ ex falso) — и гибнет об
-  зелёную стену `no_someConcreteEuclideanEngine` (lexRank строго падает).
+  WHAT THIS IS. "Solving case 4/6 from the inside" is modelled by the three-field bundle
+  `InternalisedCousinGround` / `InternalisedSexyGround`: the manifestation law
+  (`ground`), an absence witness for centers no higher than the ledger scale (`absence`),
+  and the settled ledger at that scale (`beyondOwnHorizon`). The triple is INCOMPATIBLE
+  in green: it directly assembles a perpetual engine (`cousinRefutation_carries_engine` /
+  `sexyRefutation_carries_engine` — a genuine construction via
+  `infiniteFlows_in_stableNoEnergy_build_engine`, NOT ex falso) — and dies against
+  the green wall `no_someConcreteEuclideanEngine` (lexRank strictly drops).
 
-  ЧЕСТНОСТЬ (все оговорки раскрыты и в докстроках):
-  * это МОДЕЛЬ-ВНУТРЕННЯЯ эпистемика — НЕ доказательство и НЕ опровержение
-    случаев 4/6 Полиньяка (они открыты) и НЕ Гёдель (самоуничтожение об
-    lexRank-стену, а не теорема о неполноте/неподвижной точке);
-  * связка трёхполевая и ни одно поле не есть отрицание другого — это СТИЛЬ
-    P/NP, но НЕ арность: эталон `InternalisedPNPGround` сам ДВУХполевой
-    (resolves + beyondOwnHorizon); общая родословная — не-тавтологичность
-    пары/тройки, в отличие от честно помеченного тавтологичным двуполевого
+  HONESTY (all caveats disclosed, also in docstrings):
+  * this is MODEL-INTERNAL epistemic — NOT a proof and NOT a refutation
+    of Polignac cases 4/6 (they are open) and NOT Gödel (self-destruction against
+    the lexRank wall, not a theorem about incompleteness/fixed points);
+  * the bundle is three-field and no field is the negation of another — this is the STYLE
+    of P/NP, but NOT arity: the reference `InternalisedPNPGround` is itself TWO-field
+    (resolves + beyondOwnHorizon); the common lineage is non-tautologicity
+    of the pair/triple, unlike the honestly-labelled tautological two-field
     `InternalisedCollatzGround` (ground + ¬ground = P ∧ ¬P);
-  * закон `CousinManifestationLaw` / `SexyManifestationLaw` ГЕЙЧЕН свидетелем
-    отсутствия (∀ P, свидетель → манифестация) и НЕ декретирован (полей
-    cousinBoundary/sexyBoundary в Step00FirstCause нет — вердикт §17, при
-    ПОЛОЖИТЕЛЬНОМ знаке Харди–Литтлвуда): оплата противоречия УСЛОВНА на
-    не-декретированный закон и сведённые книги — слабее безусловного
-    `nonHalting_carries_perpetual_engine` Коллатца и зелёного пижонхола
-    `no_fullPayment_of_unboundedSupply` P/NP;
-  * НИ ОДНО из трёх полей зелёно не обитаемо (у P/NP `beyondOwnHorizon`
-    зелёно-обитаем — `concreteSupply_unbounded_smallScale`): связка есть
-    зелёная НЕСОВМЕСТИМОСТЬ трёх порознь-неизвестных полей;
-  * граница появляется ТОЛЬКО гипотезой `TheStrictLastStep00Obligation`
-    (в конъюнктах вида «граница → (закон ↔ неограниченность)»): модуль
-    карантин не импортирует, целиком зелёный, таинт репозитория не меняется.
+  * the law `CousinManifestationLaw` / `SexyManifestationLaw` is GATED by the absence
+    witness (∀ P, witness → manifestation) and NOT decreed (the fields
+    cousinBoundary/sexyBoundary in Step00FirstCause do not exist — verdict §17, with
+    POSITIVE sign of Hardy–Littlewood): payment of the contradiction is CONDITIONAL on
+    the non-decreed law and settled ledger — weaker than the unconditional
+    `nonHalting_carries_perpetual_engine` of Collatz and the green pigeonhole
+    `no_fullPayment_of_unboundedSupply` of P/NP;
+  * NONE of the three fields is greenly inhabited (in P/NP `beyondOwnHorizon`
+    is greenly inhabited — `concreteSupply_unbounded_smallScale`): the bundle is
+    the green INCOMPATIBILITY of three individually-unknown fields;
+  * the boundary appears ONLY as the hypothesis `TheStrictLastStep00Obligation`
+    (in conjuncts of the form "boundary → (law ↔ unboundedness)"): the module
+    does not import the quarantine, is entirely green, the repository taint does not change.
 -/
 
 import EuclidsPath.Engine.PolignacManifestationFront
@@ -47,103 +47,103 @@ namespace EuclidsPath.Polignac.Epistemic
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 open EuclidsPath.PolignacBranch
 
-/-! ## Модель: внутреннее решение = самообоснование за собственным горизонтом
+/-! ## Model: internal solution = self-justification beyond its own horizon
 
-Для КАЖДОЙ из двух семей (кузены — случай 4, секси — случай 6) связка
-параметрична по леджер-масштабу `(A, M0)` — тому самому, на котором
-`cousinRefutation_carries_engine` собирает двигатель. -/
+For EACH of the two families (cousins — case 4, sexy primes — case 6) the bundle is
+parametric over the ledger scale `(A, M0)` — the very one at which
+`cousinRefutation_carries_engine` assembles the engine. -/
 
-/-- **Внутреннее самообоснование решения случая 4 (кузены `p, p+4`).** Несёт
-    (a) закон манифестации `ground` — ГЕЙЧЕННЫЙ свидетелем и НЕ декретированный
-    (§17); (b) свидетель отсутствия кузен-центров не выше масштаба `absence`;
-    (c) сведённые книги на этом масштабе `beyondOwnHorizon`. Ни одно поле не
-    есть отрицание другого (стиль P/NP; но эталон `InternalisedPNPGround` сам
-    ДВУХполевой — общее здесь СТИЛЬ, не арность), и ни одно поле зелёно не
-    обитаемо (в отличие от зелёно-обитаемого `beyondOwnHorizon` у P/NP):
-    содержательность связки — зелёная НЕСОВМЕСТИМОСТЬ трёх порознь-неизвестных
-    полей, оплаченная подлинной двигательной конструкцией
-    `cousinRefutation_carries_engine` об стену `no_someConcreteEuclideanEngine`. -/
+/-- **Internal self-justification of a solution to case 4 (cousin primes `p, p+4`).** Carries
+    (a) the manifestation law `ground` — GATED by the witness and NOT decreed
+    (§17); (b) an absence witness for cousin centers no higher than scale `absence`;
+    (c) the settled ledger at that scale `beyondOwnHorizon`. No field is
+    the negation of another (style of P/NP; but the reference `InternalisedPNPGround` is itself
+    TWO-field — the common element is STYLE, not arity), and no field is greenly
+    inhabited (unlike the greenly-inhabited `beyondOwnHorizon` in P/NP):
+    the substance of the bundle is the green INCOMPATIBILITY of three individually-unknown
+    fields, paid for by the genuine engine construction
+    `cousinRefutation_carries_engine` against the wall `no_someConcreteEuclideanEngine`. -/
 structure InternalisedCousinGround (A M0 : ℕ) : Prop where
   ground : CousinManifestationLaw
   absence : ∃ P : ℕ, P ≤ M0 ∧ CousinAbsenceAbove P
   beyondOwnHorizon : ∃ proj : SemanticExtendedFlowLedgerProjection A M0,
     SemanticExtendedFlowLedgerCollisionResolves proj
 
-/-- «Внутреннее знание причины случая 4» = внутреннее самообоснование. -/
+/-- "Internal knowledge of the cause of case 4" = internal self-justification. -/
 abbrev InternalKnowledgeOfCousinCause (A M0 : ℕ) : Prop :=
   InternalisedCousinGround A M0
 
-/-- **Внутреннее самообоснование решения случая 6 (секси `p, p+6`)** — зеркало
-    кузенов; свидетель `SexyAbsenceAbove` ДВУСТОРОННИЙ (гейт по Or минус/плюс
-    пар — сильнее каждой стороны порознь, раскрыто во фронте). Те же честные
-    оговорки, что у `InternalisedCousinGround`. -/
+/-- **Internal self-justification of a solution to case 6 (sexy primes `p, p+6`)** — mirror
+    of cousins; the witness `SexyAbsenceAbove` is TWO-SIDED (gate over Or of minus/plus
+    pairs — stronger than either side alone, disclosed in the front). Same honest
+    caveats as `InternalisedCousinGround`. -/
 structure InternalisedSexyGround (A M0 : ℕ) : Prop where
   ground : SexyManifestationLaw
   absence : ∃ P : ℕ, P ≤ M0 ∧ SexyAbsenceAbove P
   beyondOwnHorizon : ∃ proj : SemanticExtendedFlowLedgerProjection A M0,
     SemanticExtendedFlowLedgerCollisionResolves proj
 
-/-- «Внутреннее знание причины случая 6» = внутреннее самообоснование. -/
+/-- "Internal knowledge of the cause of case 6" = internal self-justification. -/
 abbrev InternalKnowledgeOfSexyCause (A M0 : ℕ) : Prop :=
   InternalisedSexyGround A M0
 
-/-! ## Ядро: самообоснование строит двигатель и гибнет об lexRank-стену (🟢) -/
+/-! ## Core: self-justification builds the engine and dies against the lexRank wall (🟢) -/
 
-/-- **Самообоснование случая 4 СТРОИТ двигатель** — прямая композиция
-    `cousinRefutation_carries_engine` (подлинная конструкция: закон поставляет
-    семью потоков, стабильная вселенная превращает её в двигатель-СВИДЕТЕЛЬ),
-    НЕ ex falso — в отличие от `internalisedPNPGround_builds_engine`, где
-    маршрут ex falso. Цена честности: конструкция УСЛОВНА на гейченный
-    не-декретированный закон и сведённые книги — оба поля порознь неизвестны. -/
+/-- **Self-justification of case 4 BUILDS the engine** — direct composition of
+    `cousinRefutation_carries_engine` (genuine construction: the law supplies
+    a family of flows, the stable universe turns it into an engine-WITNESS),
+    NOT ex falso — unlike `internalisedPNPGround_builds_engine`, where
+    the route is ex falso. The price of honesty: the construction is CONDITIONAL on the gated
+    non-decreed law and settled ledger — both fields individually unknown. -/
 theorem internalisedCousinGround_builds_engine {A M0 : ℕ}
     (H : InternalisedCousinGround A M0) : SomeConcreteEuclideanEngine := by
   obtain ⟨P, hPM, hAbs⟩ := H.absence
   obtain ⟨proj, hres⟩ := H.beyondOwnHorizon
   exact ⟨A, M0, cousinRefutation_carries_engine H.ground hAbs hPM proj hres⟩
 
-/-- Самообоснование случая 4 самоуничтожается: построенный двигатель гибнет об
-    зелёную стену `no_someConcreteEuclideanEngine` (lexRank строго падает).
-    ЗЕЛЁНАЯ, стандартная тройка. -/
+/-- Self-justification of case 4 self-destructs: the built engine dies against
+    the green wall `no_someConcreteEuclideanEngine` (lexRank strictly drops).
+    GREEN, standard triple. -/
 theorem no_internalisedCousinGround {A M0 : ℕ} :
     InternalisedCousinGround A M0 → False :=
   fun H => no_someConcreteEuclideanEngine (internalisedCousinGround_builds_engine H)
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА для случая 4** (зеркало
-    `collatzCause_unknowable` / `pnpCause_unknowable`): внутреннее знание
-    причины кузенов невозможно ни на каком леджер-масштабе. НЕ утверждение о
-    самих кузенах: случай 4 открыт, закон не декретирован. -/
+/-- **"CANNOT BE KNOWN FROM WITHIN" — THEOREM for case 4** (mirror of
+    `collatzCause_unknowable` / `pnpCause_unknowable`): internal knowledge
+    of the cause of cousins is impossible at any ledger scale. NOT a statement about
+    cousins themselves: case 4 is open, the law is not decreed. -/
 theorem cousinCause_unknowable {A M0 : ℕ} :
     ¬ InternalKnowledgeOfCousinCause A M0 :=
   no_internalisedCousinGround
 
-/-- **Самообоснование случая 6 СТРОИТ двигатель** — те же оговорки, что у
-    кузенов (подлинная конструкция, условная на гейченный закон и книги). -/
+/-- **Self-justification of case 6 BUILDS the engine** — same caveats as for
+    cousins (genuine construction, conditional on the gated law and ledger). -/
 theorem internalisedSexyGround_builds_engine {A M0 : ℕ}
     (H : InternalisedSexyGround A M0) : SomeConcreteEuclideanEngine := by
   obtain ⟨P, hPM, hAbs⟩ := H.absence
   obtain ⟨proj, hres⟩ := H.beyondOwnHorizon
   exact ⟨A, M0, sexyRefutation_carries_engine H.ground hAbs hPM proj hres⟩
 
-/-- Самообоснование случая 6 самоуничтожается об ту же lexRank-стену. -/
+/-- Self-justification of case 6 self-destructs against the same lexRank wall. -/
 theorem no_internalisedSexyGround {A M0 : ℕ} :
     InternalisedSexyGround A M0 → False :=
   fun H => no_someConcreteEuclideanEngine (internalisedSexyGround_builds_engine H)
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА для случая 6.** -/
+/-- **"CANNOT BE KNOWN FROM WITHIN" — THEOREM for case 6.** -/
 theorem sexyCause_unknowable {A M0 : ℕ} :
     ¬ InternalKnowledgeOfSexyCause A M0 :=
   no_internalisedSexyGround
 
-/-! ## Развилки: решение заперто за двигателем (🟢) -/
+/-! ## Trilemma: solution is locked behind the engine (🟢) -/
 
-/-- **3-развилка случая 4 (зеркало `pnp_no_internal_decision_without_engine`):**
-    (1) САМООБОСНОВАТЬ изнутри = построить двигатель (подлинная конструкция);
-    (2) построенное самоуничтожается об lexRank-стену;
-    (3) единственный оставшийся путь — ВНЕШНИЙ декрет: при границе-ГИПОТЕЗЕ
-        `TheStrictLastStep00Obligation` закон ⟺ неограниченность кузен-центров
-        (M7: поле стоило бы ровно случая 4) — и это поле НАМЕРЕННО не взято.
-    НЕ гёделевская независимость и НЕ решение случая 4 — только: внутреннее
-    решение стоит вечного двигателя, а внешняя дверь не декретирована. -/
+/-- **3-way trilemma for case 4 (mirror of `pnp_no_internal_decision_without_engine`):**
+    (1) SELF-JUSTIFY from within = build the engine (genuine construction);
+    (2) what is built self-destructs against the lexRank wall;
+    (3) the only remaining path — an EXTERNAL decree: under the boundary-HYPOTHESIS
+        `TheStrictLastStep00Obligation` the law ⟺ unboundedness of cousin centers
+        (M7: the field would cost exactly case 4) — and this field is DELIBERATELY not taken.
+    NOT Gödelian independence and NOT a solution to case 4 — only: internal
+    solution costs a perpetual engine, and the external door is not decreed. -/
 theorem cousin_no_internal_decision_without_engine {A M0 : ℕ} :
     (InternalisedCousinGround A M0 → SomeConcreteEuclideanEngine) ∧
     (InternalisedCousinGround A M0 → False) ∧
@@ -153,7 +153,7 @@ theorem cousin_no_internal_decision_without_engine {A M0 : ℕ} :
    no_internalisedCousinGround,
    cousinManifestationLaw_iff_unbounded_of_boundary⟩
 
-/-- **3-развилка случая 6** — секси-зеркало (M7: поле стоило бы ровно случая 6). -/
+/-- **3-way trilemma for case 6** — sexy-prime mirror (M7: the field would cost exactly case 6). -/
 theorem sexy_no_internal_decision_without_engine {A M0 : ℕ} :
     (InternalisedSexyGround A M0 → SomeConcreteEuclideanEngine) ∧
     (InternalisedSexyGround A M0 → False) ∧
@@ -163,9 +163,9 @@ theorem sexy_no_internal_decision_without_engine {A M0 : ℕ} :
    no_internalisedSexyGround,
    sexyManifestationLaw_iff_unbounded_of_boundary⟩
 
-/-- **«РЕШЕНИЕ ПОЛИНЬЯКА-4/6 ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — обе семьи разом**
-    (зеркало `pnp_no_internal_decision_without_engine`, две развилки одной
-    теоремой). Граница — только гипотеза; закон — только гейт; модуль зелёный. -/
+/-- **"POLIGNAC-4/6 SOLUTION IS LOCKED BEHIND THE ENGINE" — both families at once**
+    (mirror of `pnp_no_internal_decision_without_engine`, two trilemmas in one
+    theorem). Boundary — hypothesis only; law — gate only; module is green. -/
 theorem polignac_no_internal_decision_without_engine {A M0 : ℕ} :
     ((InternalisedCousinGround A M0 → SomeConcreteEuclideanEngine) ∧
      (InternalisedCousinGround A M0 → False) ∧
@@ -178,15 +178,15 @@ theorem polignac_no_internal_decision_without_engine {A M0 : ℕ} :
   ⟨cousin_no_internal_decision_without_engine,
    sexy_no_internal_decision_without_engine⟩
 
-/-! ## Сводки статуса: без декрет-конъюнкта — поля-границы у Полиньяка НЕТ (🟢) -/
+/-! ## Status summaries: without the decree-conjunct — no boundary fields in Polignac (🟢) -/
 
-/-- Итоговый эпистемический статус случая 4 (зеркало
-    `pnp_locked_behind_engine_status`, БЕЗ декрет-конъюнкта — вердикт §17):
-    внутреннее знание невозможно (теорема) / всякий свидетель отсутствия сидит
-    не ниже 37 — кузен-центр 37 = пара (223, 227) зелёно существует (M8) /
-    при границе-гипотезе закон ⟺ неограниченность (M7 — цена недекретированного
-    поля) / неограниченность довела бы до цели программы: пары кузенов
-    бесконечны (честный мост ветви). ЗЕЛЁНАЯ целиком. -/
+/-- Final epistemic status of case 4 (mirror of
+    `pnp_locked_behind_engine_status`, WITHOUT the decree-conjunct — verdict §17):
+    internal knowledge is impossible (theorem) / every absence witness sits
+    no lower than 37 — cousin center 37 = pair (223, 227) greenly exists (M8) /
+    under the boundary-hypothesis the law ⟺ unboundedness (M7 — price of the non-decreed
+    field) / unboundedness would reach the programme's goal: cousin pairs are
+    infinite (honest branch bridge). GREEN throughout. -/
 theorem cousin_locked_behind_engine_status {A M0 : ℕ} :
     (¬ InternalKnowledgeOfCousinCause A M0) ∧
     (∀ P : ℕ, CousinAbsenceAbove P → 37 ≤ P) ∧
@@ -198,8 +198,8 @@ theorem cousin_locked_behind_engine_status {A M0 : ℕ} :
    cousinManifestationLaw_iff_unbounded_of_boundary,
    cousinLowersInfinite_of_unbounded⟩
 
-/-- Итоговый эпистемический статус случая 6 (порог M8 = 17: минус-пара
-    (101, 107) при m = 17; свидетель двусторонний). ЗЕЛЁНАЯ целиком. -/
+/-- Final epistemic status of case 6 (M8 threshold = 17: minus-pair
+    (101, 107) at m = 17; witness is two-sided). GREEN throughout. -/
 theorem sexy_locked_behind_engine_status {A M0 : ℕ} :
     (¬ InternalKnowledgeOfSexyCause A M0) ∧
     (∀ P : ℕ, SexyAbsenceAbove P → 17 ≤ P) ∧
@@ -211,12 +211,12 @@ theorem sexy_locked_behind_engine_status {A M0 : ℕ} :
    sexyManifestationLaw_iff_unbounded_of_boundary,
    sexyLowersInfinite_of_unbounded⟩
 
-/-- **Итоговый эпистемический статус Полиньяка-4/6 — обе семьи разом**
-    (без декрет-конъюнкта: полей cousinBoundary/sexyBoundary в
-    Step00FirstCause не существует — §17, при положительном знаке эвристики).
-    Случаи 4 и 6 остаются 🔴 открытыми; здесь лишь машинно видимая цена:
-    изнутри — двигатель, снаружи — недекретированный закон ровно гипотезной
-    силы. ЗЕЛЁНАЯ целиком, таинт не меняется. -/
+/-- **Final epistemic status of Polignac-4/6 — both families at once**
+    (without the decree-conjunct: the fields cousinBoundary/sexyBoundary in
+    Step00FirstCause do not exist — §17, with positive sign of the heuristic).
+    Cases 4 and 6 remain 🔴 open; what is shown here is only the machine-visible price:
+    from within — the engine, from without — a non-decreed law of exactly hypothesis
+    strength. GREEN throughout, taint does not change. -/
 theorem polignac_locked_behind_engine_status {A M0 : ℕ} :
     ((¬ InternalKnowledgeOfCousinCause A M0) ∧
      (∀ P : ℕ, CousinAbsenceAbove P → 37 ≤ P) ∧
@@ -231,8 +231,8 @@ theorem polignac_locked_behind_engine_status {A M0 : ℕ} :
   ⟨cousin_locked_behind_engine_status,
    sexy_locked_behind_engine_status⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка),
-    БЕЗ step00FirstCause — таинт репозитория НЕ меняется -/
+/-! ## Axiom audit: the entire module is green (standard triple),
+    WITHOUT step00FirstCause — repository taint does NOT change -/
 #print axioms internalisedCousinGround_builds_engine
 #print axioms no_internalisedCousinGround
 #print axioms cousinCause_unknowable

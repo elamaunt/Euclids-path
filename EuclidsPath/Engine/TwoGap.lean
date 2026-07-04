@@ -1,11 +1,11 @@
 /-
-  Ось «двойки»: точные тождества, переносящие зазор +2 (twin-gap) вдоль descent.
-  Проза: prose/17_TwoGap.md (пишется после зелёного Lean).
-  Источник законов: каталог из исходных файлов (det law abv−qrs=−2; collapse u₂r₁−u₁r₂=2K;
-  euclidean descent qΔ−vΞ=2; small collapse B₂Q₁−B₁Q₂=12h; абстрактная форма Cb−Dr=−2).
+  The "two" axis: exact identities that carry the +2 gap (twin-gap) along the descent.
+  Prose: prose/17_TwoGap.md (written after the green Lean).
+  Source of laws: catalogue from the source files (det law abv−qrs=−2; collapse u₂r₁−u₁r₂=2K;
+  euclidean descent qΔ−vΞ=2; small collapse B₂Q₁−B₁Q₂=12h; abstract form Cb−Dr=−2).
 
-  Все утверждения — ЭЛЕМЕНТАРНАЯ алгебра (без анализа/распределения/сита). mathlib используется
-  только для базовой кольцевой арифметики (`ring`, `linear_combination`, `omega`, `mul_left_cancel₀`).
+  All statements are ELEMENTARY algebra (no analysis / distribution / sieve). mathlib is used
+  only for basic ring arithmetic (`ring`, `linear_combination`, `omega`, `mul_left_cancel₀`).
 -/
 import Mathlib
 
@@ -13,21 +13,21 @@ set_option autoImplicit false
 
 namespace EuclidsPath.Engine
 
-/-- **Детерминантный закон rank-(3,3).** Из `6m−1=abv`, `6m+1=qrs` (с `m≥1`) следует `qrs = abv + 2`. -/
+/-- **Determinant law rank-(3,3).** From `6m−1=abv`, `6m+1=qrs` (with `m≥1`) it follows that `qrs = abv + 2`. -/
 theorem det_law_rank33 {m a b v q r s : ℕ} (hm : 1 ≤ m)
     (h1 : 6 * m - 1 = a * b * v) (h2 : 6 * m + 1 = q * r * s) :
     q * r * s = a * b * v + 2 := by
   omega
 
-/-- **Абстрактная форма** `Cb − Dr = −2` (over ℤ): если `Cb = 6m−1` и `Dr = 6m+1`, то `Cb − Dr = −2`. -/
+/-- **Abstract form** `Cb − Dr = −2` (over ℤ): if `Cb = 6m−1` and `Dr = 6m+1`, then `Cb − Dr = −2`. -/
 theorem det_law_CD {m C D b r : ℤ} (h1 : C * b = 6 * m - 1) (h2 : D * r = 6 * m + 1) :
     C * b - D * r = -2 := by
   linear_combination h1 - h2
 
 /--
   **Determinant collapse** `u₂r₁ − u₁r₂ = 2K`.
-  Если две точки луча удовлетворяют `uᵢv + 2 = rᵢs` и шаг `u₂ − u₁ = sK`, то (при `s ≠ 0`)
-  `u₂r₁ − u₁r₂ = 2K`. Это «перенос двойки» в координатах луча.
+  If two points of the ray satisfy `uᵢv + 2 = rᵢs` and the step is `u₂ − u₁ = sK`, then (with `s ≠ 0`)
+  `u₂r₁ − u₁r₂ = 2K`. This is the "carry of the two" in ray coordinates.
 -/
 theorem det_collapse {u1 u2 r1 r2 v s K : ℤ}
     (h1 : u1 * v + 2 = r1 * s) (h2 : u2 * v + 2 = r2 * s)
@@ -41,9 +41,9 @@ theorem det_collapse {u1 u2 r1 r2 v s K : ℤ}
   exact mul_left_cancel₀ hs key
 
 /--
-  **Точное евклидово тождество спуска** `qΔ − vΞ = 2`.
-  Из rank-one уравнения `abv + 2 = qP` с разложениями `P = v² + Δ`, `ab = qv + Ξ`.
-  Это диагональное ядро самоподобного спуска.
+  **Exact Euclidean descent identity** `qΔ − vΞ = 2`.
+  From the rank-one equation `abv + 2 = qP` with decompositions `P = v² + Δ`, `ab = qv + Ξ`.
+  This is the diagonal kernel of the self-similar descent.
 -/
 theorem euclid_descent_identity {a b v q P Δ Ξ : ℤ}
     (h1 : a * b * v + 2 = q * P) (h2 : P = v ^ 2 + Δ) (h3 : a * b = q * v + Ξ) :
@@ -51,8 +51,8 @@ theorem euclid_descent_identity {a b v q P Δ Ξ : ℤ}
   linear_combination -h1 - q * h2 + v * h3
 
 /--
-  **Small determinant collapse для повторного atom** `B₂Q₁ − B₁Q₂ = 12h`.
-  Из bridge-уравнения `a·Bᵢ = qs·Qᵢ − 2` и сдвига `B₂ − B₁ = 6·qs·h` (с `a ≠ 0`, `qs ≠ 0`).
+  **Small determinant collapse for a repeated atom** `B₂Q₁ − B₁Q₂ = 12h`.
+  From the bridge equation `a·Bᵢ = qs·Qᵢ − 2` and the shift `B₂ − B₁ = 6·qs·h` (with `a ≠ 0`, `qs ≠ 0`).
 -/
 theorem small_det_collapse {a q s B1 B2 Q1 Q2 h : ℤ}
     (e1 : a * B1 = q * s * Q1 - 2) (e2 : a * B2 = q * s * Q2 - 2)

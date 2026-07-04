@@ -1,28 +1,28 @@
 /-
-  RiemannArithmeticTwoTransport — НЕ-двигательная арифметическая цель RH-ветки
-  (кирпич: Riemann_arithmetic_two_transport_law). Проза: prose/30.
+  RiemannArithmeticTwoTransport — the non-engine arithmetic target of the RH branch
+  (brick: Riemann_arithmetic_two_transport_law). Prose: prose/30.
 
-  Ответ на вскрытый коллапс когерентного маршрута (coherentTwoTransportBridge
-  ⟺ RH): сертификат строится вокруг тождества twin-слоя qrs = abv + 2, БЕЗ
-  фабрики и БЕЗ engine-killer динамики (firewall NotEngineCoherent).
+  Answer to the uncovered collapse of the coherent route (coherentTwoTransportBridge
+  ⟺ RH): the certificate is built around the twin-layer identity qrs = abv + 2,
+  WITHOUT a factory and WITHOUT engine-killer dynamics (firewall NotEngineCoherent).
 
-  ДОКАЗАНО (кирпич, чистая арифметика/сборка): зазор ровно 2 (natGap_eq_two),
-  позитивность, целочисленная ориентация abv − qrs = −2; RH-сборка из двух
-  входов (мост: нуль ⟹ закон; невозможность: закона нет) — оба будущие.
+  PROVED (brick, pure arithmetic/assembly): the gap is exactly 2 (natGap_eq_two),
+  positivity, integer orientation abv − qrs = −2; RH assembly from two
+  inputs (bridge: zero ⟹ law; impossibility: no law) — both future targets.
 
-  ⚠️ МАШИННАЯ ЧЕСТНОСТЬ (при интеграции):
-    * trivialAtom — атом без ограничений существует (3 = 1 + 2);
-    * law_iff_admissibleAtom — гейты (anchor/noncircular/firewall) СВОБОДНЫ:
-      закон при данном Z ⟺ Z-НЕЗАВИСИМОЕ существование допустимого атома
-      (AdmissibleAtomExists — LayerBox + вычеты mod 6);
-    * bridge_iff / impossible_iff — оба входа = ОДИН арифметический вопрос
-      AdmissibleAtomExists, разведённый по полярности под гипотезой нуля;
-    * front_pair_iff_no_zero — пара входов совместно выполнима ⟺ нулей нет:
-      циркулярность сохраняется, ПОКА anchor свободен. Следующая честная
-      задача маршрута — сделать привязку к нулю НЕСУЩЕЙ (закон, реально
-      зависящий от Z), либо решить AdmissibleAtomExists как самостоятельную
-      арифметику (вопрос открыт и интересен сам по себе).
-  Конкретная RH-сборка с настоящим извлечением репо: RH_of_concreteArithmeticFront.
+  ⚠️ MACHINE HONESTY (on integration):
+    * trivialAtom — unconstrained atom exists (3 = 1 + 2);
+    * law_iff_admissibleAtom — gates (anchor/noncircular/firewall) are FREE:
+      law at a given Z ⟺ Z-INDEPENDENT existence of an admissible atom
+      (AdmissibleAtomExists — LayerBox + residues mod 6);
+    * bridge_iff / impossible_iff — both inputs = ONE arithmetic question
+      AdmissibleAtomExists, split by polarity under the zero hypothesis;
+    * front_pair_iff_no_zero — the pair of inputs is jointly satisfiable ⟺ no zeros:
+      circularity is preserved AS LONG AS the anchor is free. The next honest
+      task of the route is to make the zero anchoring a LOAD-BEARING carrier (a law
+      genuinely depending on Z), or to solve AdmissibleAtomExists as an independent
+      arithmetic problem (the question is open and interesting in its own right).
+  Concrete RH assembly with real repo extraction: RH_of_concreteArithmeticFront.
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannImpossibleEngineOff
@@ -411,13 +411,13 @@ end ArithmeticTwoTransport
 end Riemann
 end EuclidsPath
 
-/-! Конкретная привязка к репо + машинная честность -/
+/-! Concrete repo anchoring + machine honesty -/
 
 namespace EuclidsPath
 namespace Riemann
 namespace ArithmeticTwoTransport
 
-/-- Атом без ограничений существует: 3·1·1 = 1·1·1 + 2. -/
+/-- An unconstrained atom exists: 3·1·1 = 1·1·1 + 2. -/
 def trivialAtom : ArithmeticTransportAtom where
   q := 3; r := 1; s := 1; a := 1; b := 1; v := 1
   q_pos := by norm_num
@@ -428,13 +428,13 @@ def trivialAtom : ArithmeticTransportAtom where
   v_pos := by norm_num
   transport_identity := by norm_num
 
-/-- Существование ДОПУСТИМОГО атома — Z-независимый арифметический вопрос. -/
+/-- Existence of an ADMISSIBLE atom is a Z-independent arithmetic question. -/
 def AdmissibleAtomExists : Prop :=
   ∃ T : ArithmeticTransportAtom, Nonempty (ArithmeticAdmissible T)
 
-/-- **ЧЕСТНОСТЬ (гейты свободны):** обитаемость закона при данном Z ⟺
-    существование допустимого атома — anchor/noncircular/firewall
-    перегейтируются даром (True/True/False). Привязка к нулю пока НЕ несущая. -/
+/-- **HONESTY (gates are free):** inhabitedness of the law at a given Z ⟺
+    existence of an admissible atom — anchor/noncircular/firewall
+    are gated away for free (True/True/False). Zero anchoring is NOT yet load-bearing. -/
 theorem law_iff_admissibleAtom
     {OffCriticalZero : Type} (Z : OffCriticalZero) :
     Nonempty (ArithmeticTwoTransportLaw OffCriticalZero Z) ↔
@@ -447,7 +447,7 @@ theorem law_iff_admissibleAtom
       ⟨True, trivial, True, trivial, True, trivial⟩,
       ⟨False, fun h => h⟩⟩⟩
 
-/-- Мост ⟺ (есть нуль ⟹ атом существует). -/
+/-- Bridge ⟺ (there is a zero ⟹ an atom exists). -/
 theorem bridge_iff
     {OffCriticalZero : Type} :
     ArithmeticTwoTransportBridge OffCriticalZero ↔
@@ -458,7 +458,7 @@ theorem bridge_iff
   · intro h Z
     exact (law_iff_admissibleAtom Z).mpr (h ⟨Z⟩)
 
-/-- Невозможность ⟺ (есть нуль ⟹ атома нет). -/
+/-- Impossibility ⟺ (there is a zero ⟹ no atom exists). -/
 theorem impossible_iff
     {OffCriticalZero : Type} :
     ArithmeticTwoTransportImpossible OffCriticalZero ↔
@@ -469,11 +469,11 @@ theorem impossible_iff
   · intro h Z hLaw
     exact h ⟨Z⟩ ((law_iff_admissibleAtom Z).mp hLaw)
 
-/-- **ЧЕСТНОСТЬ (циркулярность при свободных гейтах):** пара входов фронта
-    совместно выполнима ⟺ нулей нет. Оба входа — ОДИН Z-независимый
-    арифметический вопрос (AdmissibleAtomExists), разведённый по полярности:
-    развязка возможна только если anchor сделать НЕсвободным (настоящая
-    зависимость закона от нуля) — это и есть следующая честная задача. -/
+/-- **HONESTY (circularity with free gates):** the front's pair of inputs is
+    jointly satisfiable ⟺ no zeros. Both inputs are ONE Z-independent
+    arithmetic question (AdmissibleAtomExists), split by polarity:
+    disentanglement is possible only if the anchor is made NON-free (genuine
+    dependence of the law on the zero) — that is the next honest task. -/
 theorem front_pair_iff_no_zero
     {OffCriticalZero : Type} :
     (ArithmeticTwoTransportBridge OffCriticalZero ∧
@@ -485,7 +485,7 @@ theorem front_pair_iff_no_zero
   · intro hNo
     exact ⟨fun Z => (hNo ⟨Z⟩).elim, fun Z => (hNo ⟨Z⟩).elim⟩
 
-/-- Конкретная RH-сборка с НАСТОЯЩИМ извлечением репо (¬RH ⟹ нуль). -/
+/-- Concrete RH assembly with REAL repo extraction (¬RH ⟹ zero). -/
 theorem RH_of_concreteArithmeticFront
     (F : ArithmeticTwoTransportFront
       EuclidsPath.RiemannImpossibleEngineOff.OffCriticalZero) :

@@ -1,42 +1,45 @@
 /-
-  ObstructionClosure — абстрактный well-founded «двигатель» на положительных obstruction-сертификатах.
-  Источник: step00_obstruction_closure_badcert_engine_ru_2026-07-01.md.
-  Проза: prose/24_BoundaryDecomp.md (раздел «Obstruction-двигатель»).
+  ObstructionClosure — an abstract well-founded perpetual engine on positive obstruction certificates.
+  Source: step00_obstruction_closure_badcert_engine_ru_2026-07-01.md.
+  Prose: prose/24_BoundaryDecomp.md (section «Obstruction engine»).
 
-  ИДЕЯ (и её граница). Прежние обходы (BadCoverDescent, SmallCleanSupply) оказались циркулярны, потому
-  что `Bad := ¬Good` не несёт положительной структуры. Этот кирпич предлагает искать двигатель в
-  ПОЛОЖИТЕЛЬНОМ obstruction-сертификате: `Bad m ⟹ ∃ obs, ObsAt obs m`, и `ObsAt obs m ⟹ Close ∨
-  меньший obs`. Тогда well-founded индукция по `rank obs` даёт `Bad m ⟹ Close`.
+  IDEA (and its boundary). Earlier workarounds (BadCoverDescent, SmallCleanSupply) turned out to be
+  circular, because `Bad := ¬Good` carries no positive structure. This brick proposes to seek the
+  engine in a POSITIVE obstruction certificate: `Bad m ⟹ ∃ obs, ObsAt obs m`, and
+  `ObsAt obs m ⟹ Close ∨ smaller obs`. Then well-founded induction on `rank obs` gives
+  `Bad m ⟹ Close`.
 
-  ЗДЕСЬ ДОКАЗАНО (чистая механика, стандартные аксиомы, без sorry, БЕЗ арифметики простых):
-    * `obs_closes` — well-founded reduction ⟹ Close (ядро §5.1);
+  PROVED HERE (pure mechanics, standard axioms, no sorry, NO prime-number arithmetic):
+    * `obs_closes` — well-founded reduction ⟹ Close (core §5.1);
     * `mem_bad_closes_of_obstruction_reduction` — bad→obs + reduction ⟹ bad→Close (§5.2);
-    * `exists_close_of_nonempty_carrier_and_bad_engine` — полная абстрактная сборка (§6);
-    * `goal_of_exists_close`, `goal_all_of_exists_close_all` — снятие engine-ветки под `¬Engine` (§7).
+    * `exists_close_of_nonempty_carrier_and_bad_engine` — full abstract assembly (§6);
+    * `goal_of_exists_close`, `goal_all_of_exists_close_all` — discharging the engine branch under `¬Engine` (§7).
 
-  ГЛАВНЫЙ АУДИТНЫЙ ТЕСТ КИРПИЧА (§13) — ПРОВЕРЕН ЭМПИРИЧЕСКИ, РЕЗУЛЬТАТ ОТРИЦАТЕЛЬНЫЙ:
-  в кодовой базе НЕТ `def bad`/`def good`/`def carrier`/`Obs`/`LocalObstruction`. Реальный узел
-  `SNOL.SNOLInput` (`Engine/SNOL.lean:69`) использует `bad, carrier : Finset ℕ` как ЭКЗИСТЕНЦИАЛЬНО-
-  квантифицированные абстрактные множества с ЕДИНСТВЕННЫМ содержательным условием `bad.card <
-  carrier.card` (counting), а `twin_center_of_block` тянет survivor из `survivor_of_not_covered` —
-  чистый counting. То есть `SNOL.bad` — НЕ положительный obstruction-объект, а counting-объект.
+  MAIN AUDIT TEST OF THE BRICK (§13) — VERIFIED EMPIRICALLY, RESULT NEGATIVE:
+  the codebase has NO `def bad`/`def good`/`def carrier`/`Obs`/`LocalObstruction`. The real node
+  `SNOL.SNOLInput` (`Engine/SNOL.lean:69`) uses `bad, carrier : Finset ℕ` as EXISTENTIALLY-
+  quantified abstract sets with the SINGLE substantive condition `bad.card <
+  carrier.card` (counting), and `twin_center_of_block` pulls a survivor from `survivor_of_not_covered` —
+  pure counting. That is, `SNOL.bad` is NOT a positive obstruction object, but a counting object.
 
-  ВЫВОД (по no-go критерию §16 самого кирпича): положительной obstruction-семантики для `SNOL.bad`
-  НЕТ, поэтому U1 (`mem_bad_to_obstruction`) и U2 (`obstruction_reduce`) НЕинстанциируемы без цели/
-  counting, и этот двигатель на реальном узле НЕ ЗАПУСКАЕТСЯ. Абстрактный модуль корректен и
-  переиспользуем, но его входы к `SNOL.SNOLInput` не привязываются. Итог аудита стоит:
-  `SNOL.SNOLInput` — настоящая density/counting/parity стена. `Step00` остаётся `sorry`.
+  CONCLUSION (by the no-go criterion §16 of the brick itself): there is NO positive
+  obstruction semantics for `SNOL.bad`, so U1 (`mem_bad_to_obstruction`) and U2
+  (`obstruction_reduce`) are non-instantiable without the goal/counting, and this engine
+  DOES NOT START on the real node. The abstract module is correct and reusable, but its
+  inputs do not bind to `SNOL.SNOLInput`. Audit verdict:
+  `SNOL.SNOLInput` is a genuine density/counting/parity wall. `Step00` remains `sorry`.
 
-  ВАЖНО (чтобы никто не принял «положительный obstruction» за лазейку): даже ЕСЛИ построить
-  obstruction для `6m±1` (уже частично построен: `ObsAt` = old-peel/active ребро с большим простым
-  делителем, `rank` = высота-центр). Шаги редукции U2 доказуемы НЕциркулярно (`cofactor_is_center`,
-  `old_peel_height_drop`, `active_descent_height` — реальная алгебра спуска, catch — это ступенька, а
-  не стена). НО в РАНГ-0 терминале (clean-центр с ПРОСТЫМИ сторонами) ветви `regeneration_dichotomy`
-  (составная сторона / old-peel) ОБЕ исчезают, остаётся ровно «это twin» — то есть U2-терминал
-  «Close ∨ меньший obs» сводится к «Close ∨ ничего» = ЦЕЛЬ. Та же circularity-подпись, что машинно
-  зафиксирована в `BadCoverDescent.descent_reduction_is_circular` и
-  `ConcreteComponents.smallCleanSupply_iff_goal` (обе: вход ⟺ цель). Двигатель добавляет реальную
-  лемму спуска и более точную локализацию стены, но НИЧЕГО не закрывает.
+  IMPORTANT (so that no one takes «positive obstruction» as a loophole): even IF one
+  constructs an obstruction for `6m±1` (already partially built: `ObsAt` = old-peel/active
+  edge with a large prime divisor, `rank` = height-centre). The U2 reduction steps are
+  provable NON-circularly (`cofactor_is_center`, `old_peel_height_drop`,
+  `active_descent_height` — real descent algebra; a catch is a step, not a wall). BUT at
+  the RANK-0 terminal (clean centre with PRIME sides) BOTH branches of `regeneration_dichotomy`
+  (composite side / old-peel) vanish, leaving exactly «this is a twin» — i.e. the U2 terminal
+  «Close ∨ smaller obs» reduces to «Close ∨ nothing» = THE GOAL. The same circularity
+  signature, machine-recorded in `BadCoverDescent.descent_reduction_is_circular` and
+  `ConcreteComponents.smallCleanSupply_iff_goal` (both: input ⟺ goal). The engine adds a
+  real descent lemma and a more precise wall localisation, but CLOSES NOTHING.
 -/
 import Mathlib
 
@@ -45,12 +48,12 @@ set_option linter.unusedVariables false
 
 namespace EuclidsPath.ObstructionClosure
 
-/-! ### §5.1. Ядро: well-founded reduction obstruction'а ⟹ Close -/
+/-! ### §5.1. Core: well-founded reduction of an obstruction ⟹ Close -/
 
 /--
-  **`obs_closes` — ДОКАЗАНА.** Если каждый obstruction либо сразу закрывает `Close`, либо редуцируется
-  к obstruction строго меньшего ранга, то любой obstruction закрывает `Close`. Well-founded induction
-  по `rank : Obs → ℕ` (через `InvImage.wf Nat.lt_wfRel.wf`). -/
+  **`obs_closes` — PROVED.** If every obstruction either immediately closes `Close`, or reduces to
+  an obstruction of strictly smaller rank, then every obstruction closes `Close`. Well-founded induction
+  on `rank : Obs → ℕ` (via `InvImage.wf Nat.lt_wfRel.wf`). -/
 theorem obs_closes {Obs Point : Type*}
     (rank : Obs → ℕ) (ObsAt : Obs → Point → Prop) (Close : Prop)
     (hReduce : ∀ {x : Point} {obs : Obs}, ObsAt obs x →
@@ -67,15 +70,15 @@ theorem obs_closes {Obs Point : Type*}
       · exact IH obs' hlt x' hobs')
     x hobs
 
-/-! ### §5.2. Membership-in-bad даёт obstruction ⟹ bad закрывает -/
+/-! ### §5.2. Membership-in-bad yields an obstruction ⟹ bad closes -/
 
 /--
-  **`mem_bad_closes_of_obstruction_reduction` — ДОКАЗАНА.** Если `Bad x` даёт положительный
-  obstruction-свидетель (`hBadToObs`), а reduction well-founded (`hReduce`), то любой bad закрывает
-  `Close`. Это `obs_closes`, применённый к извлечённому свидетелю.
+  **`mem_bad_closes_of_obstruction_reduction` — PROVED.** If `Bad x` yields a positive obstruction
+  witness (`hBadToObs`), and the reduction is well-founded (`hReduce`), then every bad point closes
+  `Close`. This is `obs_closes` applied to the extracted witness.
 
-  КЛЮЧЕВОЙ ВХОД `hBadToObs` — вот где живёт вся содержательность: он требует ПОЛОЖИТЕЛЬНОЙ
-  obstruction-структуры у `Bad`. Для `SNOL.bad` (counting-объект) такой структуры НЕТ. -/
+  KEY INPUT `hBadToObs` — this is where all the substance lives: it requires a POSITIVE
+  obstruction structure for `Bad`. For `SNOL.bad` (a counting object) such structure does NOT exist. -/
 theorem mem_bad_closes_of_obstruction_reduction {Obs Point : Type*}
     (Bad : Point → Prop) (rank : Obs → ℕ) (ObsAt : Obs → Point → Prop) (Close : Prop)
     (hBadToObs : ∀ {x : Point}, Bad x → ∃ obs : Obs, ObsAt obs x)
@@ -86,12 +89,12 @@ theorem mem_bad_closes_of_obstruction_reduction {Obs Point : Type*}
   obtain ⟨obs, hobs⟩ := hBadToObs hx
   exact obs_closes rank ObsAt Close hReduce hobs
 
-/-! ### §6. Абстрактная сборка carrier / good / bad -/
+/-! ### §6. Abstract assembly: carrier / good / bad -/
 
 /--
-  **`exists_close_of_nonempty_carrier_and_bad_engine` — ДОКАЗАНА (абстрактная сборка §6).** Если
-  carrier непуст, каждый carrier-point good или bad, good закрывает, а bad закрывается через
-  obstruction-engine, то для каждого `N` существует `A` с `CloseAt A N`. Чистая логика + `obs_closes`. -/
+  **`exists_close_of_nonempty_carrier_and_bad_engine` — PROVED (abstract assembly §6).** If the
+  carrier is nonempty, every carrier-point is good or bad, good closes, and bad closes via the
+  obstruction engine, then for every `N` there exists `A` with `CloseAt A N`. Pure logic + `obs_closes`. -/
 theorem exists_close_of_nonempty_carrier_and_bad_engine
     {Obs : ℕ → ℕ → Type*}
     (Carrier : ℕ → ℕ → ℕ → Prop) (Good : ℕ → ℕ → ℕ → Prop) (Bad : ℕ → ℕ → ℕ → Prop)
@@ -114,11 +117,11 @@ theorem exists_close_of_nonempty_carrier_and_bad_engine
       (Close := CloseAt A N)
       (fun {x} hx => hBadToObs hx) (fun {x obs} hobs => hReduce hobs) hBad
 
-/-! ### §7. Снятие engine-ветки под `¬Engine` -/
+/-! ### §7. Discharging the engine branch under `¬Engine` -/
 
 /--
-  **`goal_of_exists_close` — ДОКАЗАНА.** При `CloseAt := Engine ∨ (∃ t>N, Twin t)` и `¬Engine`,
-  `∃ A, CloseAt A N` даёт `∃ t>N, Twin t`. Чистая логика (разбор дизъюнкции). -/
+  **`goal_of_exists_close` — PROVED.** With `CloseAt := Engine ∨ (∃ t>N, Twin t)` and `¬Engine`,
+  `∃ A, CloseAt A N` gives `∃ t>N, Twin t`. Pure logic (disjunction case analysis). -/
 theorem goal_of_exists_close {Engine : ℕ → Prop} {Twin : ℕ → Prop} {N : ℕ}
     (hNoEngine : ∀ A, ¬ Engine A)
     (hClose : ∃ A, Engine A ∨ ∃ t, N < t ∧ Twin t) :
@@ -127,7 +130,7 @@ theorem goal_of_exists_close {Engine : ℕ → Prop} {Twin : ℕ → Prop} {N : 
   · exact absurd hE (hNoEngine A)
   · exact hT
 
-/-- **`goal_all_of_exists_close_all` — ДОКАЗАНА.** Версия для всех `N`. -/
+/-- **`goal_all_of_exists_close_all` — PROVED.** Version for all `N`. -/
 theorem goal_all_of_exists_close_all {Engine : ℕ → Prop} {Twin : ℕ → Prop}
     (hNoEngine : ∀ A, ¬ Engine A)
     (hCloseAll : ∀ N, ∃ A, Engine A ∨ ∃ t, N < t ∧ Twin t) :

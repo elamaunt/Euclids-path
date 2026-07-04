@@ -42,18 +42,18 @@ run_cmd do
           axTainted := axTainted.push (n, a)
           if !axNames.contains a then axNames := axNames.push a
   -- Human-readable report
-  logInfo m!"Проверено деклараций: {total}"
-  logInfo m!"Заражены sorryAx: {sorryTainted.size}"
+  logInfo m!"Declarations checked: {total}"
+  logInfo m!"Tainted by sorryAx: {sorryTainted.size}"
   for i in sorryTainted.qsort (·.toString < ·.toString) do
     logInfo m!"  SORRY-TAINTED: {i}"
-  logInfo m!"Заражены НЕСТАНДАРТНЫМИ аксиомами: {axTainted.size}"
+  logInfo m!"Tainted by NON-STANDARD axioms: {axTainted.size}"
   for (n, a) in axTainted.qsort (fun x y => x.1.toString < y.1.toString) do
     logInfo m!"  AXIOM-TAINTED: {n} ← {a}"
   -- Self-asserted invariants (fail the run on violation)
   if axNames.size != 1 then
-    throwError "ИНВАРИАНТ НАРУШЕН: ожидалась ровно ОДНА нестандартная аксиома, найдено {axNames.size}: {axNames}"
+    throwError "INVARIANT VIOLATED: expected exactly ONE non-standard axiom, found {axNames.size}: {axNames}"
   if !axNames[0]!.toString.endsWith "step00FirstCause" then
-    throwError "ИНВАРИАНТ НАРУШЕН: нестандартная аксиома не step00FirstCause: {axNames[0]!}"
+    throwError "INVARIANT VIOLATED: the non-standard axiom is not step00FirstCause: {axNames[0]!}"
   if sorryTainted.size != 1 || !sorryTainted[0]!.toString.endsWith "twin_prime_conjecture" then
-    throwError "ИНВАРИАНТ НАРУШЕН: sorryAx-заражена не только twin_prime_conjecture: {sorryTainted}"
-  logInfo m!"✔ ИНВАРИАНТЫ ОК: единственная нестандартная аксиома = {axNames[0]!}; sorryAx = {sorryTainted[0]!}"
+    throwError "INVARIANT VIOLATED: sorryAx-tainted set is not only twin_prime_conjecture: {sorryTainted}"
+  logInfo m!"✔ INVARIANTS OK: the only non-standard axiom = {axNames[0]!}; sorryAx = {sorryTainted[0]!}"

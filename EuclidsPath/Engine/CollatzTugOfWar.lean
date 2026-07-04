@@ -523,8 +523,110 @@ theorem second_bottom_carries_engine (n : Nat)
   nonHalting_carries_perpetual_engine n
     (fun K hK => by have := havoid K; omega)
 
+/-! ## ОПРОВЕРЖЕНИЕ УНИВЕРСАЛЬНОГО ЗАКОНА: n = 27 (канат НЕ перетягивает из старта)
+
+Счётный закон в prefix-форме ЛОЖЕН. У знаменито карабкающейся траектории n = 27
+(пик 4616) к единице ведут 41 нечётный шаг против 29 чётных, и разность
+`evenCount − oddCount` в окнах от позиции j = 0 никогда не становится
+положительной; хвост в поглощающем цикле 1→2→1 добавляет шаги парами
+(нечётный + чётный) и разницу не поднимает. Ядро проверяет префикс k ≤ 70
+вычислением (decide), хвост закрывает лемма цикла. Следствие: универсальная
+форма `∀ n ≥ 1, RopeCountingLaw n` — ложь. Декрет, который «возможно,
+переплачивал» (см. Engine/CollatzFirstCause), переплатил до лжи — растяжка
+сработала, четвёртая граница снята. Условная механика (`window_budget`,
+`reaches_one_of_countingLaw`) остаётся зелёной и верной: per-n закон для
+отдельных n (например, `countingLaw_4`) жив и влечёт остановку. -/
+
+/-- Аддитивность счётчика нечётных шагов по конкатенации окон. -/
+theorem oddCount_add (a b n : Nat) :
+    oddCount (a + b) n = oddCount a n + oddCount b (iter a n) := by
+  induction a generalizing n with
+  | zero =>
+      rw [Nat.zero_add]
+      show oddCount b n = 0 + oddCount b n
+      omega
+  | succ a ih =>
+      rw [Nat.succ_add]
+      show oddCount (a + b) (T n) + (if n % 2 = 0 then 0 else 1) =
+        (oddCount a (T n) + (if n % 2 = 0 then 0 else 1)) + oddCount b (iter a (T n))
+      rw [ih (T n)]
+      omega
+
+/-- Аддитивность счётчика чётных шагов по конкатенации окон. -/
+theorem evenCount_add (a b n : Nat) :
+    evenCount (a + b) n = evenCount a n + evenCount b (iter a n) := by
+  induction a generalizing n with
+  | zero =>
+      rw [Nat.zero_add]
+      show evenCount b n = 0 + evenCount b n
+      omega
+  | succ a ih =>
+      rw [Nat.succ_add]
+      show evenCount (a + b) (T n) + (if n % 2 = 0 then 1 else 0) =
+        (evenCount a (T n) + (if n % 2 = 0 then 1 else 0)) + evenCount b (iter a (T n))
+      rw [ih (T n)]
+      omega
+
+/-- **Лемма цикла:** в вакууме 1→2→1 канат никогда не перетягивает — окна от 1
+    дают `even ≤ odd`, окна от 2 — `even ≤ odd + 1` (шаги идут парами). -/
+theorem cycle_counts (m : Nat) :
+    evenCount m 1 ≤ oddCount m 1 ∧ evenCount m 2 ≤ oddCount m 2 + 1 := by
+  induction m with
+  | zero => exact ⟨Nat.le_refl 0, Nat.zero_le _⟩
+  | succ m ih =>
+      refine ⟨?_, ?_⟩
+      · show evenCount m 2 + 0 ≤ oddCount m 2 + 1
+        have := ih.2
+        omega
+      · show (evenCount m 1 + 1) ≤ (oddCount m 1 + 0) + 1
+        have := ih.1
+        omega
+
+set_option maxRecDepth 8000 in
+/-- Префикс траектории 27: до k = 70 включительно канат ни разу не перетянул
+    (машинная проверка ядром). -/
+theorem counts_le_70_at_27 : ∀ k < 71, evenCount k 27 ≤ oddCount k 27 := by decide
+
+set_option maxRecDepth 8000 in
+/-- Итог окна длины 70 от 27: 41 ход двигателя, 29 рывков каната, финиш в 1. -/
+theorem counts_at_70_at_27 :
+    oddCount 70 27 = 41 ∧ evenCount 70 27 = 29 ∧ iter 70 27 = 1 := by decide
+
+/-- Хвост: после входа в вакуум (k ≥ 70) дефицит каната −12 не отыгрывается. -/
+theorem counts_ge_70_at_27 (k : Nat) (hk : 70 ≤ k) :
+    evenCount k 27 ≤ oddCount k 27 := by
+  obtain ⟨m, rfl⟩ : ∃ m, k = 70 + m := ⟨k - 70, by omega⟩
+  have ho := oddCount_add 70 m 27
+  have he := evenCount_add 70 m 27
+  have h70 := counts_at_70_at_27
+  rw [h70.2.2] at ho he
+  have hc := (cycle_counts m).1
+  omega
+
+/-- **ОПРОВЕРЖЕНИЕ: `RopeCountingLaw 27` ложен.** Из позиции j = 0 (значение 27 > 2)
+    ни одно окно не даёт перевеса каната: префикс — вычислением, хвост — леммой
+    цикла. -/
+theorem not_ropeCountingLaw_27 : ¬ RopeCountingLaw 27 := by
+  intro h
+  obtain ⟨k, hk⟩ := h 0 (by decide)
+  have hk' : oddCount k 27 < evenCount k 27 := hk
+  by_cases hlt : k < 71
+  · have := counts_le_70_at_27 k hlt
+    omega
+  · have := counts_ge_70_at_27 k (by omega)
+    omega
+
+/-- **УНИВЕРСАЛЬНАЯ ФОРМА ЗАКОНА ОПРОВЕРГНУТА** — кованое опровержение для
+    трилеммы: `∀ n ≥ 1, RopeCountingLaw n` — ложь (свидетель n = 27). Декретная
+    граница на этом законе невозможна. -/
+theorem ropeLaw_universal_refuted :
+    ¬ ∀ n : Nat, 1 ≤ n → RopeCountingLaw n :=
+  fun h => not_ropeCountingLaw_27 (h 27 (by omega))
+
 /-! ## Аудит аксиом (choice-free ядро: [propext, Quot.sound];
     секция «Опровержение = двигатель» — стандартная тройка, em раскрыт выше) -/
+#print axioms not_ropeCountingLaw_27
+#print axioms ropeLaw_universal_refuted
 #print axioms window_budget
 #print axioms window_descends
 #print axioms reaches_one_of_valueLaw

@@ -1,0 +1,156 @@
+/-
+  PNPFirstCause — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ P/NP (зеркало CollatzFirstCause).
+  Разбор: prose/56_CollatzFirstCause.md (секция «P/NP за тем же горизонтом»).
+  Зелёная машина ранго-оплаты: Engine/PNPRankPaymentFront.lean.
+
+  ЧТО ЭТО. Проверяющая машина — «компьютер в чистом виде на конечном топливе» со
+  строгими правилами: это `RankedForwardGraph` (правила = `Step`, топливо = `lexRank`,
+  закон топлива = `RankFastTraversal`), стартующий из ПРОИЗВОЛЬНОЙ (случайной) позиции
+  (5-адическая цепь при A ≤ 4). «Решить P/NP изнутри» = оплатить инъективно конечным
+  ключом КАЖДЫЙ сертификат НЕОГРАНИЧЕННОЙ поставки (`FullRankCertificatePayment`
+  неограниченного `UnboundedCertificateSupply`). Это то же противоречие вечного
+  двигателя, что у Коллатца: «непадающий хвост = двигатель» ↦ «полная оплата
+  неограниченной поставки = двигатель». Оба гибнут об одну стену вполне-фундированности
+  (пижонхол = нет инъекции бесконечного в конечное = нет ℕ-спуска, `no_perpetual_engine_on_nat`).
+
+  ЧЕСТНОСТЬ. Это модель-внутренняя эпистемическая непознаваемость (как
+  `collatzCause_unknowable`), а НЕ доказательство классического P≠NP (фрейм-слой
+  пластичен — `allPFrame`/`constantsFrame`, из него о настоящем P/NP ничего не следует)
+  и НЕ Гёдель (это пижонхол-самоуничтожение, а не теорема о неполноте/неподвижной точке).
+  КЛЮЧЕВОЕ ОТЛИЧИЕ ОТ КОЛЛАТЦА: у P/NP декрета НЕТ — трилемма (`pnpLawUniversal_refuted`,
+  `pnpLawExistential_green`) машинно доказала, что честной третьей границы `step00FirstCause`
+  не существует. Поэтому весь этот файл ЗЕЛЁНЫЙ, БЕЗ импорта карантина, без `step00FirstCause`:
+  таинт репозитория НЕ меняется. Всё при A ≤ 4 (граница `PNPRankPaymentFront`).
+-/
+
+import EuclidsPath.Engine.PNPRankPaymentFront
+import EuclidsPath.Engine.UniversalEngine
+
+set_option autoImplicit false
+
+namespace EuclidsPath.PNPRankPayment.FirstCause
+
+open EuclidsPath.PNPRankPayment
+open EuclidsPath.LocalPNP
+open EuclidsPath.LocalPNP.Concrete
+open EuclidsPath.UniversalEngine
+
+/-! ## Модель: внутреннее решение = самообоснование за собственным горизонтом -/
+
+/-- **Внутреннее самообоснование решения P/NP на конечном топливе.** Машина
+    одновременно (a) ОПЛАЧИВАЕТ инъективно конечным ключом всю поставку сертификатов
+    (`resolves`) и (b) эта поставка НЕОГРАНИЧЕНА (`beyondOwnHorizon`). Форма содержательна
+    (не тавтология `P ∧ ¬P`): `beyondOwnHorizon` — зелёный факт неограниченности, а
+    противоречие поставляет пижонхол `no_fullPayment_of_unboundedSupply`. Это в точности
+    попытка «дотянуться взглядом» за собственный конечнотопливный горизонт. -/
+structure InternalisedPNPGround {G : RankedForwardGraph} (F : GenealogyFamily G) : Prop where
+  resolves : FullRankCertificatePayment F
+  beyondOwnHorizon : UnboundedCertificateSupply F
+
+/-- «Внутреннее знание причины P/NP» = внутреннее самообоснование решения. -/
+abbrev InternalKnowledgeOfPNPCause {G : RankedForwardGraph} (F : GenealogyFamily G) : Prop :=
+  InternalisedPNPGround F
+
+/-- Конкретная честная инстанция при A ≤ 4 (5-адическая цепь, без единой гипотезы). -/
+abbrev InternalPNPDecision (A : ℕ) : Prop := InternalisedPNPGround (concreteFamily A 1)
+
+/-! ## Ядро: самообоснование самоуничтожается = стена вечного двигателя (🟢) -/
+
+/-- Самообоснование самоуничтожается — ровно `fun H => H.beyondOwnHorizon H.ground`
+    Коллатца, только отрицание поставляет пижонхол. ЗЕЛЁНАЯ. -/
+theorem no_internalisedPNPGround {G : RankedForwardGraph} {F : GenealogyFamily G} :
+    InternalisedPNPGround F → False :=
+  fun H => no_fullPayment_of_unboundedSupply H.beyondOwnHorizon H.resolves
+
+/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable`,
+    twin-`cause_unknowable`): внутреннее конечнотопливное решение P/NP невозможно.
+    ЗЕЛЁНАЯ, вообще без аксиом. -/
+theorem pnpCause_unknowable {G : RankedForwardGraph} {F : GenealogyFamily G} :
+    ¬ InternalKnowledgeOfPNPCause F :=
+  no_internalisedPNPGround
+
+/-- **ТО ЖЕ ПРОТИВОРЕЧИЕ ВЕЧНОГО ДВИГАТЕЛЯ (зелёно):** невозможность внутреннего решения
+    P/NP И невозможность вечного двигателя на ℕ — ОДНА стена вполне-фундированности
+    (зеркало `UniversalEngine.discrete_forbids_continuous_realizes`: конечное топливо на
+    ℕ бутылочит спуск). Оплатить неограниченную поставку конечным ключом = впихнуть
+    бесконечный индекс в конечный = тот же ℕ-запрет. -/
+theorem internalPNPDecision_carries_perpetual_engine {G : RankedForwardGraph}
+    {F : GenealogyFamily G} :
+    (InternalisedPNPGround F → False) ∧ ¬ PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
+  ⟨no_internalisedPNPGround, no_perpetual_engine_on_nat⟩
+
+/-- Ex-falso companion («несёт двигатель»): из самообоснования (уже ложного) выводится и
+    сам вечный двигатель на ℕ — самообоснование взрывает всё. ЧЕСТНОСТЬ: маршрут ex falso;
+    несущая часть — сама невозможность (`no_internalisedPNPGround`). -/
+theorem internalisedPNPGround_builds_engine {G : RankedForwardGraph}
+    {F : GenealogyFamily G} :
+    InternalisedPNPGround F → PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
+  fun H => (no_internalisedPNPGround H).elim
+
+/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении): либо причина непознаваема
+    изнутри, либо неограниченная поставка полностью оплачиваема. Левый дизъюнкт — теорема. -/
+theorem unknowable_or_pnp_fullyPayable {A : ℕ} :
+    (¬ InternalKnowledgeOfPNPCause (concreteFamily A 1)) ∨
+      FullRankCertificatePayment (concreteFamily A 1) :=
+  Or.inl pnpCause_unknowable
+
+/-! ## Сводки: решение заперто за двигателем; проверка, а не вывод (🟢) -/
+
+/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» (зелёная; зеркало
+    `collatz_no_internal_decision_without_engine`):**
+    (1) ОПЛАТИТЬ ИЗНУТРИ неограниченную поставку = стена вечного двигателя (пижонхол,
+        `concrete_noFullPayment_smallScale`) — внутреннее решение невозможно;
+    (2) САМООБОСНОВАТЬ решение изнутри — самоуничтожается (`no_internalisedPNPGround`);
+    (3) единственный без-двигательный путь — ВНЕШНЯЯ ПРОВЕРКА: локальный P-успех влечёт
+        полную оплату (`concrete_localPSuccess_iff_fullPayment`), то есть решают проверкой,
+        а не внутренним выводом.
+    НЕ утверждается гёделевская независимость и НЕ P≠NP — только: оба внутренних решения
+    стоят вечного двигателя. -/
+theorem pnp_no_internal_decision_without_engine {A : ℕ} (hA : A ≤ 4) :
+    (FullRankCertificatePayment (concreteFamily A 1) → False) ∧
+    (InternalisedPNPGround (concreteFamily A 1) → False) ∧
+    (∀ M0 : ℕ, LocalPSuccess (concreteProblem A M0) →
+        FullRankCertificatePayment (concreteFamily A M0)) :=
+  ⟨concrete_noFullPayment_smallScale hA,
+   no_internalisedPNPGround,
+   fun M0 hP => (concrete_localPSuccess_iff_fullPayment A M0).mp hP⟩
+
+/-- **«ПРОВЕРКА, А НЕ ВЫВОД» (зеркало `collatz_verification_not_derivation`):**
+    (1) внутреннее решение P/NP непознаваемо (`pnpCause_unknowable`);
+    (2) оплатить неограниченную поставку изнутри невозможно — стена двигателя;
+    (3) значит решение доступно лишь ПРОВЕРКОЙ (локальный успех ⟹ полная оплата),
+        находимой ровно настолько далеко, насколько достаёт конечнотопливный горизонт. -/
+theorem pnp_verification_not_derivation {A : ℕ} (hA : A ≤ 4) :
+    (¬ InternalPNPDecision A) ∧
+    (FullRankCertificatePayment (concreteFamily A 1) → False) ∧
+    (∀ M0 : ℕ, LocalPSuccess (concreteProblem A M0) →
+        FullRankCertificatePayment (concreteFamily A M0)) :=
+  ⟨pnpCause_unknowable,
+   concrete_noFullPayment_smallScale hA,
+   fun M0 hP => (concrete_localPSuccess_iff_fullPayment A M0).mp hP⟩
+
+/-- Итоговый эпистемический статус P/NP-горизонта (зеркало
+    `collatz_locked_behind_engine_status`, но БЕЗ декрет-конъюнкта — у P/NP границы нет):
+    двигатель проезжает ранг быстро / поставка неограниченна / решить изнутри нельзя
+    (теорема) / полная оплата = стена двигателя (теорема). ЗЕЛЁНАЯ целиком. -/
+theorem pnp_locked_behind_engine_status {A : ℕ} (hA : A ≤ 4) :
+    RankFastTraversal (concreteGraph A 1) ∧
+    UnboundedCertificateSupply (concreteFamily A 1) ∧
+    (¬ InternalPNPDecision A) ∧
+    (FullRankCertificatePayment (concreteFamily A 1) → False) :=
+  ⟨concrete_rankFastTraversal A 1,
+   concreteSupply_unbounded_smallScale hA,
+   pnpCause_unknowable,
+   concrete_noFullPayment_smallScale hA⟩
+
+/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
+#print axioms no_internalisedPNPGround
+#print axioms pnpCause_unknowable
+#print axioms internalPNPDecision_carries_perpetual_engine
+#print axioms internalisedPNPGround_builds_engine
+#print axioms unknowable_or_pnp_fullyPayable
+#print axioms pnp_no_internal_decision_without_engine
+#print axioms pnp_verification_not_derivation
+#print axioms pnp_locked_behind_engine_status
+
+end EuclidsPath.PNPRankPayment.FirstCause

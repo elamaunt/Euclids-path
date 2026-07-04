@@ -18,6 +18,7 @@ authors:
   - family-names: Galieva
     given-names: "L. R."
     affiliation: "Independent researcher"
+    orcid: "https://orcid.org/0009-0009-8656-6040"
 repository-code: "https://github.com/elamaunt/Euclids-path"
 url: "https://elamaunt.github.io/Euclids-path/"
 license: Apache-2.0

@@ -14,9 +14,9 @@ green except for a two-declaration coda; the entire green half is bundled by the
 Proper time is played by \code{lexRank}, the lexicographic rank of a state --- not chosen but
 computed, and strictly decreasing along every edge.
 
-\begin{theorem}[\code{timeArrow\_step}]\label{thm:timeArrow_step}
-\green{} Every real step strictly decreases the rank: $\mathrm{RealStep}\ A\ M_0\ U\ V$ implies
-$\code{lexRank}\,V < \code{lexRank}\,U$.
+\begin{theorem}[the arrow of time]\label{thm:timeArrow_step}
+\green{}\ Every real step strictly decreases the rank: $\mathrm{RealStep}\ A\ M_0\ U\ V$ implies
+$\code{lexRank}\,V < \code{lexRank}\,U$. \leantag{timeArrow\_step}
 \end{theorem}
 
 \emph{Proof idea.} A re-export of the carrying theorem of the concrete graph: each of the four step
@@ -26,9 +26,9 @@ no state is reachable from itself (\code{no\_return}), and no infinite run exist
 (\code{no\_eternal\_run}, a direct consequence of the root EPMI \code{no\_infinite\_descent},
 \cref{sec:engine}).
 
-\begin{theorem}[\code{every\_journey\_halts}]\label{thm:every_journey_halts}
-\green{} Every journey halts no later than the initial rank: $k$ real steps are possible only when
-$k \le \code{lexRank}\,(\mathrm{run}\,0)$.
+\begin{theorem}[every journey halts]\label{thm:every_journey_halts}
+\green{}\ Every journey halts no later than the initial rank: $k$ real steps are possible only when
+$k \le \code{lexRank}\,(\mathrm{run}\,0)$. \leantag{every\_journey\_halts}
 \end{theorem}
 
 \emph{Proof idea.} The qualified ``second law'', carried through
@@ -41,12 +41,13 @@ exact numerical bound.
 We have no metric, only edges; but a directed graph carries a combinatorial curvature that can be
 computed.
 
-\begin{definition}[\code{curvature}]\label{def:curvature}
+\begin{definition}[combinatorial curvature]\label{def:curvature}
 The curvature of a vertex is the integer
 \begin{equation}\label{eq:curvature}
 \kappa(v) = 1 - \operatorname{outdeg}(v),
 \end{equation}
 where $\operatorname{outdeg}$ is the number of geodesic segments leaving $v$ downward.
+\leantag{curvature}
 \end{definition}
 
 This is \emph{combinatorial} curvature --- the deficit or excess of outgoing geodesic flow, an
@@ -56,9 +57,10 @@ theory. Within that sense it is honest: the out-set of each vertex is exhibited 
 and proven to coincide with \code{RealStep} (\code{mem\_outTargets}), so $\operatorname{outdeg}$
 counts real edges. That the curvature must look forward is itself a theorem.
 
-\begin{theorem}[\code{inDegree\_infinite\_at\_origin}]\label{thm:inDegree_infinite_at_origin}
-\green{} An infinite family of edges flows into the origin \code{absorber 0}: every defect
+\begin{theorem}[infinite in-degree at the origin]\label{thm:inDegree_infinite_at_origin}
+\green{}\ An infinite family of edges flows into the origin \code{absorber 0}: every defect
 $\mathrm{defect}\ 0\ q\ \mathrm{minus}$, over all $q$, flows into the grave of zero.
+\leantag{inDegree\_infinite\_at\_origin}
 \end{theorem}
 
 \emph{Proof idea.} An absorb-edge into \code{absorber 0} requires only $0 \le M_0$, and there are
@@ -71,16 +73,17 @@ portrait of the world. Absorbers carry $\kappa = +1$ (\code{curvature\_absorber}
 flow dies out and geodesics focus. Single-exit defects are flat corridors $\kappa = 0$
 (\code{curvature\_defect\_0\_2}, \code{curvature\_defect\_6\_5}). The defect $(4,5,+)$, with both a
 peel and an absorb, branches at $\kappa = -1$ (\code{curvature\_defect\_4\_5}). Clean centres are
-ever more hyperbolic funnels: $\kappa = -3, -4, -8$ at centres $2, 3, 7$ (\code{curvature\_center\_2},
-\code{curvature\_center\_3}, \code{curvature\_center\_7}). The genealogy is hyperbolic; the bottom is
+ever more hyperbolic funnels: $\kappa = -3, -4, -8$ at centres $2, 3, 7$, one per-centre lemma each
+(\code{curvature\_center\_2} and its siblings). The genealogy is hyperbolic; the bottom is
 spherical. A discrete Gauss--Bonnet draws the picture together.
 
-\begin{theorem}[\code{gaussBonnet\_cone3}]\label{thm:gaussBonnet_cone3}
-\green{} On the forward-closed light cone under centre $3$ the total curvature equals the Euler
+\begin{theorem}[discrete Gauss--Bonnet on the cone]\label{thm:gaussBonnet_cone3}
+\green{}\ On the forward-closed light cone under centre $3$ the total curvature equals the Euler
 characteristic:
 \begin{equation}\label{eq:gaussBonnet}
 \chi(\mathrm{cone3}) = \textstyle\sum \kappa = -5.
 \end{equation}
+\leantag{gaussBonnet\_cone3}
 \end{theorem}
 
 \emph{Proof idea.} The combinatorial identity $\sum\kappa = |W| - \sum\operatorname{outdeg}$
@@ -96,10 +99,10 @@ is computed exactly, by the kernel, without assumption.
 Could the space have been flat everywhere, $\kappa \equiv 0$? It could not, and the reason is the
 programme's central prohibition.
 
-\begin{theorem}[\code{nonpositive\_curvature\_forces\_engine}]\label{thm:nonpositive_curvature_forces_engine}
-\green{} If the curvature were nowhere positive ($\forall v,\ \kappa(v) \le 0$), a step would lead out
+\begin{theorem}[a flat world is a perpetual engine]\label{thm:nonpositive_curvature_forces_engine}
+\green{}\ If the curvature were nowhere positive ($\forall v,\ \kappa(v) \le 0$), a step would lead out
 of every vertex, iterating the choice would build an infinite run --- the forbidden perpetual engine.
-Such a world does not exist.
+Such a world does not exist. \leantag{nonpositive\_curvature\_forces\_engine}
 \end{theorem}
 
 \emph{Proof idea.} $\kappa(v) \le 0$ means $\operatorname{outdeg}(v) \ge 1$: every vertex has a
@@ -107,8 +110,9 @@ continuation (\code{hasStep\_of\_curvature\_nonpos}). If this holds everywhere, 
 continuations into an infinite geodesic --- exactly Euclid's perpetual engine, killed by
 \code{no\_eternal\_run}.
 
-\begin{theorem}[\code{space\_positively\_curved\_somewhere}]\label{thm:space_positively_curved_somewhere}
-\green{} The space of Euclid's path is positively curved somewhere: $\exists v,\ 0 < \kappa(v)$.
+\begin{theorem}[positive curvature somewhere]\label{thm:space_positively_curved_somewhere}
+\green{}\ The space of Euclid's path is positively curved somewhere: $\exists v,\ 0 < \kappa(v)$.
+\leantag{space\_positively\_curved\_somewhere}
 \end{theorem}
 
 Curvature is forced, not decorative: a positively curved point (a pole, a bottom, an absorber) is
@@ -122,17 +126,18 @@ closedness are two faces of one forbidden machine.
 Define a \emph{straight line} as Euclid did: a maximal descent path, extended as long as there is
 anywhere to step.
 
-\begin{theorem}[\code{every\_line\_ends}]\label{thm:every_line_ends}
-\green{} Every straight line runs into a terminal: from any state, in finitely many steps one reaches
-a vertex with no exit.
+\begin{theorem}[every line ends]\label{thm:every_line_ends}
+\green{}\ Every straight line runs into a terminal: from any state, in finitely many steps one reaches
+a vertex with no exit. \leantag{every\_line\_ends}
 \end{theorem}
 
 \emph{Proof idea.} Strong induction on proper time $\code{lexRank}\,v$: if $v$ is terminal the path
 is empty; otherwise the first step strictly drops the rank (the arrow of time,
 \cref{thm:timeArrow_step}) and the tail is finite by hypothesis.
 
-\begin{theorem}[\code{no\_infinite\_line}]\label{thm:no_infinite_line}
-\green{} There are no infinite straight lines at all: no line can be extended without bound.
+\begin{theorem}[no infinite line]\label{thm:no_infinite_line}
+\green{}\ There are no infinite straight lines at all: no line can be extended without bound.
+\leantag{no\_infinite\_line}
 \end{theorem}
 
 Here is the irony of the programme. ``A straight line can be extended without bound'' is Euclid's
@@ -143,12 +148,12 @@ extendability of a line. There are no parallels either (\code{no\_parallel\_line
 degenerate reason: parallels are two infinite lines, and not even one exists. One must be scrupulous:
 this is a degenerate geometry, not an elliptic one. The naive ``all lines meet'' is false.
 
-\begin{theorem}[\code{bottom\_not\_unique}, \code{two\_disjoint\_lines}]\label{thm:two_disjoint_lines}
-\green{} The bottom is not unique --- \code{absorber 0} and \code{absorber 1} are both legal and
+\begin{theorem}[the bottom is not unique; two disjoint lines]\label{thm:two_disjoint_lines}
+\green{}\ The bottom is not unique --- \code{absorber 0} and \code{absorber 1} are both legal and
 terminal; and there exist two entirely disjoint finite lines (at $(5,4)$: the route
 $\mathrm{center}\,7 \to \mathrm{defect}\,4\,5\,\mathrm{plus} \to \mathrm{absorber}\,4$ and the route
 $\mathrm{center}\,3 \to \mathrm{defect}\,0\,2\,\mathrm{minus} \to \mathrm{absorber}\,0$), all nine
-states of which are pairwise distinct.
+states of which are pairwise distinct. \leantag{bottom\_not\_unique,\ two\_disjoint\_lines}
 \end{theorem}
 
 So ``all lines converge at a single point'', taken head-on, is untrue: there are two distinct meeting
@@ -160,9 +165,10 @@ points and pairs of lines that meet nowhere. Reading the fall of the second post
 There is nonetheless an honest, qualified form of meeting, passing through the single special point of
 the graph.
 
-\begin{theorem}[\code{zeroPoint\_absorbs\_all\_divisors}]\label{thm:zeroPoint_absorbs_all_divisors}
-\green{} The point $0$ absorbs all divisors: $\mathrm{sideValue}\ \mathrm{minus}\ 0 = 6\cdot 0 - 1 = 0$
+\begin{theorem}[zero absorbs all divisors]\label{thm:zeroPoint_absorbs_all_divisors}
+\green{}\ The point $0$ absorbs all divisors: $\mathrm{sideValue}\ \mathrm{minus}\ 0 = 6\cdot 0 - 1 = 0$
 in $\mathbb{N}$, and everything divides zero; hence every $q$ divides the side of zero.
+\leantag{zeroPoint\_absorbs\_all\_divisors}
 \end{theorem}
 
 This is at once an artefact and a marker. An artefact, because truncated subtraction in $\mathbb{N}$
@@ -171,24 +177,24 @@ gives $6\cdot 0 - 1 = 0$, whereas in $\mathbb{Z}$ it would be $-1$; we do not cl
 sides absorb all divisors at once, the $\mathbb{N}$-trace of the event $0 \to 1$ from the first
 cause --- the beginning of the arrow of time.
 
-\begin{theorem}[\code{line\_to\_origin}]\label{thm:line_to_origin}
-\green{} From any clean centre $m \ge 1$ (given $2 \le A$) there is a path of length $2$ into the
+\begin{theorem}[a line to the origin]\label{thm:line_to_origin}
+\green{}\ From any clean centre $m \ge 1$ (given $2 \le A$) there is a path of length $2$ into the
 grave of zero: a boundary step into the defect $(0,2,-)$ --- legal since $2 \mid 0$ --- then an absorb
-into \code{absorber 0}.
+into \code{absorber 0}. \leantag{line\_to\_origin}
 \end{theorem}
 
-\begin{theorem}[\code{web\_above\_every\_horizon}]\label{thm:web_above_every_horizon}
-\green{} For $2 \le A$ and any $N$ there exists a clean centre $m > N$ whose path leads into the grave
-of zero.
+\begin{theorem}[a web above every horizon]\label{thm:web_above_every_horizon}
+\green{}\ For $2 \le A$ and any $N$ there exists a clean centre $m > N$ whose path leads into the grave
+of zero. \leantag{web\_above\_every\_horizon}
 \end{theorem}
 
 \emph{Proof idea.} No density is needed: the primorial carrier \code{Residuals.carrier\_nonempty\_above}
 exhibits a clean centre above any bound (\cref{sec:carrier}), and \code{clean\_of\_cleanZ} transfers
 its cleanness from $\mathbb{Z}$ to $\mathbb{N}$.
 
-\begin{theorem}[\code{lines\_meet\_at\_origin}]\label{thm:lines_meet_at_origin}
-\green{} Any two clean starts (given $2 \le A$) share a common terminal --- the grave of zero,
-\code{absorber 0}.
+\begin{theorem}[all lines meet at the origin]\label{thm:lines_meet_at_origin}
+\green{}\ Any two clean starts (given $2 \le A$) share a common terminal --- the grave of zero,
+\code{absorber 0}. \leantag{lines\_meet\_at\_origin}
 \end{theorem}
 
 Not ``a unique meeting point'' and not ``any two paths intersect'', but: any pair of clean lines has a
@@ -202,9 +208,10 @@ Everything above is green; the coda carries exactly two declarations tainted not
 but through the already accepted causal boundary of the twins
 (\code{twinLowersInfinite\_from\_step00CausalClosure}), translated into the language of vertices.
 
-\begin{theorem}[\code{twin\_vertices\_beyond\_every\_horizon}]\label{thm:twin_vertices_beyond_every_horizon}
-\yellow{} Above every horizon there is a twin vertex: for any $N$ there exists a twin centre $m > N$
+\begin{theorem}[twin vertices beyond every horizon]\label{thm:twin_vertices_beyond_every_horizon}
+\yellow{}\ Above every horizon there is a twin vertex: for any $N$ there exists a twin centre $m > N$
 both of whose sides $6m \pm 1$ are prime. Conditional on \axiom{}.
+\leantag{twin\_vertices\_beyond\_every\_horizon}
 \end{theorem}
 
 \emph{Proof idea.} The bridge \code{twinCenter\_of\_twinLower} (itself green, axiom-free) shows, by a
@@ -213,19 +220,20 @@ twin centre $m$; the infinitude of the twin lowers is exactly the accepted bound
 content: the same first cause that holds the infinitude of the twins is here merely fitted onto the
 vertices.
 
-\begin{theorem}[\code{lines\_meet\_but\_unknowable\_from\_inside}]\label{thm:lines_meet_but_unknowable_from_inside}
-\yellow{} In four facts: (1) the fact of the meeting is green; (2) twin vertices exist above every
+\begin{theorem}[the meeting exists but cannot be known from inside]\label{thm:lines_meet_but_unknowable_from_inside}
+\yellow{}\ In four facts: (1) the fact of the meeting is green; (2) twin vertices exist above every
 horizon (this line carries the taint); (3) there is no internal ground for the fact of the meeting;
 (4) were there one, it would be a forbidden Euclid engine.
+\leantag{lines\_meet\_but\_unknowable\_from\_inside}
 \end{theorem}
 
-\emph{Proof idea.} The meeting fact \code{IntersectionFact} is proven green
+\emph{Proof idea.} The fact of the meeting is proven green
 (\code{intersectionFact\_green}: the common terminal is the grave of zero). But deriving it as an
-internal first cause of the \code{Step00} world --- \code{InternalisedIntersectionGround} --- is by
+internal first cause of the \code{Step00} world is by
 architecture a boundary-crossing self-proof, the forbidden engine. It does not exist
 (\code{no\_internalisedIntersectionGround}, green), and to know it from inside would be to build an
 engine (\code{knowing\_meeting\_costs\_engine}). Moreover this internal ground is tautological ---
-equivalent to $P \wedge \neg P$ (\code{internalisedIntersectionGround\_iff}) --- so all substantive
+equivalent to $P \wedge \neg P$ --- so all substantive
 content lives in the green fact. The lines meet, but this cannot be known from inside: the geometric
 fact is green; its internal grounding costs a perpetual engine.
 

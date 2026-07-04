@@ -1,0 +1,209 @@
+\appendix
+\section{Index of formal declarations}\label{sec:appendix-lean}
+
+Every numbered statement above carries, as a compact \code{(Lean: \dots)} tag, the name
+of the machine-verified declaration that backs it. The table below inverts that map:
+it lists each result by its number and the exact Lean identifier, so a reader can locate
+any statement in the source (\url{https://github.com/elamaunt/Euclids-path}) and re-check
+it with \code{lake env lean scripts/VerifyAll.lean}.
+
+\begingroup
+\small
+\setlength{\LTleft}{0pt}\setlength{\LTright}{0pt}
+\begin{longtable}{@{}p{0.13\textwidth}p{0.20\textwidth}p{0.60\textwidth}@{}}
+\toprule
+\textbf{No.} & \textbf{Kind} & \textbf{Lean declaration}\\
+\midrule\endfirsthead
+\toprule \textbf{No.} & \textbf{Kind} & \textbf{Lean declaration}\\ \midrule\endhead
+\bottomrule\endfoot
+\ref{thm:DescentStep} & Definition & \code{DescentStep}\\
+\ref{thm:descent_strict} & Lemma & \code{descent\_strict}\\
+\ref{thm:no_infinite_descent} & Theorem & \code{no\_infinite\_descent}\\
+\ref{thm:State} & Definition & \code{State}\\
+\ref{thm:no_perpetual_engine} & Theorem & \code{no\_perpetual\_engine}\\
+\ref{thm:boundary_dichotomy} & Theorem & \code{boundary\_dichotomy}\\
+\ref{thm:engine_never_returns} & Theorem & \code{engine\_never\_returns}\\
+\ref{thm:fuel_ascent_strictMono} & Theorem & \code{fuel\_ascent\_strictMono}\\
+\ref{thm:turned_engine_halts} & Theorem & \code{turned\_engine\_halts}\\
+\ref{thm:PerpetualEngine} & Definition & \code{PerpetualEngine}\\
+\ref{thm:perpetualEngine_iff_not_wellFounded} & Theorem & \code{perpetualEngine\_iff\_not\_wellFounded}\\
+\ref{thm:no_perpetual_engine_of_wellFounded} & Theorem & \code{no\_perpetual\_engine\_of\_wellFounded}\\
+\ref{thm:no_perpetual_engine_of_rank} & Theorem & \code{no\_perpetual\_engine\_of\_rank}\\
+\ref{thm:perpetualEngine_on_real} & Theorem & \code{perpetualEngine\_on\_real}\\
+\ref{thm:twin_sides_shared_dvd_two} & Theorem & \code{twin\_sides\_shared\_dvd\_two}\\
+\ref{thm:no_large_shared_divisor} & Theorem & \code{no\_large\_shared\_divisor}\\
+\ref{thm:det_law_rank33} & Theorem & \code{det\_law\_rank33}\\
+\ref{thm:det_law_CD} & Theorem & \code{det\_law\_CD}\\
+\ref{thm:det_collapse} & Theorem & \code{det\_collapse}\\
+\ref{thm:euclid_descent_identity} & Theorem & \code{euclid\_descent\_identity}\\
+\ref{thm:small_det_collapse} & Theorem & \code{small\_det\_collapse}\\
+\ref{thm:two_carry_opposite} & Theorem & \code{two\_carry\_opposite}\\
+\ref{thm:no_small_divisor} & Theorem & \code{no\_small\_divisor}\\
+\ref{thm:obstruction_on_opposite} & Theorem & \code{obstruction\_on\_opposite}\\
+\ref{thm:exclusive_diag_zero} & Theorem & \code{exclusive\_diag\_zero}\\
+\ref{thm:exclusive_no_backward} & Theorem & \code{exclusive\_no\_backward}\\
+\ref{def:istwincenter} & Definition & \code{IsTwinCenter}\\
+\ref{thm:survivor_of_not_covered} & Theorem & \code{survivor\_of\_not\_covered}\\
+\ref{thm:prime_of_no_small_prime_factor} & Theorem & \code{prime\_of\_no\_small\_prime\_factor}\\
+\ref{thm:isTwinCenter_of_root_sieve} & Theorem & \code{isTwinCenter\_of\_root\_sieve}\\
+\ref{thm:infinite_of_unbounded_centers} & Theorem & \code{infinite\_of\_unbounded\_centers}\\
+\ref{thm:twin_center_of_block} & Theorem & \code{twin\_center\_of\_block}\\
+\ref{thm:twin_prime_conjecture_of_blocks} & Theorem & \code{twin\_prime\_conjecture\_of\_blocks}\\
+\ref{thm:twin_primes_of_four_corner} & Theorem & \code{twin\_primes\_of\_four\_corner}\\
+\ref{thm:twin_finite_contradiction} & Theorem & \code{twin\_finite\_contradiction}\\
+\ref{thm:shifted_primorial_bound} & Theorem & \code{shifted\_primorial\_bound}\\
+\ref{thm:twin_primes_of_SNOL} & Theorem & \code{twin\_primes\_of\_SNOL}\\
+\ref{thm:old_peel_height_drop} & Theorem & \code{old\_peel\_height\_drop}\\
+\ref{thm:no_infinite_old_peel} & Theorem & \code{no\_infinite\_old\_peel}\\
+\ref{def:oldpeelledger} & Definition & \code{OldPeelLedger}\\
+\ref{thm:twin_primes_of_nopsl} & Theorem & \code{twin\_primes\_of\_nopsl}\\
+\ref{thm:regeneration_dichotomy} & Theorem & \code{regeneration\_dichotomy}\\
+\ref{thm:sink_is_twin} & Theorem & \code{sink\_is\_twin}\\
+\ref{thm:clean_center_outcome} & Theorem & \code{clean\_center\_outcome}\\
+\ref{thm:global_absorber_forces_engine} & Theorem & \code{global\_absorber\_forces\_engine}\\
+\ref{thm:reaches_twin} & Theorem & \code{reaches\_twin}\\
+\ref{thm:cofactor_is_center} & Theorem & \code{cofactor\_is\_center}\\
+\ref{thm:no_productHall} & Theorem & \code{no\_productHall}\\
+\ref{thm:core_step_proved} & Theorem & \code{core\_step\_proved}\\
+\ref{thm:product_core_engine_of_carrier} & Theorem & \code{product\_core\_engine\_of\_carrier}\\
+\ref{thm:mkNode_of_composite} & Theorem & \code{mkNode\_of\_composite}\\
+\ref{thm:cleanCenters_infinite} & Theorem & \code{cleanCenters\_infinite}\\
+\ref{thm:engine_of_carrier_and_factorize} & Theorem & \code{engine\_of\_carrier\_and\_factorize}\\
+\ref{conj:globaloldabsorption} & Conjecture & \code{GlobalOldAbsorption}\\
+\ref{thm:no_internalSelfDerivation_step00CausalClosure} & Theorem & \code{no\_internalSelfDerivation\_step00CausalClosure}\\
+\ref{thm:no_internalisedHorizonBoundary} & Theorem & \code{no\_internalisedHorizonBoundary}\\
+\ref{def:step00FirstCause} & Definition & \code{Step00FirstCause}\\
+\ref{thm:step00FirstCause_iff_causalClosure} & Theorem & \code{step00FirstCause\_iff\_causalClosure}\\
+\ref{thm:twinLowersInfinite_from_step00CausalClosure} & Theorem & \code{twinLowersInfinite\_from\_step00CausalClosure}\\
+\ref{thm:nonAxiomaticRemainingObligation_iff_lastStep00Obligation} & Theorem & \code{nonAxiomaticRemainingObligation\_iff\_lastStep00Obligation}\\
+\ref{thm:cause_unknowable} & Theorem & \code{cause\_unknowable}\\
+\ref{thm:twins_infinite_of_noEngine_and_boundary} & Theorem & \code{twins\_infinite\_of\_noEngine\_and\_boundary}\\
+\ref{thm:twins_because_unknowable} & Theorem & \code{twins\_because\_unknowable}\\
+\ref{thm:two_walls_one_nature} & Theorem & \code{two\_walls\_one\_nature}\\
+\ref{thm:higherEnergyIncompatibility_main} & Theorem & \code{higherEnergyIncompatibility\_main}\\
+\ref{thm:higherEnergyIncompatibility_twins} & Corollary & \code{higherEnergyIncompatibility\_twins}\\
+\ref{def:NontrivialZeroM} & Definition & \code{NontrivialZeroM}\\
+\ref{def:EngineBridge} & Definition & \code{EngineBridge}\\
+\ref{thm:riemannHypothesis_of_engine_bridge} & Theorem & \code{riemannHypothesis\_of\_engine\_bridge}\\
+\ref{thm:not_RH_gives_engine} & Theorem & \code{not\_RH\_gives\_engine}\\
+\ref{def:TwoTransportLaw} & Definition & \code{TwoTransportLaw}\\
+\ref{thm:twoTransportLaw_holds} & Theorem & \code{twoTransportLaw\_holds}\\
+\ref{def:TwoTransportBridge} & Definition & \code{TwoTransportBridge}\\
+\ref{thm:riemannHypothesis_of_two_transport} & Theorem & \code{riemannHypothesis\_of\_two\_transport}\\
+\ref{def:LiouvilleBound} & Definition & \code{LiouvilleBound}\\
+\ref{def:LiouvilleRHBridge} & Definition & \code{LiouvilleRHBridge}\\
+\ref{thm:riemann_of_liouville_bound} & Theorem & \code{riemann\_of\_liouville\_bound}\\
+\ref{thm:liouville_eq_neg_one_pow_rank} & Theorem & \code{liouville\_eq\_neg\_one\_pow\_rank}\\
+\ref{thm:liouville_flip_of_mul_prime} & Theorem & \code{liouville\_flip\_of\_mul\_prime}\\
+\ref{thm:trivialBelowZeroClassification} & Theorem & \code{trivialBelowZeroClassification}\\
+\ref{thm:coherentTwoTransportBridge_iff_RH} & Theorem & \code{coherentTwoTransportBridge\_iff\_RH}\\
+\ref{def:DeviationFlowSupply} & Definition & \code{DeviationFlowSupply}\\
+\ref{thm:no_deviationFlowSupply_at_resolved_scale} & Theorem & \code{no\_deviationFlowSupply\_at\_resolved\_scale}\\
+\ref{thm:riemannHypothesis_of_manifestation_and_boundary} & Theorem & \code{riemannHypothesis\_of\_manifestation\_and\_boundary}\\
+\ref{thm:riemannHypothesis_from_firstCause} & Theorem & \code{riemannHypothesis\_from\_firstCause}\\
+\ref{thm:riemannManifestation_asserts_RH} & Theorem & \code{riemannManifestation\_asserts\_RH}\\
+\ref{thm:no_internalisedRiemannGround} & Theorem & \code{no\_internalisedRiemannGround}\\
+\ref{def:pnp-sides} & Definition & \code{RankFastTraversal / FullRankCertificatePayment}\\
+\ref{thm:rankFastTraversal_holds} & Theorem & \code{rankFastTraversal\_holds}\\
+\ref{thm:no_fullPayment_of_unboundedSupply} & Theorem & \code{no\_fullPayment\_of\_unboundedSupply}\\
+\ref{thm:concreteSupply_unbounded_smallScale} & Theorem & \code{concreteSupply\_unbounded\_smallScale}\\
+\ref{thm:concrete_noFullPayment_smallScale} & Corollary & \code{concrete\_noFullPayment\_smallScale}\\
+\ref{thm:concrete_localPSuccess_iff_fullPayment} & Theorem & \code{concrete\_localPSuccess\_iff\_fullPayment}\\
+\ref{thm:pnp_rank_separation_smallScale} & Theorem & \code{pnp\_rank\_separation\_smallScale}\\
+\ref{thm:pnpLaw_asserts_separation} & Proposition & \code{pnpLaw\_asserts\_separation}\\
+\ref{thm:pnpCause_unknowable} & Theorem & \code{pnpCause\_unknowable}\\
+\ref{thm:not_massGap_iff_gapless} & Theorem & \code{not\_massGap\_iff\_gapless}\\
+\ref{thm:gapless_iff_nonempty_ladder} & Theorem & \code{gapless\_iff\_nonempty\_ladder}\\
+\ref{def:QuantizationLaw} & Definition & \code{QuantizationLaw}\\
+\ref{thm:no_quantizedLadder} & Theorem & \code{no\_quantizedLadder}\\
+\ref{thm:massGap_of_quantizationLaw} & Theorem & \code{massGap\_of\_quantizationLaw}\\
+\ref{thm:quantizationLaw_iff_massGap} & Theorem & \code{quantizationLaw\_iff\_massGap}\\
+\ref{thm:isEmpty_unpaidDescentChain} & Theorem & \code{isEmpty\_unpaidDescentChain}\\
+\ref{thm:hodgeProperty_of_descentLaw} & Theorem & \code{hodgeProperty\_of\_descentLaw}\\
+\ref{thm:no_unpaid_lawful_model} & Theorem & \code{no\_unpaid\_lawful\_model}\\
+\ref{thm:descentLaw_iff_hodgeProperty} & Theorem & \code{descentLaw\_iff\_hodgeProperty}\\
+\ref{thm:hodgeChainManifestationLaw_green} & Theorem & \code{hodgeChainManifestationLaw\_green}\\
+\ref{thm:hodgeManifestationLaw_refutes_boundary} & Theorem & \code{hodgeManifestationLaw\_refutes\_boundary}\\
+\ref{thm:hodgeCause_unknowable} & Theorem & \code{hodgeCause\_unknowable}\\
+\ref{thm:hodge_locked_behind_engine_status} & Theorem & \code{hodge\_locked\_behind\_engine\_status}\\
+\ref{def:IsNSSolution} & Definition & \code{IsNSSolution}\\
+\ref{thm:zero_is_NSSolution} & Theorem & \code{zero\_is\_NSSolution}\\
+\ref{thm:kineticEnergy_of_not_integrable} & Theorem & \code{kineticEnergy\_of\_not\_integrable}\\
+\ref{thm:twoTimeEnergyInequality_of_energyBalance} & Theorem & \code{twoTimeEnergyInequality\_of\_energyBalance}\\
+\ref{thm:ns_no_infinite_dissipative_cascade} & Theorem & \code{ns\_no\_infinite\_dissipative\_cascade}\\
+\ref{thm:real_positive_work_not_wellfounded} & Theorem & \code{real\_positive\_work\_not\_wellfounded}\\
+\ref{thm:energy_identity_of_energyBalance} & Theorem & \code{energy\_identity\_of\_energyBalance}\\
+\ref{thm:noSingularCascade_of_energyBalance} & Theorem & \code{noSingularCascade\_of\_energyBalance}\\
+\ref{thm:noSingularCascade_of_r3Assembly} & Theorem & \code{noSingularCascade\_of\_r3Assembly}\\
+\ref{thm:clayA_of_regularityTransfer_and_vorticityControl} & Theorem & \code{clayA\_of\_regularityTransfer\_and\_vorticityControl}\\
+\ref{thm:greenBudget_strictly_weaker_than_vorticityControl} & Theorem & \code{greenBudget\_strictly\_weaker\_than\_vorticityControl}\\
+\ref{thm:superlinear_blowup_sq} & Theorem & \code{superlinear\_blowup\_sq}\\
+\ref{thm:dyadic_blowup} & Theorem & \code{dyadic\_blowup}\\
+\ref{thm:frontDrive_of_invariant} & Theorem & \code{frontDrive\_of\_invariant}\\
+\ref{thm:dyadicBlowup_is_firstCauseManifestation} & Theorem & \code{dyadicBlowup\_is\_firstCauseManifestation}\\
+\ref{thm:mersenne_eq_sixCenter_add_one} & Theorem & \code{mersenne\_eq\_sixCenter\_add\_one}\\
+\ref{thm:isTwinCenter_mersenneCenter_iff} & Theorem & \code{isTwinCenter\_mersenneCenter\_iff}\\
+\ref{thm:twinLowersInfinite_of_mersenneTwins} & Theorem & \code{twinLowersInfinite\_of\_mersenneTwins}\\
+\ref{thm:mersenneRefutation_carries_engine} & Theorem & \code{mersenneRefutation\_carries\_engine}\\
+\ref{thm:mersenneManifestationLaw_iff_unbounded_of_boundary} & Theorem & \code{mersenneManifestationLaw\_iff\_unbounded\_of\_boundary}\\
+\ref{thm:minusSide_primes_unbounded} & Theorem & \code{minusSide\_primes\_unbounded}\\
+\ref{thm:cousin_mod_six} & Theorem & \code{cousin\_mod\_six}\\
+\ref{thm:constellation_of_adjacent_twinCenters} & Theorem & \code{constellation\_of\_adjacent\_twinCenters}\\
+\ref{thm:sg_center_doubling} & Theorem & \code{sg\_center\_doubling}\\
+\ref{thm:sophieGermain_divides_mersenne} & Theorem & \code{sophieGermain\_divides\_mersenne}\\
+\ref{thm:mersenne_composite_examples} & Theorem & \code{mersenne\_composite\_examples}\\
+\ref{thm:goldbachViolation_ge_52} & Theorem & \code{goldbachViolation\_ge\_52}\\
+\ref{thm:noGoldbachViolation_of_manifestation_and_boundary} & Theorem & \code{noGoldbachViolation\_of\_manifestation\_and\_boundary}\\
+\ref{thm:no_desert_doubles} & Theorem & \code{no\_desert\_doubles}\\
+\ref{thm:legendre_interval_shorter_than_bertrand} & Theorem & \code{legendre\_interval\_shorter\_than\_bertrand}\\
+\ref{thm:perfect_of_mersennePrime} & Theorem & \code{perfect\_of\_mersennePrime'}\\
+\ref{thm:evenPerfect_eq} & Theorem & \code{evenPerfect\_eq}\\
+\ref{thm:mersennePrimesInfinite_iff_evenPerfectUnbounded} & Theorem & \code{mersennePrimesInfinite\_iff\_evenPerfectUnbounded}\\
+\ref{thm:odd_perfect_euler_form} & Theorem & \code{odd\_perfect\_euler\_form}\\
+\ref{thm:six_mul_fermatCenter} & Theorem & \code{six\_mul\_fermatCenter}\\
+\ref{thm:fermatAbsenceBound_ge_65537} & Theorem & \code{fermatAbsenceBound\_ge\_65537}\\
+\ref{thm:fermatManifestationLaw_iff_unbounded_of_boundary} & Theorem & \code{fermatManifestationLaw\_iff\_unbounded\_of\_boundary}\\
+\ref{thm:timeArrow_step} & Theorem & \code{timeArrow\_step}\\
+\ref{thm:every_journey_halts} & Theorem & \code{every\_journey\_halts}\\
+\ref{def:curvature} & Definition & \code{curvature}\\
+\ref{thm:inDegree_infinite_at_origin} & Theorem & \code{inDegree\_infinite\_at\_origin}\\
+\ref{thm:gaussBonnet_cone3} & Theorem & \code{gaussBonnet\_cone3}\\
+\ref{thm:nonpositive_curvature_forces_engine} & Theorem & \code{nonpositive\_curvature\_forces\_engine}\\
+\ref{thm:space_positively_curved_somewhere} & Theorem & \code{space\_positively\_curved\_somewhere}\\
+\ref{thm:every_line_ends} & Theorem & \code{every\_line\_ends}\\
+\ref{thm:no_infinite_line} & Theorem & \code{no\_infinite\_line}\\
+\ref{thm:two_disjoint_lines} & Theorem & \code{bottom\_not\_unique,\ two\_disjoint\_lines}\\
+\ref{thm:zeroPoint_absorbs_all_divisors} & Theorem & \code{zeroPoint\_absorbs\_all\_divisors}\\
+\ref{thm:line_to_origin} & Theorem & \code{line\_to\_origin}\\
+\ref{thm:web_above_every_horizon} & Theorem & \code{web\_above\_every\_horizon}\\
+\ref{thm:lines_meet_at_origin} & Theorem & \code{lines\_meet\_at\_origin}\\
+\ref{thm:twin_vertices_beyond_every_horizon} & Theorem & \code{twin\_vertices\_beyond\_every\_horizon}\\
+\ref{thm:lines_meet_but_unknowable_from_inside} & Theorem & \code{lines\_meet\_but\_unknowable\_from\_inside}\\
+\ref{thm:bsd_descent_has_no_engine} & Theorem & \code{bsd\_descent\_has\_no\_engine}\\
+\ref{thm:bsd_parity_is_rankParity} & Theorem & \code{bsd\_parity\_is\_rankParity}\\
+\ref{def:WeakBSD} & Definition & \code{WeakBSD}\\
+\ref{thm:chowlaCorrelation_zero_eq_card} & Theorem & \code{chowlaCorrelation\_zero\_eq\_card}\\
+\ref{thm:polynomial_abc_shadow} & Theorem & \code{polynomial\_abc\_shadow}\\
+\ref{thm:polynomial_fermat_catalan_shadow} & Theorem & \code{polynomial\_fermat\_catalan\_shadow}\\
+\ref{thm:mahler_northcott_shadow} & Theorem & \code{mahler\_northcott\_shadow}\\
+\ref{thm:landauPrimes_infinite_of_unbounded} & Theorem & \code{landauPrimes\_infinite\_of\_unbounded}\\
+\ref{def:collatzMap} & Definition & \code{EuclidsPath.Collatz.Engine.T}\\
+\ref{thm:odd_accel_ascends} & Theorem & \code{odd\_accel\_ascends}\\
+\ref{thm:not_descent_on_odd} & Theorem & \code{not\_descent\_on\_odd}\\
+\ref{thm:no_monotone_height} & Theorem & \code{no\_monotone\_height}\\
+\ref{thm:engine_at_most_one_rank} & Theorem & \code{engine\_at\_most\_one\_rank}\\
+\ref{thm:window_budget} & Theorem & \code{window\_budget}\\
+\ref{thm:window_descends} & Theorem & \code{window\_descends}\\
+\ref{def:ropeCountingLaw} & Definition & \code{RopeCountingLaw}\\
+\ref{thm:reaches_one_of_countingLaw} & Theorem & \code{reaches\_one\_of\_countingLaw}\\
+\ref{thm:counts_at_70_at_27} & Theorem & \code{counts\_at\_70\_at\_27}\\
+\ref{thm:not_ropeCountingLaw_27} & Theorem & \code{not\_ropeCountingLaw\_27}\\
+\ref{thm:ropeLaw_universal_refuted} & Theorem & \code{ropeLaw\_universal\_refuted}\\
+\ref{thm:nonDescendingOrbit_is_perpetual_engine} & Theorem & \code{nonDescendingOrbit\_is\_perpetual\_engine}\\
+\ref{thm:nonHalting_carries_perpetual_engine} & Theorem & \code{nonHalting\_carries\_perpetual\_engine}\\
+\ref{def:internalisedCollatzGround} & Definition & \code{InternalisedCollatzGround}\\
+\ref{thm:collatzCause_unknowable} & Theorem & \code{collatzCause\_unknowable}\\
+\ref{thm:collatz_verification_not_derivation} & Theorem & \code{collatz\_verification\_not\_derivation}\\
+\ref{thm:collatz_open_status} & Theorem & \code{collatz\_open\_status}\\
+\end{longtable}
+\endgroup

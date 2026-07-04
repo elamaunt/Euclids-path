@@ -10,13 +10,14 @@ The equation is formalised in the strong form on $E_3 := \code{EuclideanSpace}\ 
 with the differential operators (divergence, vector Laplacian, convective term) assembled from bare
 \code{fderiv}.
 
-\begin{definition}[\code{IsNSSolution}]\label{def:IsNSSolution}
+\begin{definition}[Navier--Stokes solution]\label{def:IsNSSolution}
 For a viscosity $\nu$, an external force $f$, a velocity field $u$ and a pressure $p$,
 \begin{equation}\label{eq:ns-solution}
 \code{IsNSSolution}\ \nu\ f\ u\ p \;:=\;
 \bigl[\partial_t u + (u\cdot\nabla)u = \nu\,\Delta u - \nabla p + f\bigr]
 \;\wedge\; \bigl[\operatorname{div} u = 0\bigr].
 \end{equation}
+\leantag{IsNSSolution}
 \end{definition}
 
 \noindent These are the incompressible Navier--Stokes equations \cite{clay-ns,millennium} in the
@@ -24,9 +25,9 @@ classical strong form. No weak solutions and no distributions: the strong form i
 deliberately, so that the predicate can be read with the eyes. The first question to any such
 predicate is whether it is empty; the answer is by machine.
 
-\begin{theorem}[\code{zero\_is\_NSSolution}]\label{thm:zero_is_NSSolution}
-$\code{IsNSSolution}\ \nu\ 0\ 0\ 0$ for every $\nu \in \R$: the zero field with zero pressure and
-no force is a solution at any viscosity. \green{}
+\begin{theorem}[the equation is inhabited]\label{thm:zero_is_NSSolution}
+\green{}\ $\code{IsNSSolution}\ \nu\ 0\ 0\ 0$ for every $\nu \in \R$: the zero field with zero
+pressure and no force is a solution at any viscosity. \leantag{zero\_is\_NSSolution}
 \end{theorem}
 
 \emph{Proof idea.} Direct computation; every term of \cref{eq:ns-solution} vanishes. Modest, but
@@ -38,9 +39,9 @@ $\code{dissipationRate} = \nu\int\sum_i\|\partial_i u\|^2$ (the enstrophy form).
 and the repository exposes it by machine: the Bochner integral in \code{mathlib} is
 \emph{silently equal to zero} on a non-integrable function (\code{MeasureTheory.integral\_undef}).
 
-\begin{theorem}[\code{kineticEnergy\_of\_not\_integrable}]\label{thm:kineticEnergy_of_not_integrable}
-If $\|u\|^2$ is not integrable (the predicate \code{FiniteKineticEnergy} fails), then
-$\code{kineticEnergy}\ u = 0$. \green{}
+\begin{theorem}[kinetic energy of a non-integrable field]\label{thm:kineticEnergy_of_not_integrable}
+\green{}\ If $\|u\|^2$ is not integrable (the predicate \code{FiniteKineticEnergy} fails), then
+$\code{kineticEnergy}\ u = 0$. \leantag{kineticEnergy\_of\_not\_integrable}
 \end{theorem}
 
 \emph{Proof idea.} A rewrite through \code{MeasureTheory.integral\_undef}. The equality
@@ -57,9 +58,10 @@ the \code{HasDerivAt} identity $dE/dt = -D(t)$ --- the classical energy balance 
 decaying solution, in which convection and pressure do no work thanks to $\operatorname{div} u = 0$.
 The glue from the narrow input is proved.
 
-\begin{theorem}[\code{twoTimeEnergyInequality\_of\_energyBalance}]\label{thm:twoTimeEnergyInequality_of_energyBalance}
-If the pointwise balance $\code{EnergyBalanceLaw}\ \nu\ u$ holds and $s \mapsto D(u(s))$ is
-interval-integrable on every $[t_1,t_2]$, then $\code{TwoTimeEnergyInequality}\ \nu\ u$ holds. \green{}
+\begin{theorem}[two-time inequality from the pointwise balance]\label{thm:twoTimeEnergyInequality_of_energyBalance}
+\green{}\ If the pointwise balance $\code{EnergyBalanceLaw}\ \nu\ u$ holds and $s \mapsto D(u(s))$ is
+interval-integrable on every $[t_1,t_2]$, then $\code{TwoTimeEnergyInequality}\ \nu\ u$ holds.
+\leantag{twoTimeEnergyInequality\_of\_energyBalance}
 \end{theorem}
 
 \emph{Proof idea.} The pointwise balance plus integrability yield the two-time inequality (in fact
@@ -71,10 +73,11 @@ not an integral inequality over all pairs of times, but a single differential id
 Let $\code{DissipativeStage}\ \nu\ u\ \delta\ t_1\ t_2$ mark a time interval on which at least
 $\delta$ of dissipation has accumulated. The budget machine forbids an infinite tower of such steps.
 
-\begin{theorem}[\code{ns\_no\_infinite\_dissipative\_cascade}]\label{thm:ns_no_infinite_dissipative_cascade}
-Let $\delta > 0$ and suppose $\code{TwoTimeEnergyInequality}\ \nu\ u$ holds. Then there is no
-sequence of times $(t_k)_{k\in\N}$ with $\code{DissipativeStage}\ \nu\ u\ \delta\ t_k\ t_{k+1}$ for
-all $k$. \green{} (conditional on the inequality input)
+\begin{theorem}[no infinite dissipative cascade]\label{thm:ns_no_infinite_dissipative_cascade}
+\green{}\ (conditional on the inequality input) Let $\delta > 0$ and suppose
+$\code{TwoTimeEnergyInequality}\ \nu\ u$ holds. Then there is no sequence of times $(t_k)_{k\in\N}$
+with $\code{DissipativeStage}\ \nu\ u\ \delta\ t_k\ t_{k+1}$ for all $k$.
+\leantag{ns\_no\_infinite\_dissipative\_cascade}
 \end{theorem}
 
 \emph{Proof idea.} The accumulated payment $\sum_k \delta$ would exceed the starting energy
@@ -83,9 +86,10 @@ $E(u(t_0))$; a direct application of the quantised cascade lemma
 demands --- \emph{if} one is handed the premise. The word ``quantised'' carries all the weight, and
 the reason is recorded by machine.
 
-\begin{theorem}[\code{real\_positive\_work\_not\_wellfounded}]\label{thm:real_positive_work_not_wellfounded}
-There exists $a : \N \to \R$ with $a_{n+1} < a_n$, $a_n > 0$ and $a_n - a_{n+1} > 0$ for all $n$:
-an $\R$-sequence with strictly positive work at every step yet a finite total descent. \green{}
+\begin{theorem}[positive real work need not be well-founded]\label{thm:real_positive_work_not_wellfounded}
+\green{}\ There exists $a : \N \to \R$ with $a_{n+1} < a_n$, $a_n > 0$ and $a_n - a_{n+1} > 0$ for
+all $n$: an $\R$-sequence with strictly positive work at every step yet a finite total descent.
+\leantag{real\_positive\_work\_not\_wellfounded}
 \end{theorem}
 
 \emph{Proof idea.} The banal witness $a_n = 1/2^n$. For the $\N$-engine of the twins strict positive
@@ -97,23 +101,25 @@ and it stays open.
 \paragraph{The integral, taken.}
 The FTC glue lifts to an exact identity, and the solution itself is recovered by integration.
 
-\begin{theorem}[\code{energy\_identity\_of\_energyBalance}]\label{thm:energy_identity_of_energyBalance}
-Under $\code{EnergyBalanceLaw}\ \nu\ u$ and interval-integrability of the dissipation, for all
-$t_1,t_2$ one has
+\begin{theorem}[the exact energy identity]\label{thm:energy_identity_of_energyBalance}
+\green{}\ Under $\code{EnergyBalanceLaw}\ \nu\ u$ and interval-integrability of the dissipation, for
+all $t_1,t_2$ one has
 \begin{equation}\label{eq:ns-energy-identity}
 E(u(t_2)) = E(u(t_1)) - \int_{t_1}^{t_2} D(u(s))\,ds,
 \end{equation}
 as an equality; the two-time inequality of
-\cref{thm:twoTimeEnergyInequality_of_energyBalance} is a coarsening of it. \green{}
+\cref{thm:twoTimeEnergyInequality_of_energyBalance} is a coarsening of it.
+\leantag{energy\_identity\_of\_energyBalance}
 \end{theorem}
 
 A hypothetical finite-time singularity is a \code{SingularCascade}: infinitely many
 $\delta$-dissipative stages compressed towards a single finite moment $T$ --- the same perpetual
 engine as elsewhere. Its impossibility is green.
 
-\begin{theorem}[\code{noSingularCascade\_of\_energyBalance}]\label{thm:noSingularCascade_of_energyBalance}
-The pointwise energy balance $dE/dt = -D$ together with integrability implies that no rupture points
-of cascade type exist: $\code{NoSingularCascade}\ \nu\ u$. \green{}
+\begin{theorem}[no singular cascade from the balance]\label{thm:noSingularCascade_of_energyBalance}
+\green{}\ The pointwise energy balance $dE/dt = -D$ together with integrability implies that no
+rupture points of cascade type exist: $\code{NoSingularCascade}\ \nu\ u$.
+\leantag{noSingularCascade\_of\_energyBalance}
 \end{theorem}
 
 \emph{Proof idea.} A direct application of \cref{thm:ns_no_infinite_dissipative_cascade}: the budget
@@ -132,9 +138,10 @@ box-supported solutions the balance is no longer postulated but \emph{derived}, 
 sign, through three integration-by-parts identities (pressure and convection die by
 divergence-freeness; viscosity yields minus the enstrophy).
 
-\begin{theorem}[\code{noSingularCascade\_of\_r3Assembly}]\label{thm:noSingularCascade_of_r3Assembly}
-For a box-supported $C^2$ solution with force $f = 0$, cascade smoothness $\code{NoSingularCascade}$
-is derived in green, without the first-cause decree \code{nsBoundary}. \green{}
+\begin{theorem}[no singular cascade, assembled on the box]\label{thm:noSingularCascade_of_r3Assembly}
+\green{}\ For a box-supported $C^2$ solution with force $f = 0$, cascade smoothness
+$\code{NoSingularCascade}$ is derived in green, without the first-cause decree \code{nsBoundary}.
+\leantag{noSingularCascade\_of\_r3Assembly}
 \end{theorem}
 
 \emph{Proof idea.} On the box, \code{energyBalance\_of\_boxSupported} derives $dE/dt = -D$ from the
@@ -148,10 +155,11 @@ an external gap --- and \code{EnergyBalanceLaw} remains an open \red{} input in 
 The exact Clay statement (A) --- Schwartz data, divergence-freeness, the existence of a smooth
 global finite-energy solution --- is encoded and machine-reduced to a single open statement.
 
-\begin{theorem}[\code{clayA\_of\_regularityTransfer\_and\_vorticityControl}]\label{thm:clayA_of_regularityTransfer_and_vorticityControl}
-The known transfer theory --- Kato's local strong existence \cite{kato1984} together with the
-Beale--Kato--Majda continuation criterion \cite{bkm1984} --- and the single criterion
-\code{GlobalVorticityControl} imply Clay-(A). \green{}
+\begin{theorem}[Clay-(A) from transfer and vorticity control]\label{thm:clayA_of_regularityTransfer_and_vorticityControl}
+\green{}\ The known transfer theory --- Kato's local strong existence \cite{kato1984} together with
+the Beale--Kato--Majda continuation criterion \cite{bkm1984} --- and the single criterion
+\code{GlobalVorticityControl} imply Clay-(A).
+\leantag{clayA\_of\_regularityTransfer\_and\_vorticityControl}
 \end{theorem}
 
 \emph{Proof idea.} Pure modus ponens: a local smooth solution exists; the criterion keeps the
@@ -164,9 +172,9 @@ is honestly named as a \red{} input --- real theorems of the literature \cite{ka
 yet formalised in \code{mathlib}. It is tempting to close (A) through the engine, as one can for
 Collatz; for Navier--Stokes that bridge provably tears, and the module records this by machine.
 
-\begin{theorem}[\code{greenBudget\_strictly\_weaker\_than\_vorticityControl}]\label{thm:greenBudget_strictly_weaker_than_vorticityControl}
-The green budget machine is strictly weaker than \code{GlobalVorticityControl}: it does not imply
-the criterion. \green{}
+\begin{theorem}[the budget is strictly weaker than vorticity control]\label{thm:greenBudget_strictly_weaker_than_vorticityControl}
+\green{}\ The green budget machine is strictly weaker than \code{GlobalVorticityControl}: it does not
+imply the criterion. \leantag{greenBudget\_strictly\_weaker\_than\_vorticityControl}
 \end{theorem}
 
 \emph{Proof idea.} The surrogate \code{NoSingularCascade} kills only the uniformly quantised
@@ -185,9 +193,9 @@ dissipation is uniform, the budget wins; where the cascade is genuine, the engin
 \emph{realised}, and the naive ``no engine $\Rightarrow$ no singularity'' is refuted. The rigorous
 core is an ODE fact.
 
-\begin{theorem}[\code{superlinear\_blowup\_sq}]\label{thm:superlinear_blowup_sq}
-No global positive $C^1$ function can satisfy $y'(t) \ge C\,y(t)^2$ with $C > 0$: the assumption of
-a global solution yields \code{False}. \green{}
+\begin{theorem}[superlinear drive forces blow-up]\label{thm:superlinear_blowup_sq}
+\green{}\ No global positive $C^1$ function can satisfy $y'(t) \ge C\,y(t)^2$ with $C > 0$: the
+assumption of a global solution yields \code{False}. \leantag{superlinear\_blowup\_sq}
 \end{theorem}
 
 \begin{proof}
@@ -196,10 +204,10 @@ whence $1/y = w - C\,t$ must go negative in finite time, contradicting $y > 0$. 
 cascade is a realised perpetual engine: it exists exactly until the moment of blow-up.
 \end{proof}
 
-\begin{theorem}[\code{dyadic\_blowup}]\label{thm:dyadic_blowup}
-The Katz--Pavlovi\'c model \code{DyadicSolution}, with equations
+\begin{theorem}[the dyadic model blows up]\label{thm:dyadic_blowup}
+\green{}\ The Katz--Pavlovi\'c model \code{DyadicSolution}, with equations
 $a_n' = \lambda^n a_{n-1}^2 - \lambda^{n+1} a_n a_{n+1} - d_n a_n$, is globally empty: blow-up is
-inevitable. \green{}
+inevitable. \leantag{dyadic\_blowup}
 \end{theorem}
 
 \emph{Proof idea.} The nonlinear transfer telescopes (energy is conserved by the coupling), and the
@@ -207,11 +215,12 @@ blow-up follows from \cref{thm:superlinear_blowup_sq} applied to the leading mod
 drive $y' \ge C\,y^2$ is no longer postulated: for a whole class of solutions it is derived from the
 $\lambda^n$-couplings.
 
-\begin{theorem}[\code{frontDrive\_of\_invariant}]\label{thm:frontDrive_of_invariant}
-Suppose a Katz--Pavlovi\'c solution has one front shell pinched from below by its two neighbours ---
-the invariant \code{FrontDomination}: $\rho\, a_{J+1} \le a_J$, $a_{J+2} \le \kappa\, a_{J+1}$,
-$m \le a_{J+1}$. Then the drive $C\,y^2 \le y'$ is derived directly from the $\lambda^n$-couplings,
-with $C = \lambda^{J+1}\rho^2 - \lambda^{J+2}\kappa - d_{J+1}/m$. \green{}
+\begin{theorem}[the front drive from the invariant]\label{thm:frontDrive_of_invariant}
+\green{}\ Suppose a Katz--Pavlovi\'c solution has one front shell pinched from below by its two
+neighbours --- the invariant \code{FrontDomination}: $\rho\, a_{J+1} \le a_J$,
+$a_{J+2} \le \kappa\, a_{J+1}$, $m \le a_{J+1}$. Then the drive $C\,y^2 \le y'$ is derived directly
+from the $\lambda^n$-couplings, with $C = \lambda^{J+1}\rho^2 - \lambda^{J+2}\kappa - d_{J+1}/m$.
+\leantag{frontDrive\_of\_invariant}
 \end{theorem}
 
 \emph{Proof idea.} The three estimates are substituted into the right-hand side of shell $J+1$: the
@@ -226,9 +235,10 @@ $n = 0$ has zero inflow: it can only give, never start itself, so its origin can
 inside the couplings. The self-similar solution needs an external pumping term, and that supply is
 drawn from the first cause.
 
-\begin{theorem}[\code{dyadicBlowup\_is\_firstCauseManifestation}]\label{thm:dyadicBlowup_is_firstCauseManifestation}
-The supply at scale $n = 0$ is drawn from the boundary \code{nsBoundary} of the axiom \axiom{}: the
-dyadic blow-up joins the first-cause manifestations through its origin. \yellow{}~(\textsc{axiom-tainted})
+\begin{theorem}[the dyadic origin is a first-cause manifestation]\label{thm:dyadicBlowup_is_firstCauseManifestation}
+\yellow{}~(\textsc{axiom-tainted})\ The supply at scale $n = 0$ is drawn from the boundary
+\code{nsBoundary} of the axiom \axiom{}: the dyadic blow-up joins the first-cause manifestations
+through its origin. \leantag{dyadicBlowup\_is\_firstCauseManifestation}
 \end{theorem}
 
 \emph{Proof idea.} Two walls: a green wall of impossibility (the origin is uncausable from inside)

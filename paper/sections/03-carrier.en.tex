@@ -24,8 +24,9 @@ $p\mid(6m-1)$ and $p\mid(6m+1)$ simultaneously.
 The sides stand exactly two apart, $(6m+1)-(6m-1)=2$, and this fixed difference governs all their
 joint divisibility.
 
-\begin{theorem}[\code{twin\_sides\_shared\_dvd\_two}]\label{thm:twin_sides_shared_dvd_two}
-\green{} Let $m\ge 1$ and let $p\mid(6m+1)$ and $p\mid(6m-1)$. Then $p\mid 2$.
+\begin{theorem}[a shared divisor of the sides divides two]\label{thm:twin_sides_shared_dvd_two}
+\green{}\ Let $m\ge 1$ and let $p\mid(6m+1)$ and $p\mid(6m-1)$. Then $p\mid 2$.
+\leantag{twin\_sides\_shared\_dvd\_two}
 \end{theorem}
 
 \emph{Proof idea.} Rewrite the larger side through the smaller, $6m+1=(6m-1)+2$ (closed by
@@ -36,8 +37,9 @@ $\gcd(6m-1,\,6m+1)\mid 2$.
 
 Since two has only the divisors $1$ and $2$, no prime above two can occupy both sides at once.
 
-\begin{theorem}[\code{no\_large\_shared\_divisor}]\label{thm:no_large_shared_divisor}
-\green{} Let $m\ge 1$ and $p>2$. Then $p\mid(6m+1)$ and $p\mid(6m-1)$ cannot hold simultaneously.
+\begin{theorem}[no prime above two divides both sides]\label{thm:no_large_shared_divisor}
+\green{}\ Let $m\ge 1$ and $p>2$. Then $p\mid(6m+1)$ and $p\mid(6m-1)$ cannot hold simultaneously.
+\leantag{no\_large\_shared\_divisor}
 \end{theorem}
 
 \emph{Proof idea.} By \cref{thm:twin_sides_shared_dvd_two}, $p\mid 2$, whence $p\le 2$ by the
@@ -67,8 +69,9 @@ A centre $m$ is \emph{rank-$(3,3)$} if there exist naturals $a\le b\le v$ and $q
 \end{equation}
 \end{definition}
 
-\begin{theorem}[\code{det\_law\_rank33}]\label{thm:det_law_rank33}
-\green{} Let $1\le m$, $6m-1=abv$ and $6m+1=qrs$. Then $qrs=abv+2$.
+\begin{theorem}[the determinant law for a rank-$(3,3)$ centre]\label{thm:det_law_rank33}
+\green{}\ Let $1\le m$, $6m-1=abv$ and $6m+1=qrs$. Then $qrs=abv+2$.
+\leantag{det\_law\_rank33}
 \end{theorem}
 
 \emph{Proof idea.} The difference $qrs-abv$ equals the difference of the sides
@@ -86,11 +89,12 @@ For a rank-$(3,3)$ centre set $C=av$ and $D=qs$, so the sides read $Cb=6m-1$ and
 $b,r$ the free factors.
 \end{definition}
 
-\begin{theorem}[\code{det\_law\_CD}]\label{thm:det_law_CD}
-\green{} Over $\Z$: if $Cb=6m-1$ and $Dr=6m+1$, then
+\begin{theorem}[the determinant law in product coordinates]\label{thm:det_law_CD}
+\green{}\ Over $\Z$: if $Cb=6m-1$ and $Dr=6m+1$, then
 \begin{equation}\label{eq:detCD}
 Cb-Dr=-2.
 \end{equation}
+\leantag{det\_law\_CD}
 \end{theorem}
 
 \emph{Proof idea.} Subtract the two hypotheses: $Cb-Dr=(6m-1)-(6m+1)=-2$ (\code{linear\_combination
@@ -109,11 +113,12 @@ A \emph{ray} is a family of points with common $v,s$, the $i$-th satisfying the 
 $u_i v+2=r_i s$, with integer step $u_2-u_1=sK$.
 \end{definition}
 
-\begin{theorem}[\code{det\_collapse}]\label{thm:det_collapse}
-\green{} Let $u_1 v+2=r_1 s$, $u_2 v+2=r_2 s$, $u_2-u_1=sK$ and $s\ne 0$. Then
+\begin{theorem}[the determinant collapses along a ray]\label{thm:det_collapse}
+\green{}\ Let $u_1 v+2=r_1 s$, $u_2 v+2=r_2 s$, $u_2-u_1=sK$ and $s\ne 0$. Then
 \begin{equation}\label{eq:detcollapse}
 u_2 r_1-u_1 r_2=2K.
 \end{equation}
+\leantag{det\_collapse}
 \end{theorem}
 
 \emph{Proof idea.} Multiply the target by $s$ and substitute both rank-one equations:
@@ -130,11 +135,12 @@ Given $abv+2=qP$, decompose $P=v^2+\Delta$ and $ab=qv+\Xi$ relative to the scale
 $\Delta,\Xi$ are the \emph{Euclidean remainders} of the step.
 \end{definition}
 
-\begin{theorem}[\code{euclid\_descent\_identity}]\label{thm:euclid_descent_identity}
-\green{} Given $abv+2=qP$, $P=v^2+\Delta$ and $ab=qv+\Xi$, then
+\begin{theorem}[the Euclidean descent identity]\label{thm:euclid_descent_identity}
+\green{}\ Given $abv+2=qP$, $P=v^2+\Delta$ and $ab=qv+\Xi$, then
 \begin{equation}\label{eq:euclid-descent}
 q\,\Delta-v\,\Xi=2.
 \end{equation}
+\leantag{euclid\_descent\_identity}
 \end{theorem}
 
 \emph{Proof idea.} Expanding $qP=qv^2+q\Delta$ and $abv=qv^2+\Xi v$ cancels $qv^2$, leaving
@@ -154,11 +160,12 @@ A repeated atom $a$ links two points by $a B_1=qs\,Q_1-2$ and $a B_2=qs\,Q_2-2$,
 $B_2-B_1=6\,(qs)\,h$.
 \end{definition}
 
-\begin{theorem}[\code{small\_det\_collapse}]\label{thm:small_det_collapse}
-\green{} Given $a\ne 0$, $qs\ne 0$ and the bridge equations above,
+\begin{theorem}[the small-determinant collapse across a bridge]\label{thm:small_det_collapse}
+\green{}\ Given $a\ne 0$, $qs\ne 0$ and the bridge equations above,
 \begin{equation}\label{eq:smalldet}
 B_2 Q_1-B_1 Q_2=12\,h.
 \end{equation}
+\leantag{small\_det\_collapse}
 \end{theorem}
 
 \emph{Proof idea.} Two cancellations. First $qs(Q_2-Q_1)=qs\cdot 6ah$ gives the conjugate shift
@@ -181,11 +188,12 @@ Removing $a$, the descended centre is that $n$ with remainder side $6n+\varepsil
 the height drops strictly: $n<m/A$ --- pointwise divisibility arithmetic, not an average, and it is
 what makes descent terminate ($m/A^t<1$ eventually). Write $U:=6n+\varepsilon$.
 
-\begin{theorem}[\code{two\_carry\_opposite}]\label{thm:two_carry_opposite}
-\green{} If $U=6n+\varepsilon$, then
+\begin{theorem}[the two migrates to the opposite side]\label{thm:two_carry_opposite}
+\green{}\ If $U=6n+\varepsilon$, then
 \begin{equation}\label{eq:two-carry}
 6n-\varepsilon=U-2\varepsilon.
 \end{equation}
+\leantag{two\_carry\_opposite}
 \end{theorem}
 
 \emph{Proof idea.} $6n-\varepsilon=(6n+\varepsilon)-2\varepsilon=U-2\varepsilon$
@@ -196,8 +204,9 @@ What holds the sides apart above ($\gcd\mid 2$) is exactly what is carried below
 The product side $U=b\cdot v$ inherits factors $b,v>A$ from the pedigree of $6m+\sigma$, so no old
 small prime can spoil it.
 
-\begin{theorem}[\code{no\_small\_divisor}]\label{thm:no_small_divisor}
-\green{} Let $b,v$ be primes with $A<b$, $A<v$, and $p$ prime with $p\le A$. Then $p\nmid(b\cdot v)$.
+\begin{theorem}[no small prime divides the product side]\label{thm:no_small_divisor}
+\green{}\ Let $b,v$ be primes with $A<b$, $A<v$, and $p$ prime with $p\le A$. Then $p\nmid(b\cdot v)$.
+\leantag{no\_small\_divisor}
 \end{theorem}
 
 \emph{Proof idea.} If $p\mid b\cdot v$ then by Euclid's lemma (\code{Nat.Prime.dvd\_mul}) $p\mid b$
@@ -208,11 +217,12 @@ fails through some $p\le A$, the culprit is only the opposite side.
 Calling an obstruction the event ``$p$ divides one of the sides'' (a boundary-exit from $\Om_A$),
 the disjunction collapses when $p\nmid U$.
 
-\begin{theorem}[\code{obstruction\_on\_opposite}]\label{thm:obstruction_on_opposite}
-\green{} Let $\mathit{sideProd}=U$, $\mathit{sideOpp}=U-2\varepsilon$ and $p\nmid U$. Then
+\begin{theorem}[any obstruction lands on the opposite side]\label{thm:obstruction_on_opposite}
+\green{}\ Let $\mathit{sideProd}=U$, $\mathit{sideOpp}=U-2\varepsilon$ and $p\nmid U$. Then
 \begin{equation}\label{eq:obstruction}
 \bigl(p\mid\mathit{sideProd}\ \lor\ p\mid\mathit{sideOpp}\bigr)\iff p\mid\mathit{sideOpp}.
 \end{equation}
+\leantag{obstruction\_on\_opposite}
 \end{theorem}
 
 \emph{Proof idea.} If $p\mid\mathit{sideProd}=U$ this contradicts $p\nmid U$; the reverse
@@ -242,22 +252,24 @@ is $X_p\cdot Y_p=0$ for every $p\in s$.
 The statements below use only $X_p Y_p=0$ and so hold for any nonnegative weights with vanishing
 product; they are abstract algebra, not tied to the indicators.
 
-\begin{theorem}[\code{exclusive\_diag\_zero}]\label{thm:exclusive_diag_zero}
-\green{} For a finite $s$ and $X,Y:\iota\to\N$ with $X_p Y_p=0$ for all $p\in s$,
+\begin{theorem}[exclusivity kills the diagonal]\label{thm:exclusive_diag_zero}
+\green{}\ For a finite $s$ and $X,Y:\iota\to\N$ with $X_p Y_p=0$ for all $p\in s$,
 \begin{equation}\label{eq:diag-zero}
 \sum_{p\in s}X_p\cdot Y_p=0.
 \end{equation}
+\leantag{exclusive\_diag\_zero}
 \end{theorem}
 
 \emph{Proof idea.} A sum of zeros (\code{Finset.sum\_eq\_zero hexcl}). The quantity is the
 \emph{diagonal}: it counts primes dividing both sides --- a self-transition ``into itself'' ---
 which exclusivity erases pointwise, $\mathrm{DIAG}=0$.
 
-\begin{theorem}[\code{exclusive\_no\_backward}]\label{thm:exclusive_no_backward}
-\green{} For a finite $s$ with $[\mathrm{DecidableEq}\ \iota]$ and $X,Y:\iota\to\N$ under exclusivity,
+\begin{theorem}[exclusivity forbids a backward move]\label{thm:exclusive_no_backward}
+\green{}\ For a finite $s$ with $[\mathrm{DecidableEq}\ \iota]$ and $X,Y:\iota\to\N$ under exclusivity,
 \begin{equation}\label{eq:no-backward}
 \Bigl(\sum_{i\in s}X_i\Bigr)\cdot\Bigl(\sum_{j\in s}Y_j\Bigr)=\sum_{i\in s}\sum_{j\in s\setminus\{i\}}X_i\cdot Y_j.
 \end{equation}
+\leantag{exclusive\_no\_backward}
 \end{theorem}
 
 \emph{Proof idea.} Distribute the product (\code{Finset.sum\_mul}, \code{Finset.mul\_sum}) into

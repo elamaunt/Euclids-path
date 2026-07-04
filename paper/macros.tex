@@ -28,6 +28,7 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{cleveref}
@@ -71,6 +72,9 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\code}[1]{\texttt{#1}}   % Lean declaration name (breaks at `_' via the underscore pkg)
+% Compact tag carrying the machine-verified Lean declaration name, placed at the end of a
+% readable theorem statement (the statement itself is in ordinary mathematical language).
+\newcommand{\leantag}[1]{\;\textup{\footnotesize(Lean: \code{#1})}}
 \newcommand{\Om}{\Omega}
 \DeclareMathOperator{\DescentStep}{DescentStep}
 \DeclareMathOperator{\Clean}{Clean}

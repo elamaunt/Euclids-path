@@ -18,11 +18,11 @@ is a positive-definite quadratic form, and by the Northcott property there are o
 points of bounded height, so the height descent must break off. This is exactly our prohibition: an
 infinite strictly descending chain of heights is a perpetual engine, and there is none.
 
-\begin{theorem}[\code{bsd\_descent\_has\_no\_engine}]\label{thm:bsd_descent_has_no_engine}
-\green{} On the real point group $W.\code{toAffine.Point}$ of an elliptic curve the height descent
-has no perpetual engine: for every height descent model $M$ there is no
-$\code{PerpetualEngine}\,M.\code{descentStep}$, that is, no infinite chain of points strictly
-decreasing under a height function $h\colon W.\code{toAffine.Point}\to\mathbb{N}$ can exist.
+\begin{theorem}[descent has no engine]\label{thm:bsd_descent_has_no_engine}
+\green{}\ On the rational point group of an elliptic curve the height descent has no perpetual
+engine: for every height descent model, no infinite chain of points strictly decreasing under a
+height function $h\colon W.\code{toAffine.Point}\to\mathbb{N}$ can exist.
+\leantag{bsd\_descent\_has\_no\_engine}
 \end{theorem}
 
 \emph{Proof idea.} A height is an $\mathbb{N}$-rank, and rank imports the engine prohibition from
@@ -43,9 +43,10 @@ The parity conjecture asserts $(-1)^{\operatorname{rank}}=w(E)$, where $w(E)$ is
 the sign of the functional equation. And $(-1)^{\operatorname{rank}}$ is exactly the rank-parity
 invariant behind Riemann: the Liouville function $\lambda(n)=(-1)^{\Omega(n)}$.
 
-\begin{theorem}[\code{bsd\_parity\_is\_rankParity}]\label{thm:bsd_parity_is_rankParity}
-\green{} The parity of the rank coincides with Liouville's: for all $r,n\in\mathbb{N}$ with
+\begin{theorem}[parity is the rank-parity node]\label{thm:bsd_parity_is_rankParity}
+\green{}\ The parity of the rank coincides with Liouville's: for all $r,n\in\mathbb{N}$ with
 $n\neq 0$ and $\Omega(n)=r$ one has $(-1)^r=\lambda(n)$ in $\mathbb{Z}$.
+\leantag{bsd\_parity\_is\_rankParity}
 \end{theorem}
 
 \emph{Proof idea.} A direct bridge to \code{RiemannLiouville.liouville\_eq\_neg\_one\_pow\_rank}
@@ -68,11 +69,11 @@ curve's $L$-function (\code{WeierstrassCurve.LSeries}, via the Euler product), a
 honestly. But its analytic properties --- continuation to $s=1$, the order of the zero, the
 functional equation --- are proved nowhere.
 
-\begin{definition}[\code{WeakBSD}]\label{def:WeakBSD}
-\red{} The open input: for an elliptic curve $W/K$ and naturals $\text{algRank},\text{aRank}$ the
+\begin{definition}[weak BSD]\label{def:WeakBSD}
+\red{}\ The open input: for an elliptic curve $W/K$ and naturals $\text{algRank},\text{aRank}$ the
 predicate $\operatorname{WeakBSD}(W,\text{algRank},\text{aRank})$ is
 $\operatorname{AnalyticRank}(W,\text{aRank})\wedge\text{algRank}=\text{aRank}$. We do not prove it:
-it is a named input, not a theorem.
+it is a named input, not a theorem. \leantag{WeakBSD}
 \end{definition}
 
 Humanity has covered only the edges: for analytic rank $\le 1$ (Gross–Zagier and Kolyvagin, via
@@ -116,9 +117,9 @@ conjecture says the parity of $\Omega$ does not correlate across shifts,
 $\sum_{n\le x}\lambda(n)\lambda(n+h)=o(x)$ --- the same prohibition on parity collapsing into one
 class that guards both twins and Riemann.
 
-\begin{theorem}[\code{chowlaCorrelation\_zero\_eq\_card}]\label{thm:chowlaCorrelation_zero_eq_card}
-\green{} The diagonal $h=0$ yields perfect self-correlation:
-$\sum_{n\le x}\lambda(n)^2=x$.
+\begin{theorem}[the diagonal self-correlation]\label{thm:chowlaCorrelation_zero_eq_card}
+\green{}\ The diagonal $h=0$ yields perfect self-correlation:
+$\sum_{n\le x}\lambda(n)^2=x$. \leantag{chowlaCorrelation\_zero\_eq\_card}
 \end{theorem}
 
 \emph{Proof idea.} $\lambda(n)^2=1$ for $n\ge 1$ (values $\pm1$), so the diagonal degenerates into a
@@ -135,9 +136,10 @@ The abc conjecture: for coprime $a+b=c$ one has $c<K_\varepsilon\cdot\operatorna
 The polynomial analogue --- the Mason–Stothers theorem~\cite{mason1984,stothers1981} --- is proved
 and in \code{mathlib}.
 
-\begin{theorem}[\code{polynomial\_abc\_shadow}]\label{thm:polynomial_abc_shadow}
-\green{} For coprime polynomials $a+b+c=0$ over a field the degree is bounded by the radical of the
+\begin{theorem}[the polynomial abc shadow]\label{thm:polynomial_abc_shadow}
+\green{}\ For coprime polynomials $a+b+c=0$ over a field the degree is bounded by the radical of the
 product (or else all derivatives vanish). This is \code{mathlib}'s \code{Polynomial.abc}.
+\leantag{polynomial\_abc\_shadow}
 \end{theorem}
 
 \emph{Proof idea.} A ready-made \code{mathlib} theorem (the Wronskian plus coprimality). The degree
@@ -152,9 +154,10 @@ untouched, and all openness lives in the $\varepsilon$ slack.
 \paragraph{Beal and Fermat–Catalan.}
 Fermat's infinite descent is literally our engine, and its polynomial form is proved.
 
-\begin{theorem}[\code{polynomial\_fermat\_catalan\_shadow}]\label{thm:polynomial_fermat_catalan_shadow}
-\green{} When $1/p+1/q+1/r<1$, the equation $u\,a^p+v\,b^q+w\,c^r=0$ for coprime polynomials forces
+\begin{theorem}[the polynomial Fermat--Catalan shadow]\label{thm:polynomial_fermat_catalan_shadow}
+\green{}\ When $1/p+1/q+1/r<1$, the equation $u\,a^p+v\,b^q+w\,c^r=0$ for coprime polynomials forces
 $a,b,c$ to be constants. This is \code{mathlib}'s \code{Polynomial.flt\_catalan}.
+\leantag{polynomial\_fermat\_catalan\_shadow}
 \end{theorem}
 
 \emph{Proof idea.} A ready-made \code{mathlib} theorem whose proof is infinite descent on the
@@ -170,9 +173,9 @@ are closed by descent (\code{beal\_no\_solution\_exponent\_three},
 \paragraph{Lehmer.}
 The Mahler measure is a height, and the same Northcott that computed the rank in BSD works here.
 
-\begin{theorem}[\code{mahler\_northcott\_shadow}]\label{thm:mahler_northcott_shadow}
-\green{} There are only finitely many polynomials of bounded degree and bounded Mahler measure. This
-is \code{mathlib}'s \code{finite\_mahlerMeasure\_le}.
+\begin{theorem}[the Mahler--Northcott shadow]\label{thm:mahler_northcott_shadow}
+\green{}\ There are only finitely many polynomials of bounded degree and bounded Mahler measure. This
+is \code{mathlib}'s \code{finite\_mahlerMeasure\_le}. \leantag{mahler\_northcott\_shadow}
 \end{theorem}
 
 \emph{Proof idea.} This is Northcott: the height is well-founded, there is no infinite height
@@ -189,10 +192,10 @@ no measures in $(1,c)$; but $c=c(n)$ depends on the degree, and a single $c$ for
 Dirichlet (in \code{mathlib}) gives primes in arithmetic progressions, on which the sides $6m\pm1$
 stand. But $n^2+1$ is not a progression, and its infinitude remains a gate.
 
-\begin{theorem}[\code{landauPrimes\_infinite\_of\_unbounded}]\label{thm:landauPrimes_infinite_of_unbounded}
-\green{} If the primes $n^2+1$ are unbounded, then their set is infinite. Moreover
+\begin{theorem}[unbounded Landau primes are infinite]\label{thm:landauPrimes_infinite_of_unbounded}
+\green{}\ If the primes $n^2+1$ are unbounded, then their set is infinite. Moreover
 (\code{oddLandauPrime\_even\_k}) for odd $k$ the number $k^2+1$ is even, so a prime $k^2+1>2$ forces
-even $k$.
+even $k$. \leantag{landauPrimes\_infinite\_of\_unbounded}
 \end{theorem}
 
 \emph{Proof idea.} A pure structural repackaging (as in the Polignac branch): unboundedness implies

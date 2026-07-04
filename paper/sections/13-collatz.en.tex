@@ -10,25 +10,27 @@ event.
 
 \subsection{The map, and where it breaks the descent law}
 
-\begin{definition}[\code{CollatzMap}]\label{def:collatzMap}
+\begin{definition}[accelerated Collatz map]\label{def:collatzMap}
 The accelerated Collatz map $T\colon\N\to\N$ folds the forced halving after an odd step into itself:
 \begin{equation}\label{eq:collatz-map}
 T(n)=\begin{cases}n/2,& n\equiv 0\ (\mathrm{mod}\ 2),\\[2pt] (3n+1)/2,& n\equiv 1\ (\mathrm{mod}\ 2).\end{cases}
 \end{equation}
 The even step is a descent by exactly two (the edge case $A=2$, not strict); the odd step is a
-\emph{fuel injection} --- the ``$+1$'' in $3n+1$ raises the height.
+\emph{fuel injection} --- the ``$+1$'' in $3n+1$ raises the height. \leantag{EuclidsPath.Collatz.Engine.T}
 \end{definition}
 
 Euclid's engine halts with a guarantee because every step is a strict descent, whence
 \code{no\_infinite\_descent} forces $H(t)<H_0/A^{t}<1$. Collatz enjoys no such law.
 
-\begin{theorem}[\code{odd\_accel\_ascends}]\label{thm:odd_accel_ascends}
-For odd $n\ge 1$ the accelerated step strictly raises the height: $n<\tfrac{3n+1}{2}=T(n)$. \green{}
+\begin{theorem}[odd step ascends]\label{thm:odd_accel_ascends}
+\green{}\ For odd $n\ge 1$ the accelerated step strictly raises the height: $n<\tfrac{3n+1}{2}=T(n)$.
+\leantag{odd\_accel\_ascends}
 \end{theorem}
 
-\begin{theorem}[\code{not\_descent\_on\_odd}]\label{thm:not_descent_on_odd}
-For odd $n\ge 1$ the step is not a descent, $\neg\,(T(n)<n)$. Hence the height along an orbit is not
-\code{StrictAnti}, and \code{no\_infinite\_descent} does not apply. \green{}
+\begin{theorem}[odd step is not a descent]\label{thm:not_descent_on_odd}
+\green{}\ For odd $n\ge 1$ the step is not a descent, $\neg\,(T(n)<n)$. Hence the height along an orbit
+is not strictly decreasing, and \code{no\_infinite\_descent} does not apply.
+\leantag{not\_descent\_on\_odd}
 \end{theorem}
 
 \emph{Proof idea.} Both are one-line arithmetic on $\N$. Numerically the height wanders upward by
@@ -37,9 +39,10 @@ $n=159487$); there is no strict monotone Lyapunov function. This is the exact bo
 proven halting of Euclid's engine and the openness of Collatz: the fuel injection temporarily lifts
 the height, so the strict form of the second law is broken.
 
-\begin{theorem}[\code{no\_monotone\_height}]\label{thm:no_monotone_height}
-Ascending positions are unbounded: for every $N$ there is $n>N$ with $n\equiv 1\ (\mathrm{mod}\ 4)$
-and $n<(3n+1)/2$ (witness $n=4N+5$). Hence no monotone $\log_2$-height exists. \green{}
+\begin{theorem}[no monotone height]\label{thm:no_monotone_height}
+\green{}\ Ascending positions are unbounded: for every $N$ there is $n>N$ with $n\equiv 1\ (\mathrm{mod}\ 4)$
+and $n<(3n+1)/2$ (witness $n=4N+5$). Hence no monotone $\log_2$-height exists.
+\leantag{no\_monotone\_height}
 \end{theorem}
 
 Averaged, the fuel is net-consumed --- the mean geometric drift per step is $\sqrt{3}/2\approx
@@ -54,22 +57,24 @@ We read the dynamics without logarithms. The engine advances by at most one bina
 the rope pulls back exactly one rank (halving) or two ($n\equiv 0\ \mathrm{mod}\ 4$). Descent is
 then a bookkeeping inequality between the counts of even and odd steps in a window.
 
-\begin{theorem}[\code{engine\_at\_most\_one\_rank}]\label{thm:engine_at_most_one_rank}
-One move of the engine advances by at most a rank: $T(n)\le 2n$ for all $n$. \green{}
+\begin{theorem}[engine advances at most one rank]\label{thm:engine_at_most_one_rank}
+\green{}\ One move of the engine advances by at most a rank: $T(n)\le 2n$ for all $n$.
+\leantag{engine\_at\_most\_one\_rank}
 \end{theorem}
 
-\begin{theorem}[\code{window\_budget}]\label{thm:window_budget}
-Over a window of $k$ steps, of which $t=\mathrm{oddCount}(k,n)$ are odd and
+\begin{theorem}[window budget]\label{thm:window_budget}
+\green{}\ Over a window of $k$ steps, of which $t=\mathrm{oddCount}(k,n)$ are odd and
 $e=\mathrm{evenCount}(k,n)$ are even, the per-step bounds multiply under any order of steps:
 \begin{equation}\label{eq:window-budget}
 2^{e}\cdot T^{k}(n)\;\le\;2^{t}\cdot n.
 \end{equation}
 This is pure $\N$-arithmetic: the floor-divisions are absorbed by the precision of the per-step
-bounds, and no logarithms are needed. \green{}
+bounds, and no logarithms are needed. \leantag{window\_budget}
 \end{theorem}
 
-\begin{theorem}[\code{window\_descends}]\label{thm:window_descends}
-If the rope wins the window strictly ($t<e$) and $n\ge 1$, then $T^{k}(n)<n$. \green{}
+\begin{theorem}[window descends]\label{thm:window_descends}
+\green{}\ If the rope wins the window strictly ($t<e$) and $n\ge 1$, then $T^{k}(n)<n$.
+\leantag{window\_descends}
 \end{theorem}
 
 \begin{proof}
@@ -81,16 +86,18 @@ The exact threshold $e>t$ --- not the average-implausible $e>2t$ --- is precisel
 green $\times 2$ bound converts into a descent. Renouncing $\log_2 3$ costs a $\sim 1.6\%$ margin
 (true descent needs only $e>0.585\,t$, but that is already logarithms, not core Lean).
 
-\begin{definition}[\code{RopeCountingLaw}]\label{def:ropeCountingLaw}
+\begin{definition}[rope counting law]\label{def:ropeCountingLaw}
 For $n$, the rope dominance law asserts that above the absorbing cycle every position opens a window
 with an even surplus:
 \begin{equation}\label{eq:rope-law}
 \mathrm{RopeCountingLaw}(n)\ :\equiv\ \forall j,\ \bigl(2<T^{j}(n)\Rightarrow \exists k,\ \mathrm{oddCount}(k,T^{j}(n))<\mathrm{evenCount}(k,T^{j}(n))\bigr).
 \end{equation}
+\leantag{RopeCountingLaw}
 \end{definition}
 
-\begin{theorem}[\code{reaches\_one\_of\_countingLaw}]\label{thm:reaches_one_of_countingLaw}
-If $n\ge 1$ and $\mathrm{RopeCountingLaw}(n)$ holds, then $\exists K,\ T^{K}(n)=1$. \green{}
+\begin{theorem}[the counting law forces halting]\label{thm:reaches_one_of_countingLaw}
+\green{}\ If $n\ge 1$ and $\mathrm{RopeCountingLaw}(n)$ holds, then $\exists K,\ T^{K}(n)=1$.
+\leantag{reaches\_one\_of\_countingLaw}
 \end{theorem}
 
 \emph{Proof idea.} The ladder is entirely green: $\mathrm{RopeCountingLaw}(n)$ feeds the window
@@ -107,30 +114,29 @@ $4616$ before surrendering, and it never opens such a window from the start: whi
 the steps are odd-heavy, and $\mathrm{evenCount}-\mathrm{oddCount}$ in the prefix windows never turns
 positive.
 
-\begin{theorem}[\code{counts\_at\_70\_at\_27}]\label{thm:counts_at_70_at_27}
-The orbit of $27$ reaches one in $70$ accelerated steps:
+\begin{theorem}[the orbit of $27$ counted out]\label{thm:counts_at_70_at_27}
+\green{}\ The orbit of $27$ reaches one in $70$ accelerated steps:
 \begin{equation}\label{eq:counts-27}
 \mathrm{oddCount}(70,27)=41,\qquad \mathrm{evenCount}(70,27)=29,\qquad T^{70}(27)=1.
 \end{equation}
 Forty-one moves of the engine against only twenty-nine pulls of the rope; the rope trails by twelve
-overall and never once leads from the start. \green{}
+overall and never once leads from the start. \leantag{counts\_at\_70\_at\_27}
 \end{theorem}
 
-\emph{Proof idea.} The kernel closes the prefix up to $k=70$ by direct computation
-(\code{counts\_le\_70\_at\_27}: $\mathrm{even}\le\mathrm{odd}$ in every prefix window;
-\code{counts\_at\_70\_at\_27}: exactly $41$ against $29$, finishing at $1$). The tail falls into the
-cycle $1\to 2\to 1$, where steps go strictly in pairs; the cycle lemma \code{cycle\_counts}, via the
-additivity of the counters (\code{oddCount\_add}, \code{evenCount\_add}), freezes the deficit of
-$-12$ forever, so no window from the start ever flips it.
+\emph{Proof idea.} The kernel closes the prefix up to $k=70$ by direct computation: every prefix window
+has $\mathrm{even}\le\mathrm{odd}$, and at $k=70$ exactly $41$ against $29$, finishing at $1$. The tail
+falls into the cycle $1\to 2\to 1$, where steps go strictly in pairs; a cycle lemma, via the additivity
+of the counters, freezes the deficit of $-12$ forever, so no window from the start ever flips it.
 
-\begin{theorem}[\code{not\_ropeCountingLaw\_27}]\label{thm:not_ropeCountingLaw_27}
-The rope law is false for $n=27$: $\neg\,\mathrm{RopeCountingLaw}(27)$. From $j=0$ (value $27>2$) no
-window gives a rope surplus. \green{}
+\begin{theorem}[the rope law fails at $27$]\label{thm:not_ropeCountingLaw_27}
+\green{}\ The rope law is false for $n=27$: $\neg\,\mathrm{RopeCountingLaw}(27)$. From $j=0$ (value $27>2$)
+no window gives a rope surplus. \leantag{not\_ropeCountingLaw\_27}
 \end{theorem}
 
-\begin{theorem}[\code{ropeLaw\_universal\_refuted}]\label{thm:ropeLaw_universal_refuted}
-The universal form of the law is false: $\neg\,\forall n\,(1\le n\Rightarrow\mathrm{RopeCountingLaw}(n))$,
-with witness $n=27$ (\cref{thm:not_ropeCountingLaw_27}). A decree boundary on this law is impossible. \green{}
+\begin{theorem}[the universal law is refuted]\label{thm:ropeLaw_universal_refuted}
+\green{}\ The universal form of the law is false: $\neg\,\forall n\,(1\le n\Rightarrow\mathrm{RopeCountingLaw}(n))$,
+with witness $n=27$ (\cref{thm:not_ropeCountingLaw_27}). A decree boundary on this law is impossible.
+\leantag{ropeLaw\_universal\_refuted}
 \end{theorem}
 
 The beautiful metaphor ``the fuel runs out, the engine is dragged back to the start'' is true in
@@ -139,19 +145,20 @@ And $27$ is not alone: the harness finds a whole family of climbing violators ($
 
 \subsection{A non-descending orbit is a perpetual engine}
 
-\begin{theorem}[\code{nonDescendingOrbit\_is\_perpetual\_engine}]\label{thm:nonDescendingOrbit_is_perpetual_engine}
-For $n\ge 3$ a non-descending orbit ($n\le T^{k}(n)$ for all $k$) loses no window to the rope
+\begin{theorem}[a non-descending orbit is a perpetual engine]\label{thm:nonDescendingOrbit_is_perpetual_engine}
+\green{}\ For $n\ge 3$ a non-descending orbit ($n\le T^{k}(n)$ for all $k$) loses no window to the rope
 ($\forall k,\ \mathrm{evenCount}(k,n)\le\mathrm{oddCount}(k,n)$) and never halts
-($\forall K,\ T^{K}(n)\neq 1$). \green{}
+($\forall K,\ T^{K}(n)\neq 1$). \leantag{nonDescendingOrbit\_is\_perpetual\_engine}
 \end{theorem}
 
 \emph{Proof idea.} Non-descent forces the window budget \cref{eq:window-budget} to keep the even
 count from ever exceeding the odd count; an infinite feed with not a single lost window is precisely a
 perpetual engine, and \cref{thm:window_descends} shows it cannot reach $1$.
 
-\begin{theorem}[\code{nonHalting\_carries\_perpetual\_engine}]\label{thm:nonHalting_carries_perpetual_engine}
-If an orbit never reaches $1$, then its tail from the global-minimum position is a non-descending,
-never-halting orbit --- exhibited explicitly, not by contradiction. \green{}
+\begin{theorem}[non-halting carries a perpetual engine]\label{thm:nonHalting_carries_perpetual_engine}
+\green{}\ If an orbit never reaches $1$, then its tail from the global-minimum position is a non-descending,
+never-halting orbit --- exhibited explicitly, not by contradiction.
+\leantag{nonHalting\_carries\_perpetual\_engine}
 \end{theorem}
 
 The natural numbers are well-ordered, so every orbit has a global minimum
@@ -166,17 +173,17 @@ To \emph{learn the cause from inside} --- to derive the universal rope law by an
 would mean extracting an infinite fact about the whole number line without leaving it. We formalise
 the attempt as a self-grounding that crosses its own boundary.
 
-\begin{definition}[\code{InternalisedCollatzGround}]\label{def:internalisedCollatzGround}
-A structure with two fields: \code{ground}, the law itself $\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$,
-and \code{beyondOwnHorizon}, a witness that it was derived by crossing the boundary,
+\begin{definition}[internalised Collatz ground]\label{def:internalisedCollatzGround}
+A structure with two fields: the \emph{ground}, the law itself $\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$,
+and a witness that it was derived by crossing the boundary,
 $\neg\,\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$. The abbreviation
 \code{InternalKnowledgeOfCollatzCause} identifies internal knowledge of the cause with this
-self-grounding.
+self-grounding. \leantag{InternalisedCollatzGround}
 \end{definition}
 
-\begin{theorem}[\code{collatzCause\_unknowable}]\label{thm:collatzCause_unknowable}
-Internal knowledge of the Collatz first cause is impossible: $\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$.
-\green{} (with no axioms at all)
+\begin{theorem}[the Collatz cause is unknowable]\label{thm:collatzCause_unknowable}
+\green{}\ Internal knowledge of the Collatz first cause is impossible (with no axioms at all):
+$\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$. \leantag{collatzCause\_unknowable}
 \end{theorem}
 
 \begin{proof}
@@ -190,11 +197,12 @@ form. This is the same prohibition that forbids a perpetual engine on $\N$
 (\code{no\_infinite\_descent}) and, read through Landauer, forbids extracting the cause from inside
 --- knowledge is physical.
 
-\begin{theorem}[\code{collatz\_verification\_not\_derivation}]\label{thm:collatz_verification_not_derivation}
-A conjunction of three links: (1) infinite internal extraction of the rope law is impossible,
+\begin{theorem}[verification, not derivation]\label{thm:collatz_verification_not_derivation}
+\green{}\ A conjunction of three links: (1) infinite internal extraction of the rope law is impossible,
 $\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$; (2) the only internal trace of a counterexample is a
-perpetual engine (\code{nonHalting\_carries\_perpetual\_engine}); (3) hence the solution is either
-unknowable from inside, or accessible only by \emph{verification} of an orbit. \green{}
+perpetual engine (\cref{thm:nonHalting_carries_perpetual_engine}); (3) hence the solution is either
+unknowable from inside, or accessible only by \emph{verification} of an orbit.
+\leantag{collatz\_verification\_not\_derivation}
 \end{theorem}
 
 The harnesses over $n\in[2,200000]$ with a divergence guard at $10^5$ steps are precisely the ``how
@@ -217,8 +225,8 @@ again (twins, Riemann, Navier--Stokes). The taint does not grow; after the remov
 $47$. This closes the Collatz trilemma exactly as Yang--Mills was closed, by a forged refutation
 rather than by a proof.
 
-\begin{theorem}[\code{collatz\_open\_status}]\label{thm:collatz_open_status}
-The epistemic status of Collatz after the decree's fall (the mirror of
+\begin{theorem}[open status of Collatz]\label{thm:collatz_open_status}
+\green{}\ The epistemic status of Collatz after the decree's fall (the mirror of
 \code{pnp\_locked\_behind\_engine\_status}, now \emph{without} the decree conjunct) is a conjunction of
 four: $\neg\,\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)$ (the universal law is refuted) $\wedge$
 $\neg\,\mathrm{InternalKnowledgeOfCollatzCause}$ (internal knowledge is impossible) $\wedge$
@@ -226,7 +234,7 @@ $\bigl(\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)\Rightarrow\exists K,\ \mathr
 (the per-$n$ law entails halting, conditional) $\wedge$
 $\bigl(\forall n,\ (\forall K,\ \mathrm{iter}\,K\,n\neq 1)\Rightarrow \exists j,\
 \mathrm{NonDescendingOrbit}(\mathrm{iter}\,j\,n)\wedge\forall K,\ \mathrm{iter}\,K\,(\mathrm{iter}\,j\,n)\neq 1\bigr)$
-(a refutation would build a perpetual engine). \green{}
+(a refutation would build a perpetual engine). \leantag{collatz\_open\_status}
 \end{theorem}
 
 This is not G\"odelian independence --- we do not claim Collatz is unprovable in Peano arithmetic.
@@ -235,8 +243,8 @@ self-grounding) run into one and the same forbidden object, and the decree third
 machine-closed. The conjecture itself remains open.
 
 \begin{conjecture}[Collatz]\label{conj:collatz}
-For every $n\ge 1$ there is $K$ with $T^{K}(n)=1$; equivalently, every orbit has no perpetual tail.
-\red{} Open, and untouched by the decree's fall: the refuted law was strictly stronger than the
+\red{}\ For every $n\ge 1$ there is $K$ with $T^{K}(n)=1$; equivalently, every orbit has no perpetual tail.
+Open, and untouched by the decree's fall: the refuted law was strictly stronger than the
 conjecture, so its fall says only that Collatz cannot be closed by \emph{such} a decree.
 \end{conjecture}
 

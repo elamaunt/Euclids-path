@@ -16,38 +16,40 @@ Mersenne numbers $2^p-1$ look like ready-made inhabitants of the $6m\pm1$ grid, 
 temptation is to declare that the twin engine solves them ``along the way''. It does not.
 We record first the genuine embedding.
 
-\begin{theorem}[\code{mersenne\_eq\_sixCenter\_add\_one}]\label{thm:mersenne_eq_sixCenter_add_one}
+\begin{theorem}[Mersenne on the grid]\label{thm:mersenne_eq_sixCenter_add_one}
 \green{}\; For odd $p$, writing $m_p=(2^{p-1}-1)/3$,
 \begin{equation}\label{eq:mersenne-embed}
   2^p-1 = 6\,m_p+1.
 \end{equation}
+\leantag{mersenne\_eq\_sixCenter\_add\_one}
 \end{theorem}
 
 Thus every odd Mersenne number is exactly the plus side of the centre $m_p$; its lower side
 $6m_p-1 = 2^p-3$ gives an immediate twin criterion.
 
-\begin{theorem}[\code{isTwinCenter\_mersenneCenter\_iff}]\label{thm:isTwinCenter_mersenneCenter_iff}
+\begin{theorem}[Mersenne twin criterion]\label{thm:isTwinCenter_mersenneCenter_iff}
 \green{}\; For odd $p\ge 2$ the centre $m_p$ is a twin centre if and only if both $2^p-3$
-and $2^p-1$ are prime.
+and $2^p-1$ are prime. \leantag{isTwinCenter\_mersenneCenter\_iff}
 \end{theorem}
 
 Such Mersenne twins exist ($p=3$ gives $(5,7)$, $p=5$ gives $(29,31)$), and the only honest
 arrow between the topics runs \emph{from} them: a subsequence of twins is still twins.
 
-\begin{theorem}[\code{twinLowersInfinite\_of\_mersenneTwins}]\label{thm:twinLowersInfinite_of_mersenneTwins}
-\green{}\; If the Mersenne twin centres are unbounded, then \code{TwinLowers.Infinite}.
+\begin{theorem}[unbounded Mersenne twins feed the twins]\label{thm:twinLowersInfinite_of_mersenneTwins}
+\green{}\; If the Mersenne twin centres are unbounded, then the lower twin centres are
+infinite. \leantag{twinLowersInfinite\_of\_mersenneTwins}
 \end{theorem}
 
 \emph{Proof idea.} The pairs $(2^p-3,\,2^p-1)$ are then unbounded twin pairs, and a
 subsequence of twins is carried across the honest bridge to the programme's genuine goal.
 The arrow is trivial and points from the stronger hypothesis to the weaker conclusion; the
 reverse implication ``twins $\Rightarrow$ Mersenne'' is \emph{not} a theorem here --- the
-branch carries an explicit coverage marker \code{NoTwinsToMersenneImplicationClaimed}, and
-the goal \code{MersennePrimesInfinite} is \red{} open, derived from nowhere in the branch.
+branch carries an explicit coverage marker recording that no such implication is claimed, and
+the goal ``Mersenne primes are infinite'' is \red{} open, derived from nowhere in the branch.
 
 \begin{remark}
 An earlier ``forward series'' of $34$ bricks aimed to prove Mersenne infinitude
-unconditionally; an internal audit exposed it as \warn{}~vacuous --- its \code{noEngine}
+unconditionally; an internal audit exposed it as \warn{}~vacuous --- its no-engine
 packages were uninhabited, and its headline theorems followed from empty premises. It is
 recorded, not retouched: the reduction chains here consume only genuine hypotheses.
 \end{remark}
@@ -55,41 +57,41 @@ recorded, not retouched: the reduction chains here consume only genuine hypothes
 \subsection{A refutation presents an engine, and the boundary we did not take}
 
 Run the Mersenne branch through the manifestation architecture of \cref{sec:riemann}. The
-deviation is not a data point but a $\Pi$-witness of \emph{finiteness}:
-\code{MersenneTwinAbsenceAbove}$(P)$, asserting that every prime pair $(2^p-3,\,2^p-1)$ sits
-with its lower side no higher than $P$. The plumbing ties it to the goal exactly
-(\code{mersenneTwinCentersUnbounded\_iff\_no\_absence}, \green{}), and the witness cannot be
-forged: the centres form the base-$4$ chain $m\to 4m+1$, whose first step $5\to 1$ carries
-no proper peel at any scale (\code{isEmpty\_properCenterPeel\_five\_one}, \green{}), because
+deviation is not a data point but a $\Pi$-witness of \emph{finiteness}: an absence witness
+asserting that every prime pair $(2^p-3,\,2^p-1)$ sits with its lower side no higher than $P$.
+The plumbing ties it to the goal exactly (unboundedness is equivalent to the absence of such a
+witness, \green{}), and the witness cannot be forged: the centres form the base-$4$ chain
+$m\to 4m+1$, whose first step $5\to 1$ carries no proper peel at any scale (\green{}), because
 the leading coefficient $4$ is neither prime nor $\equiv\pm1\pmod 6$ --- sides do not map to
 sides. So no unconditional supply of flows is buildable here, exactly the Riemann situation.
 
-\begin{theorem}[\code{mersenneRefutation\_carries\_engine}]\label{thm:mersenneRefutation_carries_engine}
-\green{}\; An absence witness, the manifestation law \code{MersenneManifestationLaw}, and
-reconciled books at a scale no lower than $P$ present a perpetual engine as an object,
-\code{ConcreteEuclideanEngineWitness}, before any killing.
+\begin{theorem}[a Mersenne refutation exhibits an engine]\label{thm:mersenneRefutation_carries_engine}
+\green{}\; An absence witness, the Mersenne manifestation law, and reconciled books at a scale
+no lower than $P$ present a perpetual engine as a concrete object, before any killing.
+\leantag{mersenneRefutation\_carries\_engine}
 \end{theorem}
 
 \emph{Proof idea.} The resolving projection yields a stable, energy-free universe; the law
 turns the absence into an infinite family of flows; a finite key is forced to collide two
 of its members; from the collision an engine-witness is assembled. Composed with the no-engine
 wall and the accepted boundary this forces the Mersenne twins unbounded, and across the
-bridge \code{twinLowersInfinite\_of\_noEngine\_boundary\_and\_mersenneManifestation} (\green{}).
-The witness gate is load-bearing: the ungated form at $P=0$ would produce a supply at a
-resolved scale, contradicting the green impossibility \code{no\_deviationFlowSupply\_at\_resolved\_scale}.
+bridge the lower twin centres come out infinite (\green{}). The witness gate is load-bearing:
+the ungated form at $P=0$ would produce a supply at a resolved scale, contradicting the green
+impossibility \cref{thm:no_deviationFlowSupply_at_resolved_scale} of a supply there.
 
 The trilemma is cleared and the boundary field \code{mersenneBoundary} is machine-admissible.
 Its price is exact.
 
-\begin{theorem}[\code{mersenneManifestationLaw\_iff\_unbounded\_of\_boundary}]\label{thm:mersenneManifestationLaw_iff_unbounded_of_boundary}
-\green{}\; Under the accepted boundary \code{TheStrictLastStep00Obligation}, the manifestation
-law is equivalent to the unboundedness of the Mersenne twins:
+\begin{theorem}[exact price of the Mersenne decree]\label{thm:mersenneManifestationLaw_iff_unbounded_of_boundary}
+\green{}\; Under the accepted boundary, the manifestation law is equivalent to the
+unboundedness of the Mersenne twins:
 \begin{equation}\label{eq:mersenne-price}
 \begin{gathered}
 \code{TheStrictLastStep00Obligation}\ \Rightarrow\\
 \bigl(\code{MersenneManifestationLaw}\iff\code{MersenneTwinCentersUnbounded}\bigr).
 \end{gathered}
 \end{equation}
+\leantag{mersenneManifestationLaw\_iff\_unbounded\_of\_boundary}
 \end{theorem}
 
 The decree would carry exactly Mersenne-twin strength --- and here, for the first time in the
@@ -105,33 +107,34 @@ The pair problems --- twins (gap $2$), cousins (gap $4$), sexies (gap $6$), and 
 general --- decompose geometrically on the grid. First the spine of honesty: each side
 separately carries infinitely many primes.
 
-\begin{theorem}[\code{minusSide\_primes\_unbounded}]\label{thm:minusSide_primes_unbounded}
+\begin{theorem}[each grid side carries infinitely many primes]\label{thm:minusSide_primes_unbounded}
 \green{}\; Above any $n$ there is a prime $p>n$ with $p\bmod 6 = 5$; and, separately, a prime
-$p>n$ with $p\bmod 6 = 1$ (\code{plusSide\_primes\_unbounded}).
+$p>n$ with $p\bmod 6 = 1$. \leantag{minusSide\_primes\_unbounded}
 \end{theorem}
 
 \emph{Proof idea.} This is Dirichlet's theorem on primes in arithmetic progressions, borrowed
 whole from \code{mathlib}~\cite{mathlib}: the classes $1$ and $5$ modulo $6$ are coprime to
 $6$, so each carries infinitely many primes. About one and the same centre the two columns say
-nothing --- the marker \code{NoPairingClaimed} (\green{}, an \code{abbrev := True}) signs this
-honestly, and the coincidence of the sides at a shared centre is the twin conjecture, neither
-asserted nor derived here.
+nothing --- a marker (\green{}, an \code{abbrev := True}) signs this honestly, and the
+coincidence of the sides at a shared centre is the twin conjecture, neither asserted nor
+derived here.
 
 Cousins and sexies are read off the same grid. A cousin pair $(p,p+4)$ crosses two adjacent
 centres, $(6m+1,\,6(m+1)-1)$; a sexy pair $(p,p+6)$ stays on one side of two adjacent centres.
 The geometry forces a residue.
 
-\begin{theorem}[\code{cousin\_mod\_six}]\label{thm:cousin_mod_six}
+\begin{theorem}[cousins are born on the plus side]\label{thm:cousin_mod_six}
 \green{}\; Every junior member of a cousin pair with $p>3$ lies on the plus side:
-$p\bmod 6 = 1$.
+$p\bmod 6 = 1$. \leantag{cousin\_mod\_six}
 \end{theorem}
 
 \emph{Proof idea.} A prime $p>3$ has $p\bmod 6\in\{1,5\}$; the case $5$ forces $p+4\equiv 0
 \pmod 3$, impossible for the prime $p+4>3$. Cousins are born only on the plus side.
 
-\begin{theorem}[\code{constellation\_of\_adjacent\_twinCenters}]\label{thm:constellation_of_adjacent_twinCenters}
+\begin{theorem}[adjacent twin centres yield a constellation]\label{thm:constellation_of_adjacent_twinCenters}
 \green{} (even without \code{Classical.choice})\; Two adjacent twin centres $m$ and $m+1$
 simultaneously yield the cousins on $m$ and both sexy pairs on $m$.
+\leantag{constellation\_of\_adjacent\_twinCenters}
 \end{theorem}
 
 \emph{Proof idea.} Then all four sides $6m\mp1$, $6(m+1)\mp1$ are prime, and cousins
@@ -148,18 +151,19 @@ in which the quarantine's meaning resides.
 A Sophie Germain pair is $(p,\,2p+1)$, both prime. In grid coordinates it is one-sided, and
 the SG map of centres is pure doubling.
 
-\begin{theorem}[\code{sg\_center\_doubling}]\label{thm:sg_center_doubling}
+\begin{theorem}[Sophie Germain centres double]\label{thm:sg_center_doubling}
 \green{}\; $2(6m-1)+1 = 6(2m)-1$: an SG prime $p=6m-1$ has its companion $2p+1$ on the minus
-side of centre $2m$.
+side of centre $2m$. \leantag{sg\_center\_doubling}
 \end{theorem}
 
 The map $m\to 2m$ is the third sibling of the chains, beside Mersenne's $4m+1$ and the pentadic
 $5m+1$. But the branch carries the one substantive classical theorem of the whole zoo,
 machine-proved to the last step.
 
-\begin{theorem}[\code{sophieGermain\_divides\_mersenne}]\label{thm:sophieGermain_divides_mersenne}
+\begin{theorem}[a Sophie Germain companion divides its Mersenne number]\label{thm:sophieGermain_divides_mersenne}
 \green{}\; If $p$ is prime, $p\equiv 3\pmod 4$, $p>3$, and $q=2p+1$ is prime, then $q\mid M_p$
 and the Mersenne number $M_p=2^p-1$ is composite.
+\leantag{sophieGermain\_divides\_mersenne}
 \end{theorem}
 
 \begin{proof}
@@ -167,19 +171,19 @@ This is the classical Euler--Lagrange route~\cite{hardy-wright}. Since $p\equiv3
 $q=2p+1\equiv7\pmod8$, which is exactly the condition $q\equiv\pm1\pmod8$ under which $2$ is a
 quadratic residue modulo $q$ (\code{ZMod.exists\_sq\_eq\_two\_iff}). By Euler's criterion
 $2^{(q-1)/2}\equiv 1\pmod q$, and $(q-1)/2=p$, so $2^p\equiv 1\pmod q$, i.e.\ $q\mid 2^p-1=M_p$.
-For $p\ge4$ one has $2p+1<2^p-1$ (\code{two\_mul\_add\_one\_lt\_mersenne}), so $1<q<M_p$ and
+For $p\ge4$ one has $2p+1<2^p-1$, so $1<q<M_p$ and
 $M_p$ is composite. The proviso $p>3$ is honest: at $p=3$ the companion $q=7=M_3$ is itself the
 Mersenne number and is prime, so the divisor coincides with the dividend.
 \end{proof}
 
-\begin{theorem}[\code{mersenne\_composite\_examples}]\label{thm:mersenne_composite_examples}
+\begin{theorem}[a worked composite Mersenne number]\label{thm:mersenne_composite_examples}
 \green{}\; $23\mid M_{11}=2047$, and $M_{11}$ is composite.
+\leantag{mersenne\_composite\_examples}
 \end{theorem}
 
 Here $p=11\equiv3\pmod4$, $q=23$ is prime, and $2047=23\cdot89$ splits into exactly the predicted
 divisor. Through the restricted $3\pmod4$ manifestation front this yields, conditionally on the
-open Sophie Germain conjecture, unboundedly many composite Mersenne numbers
-(\code{mersenneComposites\_unbounded\_of\_noEngine\_boundary\_and\_sgManifestation}, \green{},
+open Sophie Germain conjecture, unboundedly many composite Mersenne numbers (\green{},
 conditional) --- a one-way bridge onto the \emph{composite} side of the same $M_p$ whose
 \emph{prime} side the Mersenne boundary declined to bet on.
 
@@ -189,44 +193,46 @@ For Goldbach and Legendre the deviation is a data object that is moreover \emph{
 decidable} --- the strongest form of unpresentability in the series. Each candidate is the
 easiest thing to check, yet presenting a genuine witness is impossible.
 
-\begin{theorem}[\code{goldbachViolation\_ge\_52}]\label{thm:goldbachViolation_ge_52}
+\begin{theorem}[a Goldbach violation must sit at $E\ge52$]\label{thm:goldbachViolation_ge_52}
 \green{}\; Every witness of a Goldbach violation sits at $E\ge 52$.
+\leantag{goldbachViolation\_ge\_52}
 \end{theorem}
 
 \emph{Proof idea.} A Goldbach violation ``$E\ge4$ even, not a sum of two primes'' is decidable
-through a bounded search; \code{decide} verifies \code{goldbach\_upTo\_52} (\green{}) that every
-even $E<52$ decomposes, so any fake below $52$ dies on the spot. The literature bound
-$4\cdot10^{18}$ is not formalised; only $\ge52$ is green. The manifestation law is object-quantified
-(no gate: the scale anchor $M_0:=E$ is the number itself), and the essence carries through.
+through a bounded search; \code{decide} verifies that every even $E<52$ decomposes, so any fake
+below $52$ dies on the spot. The literature bound $4\cdot10^{18}$ is not formalised; only
+$\ge52$ is green. The manifestation law is object-quantified (no gate: the scale anchor
+$M_0:=E$ is the number itself), and the essence carries through.
 
-\begin{theorem}[\code{noGoldbachViolation\_of\_manifestation\_and\_boundary}]\label{thm:noGoldbachViolation_of_manifestation_and_boundary}
+\begin{theorem}[Goldbach from manifestation and boundary]\label{thm:noGoldbachViolation_of_manifestation_and_boundary}
 \green{}\; No engines, an accepted boundary, and the manifestation law imply there are no
 Goldbach violations --- the Goldbach conjecture holds.
+\leantag{noGoldbachViolation\_of\_manifestation\_and\_boundary}
 \end{theorem}
 
 \emph{Proof idea.} A hypothetical witness $V$ yields the scale $M_0:=V.1$; the boundary supplies
 a resolving projection there; the law turns the violation into an infinite family of flows, from
 whose collision an engine-witness is assembled --- killed by ``no engines''. Across the bridge
-\code{goldbachConjecture\_iff\_no\_violation} this reaches the conjecture itself. Legendre's front
-is identical (\code{noLegendreViolation\_of\_manifestation\_and\_boundary}, \green{}), but carries
-a unique unconditional companion --- Bertrand's postulate.
+tying violations to the conjecture, this reaches the conjecture itself. Legendre's front
+is identical (\green{}), but carries a unique unconditional companion --- Bertrand's postulate.
 
-\begin{theorem}[\code{no\_desert\_doubles}]\label{thm:no_desert_doubles}
+\begin{theorem}[no prime desert survives a doubling]\label{thm:no_desert_doubles}
 \green{}\; A prime desert cannot survive a doubling: for $n\neq0$ there is always a prime
-between $n$ and $2n$.
+between $n$ and $2n$. \leantag{no\_desert\_doubles}
 \end{theorem}
 
 \emph{Proof idea.} A direct repackaging of Bertrand's postulate
 (\code{Nat.exists\_prime\_lt\_and\_le\_two\_mul}, \code{mathlib}~\cite{mathlib}, unconditional).
 But it does \emph{not} solve Legendre, and we mark this machine-checkably.
 
-\begin{theorem}[\code{legendre\_interval\_shorter\_than\_bertrand}]\label{thm:legendre_interval_shorter_than_bertrand}
+\begin{theorem}[Legendre's interval is shorter than Bertrand's]\label{thm:legendre_interval_shorter_than_bertrand}
 \green{}\; For $n\ge3$ one has $(n+1)^2<2n^2$: Legendre's interval $(n^2,(n+1)^2)$ is
 \emph{shorter} than Bertrand's doubling $[n,2n]$.
+\leantag{legendre\_interval\_shorter\_than\_bertrand}
 \end{theorem}
 
-Hence the green Bertrand is powerless on the quadratic crack, and the module records
-\code{NoBertrandToLegendreImplicationClaimed} $=$ True. A green theorem next to an open problem
+Hence the green Bertrand is powerless on the quadratic crack, and the module records that no
+Bertrand-to-Legendre implication is claimed. A green theorem next to an open problem
 does not make it green; it delineates exactly where the proven ends.
 
 \subsection{Perfect numbers: green Euclid--Euler both ways}
@@ -234,35 +240,36 @@ does not make it green; it delineates exactly where the proven ends.
 Both directions of the oldest theorem of the \emph{Elements}~\cite{euclid-elements} are now green,
 re-exported from the \code{mathlib} archive~\cite{mathlib,wiedijk100}.
 
-\begin{theorem}[\code{perfect\_of\_mersennePrime'}]\label{thm:perfect_of_mersennePrime}
+\begin{theorem}[Euclid's direction: Mersenne prime gives a perfect number]\label{thm:perfect_of_mersennePrime}
 \green{}\; For $2\le p$ with $2^p-1$ prime, the number $2^{p-1}(2^p-1)$ is perfect --- Euclid's
-direction (\emph{Elements} IX.36).
+direction (\emph{Elements} IX.36). \leantag{perfect\_of\_mersennePrime'}
 \end{theorem}
 
-\begin{theorem}[\code{evenPerfect\_eq}]\label{thm:evenPerfect_eq}
+\begin{theorem}[Euler's converse: every even perfect number is Euclid's]\label{thm:evenPerfect_eq}
 \green{}\; Every even perfect number has the form $2^k(2^{k+1}-1)$ with a prime Mersenne factor
---- Euler's converse.
+--- Euler's converse. \leantag{evenPerfect\_eq}
 \end{theorem}
 
 Together these two arrows are the entire classical theorem: Mersenne primes and even perfect
 numbers are one object. This makes an ancient equivalence green.
 
-\begin{theorem}[\code{mersennePrimesInfinite\_iff\_evenPerfectUnbounded}]\label{thm:mersennePrimesInfinite_iff_evenPerfectUnbounded}
-\green{}\; \code{MersennePrimesInfinite} is equivalent to the unboundedness of even perfect numbers.
+\begin{theorem}[Mersenne primes and even perfect numbers rise together]\label{thm:mersennePrimesInfinite_iff_evenPerfectUnbounded}
+\green{}\; The infinitude of the Mersenne primes is equivalent to the unboundedness of even
+perfect numbers. \leantag{mersennePrimesInfinite\_iff\_evenPerfectUnbounded}
 \end{theorem}
 
 \emph{Proof idea.} Forward, Euclid's construction with $N<p<2^p\le 2^{p-1}(2^p-1)$ drives the
 perfect numbers upward without a ceiling; backward, Euler's classification dissects an unbounded
-even perfect number and \code{Nat.prime\_of\_pow\_sub\_one\_prime} forces a growing prime exponent.
+even perfect number and a divisibility lemma forces a growing prime exponent.
 Both sides are open; what is green is the \emph{equivalence} --- the oldest question of the
 \emph{Elements} and the Mersenne question are literally one. The even side is constructive and
 locked, so a deviation --- an odd perfect number --- can live only on the odd side; its witness is
 pointwise decidable and $\ge101$ is green (the literature bound $>10^{2200}$ is not formalised).
 Euler's classical form of the hypothetical witness is machine-verified.
 
-\begin{theorem}[\code{odd\_perfect\_euler\_form}]\label{thm:odd_perfect_euler_form}
+\begin{theorem}[Euler's form of an odd perfect number]\label{thm:odd_perfect_euler_form}
 \green{}\; Every odd perfect $n$ has the form $n=q^{\alpha}m^2$ with $q$ prime, $q\equiv1\pmod4$,
-$\alpha\equiv1\pmod4$, and $q\nmid m$.
+$\alpha\equiv1\pmod4$, and $q\nmid m$. \leantag{odd\_perfect\_euler\_form}
 \end{theorem}
 
 \emph{Proof idea.} For odd $n$ the factor $2$ enters $\sigma(n)=2n$ in exactly the first power;
@@ -275,30 +282,29 @@ domain of the nonexistent witness --- without asserting its existence either way
 
 The Fermat numbers $F_k=2^{2^k}+1$ mirror Mersenne on the other side of the grid.
 
-\begin{theorem}[\code{six\_mul\_fermatCenter}]\label{thm:six_mul_fermatCenter}
+\begin{theorem}[a Fermat number is the minus side of its centre]\label{thm:six_mul_fermatCenter}
 \green{}\; For $k\ge1$, with $c_k=(F_k+1)/6$, one has $6c_k=F_k+1$, i.e.\ $F_k=6c_k-1$: a Fermat
-number is the \emph{minus} side of its centre.
+number is the \emph{minus} side of its centre. \leantag{six\_mul\_fermatCenter}
 \end{theorem}
 
 \emph{Proof idea.} For $k\ge1$ the exponent $2^k$ is even, so $F_k\equiv2\pmod3$ and, by oddness,
-$F_k\equiv5\pmod6$ (\code{fermatNumber\_mod\_six}); $F_0=3$ is off the grid and excluded. The chain
-of centres is here \emph{quadratic}, $c_{k+1}=6c_k^2-4c_k+1$ (\code{fermatCenter\_chain}, \green{}),
-which again cannot be sawed --- the step $3\to1$ carries no proper peel
-(\code{isEmpty\_properCenterPeel\_three\_one}, \green{}) --- so no forged witness exists. The
+$F_k\equiv5\pmod6$; $F_0=3$ is off the grid and excluded. The chain of centres is here
+\emph{quadratic}, $c_{k+1}=6c_k^2-4c_k+1$ (\green{}), which again cannot be sawed --- the step
+$3\to1$ carries no proper peel (\green{}) --- so no forged witness exists. The
 localisation of the absence witness is the record of the programme.
 
-\begin{theorem}[\code{fermatAbsenceBound\_ge\_65537}]\label{thm:fermatAbsenceBound_ge_65537}
+\begin{theorem}[the Fermat-twin absence bound is at least $65537$]\label{thm:fermatAbsenceBound_ge_65537}
 \green{}\; Every Fermat-twin absence bound is at least $65537$.
+\leantag{fermatAbsenceBound\_ge\_65537}
 \end{theorem}
 
 \emph{Proof idea.} The pair at $k=4$, namely $F_4=65537$ and $F_4+2=65539$, both prime, exists
-greenly (\code{fermat\_twin\_instances}), and no witness can cut it off from below; note $k=3$
-gives no pair, $F_3+2=259=7\cdot37$ composite. The rest of the front mirrors Mersenne word for
-word, and the price is exact.
+greenly, and no witness can cut it off from below; note $k=3$ gives no pair, $F_3+2=259=7\cdot37$
+composite. The rest of the front mirrors Mersenne word for word, and the price is exact.
 
-\begin{theorem}[\code{fermatManifestationLaw\_iff\_unbounded\_of\_boundary}]\label{thm:fermatManifestationLaw_iff_unbounded_of_boundary}
+\begin{theorem}[exact price of the Fermat decree]\label{thm:fermatManifestationLaw_iff_unbounded_of_boundary}
 \green{}\; Under an accepted boundary the manifestation law is equivalent to the unboundedness of
-Fermat twins.
+Fermat twins. \leantag{fermatManifestationLaw\_iff\_unbounded\_of\_boundary}
 \end{theorem}
 
 The decree would carry exactly Fermat-twin strength, but the sign of the heuristic is inverted

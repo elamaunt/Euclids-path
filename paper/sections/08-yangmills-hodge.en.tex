@@ -22,13 +22,14 @@ half.
 On it, the \emph{mass gap} $\mathrm{MassGap}(S)$ and \emph{masslessness} $\mathrm{Gapless}(S)$ are
 exact negations of one another.
 
-\begin{theorem}[\code{not\_massGap\_iff\_gapless}]\label{thm:not_massGap_iff_gapless}
+\begin{theorem}[no gap means massless]\label{thm:not_massGap_iff_gapless}
 \green{}\ The absence of a gap is equivalent to masslessness, and without any use of choice:
 \[
   \neg\,\mathrm{MassGap}(S)\iff\mathrm{Gapless}(S),
 \]
 where $\mathrm{MassGap}(S):=\exists\,\Delta>0,\ \forall E\in S.\mathrm{Energy},\ E\neq 0\Rightarrow\Delta\le E$
 and $\mathrm{Gapless}(S):=\forall\varepsilon>0,\ \exists E\in S.\mathrm{Energy},\ 0<E<\varepsilon$.
+\leantag{not\_massGap\_iff\_gapless}
 \end{theorem}
 
 What makes masslessness an engine is that it builds a \emph{ladder} --- a halving chain of positive
@@ -36,11 +37,12 @@ levels, dropping by at least half at each step, $2\cdot E(n+1)\le E(n)$. This is
 $\R$-counterexample of positive work with no lower limit, the infinite multiplicative descent in
 the reals against which acyclicity is powerless.
 
-\begin{theorem}[\code{gapless\_iff\_nonempty\_ladder}]\label{thm:gapless_iff_nonempty_ladder}
+\begin{theorem}[masslessness is a ladder]\label{thm:gapless_iff_nonempty_ladder}
 \green{}\ Masslessness is equivalent to the existence of a ladder: $\mathrm{Gapless}(S)$ holds
 if and only if the type $\mathrm{GaplessLadder}(S)$ of ladders is nonempty, where a ladder is a
 sequence $E:\N\to\R$ with $E(n)\in S.\mathrm{Energy}$, $E(n)>0$ and $2\cdot E(n+1)\le E(n)$ for all
 $n$.
+\leantag{gapless\_iff\_nonempty\_ladder}
 \end{theorem}
 
 \emph{Proof idea.} Forward, the ladder is built by choice, mirroring the zero-extraction of the
@@ -50,21 +52,23 @@ as the ladder lives in $\R$, acyclicity cannot touch it.
 The engine is killed exactly when the ladder can be \emph{reflected into the natural numbers}. This
 is the physical input of the branch, and it is genuinely open.
 
-\begin{definition}[\code{QuantizationLaw}]\label{def:QuantizationLaw}
-\red{}\ A red per-model input (the \code{EnergyBalanceLaw} pattern): every positive state carries a
+\begin{definition}[quantization law]\label{def:QuantizationLaw}
+\red{}\ A red per-model input (of the energy-balance pattern): every positive state carries a
 natural rank, and multiplicative descent of energy is reflected into a \emph{strict} descent of
 rank,
 \[
   \mathrm{QuantizationLaw}(S):=\exists\,\mathrm{rank}:\mathrm{PositiveState}(S)\to\N,\
     \forall x,y,\ 2\cdot(y:\R)\le(x:\R)\Rightarrow\mathrm{rank}(y)<\mathrm{rank}(x).
 \]
+\leantag{QuantizationLaw}
 \end{definition}
 
 Under the law, the ladder turns from real into natural, and breaks off.
 
-\begin{theorem}[\code{no\_quantizedLadder}]\label{thm:no_quantizedLadder}
+\begin{theorem}[no quantized ladder]\label{thm:no_quantizedLadder}
 \green{}\ A quantized ladder does not exist:
 $\mathrm{QuantizationLaw}(S)\wedge\mathrm{GaplessLadder}(S)\Rightarrow\bot$.
+\leantag{no\_quantizedLadder}
 \end{theorem}
 
 \emph{Proof idea.} A quantized ladder would be an infinite strictly descending chain of natural
@@ -72,8 +76,9 @@ ranks --- Euclid's perpetual engine --- killed by \code{no\_infinite\_descent}
 (\cref{sec:engine}). The killer here is the pure well-foundedness of $\N$; no fake ``there are no
 engines'' hypothesis is mixed in.
 
-\begin{theorem}[\code{massGap\_of\_quantizationLaw}]\label{thm:massGap_of_quantizationLaw}
+\begin{theorem}[quantization gives the gap]\label{thm:massGap_of_quantizationLaw}
 \green{}\ Quantization implies the mass gap: $\mathrm{QuantizationLaw}(S)\Rightarrow\mathrm{MassGap}(S)$.
+\leantag{massGap\_of\_quantizationLaw}
 \end{theorem}
 
 \emph{Proof idea.} No gap gives masslessness (\cref{thm:not_massGap_iff_gapless}), masslessness a
@@ -84,9 +89,10 @@ branch: spectral quantisation $\Rightarrow$ mass gap.
 As with P/NP, one is tempted to add a fourth boundary of the first cause; the machine forbids it,
 and the reason runs deeper here.
 
-\begin{theorem}[\code{quantizationLaw\_iff\_massGap}]\label{thm:quantizationLaw_iff_massGap}
+\begin{theorem}[quantization is the gap verbatim]\label{thm:quantizationLaw_iff_massGap}
 \green{}\ For every model the quantization law is equivalent to the presence of a gap, green and
 with no boundary anywhere: $\mathrm{QuantizationLaw}(S)\iff\mathrm{MassGap}(S)$.
+\leantag{quantizationLaw\_iff\_massGap}
 \end{theorem}
 
 This is the shape of the \emph{condemned} bridge, not of the honest Riemann mirror: there the
@@ -138,10 +144,11 @@ We do not solve the problem; the remainder is a named input \code{DescentLaw}.
 
 The branch's headline is that here the engine is dead \emph{unconditionally}.
 
-\begin{theorem}[\code{isEmpty\_unpaidDescentChain}]\label{thm:isEmpty_unpaidDescentChain}
+\begin{theorem}[no unpaid descent chain]\label{thm:isEmpty_unpaidDescentChain}
 \green{}\ For every Hodge ledger $S$ the type $\mathrm{UnpaidDescentChain}(S)$ is empty: an infinite
 strictly height-descending chain of unpaid charges exists in no model whatsoever. The axiom list is
 just \code{[propext, Quot.sound]}, without even choice --- pure descent at $A=1$.
+\leantag{isEmpty\_unpaidDescentChain}
 \end{theorem}
 
 Unlike Yang--Mills, where the real ladder lived at masslessness and was killed by a
@@ -149,28 +156,31 @@ Unlike Yang--Mills, where the real ladder lived at masslessness and was killed b
 natural number --- so the engine is dead in every model. What remains contested is not whether the
 charge is quantised (yes, by construction) but the existence of the payment \emph{steps}.
 
-\begin{theorem}[\code{hodgeProperty\_of\_descentLaw}]\label{thm:hodgeProperty_of_descentLaw}
+\begin{theorem}[descent law gives the conjecture]\label{thm:hodgeProperty_of_descentLaw}
 \green{}\ If $\mathrm{DescentLaw}(S)$, then $\mathrm{HodgeProperty}(S)$: the descent law implies the
 model's Hodge conjecture.
+\leantag{hodgeProperty\_of\_descentLaw}
 \end{theorem}
 
 \emph{Proof idea.} Strong induction on the height, no choice needed; the same follows by the chain
 route through \code{descentSeq}. This is the green conditional theorem of the branch: the descent
 law is payment by cycles.
 
-\begin{theorem}[\code{no\_unpaid\_lawful\_model}]\label{thm:no_unpaid_lawful_model}
+\begin{theorem}[no lawful unpaid model]\label{thm:no_unpaid_lawful_model}
 \green{}\ There is no ledger $S$ satisfying both $\mathrm{DescentLaw}(S)$ and
 $\mathrm{Nonempty}(\mathrm{UnpaidClass}(S))$: a model of ``the law plus an unpaid charge'' does not
 exist.
+\leantag{no\_unpaid\_lawful\_model}
 \end{theorem}
 
 The converse is honestly vacuous: \code{descentLaw\_of\_hodgeProperty} is proven by an empty
 quantifier (if everything is paid, there are no unpaid charges), unlike Yang--Mills where the reverse
 rank was built for real. Hence the decisive audit.
 
-\begin{theorem}[\code{descentLaw\_iff\_hodgeProperty}]\label{thm:descentLaw_iff_hodgeProperty}
+\begin{theorem}[the law is the conjecture verbatim]\label{thm:descentLaw_iff_hodgeProperty}
 \green{}\ For every ledger $S$: $\mathrm{DescentLaw}(S)\iff\mathrm{HodgeProperty}(S)$, green and with
 no boundary anywhere.
+\leantag{descentLaw\_iff\_hodgeProperty}
 \end{theorem}
 
 Once again the condemned bridge: to decree the law would be to decree the conjecture verbatim. There
@@ -178,10 +188,11 @@ can be no sixth field of the decree; what is missing is a \red{} data anchor ---
 $(p,p)$-classes. The trilemma confirms it, and one face is unique here. Transplanting the
 manifestation form from Yang--Mills over \emph{chains} degenerates into a green theorem.
 
-\begin{theorem}[\code{hodgeChainManifestationLaw\_green}]\label{thm:hodgeChainManifestationLaw_green}
+\begin{theorem}[the chain law is vacuous]\label{thm:hodgeChainManifestationLaw_green}
 \green{}\ $\mathrm{HodgeChainManifestationLaw}$: for every ledger $S$ and every chain
 $C:\mathrm{UnpaidDescentChain}(S)$ one has $\mathrm{ChainManifests}(C)$. Since by
 \cref{thm:isEmpty_unpaidDescentChain} no such chain exists, the law over chains is vacuously true.
+\leantag{hodgeChainManifestationLaw\_green}
 \end{theorem}
 
 This is a vacuity of the ``empty-witness'' type, not an incompatibility: from an empty type of
@@ -189,10 +200,11 @@ witnesses one cannot assemble the third trilemma face, which needs a witness \em
 green. The honest witness here is not a chain but a single unpaid class, \code{cookedUnpaidClass},
 presented by construction without choice.
 
-\begin{theorem}[\code{hodgeManifestationLaw\_refutes\_boundary}]\label{thm:hodgeManifestationLaw_refutes_boundary}
+\begin{theorem}[the manifestation form refutes the boundary]\label{thm:hodgeManifestationLaw_refutes_boundary}
 \green{}\ If $\mathrm{HodgeManifestationLaw}$ holds, then
 $\neg\,\mathrm{TheStrictLastStep00Obligation}$: the manifestation form of the law is incompatible
 with the accepted quarantine boundary.
+\leantag{hodgeManifestationLaw\_refutes\_boundary}
 \end{theorem}
 
 The branch's single \yellow{} is a tripwire,
@@ -203,10 +215,11 @@ verified.
 The epistemic complement (\srcpath{Engine/HodgeEpistemic.lean}) closes the internal door. Self-grounding
 the per-model descent law self-destructs (\code{no\_internalisedHodgeGround}).
 
-\begin{theorem}[\code{hodgeCause\_unknowable}]\label{thm:hodgeCause_unknowable}
+\begin{theorem}[the Hodge cause is unknowable]\label{thm:hodgeCause_unknowable}
 \green{}\ For every ledger $S$: $\neg\,\mathrm{InternalKnowledgeOfHodgeCause}(S)$ --- internal
 self-grounding of the descent law is impossible in every model, unconditionally and without any
 axioms.
+\leantag{hodgeCause\_unknowable}
 \end{theorem}
 
 The contradiction has a second, engine route: under the law an unpaid charge unfolds into a genuine
@@ -217,7 +230,7 @@ genuinely rather than \emph{ex falso} (\code{internalisedHodgeGround\_builds\_en
 (\code{hodgeUniversal\_forged\_refutation}), so the only living option is the per-model input --- which
 by \cref{thm:descentLaw_iff_hodgeProperty} equals the goal verbatim.
 
-\begin{theorem}[\code{hodge\_locked\_behind\_engine\_status}]\label{thm:hodge_locked_behind_engine_status}
+\begin{theorem}[Hodge locked behind the engine]\label{thm:hodge_locked_behind_engine_status}
 \green{}\ For every ledger $S$:
 \begin{equation}\label{eq:hodge_locked}
 \begin{aligned}
@@ -227,6 +240,7 @@ by \cref{thm:descentLaw_iff_hodgeProperty} equals the goal verbatim.
 \end{equation}
 The universal refuted, chains empty in every model, internal knowledge impossible, and the per-model
 law equivalent to the model's conjecture --- entirely green; the repository's taint does not grow.
+\leantag{hodge\_locked\_behind\_engine\_status}
 \end{theorem}
 
 \begin{remark}

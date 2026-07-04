@@ -18,19 +18,19 @@ it, and we make no such claim.
 
 \subsection*{The two sides in the language of rank}
 
-\begin{definition}[\code{RankFastTraversal} / \code{FullRankCertificatePayment}]\label{def:pnp-sides}
-The \emph{P side} is \code{RankFastTraversal}: in a ranked graph every legal path \code{PathN} of
-length $n$ from $x$ satisfies $n \le \operatorname{lexRank}(x)$. The \emph{NP side} is
-\code{FullRankCertificatePayment}: the existence of an injective finite-key compression of the
-\emph{entire} family of genealogies, each certificate accounted for individually. An
-\code{UnboundedCertificateSupply} is a family whose index set is infinite.
+\begin{definition}[the two sides of P versus NP]\label{def:pnp-sides}
+The \emph{P side} is fast rank traversal: in a ranked graph every legal path of length $n$ from $x$
+satisfies $n \le \operatorname{lexRank}(x)$. The \emph{NP side} is full certificate payment: the
+existence of an injective finite-key compression of the \emph{entire} family of genealogies, each
+certificate accounted for individually. An \emph{unbounded supply} is such a family whose index set
+is infinite. \leantag{RankFastTraversal / FullRankCertificatePayment}
 \end{definition}
 
 The P side is a gift of the construction, not a hypothesis.
 
-\begin{theorem}[\code{rankFastTraversal_holds}]\label{thm:rankFastTraversal_holds}
-\green{}\ Every ranked graph traverses the rank fast: for any ranked graph $G$, every legal path
-\code{PathN} of length $n$ from $x$ satisfies $n \le \operatorname{lexRank}(x)$.
+\begin{theorem}[fast traversal holds]\label{thm:rankFastTraversal_holds}
+\green{}\ Every ranked graph traverses the rank fast: for any ranked graph $G$, every legal path of
+length $n$ from $x$ satisfies $n \le \operatorname{lexRank}(x)$. \leantag{rankFastTraversal\_holds}
 \end{theorem}
 
 \emph{Proof idea.} A direct consequence of the fact that the length of a legal path does not
@@ -40,11 +40,10 @@ rank. Verifying a single certificate is likewise always cheap (\code{verificatio
 
 \subsection*{The heart of the inequality: pigeonhole}
 
-\begin{theorem}[\code{no_fullPayment_of_unboundedSupply}]\label{thm:no_fullPayment_of_unboundedSupply}
+\begin{theorem}[no full payment of an unbounded supply]\label{thm:no_fullPayment_of_unboundedSupply}
 \green{}\ A fast finite-key engine cannot fully pay for an unbounded family of certificates: if a
-genealogy family $F$ satisfies \code{UnboundedCertificateSupply} (its index set is infinite), then
-\code{FullRankCertificatePayment} for $F$ fails --- no injective finite-key compression of $F$
-exists.
+genealogy family $F$ has an infinite index set, then full certificate payment for $F$ fails --- no
+injective finite-key compression of $F$ exists. \leantag{no\_fullPayment\_of\_unboundedSupply}
 \end{theorem}
 
 \emph{Proof idea.} Pure pigeonhole. A finite key compressing an infinite supply is forced to
@@ -57,15 +56,15 @@ nothing to \axiom{}.
 It remains to exhibit a scale where the supply is genuinely infinite --- and there is one, without
 any hypothesis about the twins.
 
-\begin{theorem}[\code{concreteSupply_unbounded_smallScale}]\label{thm:concreteSupply_unbounded_smallScale}
-\green{}\ For $A \le 4$ the concrete family of certificates is infinite: the index type of
-\code{concreteFamily}\,$A\,1$ is infinite, witnessed by the injection of the pentadic chain
-\code{fiveAdicChainFlow} --- the same chain that refuted the branch $A \le 4$ in the reduction.
+\begin{theorem}[the concrete supply is unbounded at small scale]\label{thm:concreteSupply_unbounded_smallScale}
+\green{}\ For $A \le 4$ the concrete family of certificates is infinite: its index type is infinite,
+witnessed by the injection of the pentadic chain \code{fiveAdicChainFlow} --- the same chain that
+refuted the branch $A \le 4$ in the reduction. \leantag{concreteSupply\_unbounded\_smallScale}
 \end{theorem}
 
-\begin{corollary}[\code{concrete_noFullPayment_smallScale}]\label{thm:concrete_noFullPayment_smallScale}
-\green{}\ For $A \le 4$ full payment of the concrete family is impossible:
-\code{FullRankCertificatePayment}\,(\code{concreteFamily}\,$A\,1$) fails.
+\begin{corollary}[no full payment at small scale]\label{thm:concrete_noFullPayment_smallScale}
+\green{}\ For $A \le 4$ full payment of the concrete family is impossible.
+\leantag{concrete\_noFullPayment\_smallScale}
 \end{corollary}
 
 \begin{proof}
@@ -78,13 +77,14 @@ Apply \cref{thm:no_fullPayment_of_unboundedSupply} to the infinite supply of
 To make the title a theorem rather than an image, we tie ``full payment'' to local P-success --- at
 every scale.
 
-\begin{theorem}[\code{concrete_localPSuccess_iff_fullPayment}]\label{thm:concrete_localPSuccess_iff_fullPayment}
+\begin{theorem}[local P-success equals full payment]\label{thm:concrete_localPSuccess_iff_fullPayment}
 \green{}\ Local P-success is equivalent to full payment of certificates: for all $A, M_0$,
 \[
    \code{LocalPSuccess}\,(\code{concreteProblem}\,A\,M_0)
    \iff
    \code{FullRankCertificatePayment}\,(\code{concreteFamily}\,A\,M_0).
 \]
+\leantag{concrete\_localPSuccess\_iff\_fullPayment}
 \end{theorem}
 
 \emph{Proof idea.} Both alternatives for resolving a collision --- a legal cycle and an impossible
@@ -92,14 +92,11 @@ payment --- have already been burnt green (\code{no_extendedFlowResolutionAltern
 resolver cannot cheat, and the only way to resolve collisions is to account for each one honestly.
 The full inequality now assembles into a single green statement.
 
-\begin{theorem}[\code{pnp_rank_separation_smallScale}]\label{thm:pnp_rank_separation_smallScale}
-\green{}\ For $A \le 4$ five statements hold simultaneously:
-\code{RankFastTraversal}\,(\code{concreteGraph}\,$A\,1$) (the engine traverses the rank fast);
-\code{VerificationEasy} for every certificate (checking is easy);
-\code{UnboundedCertificateSupply}\,(\code{concreteFamily}\,$A\,1$) (the supply is unbounded);
-$\lnot\,\code{FullRankCertificatePayment}\,(\code{concreteFamily}\,A\,1)$ (full payment is
-impossible); and \code{LocalSearchIncompressible}\,(\code{concreteProblem}\,$A\,1$) (local search
-is incompressible).
+\begin{theorem}[the rank separation at small scale]\label{thm:pnp_rank_separation_smallScale}
+\green{}\ For $A \le 4$ five statements hold simultaneously for the concrete problem: the engine
+traverses the rank fast; verification of every certificate is easy; the certificate supply is
+unbounded; full certificate payment is impossible; and local search is incompressible.
+\leantag{pnp\_rank\_separation\_smallScale}
 \end{theorem}
 
 The five facets --- fast traversal, easy verification, infinite supply, impossibility of full
@@ -128,9 +125,10 @@ language and the resolver extracted from it crashes against incompressibility at
 existential form is \emph{already proved} (\code{pnpLawExistential_green}), so decreeing it would be
 empty. The cost mirror collapses on its own.
 
-\begin{proposition}[\code{pnpLaw_asserts_separation}]\label{thm:pnpLaw_asserts_separation}
+\begin{proposition}[the law only restates the separation]\label{thm:pnpLaw_asserts_separation}
 \green{}\ The $\mathrm{P}/\mathrm{NP}$ law is equivalent to the separation \emph{without any
 boundary}, and both sides are already theorems; hence no honest third field of the decree exists.
+\leantag{pnpLaw\_asserts\_separation}
 \end{proposition}
 
 \emph{Proof idea.} The abstract layer of complexity classes is plastic: it can be tailored so the
@@ -148,9 +146,10 @@ lesson taught by the spectral audit of Riemann.
 There is an epistemic twin of this prohibition, mirroring the unknowability results for Collatz and
 Yang--Mills (\cref{sec:collatz}).
 
-\begin{theorem}[\code{pnpCause_unknowable}]\label{thm:pnpCause_unknowable}
+\begin{theorem}[the cause is unknowable from inside]\label{thm:pnpCause_unknowable}
 \green{}\ An internal, finite-fuel resolution of $\mathrm{P}/\mathrm{NP}$ would be a perpetual
 engine: it is unreachable from inside the system, beyond the same horizon as the cause of Collatz.
+\leantag{pnpCause\_unknowable}
 \end{theorem}
 
 \emph{Proof idea.} Green, without a decree; the axiom-taint does not grow. ``It cannot be known

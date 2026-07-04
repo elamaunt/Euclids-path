@@ -1,24 +1,24 @@
 /-
-  DissipativeCascade — диссипативный cascade-сертификат: decomposition узла Лиувилль-локализации.
-  Источник: диссипативный cascade-blueprint (Step00 / RH / Navier–Stokes аналогия).
-  Проза: prose/24_BoundaryDecomp.md (раздел «Диссипативный cascade и capacity/overflow»).
+  DissipativeCascade — dissipative cascade certificate: decomposition of the Liouville-localisation node.
+  Source: dissipative cascade blueprint (Step00 / RH / Navier–Stokes analogy).
+  Prose: prose/24_BoundaryDecomp.md (section "Dissipative cascade and capacity/overflow").
 
-  ИДЕЯ (единая для Step00 / RH / NS): «дефект не может исчезнуть; если он не закрывается, он обязан
-  двигаться и платить». Это уже воплощено в `ClosedUniverse.no_infinite_closed_paid_run`,
-  `DichotomyEngine.close_forced`, `RankJumpBridge` (rank/parity). Здесь — НОВАЯ часть: **capacity /
-  overflow** декомпозиция узла `RankJumpLocalization` (Лиувилль-дисбаланс ⟹ twin-jump) на два меньших:
-    (1) irrelevant-cancellation (нерелевантная часть не переполняет bound);
-    (2) pairing (релевантный дисбаланс не влезает в сокращающиеся пары ⟹ jump).
+  IDEA (shared by Step00 / RH / NS): "a defect cannot vanish; if it does not close, it must
+  move and pay". This is already embodied in `ClosedUniverse.no_infinite_closed_paid_run`,
+  `DichotomyEngine.close_forced`, `RankJumpBridge` (rank/parity). Here — the NEW part: **capacity /
+  overflow** decomposition of the node `RankJumpLocalization` (Liouville imbalance ⟹ twin-jump) into two smaller ones:
+    (1) irrelevant-cancellation (the irrelevant part does not overflow the bound);
+    (2) pairing (the relevant imbalance does not fit into the cancelling pairs ⟹ jump).
 
-  ЗДЕСЬ ДОКАЗАНО (чистые суммы/triangle, std аксиомы, без sorry):
-    * `L_eq_relevant_add_irrelevant` (§10, `Finset.sum_union` — sorry blueprint'а ЗАКРЫТ);
-    * `relevantViolation_of_globalViolation` (§10 overflow, triangle — sorry blueprint'а ЗАКРЫТ);
-    * `twinJump_of_relevantViolation` / сборка (§11).
+  PROVED HERE (pure sums/triangle, std axioms, no sorry):
+    * `L_eq_relevant_add_irrelevant` (§10, `Finset.sum_union` — blueprint sorry CLOSED);
+    * `relevantViolation_of_globalViolation` (§10 overflow, triangle — blueprint sorry CLOSED);
+    * `twinJump_of_relevantViolation` / assembly (§11).
 
-  ЧЕСТНАЯ ГРАНИЦА. Это НЕ доказательство RH/NS/twins. Аналитические входы остаются: `IrrelevantCancellation`
-  (bound на нерелевантную часть) и `TwinCarrierPairing.unpaired_gives_jump` — они замещают более крупный
-  `RankJumpLocalization`, но сами не доказаны. ℝ-budget оговорка (§2): в отличие от ℕ-движка, строго
-  положительная работа над ℝ НЕ даёт well-foundedness (ряд 1/2^n) — поэтому NS-аналогия только структурная.
+  HONEST BOUNDARY. This is NOT a proof of RH/NS/twins. Analytic inputs remain: `IrrelevantCancellation`
+  (bound on the irrelevant part) and `TwinCarrierPairing.unpaired_gives_jump` — they replace the larger
+  `RankJumpLocalization`, but are themselves unproved. ℝ-budget caveat (§2): unlike the ℕ-engine, strictly
+  positive work over ℝ does NOT give well-foundedness (series 1/2^n) — so the NS analogy is structural only.
 -/
 import Mathlib
 import EuclidsPath.Engine.RankJumpBridge
@@ -32,14 +32,14 @@ open scoped BigOperators
 open ArithmeticFunction
 open EuclidsPath.RankJumpBridge
 
-/-! ### §2. ℕ-budget vs ℝ-budget: почему NS-аналогия только структурная (машинный контрпример)
+/-! ### §2. ℕ-budget vs ℝ-budget: why the NS analogy is structural only (machine counterexample)
 
-Для ℕ-движка `Total y + Work ≤ Total x` c `0 < Work` даёт `Total y < Total x` ⟹ well-founded.
-Для ℝ строго положительная работа НЕ запрещает бесконечный ряд убываний (`1/2^n`). Фиксируем машинно. -/
+For the ℕ-engine `Total y + Work ≤ Total x` with `0 < Work` gives `Total y < Total x` ⟹ well-founded.
+For ℝ strictly positive work does NOT forbid an infinite descending series (`1/2^n`). We fix this machine-verifiably. -/
 
-/-- **`real_positive_work_not_wellfounded` — ДОКАЗАНА (§2 warning).** Существует ℝ-последовательность
-    со строго положительным «шагом работы» на каждом шаге, но конечным суммарным спадом: `a n = 1/2^n`.
-    Значит ℝ-диссипация без квантования/ранга НЕ даёт конечности — в отличие от ℕ-движка. -/
+/-- **`real_positive_work_not_wellfounded` — PROVED (§2 warning).** There exists an ℝ-sequence
+    with strictly positive "work step" at each step, but a finite total descent: `a n = 1/2^n`.
+    Hence ℝ-dissipation without quantisation/rank does NOT give finiteness — unlike the ℕ-engine. -/
 theorem real_positive_work_not_wellfounded :
     ∃ a : ℕ → ℝ, (∀ n, a (n + 1) < a n) ∧ (∀ n, 0 < a n) ∧ (∀ n, 0 < a n - a (n + 1)) := by
   refine ⟨fun n => (1 / 2) ^ n, ?_, ?_, ?_⟩
@@ -56,14 +56,14 @@ theorem real_positive_work_not_wellfounded :
     have he : (1/2 : ℝ) ^ (n + 1) = (1/2) ^ n * (1/2) := by ring
     rw [he]; nlinarith
 
-/-! ### §2bis. Квантизация СПАСАЕТ ℝ-каскад (завершение предупреждения §2)
+/-! ### §2bis. Quantisation SAVES the ℝ-cascade (completing the §2 warning)
 
-Контрпример §2 показал: положительная работа над ℝ не даёт конечности. Вот ТОЧНОЕ спасение (опция 3
-blueprint'a): равномерная нижняя граница δ на диссипацию bad-шага. Это форма настоящего НС-сертификата:
-«каждый каскадный переход к меньшему масштабу диссипирует ≥ δ» ⟹ каскад конечен. -/
+The §2 counterexample showed: positive work over ℝ does not give finiteness. Here is the EXACT remedy (option 3
+of the blueprint): a uniform lower bound δ on the dissipation of a bad step. This is the form of a genuine NS certificate:
+"every cascade transition to a smaller scale dissipates ≥ δ" ⟹ the cascade is finite. -/
 
-/-- **`real_cascade_bounded_of_uniform_work` — ДОКАЗАНА (квантизация).** При равномерной δ-диссипации
-    накопленная работа за n шагов ≤ E(0): `n·δ ≤ Total(path 0)`. -/
+/-- **`real_cascade_bounded_of_uniform_work` — PROVED (quantisation).** Under uniform δ-dissipation
+    the accumulated work after n steps is ≤ E(0): `n·δ ≤ Total(path 0)`. -/
 theorem real_cascade_bounded_of_uniform_work
     {State : Type} {Step : State → State → Prop}
     (Total : State → ℝ) (Work : State → State → ℝ) (δ : ℝ) (hδ : 0 < δ)
@@ -87,9 +87,9 @@ theorem real_cascade_bounded_of_uniform_work
   have := hnonneg (path n)
   linarith
 
-/-- **`no_infinite_uniform_dissipative_cascade` — ДОКАЗАНА.** Бесконечный равномерно-диссипативный
-    ℝ-каскад невозможен: `n·δ` превысит `E(0)`. Это честный ℝ-аналог `no_infinite_closed_paid_run`
-    и ТОЧНАЯ форма, которую должен иметь НС-сертификат регулярности. -/
+/-- **`no_infinite_uniform_dissipative_cascade` — PROVED.** An infinite uniformly-dissipative
+    ℝ-cascade is impossible: `n·δ` would exceed `E(0)`. This is the honest ℝ-analogue of `no_infinite_closed_paid_run`
+    and the EXACT form that an NS regularity certificate must have. -/
 theorem no_infinite_uniform_dissipative_cascade
     {State : Type} {Step : State → State → Prop}
     (Total : State → ℝ) (Work : State → State → ℝ) (δ : ℝ) (hδ : 0 < δ)
@@ -105,51 +105,51 @@ theorem no_infinite_uniform_dissipative_cascade
   rw [div_mul_cancel₀ _ (ne_of_gt hδ)] at this
   linarith
 
-/-! ### §10. Partition и capacity / overflow -/
+/-! ### §10. Partition and capacity / overflow -/
 
-/-- Разбиение `[1,X]` на релевантную (twin-carrier) и нерелевантную части. -/
+/-- Partition of `[1,X]` into the relevant (twin-carrier) and irrelevant parts. -/
 structure LiouvilleTwinPartition where
   relevant : ℕ → Finset ℕ
   irrelevant : ℕ → Finset ℕ
   disjoint : ∀ X, Disjoint (relevant X) (irrelevant X)
   union_eq : ∀ X, relevant X ∪ irrelevant X = Finset.Icc 1 X
 
-/-- Суммирующая функция Лиувилля. -/
+/-- Liouville summatory function. -/
 noncomputable def L (x : ℕ) : ℤ := ∑ n ∈ Finset.Icc 1 x, liouville n
 
-/-- Релевантная сумма. -/
+/-- Relevant sum. -/
 noncomputable def LRelevant (P : LiouvilleTwinPartition) (X : ℕ) : ℤ :=
   ∑ n ∈ P.relevant X, liouville n
 
-/-- Нерелевантная сумма. -/
+/-- Irrelevant sum. -/
 noncomputable def LIrrelevant (P : LiouvilleTwinPartition) (X : ℕ) : ℤ :=
   ∑ n ∈ P.irrelevant X, liouville n
 
-/-- **`L_eq_relevant_add_irrelevant` — ДОКАЗАНА (sorry blueprint'а закрыт).** `L = LRelevant + LIrrelevant`
-    по разбиению непересекающегося объединения (`Finset.sum_union`). -/
+/-- **`L_eq_relevant_add_irrelevant` — PROVED (blueprint sorry closed).** `L = LRelevant + LIrrelevant`
+    by the disjoint-union partition (`Finset.sum_union`). -/
 theorem L_eq_relevant_add_irrelevant (P : LiouvilleTwinPartition) (X : ℕ) :
     L X = LRelevant P X + LIrrelevant P X := by
   unfold L LRelevant LIrrelevant
   rw [← P.union_eq X, Finset.sum_union (P.disjoint X)]
 
-/-- `LiouvilleViolation` (глобальный дисбаланс) — из `RankJumpBridge`. -/
+/-- `LiouvilleViolation` (global imbalance) — from `RankJumpBridge`. -/
 def LiouvilleViolation : Prop := EuclidsPath.RankJumpBridge.LiouvilleViolation
 
-/-- Нерелевантная часть ограничена (аналитический ВХОД, не доказан). -/
+/-- The irrelevant part is bounded (analytic INPUT, unproved). -/
 def IrrelevantCancellation (P : LiouvilleTwinPartition) : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
     ∀ X : ℕ, |(LIrrelevant P X : ℝ)| ≤ C * (X : ℝ) ^ ((1 / 2 : ℝ) + ε)
 
-/-- Релевантный дисбаланс (то, что переполняет после overflow). -/
+/-- Relevant imbalance (the part that overflows after the overflow step). -/
 def RelevantLiouvilleViolation (P : LiouvilleTwinPartition) : Prop :=
   ∃ ε : ℝ, 0 < ε ∧ ∀ C : ℝ, 0 < C →
     ∃ X : ℕ, C * (X : ℝ) ^ ((1 / 2 : ℝ) + ε) < |(LRelevant P X : ℝ)|
 
 /--
-  **`relevantViolation_of_globalViolation` — ДОКАЗАНА (§10 overflow, sorry blueprint'а закрыт).**
-  Если глобальный дисбаланс есть, а нерелевантная часть ограничена, то релевантная часть переполняется.
-  Triangle: `|L| ≤ |LRelevant| + |LIrrelevant|`; при большом `|L|` и ограниченном `|LIrrelevant|`
-  большим обязан быть `|LRelevant|`. Берём `C' = C + Cirr` (bound нерелевантной части) как порог. -/
+  **`relevantViolation_of_globalViolation` — PROVED (§10 overflow, blueprint sorry closed).**
+  If there is a global imbalance and the irrelevant part is bounded, then the relevant part overflows.
+  Triangle: `|L| ≤ |LRelevant| + |LIrrelevant|`; when `|L|` is large and `|LIrrelevant|` is bounded,
+  `|LRelevant|` must be large. We take `C' = C + Cirr` (bound of the irrelevant part) as the threshold. -/
 theorem relevantViolation_of_globalViolation (P : LiouvilleTwinPartition)
     (hCancel : IrrelevantCancellation P)
     (hV : LiouvilleViolation) : RelevantLiouvilleViolation P := by
@@ -157,10 +157,10 @@ theorem relevantViolation_of_globalViolation (P : LiouvilleTwinPartition)
   obtain ⟨Cirr, hCirr, hirr⟩ := hCancel ε hε
   refine ⟨ε, hε, ?_⟩
   intro C hC
-  -- порог для глобального дисбаланса: C + Cirr
+  -- threshold for the global imbalance: C + Cirr
   obtain ⟨X, hX⟩ := hbig (C + Cirr) (by positivity)
   refine ⟨X, ?_⟩
-  -- |L X| = |LRelevant + LIrrelevant| ≤ |LRelevant| + |LIrrelevant|
+  -- |L X| = |LRelevant + LIrrelevant| ≤ |LRelevant| + |LIrrelevant|  (triangle inequality)
   have hLsplit : (L X : ℝ) = (LRelevant P X : ℝ) + (LIrrelevant P X : ℝ) := by
     have := L_eq_relevant_add_irrelevant P X
     exact_mod_cast this
@@ -168,45 +168,45 @@ theorem relevantViolation_of_globalViolation (P : LiouvilleTwinPartition)
     rw [hLsplit]; exact abs_add_le _ _
   have hirrX : |(LIrrelevant P X : ℝ)| ≤ Cirr * (X : ℝ) ^ ((1 / 2 : ℝ) + ε) := hirr X
   -- hX : (C+Cirr)*X^... < |L X|
-  -- (C+Cirr)·Xᵖ < |L| ≤ |LRel| + |LIrr| ≤ |LRel| + Cirr·Xᵖ  ⟹  C·Xᵖ < |LRel|
+  -- (C+Cirr)·Xᵖ < |L| ≤ |LRel| + |LIrr| ≤ |LRel| + Cirr·Xᵖ  ⟹  C·Xᵖ < |LRel|  (conclude)
   set p := (X : ℝ) ^ ((1 / 2 : ℝ) + ε) with hp
   have h1 : (C + Cirr) * p < |(LRelevant P X : ℝ)| + |(LIrrelevant P X : ℝ)| :=
     lt_of_lt_of_le hX htri
   have h2 : |(LIrrelevant P X : ℝ)| ≤ Cirr * p := hirrX
   nlinarith [h1, h2]
 
-/-! ### §11. Pairing capacity: релевантный дисбаланс не влезает в сокращающиеся пары ⟹ jump -/
+/-! ### §11. Pairing capacity: the relevant imbalance does not fit into the cancelling pairs ⟹ jump -/
 
-/-- `TwinCarrierEnergyJump` — из `RankJumpBridge`. -/
+/-- `TwinCarrierEnergyJump` — from `RankJumpBridge`. -/
 def TwinCarrierEnergyJump (TwinSystem : RankParitySystem) : Prop :=
   EuclidsPath.RankJumpBridge.TwinCarrierEnergyJump TwinSystem
 
-/-- Pairing-структура: релевантные точки кодируются в twin-систему; сокращающиеся пары флипают знак;
-    несокращённый остаток даёт jump (последнее поле — аналитический ВХОД). -/
+/-- Pairing structure: relevant points are encoded into the twin system; cancelling pairs flip the sign;
+    the uncancelled remainder gives a jump (the last field is an analytic INPUT). -/
 structure TwinCarrierPairing (P : LiouvilleTwinPartition) (TwinSystem : RankParitySystem) where
   encode : ∀ {X : ℕ}, {n : ℕ // n ∈ P.relevant X} → TwinSystem.State
   paired : TwinSystem.State → TwinSystem.State → Prop
   paired_flips_sign : ∀ a b, paired a b → TwinSystem.sign a = - TwinSystem.sign b
   unpaired_gives_jump : RelevantLiouvilleViolation P → TwinCarrierEnergyJump TwinSystem
 
-/-- **`twinJump_of_relevantViolation` — ДОКАЗАНА (§11).** Релевантный дисбаланс ⟹ twin jump (через
-    вход `unpaired_gives_jump`). -/
+/-- **`twinJump_of_relevantViolation` — PROVED (§11).** Relevant imbalance ⟹ twin jump (via
+    the input `unpaired_gives_jump`). -/
 theorem twinJump_of_relevantViolation (P : LiouvilleTwinPartition)
     (TwinSystem : RankParitySystem) (Pair : TwinCarrierPairing P TwinSystem)
     (hRel : RelevantLiouvilleViolation P) : TwinCarrierEnergyJump TwinSystem :=
   Pair.unpaired_gives_jump hRel
 
-/-- Полный localization-пакет: разбиение + cancellation + pairing. -/
+/-- Full localisation package: partition + cancellation + pairing. -/
 structure LiouvilleToTwinLocalization (TwinSystem : RankParitySystem) where
   P : LiouvilleTwinPartition
   irrelevant_cancellation : IrrelevantCancellation P
   pairing : TwinCarrierPairing P TwinSystem
 
 /--
-  **`liouvilleViolation_localizes — ДОКАЗАНА (сборка §10+§11).** Полный пакет декомпозирует узел
-  `RankJumpLocalizationTarget`: глобальный Лиувилль-дисбаланс ⟹ (overflow) релевантный дисбаланс ⟹
-  (pairing) twin jump. Это разбивает ОДИН крупный вход `RankJumpLocalization` на ДВА меньших
-  (`irrelevant_cancellation`, `pairing.unpaired_gives_jump`). Сами они — аналитические входы, не доказаны. -/
+  **`liouvilleViolation_localizes — PROVED (assembly §10+§11).** The full package decomposes the node
+  `RankJumpLocalizationTarget`: global Liouville imbalance ⟹ (overflow) relevant imbalance ⟹
+  (pairing) twin jump. This splits ONE large input `RankJumpLocalization` into TWO smaller ones
+  (`irrelevant_cancellation`, `pairing.unpaired_gives_jump`). They themselves are analytic inputs, unproved. -/
 theorem liouvilleViolation_localizes (TwinSystem : RankParitySystem)
     (Loc : LiouvilleToTwinLocalization TwinSystem)
     (hV : LiouvilleViolation) : TwinCarrierEnergyJump TwinSystem := by

@@ -1,11 +1,11 @@
 /-
-  B_K-механизм (ацикличность). Проза: prose/19_BK.md (после зелёного Lean).
-  Источник: новый файл §VI Лемма 6.1.1 — если в 𝒜 ⊆ [1,T] нет нетривиального равенства K-сумм,
-  то |𝒜| ≪_K T^{1/K}. Здесь — load-bearing КОНТРАПОЗИЦИЯ (то, что нужно Fan-Cycle):
-  если число K-мультимножеств превосходит число возможных сумм, существует НЕТРИВИАЛЬНЫЙ
-  аддитивный цикл (два разных K-мультимножества с равной суммой).
+  B_K mechanism (acyclicity). Prose: prose/19_BK.md (after the green Lean).
+  Source: new file §VI Lemma 6.1.1 — if 𝒜 ⊆ [1,T] contains no non-trivial equality of K-sums,
+  then |𝒜| ≪_K T^{1/K}. Here — the load-bearing CONTRAPOSITION (what Fan-Cycle needs):
+  if the number of K-multisets exceeds the number of possible sums, there exists a NON-TRIVIAL
+  additive cycle (two distinct K-multisets with equal sum).
 
-  Чистая конечная комбинаторика (pigeonhole). Без анализа/распределения/сита.
+  Pure finite combinatorics (pigeonhole). No analysis / distribution / sieve.
 -/
 import Mathlib
 
@@ -15,9 +15,9 @@ namespace EuclidsPath.Engine
 
 open Finset in
 /--
-  **B_K (контрапозиция).** Пусть `𝒜 ⊆ [1,T]` и число K-мультимножеств `|sym K 𝒜|` больше `K·T`
-  (числа возможных сумм). Тогда существуют два РАЗНЫХ K-мультимножества из `𝒜` с равной суммой —
-  нетривиальный аддитивный евклидов цикл.
+  **B_K (contraposition).** Let `𝒜 ⊆ [1,T]` and suppose the number of K-multisets `|sym K 𝒜|`
+  exceeds `K·T` (the number of possible sums). Then there exist two DISTINCT K-multisets from `𝒜`
+  with equal sum — a non-trivial additive Euclidean cycle.
 -/
 theorem exists_additive_cycle {𝒜 : Finset ℕ} {K T : ℕ} (hK : 1 ≤ K)
     (hlb : ∀ a ∈ 𝒜, 1 ≤ a) (hub : ∀ a ∈ 𝒜, a ≤ T)

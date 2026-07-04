@@ -1,32 +1,32 @@
 /-
-  ClassicalFrontierRoutes — классический P/NP-фронт (42 кирпича одной сборкой):
-  external lower-bound routes/barriers/forward-layer/certificate, машинная
-  модель, np-complete route + transfer guard, faithful machine frame skeleton,
-  no-free-lunch мост, frontier-манифесты v2-v8 (deep obligations, circuit
+  ClassicalFrontierRoutes — the classical P/NP front (42 bricks in one build):
+  external lower-bound routes/barriers/forward-layer/certificate, machine
+  model, np-complete route + transfer guard, faithful machine frame skeleton,
+  no-free-lunch bridge, frontier manifests v2-v8 (deep obligations, circuit
   ladder + barriers, commitment layer, circuit escalation, proof complexity
-  NP-int-coNP, hierarchy/Williams, single-file deep frontier), promise-слой
+  NP-int-coNP, hierarchy/Williams, single-file deep frontier), promise layer
   (coverage trilemma / prefix self-reduction / to-decision barrier / firewalls),
   step00 collision (problem/totality/quotient/nonabsorption), FP/FNP total
-  search separation + effectivity firewall, scale-indexed мосты и кодирования,
-  resolver-коды (finite table / proof-carrying / canonical encoding),
+  search separation + effectivity firewall, scale-indexed bridges and encodings,
+  resolver codes (finite table / proof-carrying / canonical encoding),
   bitwise decision-to-search, p-decider extraction obstruction.
 
-  ЧЕСТНОСТЬ (флаги сборочного аудита, машинно):
-    * УДАЛЁН falseDecider (extraction_obstruction): заявлял Decider L для
-      любого языка константой false — ЛОЖЕН как сформулирован.
-    * ИСКЛЮЧЁН дубликат external_universe_self_engine (уже в ConcreteStep00Graph).
-    * Два Prop-как-доказательство дефекта починены УСИЛЕНИЕМ входов (добавлены
-      InNP_proof/NotInP_proof и incomplete_without_coverage_proof) — честное
-      направление: нагрузка на инстанциацию выросла.
-    * Около 30 slogan-abbrev — буквально Prop := True (маркеры); идиома
-      gate/gate_proof повсеместно инстанциируема True — аудит-поля без
-      семантики; SemanticCollisionClosure/LocalSuccess в одном месте := True
-      (вакуумный гейт, отмечено).
-    * Renamed-conclusion входы: BitwiseClassicalBridgeFront /
-      CanonicalCodeClassicalBridgeFront / ScaleIndexedClassicalBridge несут
-      local_incompressible готовым полем — их ClassesSeparate есть переупаковка
-      гипотезы через strict-encoding конвейер.
-  Безусловных ClassesSeparate/False нет; sorry/axiom нет.
+  HONESTY (build audit flags, machine-checked):
+    * REMOVED falseDecider (extraction_obstruction): claimed a Decider L for
+      any language with constant false — INVALID as formulated.
+    * EXCLUDED duplicate external_universe_self_engine (already in ConcreteStep00Graph).
+    * Two Prop-as-proof defects fixed by STRENGTHENING inputs (added
+      InNP_proof/NotInP_proof and incomplete_without_coverage_proof) — honest
+      direction: the instantiation burden increased.
+    * About 30 slogan-abbrevs are literally Prop := True (markers); the
+      gate/gate_proof idiom is universally instantiable as True — audit fields
+      without semantics; SemanticCollisionClosure/LocalSuccess in one place := True
+      (vacuous gate, noted).
+    * Renamed-conclusion inputs: BitwiseClassicalBridgeFront /
+      CanonicalCodeClassicalBridgeFront / ScaleIndexedClassicalBridge carry
+      local_incompressible as a ready field — their ClassesSeparate is a repackaging
+      of the hypothesis through a strict-encoding pipeline.
+  No unconditional ClassesSeparate/False; no sorry/axiom.
 -/
 import Mathlib
 import EuclidsPath.Engine.CanonicalSelfReduction

@@ -1,47 +1,48 @@
 /-
-  HodgeEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ шестого фронта (Ходж), по
-  программе Яруса 1. Зелёная машина: Engine/HodgeFront.lean.
-  Ряд-зеркала: PNPFirstCause (пара «resolves + горизонт»), CollatzFirstCause
-  (пара «ground + его отрицание» — наш случай).
+  HodgeEpistemic — EPISTEMIC COMPLEMENT of the sixth front (Hodge), following
+  the Tier 1 programme. Green machine: Engine/HodgeFront.lean.
+  Mirror row: PNPFirstCause (pair "resolves + horizon"), CollatzFirstCause
+  (pair "ground + its negation" — our case).
 
-  ЧТО ЭТО. Модель-внутренняя эпистемика ветви Ходжа: «решить изнутри» =
-  самообосновать per-model закон спуска `DescentLaw S`, пересекая собственный
-  горизонт (`InternalisedHodgeGround`). Самообоснование самоуничтожается
-  (`no_internalisedHodgeGround`), причём противоречие оплачивается НЕ только
-  формой: под законом неоплаченный класс разворачивается в НАСТОЯЩУЮ
-  бесконечную цепь (`unpaidDescentChain_of_descentLaw`, не ex falso) — то есть
-  в вечный двигатель на ℕ (`hodgeChain_builds_perpetual_engine`), сжигаемый
-  стеной вполне-фундированности (`no_perpetual_engine_on_nat`, тот же запрет,
-  что у Коллатца и P/NP).
+  WHAT THIS IS. Model-internal epistemics of the Hodge branch: "to resolve from
+  within" = to self-justify the per-model descent law `DescentLaw S` by crossing
+  its own horizon (`InternalisedHodgeGround`). Self-justification self-destructs
+  (`no_internalisedHodgeGround`), and the contradiction is paid NOT only by
+  form: under the law an unpaid class unfolds into a GENUINE infinite chain
+  (`unpaidDescentChain_of_descentLaw`, not ex falso) — that is, into a perpetual
+  engine on ℕ (`hodgeChain_builds_perpetual_engine`), burned by the wall of
+  well-foundedness (`no_perpetual_engine_on_nat`, the same prohibition as in
+  Collatz and P/NP).
 
-  КРИТИЧНО (вердикт скептика, учтён): УНИВЕРСАЛЬНАЯ форма закона УЖЕ машинно
-  опровергнута (`hodgeLawUniversal_refuted`, V1 трилеммы: кованый свидетель
-  cookedUnpaid, шаг с высоты 1 упирается в якорь квантования) — потому ground
-  здесь берётся ТОЛЬКО per-model (`DescentLaw S`), чья истинность для
-  намеренной инстанциации открыта. Универсальный путь закрыт кованым
-  опровержением — как у ЯМ и Коллатца (`hodgeUniversal_forged_refutation`).
+  CRITICAL (sceptic's verdict, accounted for): the UNIVERSAL form of the law has
+  ALREADY been machine-refuted (`hodgeLawUniversal_refuted`, V1 of the trilemma:
+  forged witness cookedUnpaid, the descent step from height 1 hits the
+  quantisation anchor) — so ground is taken HERE ONLY per-model (`DescentLaw S`),
+  whose truth for the intended instantiation remains open. The universal path is
+  closed by the forged refutation — as in YM and Collatz
+  (`hodgeUniversal_forged_refutation`).
 
-  ЧЕСТНОСТЬ (громко). (1) Это модель-внутренняя эпистемическая
-  непознаваемость, НЕ решение гипотезы Ходжа (в mathlib нет даже языка для
-  целевой инстанциации — шапка HodgeFront) и НЕ Гёдель (никакой неполноты /
-  неподвижной точки — только самоуничтожение пары и ℕ-спуск). (2) Пара
-  `InternalisedHodgeGround` формально есть «ground + его отрицание» (как
-  `InternalisedCollatzGround`) — сама по себе форма самоуничтожается одной
-  строкой. Чем оплачена содержательность: (а) обе стороны зелёно
-  отождествлены с содержанием — закон ⟺ гипотеза модели
-  (`descentLaw_iff_hodgeProperty`, коллапс L9), его отрицание ⟺ существование
-  неоплаченного класса (`not_hodgeProperty_iff_unpaidClass`); (б) противоречие
-  имеет ВТОРОЙ, двигательный маршрут: из пары строится настоящая цепь спуска
-  и настоящий `PerpetualEngine` (`internalisedHodgeGround_builds_engine` — в
-  отличие от ex-falso companion у P/NP, здесь конструкция подлинная), а
-  сжигает её EPMI-стена. (3) Отличие от Коллатца раскрыто: там отрицание
-  ground неизвестно, здесь стороны per-model пары зелёно взаимно-отрицательны
-  через коллапс — это признано, дихотомической новизны пара не несёт;
-  ценность модуля архитектурная (Ходж встаёт в ряд unknowable /
-  locked_behind_engine), а не новая математика.
+  HONESTY (loud). (1) This is model-internal epistemic unknowability, NOT a
+  solution of the Hodge conjecture (mathlib does not even have the language for
+  the target instantiation — see HodgeFront header) and NOT Godel (no
+  incompleteness / fixed point — only self-destruction of the pair and ℕ-descent).
+  (2) The pair `InternalisedHodgeGround` is formally "ground + its negation" (like
+  `InternalisedCollatzGround`) — the form alone self-destructs in one line. What
+  pays for substantiveness: (a) both sides are green-identified with content —
+  the law ⟺ the model's Hodge conjecture (`descentLaw_iff_hodgeProperty`,
+  collapse L9), its negation ⟺ existence of an unpaid class
+  (`not_hodgeProperty_iff_unpaidClass`); (b) the contradiction has a SECOND,
+  engine route: from the pair a genuine descent chain and a genuine
+  `PerpetualEngine` are constructed (`internalisedHodgeGround_builds_engine` —
+  unlike the ex-falso companion in P/NP, the construction here is authentic),
+  and the EPMI wall burns it. (3) The distinction from Collatz is disclosed:
+  there the negation of ground is unknown; here the sides of the per-model pair
+  are green mutually-negative via collapse — this is acknowledged, the pair
+  carries no dichotomous novelty; the module's value is architectural (Hodge
+  joins the row unknowable / locked_behind_engine), not new mathematics.
 
-  Модуль ЦЕЛИКОМ ЗЕЛЁНЫЙ: карантин НЕ импортируется, axiom/sorry нет,
-  таинт репозитория не меняется.
+  The module is ENTIRELY GREEN: quarantine is NOT imported, no axiom/sorry,
+  the repository taint does not change.
 -/
 
 import EuclidsPath.Engine.HodgeFront
@@ -55,71 +56,73 @@ namespace Epistemic
 
 open EuclidsPath.UniversalEngine
 
-/-! ## Модель: внутреннее решение = самообоснование per-model закона -/
+/-! ## Model: internal resolution = self-justification of the per-model law -/
 
-/-- **Внутреннее самообоснование основания Ходжа (per-model!):** машина несёт
-    сам закон спуска модели И свидетельство, что он выведен изнутри —
-    пересекая собственный горизонт. Форма пары — «ground + его отрицание»
-    (как `InternalisedCollatzGround`; первое поле у P/NP звалось `resolves`).
-    УНИВЕРСАЛЬНЫЙ ground здесь брать нельзя: он уже машинно опровергнут
-    (`hodgeLawUniversal_refuted`) — непознаваемость была бы следствием V1, а
-    не эпистемики. Содержательность пары оплачена коллапсом L9: `ground` ⟺
-    гипотеза Ходжа модели, `beyondOwnHorizon` ⟺ предъявимость неоплаченного
-    класса — и подлинным двигательным маршрутом противоречия (см.
-    `internalisedHodgeGround_builds_engine`). -/
+/-- **Internal self-justification of the Hodge ground (per-model!):** the machine
+    carries the model's own descent law AND a witness that it was derived from
+    within — crossing its own horizon. The pair's form is "ground + its negation"
+    (like `InternalisedCollatzGround`; the first field in P/NP was called
+    `resolves`). The UNIVERSAL ground must not be taken here: it has already been
+    machine-refuted (`hodgeLawUniversal_refuted`) — unknowability would then be a
+    consequence of V1, not of epistemics. The pair's substantiveness is paid by
+    collapse L9: `ground` ⟺ the model's Hodge conjecture, `beyondOwnHorizon` ⟺
+    presentability of an unpaid class — and by the genuine engine route of the
+    contradiction (see `internalisedHodgeGround_builds_engine`). -/
 structure InternalisedHodgeGround (S : HodgeLedger) : Prop where
   ground : DescentLaw S
   beyondOwnHorizon : ¬ DescentLaw S
 
-/-- «Внутреннее знание причины Ходжа» = внутреннее самообоснование закона. -/
+/-- "Internal knowledge of the Hodge cause" = internal self-justification of the law. -/
 abbrev InternalKnowledgeOfHodgeCause (S : HodgeLedger) : Prop :=
   InternalisedHodgeGround S
 
-/-! ## Ядро: самообоснование самоуничтожается (🟢) -/
+/-! ## Core: self-justification self-destructs (🟢) -/
 
-/-- Самообоснование самоуничтожается — ровно
-    `fun H => H.beyondOwnHorizon H.ground` Коллатца. Формальный маршрут;
-    двигательная оплата той же истины — `no_internalisedHodgeGround'`. -/
+/-- Self-justification self-destructs — exactly
+    `fun H => H.beyondOwnHorizon H.ground` of Collatz. The formal route;
+    the engine payment of the same truth — `no_internalisedHodgeGround'`. -/
 theorem no_internalisedHodgeGround {S : HodgeLedger} :
     InternalisedHodgeGround S → False :=
   fun H => H.beyondOwnHorizon H.ground
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable`,
-    `pnpCause_unknowable`): внутреннее самообоснование per-model закона Ходжа
-    невозможно. ЗЕЛЁНАЯ, вообще без аксиом. НЕ утверждается ни независимость,
-    ни статус самой гипотезы Ходжа — только невозможность внутреннего
-    самообоснования. -/
+/-- **"CANNOT BE KNOWN FROM WITHIN" — THEOREM** (mirror of `collatzCause_unknowable`,
+    `pnpCause_unknowable`): internal self-justification of the per-model Hodge
+    law is impossible. GREEN, without any axioms. Neither independence nor the
+    status of the Hodge conjecture itself is asserted — only the impossibility of
+    internal self-justification. -/
 theorem hodgeCause_unknowable {S : HodgeLedger} :
     ¬ InternalKnowledgeOfHodgeCause S :=
   no_internalisedHodgeGround
 
-/-! ## Мост в словарь UniversalEngine: цепь Ходжа = вечный двигатель на ℕ -/
+/-! ## Bridge to the UniversalEngine vocabulary: Hodge chain = perpetual engine on ℕ -/
 
-/-- **Цепь неоплаченного спуска = вечный двигатель на ℕ** (мост в
-    универсальный словарь, зеркало `internalPNPDecision_carries_perpetual_engine`
-    по духу): прямая проекция `height ∘ seq`, свидетель предъявляется
-    конструкцией — НЕ ex falso. -/
+/-- **Unpaid descent chain = perpetual engine on ℕ** (bridge to the universal
+    vocabulary, mirror of `internalPNPDecision_carries_perpetual_engine` in
+    spirit): direct projection `height ∘ seq`, the witness is presented by
+    construction — NOT ex falso. -/
 theorem hodgeChain_builds_perpetual_engine {S : HodgeLedger}
     (C : UnpaidDescentChain S) : PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
   ⟨fun n => S.height (C.seq n), C.descent⟩
 
-/-- **«Неоплаченный класс при законе несёт двигатель» — ПОДЛИННО** (зеркало
-    `nonHalting_carries_perpetual_engine` Коллатца): из per-model закона и
-    неоплаченного класса СТРОИТСЯ настоящая бесконечная цепь
-    (`unpaidDescentChain_of_descentLaw`, выбор честно виден) и проецируется в
-    `PerpetualEngine` на ℕ. Честный нюанс (раскрыт): у Коллатца двигатель
-    встаёт из голого контрпримера, у Ходжа — из отклонения ПОД законом (без
-    закона шага нет: `cookedUnpaid_no_descent_step`). -/
+/-- **"Unpaid class under the law carries the engine" — GENUINE** (mirror of
+    `nonHalting_carries_perpetual_engine` of Collatz): from the per-model law and
+    an unpaid class a genuine infinite chain is CONSTRUCTED
+    (`unpaidDescentChain_of_descentLaw`, the choice is honestly visible) and
+    projected into a `PerpetualEngine` on ℕ. Honest nuance (disclosed): in
+    Collatz the engine arises from a bare counterexample; in Hodge — from a
+    deviation UNDER the law (without the law there is no descent step:
+    `cookedUnpaid_no_descent_step`). -/
 theorem unpaidClass_under_law_carries_perpetual_engine {S : HodgeLedger}
     (hLaw : DescentLaw S) (p : UnpaidClass S) :
     PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
   hodgeChain_builds_perpetual_engine (unpaidDescentChain_of_descentLaw hLaw p)
 
-/-- **Двигательный companion — НЕ ex falso** (в отличие от
-    `internalisedPNPGround_builds_engine`): из пары самообоснования двигатель
-    строится ПОДЛИННО — `beyondOwnHorizon` через коллапс L9 предъявляет
-    неоплаченный класс, `ground` разворачивает его в цепь, цепь проецируется
-    в `PerpetualEngine`. Это и есть оплата содержательности пары. -/
+/-- **Engine companion — NOT ex falso** (unlike
+    `internalisedPNPGround_builds_engine`): from the self-justification pair the
+    engine is constructed GENUINELY — `beyondOwnHorizon` via collapse L9 presents
+    an unpaid class, `ground` unfolds it into a chain, the chain is projected into
+    a `PerpetualEngine`. This is precisely the payment for the pair's
+    substantiveness. -/
 theorem internalisedHodgeGround_builds_engine {S : HodgeLedger} :
     InternalisedHodgeGround S → PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
   fun H =>
@@ -127,36 +130,36 @@ theorem internalisedHodgeGround_builds_engine {S : HodgeLedger} :
         (fun hP => H.beyondOwnHorizon (descentLaw_of_hodgeProperty hP))).elim
       (fun p => unpaidClass_under_law_carries_perpetual_engine H.ground p)
 
-/-- Второй маршрут самоуничтожения — той же истины, но через двигатель и
-    EPMI-стену (`no_perpetual_engine_on_nat`), а не через форму пары. -/
+/-- Second route of self-destruction — of the same truth, but via the engine and
+    the EPMI wall (`no_perpetual_engine_on_nat`), not via the pair's form. -/
 theorem no_internalisedHodgeGround' {S : HodgeLedger} :
     InternalisedHodgeGround S → False :=
   fun H => no_perpetual_engine_on_nat (internalisedHodgeGround_builds_engine H)
 
-/-- **Стена Ходжа = стена двигателя** (зеркало пары стен
-    `internalPNPDecision_carries_perpetual_engine`): пустота цепей в каждой
-    модели и запрет вечного двигателя на ℕ — ОДНА стена
-    вполне-фундированности (EPMI, A = 1). -/
+/-- **Hodge wall = engine wall** (mirror of the wall pair
+    `internalPNPDecision_carries_perpetual_engine`): emptiness of chains in every
+    model and the prohibition of a perpetual engine on ℕ — ONE wall of
+    well-foundedness (EPMI, A = 1). -/
 theorem hodge_wall_is_engine_wall (S : HodgeLedger) :
     IsEmpty (UnpaidDescentChain S) ∧ ¬ PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
   ⟨isEmpty_unpaidDescentChain S, no_perpetual_engine_on_nat⟩
 
-/-! ## Сводки: решение заперто за двигателем (🟢) -/
+/-! ## Summaries: resolution is locked behind the engine (🟢) -/
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — 3-РАЗВИЛКА (зелёная; зеркало
+/-- **"RESOLUTION IS LOCKED BEHIND THE ENGINE" — 3-WAY FORK (green; mirror of
     `collatz_no_internal_decision_without_engine`,
     `pnp_no_internal_decision_without_engine`):**
-    (1) НЕОПЛАЧЕННЫЙ КЛАСС ПРИ ЗАКОНЕ = бесконечная цепь = вечный двигатель
-        на ℕ (подлинная конструкция `unpaidDescentChain_of_descentLaw` +
-        проекция, НЕ ex falso) — а двигатель на ℕ запрещён;
-    (2) САМООБОСНОВАТЬ закон изнутри — самоуничтожается
+    (1) UNPAID CLASS UNDER THE LAW = infinite chain = perpetual engine on ℕ
+        (genuine construction `unpaidDescentChain_of_descentLaw` + projection,
+        NOT ex falso) — but a perpetual engine on ℕ is forbidden;
+    (2) TO SELF-JUSTIFY the law from within — self-destructs
         (`no_internalisedHodgeGround`);
-    (3) per-model закон ⟺ гипотеза Ходжа модели ЗЕЛЕНО
-        (`descentLaw_iff_hodgeProperty`, коллапс осуждённого моста):
-        декретировать закон = декретировать цель дословно — потому
-        без-двигательный путь только ВНЕШНИЙ data anchor (настоящие
-        рациональные (p,p)-классы, которых в mathlib нет).
-    НЕ утверждается гёделевская независимость и НЕ гипотеза Ходжа. -/
+    (3) per-model law ⟺ the model's Hodge conjecture GREEN
+        (`descentLaw_iff_hodgeProperty`, collapse of the condemned bridge):
+        to decree the law = to decree the goal verbatim — so the engine-free path
+        is only an EXTERNAL data anchor (genuine rational (p,p)-classes, which are
+        absent from mathlib).
+    Neither Godelian independence nor the Hodge conjecture is asserted. -/
 theorem hodge_no_internal_decision_without_engine (S : HodgeLedger) :
     (DescentLaw S → Nonempty (UnpaidClass S) →
         PerpetualEngine (· < · : ℕ → ℕ → Prop)) ∧
@@ -167,12 +170,13 @@ theorem hodge_no_internal_decision_without_engine (S : HodgeLedger) :
    no_internalisedHodgeGround,
    descentLaw_iff_hodgeProperty S⟩
 
-/-- Итоговый эпистемический статус шестого фронта (зеркало
-    `pnp_locked_behind_engine_status` / `collatz_open_status`; декрет-конъюнкта
-    НЕТ — шестой границы не существует, коллапс L9): универсальный закон
-    КОВАННО ОПРОВЕРГНУТ (теорема) / двигатель мёртв в каждой модели (теорема,
-    EPMI A = 1) / внутреннее знание невозможно (теорема) / per-model закон ⟺
-    гипотеза модели (теорема — потому вход остаётся внешним). ЗЕЛЁНАЯ целиком. -/
+/-- Final epistemic status of the sixth front (mirror of
+    `pnp_locked_behind_engine_status` / `collatz_open_status`; no decree
+    conjunct — the sixth boundary does not exist, collapse L9): the universal law
+    is FORGEDLY REFUTED (theorem) / the engine is dead in every model (theorem,
+    EPMI A = 1) / internal knowledge is impossible (theorem) / per-model law ⟺
+    the model's conjecture (theorem — so the entry remains external). ENTIRELY
+    GREEN. -/
 theorem hodge_locked_behind_engine_status (S : HodgeLedger) :
     (¬ HodgeDescentLawUniversal) ∧
     IsEmpty (UnpaidDescentChain S) ∧
@@ -183,17 +187,17 @@ theorem hodge_locked_behind_engine_status (S : HodgeLedger) :
    hodgeCause_unknowable,
    descentLaw_iff_hodgeProperty S⟩
 
-/-! ## Универсал кован — реэкспорт V1 -/
+/-! ## Universal form is forged — re-export of V1 -/
 
-/-- **«КАК ЯМ И КОЛЛАТЦ: УНИВЕРСАЛ КОВАН»** — именованный реэкспорт
-    `hodgeLawUniversal_refuted` (V1 трилеммы шестого фронта): универсальная
-    форма закона спуска машинно опровергнута кованым свидетелем
-    (`cookedUnpaid`: шаг спуска с высоты 1 упёрся бы в оплаченность нулевой
-    высоты — якорь квантования `height_zero_iff` потреблён по-настоящему).
-    Ровно как `ropeLaw_universal_refuted` у Коллатца и опровержение
-    универсальной формы у ЯМ: декретный путь через универсал закрыт машинно,
-    живым остаётся только per-model вход — а он, по коллапсу L9, равен цели
-    дословно. -/
+/-- **"LIKE YM AND COLLATZ: THE UNIVERSAL IS FORGED"** — named re-export of
+    `hodgeLawUniversal_refuted` (V1 of the sixth-front trilemma): the universal
+    form of the descent law is machine-refuted by the forged witness
+    (`cookedUnpaid`: the descent step from height 1 would hit the paid-ness of
+    height zero — the quantisation anchor `height_zero_iff` is genuinely consumed).
+    Exactly as `ropeLaw_universal_refuted` in Collatz and the refutation of the
+    universal form in YM: the decree path via the universal is machine-closed;
+    only the per-model entry survives — and it, by collapse L9, equals the goal
+    verbatim. -/
 theorem hodgeUniversal_forged_refutation : ¬ HodgeDescentLawUniversal :=
   hodgeLawUniversal_refuted
 
@@ -201,8 +205,8 @@ end Epistemic
 end Hodge
 end EuclidsPath
 
--- Машинная видимость чистоты в build-логе
--- (ожидаемо: подмножество [propext, Classical.choice, Quot.sound]):
+-- Machine-visible cleanliness in the build log
+-- (expected: a subset of [propext, Classical.choice, Quot.sound]):
 #print axioms EuclidsPath.Hodge.Epistemic.InternalisedHodgeGround
 #print axioms EuclidsPath.Hodge.Epistemic.InternalKnowledgeOfHodgeCause
 #print axioms EuclidsPath.Hodge.Epistemic.no_internalisedHodgeGround

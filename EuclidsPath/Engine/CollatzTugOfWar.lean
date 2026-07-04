@@ -1,87 +1,87 @@
 /-
-  Collatz как ПЕРЕТЯГИВАНИЕ КАНАТА (tug-of-war): двигатель против каната.
-  Разбор: prose/55_Collatz.md. Числа: tools/collatz_engine_harness.py, tools/collatz_fuel_harness.py.
+  Collatz as a TUG OF WAR: the engine against the rope.
+  Discussion: prose/55_Collatz.md. Numbers: tools/collatz_engine_harness.py, tools/collatz_fuel_harness.py.
 
-  Чтение автора: «соревнование двигателя и каната: двигатель продвигается НЕ БОЛЕЕ чем на
-  1 ранг вперёд за шаг, канат тянет на 1 или 2 ранга назад; топливо кончается — двигатель
-  стягивается к старту». Формализация МУЛЬТИПЛИКАТИВНАЯ (чистая ℕ-арифметика, без логарифмов):
-  ранг = двоичный порядок; «+1 ранг» = не более удвоения, «−1 ранг» = ровно половина.
+  The author's reading: "a contest between engine and rope: the engine advances by AT MOST
+  1 rank forward per step, the rope pulls back by 1 or 2 ranks; the fuel runs out — the engine
+  is dragged back to the start". The formalization is MULTIPLICATIVE (pure ℕ-arithmetic, no logarithms):
+  rank = binary order; "+1 rank" = at most a doubling, "−1 rank" = exactly a halving.
 
-  ЗЕЛЁНОЕ ЯДРО (доказано здесь):
-  - engine_at_most_one_rank : T n ≤ 2n               — двигатель: ≤ +1 ранг за ЛЮБОЙ шаг;
-  - rope_pulls_one          : 2·T n = n  (n чёт.)    — канат: ровно −1 ранг;
-  - rope_pulls_two          : 4·T²(n) = n (n≡0 mod4) — канат: −2 ранга за два шага;
-  - window_budget           : 2^e·T^k(n) ≤ 2^t·n     — БЮДЖЕТ ОКНА: границы перемножаются
-                              НЕЗАВИСИМО от порядка шагов (t нечётных, e чётных, t+e=k);
-  - window_descends         : e > t в окне ⟹ T^k(n) < n — канат перетянул ⟹ строгий спуск;
-  - reaches_one_of_countingLaw (ГЕРОЙ): закон каната ⟹ достижение 1.
+  GREEN CORE (proved here):
+  - engine_at_most_one_rank : T n ≤ 2n               — engine: ≤ +1 rank on ANY step;
+  - rope_pulls_one          : 2·T n = n  (n even)    — rope: exactly −1 rank;
+  - rope_pulls_two          : 4·T²(n) = n (n≡0 mod4) — rope: −2 ranks over two steps;
+  - window_budget           : 2^e·T^k(n) ≤ 2^t·n     — WINDOW BUDGET: the bounds multiply
+                              INDEPENDENTLY of the step order (t odd, e even, t+e=k);
+  - window_descends         : e > t in a window ⟹ T^k(n) < n — rope out-pulled ⟹ strict descent;
+  - reaches_one_of_countingLaw (HERO): the rope law ⟹ reaching 1.
 
-  🔴 ИМЕНОВАННЫЙ ВХОД (открытое сердце, НЕ доказывается): RopeCountingLaw n — «в каждой
-  позиции траектории ВЫШЕ цикла остановки (значение > 2) найдётся окно, где чётных шагов
-  строго больше нечётных». Универсальная форма (∀ n ≥ 1) ОТКРЫТА: она ВЛЕЧЁТ гипотезу
-  Коллатца (герой); обратное НЕ известно; она может быть строго сильнее гипотезы. При
-  слиянии с репо этот вход становится полем `collatzBoundary` первопричины `step00FirstCause`
-  (см. `Engine/CausalClosureAxiom` §18 и потребитель `Engine/CollatzFirstCause`).
+  🔴 NAMED INPUT (the open heart, NOT proved): RopeCountingLaw n — "at every
+  position of the trajectory ABOVE the halting cycle (value > 2) there is a window in which the even
+  steps strictly outnumber the odd ones". The universal form (∀ n ≥ 1) is OPEN: it ENTAILS the Collatz
+  conjecture (hero); the converse is NOT known; it may be strictly stronger than the conjecture. On
+  merging with the repo this input becomes the field `collatzBoundary` of the first cause `step00FirstCause`
+  (see `Engine/CausalClosureAxiom` §18 and the consumer `Engine/CollatzFirstCause`).
 
-  ЧЕСТНОСТЬ (три раскрытия):
-  1) «Мост приговорённого»: ценностная форма закона (ValueDescentLaw) ЭКВИВАЛЕНТНА сходимости
-     (valueLaw_iff_reaches_one) — сама по себе содержания НЕ добавляет. Содержательна только
-     счётная форма; её обратная сторона (сходимость ⟹ счётный закон) НЕ утверждается:
-     бюджет окна односторонен.
-  2) Исходная форма «2·odd < even» ОТВЕРГНУТА: эмпирически e ≈ 1.016·t на ускоренной карте
-     (halvings/triplings = 2.016 в сырой карте, минус 1 съеденное ускорением), т.е. e > 2t
-     ЛОЖНО в среднем. Порог e > t — ТОЧНЫЙ порог, который грубая граница ×2 конвертирует
-     в спуск, и он впритык (средний запас ~1.6%). Это цена отказа от log₂3.
-  3) Окна длины 1 ПРОВАЛИВАЮТСЯ на каждой нечётной позиции (no_single_step_law) — согласовано
-     со стеной CollatzFuel.no_monotone_height: монотонной высоты нет, закон ОБЯЗАН жить на
-     окнах ≥ 2. На состоянии остановки закон вакуумен (countingLaw_1) — потому квантор
-     ограничен «выше цикла»: от значения 1 шаги чередуются 1→2→1 и t ≥ e во ВСЕХ окнах,
-     закон без ограничения был бы ложен для всякой сходящейся траектории.
+  HONESTY (three disclosures):
+  1) "The condemned man's bridge": the value form of the law (ValueDescentLaw) is EQUIVALENT to convergence
+     (valueLaw_iff_reaches_one) — on its own it adds NO content. Only the counting
+     form is substantive; its reverse side (convergence ⟹ counting law) is NOT asserted:
+     the window budget is one-sided.
+  2) The original form "2·odd < even" is REJECTED: empirically e ≈ 1.016·t on the accelerated map
+     (halvings/triplings = 2.016 in the raw map, minus 1 eaten by the acceleration), i.e. e > 2t
+     is FALSE on average. The threshold e > t is the EXACT threshold that the crude ×2 bound converts
+     into descent, and it is razor-thin (average margin ~1.6%). This is the price of giving up log₂3.
+  3) Windows of length 1 FAIL at every odd position (no_single_step_law) — consistent
+     with the wall CollatzFuel.no_monotone_height: there is no monotone height, the law MUST live on
+     windows ≥ 2. On the halting state the law is vacuous (countingLaw_1) — that is why the quantifier
+     is restricted to "above the cycle": from value 1 the steps alternate 1→2→1 and t ≥ e in ALL windows,
+     the law without the restriction would be false for every convergent trajectory.
 
-  Дублирование T из CollatzEngine.lean НАМЕРЕННОЕ: три Collatz-ядра самодостаточны
-  (core Lean, без Mathlib и без import); при слиянии дубли ушли только из потребителя.
+  Duplicating T from CollatzEngine.lean is INTENTIONAL: the three Collatz cores are self-contained
+  (core Lean, no Mathlib and no import); on merging the duplicates were removed only from the consumer.
 -/
 
 namespace EuclidsPath.Collatz.TugOfWar
 
-/-- Ускоренная карта Коллатца (дубль CollatzEngine.T — файлы самодостаточны). -/
+/-- The accelerated Collatz map (a duplicate of CollatzEngine.T — the files are self-contained). -/
 def T (n : Nat) : Nat := if n % 2 = 0 then n / 2 else (3 * n + 1) / 2
 
-/-- Траектория: k шагов карты T от n (снятие ПЕРВОГО шага — удобно для бюджета окна). -/
+/-- Trajectory: k steps of the map T from n (peeling off the FIRST step — convenient for the window budget). -/
 def iter : Nat → Nat → Nat
   | 0, n => n
   | k + 1, n => iter k (T n)
 
-/-- Число НЕЧЁТНЫХ шагов (ходов двигателя) в окне из k шагов от n. -/
+/-- Number of ODD steps (engine moves) in a window of k steps from n. -/
 def oddCount : Nat → Nat → Nat
   | 0, _ => 0
   | k + 1, n => oddCount k (T n) + (if n % 2 = 0 then 0 else 1)
 
-/-- Число ЧЁТНЫХ шагов (рывков каната) в окне из k шагов от n. -/
+/-- Number of EVEN steps (rope pulls) in a window of k steps from n. -/
 def evenCount : Nat → Nat → Nat
   | 0, _ => 0
   | k + 1, n => evenCount k (T n) + (if n % 2 = 0 then 1 else 0)
 
-/-! ## Двигатель и канат: пошаговые границы (зелёные) -/
+/-! ## Engine and rope: per-step bounds (green) -/
 
-/-- **ДВИГАТЕЛЬ: не более +1 ранга за шаг.** `T n ≤ 2n` для ВСЕХ n: нечётный шаг
-    (3n+1)/2 ≤ 2n при n ≥ 1 (нечётное n ≥ 1 автоматически), чётный — тем более. -/
+/-- **ENGINE: at most +1 rank per step.** `T n ≤ 2n` for ALL n: the odd step
+    (3n+1)/2 ≤ 2n for n ≥ 1 (odd n ≥ 1 automatically), the even one all the more so. -/
 theorem engine_at_most_one_rank (n : Nat) : T n ≤ 2 * n := by
   unfold T
   by_cases h : n % 2 = 0
   · rw [if_pos h]; omega
   · rw [if_neg h]; omega
 
-/-- **Точный расход топлива нечётного шага:** `2·T n = 3n+1` — двигатель платит ×1.5+ε,
-    а НЕ ×2; граница ×2 — грубая (см. честность-2 в шапке). -/
+/-- **Exact fuel cost of an odd step:** `2·T n = 3n+1` — the engine pays ×1.5+ε,
+    and NOT ×2; the ×2 bound is crude (see honesty-2 in the header). -/
 theorem engine_exact_fuel (n : Nat) (ho : n % 2 = 1) : 2 * T n = 3 * n + 1 := by
   unfold T; rw [if_neg (by omega : ¬ n % 2 = 0)]; omega
 
-/-- **КАНАТ: ровно −1 ранг на чётном шаге:** `2·T n = n` («тянет на 1»). -/
+/-- **ROPE: exactly −1 rank on an even step:** `2·T n = n` ("pulls by 1"). -/
 theorem rope_pulls_one (n : Nat) (he : n % 2 = 0) : 2 * T n = n := by
   unfold T; rw [if_pos he]; omega
 
-/-- **КАНАТ: −2 ранга за два чётных шага** (n ≡ 0 mod 4): `4·T²(n) = n` («тянет на 2»). -/
+/-- **ROPE: −2 ranks over two even steps** (n ≡ 0 mod 4): `4·T²(n) = n` ("pulls by 2"). -/
 theorem rope_pulls_two (n : Nat) (h4 : n % 4 = 0) : 4 * iter 2 n = n := by
   have e1 : T n = n / 2 := by unfold T; rw [if_pos (by omega : n % 2 = 0)]
   have e2 : T (n / 2) = n / 2 / 2 := by
@@ -90,7 +90,7 @@ theorem rope_pulls_two (n : Nat) (h4 : n % 4 = 0) : 4 * iter 2 n = n := by
   rw [e3, e1, e2]
   omega
 
-/-- Двигатель не глохнет в нуле: при n ≥ 1 шаг сохраняет n ≥ 1. -/
+/-- The engine does not stall at zero: for n ≥ 1 a step preserves n ≥ 1. -/
 theorem T_pos (n : Nat) (h : 1 ≤ n) : 1 ≤ T n := by
   unfold T
   by_cases hp : n % 2 = 0
@@ -102,7 +102,7 @@ theorem iter_pos (j n : Nat) (h : 1 ≤ n) : 1 ≤ iter j n := by
   | zero => exact h
   | succ j ih => simp only [iter]; exact ih (T n) (T_pos n h)
 
-/-- Склейка траектории: `T^(j+k) = T^k ∘ T^j`. -/
+/-- Gluing trajectories: `T^(j+k) = T^k ∘ T^j`. -/
 theorem iter_add (j k n : Nat) : iter (j + k) n = iter k (iter j n) := by
   induction j generalizing n with
   | zero => simp [iter]
@@ -111,7 +111,7 @@ theorem iter_add (j k n : Nat) : iter (j + k) n = iter k (iter j n) := by
     simp only [iter]
     exact ih (T n)
 
-/-- Учёт шагов: окно из k шагов = t нечётных + e чётных, t + e = k. -/
+/-- Step accounting: a window of k steps = t odd + e even, t + e = k. -/
 theorem counts_total (k n : Nat) : oddCount k n + evenCount k n = k := by
   induction k generalizing n with
   | zero => rfl
@@ -122,13 +122,13 @@ theorem counts_total (k n : Nat) : oddCount k n + evenCount k n = k := by
     · simp only [if_pos hp]; omega
     · simp only [if_neg hp]; omega
 
-/-! ## Бюджет окна — зелёное ядро перетягивания -/
+/-! ## Window budget — the green core of the tug of war -/
 
-/-- **БЮДЖЕТ ОКНА.** За k шагов от n с t = oddCount нечётными и e = evenCount чётными:
-    `2^e · T^k(n) ≤ 2^t · n`. Каждый рывок каната множит РОВНО на ½ (rope_pulls_one),
-    каждый ход двигателя — НЕ БОЛЕЕ чем на 2 (engine_at_most_one_rank); границы
-    перемножаются при ЛЮБОМ порядке шагов. Чистая ℕ-арифметика: floor-деления съедены
-    точностью границ, логарифмы не нужны. -/
+/-- **WINDOW BUDGET.** Over k steps from n with t = oddCount odd and e = evenCount even:
+    `2^e · T^k(n) ≤ 2^t · n`. Each rope pull multiplies by EXACTLY ½ (rope_pulls_one),
+    each engine move — by AT MOST 2 (engine_at_most_one_rank); the bounds
+    multiply under ANY step order. Pure ℕ-arithmetic: floor-divisions are eaten
+    by the precision of the bounds, no logarithms needed. -/
 theorem window_budget (k n : Nat) :
     2 ^ evenCount k n * iter k n ≤ 2 ^ oddCount k n * n := by
   induction k generalizing n with
@@ -156,9 +156,9 @@ theorem window_budget (k n : Nat) :
             Nat.mul_le_mul (Nat.le_refl (2 ^ oddCount k (T n))) hT
         _ = 2 ^ (oddCount k (T n) + 1) * n := by rw [Nat.pow_add_one, Nat.mul_assoc]
 
-/-- **Канат перетянул окно ⟹ строгий спуск.** Если чётных шагов СТРОГО больше (t < e),
-    то `2^(t+1) ≤ 2^e`, бюджет даёт `2^t·(2·T^k(n)) ≤ 2^t·n`, сокращаем 2^t > 0:
-    `2·T^k(n) ≤ n`, откуда `T^k(n) < n` при n ≥ 1. -/
+/-- **Rope out-pulled the window ⟹ strict descent.** If the even steps STRICTLY outnumber (t < e),
+    then `2^(t+1) ≤ 2^e`, the budget gives `2^t·(2·T^k(n)) ≤ 2^t·n`, we cancel 2^t > 0:
+    `2·T^k(n) ≤ n`, whence `T^k(n) < n` for n ≥ 1. -/
 theorem window_descends (k n : Nat) (h1 : 1 ≤ n)
     (hc : oddCount k n < evenCount k n) : iter k n < n := by
   have hb := window_budget k n
@@ -173,23 +173,23 @@ theorem window_descends (k n : Nat) (h1 : 1 ≤ n)
     Nat.le_of_mul_le_mul_left hchain (Nat.two_pow_pos (oddCount k n))
   omega
 
-/-! ## Законы перетягивания: две формы, честная лестница -/
+/-! ## Tug-of-war laws: two forms, an honest ladder -/
 
-/-- **🔴 ЗАКОН ДОМИНИРОВАНИЯ КАНАТА (счётная форма) — именованный вход.** В каждой позиции
-    траектории ВЫШЕ цикла остановки (значение > 2) найдётся окно, где чётных шагов строго
-    больше нечётных. k > 0 автоматически (при k = 0 оба счёта равны 0). Здесь ТОЛЬКО
-    определение: универсально по n это ОТКРЫТО (см. шапку). -/
+/-- **🔴 ROPE DOMINATION LAW (counting form) — a named input.** At every position
+    of the trajectory ABOVE the halting cycle (value > 2) there is a window in which the even steps strictly
+    outnumber the odd ones. k > 0 automatically (for k = 0 both counts equal 0). Here ONLY the
+    definition: universally in n this is OPEN (see the header). -/
 def RopeCountingLaw (n : Nat) : Prop :=
   ∀ j : Nat, 2 < iter j n →
     ∃ k : Nat, oddCount k (iter j n) < evenCount k (iter j n)
 
-/-- **Закон спуска значения (ценностная форма).** В каждой позиции выше цикла найдётся
-    будущая позиция строго ниже. ВНИМАНИЕ: эта форма ЭКВИВАЛЕНТНА сходимости
-    (valueLaw_iff_reaches_one) — «мост приговорённого», содержание не добавляется. -/
+/-- **Value descent law (value form).** At every position above the cycle there is
+    a future position strictly lower. ATTENTION: this form is EQUIVALENT to convergence
+    (valueLaw_iff_reaches_one) — "the condemned man's bridge", no content is added. -/
 def ValueDescentLaw (n : Nat) : Prop :=
   ∀ j : Nat, 2 < iter j n → ∃ k : Nat, iter (j + k) n < iter j n
 
-/-- Ступень лестницы: счётный закон ⟹ ценностный (через бюджет окна). -/
+/-- A rung of the ladder: the counting law ⟹ the value law (via the window budget). -/
 theorem valueLaw_of_countingLaw (n : Nat) (law : RopeCountingLaw n) :
     ValueDescentLaw n := by
   intro j hj
@@ -199,7 +199,7 @@ theorem valueLaw_of_countingLaw (n : Nat) (law : RopeCountingLaw n) :
     rw [iter_add j k n]
     exact window_descends k (iter j n) (by omega) hk
 
-/-- Цикл остановки поглощает: после достижения 1 значения навсегда в {1, 2} (1→2→1). -/
+/-- The halting cycle absorbs: after reaching 1 the values stay forever in {1, 2} (1→2→1). -/
 theorem cycle_absorbs (n K : Nat) (hK : iter K n = 1) :
     ∀ d : Nat, iter (K + d) n = 1 ∨ iter (K + d) n = 2 := by
   intro d
@@ -212,10 +212,10 @@ theorem cycle_absorbs (n K : Nat) (hK : iter K n = 1) :
     | inl h => rw [h]; exact Or.inr (by decide)
     | inr h => rw [h]; exact Or.inl (by decide)
 
-/-- **ГЕРОЙ-ДВИЖОК: ценностный закон ⟹ достижение 1.** Индукция по ПОТОЛКУ значения
-    (обычная индукция по v — без сильной рекурсии и без Classical.choice): позиция со
-    значением ≤ v+1 либо уже 1, либо 2 (один шаг), либо > 2 — закон даёт будущую позицию
-    со значением ≤ v, применяем гипотезу индукции. -/
+/-- **HERO ENGINE: the value law ⟹ reaching 1.** Induction on the CEILING of the value
+    (ordinary induction on v — without strong recursion and without Classical.choice): a position with
+    value ≤ v+1 is either already 1, or 2 (one step), or > 2 — the law gives a future position
+    with value ≤ v, we apply the induction hypothesis. -/
 theorem reaches_one_of_valueLaw (n : Nat) (h1 : 1 ≤ n) (law : ValueDescentLaw n) :
     ∃ K, iter K n = 1 := by
   suffices h : ∀ v j, iter j n ≤ v → ∃ K, iter K n = 1 by
@@ -240,17 +240,17 @@ theorem reaches_one_of_valueLaw (n : Nat) (h1 : 1 ≤ n) (law : ValueDescentLaw 
           cases law j (by omega) with
           | intro k hk => exact ih (j + k) (by omega)
 
-/-- **ГЕРОЙ (главная теорема): закон доминирования каната ⟹ двигатель стянут к старту.**
-    Лестница: RopeCountingLaw → (бюджет окна) → ValueDescentLaw → (индукция по потолку) → 1. -/
+/-- **HERO (main theorem): the rope domination law ⟹ the engine is dragged back to the start.**
+    Ladder: RopeCountingLaw → (window budget) → ValueDescentLaw → (induction on the ceiling) → 1. -/
 theorem reaches_one_of_countingLaw (n : Nat) (h1 : 1 ≤ n) (law : RopeCountingLaw n) :
     ∃ K, iter K n = 1 :=
   reaches_one_of_valueLaw n h1 (valueLaw_of_countingLaw n law)
 
-/-! ## Аудит коллапса: чем ценностная форма хуже счётной -/
+/-! ## Collapse audit: why the value form is worse than the counting form -/
 
-/-- **КОЛЛАПС ценностной формы (раскрытие «моста приговорённого»):** сходимость ⟹
-    ценностный закон. До достижения 1 спуск даёт сама точка достижения; после — позиций
-    выше цикла нет (cycle_absorbs). Вместе с героем: ValueDescentLaw ⟺ сходимость. -/
+/-- **COLLAPSE of the value form (disclosure of "the condemned man's bridge"):** convergence ⟹
+    the value law. Before reaching 1 the descent is given by the point of reaching itself; after — there are no
+    positions above the cycle (cycle_absorbs). Together with the hero: ValueDescentLaw ⟺ convergence. -/
 theorem valueLaw_of_reaches_one (n : Nat) (hr : ∃ K, iter K n = 1) :
     ValueDescentLaw n := by
   cases hr with
@@ -267,16 +267,16 @@ theorem valueLaw_of_reaches_one (n : Nat) (hr : ∃ K, iter K n = 1) :
       | inl h => omega
       | inr h => omega
 
-/-- Ценностная форма ⟺ гипотеза для n: «мост приговорённого» раскрыт формально. -/
+/-- The value form ⟺ the conjecture for n: "the condemned man's bridge" disclosed formally. -/
 theorem valueLaw_iff_reaches_one (n : Nat) (h1 : 1 ≤ n) :
     ValueDescentLaw n ↔ ∃ K, iter K n = 1 :=
   ⟨reaches_one_of_valueLaw n h1, valueLaw_of_reaches_one n⟩
 
-/-! ## Аудиты честности -/
+/-! ## Honesty audits -/
 
-/-- **Окно k=1 ПРОВАЛИВАЕТСЯ на каждой нечётной позиции:** значение растёт (двигатель
-    тянет вперёд), а счёт даёт t=1 > e=0. Согласовано с CollatzFuel.no_monotone_height:
-    пошагового закона нет — закон каната ОБЯЗАН жить на окнах ≥ 2. -/
+/-- **The k=1 window FAILS at every odd position:** the value grows (the engine
+    pulls forward), and the count gives t=1 > e=0. Consistent with CollatzFuel.no_monotone_height:
+    there is no per-step law — the rope law MUST live on windows ≥ 2. -/
 theorem single_window_fails (n : Nat) (ho : n % 2 = 1) :
     n < T n ∧ ¬ (oddCount 1 n < evenCount 1 n) := by
   constructor
@@ -284,17 +284,17 @@ theorem single_window_fails (n : Nat) (ho : n % 2 = 1) :
   · simp only [oddCount, evenCount, if_neg (show ¬ n % 2 = 0 by omega)]
     omega
 
-/-- Сколь угодно большие свидетели провала k=1 (семейство 2N+1; ср. 4N+5 в CollatzFuel). -/
+/-- Arbitrarily large witnesses of the k=1 failure (the family 2N+1; cf. 4N+5 in CollatzFuel). -/
 theorem no_single_step_law (N : Nat) :
     ∃ n, N < n ∧ n % 2 = 1 ∧ n < T n ∧ ¬ (oddCount 1 n < evenCount 1 n) := by
   have h := single_window_fails (2 * N + 1) (by omega)
   exact ⟨2 * N + 1, by omega, by omega, h.1, h.2⟩
 
-/-- Невакуумный зелёный пример счётного условия: у n=4 окно k=2 (4→2→1): t=0 < e=2. -/
+/-- A non-vacuous green example of the counting condition: n=4 has a window k=2 (4→2→1): t=0 < e=2. -/
 theorem window_at_4 : oddCount 2 4 < evenCount 2 4 := by decide
 
-/-- Счётный закон ВЕРЕН для n=4: единственная позиция выше цикла — старт (окно k=2);
-    существование выполняющих n — зелёное. Универсальность — открытый вход. -/
+/-- The counting law is TRUE for n=4: the only position above the cycle is the start (window k=2);
+    the existence of satisfying n is green. Universality is the open input. -/
 theorem countingLaw_4 : RopeCountingLaw 4 := by
   intro j hj
   by_cases h0 : j = 0
@@ -310,10 +310,10 @@ theorem countingLaw_4 : RopeCountingLaw 4 := by
       | inl h => omega
       | inr h => omega
 
-/-- **Ловушка хвоста цикла (раскрытие):** для n=1 закон истинен ВАКУУМНО — позиций выше
-    цикла нет. Ограничение «значение > 2» в кванторе обязательно: от значения 1 шаги
-    чередуются 1→2→1 и t ≥ e во всех окнах — закон без ограничения был бы ложен для
-    ВСЯКОЙ сходящейся траектории. -/
+/-- **The cycle-tail trap (disclosure):** for n=1 the law is true VACUOUSLY — there are no positions above
+    the cycle. The restriction "value > 2" in the quantifier is mandatory: from value 1 the steps
+    alternate 1→2→1 and t ≥ e in all windows — the law without the restriction would be false for
+    EVERY convergent trajectory. -/
 theorem countingLaw_1 : RopeCountingLaw 1 := by
   intro j hj
   exfalso
@@ -323,17 +323,17 @@ theorem countingLaw_1 : RopeCountingLaw 1 := by
   | inl h => omega
   | inr h => omega
 
-/-! ## Неубывающая орбита = вечный двигатель -/
+/-! ## Non-descending orbit = perpetual engine -/
 
-/-- **Неубывающая орбита**: траектория никогда не опускается ниже старта. -/
+/-- **Non-descending orbit**: the trajectory never drops below the start. -/
 def NonDescendingOrbit (n : Nat) : Prop :=
   ∀ k : Nat, n ≤ iter k n
 
-/-- **ТЕОРЕМА (неубывание = вечный двигатель, счётная форма):** чтобы орбита
-    не убывала, двигатель обязан выигрывать или сводить вничью КАЖДОЕ окно —
-    навсегда: `evenCount ≤ oddCount` для всех k. Прямо из бюджета окна:
-    2^e·iter ≤ 2^t·n и n ≤ iter дают 2^e ≤ 2^t. Бесконечная подпитка
-    топливом без единого проигранного окна — это и есть вечный двигатель. -/
+/-- **THEOREM (non-descent = perpetual engine, counting form):** for the orbit
+    not to descend, the engine must win or draw EVERY window —
+    forever: `evenCount ≤ oddCount` for all k. Directly from the window budget:
+    2^e·iter ≤ 2^t·n and n ≤ iter give 2^e ≤ 2^t. Infinite refuelling
+    without a single lost window — that is exactly a perpetual engine. -/
 theorem nonDescending_engine_never_loses (n : Nat) (h1 : 1 ≤ n)
     (hnd : NonDescendingOrbit n) :
     ∀ k : Nat, evenCount k n ≤ oddCount k n := by
@@ -355,8 +355,8 @@ theorem nonDescending_engine_never_loses (n : Nat) (h1 : 1 ≤ n)
       rw [Nat.pow_add_one, Nat.mul_comm]
     omega
 
-/-- Неубывающая орбита (со старта выше цикла) никогда не достигает 1 —
-    вечное движение без остановки. -/
+/-- A non-descending orbit (from a start above the cycle) never reaches 1 —
+    perpetual motion without halting. -/
 theorem nonDescending_never_halts (n : Nat) (h3 : 3 ≤ n)
     (hnd : NonDescendingOrbit n) :
     ∀ K : Nat, iter K n ≠ 1 := by
@@ -364,17 +364,17 @@ theorem nonDescending_never_halts (n : Nat) (h3 : 3 ≤ n)
   have := hnd K
   omega
 
-/-- **Сводка «неубывающая орбита = вечный двигатель»:** двигатель не
-    проигрывает ни одного окна И никогда не останавливается. -/
+/-- **Summary "non-descending orbit = perpetual engine":** the engine does not
+    lose a single window AND never halts. -/
 theorem nonDescendingOrbit_is_perpetual_engine (n : Nat) (h3 : 3 ≤ n)
     (hnd : NonDescendingOrbit n) :
     (∀ k, evenCount k n ≤ oddCount k n) ∧ (∀ K, iter K n ≠ 1) :=
   ⟨nonDescending_engine_never_loses n (by omega) hnd,
    nonDescending_never_halts n h3 hnd⟩
 
-/-- **Закон каната запрещает вечный двигатель:** при законе доминирования
-    неубывающих орбит (выше цикла) НЕ существует — первая же позиция даёт
-    окно с перевесом каната и строгий спуск ниже старта. -/
+/-- **The rope law forbids a perpetual engine:** under the domination law
+    non-descending orbits (above the cycle) do NOT exist — the very first position gives
+    a window with a rope surplus and a strict descent below the start. -/
 theorem no_nonDescendingOrbit_under_countingLaw (n : Nat) (h3 : 3 ≤ n)
     (law : RopeCountingLaw n) : ¬ NonDescendingOrbit n := by
   intro hnd
@@ -387,39 +387,39 @@ theorem no_nonDescendingOrbit_under_countingLaw (n : Nat) (h3 : 3 ≤ n)
     have := hnd k
     omega
 
-/-! ## Нижний ранг: почему +1 запутывает двигатель на цифрах 2 и 3 -/
+/-! ## The bottom rank: why +1 confuses the engine at the digits 2 and 3 -/
 
-/-- **«+1 весит полный ранг ТОЛЬКО при n = 1»:** 3n+1 достигает верхней
-    границы двигателя 4n (ровно +2 сырых ранга) в одной-единственной точке —
-    на дне. Выше дна добавка +1 суб-ранговая: 3n+1 < 4n. -/
+/-- **"+1 weighs a full rank ONLY at n = 1":** 3n+1 reaches the engine's upper
+    bound 4n (exactly +2 raw ranks) at one single point —
+    at the bottom. Above the bottom the +1 addition is sub-rank: 3n+1 < 4n. -/
 theorem plus_one_full_rank_only_at_one (n : Nat) (h1 : 1 ≤ n) :
     3 * n + 1 = 4 * n ↔ n = 1 := by
   constructor
   · intro h; omega
   · intro h; omega
 
-/-- Выше дна +1 строго суб-ранговая. -/
+/-- Above the bottom +1 is strictly sub-rank. -/
 theorem plus_one_subrank_above_one (n : Nat) (h3 : 3 ≤ n) :
     3 * n + 1 < 4 * n := by omega
 
-/-- **«Двигатель запутан на дне»:** ровно при n = 1 выстрел двигателя
-    попадает в ЧИСТУЮ степень каната (3·1+1 = 4 = 2²) — канат стягивает его
-    два шага подряд назад, образуя поглощающий цикл 1→2→1. Цифры 2 и 3 на
-    нижнем ранге неразличимы для +1: она составляет там целый ранг. -/
+/-- **"The engine is confused at the bottom":** exactly at n = 1 the engine's shot
+    lands on a PURE power of the rope (3·1+1 = 4 = 2²) — the rope drags it
+    two steps in a row back, forming the absorbing cycle 1→2→1. The digits 2 and 3 at
+    the bottom rank are indistinguishable for +1: it makes up a whole rank there. -/
 theorem engine_confused_at_bottom :
     3 * 1 + 1 = 2 ^ 2 ∧ T 1 = 2 ∧ T 2 = 1 :=
   ⟨by decide, by decide, by decide⟩
 
-/-! ## Опровержение = двигатель: любой контрпример несёт вечный двигатель
+/-! ## Refutation = engine: any counterexample carries a perpetual engine
 
-ЧЕСТНОЕ РАСКРЫТИЕ ОБ АКСИОМАХ: теоремы этой секции — единственное место файла,
-где используется классическая логика (`Classical.em` — выбор позиции минимума
-орбиты неконструктивен); их список аксиом — стандартная тройка
-[propext, Classical.choice, Quot.sound]. Весь остальной файл остаётся
+HONEST DISCLOSURE ABOUT THE AXIOMS: the theorems of this section are the only place in the file
+where classical logic is used (`Classical.em` — the choice of the orbit's minimum
+position is non-constructive); their axiom list is the standard triple
+[propext, Classical.choice, Quot.sound]. The rest of the file stays
 choice-free ([propext, Quot.sound]). -/
 
-/-- **Минимум орбиты существует** (вполне-упорядоченность ℕ): у всякой орбиты
-    есть позиция глобального минимума значения. -/
+/-- **The orbit's minimum exists** (well-ordering of ℕ): every orbit
+    has a position of global minimum value. -/
 theorem exists_min_position (n : Nat) :
     ∃ j : Nat, ∀ k : Nat, iter j n ≤ iter k n := by
   suffices h : ∀ v j0 : Nat, iter j0 n ≤ v →
@@ -443,13 +443,13 @@ theorem exists_min_position (n : Nat) :
       | inl hlt => exact absurd ⟨k, hlt⟩ hno
       | inr hge => exact hge
 
-/-- **ЦЕНТРАЛЬНАЯ ТЕОРЕМА: контрпример Коллатца несёт вечный двигатель.**
-    Если орбита никогда не достигает 1, то её хвост от позиции минимума —
-    неубывающая не-останавливающаяся орбита, то есть ровно наш вечный
-    двигатель (`nonDescendingOrbit_is_perpetual_engine`: не проигрывает ни
-    одного окна и никогда не останавливается). Конструкция ПОДЛИННАЯ, не
-    ex falso: хвост предъявляется явно. Опровергнуть Коллатца = построить
-    вечный двигатель — дословно. -/
+/-- **CENTRAL THEOREM: a Collatz counterexample carries a perpetual engine.**
+    If an orbit never reaches 1, then its tail from the minimum position is a
+    non-descending non-halting orbit, that is, exactly our perpetual
+    engine (`nonDescendingOrbit_is_perpetual_engine`: loses not a
+    single window and never halts). The construction is GENUINE, not
+    ex falso: the tail is exhibited explicitly. To refute Collatz = to build
+    a perpetual engine — literally. -/
 theorem nonHalting_carries_perpetual_engine (n : Nat)
     (hnh : ∀ K : Nat, iter K n ≠ 1) :
     ∃ j : Nat, NonDescendingOrbit (iter j n) ∧
@@ -464,9 +464,9 @@ theorem nonHalting_carries_perpetual_engine (n : Nat)
       rw [← iter_add] at hK
       exact hnh (j + K) hK
 
-/-- **Коллатц ⟺ «вечного двигателя нет».** Остановка орбиты эквивалентна
-    отсутствию вечного хвоста: гипотеза Коллатца — это в точности утверждение
-    о невозможности вечного двигателя для карты T. -/
+/-- **Collatz ⟺ "there is no perpetual engine".** Halting of an orbit is equivalent to
+    the absence of a perpetual tail: the Collatz conjecture is exactly the statement
+    of the impossibility of a perpetual engine for the map T. -/
 theorem collatz_iff_no_perpetual_tail (n : Nat) :
     (∃ K : Nat, iter K n = 1) ↔
       ¬ ∃ j : Nat, NonDescendingOrbit (iter j n) ∧
@@ -479,14 +479,14 @@ theorem collatz_iff_no_perpetual_tail (n : Nat) :
       | intro j htl =>
         cases Nat.lt_or_ge K j with
         | inr hjK =>
-          -- j ≤ K: хвост ловит 1 на шаге K − j
+          -- j ≤ K: the tail catches 1 at step K − j
           have hidx : j + (K - j) = K := by omega
           have h1 : iter (K - j) (iter j n) = 1 := by
             rw [← iter_add, hidx]
             exact hK
           exact htl.2 (K - j) h1
         | inl hKj =>
-          -- K < j: после K всё в вакууме {1,2}, хвост гаснет за ≤ 1 шаг
+          -- K < j: after K everything is in the vacuum {1,2}, the tail dies out in ≤ 1 step
           have habs := cycle_absorbs n K hK (j - K)
           have hidx : K + (j - K) = j := by omega
           rw [hidx] at habs
@@ -507,15 +507,15 @@ theorem collatz_iff_no_perpetual_tail (n : Nat) :
       exact hno (nonHalting_carries_perpetual_engine n
         (fun K hK => hne ⟨K, hK⟩))
 
-/-- **Вакуум не имеет щели:** из цикла {1, 2} не выйти никогда. -/
+/-- **The vacuum has no gap:** one can never escape the cycle {1, 2}. -/
 theorem vacuum_has_no_gap (d : Nat) : iter d 1 = 1 ∨ iter d 1 = 2 := by
   have h := cycle_absorbs 1 0 rfl d
   rwa [Nat.zero_add] at h
 
-/-- **«Щель в вакууме» = вечный двигатель:** орбита, вечно избегающая вакуума
-    {1, 2} (второе дно, «другой ранг с самого низа»), несёт вечный двигатель —
-    прямое следствие центральной теоремы. Найти щель в вакууме стоит ровно
-    вечного двигателя. -/
+/-- **"A gap in the vacuum" = perpetual engine:** an orbit forever avoiding the vacuum
+    {1, 2} (the second bottom, "another rank from the very bottom") carries a perpetual engine —
+    a direct consequence of the central theorem. Finding a gap in the vacuum costs exactly
+    a perpetual engine. -/
 theorem second_bottom_carries_engine (n : Nat)
     (havoid : ∀ K : Nat, 3 ≤ iter K n) :
     ∃ j : Nat, NonDescendingOrbit (iter j n) ∧
@@ -523,21 +523,21 @@ theorem second_bottom_carries_engine (n : Nat)
   nonHalting_carries_perpetual_engine n
     (fun K hK => by have := havoid K; omega)
 
-/-! ## ОПРОВЕРЖЕНИЕ УНИВЕРСАЛЬНОГО ЗАКОНА: n = 27 (канат НЕ перетягивает из старта)
+/-! ## REFUTATION OF THE UNIVERSAL LAW: n = 27 (the rope does NOT out-pull from the start)
 
-Счётный закон в prefix-форме ЛОЖЕН. У знаменито карабкающейся траектории n = 27
-(пик 4616) к единице ведут 41 нечётный шаг против 29 чётных, и разность
-`evenCount − oddCount` в окнах от позиции j = 0 никогда не становится
-положительной; хвост в поглощающем цикле 1→2→1 добавляет шаги парами
-(нечётный + чётный) и разницу не поднимает. Ядро проверяет префикс k ≤ 70
-вычислением (decide), хвост закрывает лемма цикла. Следствие: универсальная
-форма `∀ n ≥ 1, RopeCountingLaw n` — ложь. Декрет, который «возможно,
-переплачивал» (см. Engine/CollatzFirstCause), переплатил до лжи — растяжка
-сработала, четвёртая граница снята. Условная механика (`window_budget`,
-`reaches_one_of_countingLaw`) остаётся зелёной и верной: per-n закон для
-отдельных n (например, `countingLaw_4`) жив и влечёт остановку. -/
+The counting law in prefix form is FALSE. For the famously climbing trajectory n = 27
+(peak 4616) 41 odd steps against 29 even ones lead to unity, and the difference
+`evenCount − oddCount` in windows from position j = 0 never becomes
+positive; the tail in the absorbing cycle 1→2→1 adds steps in pairs
+(odd + even) and does not raise the difference. The core checks the prefix k ≤ 70
+by computation (decide), the tail is closed by the cycle lemma. Consequence: the universal
+form `∀ n ≥ 1, RopeCountingLaw n` is false. The decree that "may have
+overpaid" (see Engine/CollatzFirstCause) overpaid into falsehood — the tripwire
+fired, the fourth boundary is lifted. The conditional machinery (`window_budget`,
+`reaches_one_of_countingLaw`) stays green and correct: the per-n law for
+individual n (for example, `countingLaw_4`) is alive and entails halting. -/
 
-/-- Аддитивность счётчика нечётных шагов по конкатенации окон. -/
+/-- Additivity of the odd-step counter under window concatenation. -/
 theorem oddCount_add (a b n : Nat) :
     oddCount (a + b) n = oddCount a n + oddCount b (iter a n) := by
   induction a generalizing n with
@@ -552,7 +552,7 @@ theorem oddCount_add (a b n : Nat) :
       rw [ih (T n)]
       omega
 
-/-- Аддитивность счётчика чётных шагов по конкатенации окон. -/
+/-- Additivity of the even-step counter under window concatenation. -/
 theorem evenCount_add (a b n : Nat) :
     evenCount (a + b) n = evenCount a n + evenCount b (iter a n) := by
   induction a generalizing n with
@@ -567,8 +567,8 @@ theorem evenCount_add (a b n : Nat) :
       rw [ih (T n)]
       omega
 
-/-- **Лемма цикла:** в вакууме 1→2→1 канат никогда не перетягивает — окна от 1
-    дают `even ≤ odd`, окна от 2 — `even ≤ odd + 1` (шаги идут парами). -/
+/-- **Cycle lemma:** in the vacuum 1→2→1 the rope never out-pulls — windows from 1
+    give `even ≤ odd`, windows from 2 — `even ≤ odd + 1` (steps come in pairs). -/
 theorem cycle_counts (m : Nat) :
     evenCount m 1 ≤ oddCount m 1 ∧ evenCount m 2 ≤ oddCount m 2 + 1 := by
   induction m with
@@ -583,16 +583,16 @@ theorem cycle_counts (m : Nat) :
         omega
 
 set_option maxRecDepth 8000 in
-/-- Префикс траектории 27: до k = 70 включительно канат ни разу не перетянул
-    (машинная проверка ядром). -/
+/-- Prefix of the trajectory 27: up to k = 70 inclusive the rope never out-pulled
+    (machine check by the core). -/
 theorem counts_le_70_at_27 : ∀ k < 71, evenCount k 27 ≤ oddCount k 27 := by decide
 
 set_option maxRecDepth 8000 in
-/-- Итог окна длины 70 от 27: 41 ход двигателя, 29 рывков каната, финиш в 1. -/
+/-- Result of the length-70 window from 27: 41 engine moves, 29 rope pulls, finishing at 1. -/
 theorem counts_at_70_at_27 :
     oddCount 70 27 = 41 ∧ evenCount 70 27 = 29 ∧ iter 70 27 = 1 := by decide
 
-/-- Хвост: после входа в вакуум (k ≥ 70) дефицит каната −12 не отыгрывается. -/
+/-- Tail: after entering the vacuum (k ≥ 70) the rope's deficit of −12 is not recovered. -/
 theorem counts_ge_70_at_27 (k : Nat) (hk : 70 ≤ k) :
     evenCount k 27 ≤ oddCount k 27 := by
   obtain ⟨m, rfl⟩ : ∃ m, k = 70 + m := ⟨k - 70, by omega⟩
@@ -603,9 +603,9 @@ theorem counts_ge_70_at_27 (k : Nat) (hk : 70 ≤ k) :
   have hc := (cycle_counts m).1
   omega
 
-/-- **ОПРОВЕРЖЕНИЕ: `RopeCountingLaw 27` ложен.** Из позиции j = 0 (значение 27 > 2)
-    ни одно окно не даёт перевеса каната: префикс — вычислением, хвост — леммой
-    цикла. -/
+/-- **REFUTATION: `RopeCountingLaw 27` is false.** From position j = 0 (value 27 > 2)
+    no window gives a rope surplus: the prefix by computation, the tail by the cycle
+    lemma. -/
 theorem not_ropeCountingLaw_27 : ¬ RopeCountingLaw 27 := by
   intro h
   obtain ⟨k, hk⟩ := h 0 (by decide)
@@ -616,15 +616,15 @@ theorem not_ropeCountingLaw_27 : ¬ RopeCountingLaw 27 := by
   · have := counts_ge_70_at_27 k (by omega)
     omega
 
-/-- **УНИВЕРСАЛЬНАЯ ФОРМА ЗАКОНА ОПРОВЕРГНУТА** — кованое опровержение для
-    трилеммы: `∀ n ≥ 1, RopeCountingLaw n` — ложь (свидетель n = 27). Декретная
-    граница на этом законе невозможна. -/
+/-- **THE UNIVERSAL FORM OF THE LAW IS REFUTED** — a forged refutation for
+    the trilemma: `∀ n ≥ 1, RopeCountingLaw n` is false (witness n = 27). A decree
+    boundary on this law is impossible. -/
 theorem ropeLaw_universal_refuted :
     ¬ ∀ n : Nat, 1 ≤ n → RopeCountingLaw n :=
   fun h => not_ropeCountingLaw_27 (h 27 (by omega))
 
-/-! ## Аудит аксиом (choice-free ядро: [propext, Quot.sound];
-    секция «Опровержение = двигатель» — стандартная тройка, em раскрыт выше) -/
+/-! ## Axiom audit (choice-free core: [propext, Quot.sound];
+    the section "Refutation = engine" — the standard triple, em disclosed above) -/
 #print axioms not_ropeCountingLaw_27
 #print axioms ropeLaw_universal_refuted
 #print axioms window_budget

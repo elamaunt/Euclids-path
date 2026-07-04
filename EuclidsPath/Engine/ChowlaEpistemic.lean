@@ -1,72 +1,72 @@
 /-
-  ChowlaEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ фронта Чоулы/Сарнака (глава 54).
-  Зеркало PNPFirstCause / LehmerEpistemic (НЕ Коллатц-варианта: декрета у Чоулы нет
-  и не было — Чоула не входит в четыре границы step00FirstCause, файл целиком зелёный).
-  Зелёный фронт: Engine/ChowlaFront.lean (λ² = 1, диагональ = x, флип паритета).
+  ChowlaEpistemic — EPISTEMIC COMPLEMENT of the Chowla/Sarnak front (chapter 54).
+  Mirror of PNPFirstCause / LehmerEpistemic (NOT the Collatz variant: Chowla has no
+  decree and never had one — Chowla is not among the four boundaries of step00FirstCause,
+  the file is entirely green).
+  Green front: Engine/ChowlaFront.lean (λ² = 1, diagonal = x, parity flip).
 
-  ЧТО ЭТО. «Решить узел чётности-сдвига изнутри» = предъявить ПОЛНОЕ внутреннее
-  решение динамики знака λ, т.е. коллапс паритета: хвост, на котором знак Лиувилля
-  ПОСТОЯНЕН (`PerfectParityCollapse`: ∃ N, ∀ m ≥ N, λ(m) = λ(N)) — единственная
-  форма, в которой конечная внутренняя система может «знать» поведение чётности
-  ранга целиком. Это самоуничтожается НЕ подстановкой P ∧ ¬P, а настоящей
-  флип-стеной: удвоение аргумента ФЛИПАЕТ знак (λ(2m) = −λ(m), реюз
-  `chowla_parity_flip` при p = 2 — НЕ третья копия `liouville_flip_of_mul_prime`,
-  CORR §4), а λ² = 1 запрещает знаку быть нулём — хвостовая константа гибнет на
-  первом же удвоении (`no_parityCollapse_of_flip`). Та же валюта, что пижонхол
-  `no_fullPayment_of_unboundedSupply` у P/NP и Норткотт-стена у Лемера.
+  WHAT THIS IS. "Solving the parity-shift node from inside" = presenting a COMPLETE internal
+  solution of the sign dynamics of λ, i.e. a parity collapse: a tail on which the Liouville sign
+  is CONSTANT (`PerfectParityCollapse`: ∃ N, ∀ m ≥ N, λ(m) = λ(N)) — the only
+  form in which a finite internal system could "know" the parity behaviour of the rank
+  in full. This self-destructs NOT by substitution P ∧ ¬P but by a genuine
+  flip-wall: doubling the argument FLIPS the sign (λ(2m) = −λ(m), reuse of
+  `chowla_parity_flip` at p = 2 — NOT a third copy of `liouville_flip_of_mul_prime`,
+  CORR §4), and λ² = 1 forbids the sign from being zero — the tail constant perishes on
+  the very first doubling (`no_parityCollapse_of_flip`). The same currency as the pigeonhole
+  `no_fullPayment_of_unboundedSupply` for P/NP and the Northcott wall for Lehmer.
 
-  ПОТРЕБЛЕНИЕ, НЕ ДЕКОРАЦИЯ (CORR §1). Лемма-стена `no_parityCollapse_of_flip`
-  ПАРАМЕТРИЗОВАНА флип-поставкой: она берёт `flip : ∀ m, λ(2m) = −λ(m)` гипотезой
-  и потребляет её в противоречии. Поэтому `no_internalisedChowlaGround` — это
-  `fun H => no_parityCollapse_of_flip H.beyondOwnHorizon H.ground`: ОБА поля
-  грузонесущие на уровне терма (точное зеркало
+  CONSUMPTION, NOT DECORATION (CORR §1). The wall lemma `no_parityCollapse_of_flip`
+  is PARAMETRISED by the flip supply: it takes `flip : ∀ m, λ(2m) = −λ(m)` as a hypothesis
+  and consumes it in a contradiction. Therefore `no_internalisedChowlaGround` is
+  `fun H => no_parityCollapse_of_flip H.beyondOwnHorizon H.ground`: BOTH fields are
+  load-bearing at the term level (exact mirror of
   `no_fullPayment_of_unboundedSupply H.beyondOwnHorizon H.resolves`).
 
-  ЧЕСТНЫЕ ГРАНИЦЫ (обязательные, по вердикту скептика):
-  (1) Поле `beyondOwnHorizon` — доказуемый зелёный факт (`liouville_doubling_flip`),
-      поэтому структура `InternalisedChowlaGround` ЭКСТЕНСИОНАЛЬНО эквивалентна
-      одному полю `ground` — раскрыто машинно леммой
-      `internalisedChowlaGround_iff_collapse`. Оплата противоречия РЕАЛЬНА
-      (флип + λ² = 1, не тавтология), но связка слабее эталона P/NP, где ОБЕ
-      ноги — независимые нетривиальные предикаты.
-  (2) Связка покрывает ТОЛЬКО коллапс-моду (детерминированную хвостовую
-      константность знака). Для статистического опровержения Чоулы (корреляция
-      порядка c·x БЕЗ детерминированного закона) связка вырождается: зелёного
-      факта «отклонение ⟹ двигатель» НЕ существует, и его построение — открытая
-      математика, по существу сама Чоула. Поэтому в имени сводки НЕТ «двигателя»:
-      здесь честно флип-стена (`chowla_locked_behind_flip_wall`), двигательного
-      факта у Чоулы в репо нет.
-  (3) Это модель-внутренняя эпистемика узла чётности-сдвига, а НЕ доказательство
-      и НЕ опровержение гипотез Чоулы/Сарнака: красные гейты `ChowlaConjecture` /
-      `SarnakConjecture` остаются красными, о них не утверждается НИЧЕГО.
-  (4) Это НЕ Гёдель: никакой независимости — только флип-самоуничтожение
-      внутреннего самообоснования.
+  HONEST BOUNDARIES (mandatory, by the sceptic's verdict):
+  (1) The field `beyondOwnHorizon` is a provable green fact (`liouville_doubling_flip`),
+      so the structure `InternalisedChowlaGround` is EXTENSIONALLY equivalent to
+      a single field `ground` — disclosed machine-wise by the lemma
+      `internalisedChowlaGround_iff_collapse`. The payment for the contradiction is REAL
+      (flip + λ² = 1, not a tautology), but the bundle is weaker than the P/NP reference,
+      where BOTH legs are independent non-trivial predicates.
+  (2) The bundle covers ONLY the collapse mode (deterministic tail constancy of the sign).
+      For a statistical refutation of Chowla (correlation of order c·x WITHOUT a deterministic
+      law) the bundle degenerates: the green fact "deviation ⟹ engine" does NOT exist,
+      and constructing it is open mathematics, essentially Chowla itself. Hence the summary
+      name contains NO "engine": here the wall is honestly the flip-wall
+      (`chowla_locked_behind_flip_wall`); there is no engine fact for Chowla in the repo.
+  (3) This is model-internal epistemics of the parity-shift node, NOT a proof
+      and NOT a refutation of the Chowla/Sarnak conjectures: the red gates `ChowlaConjecture` /
+      `SarnakConjecture` remain red; NOTHING is asserted about them.
+  (4) This is NOT Gödel: no independence — only flip-self-destruction of
+      internal self-grounding.
 
-  🟢 ЗЕЛЁНОЕ ЗДЕСЬ (всё над РЕАЛЬНОЙ `ArithmeticFunction.liouville`):
-   · `liouville_doubling_flip` — λ(2m) = −λ(m) (реюз `chowla_parity_flip`, p = 2);
-   · `liouville_no_doubling_fixpoint` — НЕ существует m ≠ 0 с λ(2m) = λ(m);
-   · `no_parityCollapse_of_flip` / `no_parityCollapse` — совершенный коллапс
-     паритета (хвостовая константность λ) невозможен;
-   · `chowlaCorrelation_parity` — корреляция ≡ x (mod 2): сумма x термов ±1;
-     следствие `chowlaCorrelation_ne_zero_of_odd` — ноль НЕДОСТИЖИМ на нечётном
-     срезе (точечная жёсткость величины красного гейта: «o(x)» принципиально
-     не может быть тождественным нулём);
-   · `liouville_two_pow` — λ(2^k) = (−1)^k: неограниченная поставка ОБОИХ знаков
-     (`liouville_attains_both_signs_cofinally`) — знаковая динамика не вырождена;
-   · эпистемический пакет: `no_internalisedChowlaGround`, `chowlaCause_unknowable`,
-     сводка `chowla_locked_behind_flip_wall`.
+  🟢 GREEN HERE (everything over the REAL `ArithmeticFunction.liouville`):
+   · `liouville_doubling_flip` — λ(2m) = −λ(m) (reuse of `chowla_parity_flip`, p = 2);
+   · `liouville_no_doubling_fixpoint` — there is NO m ≠ 0 with λ(2m) = λ(m);
+   · `no_parityCollapse_of_flip` / `no_parityCollapse` — perfect parity collapse
+     (tail constancy of λ) is impossible;
+   · `chowlaCorrelation_parity` — correlation ≡ x (mod 2): sum of x terms ±1;
+     corollary `chowlaCorrelation_ne_zero_of_odd` — zero is UNREACHABLE on the odd
+     slice (pointwise rigidity of the red gate's value: "o(x)" cannot
+     identically be zero);
+   · `liouville_two_pow` — λ(2^k) = (−1)^k: unbounded supply of BOTH signs
+     (`liouville_attains_both_signs_cofinally`) — sign dynamics are non-degenerate;
+   · epistemic package: `no_internalisedChowlaGround`, `chowlaCause_unknowable`,
+     summary `chowla_locked_behind_flip_wall`.
 
-  Никакого sorry, никакой новой аксиомы, никакого native_decide, карантин
-  (CausalClosureAxiom) НЕ импортируется. Все зелёные грузонесущие — стандартная
-  тройка propext / Classical.choice / Quot.sound. Таинт репозитория (47) этим
-  файлом НЕ меняется.
+  No sorry, no new axiom, no native_decide; the quarantine
+  (CausalClosureAxiom) is NOT imported. All green load-bearing declarations use the standard
+  triple propext / Classical.choice / Quot.sound. The repository taint (47) is NOT
+  changed by this file.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
+  Compilation: cd /f/Primes/Euclids-path &&
     "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/ChowlaEpistemic.lean
 
-  Родство: Engine/ChowlaFront.lean (зелёное ядро + красные гейты),
-    Engine/RiemannLiouville.lean (флип у истока), Engine/PNPFirstCause.lean и
-    Engine/TwinNodeEpistemic.lean / Engine/LehmerEpistemic.lean (эталоны эпистемики).
+  Lineage: Engine/ChowlaFront.lean (green core + red gates),
+    Engine/RiemannLiouville.lean (flip at the source), Engine/PNPFirstCause.lean and
+    Engine/TwinNodeEpistemic.lean / Engine/LehmerEpistemic.lean (epistemic references).
 -/
 import EuclidsPath.Engine.ChowlaFront
 
@@ -76,21 +76,21 @@ namespace EuclidsPath.ChowlaFront.Epistemic
 
 open ArithmeticFunction
 
-/-! ## Флип-стена: динамика знака λ на удвоении (🟢) -/
+/-! ## Flip-wall: sign dynamics of λ under doubling (🟢) -/
 
-/-- 🟢 **Флип-поставка на удвоении.** Умножение аргумента на 2 ФЛИПАЕТ знак Лиувилля:
-    `λ(2m) = −λ(m)` для ВСЕХ `m` (при `m = 0` обе части нули). Реюз
-    `chowla_parity_flip` при `p = 2` (который сам — переизложение
-    `RiemannLiouville.liouville_flip_of_mul_prime`; третья копия НЕ плодится, CORR §4).
-    Роль: неисчерпаемое «топливо» флип-стены — поле `beyondOwnHorizon` ниже. -/
+/-- 🟢 **Flip supply under doubling.** Multiplying the argument by 2 FLIPS the Liouville sign:
+    `λ(2m) = −λ(m)` for ALL `m` (at `m = 0` both sides are zero). Reuse of
+    `chowla_parity_flip` at `p = 2` (which itself is a restatement of
+    `RiemannLiouville.liouville_flip_of_mul_prime`; a third copy is NOT spawned, CORR §4).
+    Role: inexhaustible "fuel" of the flip-wall — the field `beyondOwnHorizon` below. -/
 theorem liouville_doubling_flip (m : ℕ) :
     ArithmeticFunction.liouville (2 * m) = - ArithmeticFunction.liouville m :=
   chowla_parity_flip Nat.prime_two
 
-/-- 🟢 **Совершенный коллапс на удвоении невозможен точечно.** НЕ существует `m ≠ 0`
-    с `λ(2m) = λ(m)`: флип даёт `λ(2m) = −λ(m)`, а `λ² = 1` запрещает знаку быть
-    нулём. Первый жёсткий факт чоула-типа: чётность ранга обязана осциллировать
-    уже вдоль удвоений. -/
+/-- 🟢 **Perfect collapse under doubling is pointwise impossible.** There is NO `m ≠ 0`
+    with `λ(2m) = λ(m)`: the flip gives `λ(2m) = −λ(m)`, and `λ² = 1` forbids the sign from
+    being zero. The first hard Chowla-type fact: the parity of the rank must oscillate
+    already along doublings. -/
 theorem liouville_no_doubling_fixpoint {m : ℕ} (hm : m ≠ 0) :
     ArithmeticFunction.liouville (2 * m) ≠ ArithmeticFunction.liouville m := by
   rw [liouville_doubling_flip m]
@@ -100,25 +100,24 @@ theorem liouville_no_doubling_fixpoint {m : ℕ} (hm : m ≠ 0) :
   rw [hzero] at hsq
   norm_num at hsq
 
-/-! ## (а) Коллапс паритета и его невозможность (🟢) -/
+/-! ## (a) Parity collapse and its impossibility (🟢) -/
 
-/-- **Совершенный коллапс паритета** — «внутреннее полное решение» узла
-    чётности-сдвига: существует хвост, на котором знак Лиувилля ПОСТОЯНЕН
-    (`∃ N, ∀ m ≥ N, λ(m) = λ(N)`). Единственная форма, в которой конечная
-    внутренняя система могла бы «знать» поведение чётности ранга целиком.
-    Это ground эпистемической связки ниже; гипотеза Чоулы утверждает ГОРАЗДО
-    больше (некоррелированность поперёк всех сдвигов), поэтому невозможность
-    коллапса — лишь конечный зародыш, НЕ решение гипотезы. -/
+/-- **Perfect parity collapse** — the "complete internal solution" of the parity-shift node:
+    there exists a tail on which the Liouville sign is CONSTANT
+    (`∃ N, ∀ m ≥ N, λ(m) = λ(N)`). The only form in which a finite internal system could
+    "know" the parity behaviour of the rank in full. This is the ground of the epistemic
+    bundle below; the Chowla conjecture asserts MUCH more (uncorrelation across all shifts),
+    so impossibility of collapse is merely the finite germ — NOT a solution of the conjecture. -/
 def PerfectParityCollapse : Prop :=
   ∃ N : ℕ, ∀ m : ℕ, N ≤ m →
     ArithmeticFunction.liouville m = ArithmeticFunction.liouville N
 
-/-- 🟢 **ФЛИП-СТЕНА (грузонесущая, параметризована поставкой — CORR §1).** Любая
-    флип-поставка `∀ m, λ(2m) = −λ(m)` уничтожает совершенный коллапс паритета:
-    в хвосте константности берём `m ≥ max(N,1)` — тогда `λ(2m) = λ(N) = λ(m)`
-    по константности, но `λ(2m) = −λ(m)` по флипу, значит `λ(m) = 0` против
-    `λ(m)² = 1`. Флип-поставка ПОТРЕБЛЯЕТСЯ противоречием (не декорация) —
-    точный аналог пижонхола `no_fullPayment_of_unboundedSupply` у P/NP. -/
+/-- 🟢 **FLIP-WALL (load-bearing, parametrised by the supply — CORR §1).** Any
+    flip supply `∀ m, λ(2m) = −λ(m)` destroys perfect parity collapse:
+    in the constancy tail take `m ≥ max(N,1)` — then `λ(2m) = λ(N) = λ(m)`
+    by constancy, but `λ(2m) = −λ(m)` by the flip, so `λ(m) = 0` against
+    `λ(m)² = 1`. The flip supply is CONSUMED by the contradiction (not decoration) —
+    exact analogue of the pigeonhole `no_fullPayment_of_unboundedSupply` for P/NP. -/
 theorem no_parityCollapse_of_flip
     (flip : ∀ m : ℕ,
       ArithmeticFunction.liouville (2 * m) = - ArithmeticFunction.liouville m) :
@@ -135,17 +134,17 @@ theorem no_parityCollapse_of_flip
   rw [hzero] at hsq
   norm_num at hsq
 
-/-- 🟢 **Совершенный коллапс паритета невозможен (безусловно).** Флип-поставка —
-    теорема (`liouville_doubling_flip`), поэтому стена срабатывает без гипотез:
-    хвостовой константности знака Лиувилля НЕ существует. -/
+/-- 🟢 **Perfect parity collapse is impossible (unconditionally).** The flip supply is
+    a theorem (`liouville_doubling_flip`), so the wall fires without hypotheses:
+    tail constancy of the Liouville sign does NOT exist. -/
 theorem no_parityCollapse : PerfectParityCollapse → False :=
   no_parityCollapse_of_flip liouville_doubling_flip
 
-/-! ## (б) Зелёная арифметика корреляции: чётность и недостижимость нуля (🟢) -/
+/-! ## (b) Green correlation arithmetic: parity and unreachability of zero (🟢) -/
 
-/-- 🟢 **Корреляция ≡ x (mod 2).** Каждый терм `λ(n)·λ(n+h)` на `Icc 1 x` есть `±1`
-    (обе λ — знаки, `λ² = 1`), значит терм ≡ 1 (mod 2) и сумма `x` термов имеет
-    чётность `x`. Точечная жёсткость величины красного гейта `ChowlaConjecture`. -/
+/-- 🟢 **Correlation ≡ x (mod 2).** Each term `λ(n)·λ(n+h)` on `Icc 1 x` is `±1`
+    (both λ are signs, `λ² = 1`), so the term ≡ 1 (mod 2) and the sum of `x` terms has
+    parity `x`. Pointwise rigidity of the red gate `ChowlaConjecture`. -/
 theorem chowlaCorrelation_parity (h x : ℕ) :
     (2 : ℤ) ∣ (chowlaCorrelation h x - (x : ℤ)) := by
   have hdef : chowlaCorrelation h x
@@ -166,17 +165,16 @@ theorem chowlaCorrelation_parity (h x : ℕ) :
   · rw [ht]; exact ⟨0, by ring⟩
   · rw [ht]; exact ⟨-1, by ring⟩
 
-/-- 🟢 Та же чётность в `Even`-форме: `chowlaCorrelation h x − x` чётна. -/
+/-- 🟢 The same parity in `Even` form: `chowlaCorrelation h x − x` is even. -/
 theorem chowlaCorrelation_sub_even (h x : ℕ) :
     Even (chowlaCorrelation h x - (x : ℤ)) := by
   obtain ⟨c, hc⟩ := chowlaCorrelation_parity h x
   exact ⟨c, by omega⟩
 
-/-- 🟢 **Ноль недостижим на нечётном срезе.** При нечётном `x` корреляция НЕ равна
-    нулю точно: сумма нечётного числа термов `±1` нечётна. «`o(x)`» красного гейта
-    принципиально не может быть тождественным нулём — корреляция обязана
-    осциллировать (дешёвый, но настоящий вычет; зеркало `oddLandauPrime_even_k`
-    у Ландау). -/
+/-- 🟢 **Zero is unreachable on the odd slice.** For odd `x` the correlation is NOT equal
+    to zero: the sum of an odd number of terms `±1` is odd. The "o(x)" of the red gate
+    cannot identically be zero — the correlation must oscillate (cheap but genuine
+    deduction; mirror of `oddLandauPrime_even_k` for Landau). -/
 theorem chowlaCorrelation_ne_zero_of_odd {h x : ℕ} (hx : Odd x) :
     chowlaCorrelation h x ≠ 0 := by
   intro h0
@@ -185,21 +183,21 @@ theorem chowlaCorrelation_ne_zero_of_odd {h x : ℕ} (hx : Odd x) :
   rw [h0] at hc
   omega
 
-/-! ## (в) Неограниченная поставка обоих знаков (🟢) -/
+/-! ## (c) Unbounded supply of both signs (🟢) -/
 
-/-- 🟢 **`λ(2^k) = (−1)^k`.** Степени двойки поставляют оба знака Лиувилля в чистом
-    виде: `Ω(2^k) = k` (mathlib `cardFactors_apply_prime_pow`), значит знак — точно
-    `(−1)^k`. Стиль `liouville_prime` из `RiemannLiouville`. -/
+/-- 🟢 **`λ(2^k) = (−1)^k`.** Powers of two supply both Liouville signs in pure form:
+    `Ω(2^k) = k` (mathlib `cardFactors_apply_prime_pow`), so the sign is exactly
+    `(−1)^k`. Style of `liouville_prime` from `RiemannLiouville`. -/
 theorem liouville_two_pow (k : ℕ) :
     ArithmeticFunction.liouville (2 ^ k) = (-1 : ℤ) ^ k := by
   rw [liouville_apply (pow_ne_zero k (by norm_num : (2 : ℕ) ≠ 0)),
     cardFactors_apply_prime_pow Nat.prime_two]
 
-/-- 🟢 **Оба знака достигаются кофинально.** Сколь угодно далеко есть и `λ = 1`
-    (чётные степени двойки), и `λ = −1` (нечётные): знаковая динамика не
-    вырождена, поставка флипов бесконечна. Зелёный аналог
-    `UnboundedCertificateSupply` у P/NP — честный контраст к невозможности
-    коллапса (`no_parityCollapse`). -/
+/-- 🟢 **Both signs are attained cofinally.** Arbitrarily far out there are both `λ = 1`
+    (even powers of two) and `λ = −1` (odd powers): sign dynamics are non-degenerate,
+    the flip supply is infinite. Green analogue of
+    `UnboundedCertificateSupply` for P/NP — honest contrast to the impossibility of
+    collapse (`no_parityCollapse`). -/
 theorem liouville_attains_both_signs_cofinally (N : ℕ) :
     (∃ m : ℕ, N ≤ m ∧ ArithmeticFunction.liouville m = 1) ∧
     (∃ m : ℕ, N ≤ m ∧ ArithmeticFunction.liouville m = -1) := by
@@ -213,64 +211,64 @@ theorem liouville_attains_both_signs_cofinally (N : ℕ) :
     · rw [liouville_two_pow]
       exact Odd.neg_one_pow ⟨N, by ring⟩
 
-/-! ## (г) Модель: внутреннее решение = самообоснование за собственным горизонтом -/
+/-! ## (d) Model: internal solution = self-grounding beyond one's own horizon -/
 
-/-- **Внутреннее самообоснование решения узла чётности-сдвига.** Система
-    одновременно (a) держит ПОЛНОЕ внутреннее решение — коллапс паритета,
-    хвостовую константность знака (`ground`), и (b) видит флип-динамику знака
-    на удвоении (`beyondOwnHorizon`).
+/-- **Internal self-grounding of the parity-shift node solution.** The system
+    simultaneously (a) holds the COMPLETE internal solution — parity collapse,
+    tail constancy of the sign (`ground`), and (b) sees the flip dynamics of the sign
+    under doubling (`beyondOwnHorizon`).
 
-    СОДЕРЖАТЕЛЬНОСТЬ: противоречие поставляет флип-стена
-    `no_parityCollapse_of_flip`, ПОТРЕБЛЯЮЩАЯ оба поля на уровне терма
-    (CORR §1) — не `fun H => H.b H.g` Коллатца.
-    ЧЕСТНАЯ ОГОВОРКА: `beyondOwnHorizon` — доказуемый зелёный факт
-    (`liouville_doubling_flip`), поэтому структура экстенсионально эквивалентна
-    голому `ground` (машинно: `internalisedChowlaGround_iff_collapse`) — оплата
-    реальна, но вторая нога свободна по построению; это слабее эталона P/NP,
-    где обе ноги — независимые нетривиальные предикаты. -/
+    SUBSTANTIVENESS: the contradiction is supplied by the flip-wall
+    `no_parityCollapse_of_flip`, which CONSUMES both fields at the term level
+    (CORR §1) — not Collatz's `fun H => H.b H.g`.
+    HONEST CAVEAT: `beyondOwnHorizon` is a provable green fact
+    (`liouville_doubling_flip`), so the structure is extensionally equivalent to
+    bare `ground` (machine-wise: `internalisedChowlaGround_iff_collapse`) — the payment
+    is real, but the second leg is free by construction; this is weaker than the P/NP
+    reference, where both legs are independent non-trivial predicates. -/
 structure InternalisedChowlaGround : Prop where
   ground : PerfectParityCollapse
   beyondOwnHorizon : ∀ m : ℕ,
     ArithmeticFunction.liouville (2 * m) = - ArithmeticFunction.liouville m
 
-/-- «Внутреннее знание причины Чоулы» = внутреннее самообоснование решения узла. -/
+/-- "Internal knowledge of the Chowla cause" = internal self-grounding of the node solution. -/
 abbrev InternalKnowledgeOfChowlaCause : Prop := InternalisedChowlaGround
 
-/-- 🟢 Самообоснование самоуничтожается — флип-стена потребляет ОБА поля:
-    `no_parityCollapse_of_flip H.beyondOwnHorizon H.ground` (точное зеркало
-    `no_fullPayment_of_unboundedSupply H.beyondOwnHorizon H.resolves` у P/NP). -/
+/-- 🟢 Self-grounding self-destructs — the flip-wall consumes BOTH fields:
+    `no_parityCollapse_of_flip H.beyondOwnHorizon H.ground` (exact mirror of
+    `no_fullPayment_of_unboundedSupply H.beyondOwnHorizon H.resolves` for P/NP). -/
 theorem no_internalisedChowlaGround : InternalisedChowlaGround → False :=
   fun H => no_parityCollapse_of_flip H.beyondOwnHorizon H.ground
 
-/-- 🟢 **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `pnpCause_unknowable` /
-    `lehmerCause_unknowable` / `collatzCause_unknowable`): внутреннее полное
-    решение узла чётности-сдвига невозможно. НЕ утверждение о самих гипотезах
-    Чоулы/Сарнака — их красные гейты не трогаются. -/
+/-- 🟢 **"CANNOT BE KNOWN FROM INSIDE" — THEOREM** (mirror of `pnpCause_unknowable` /
+    `lehmerCause_unknowable` / `collatzCause_unknowable`): a complete internal
+    solution of the parity-shift node is impossible. NOT an assertion about the
+    Chowla/Sarnak conjectures themselves — their red gates are untouched. -/
 theorem chowlaCause_unknowable : ¬ InternalKnowledgeOfChowlaCause :=
   no_internalisedChowlaGround
 
-/-- 🟢 **Машинная честность (раскрытие формы):** поле `beyondOwnHorizon` — теорема,
-    поэтому связка экстенсионально эквивалентна одному полю `ground`.
-    Содержательность живёт НЕ в независимости ног, а в ЦЕНЕ противоречия:
-    флип + `λ² = 1` (`no_parityCollapse_of_flip`) — реальная арифметика, не
-    тавтология P ∧ ¬P. Зеркало `internalisedPNPGround_semantically_selfNegating`. -/
+/-- 🟢 **Machine honesty (form disclosure):** the field `beyondOwnHorizon` is a theorem,
+    so the bundle is extensionally equivalent to a single field `ground`.
+    Substantiveness lives NOT in the independence of the legs but in the PRICE of the
+    contradiction: flip + `λ² = 1` (`no_parityCollapse_of_flip`) — real arithmetic, not
+    the tautology P ∧ ¬P. Mirror of `internalisedPNPGround_semantically_selfNegating`. -/
 theorem internalisedChowlaGround_iff_collapse :
     InternalisedChowlaGround ↔ PerfectParityCollapse :=
   ⟨fun H => H.ground, fun hg => ⟨hg, liouville_doubling_flip⟩⟩
 
-/-! ## Сводка: узел заперт за флип-стеной (🟢) -/
+/-! ## Summary: the node is locked behind the flip-wall (🟢) -/
 
-/-- 🟢 **Итоговый эпистемический статус узла чётности-сдвига** (зеркало
-    `pnp_locked_behind_engine_status` БЕЗ декрет-конъюнкта — у Чоулы границы
-    step00FirstCause нет; в имени честно НЕТ «двигателя»: двигательного факта
-    у Чоулы в репо не существует, стена здесь — флип + `λ² = 1`):
-    (1) флип-поставка на удвоении неисчерпаема (теорема);
-    (2) оба знака достигаются кофинально — поставка не вырождена (теорема);
-    (3) узел непознаваем изнутри (теорема);
-    (4) совершенный коллапс паритета невозможен (теорема);
-    (5) корреляция никогда не равна нулю на нечётных срезах (теорема) —
-        «o(x)» красного гейта не может быть тождественным нулём.
-    Красные гейты `ChowlaConjecture`/`SarnakConjecture` остаются красными. -/
+/-- 🟢 **Final epistemic status of the parity-shift node** (mirror of
+    `pnp_locked_behind_engine_status` WITHOUT the decree conjunct — Chowla has no
+    boundary of step00FirstCause; the name honestly contains NO "engine": there is no
+    engine fact for Chowla in the repo; the wall here is flip + `λ² = 1`):
+    (1) the flip supply under doubling is inexhaustible (theorem);
+    (2) both signs are attained cofinally — the supply is non-degenerate (theorem);
+    (3) the node is unknowable from inside (theorem);
+    (4) perfect parity collapse is impossible (theorem);
+    (5) the correlation is never zero on odd slices (theorem) —
+        the "o(x)" of the red gate cannot identically be zero.
+    The red gates `ChowlaConjecture`/`SarnakConjecture` remain red. -/
 theorem chowla_locked_behind_flip_wall :
     (∀ m : ℕ,
       ArithmeticFunction.liouville (2 * m) = - ArithmeticFunction.liouville m) ∧
@@ -285,7 +283,7 @@ theorem chowla_locked_behind_flip_wall :
    no_parityCollapse,
    fun _h _x hx => chowlaCorrelation_ne_zero_of_odd hx⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
+/-! ## Axiom audit: the entire module is green (standard triple), repo taint does NOT change -/
 #print axioms liouville_doubling_flip
 #print axioms liouville_no_doubling_fixpoint
 #print axioms no_parityCollapse_of_flip

@@ -1,63 +1,63 @@
 /-
-  BSDEpistemic — эпистемический раздел BSD: ЧЕСТНАЯ ФИКСАЦИЯ ВЫРОЖДЕНИЯ ОСИ.
+  BSDEpistemic — epistemic section of BSD: HONEST RECORDING OF AXIS DEGENERATION.
 
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │  ГЛАВНЫЙ CORR СКЕПТИКА ЗАПИСАН ТЕОРЕМОЙ: у BSD НОВОЙ ЭПИСТЕМИЧЕСКОЙ ОСИ НЕТ. │
+  │  THE SCEPTIC'S MAIN CORR IS RECORDED AS A THEOREM: BSD HAS NO NEW EPISTEMIC AXIS. │
   └───────────────────────────────────────────────────────────────────────────┘
 
-  ЧТО ЭТО. Для семи фронтов эпистемический слой строился парой
+  WHAT THIS IS. For the seven fronts the epistemic layer was built as a pair
   `ground` / `beyondOwnHorizon` (CollatzFirstCause, PNPFirstCause, TwinNodeEpistemic,
-  OddPerfectEpistemic): «решить изнутри» = нести оба факта сразу, и противоречие
-  оплачивается настоящей зелёной стеной. Для BSD предлагалась та же пара:
-  `ground := PerpetualEngine M.descentStep` (внутреннее дообоснование ранга
-  предъявлением бесконечного спуска), `beyondOwnHorizon := строгое убывание высоты`.
-  ЭТА ПАРА ВЫРОЖДАЕТСЯ, и вырождение здесь зафиксировано МАШИННО, а не в комментарии:
-  вторая нога — буквально поле `M.descent_decreases` модели `BSDHeightModel`,
-  обитаемое для ЛЮБОЙ `M` всегда. Отсюда две теоремы-раскрытия:
+  OddPerfectEpistemic): "to resolve from within" = to carry both facts at once, and the
+  contradiction is paid by a genuine green wall. For BSD the same pair was proposed:
+  `ground := PerpetualEngine M.descentStep` (internal self-justification of the rank
+  by exhibiting an infinite descent), `beyondOwnHorizon := strict decrease of height`.
+  THIS PAIR DEGENERATES, and the degeneration is recorded here MACHINE-WISE, not in a comment:
+  the second leg is literally the field `M.descent_decreases` of the model `BSDHeightModel`,
+  inhabited for ANY `M` always. This yields two disclosure theorems:
 
    · `bsdGround_coincides_with_engine` — `InternalisedBSDGround M ↔
-     PerpetualEngine M.descentStep`: структура эквивалентна ОДНОЙ своей ноге;
-   · `bsdCause_unknowable_iff_no_engine` — «непознаваемость изнутри» экстенсионально
-     СОВПАДАЕТ с уже существующей `bsd_descent_has_no_engine` (BSDFront): пакет —
-     дефинициональная переупаковка старой теоремы, а не новая ось.
+     PerpetualEngine M.descentStep`: the structure is equivalent to ONE of its legs;
+   · `bsdCause_unknowable_iff_no_engine` — "unknowability from within" extensionally
+     COINCIDES with the already-existing `bsd_descent_has_no_engine` (BSDFront): the package is
+     a definitional repacking of the old theorem, not a new axis.
 
-  ЧЕМ ОПЛАЧЕНО (честно). Оплата противоречия РЕАЛЬНА: `bsdCause_unknowable` гибнет
-  об `UniversalEngine.no_perpetual_engine_of_natRank` — настоящую стену
-  фундированности ℕ (та же семья, что пижонхол `no_fullPayment_of_unboundedSupply`
-  у P/NP), потребляющую зелёное поле `descent_decreases` на РЕАЛЬНОМ носителе
-  `W.toAffine.Point`. Но — в отличие от эталона P/NP, где ОБЕ ноги независимые
-  нетривиальные предикаты, — вторая нога здесь СВОБОДНА ПО ПОСТРОЕНИЮ. Поэтому
-  формула честности такова: «оплата реальна, но вторая нога свободна по построению»,
-  и весь эпистемический слой BSD сводится к запрету двигателя спуска. Это НЕ дефект,
-  а результат: сама попытка построить BSD отдельную эпистемическую ось доказуемо
-  коллапсирует в терминацию спуска Морделла–Вейля.
+  WHAT IT COSTS (honestly). The payment for the contradiction IS REAL: `bsdCause_unknowable`
+  dies against `UniversalEngine.no_perpetual_engine_of_natRank` — the genuine wall of
+  well-foundedness of ℕ (the same family as the pigeonhole `no_fullPayment_of_unboundedSupply`
+  in P/NP), consuming the green field `descent_decreases` on the REAL carrier
+  `W.toAffine.Point`. But — unlike the P/NP reference case, where BOTH legs are independent
+  non-trivial predicates — the second leg here is FREE BY CONSTRUCTION. Therefore
+  the honesty formula is: "the payment is real, but the second leg is free by construction",
+  and the entire epistemic layer of BSD reduces to the prohibition of the descent engine. This is NOT a defect,
+  but a result: the very attempt to build a separate BSD epistemic axis provably
+  collapses into the termination of Mordell–Weil descent.
 
-  ДВЕ ЛЕММЫ ЧЕСТНОСТИ ОТЧЁТА (тоже машинно):
+  TWO HONESTY LEMMAS OF THE REPORT (also machine-verified):
    · `analyticRank_gate_satisfiable` + `weakBSD_reduces_to_bare_equality` —
-     🔴-ворота `AnalyticRank` (BSDFront §3) СВОБОДНО ВЫПОЛНИМЫ выбором
-     (`⟨W.LSeries, rfl, 0 ≤ aRank⟩`): это маркер цитирования реальной
-     `WeierstrassCurve.LSeries`, а не ограничение; `WeakBSD` доказуемо сводится
-     к голому равенству `algRank = aRank`. Вакуумность ворот видна машине,
-     а не только в комментарии.
-   · `parity_bridge_inhabited_per_rank` — мост чётности `bsd_parity_is_rankParity`
-     обитаем для КАЖДОГО ранга r (свидетель n = 2^r,
-     `ArithmeticFunction.cardFactors_apply_prime_pow`), включая открытый
-     классически режим r ≥ 2. Узел rank-parity (Лиувилль) не вакуумен ни при каком r.
+     🔴-gate `AnalyticRank` (BSDFront §3) is FREELY SATISFIABLE by the choice
+     (`⟨W.LSeries, rfl, 0 ≤ aRank⟩`): this is a citation marker for the real
+     `WeierstrassCurve.LSeries`, not a constraint; `WeakBSD` provably reduces
+     to the bare equality `algRank = aRank`. Vacuity of the gate is visible to the machine,
+     not only in the comment.
+   · `parity_bridge_inhabited_per_rank` — the parity bridge `bsd_parity_is_rankParity`
+     is inhabited for EVERY rank r (witness n = 2^r,
+     `ArithmeticFunction.cardFactors_apply_prime_pow`), including the classically OPEN
+     mode r ≥ 2. The rank-parity node (Liouville) is not vacuous for any r.
 
-  ЧЕСТНОСТЬ. Это НЕ доказательство и НЕ опровержение BSD (WeakBSD остаётся 🔴 named
-  predicate; аналитический мост генуинно вне mathlib) и НЕ Гёдель (никакой
-  независимости — только фундированность ℕ и раскрытие дефинициональных совпадений).
-  Формальные связки помечены в докстроках и указано, чем каждая оплачена.
-  Никакого `sorry`, никакой новой аксиомы, никакого `native_decide`; карантин
-  (CausalClosureAxiom) НЕ импортируется; таинт репозитория (47) не меняется.
-  Грузонесущие — не более стандартной тройки `propext`/`Classical.choice`/`Quot.sound`.
+  HONESTY. This is NOT a proof and NOT a refutation of BSD (WeakBSD remains a 🔴 named
+  predicate; the analytic bridge is genuinely outside mathlib) and NOT Gödel (no
+  independence — only well-foundedness of ℕ and disclosure of definitional coincidences).
+  Formal links are annotated in the docstrings, with what each is paid by.
+  No `sorry`, no new axiom, no `native_decide`; the quarantine
+  (CausalClosureAxiom) is NOT imported; the repository taint (47) does not change.
+  Load-bearing: no more than the standard triple `propext`/`Classical.choice`/`Quot.sound`.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
-    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/BSDEpistemic.lean → ноль ошибок.
+  Compilation: cd /f/Primes/Euclids-path &&
+    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/BSDEpistemic.lean → zero errors.
 
-  Родство: Engine/BSDFront.lean (модель, стена, мост, ворота);
+  Kinship: Engine/BSDFront.lean (model, wall, bridge, gate);
     Engine/UniversalEngine.lean (`PerpetualEngine`, `no_perpetual_engine_of_natRank`);
-    зеркала эпистемики: Engine/PNPFirstCause.lean, Engine/TwinNodeEpistemic.lean.
+    epistemic mirrors: Engine/PNPFirstCause.lean, Engine/TwinNodeEpistemic.lean.
 -/
 import Mathlib
 import EuclidsPath.Engine.BSDFront
@@ -69,106 +69,106 @@ namespace EuclidsPath.BSDFront.Epistemic
 open EuclidsPath.UniversalEngine
 
 /-! ################################################################################
-    §1  Предложенная эпистемическая пара и её МАШИННОЕ ВЫРОЖДЕНИЕ (а)
+    §1  The proposed epistemic pair and its MACHINE DEGENERATION (a)
     ################################################################################ -/
 
-/-- **Предложенное «внутреннее самообоснование ранга» для BSD** (по шаблону
-    `InternalisedPNPGround` / `InternalisedTwinGround`): (a) `ground` — внутреннее
-    дообоснование конечности ранга предъявлением бесконечного спуска (двигатель
-    на `M.descentStep`), (b) `beyondOwnHorizon` — строгое убывание высоты на шаге.
+/-- **The proposed "internal self-justification of rank" for BSD** (following the template of
+    `InternalisedPNPGround` / `InternalisedTwinGround`): (a) `ground` — internal
+    justification of the finiteness of the rank by exhibiting an infinite descent (engine
+    on `M.descentStep`), (b) `beyondOwnHorizon` — strict decrease of height per step.
 
-    ЧЕСТНОСТЬ (главный CORR, обязательная): пара ВЫРОЖДЕНА. `beyondOwnHorizon` —
-    буквально поле `M.descent_decreases`, обитаемое для ЛЮБОЙ модели `M`, поэтому
-    структура эквивалентна одной своей ноге (`bsdGround_coincides_with_engine` ниже),
-    а её невозможность — дефинициональная переупаковка `bsd_descent_has_no_engine`.
-    Мы оставляем структуру ИМЕННО ради этой фиксации: у P/NP обе ноги — независимые
-    нетривиальные предикаты, у BSD вторая нога свободна по построению. -/
+    HONESTY (main CORR, mandatory): the pair IS DEGENERATE. `beyondOwnHorizon` —
+    is literally the field `M.descent_decreases`, inhabited for ANY model `M`, therefore
+    the structure is equivalent to one of its legs (`bsdGround_coincides_with_engine` below),
+    and its impossibility is a definitional repacking of `bsd_descent_has_no_engine`.
+    We keep the structure PRECISELY to record this: in P/NP both legs are independent
+    non-trivial predicates; in BSD the second leg is free by construction. -/
 structure InternalisedBSDGround (M : BSDHeightModel) : Prop where
-  /-- Внутреннее дообоснование: бесконечная спусковая цепь (вечный двигатель). -/
+  /-- Internal justification: an infinite descent chain (perpetual engine). -/
   ground : PerpetualEngine M.descentStep
-  /-- «Взгляд за горизонт»: шаг спуска строго уменьшает высоту. ВЫРОЖДЕНИЕ:
-      это поле `M.descent_decreases`, всегда доступное, — нога свободна. -/
+  /-- "View beyond the horizon": a descent step strictly decreases the height. DEGENERATION:
+      this is the field `M.descent_decreases`, always available — the leg is free. -/
   beyondOwnHorizon : ∀ P Q, M.descentStep P Q → M.height P < M.height Q
 
-/-- «Внутреннее знание причины BSD» = внутреннее самообоснование ранга
-    (зеркало `InternalKnowledgeOfPNPCause` / `InternalKnowledgeOfTwinCause`). -/
+/-- "Internal knowledge of the BSD cause" = internal self-justification of the rank
+    (mirror of `InternalKnowledgeOfPNPCause` / `InternalKnowledgeOfTwinCause`). -/
 abbrev InternalKnowledgeOfBSDCause (M : BSDHeightModel) : Prop :=
   InternalisedBSDGround M
 
-/-- **ТЕОРЕМА-РАСКРЫТИЕ (главный CORR записан машинно):** предложенная эпистемическая
-    структура BSD ЭКВИВАЛЕНТНА одной своей ноге — двигателю на спусковом отношении.
-    Обратная стрелка оплачена даром: вторая нога — поле `M.descent_decreases`.
-    Значит, никакой НОВОЙ эпистемической связки у BSD нет: `InternalisedBSDGround` —
-    это `PerpetualEngine M.descentStep` под другим именем. Вырождение зафиксировано
-    машинно — это и есть честность модуля. -/
+/-- **DISCLOSURE THEOREM (main CORR recorded machine-wise):** the proposed epistemic
+    structure of BSD IS EQUIVALENT to one of its legs — the engine on the descent relation.
+    The backward arrow is paid for free: the second leg is the field `M.descent_decreases`.
+    Hence BSD has NO NEW epistemic link: `InternalisedBSDGround` is
+    `PerpetualEngine M.descentStep` under a different name. The degeneration is recorded
+    machine-wise — that is the honesty of this module. -/
 theorem bsdGround_coincides_with_engine (M : BSDHeightModel) :
     InternalisedBSDGround M ↔ PerpetualEngine M.descentStep :=
   ⟨fun H => H.ground, fun h => ⟨h, M.descent_decreases⟩⟩
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — но БЕЗ НОВОЙ ОСИ:** эпистемика БСД совпадает
-    с запретом двигателя спуска — новой оси у БСД нет, и это теорема.
-    Формально: следствие раскрытия `bsdGround_coincides_with_engine`; противоречие
-    оплачено НЕ формой структуры, а стеной фундированности ℕ
-    (`no_perpetual_engine_of_natRank` через `bsd_descent_has_no_engine`), потребляющей
-    реальное поле `descent_decreases` на носителе `W.toAffine.Point`. ЧЕСТНОСТЬ:
-    это дефинициональная переупаковка `bsd_descent_has_no_engine`, а не аналог
-    независимой пары P/NP — оплата реальна, но вторая нога свободна по построению. -/
+/-- **"UNKNOWABLE FROM WITHIN" — but WITHOUT A NEW AXIS:** the BSD epistemic layer
+    coincides with the prohibition of the descent engine — BSD has no new axis, and this is a theorem.
+    Formally: a consequence of the disclosure `bsdGround_coincides_with_engine`; the contradiction
+    is paid NOT by the form of the structure but by the wall of well-foundedness of ℕ
+    (`no_perpetual_engine_of_natRank` via `bsd_descent_has_no_engine`), consuming
+    the real field `descent_decreases` on the carrier `W.toAffine.Point`. HONESTY:
+    this is a definitional repacking of `bsd_descent_has_no_engine`, not an analogue
+    of the independent P/NP pair — the payment is real, but the second leg is free by construction. -/
 theorem bsdCause_unknowable (M : BSDHeightModel) :
     ¬ InternalKnowledgeOfBSDCause M :=
   fun H => bsd_descent_has_no_engine M H.ground
 
-/-- **Совпадение осей, экстенсионально:** «непознаваемость изнутри» ⟺ «двигателя
-    спуска нет» — т.е. `bsdCause_unknowable` есть УЖЕ СУЩЕСТВУЮЩАЯ
-    `bsd_descent_has_no_engine` (BSDFront) с точностью до переименования.
-    Тривиальное `not_congr` от раскрытия — формальная связка, оплаченная
-    вырождением второй ноги. -/
+/-- **Axis coincidence, extensionally:** "unknowability from within" ⟺ "no descent engine" —
+    i.e., `bsdCause_unknowable` is the ALREADY EXISTING
+    `bsd_descent_has_no_engine` (BSDFront) up to renaming.
+    A trivial `not_congr` from the disclosure — a formal link paid by
+    the degeneration of the second leg. -/
 theorem bsdCause_unknowable_iff_no_engine (M : BSDHeightModel) :
     (¬ InternalKnowledgeOfBSDCause M) ↔ (¬ PerpetualEngine M.descentStep) :=
   not_congr (bsdGround_coincides_with_engine M)
 
-/-- Конкретная инстанция на НЕ-вакуумном свидетеле `bsdHeightModel_inhabited`
-    (кривая над ℚ, обитаемый шаг спуска): утверждение не о пустой модели. -/
+/-- Concrete instance on the NON-vacuous witness `bsdHeightModel_inhabited`
+    (a curve over ℚ, inhabited descent step): the statement is not about an empty model. -/
 theorem bsdCause_unknowable_inhabited :
     ¬ InternalKnowledgeOfBSDCause bsdHeightModel_inhabited :=
   bsdCause_unknowable bsdHeightModel_inhabited
 
 /-! ################################################################################
-    §2  Лемма честности: 🔴-ворота `AnalyticRank` свободно выполнимы (б)
+    §2  Honesty lemma: 🔴-gate `AnalyticRank` is freely satisfiable (b)
     ################################################################################ -/
 
-/-- **Ворота `AnalyticRank` СВОБОДНО ВЫПОЛНИМЫ (лемма честности, зелёная):** для
-    любой кривой и ЛЮБОГО `aRank` предикат `AnalyticRank W aRank` доказуем выбором
-    `⟨W.LSeries, rfl, 0 ≤ aRank⟩`. Машинная фиксация того, что 🔴-ворота BSDFront §3 —
-    МАРКЕР ЦИТИРОВАНИЯ реальной `WeierstrassCurve.LSeries`, а не ограничение:
-    содержательное «порядок обнуления в s = 1» mathlib не даёт, и предикат его
-    не несёт. Та же честность, что у вердикта трилеммы `bsd_parityLaw_satisfiable`:
-    вакуумность видна машине, а не только в комментарии. -/
+/-- **Gate `AnalyticRank` IS FREELY SATISFIABLE (honesty lemma, green):** for
+    any curve and ANY `aRank` the predicate `AnalyticRank W aRank` is provable by the choice
+    `⟨W.LSeries, rfl, 0 ≤ aRank⟩`. Machine recording of the fact that the 🔴-gate BSDFront §3 is
+    a CITATION MARKER for the real `WeierstrassCurve.LSeries`, not a constraint:
+    the substantive "order of vanishing at s = 1" is not provided by mathlib, and the predicate
+    does not carry it. The same honesty as in the trilemma verdict `bsd_parityLaw_satisfiable`:
+    vacuity is visible to the machine, not only in the comment. -/
 theorem analyticRank_gate_satisfiable {K : Type*} [Field K] [NumberField K]
     (W : WeierstrassCurve K) (aRank : ℕ) :
     AnalyticRank W aRank :=
   ⟨fun s => WeierstrassCurve.LSeries W s, rfl, Nat.zero_le _⟩
 
-/-- **Следствие для самой гипотезы:** `WeakBSD` доказуемо СВОДИТСЯ к голому равенству
-    `algRank = aRank` — аналитический конъюнкт поглощается свободной выполнимостью
-    ворот. Формальная связка, оплаченная `analyticRank_gate_satisfiable`; фиксирует,
-    что ВСЁ открытое содержание BSD в текущей формализации живёт в одном named
-    равенстве, которое мы честно НЕ доказываем. -/
+/-- **Consequence for the hypothesis itself:** `WeakBSD` provably REDUCES to the bare equality
+    `algRank = aRank` — the analytic conjunct is absorbed by the free satisfiability of
+    the gate. A formal link paid by `analyticRank_gate_satisfiable`; records that
+    ALL the open content of BSD in the current formalisation lives in one named
+    equality, which we honestly do NOT prove. -/
 theorem weakBSD_reduces_to_bare_equality {K : Type*} [Field K] [NumberField K]
     (W : WeierstrassCurve K) (algRank aRank : ℕ) :
     WeakBSD W algRank aRank ↔ algRank = aRank :=
   ⟨fun h => h.2, fun h => ⟨analyticRank_gate_satisfiable W aRank, h⟩⟩
 
 /-! ################################################################################
-    §3  Мост чётности обитаем для КАЖДОГО ранга (в)
+    §3  The parity bridge is inhabited for EVERY rank (c)
     ################################################################################ -/
 
-/-- **Мост чётности не вакуумен ни при каком ранге (зелёная):** для каждого `r`
-    узел rank-parity предъявляет свидетеля `n = 2^r` — `n ≠ 0`, `Ω(n) = r` и
-    `(−1)^r = λ(n)`. Оплачено mathlib-фактом
-    `ArithmeticFunction.cardFactors_apply_prime_pow` и мостом
-    `bsd_parity_is_rankParity` (BSDFront §2). Покрыт и чётный, и нечётный случай
-    сразу — включая классически ОТКРЫТЫЙ режим r ≥ 2: обитаемость моста не зависит
-    от того, реализуем ли такой ранг на кривой (об этом мы ничего не утверждаем). -/
+/-- **The parity bridge is not vacuous at any rank (green):** for each `r`
+    the rank-parity node exhibits the witness `n = 2^r` — `n ≠ 0`, `Ω(n) = r` and
+    `(−1)^r = λ(n)`. Paid by the mathlib fact
+    `ArithmeticFunction.cardFactors_apply_prime_pow` and the bridge
+    `bsd_parity_is_rankParity` (BSDFront §2). Both the even and odd cases are covered
+    at once — including the classically OPEN mode r ≥ 2: inhabitedness of the bridge does not depend
+    on whether such a rank is realised on a curve (we claim nothing about that). -/
 theorem parity_bridge_inhabited_per_rank (r : ℕ) :
     ∃ n : ℕ, n ≠ 0 ∧ ArithmeticFunction.cardFactors n = r ∧
       (-1 : ℤ) ^ r = ArithmeticFunction.liouville n :=
@@ -178,33 +178,33 @@ theorem parity_bridge_inhabited_per_rank (r : ℕ) :
   ⟨2 ^ r, hn, hr, bsd_parity_is_rankParity r (2 ^ r) hn hr⟩
 
 /-! ################################################################################
-    ИТОГ (LOUD HONEST)
+    SUMMARY (LOUD HONEST)
     ################################################################################
 
-  🟢 МАШИННО, В ЭТОМ ФАЙЛЕ:
-     · `bsdGround_coincides_with_engine` — предложенная эпистемическая пара BSD
-       ВЫРОЖДЕНА: `InternalisedBSDGround M ↔ PerpetualEngine M.descentStep`;
-     · `bsdCause_unknowable` (+ `_iff_no_engine`, `_inhabited`) — непознаваемость
-       изнутри есть, но она СОВПАДАЕТ с `bsd_descent_has_no_engine`: новой оси нет,
-       и это теорема; оплата реальна (`no_perpetual_engine_of_natRank`), но вторая
-       нога свободна по построению;
+  🟢 MACHINE-VERIFIED, IN THIS FILE:
+     · `bsdGround_coincides_with_engine` — the proposed BSD epistemic pair is
+       DEGENERATE: `InternalisedBSDGround M ↔ PerpetualEngine M.descentStep`;
+     · `bsdCause_unknowable` (+ `_iff_no_engine`, `_inhabited`) — unknowability
+       from within exists, but it COINCIDES with `bsd_descent_has_no_engine`: no new axis,
+       and this is a theorem; the payment is real (`no_perpetual_engine_of_natRank`), but the second
+       leg is free by construction;
      · `analyticRank_gate_satisfiable` / `weakBSD_reduces_to_bare_equality` —
-       🔴-ворота свободно выполнимы; `WeakBSD` ⟺ голое `algRank = aRank`;
-     · `parity_bridge_inhabited_per_rank` — мост чётности обитаем для каждого r
-       (свидетель 2^r).
+       🔴-gate is freely satisfiable; `WeakBSD` ⟺ bare `algRank = aRank`;
+     · `parity_bridge_inhabited_per_rank` — the parity bridge is inhabited for every r
+       (witness 2^r).
 
-  🟢 ПЕРЕИСПОЛЬЗОВАНО (цитируется, НЕ пере-выводится): `BSDHeightModel`,
+  🟢 REUSED (cited, NOT re-derived): `BSDHeightModel`,
      `bsd_descent_has_no_engine`, `bsdHeightModel_inhabited`, `AnalyticRank`,
      `WeakBSD`, `bsd_parity_is_rankParity` (BSDFront); `PerpetualEngine`,
      `no_perpetual_engine_of_natRank` (UniversalEngine);
      `ArithmeticFunction.cardFactors_apply_prime_pow` (mathlib).
 
-  🔴 ЧЕСТНО ОТКРЫТО (и НЕ трогается): `WeakBSD` как равенство `algRank = aRank`,
-     настоящий аналитический ранг (продолжение L-ряда), настоящее корневое число.
-     ЭТО НЕ ДОКАЗАТЕЛЬСТВО BSD И НЕ ГЁДЕЛЬ.
+  🔴 HONESTLY OPEN (and NOT touched): `WeakBSD` as the equality `algRank = aRank`,
+     the genuine analytic rank (continuation of the L-series), the genuine root number.
+     THIS IS NOT A PROOF OF BSD AND NOT GÖDEL.
 
-  Никакого `sorry`, никакой новой аксиомы, никакого `native_decide`; карантин не
-  импортирован; таинт 47 не меняется.
+  No `sorry`, no new axiom, no `native_decide`; quarantine not
+  imported; taint 47 does not change.
 -/
 
 #print axioms bsdGround_coincides_with_engine

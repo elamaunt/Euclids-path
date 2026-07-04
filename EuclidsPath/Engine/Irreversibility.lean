@@ -1,16 +1,16 @@
 /-
-  «Куда бы ни поехал двигатель — не повернёт назад и всегда остановится.»
-  Проза: prose/24_Irreversibility.md.
+  "Wherever the engine goes — it will not turn back and will always halt."
+  Prose: prose/24_Irreversibility.md.
 
-  Это 2-й закон термодинамики для двигателя Евклида, и он машинно доказан здесь и в соседних модулях:
-    * «не повернёт назад» (на одном шаге):  `descent_strict` — высота строго убывает;
-    * «никогда не вернётся» (глобально):      `engine_never_returns` — высота строго антимонотонна,
-      двигатель не возвращается ни в одно более раннее (более высокое) состояние;
-    * «не повернёт назад на двух точках»:      `NoBackward.exclusive_no_backward` — self-член исчезает;
-    * «всегда остановится»:                    `no_infinite_descent` / `no_perpetual_engine` — бесконечной
-      цепочки нет (`H(S_t) < H(S_0)/Aᵗ < 1`).
+  This is the 2nd law of thermodynamics for Euclid's engine, and it is machine-proven here and in the neighbouring modules:
+    * "will not turn back" (one step):   `descent_strict` — the rank strictly decreases;
+    * "will never return" (globally):     `engine_never_returns` — the rank is strictly anti-monotone,
+      the engine never returns to any earlier (higher) state;
+    * "will not turn back at two points": `NoBackward.exclusive_no_backward` — the self-member disappears;
+    * "will always halt":                 `no_infinite_descent` / `no_perpetual_engine` — an infinite
+      chain does not exist (`H(S_t) < H(S_0)/Aᵗ < 1`).
 
-  Здесь — объединяющий капстоун. Без анализа/распределения/сита.
+  This is the unifying capstone. No analysis / distribution / sieve.
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -20,42 +20,42 @@ set_option autoImplicit false
 namespace EuclidsPath.Engine
 
 /--
-  **«Не повернёт назад» (глобально).** Если каждый шаг — успешный `A`-спуск (`A ≥ 1`), то высота
-  СТРОГО АНТИМОНОТОННА: `s < t ⟹ H t < H s`. Двигатель никогда не возвращается в более раннее
-  (более высокое) состояние — необратимость.
+  **"Will not turn back" (globally).** If every step is a successful `A`-descent (`A ≥ 1`), then the rank is
+  STRICTLY ANTI-MONOTONE: `s < t ⟹ H t < H s`. The engine never returns to any earlier
+  (higher) state — irreversibility.
 -/
 theorem engine_never_returns {A : ℕ} (hA : 1 ≤ A) (H : ℕ → ℕ)
     (hchain : ∀ t, DescentStep A (H t) (H (t + 1))) : StrictAnti H :=
   strictAnti_nat_of_succ_lt (fun n => descent_strict hA (hchain n))
 
 /-
-  «Всегда остановится» — это `no_infinite_descent` (Engine/EPMI): бесконечной `A`-спуск-цепочки
-  не существует. Вместе с `engine_never_returns` («не повернёт назад») это и есть весь 2-й закон:
-  куда бы двигатель ни поехал, он не повернёт назад и всегда остановится.
+  "Will always halt" — that is `no_infinite_descent` (Engine/EPMI): an infinite `A`-descent chain
+  does not exist. Together with `engine_never_returns` ("will not turn back") this is the entire 2nd law:
+  wherever the engine goes, it will not turn back and will always halt.
 -/
 
-/-! ### Направленная асимметрия: «+1 — топливо», двигатель едет бесконечно только вверх -/
+/-! ### Directional asymmetry: "+1 is fuel", the engine runs forever only upward -/
 
 /--
-  **Вниз — конечно.** В `ℕ` нет бесконечно убывающей цепи: любой строго убывающий `f : ℕ → ℕ`
-  даёт противоречие (порядковая полнота ℕ = EPMI при `A=1`). Двигатель не может ехать вниз вечно.
+  **Downward — finite.** In `ℕ` there is no infinitely descending chain: any strictly decreasing `f : ℕ → ℕ`
+  yields a contradiction (ordinal completeness of ℕ = EPMI at `A=1`). The engine cannot run downward forever.
 -/
 theorem no_infinite_engine_descent (f : ℕ → ℕ) (hf : StrictAnti f) : False :=
   no_infinite_descent (le_refl 1) f
     (fun t => by simp only [DescentStep, one_mul]; exact hf (Nat.lt_succ_self t))
 
 /--
-  **Вверх — бесконечно («+1 = топливо»).** Successor даёт строго возрастающую цепь: топлива
-  (бо́льших центров) всегда хватает, двигатель едет вверх без остановки.
-  Вместе с `no_infinite_engine_descent`: двигатель едет бесконечно ТОЛЬКО в одном направлении (вверх).
+  **Upward — infinite ("+1 = fuel").** Successor yields a strictly increasing chain: fuel
+  (larger centers) is always available, the engine runs upward without stopping.
+  Together with `no_infinite_engine_descent`: the engine runs forever ONLY in one direction (upward).
 -/
 theorem fuel_ascent_strictMono : StrictMono (fun n : ℕ => n + 1) :=
   fun _ _ h => Nat.add_lt_add_right h 1
 
 /--
-  **«Свернёт — остановится» (точная оценка).** Если двигатель свернул в спуск и сделал `k` строгих
-  шагов вниз (`H(t+1) < H(t)` для `t < k`), то `k ≤ H 0`: он точно остановится, и не более чем за
-  `H 0` шагов. Любой поворот вниз — это конечный путь (порядковая полнота ℕ).
+  **"Turns and halts" (exact bound).** If the engine turned into descent and made `k` strict
+  steps downward (`H(t+1) < H(t)` for `t < k`), then `k ≤ H 0`: it will definitely halt, in at most
+  `H 0` steps. Any turn downward is a finite path (ordinal completeness of ℕ).
 -/
 theorem turned_engine_halts (H : ℕ → ℕ) (k : ℕ)
     (hdesc : ∀ t, t < k → H (t + 1) < H t) : k ≤ H 0 := by

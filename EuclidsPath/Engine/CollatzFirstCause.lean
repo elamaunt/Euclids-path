@@ -1,23 +1,23 @@
 /-
-  CollatzFirstCause — ПОСТ-МОРТЕМ четвёртой границы (декрет ВЗЯТ И СНЯТ) +
-  уцелевшая зелёная эпистемика. Разбор: prose/56_CollatzFirstCause.md.
-  Зелёная машина: Engine/CollatzTugOfWar.lean.
+  CollatzFirstCause — POST-MORTEM of the fourth boundary (decree TAKEN AND LIFTED) +
+  surviving green epistemics. Discussion: prose/56_CollatzFirstCause.md.
+  Green engine: Engine/CollatzTugOfWar.lean.
 
-  ИСТОРИЯ. Закон каната (`RopeCountingLaw` для всех n ≥ 1) был принят ЧЕТВЁРТОЙ
-  границей `collatzBoundary` структуры `Step00FirstCause` — с раскрытой ценой
-  «декрет, возможно, ПЕРЕПЛАЧИВАЕТ» (доказана лишь стрелка закон ⟹ гипотеза).
-  Затем универсальная форма закона была ОПРОВЕРГНУТА машинно:
-  `ropeLaw_universal_refuted` (CollatzTugOfWar; свидетель n = 27, ядро
-  [propext, Quot.sound]). Растяжка `collatzQuarantine_inconsistent_if_law_refuted`
-  сработала ровно как задумано — поле УДАЛЕНО из первопричины (иначе аксиома
-  была бы противоречива). Переплатил до лжи; дисциплина честности отработала.
+  HISTORY. The rope law (`RopeCountingLaw` for all n ≥ 1) was accepted by the FOURTH
+  boundary `collatzBoundary` of `Step00FirstCause` — with the disclosed price
+  "the decree possibly OVERPAYS" (only the arrow law ⟹ conjecture was proved).
+  Then the universal form of the law was REFUTED by machine:
+  `ropeLaw_universal_refuted` (CollatzTugOfWar; witness n = 27, kernel
+  [propext, Quot.sound]). The tripwire `collatzQuarantine_inconsistent_if_law_refuted`
+  fired exactly as intended — the field was REMOVED from the first cause (otherwise the axiom
+  would have been inconsistent). Overpaid into falsehood; the honesty discipline worked.
 
-  СТАТУС ТЕПЕРЬ. Как у Янг–Миллса: трилемма закрыта КОВАНЫМ опровержением —
-  декретный путь для Коллатца невозможен машинно. Гипотеза Коллатца — открытый
-  🔴 вопрос при зелёном фронте: бюджет окна, УСЛОВНЫЙ per-n герой
-  `reaches_one_of_countingLaw`, «опровержение гипотезы = вечный двигатель»
-  (`nonHalting_carries_perpetual_engine`) — всё живо. Этот модуль ЦЕЛИКОМ
-  ЗЕЛЁНЫЙ: не импортирует карантин, не трогает таинт.
+  STATUS NOW. As with Yang–Mills: the trilemma is closed by a FORGED REFUTATION —
+  the decree path for Collatz is impossible by machine. The Collatz conjecture is an open
+  🔴 question with a green front: window budget, CONDITIONAL per-n hero
+  `reaches_one_of_countingLaw`, "refuting the conjecture = perpetual engine"
+  (`nonHalting_carries_perpetual_engine`) — all live. This module is ENTIRELY
+  GREEN: does not import quarantine, does not touch taint.
 -/
 
 import EuclidsPath.Engine.CollatzTugOfWar
@@ -28,13 +28,13 @@ namespace EuclidsPath.Collatz.FirstCause
 
 open EuclidsPath.Collatz.TugOfWar
 
-/-! ## Пост-мортем декрета (🟢) -/
+/-! ## Decree post-mortem (🟢) -/
 
-/-- **ПОСТ-МОРТЕМ ЧЕТВЁРТОЙ ГРАНИЦЫ (зелёная сводка).** (1) Универсальный закон
-    каната ЛОЖЕН (свидетель n = 27) — декретная граница на нём невозможна;
-    (2) per-n закон по-прежнему влечёт остановку (условная механика жива);
-    (3) опровержение самой гипотезы всё равно несёт вечный двигатель (хвост от
-    минимума). Декрет пал, зелёный фронт цел. -/
+/-- **POST-MORTEM OF THE FOURTH BOUNDARY (green summary).** (1) The universal rope
+    law is FALSE (witness n = 27) — a decree boundary on it is impossible;
+    (2) the per-n law still implies halting (the conditional mechanics are alive);
+    (3) refuting the conjecture itself still carries a perpetual engine (tail from
+    the minimum). The decree fell, the green front holds. -/
 theorem collatz_decree_postmortem :
     (¬ ∀ n : Nat, 1 ≤ n → RopeCountingLaw n) ∧
     (∀ n : Nat, 1 ≤ n → RopeCountingLaw n → ∃ K, iter K n = 1) ∧
@@ -44,63 +44,63 @@ theorem collatz_decree_postmortem :
    fun n h1 law => reaches_one_of_countingLaw n h1 law,
    fun n hnh => nonHalting_carries_perpetual_engine n hnh⟩
 
-/-- **Стрелка декрета, которая «возможно, переплачивала» — и переплатила до
-    лжи.** Импликация «универсальный закон ⟹ сходимость всюду» остаётся
-    зелёной и верной, но её посылка теперь машинно опровергнута
-    (`ropeLaw_universal_refuted`): универсально закон никогда не будет подан.
-    Содержание живёт в per-n форме (`reaches_one_of_countingLaw`). -/
+/-- **The decree arrow that "possibly overpaid" — and overpaid into falsehood.**
+    The implication "universal law ⟹ convergence everywhere" remains green and
+    true, but its premise is now refuted by machine (`ropeLaw_universal_refuted`):
+    the law will never be supplied universally.
+    The content lives in the per-n form (`reaches_one_of_countingLaw`). -/
 theorem ropeLaw_would_imply_collatz :
     (∀ n : Nat, 1 ≤ n → RopeCountingLaw n) →
       ∀ n : Nat, 1 ≤ n → ∃ K, iter K n = 1 :=
   fun law n h1 => reaches_one_of_countingLaw n h1 (law n h1)
 
-/-! ## Эпистемика: решение заперто за двигателем (зелёная, уцелела)
+/-! ## Epistemics: the solution is locked behind the engine (green, survived)
 
-Непознаваемость внутреннего самообоснования НЕ зависела от декрета и переживает
-его падение; более того, теперь основание `ground` само машинно опровергнуто —
-внутреннее самообоснование невозможно уже a fortiori. -/
+The unknowability of internal self-grounding did NOT depend on the decree and
+survives its fall; moreover, the `ground` field itself is now refuted by machine —
+internal self-grounding is impossible a fortiori. -/
 
-/-- **Внутреннее самообоснование основания закона каната**: несёт сам закон И
-    свидетельство, что выведен изнутри — пересекая собственную границу.
-    После `ropeLaw_universal_refuted` сторона `ground` сама по себе ложна —
-    самообоснование невозможно вдвойне. -/
+/-- **Internal self-grounding of the rope law's ground**: carries the law itself AND
+    a witness that it was derived from within — crossing its own boundary.
+    After `ropeLaw_universal_refuted` the `ground` side is false on its own —
+    self-grounding is impossible doubly so. -/
 structure InternalisedCollatzGround : Prop where
   ground : ∀ n : Nat, 1 ≤ n → RopeCountingLaw n
   beyondOwnHorizon : ¬ ∀ n : Nat, 1 ≤ n → RopeCountingLaw n
 
-/-- «Внутреннее знание причины» = внутреннее самообоснование границы. -/
+/-- "Internal knowledge of the cause" = internal self-grounding of the boundary. -/
 abbrev InternalKnowledgeOfCollatzCause : Prop := InternalisedCollatzGround
 
-/-- Самообоснование самоуничтожается (форма); а после опровержения закона
-    невозможно и по содержанию: `ground` ложен. -/
+/-- Self-grounding self-destructs (by form); and after the law's refutation it is
+    impossible by content as well: `ground` is false. -/
 theorem no_internalisedCollatzGround : InternalisedCollatzGround → False :=
   fun H => H.beyondOwnHorizon H.ground
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ» — ТЕОРЕМА** (зеркало twin-`cause_unknowable`): внутреннее
-    знание первопричины Коллатца невозможно. ЗЕЛЁНАЯ, вообще без аксиом. -/
+/-- **"CANNOT BE KNOWN" — THEOREM** (mirror of twin-`cause_unknowable`): internal
+    knowledge of the Collatz first cause is impossible. GREEN, with no axioms at all. -/
 theorem collatzCause_unknowable : ¬ InternalKnowledgeOfCollatzCause :=
   no_internalisedCollatzGround
 
-/-- А теперь и сильнее: основание непознаваемого знания само ложно —
-    прямое следствие опровержения (не через самоуничтожение формы). -/
+/-- Now even stronger: the ground of the unknowable knowledge is itself false —
+    a direct consequence of the refutation (not through formal self-destruction). -/
 theorem internalGround_impossible_a_fortiori : InternalisedCollatzGround → False :=
   fun H => ropeLaw_universal_refuted H.ground
 
-/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении): либо причина
-    непознаваема, либо Коллатц ложен. Левый дизъюнкт — теорема. -/
+/-- SUBSTANTIVE DICHOTOMY (no ex falso in the statement): either the cause is
+    unknowable, or Collatz is false. The left disjunct is a theorem. -/
 theorem unknowable_or_collatz_fails :
     ¬ InternalKnowledgeOfCollatzCause ∨
       ∃ n : Nat, 1 ≤ n ∧ ∀ K, iter K n ≠ 1 :=
   Or.inl collatzCause_unknowable
 
-/-- **СВОДКА «РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» (зелёная):**
-    (1) ОПРОВЕРГНУТЬ гипотезу = построить вечный двигатель — подлинно (хвост от
-        минимума предъявляется конструкцией);
-    (2) ДОКАЗАТЬ ИЗНУТРИ = самообосновать основание — самоуничтожается;
-    (3) per-n закон каната влёк бы остановку per-n — но УНИВЕРСАЛЬНОЙ подачи
-        больше нет: универсальный закон опровергнут.
-    НЕ утверждается гёделевская независимость — только: оба внутренних решения
-    стоят вечного двигателя, а декретная дверь закрыта кованым опровержением. -/
+/-- **SUMMARY "SOLUTION LOCKED BEHIND THE ENGINE" (green):**
+    (1) REFUTING the conjecture = building a perpetual engine — genuinely (the tail from
+        the minimum is exhibited by construction);
+    (2) PROVING FROM WITHIN = self-grounding the ground — self-destructs;
+    (3) the per-n rope law would imply per-n halting — but there is no UNIVERSAL supply
+        any longer: the universal law is refuted.
+    Gödelian independence is NOT asserted — only: both internal resolutions
+    cost a perpetual engine, and the decree door is closed by a forged refutation. -/
 theorem collatz_no_internal_decision_without_engine :
     (∀ n : Nat, (∀ K, iter K n ≠ 1) →
         ∃ j, NonDescendingOrbit (iter j n) ∧ ∀ K, iter K (iter j n) ≠ 1) ∧
@@ -110,14 +110,13 @@ theorem collatz_no_internal_decision_without_engine :
    no_internalisedCollatzGround,
    fun n h1 law => reaches_one_of_countingLaw n h1 law⟩
 
-/-- **«ПРОВЕРКА, А НЕ ВЫВОД» (машинно видимый нарратив):**
-    (1) внутреннее извлечение закона каната невозможно
+/-- **"VERIFICATION, NOT DERIVATION" (machine-visible narrative):**
+    (1) internal extraction of the rope law is impossible
         (`collatzCause_unknowable`);
-    (2) единственный внутренний след контрпримера — вечный двигатель: хвост
-        орбиты от минимума неубывающий и не останавливается;
-    (3) значит решение — либо непознаваемо изнутри, либо доступно лишь
-        ПРОВЕРКОЙ орбиты, находимой ровно настолько далеко, насколько мы
-        смотрим. ЗЕЛЁНАЯ. -/
+    (2) the only internal trace of a counterexample is a perpetual engine: the tail
+        of the orbit from the minimum is non-descending and does not halt;
+    (3) hence the resolution is either unknowable from within, or accessible only by
+        VERIFYING an orbit found exactly as far as we look. GREEN. -/
 theorem collatz_verification_not_derivation :
     (¬ InternalKnowledgeOfCollatzCause) ∧
     (∀ n : Nat, (∀ K, iter K n ≠ 1) →
@@ -127,11 +126,11 @@ theorem collatz_verification_not_derivation :
    fun n hnh => nonHalting_carries_perpetual_engine n hnh,
    unknowable_or_collatz_fails⟩
 
-/-- Итоговый эпистемический статус Коллатца ПОСЛЕ падения декрета (зелёный,
-    зеркало `pnp_locked_behind_engine_status` — без декрет-конъюнкта):
-    универсальный закон ОПРОВЕРГНУТ (теорема) / внутреннее знание невозможно
-    (теорема) / per-n закон влечёт остановку (условно) / опровержение гипотезы
-    строило бы вечный двигатель (теорема). -/
+/-- The final epistemic status of Collatz AFTER the decree's fall (green,
+    mirror of `pnp_locked_behind_engine_status` — without the decree conjunct):
+    universal law REFUTED (theorem) / internal knowledge impossible
+    (theorem) / per-n law implies halting (conditional) / refuting the conjecture
+    would build a perpetual engine (theorem). -/
 theorem collatz_open_status :
     (¬ ∀ n : Nat, 1 ≤ n → RopeCountingLaw n) ∧
     (¬ InternalKnowledgeOfCollatzCause) ∧
@@ -142,7 +141,7 @@ theorem collatz_open_status :
    fun n h1 law => reaches_one_of_countingLaw n h1 law,
    fun n hnh => nonHalting_carries_perpetual_engine n hnh⟩
 
-/-! ## Аудит аксиом: модуль ЦЕЛИКОМ зелёный (декретного слоя больше нет) -/
+/-! ## Axiom audit: module is ENTIRELY green (the decree layer no longer exists) -/
 #print axioms collatz_decree_postmortem
 #print axioms ropeLaw_would_imply_collatz
 #print axioms no_internalisedCollatzGround

@@ -1,71 +1,72 @@
 /-
-  BoundedGapsAnchor — якорь ограниченных зазоров: Чжан 2013 / Мейнард–Тао 2014.
+  BoundedGapsAnchor — anchor of bounded gaps: Zhang 2013 / Maynard–Tao 2014.
 
   ┌─────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКИЙ ЧЕСТНЫЙ ЗАГОЛОВОК. ЧТО ЗДЕСЬ ЗЕЛЁНОЕ И ЧТО ЧЕСТНО КРАСНОЕ.     │
+  │  LOUD HONEST HEADER. WHAT IS GREEN HERE AND WHAT IS HONESTLY RED.        │
   └─────────────────────────────────────────────────────────────────────────┘
 
-  Итан Чжан (2013) доказал: существует B < 70 000 000 такое, что бесконечно
-  много пар последовательных простых с зазором ≤ B. Мейнард и Тао (2014,
-  независимо; Polymath8b) снизили планку до B = 246. Это ЛУЧШИЙ безусловный
-  результат человечества на пути к близнецам (B = 2). НИ ОДИН из этих
-  результатов НЕ формализован: в mathlib v4.31 нет ни теоремы Чжана, ни
-  Мейнарда–Тао, ни даже метода Гольдстона–Пинца–Йылдырыма. Самое сильное,
-  что mathlib реально даёт о зазорах, — постулат Бертрана
-  (`Nat.exists_prime_lt_and_le_two_mul`): в (n, 2n] есть простое. Но это зазор
-  порядка САМОГО p, а не константа B — от Бертрана до ограниченных зазоров
-  пропасть в столетие аналитической теории чисел (BV-теорема, сита GPY/Maynard).
-  Поэтому вход здесь — именованный КРАСНЫЙ def-якорь `BoundedGaps B`,
-  НЕ теорема, НЕ sorry, НЕ аксиома.
+  Yitang Zhang (2013) proved: there exists B < 70 000 000 such that infinitely
+  many pairs of consecutive primes have gap ≤ B. Maynard and Tao (2014,
+  independently; Polymath8b) lowered the bar to B = 246. This is the BEST
+  unconditional result of humanity on the road to twins (B = 2). NOT ONE of
+  these results is formalised: mathlib v4.31 has neither Zhang's theorem nor
+  Maynard–Tao, nor even the Goldston–Pintz–Yıldırım method. The strongest thing
+  mathlib actually gives about gaps is Bertrand's postulate
+  (`Nat.exists_prime_lt_and_le_two_mul`): there is a prime in (n, 2n]. But that
+  is a gap of order p ITSELF, not a constant B — from Bertrand to bounded gaps
+  is a century of analytic number theory (BV-theorem, GPY/Maynard sieves).
+  Therefore the entry here is a named RED def-anchor `BoundedGaps B`,
+  NOT a theorem, NOT sorry, NOT an axiom.
 
-  🔴 КРАСНЫЕ ВХОДЫ (названы, ниоткуда не выводятся):
-   · `BoundedGaps B` — «бесконечно много пар простых с зазором ≤ B»;
+  🔴 RED INPUTS (named, derived from nowhere):
+   · `BoundedGaps B` — "infinitely many prime pairs with gap ≤ B";
    · `ZhangAnchor`      = BoundedGaps 70000000 (Zhang 2013);
    · `MaynardTaoAnchor` = BoundedGaps 246      (Maynard–Tao 2014, Polymath8b).
 
-  🟢 ЗЕЛЁНЫЕ МОСТЫ (машинно, std-аксиомы):
-   · `boundedGaps_mono` — монотонность по B: ослабление планки бесплатно;
-   · `zhangAnchor_of_maynardTao` — 246 ⟹ 70 000 000 (инстанс монотонности);
-   · `boundedGaps_two_iff_twins` — ГЛАВНЫЙ АУДИТ НА ПЕРЕИМЕНОВАНИЕ ЦЕЛИ
-     (зеркало `offCriticalBridge_iff_RH`): якорь на краю B = 2 РАВНОСИЛЕН
-     бесконечности близнецов (`TwinLowers.Infinite` из Step00). Принять
-     `BoundedGaps 2` = принять близнецов: это дословное переименование
-     гипотезы, и мы раскрываем это машинно, iff-теоремой, а не прячем;
-   · `boundedGaps_two_iff_unbounded_twins` — та же равносильность в
-     самостоятельной формулировке «∀ N ∃ p > N: p и p+2 просты»;
+  🟢 GREEN BRIDGES (machine-proven, std axioms):
+   · `boundedGaps_mono` — monotonicity in B: relaxing the bar is free;
+   · `zhangAnchor_of_maynardTao` — 246 ⟹ 70 000 000 (instance of monotonicity);
+   · `boundedGaps_two_iff_twins` — THE MAIN GOAL-RENAMING AUDIT
+     (mirror of `offCriticalBridge_iff_RH`): the anchor at edge B = 2 IS
+     EQUIVALENT TO infinitely many twins (`TwinLowers.Infinite` from Step00).
+     Accepting `BoundedGaps 2` = accepting twins: this is a word-for-word
+     renaming of the hypothesis, and we expose it machine-wise via an iff-theorem,
+     not hide it;
+   · `boundedGaps_two_iff_unbounded_twins` — the same equivalence in the
+     standalone formulation "∀ N ∃ p > N: p and p+2 are prime";
    · `boundedGaps_four_twins_or_cousins`, `boundedGaps_six_polignac_trichotomy`
-     — сетка PolignacBranch: при зазоре ≤ 4 бесконечен хотя бы один из классов
-     {близнецы, кузены}; при ≤ 6 — хотя бы один из {близнецы, кузены, секси}.
-     Это формальная тень НАСТОЯЩЕГО следствия Мейнарда–Тао: из B = 246
-     бесконечен хотя бы ОДИН класс зазоров d ≤ 246 — но КАКОЙ именно,
-     неизвестно; дизъюнкция неустранима.
+     — the PolignacBranch grid: for gap ≤ 4 at least one of the classes
+     {twins, cousins} is infinite; for ≤ 6 — at least one of {twins, cousins, sexy}.
+     This is the formal shadow of the REAL corollary of Maynard–Tao: from B = 246
+     at least ONE gap class d ≤ 246 is infinite — but WHICH one is unknown;
+     the disjunction is irreducible.
 
-  ⚠️ ГЛАВНАЯ ЧЕСТНОСТЬ: спуск от B = 246 к B = 2 — ОТКРЫТАЯ математика.
-  `MaynardTaoAnchor` близнецов НЕ влечёт: из «бесконечно много зазоров ≤ 246»
-  никакими зелёными средствами не следует «бесконечно много зазоров ≤ 2» —
-  монотонность работает ВВЕРХ по B, не вниз. Маркер:
-  `NoDescentFrom246To2Claimed`. Что математика ДОЛЖНА предъявить для спуска:
-  уровень распределения простых за пределами Bombieri–Vinogradov (гипотеза
-  Эллиотта–Халберстама даёт B = 12, обобщённая EH — B = 6, Polymath8b), а
-  ниже 6 сита упираются в parity problem Сельберга — B = 2 не берётся даже
-  при GEH, нужна идея другого рода. В mathlib v4.31 нет НИЧЕГО из этого
-  списка: нет Bombieri–Vinogradov, нет Selberg sieve в нужной силе, нет ни
-  одного proof_wanted про ограниченные зазоры.
+  ⚠️ THE MAIN HONESTY: the descent from B = 246 to B = 2 is OPEN mathematics.
+  `MaynardTaoAnchor` does NOT entail twins: from "infinitely many gaps ≤ 246"
+  no green means can derive "infinitely many gaps ≤ 2" —
+  monotonicity works UPWARD in B, not downward. Marker:
+  `NoDescentFrom246To2Claimed`. What mathematics MUST exhibit for the descent:
+  a level of distribution of primes beyond Bombieri–Vinogradov (the
+  Elliott–Halberstam conjecture gives B = 12, generalised EH — B = 6, Polymath8b),
+  and below 6 sieves hit Selberg's parity problem — B = 2 does not fall even
+  under GEH; an idea of a different kind is needed. Mathlib v4.31 has NONE of
+  this: no Bombieri–Vinogradov, no Selberg sieve in the required strength, not
+  a single proof_wanted about bounded gaps.
 
-  ЭТО НЕ РЕШЕНИЕ ГИПОТЕЗЫ БЛИЗНЕЦОВ И НЕ ГЁДЕЛЕВСКИЙ АРГУМЕНТ. Якорь —
-  честная точка стыковки: если внешняя математика предъявит `BoundedGaps 2`,
-  зелёный мост немедленно закрывает цель Step00.
+  THIS IS NOT A SOLUTION TO THE TWIN PRIME CONJECTURE AND NOT A GÖDELIAN ARGUMENT.
+  The anchor is an honest docking point: if external mathematics supplies
+  `BoundedGaps 2`, the green bridge immediately closes the Step00 goal.
 
-  Никакого sorry, никакого admit, никакого native_decide, никакой новой
-  аксиомы; карантин (CausalClosureAxiom) НЕ импортируется. Зелёные
-  грузонесущие — стандартная тройка propext / Classical.choice / Quot.sound.
-  Такса репозитория (таинт 47) этим файлом НЕ меняется.
+  No sorry, no admit, no native_decide, no new axiom; the quarantine
+  (CausalClosureAxiom) is NOT imported. The green load-bearing declarations are
+  the standard triple propext / Classical.choice / Quot.sound.
+  The repository taint count (taint 47) is NOT changed by this file.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
+  Compilation: cd /f/Primes/Euclids-path &&
     "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/BoundedGapsAnchor.lean
-    → ноль ошибок.
+    → zero errors.
 
-  Родство: EuclidsPath/Engine/PolignacBranch.lean (сетка 6m±1, кузены/секси),
+  Kinship: EuclidsPath/Engine/PolignacBranch.lean (6m±1 grid, cousins/sexy),
   EuclidsPath/Step00_Overview.lean (`TwinLowers`, `IsTwinPair`).
 -/
 import Mathlib
@@ -77,50 +78,50 @@ namespace EuclidsPath.BoundedGapsAnchor
 
 open EuclidsPath EuclidsPath.PolignacBranch
 
-/-! ### 🔴 Красные входы: именованные якоря, НЕ теоремы -/
+/-! ### 🔴 Red inputs: named anchors, NOT theorems -/
 
-/-- **🔴 КРАСНЫЙ ВХОД — якорь ограниченных зазоров.** «Бесконечно много пар
-    простых с зазором ≤ B»: выше любого `N` найдутся простые `p < q ≤ p + B`.
+/-- **🔴 RED INPUT — anchor of bounded gaps.** "Infinitely many prime pairs
+    with gap ≤ B": above any `N` there exist primes `p < q ≤ p + B`.
 
-    Известно человечеству (вне mathlib): Zhang 2013 даёт `B = 70 000 000`,
-    Maynard–Tao 2014 (и Polymath8b) — `B = 246`. НИ ОДНО из этих значений
-    не формализовано: mathlib v4.31 о зазорах умеет лишь постулат Бертрана
-    (`Nat.exists_prime_lt_and_le_two_mul`) — зазор ≤ p, растущий, НЕ константа.
-    Гипотеза близнецов — ровно `BoundedGaps 2` (см. аудит
-    `boundedGaps_two_iff_twins`). Здесь предикат только НАЗВАН. -/
+    Known to humanity (outside mathlib): Zhang 2013 gives `B = 70 000 000`,
+    Maynard–Tao 2014 (and Polymath8b) — `B = 246`. NEITHER of these values
+    is formalised: mathlib v4.31 about gaps knows only Bertrand's postulate
+    (`Nat.exists_prime_lt_and_le_two_mul`) — gap ≤ p, growing, NOT a constant.
+    The twin prime conjecture is exactly `BoundedGaps 2` (see the audit
+    `boundedGaps_two_iff_twins`). Here the predicate is only NAMED. -/
 def BoundedGaps (B : ℕ) : Prop :=
   ∀ N : ℕ, ∃ p q : ℕ, N < p ∧ p.Prime ∧ q.Prime ∧ p < q ∧ q ≤ p + B
 
-/-- **🔴 Якорь Чжана (2013):** бесконечно много зазоров ≤ 70 000 000.
-    Доказано человечеством, НЕ формализовано; здесь — только имя. -/
+/-- **🔴 Zhang anchor (2013):** infinitely many gaps ≤ 70 000 000.
+    Proved by humanity, NOT formalised; here — only a name. -/
 def ZhangAnchor : Prop := BoundedGaps 70000000
 
-/-- **🔴 Якорь Мейнарда–Тао (2014, Polymath8b):** бесконечно много зазоров
-    ≤ 246. Лучший безусловный результат; НЕ формализован; здесь — только имя.
-    ⚠️ Близнецов НЕ влечёт: спуск 246 → 2 — открытая математика
-    (см. `NoDescentFrom246To2Claimed`). -/
+/-- **🔴 Maynard–Tao anchor (2014, Polymath8b):** infinitely many gaps
+    ≤ 246. The best unconditional result; NOT formalised; here — only a name.
+    ⚠️ Does NOT entail twins: the descent 246 → 2 is open mathematics
+    (see `NoDescentFrom246To2Claimed`). -/
 def MaynardTaoAnchor : Prop := BoundedGaps 246
 
-/-! ### 🟢 Зелёные мосты -/
+/-! ### 🟢 Green bridges -/
 
-/-- **🟢 Монотонность по планке (доказано):** ослабить B бесплатно — та же
-    пара свидетелей проходит под более высокой планкой. Работает только
-    ВВЕРХ по B; обратного хода (спуска) нет и не утверждается. -/
+/-- **🟢 Monotonicity in the bar (proved):** relaxing B is free — the same
+    witness pair passes under a higher bar. Works only UPWARD in B;
+    there is no reverse direction (descent) and none is claimed. -/
 theorem boundedGaps_mono {B B2 : ℕ} (h : B ≤ B2) (H : BoundedGaps B) :
     BoundedGaps B2 := by
   intro N
   obtain ⟨p, q, hN, hp, hq, hlt, hle⟩ := H N
   exact ⟨p, q, hN, hp, hq, hlt, by omega⟩
 
-/-- **🟢 246 ⟹ 70 000 000 (доказано):** якорь Мейнарда–Тао влечёт якорь
-    Чжана — инстанс монотонности. Исторически стрелка шла в обратную
-    сторону (сначала Чжан, потом усиление), логически — в эту. -/
+/-- **🟢 246 ⟹ 70 000 000 (proved):** the Maynard–Tao anchor entails the Zhang
+    anchor — an instance of monotonicity. Historically the arrow went the other
+    way (Zhang first, then strengthening), logically — this way. -/
 theorem zhangAnchor_of_maynardTao (H : MaynardTaoAnchor) : ZhangAnchor :=
   boundedGaps_mono (by norm_num) H
 
-/-- **🟢 Сантехника (доказано):** бесконечность `TwinLowers` ⟺ неограниченность
-    младших членов пар близнецов, «∀ N ∃ p > N: p и p+2 просты». Дешёвый мост
-    между репо-формой (Step00) и самостоятельной формулировкой. -/
+/-- **🟢 Plumbing (proved):** infiniteness of `TwinLowers` ⟺ unboundedness of
+    the lesser members of twin pairs, "∀ N ∃ p > N: p and p+2 are prime".
+    A cheap bridge between the repo form (Step00) and the standalone formulation. -/
 theorem twinLowers_infinite_iff_unbounded :
     TwinLowers.Infinite ↔ ∀ N : ℕ, ∃ p : ℕ, N < p ∧ p.Prime ∧ (p + 2).Prime := by
   constructor
@@ -135,15 +136,15 @@ theorem twinLowers_infinite_iff_unbounded :
     have hmem : p ∈ TwinLowers := show IsTwinPair p from ⟨hp, hp2⟩
     exact absurd (hC hmem) (not_le.mpr hlt)
 
-/-- **🟢 ГЛАВНЫЙ АУДИТ НА ПЕРЕИМЕНОВАНИЕ ЦЕЛИ (доказано; зеркало
-    `offCriticalBridge_iff_RH`):** якорь на краю `B = 2` РАВНОСИЛЕН
-    бесконечности близнецов. Принять `BoundedGaps 2` = принять близнецов:
-    дословное переименование гипотезы Step00, раскрытое машинно.
+/-- **🟢 THE MAIN GOAL-RENAMING AUDIT (proved; mirror of
+    `offCriticalBridge_iff_RH`):** the anchor at edge `B = 2` IS EQUIVALENT TO
+    infinitely many twins. Accepting `BoundedGaps 2` = accepting twins:
+    a word-for-word renaming of the Step00 hypothesis, exposed machine-wise.
 
-    Прямая: выше `max C 2` оба простых нечётны; из `p < q ≤ p + 2` зазор
-    `q − p ∈ {1, 2}`, но `q = p + 1` чётно и > 2 — не простое; остаётся
-    `q = p + 2` — пара близнецов. Обратная: сама пара близнецов и есть
-    свидетель зазора 2. -/
+    Forward: above `max C 2` both primes are odd; from `p < q ≤ p + 2` the gap
+    `q − p ∈ {1, 2}`, but `q = p + 1` is even and > 2 — not prime; what remains
+    is `q = p + 2` — a twin pair. Backward: the twin pair itself is the
+    witness for gap 2. -/
 theorem boundedGaps_two_iff_twins : BoundedGaps 2 ↔ TwinLowers.Infinite := by
   constructor
   · intro H
@@ -165,24 +166,24 @@ theorem boundedGaps_two_iff_twins : BoundedGaps 2 ↔ TwinLowers.Infinite := by
     obtain ⟨p, hlt, hp, hp2⟩ := twinLowers_infinite_iff_unbounded.mp H N
     exact ⟨p, p + 2, hlt, hp, hp2, by omega, le_refl _⟩
 
-/-- **🟢 Та же равносильность в самостоятельной формулировке (доказано):**
-    `BoundedGaps 2` ⟺ «∀ N ∃ p > N: p и p+2 просты» — без ссылки на
-    репо-множество, для внешней стыковки. -/
+/-- **🟢 The same equivalence in the standalone formulation (proved):**
+    `BoundedGaps 2` ⟺ "∀ N ∃ p > N: p and p+2 are prime" — without reference
+    to the repo set, for external docking. -/
 theorem boundedGaps_two_iff_unbounded_twins :
     BoundedGaps 2 ↔ ∀ N : ℕ, ∃ p : ℕ, N < p ∧ p.Prime ∧ (p + 2).Prime :=
   boundedGaps_two_iff_twins.trans twinLowers_infinite_iff_unbounded
 
-/-! ### 🟢 Сетка Полиньяка: дизъюнктивные следствия малых планок
+/-! ### 🟢 Polignac grid: disjunctive corollaries of small bars
 
-  Формальная тень настоящего следствия Мейнарда–Тао: из `BoundedGaps 246`
-  бесконечен хотя бы ОДИН класс зазоров `d ≤ 246`, но КАКОЙ — неизвестно.
-  Здесь то же для планок 4 и 6 через классы PolignacBranch. Дизъюнкция
-  неустранима: выбрать член дизъюнкции = решить открытую задачу. -/
+  The formal shadow of the real corollary of Maynard–Tao: from `BoundedGaps 246`
+  at least ONE gap class `d ≤ 246` is infinite, but WHICH one is unknown.
+  Here the same for bars 4 and 6 via the PolignacBranch classes. The disjunction
+  is irreducible: choosing a disjunct = solving an open problem. -/
 
-/-- **🟢 Планка 4 ⟹ близнецы ИЛИ кузены (доказано):** выше 2 оба простых
-    нечётны, зазор ≤ 4 означает `q = p + 2` или `q = p + 4`; бесконечно
-    объединение `TwinLowers ∪ CousinLowers`, значит бесконечен хотя бы один
-    класс. Который — из якоря НЕ извлекается. -/
+/-- **🟢 Bar 4 ⟹ twins OR cousins (proved):** above 2 both primes are odd,
+    gap ≤ 4 means `q = p + 2` or `q = p + 4`; the union `TwinLowers ∪ CousinLowers`
+    is infinite, hence at least one class is infinite. Which one — the anchor
+    does NOT reveal. -/
 theorem boundedGaps_four_twins_or_cousins (H : BoundedGaps 4) :
     TwinLowers.Infinite ∨ CousinLowers.Infinite := by
   have hunion : (TwinLowers ∪ CousinLowers).Infinite := by
@@ -200,10 +201,10 @@ theorem boundedGaps_four_twins_or_cousins (H : BoundedGaps 4) :
     exact absurd (hC hmem) (not_le.mpr hCp)
   exact Set.infinite_union.mp hunion
 
-/-- **🟢 Планка 6 ⟹ трихотомия Полиньяка (доказано):** зазор ≤ 6 между
-    нечётными простыми — это 2, 4 или 6; бесконечен хотя бы один из классов
-    {близнецы, кузены, секси}. Миниатюра следствия Мейнарда–Тао: при
-    `B = 246` то же с 123 чётными классами — и НИ ОДИН не выбирается. -/
+/-- **🟢 Bar 6 ⟹ Polignac trichotomy (proved):** gap ≤ 6 between odd primes
+    is 2, 4, or 6; at least one of the classes {twins, cousins, sexy} is infinite.
+    A miniature of the Maynard–Tao corollary: for `B = 246` the same holds with
+    123 even classes — and NOT ONE is chosen. -/
 theorem boundedGaps_six_polignac_trichotomy (H : BoundedGaps 6) :
     TwinLowers.Infinite ∨ CousinLowers.Infinite ∨ SexyLowers.Infinite := by
   have hunion : (TwinLowers ∪ (CousinLowers ∪ SexyLowers)).Infinite := by
@@ -224,15 +225,15 @@ theorem boundedGaps_six_polignac_trichotomy (H : BoundedGaps 6) :
   · exact Or.inl h
   · exact Or.inr (Set.infinite_union.mp h)
 
-/-! ### Честность -/
+/-! ### Honesty -/
 
-/-- **ЧЕСТНОСТЬ (охват):** спуск от `B = 246` к `B = 2` здесь НЕ утверждается
-    и ниоткуда не следует: монотонность `boundedGaps_mono` работает только
-    вверх по планке. `MaynardTaoAnchor` близнецов НЕ влечёт. Что математика
-    должна предъявить для спуска: уровень распределения простых за пределами
-    Bombieri–Vinogradov (Elliott–Halberstam даёт B = 12, обобщённая EH —
-    B = 6; ниже 6 сита блокирует parity problem Сельберга). Ничего из этого
-    в mathlib v4.31 нет. -/
+/-- **HONESTY (scope):** the descent from `B = 246` to `B = 2` is NOT claimed
+    here and follows from nowhere: monotonicity `boundedGaps_mono` works only
+    upward in the bar. `MaynardTaoAnchor` does NOT entail twins. What mathematics
+    must exhibit for the descent: a level of distribution of primes beyond
+    Bombieri–Vinogradov (Elliott–Halberstam gives B = 12, generalised EH —
+    B = 6; below 6 sieves are blocked by Selberg's parity problem). None of this
+    is in mathlib v4.31. -/
 abbrev NoDescentFrom246To2Claimed : Prop := True
 
 theorem noDescentFrom246To2Claimed : NoDescentFrom246To2Claimed := trivial

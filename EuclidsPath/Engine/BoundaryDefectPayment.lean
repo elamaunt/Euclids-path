@@ -1,13 +1,13 @@
 /-
-  BoundaryDefectPayment — boundary-дефект ⟹ engine ИЛИ невозможная оплата.
-  Источник: EuclidsPath_boundary_defect_payment_engine_patch (внешний аудит-кирпич).
-  Проза: prose/24_BoundaryDecomp.md (раздел «Boundary-дефект и платёжный ledger»).
+  BoundaryDefectPayment — boundary defect ⟹ engine OR impossible payment.
+  Source: EuclidsPath_boundary_defect_payment_engine_patch (external audit brick).
+  Prose: prose/24_BoundaryDecomp.md (section "Boundary defect and the payment ledger").
 
-  Локализует первый материальный дефект после BoundaryExit: `¬Clean A n` разворачивается в
-  конкретную арифметику `∃ q≤A prime, q ∣ 6n±1` (`SmallPrimeDefect`). Доказано: извлечение дефекта
-  (`boundaryExit_has_smallPrimeDefect`) и НЕВОЗМОЖНОСТЬ no-tax-оплаты (`noTaxPaymentCertificate_impossible`
-  через shifted-primorial из `PaymentLedger`). Единственный вход — дихотомия
-  `BoundaryDefectCreatesCycleOrImpossiblePayment` (дефект ⟹ цикл ∨ невозможная оплата). НЕ закрывает Step00.
+  Localises the first material defect after BoundaryExit: `¬Clean A n` unfolds into
+  concrete arithmetic `∃ q≤A prime, q ∣ 6n±1` (`SmallPrimeDefect`). Proved: extraction of the defect
+  (`boundaryExit_has_smallPrimeDefect`) and the IMPOSSIBILITY of a no-tax payment (`noTaxPaymentCertificate_impossible`
+  via the shifted primorial from `PaymentLedger`). The single entry point is the dichotomy
+  `BoundaryDefectCreatesCycleOrImpossiblePayment` (defect ⟹ cycle ∨ impossible payment). Does NOT close Step00.
 -/
 import EuclidsPath.Engine.CleanGraph
 import EuclidsPath.Engine.PaymentLedger

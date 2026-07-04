@@ -1,11 +1,11 @@
 /-
-  BoundaryLedgerCollision — коллизия ledger-ключа ⟹ цикл (последняя ветка после boundary-дефекта).
-  Источник: EuclidsPath_boundary_ledger_collision_cycle_patch (внешний аудит-кирпич).
-  Проза: prose/24_BoundaryDecomp.md (раздел «Ledger-коллизия ⟹ цикл»).
+  BoundaryLedgerCollision — ledger-key collision ⟹ cycle (the last branch after a boundary defect).
+  Source: EuclidsPath_boundary_ledger_collision_cycle_patch (external audit brick).
+  Prose: prose/24_BoundaryDecomp.md (section "Ledger collision ⟹ cycle").
 
-  Доказано: пиджонхол (∞ дефект-потоков → конечный ключ ⟹ коллизия), сжигание платёжной ветки через
-  `impossiblePayment_false`, и весь glue до `False` под локальной высотой. Единственный вход —
-  `BoundaryLedgerCollisionResolves` (коллизия ⟹ цикл ∨ невозможная оплата). НЕ закрывает Step00.
+  Proved: pigeonhole (∞ defect-flows → finite key ⟹ collision), burning the payment branch via
+  `impossiblePayment_false`, and all glue down to `False` under a local height. The single named input —
+  `BoundaryLedgerCollisionResolves` (collision ⟹ cycle ∨ impossible payment). Does NOT close Step00.
 -/
 import EuclidsPath.Engine.LabelledFanIn
 import EuclidsPath.Engine.BoundaryDefectPayment

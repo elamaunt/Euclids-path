@@ -1,73 +1,73 @@
 /-
-  AbcEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ abc-фронта (зеркало PNPFirstCause;
-  НЕ Коллатц-вариант: декрета у abc нет и не было — abc не входит в четыре границы
-  step00FirstCause, файл целиком зелёный). Зелёный фронт: Engine/AbcFront.lean
-  (Мейсон–Стотерс, радикал, красный гейт AbcConjecture).
+  AbcEpistemic — EPISTEMIC COMPLEMENT of the abc-front (mirror of PNPFirstCause;
+  NOT a Collatz variant: abc has no decree and never had one — abc is not among the four
+  boundaries of step00FirstCause, the file is fully green). Green front: Engine/AbcFront.lean
+  (Mason–Stothers, radical, red gate AbcConjecture).
 
-  ЧТО ЗДЕСЬ ЕСТЬ (четыре слоя):
+  WHAT IS HERE (four layers):
 
-  (а) 🟢 Радикальный инструментарий: `natRad_pow` (rad(n^k) = rad(n) при k ≠ 0),
-      `natRad_mul_of_coprime` (мультипликативность на взаимно простых),
-      `natRad_mul_dvd`, `natRad_prime` — тонкие обёртки над реальными
+  (a) 🟢 Radical toolkit: `natRad_pow` (rad(n^k) = rad(n) for k ≠ 0),
+      `natRad_mul_of_coprime` (multiplicativity on coprimes),
+      `natRad_mul_dvd`, `natRad_prime` — thin wrappers over the real
       `UniqueFactorizationMonoid.radical_pow` / `radical_mul` / `radical_mul_dvd`
-      (Mathlib/RingTheory/Radical/Basic.lean) через `Nat.coprime_iff_isRelPrime`;
-      `natRad_prime` идёт через `Nat.Prime.primeFactors` (без normalize-шага).
+      (Mathlib/RingTheory/Radical/Basic.lean) via `Nat.coprime_iff_isRelPrime`;
+      `natRad_prime` goes through `Nat.Prime.primeFactors` (without the normalize step).
 
-  (б) 🟢 НАИВНЫЙ abc (ε = 0) ЛОЖЕН — машинно: `abc_exponent_one_counterexample`
-      (тройка 1 + 8 = 9, rad(1·8·9) = rad(72) = 6 < 9) и НЕОГРАНИЧЕННАЯ поставка
-      качества `unboundedQualitySupplyExponentOne` — семейство a = 1,
-      c = 3^(2^(k+1)), b = c − 1 с индукцией 2^(k+3) ∣ 3^(2^(k+1)) − 1 (база
-      k = 0: 3² − 1 = 8 = 2³; CORR-сдвиг индекса учтён: при базе 2^(k+2) ∣ 3^(2^k)−1
-      утверждение ложно в k = 0) и мультипликативностью радикала. Это оплаченный
-      настоящей математикой зелёный факт: «c / rad(abc) неограничен» — точная
-      целочисленная противоположность полиномиального `polynomial_abc_no_escape`.
+  (b) 🟢 NAIVE abc (ε = 0) IS FALSE — mechanically: `abc_exponent_one_counterexample`
+      (triple 1 + 8 = 9, rad(1·8·9) = rad(72) = 6 < 9) and the UNBOUNDED quality
+      supply `unboundedQualitySupplyExponentOne` — family a = 1,
+      c = 3^(2^(k+1)), b = c − 1 with induction 2^(k+3) ∣ 3^(2^(k+1)) − 1 (base
+      k = 0: 3² − 1 = 8 = 2³; CORR index shift accounted for: with base 2^(k+2) ∣ 3^(2^k)−1
+      the statement is false at k = 0) and multiplicativity of the radical. This is a green
+      fact paid for by real mathematics: "c / rad(abc) is unbounded" — the exact
+      integer opposite of the polynomial `polynomial_abc_no_escape`.
 
-  (в) 🟢 `polynomial_flt_shadow` — именованное полиномиальное зеркало стрелки
-      abc ⟹ FLT: цитата РЕАЛЬНОЙ `Polynomial.flt` (mathlib выводит её из
-      `Polynomial.flt_catalan`, а ту — из Мейсона–Стотерса `Polynomial.abc`).
-      На полиномах стрелка зелёная; на целых та же стрелка заперта за красным
-      гейтом `AbcConjecture` — здесь она НЕ заявляется.
+  (c) 🟢 `polynomial_flt_shadow` — a named polynomial mirror of the arrow
+      abc ⟹ FLT: quote of the REAL `Polynomial.flt` (mathlib derives it from
+      `Polynomial.flt_catalan`, and that from Mason–Stothers `Polynomial.abc`).
+      Over polynomials the arrow is green; over the integers the same arrow is locked behind
+      the red gate `AbcConjecture` — here it is NOT claimed.
 
-  (г) 🟢 Эпистемическая связка (стиль PNPFirstCause): `LinearAbcLaw K` —
-      равномерный ЛИНЕЙНЫЙ закон качества при ε = 0 (∀ тройки, c ≤ K·rad(abc));
+  (d) 🟢 Epistemic linkage (PNPFirstCause style): `LinearAbcLaw K` —
+      uniform LINEAR quality law at ε = 0 (∀ triples, c ≤ K·rad(abc));
       `InternalisedAbcGround` (ground : ∃ K, LinearAbcLaw K / beyondOwnHorizon :
-      неограниченная поставка), `no_internalisedAbcGround`, `abcCause_unknowable`.
+      unbounded supply), `no_internalisedAbcGround`, `abcCause_unknowable`.
 
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКАЯ ЧЕСТНОСТЬ — ОБЯЗАТЕЛЬНАЯ ШАПКА (по вердикту скептика).            │
+  │  LOUD HONESTY — MANDATORY HEADER (per the skeptic's verdict).             │
   └───────────────────────────────────────────────────────────────────────────┘
 
-  1. ЭТО ЭПИСТЕМИКА НАИВНОЙ ФОРМЫ (ε = 0), А НЕ САМОГО abc. `ground` здесь — НЕ
-     открытый гейт `AbcConjecture`, а его наивное ε = 0-усиление (линейный закон
-     `∃ K, LinearAbcLaw K`). Связка говорит: «линейное внутреннее заземление
-     качества невозможно — вся открытость abc живёт в ε-слабине», и это ПРАВДА
-     СЛАБЕЕ, чем эпистемика самого AbcConjecture. Для настоящего гейта (ε > 0)
-     аналогичная связка ВЫРОЖДАЕТСЯ в тавтологию: зелёной (1+ε)-поставки не
-     существует и существовать не обязана — классически известны лишь
-     субполиномиальные побеги Стюарта–Тайдемана, а неограниченная (1+ε)-поставка
-     противоречила бы самому abc. Настоящий красный гейт `AbcConjecture` этим
-     файлом НЕ ТРОНУТ: не доказан, не опровергнут, не использован как факт.
+  1. THIS IS EPISTEMICS OF THE NAIVE FORM (ε = 0), NOT OF abc ITSELF. `ground` here is NOT
+     the open gate `AbcConjecture`, but its naive ε = 0-strengthening (the linear law
+     `∃ K, LinearAbcLaw K`). The linkage says: "linear internal grounding
+     of quality is impossible — all the openness of abc lives in the ε-slack", and this is a TRUTH
+     WEAKER than the epistemics of AbcConjecture itself. For the real gate (ε > 0)
+     the analogous linkage DEGENERATES into a tautology: a green (1+ε)-supply does not
+     exist and need not exist — classically only
+     subpolynomial escapes of Stewart–Tijdeman are known, and an unbounded (1+ε)-supply
+     would contradict abc itself. The real red gate `AbcConjecture` is NOT TOUCHED by this
+     file: not proven, not refuted, not used as a fact.
 
-  2. МАШИННАЯ ЧЕСТНОСТЬ ФОРМЫ (Чоула/PNP-стиль): поле `beyondOwnHorizon` —
-     ДОКАЗУЕМЫЙ зелёный факт, поэтому структура `InternalisedAbcGround`
-     семантически эквивалентна паре «закон ∧ ¬закон»
-     (`internalisedAbcGround_semantically_selfNegating`). Содержательность живёт
-     НЕ в форме структуры, а в том, чем контрадикция ОПЛАЧЕНА: индукция
-     2^(k+3) ∣ 3^(2^(k+1)) − 1 + мультипликативность радикала + честная
-     инстанциация-пижонхол `no_linearAbcLaw_of_unboundedSupply` — ровно механика
-     P/NP (`no_fullPayment_of_unboundedSupply`), а не голое P ∧ ¬P.
+  2. MACHINE HONESTY OF THE FORM (Chowla/PNP style): the field `beyondOwnHorizon` is a
+     PROVABLE green fact, so the structure `InternalisedAbcGround`
+     is semantically equivalent to the pair "law ∧ ¬law"
+     (`internalisedAbcGround_semantically_selfNegating`). The substance lives
+     NOT in the form of the structure, but in what the contradiction is PAID with: induction
+     2^(k+3) ∣ 3^(2^(k+1)) − 1 + multiplicativity of the radical + honest
+     pigeonhole instantiation `no_linearAbcLaw_of_unboundedSupply` — exactly the mechanics
+     of P/NP (`no_fullPayment_of_unboundedSupply`), not a bare P ∧ ¬P.
 
-  3. НЕ Гёдель (никакой независимости не заявляется — только
-     пижонхол-самоуничтожение внутреннего самообоснования), НЕ решение abc,
-     НЕ перенос Мейсона–Стотерса на ℤ (маркер `noPolynomialToIntegerAbcClaimed`
-     остаётся в силе).
+  3. NOT Gödel (no independence is claimed — only
+     pigeonhole self-destruction of internal self-grounding), NOT a solution of abc,
+     NOT a transfer of Mason–Stothers to ℤ (the marker `noPolynomialToIntegerAbcClaimed`
+     remains in force).
 
-  Никакого `sorry`, никакой новой аксиомы, никакого `native_decide`; карантин
-  (Engine/CausalClosureAxiom) НЕ импортируется. Всё — стандартная тройка
-  (`propext` / `Classical.choice` / `Quot.sound`). Таинт репозитория (47) этим
-  файлом НЕ меняется.
+  No `sorry`, no new axiom, no `native_decide`; the quarantine
+  (Engine/CausalClosureAxiom) is NOT imported. Everything is the standard triple
+  (`propext` / `Classical.choice` / `Quot.sound`). The repository taint (47) is NOT changed by
+  this file.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
+  Compilation: cd /f/Primes/Euclids-path &&
     "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/AbcEpistemic.lean
 -/
 
@@ -79,46 +79,46 @@ namespace EuclidsPath.AbcFront
 
 /-!
 ################################################################################
-  (а) 🟢 Радикальный инструментарий — pow / mul, тонкие обёртки над mathlib
+  (a) 🟢 Radical toolkit — pow / mul, thin wrappers over mathlib
 ################################################################################
 -/
 
-/-- **🟢 (ДОКАЗАНО): радикал степени** — `rad(a^k) = rad(a)` при `k ≠ 0`. Тонкая
-    обёртка над реальной `UniqueFactorizationMonoid.radical_pow`
+/-- **🟢 (PROVEN): radical of a power** — `rad(a^k) = rad(a)` for `k ≠ 0`. A thin
+    wrapper over the real `UniqueFactorizationMonoid.radical_pow`
     (Mathlib/RingTheory/Radical/Basic.lean). -/
 theorem natRad_pow (a : ℕ) {k : ℕ} (hk : k ≠ 0) : natRad (a ^ k) = natRad a :=
   UniqueFactorizationMonoid.radical_pow a hk
 
-/-- **🟢 (ДОКАЗАНО): мультипликативность радикала на взаимно простых** —
-    `rad(a·b) = rad(a)·rad(b)` при `Nat.Coprime a b`. Обёртка над реальной
-    `UniqueFactorizationMonoid.radical_mul` (та берёт `IsRelPrime` БЕЗ
-    nonzero-гипотез); мост копримальностей — `Nat.coprime_iff_isRelPrime`. -/
+/-- **🟢 (PROVEN): multiplicativity of the radical on coprimes** —
+    `rad(a·b) = rad(a)·rad(b)` for `Nat.Coprime a b`. A wrapper over the real
+    `UniqueFactorizationMonoid.radical_mul` (which takes `IsRelPrime` WITHOUT
+    nonzero hypotheses); the coprimality bridge is `Nat.coprime_iff_isRelPrime`. -/
 theorem natRad_mul_of_coprime {a b : ℕ} (h : Nat.Coprime a b) :
     natRad (a * b) = natRad a * natRad b :=
   UniqueFactorizationMonoid.radical_mul (Nat.coprime_iff_isRelPrime.mp h)
 
-/-- **🟢 (ДОКАЗАНО): субмультипликативность радикала (без всяких гипотез)** —
-    `rad(a·b) ∣ rad(a)·rad(b)`. Цитата `UniqueFactorizationMonoid.radical_mul_dvd`. -/
+/-- **🟢 (PROVEN): submultiplicativity of the radical (without any hypotheses)** —
+    `rad(a·b) ∣ rad(a)·rad(b)`. Quote of `UniqueFactorizationMonoid.radical_mul_dvd`. -/
 theorem natRad_mul_dvd (a b : ℕ) : natRad (a * b) ∣ natRad a * natRad b :=
   UniqueFactorizationMonoid.radical_mul_dvd
 
-/-- **🟢 (ДОКАЗАНО): радикал простого — оно само.** Идём через явную формулу
-    `natRad_eq_prod_primeFactors` и `Nat.Prime.primeFactors` (`p.primeFactors = {p}`),
-    минуя normalize-шаг `radical_of_prime` (CORR-замечание про `normalize = id` на ℕ). -/
+/-- **🟢 (PROVEN): the radical of a prime is itself.** We go through the explicit formula
+    `natRad_eq_prod_primeFactors` and `Nat.Prime.primeFactors` (`p.primeFactors = {p}`),
+    bypassing the normalize step `radical_of_prime` (CORR remark about `normalize = id` on ℕ). -/
 theorem natRad_prime {p : ℕ} (hp : p.Prime) : natRad p = p := by
   rw [natRad_eq_prod_primeFactors, hp.primeFactors, Finset.prod_singleton]
 
 /-!
 ################################################################################
-  (б) 🟢 Наивный abc (ε = 0) машинно ложен: контрпример и неограниченная поставка
+  (b) 🟢 Naive abc (ε = 0) is mechanically false: a counterexample and an unbounded supply
 ################################################################################
 -/
 
-/-- **🟢 (ДОКАЗАНО): наивный abc при ε = 0 ЛОЖЕН — конкретный контрпример.**
-    Тройка `1 + 8 = 9`: `rad(1·8·9) = rad(72) = rad(2³·3²) = 2·3 = 6 < 9`.
-    Граница `c ≤ rad(abc)` (без ε-запаса) опровергнута машинно: ε в красном
-    гейте `AbcConjecture` — не украшение. Вычисление радикала — целиком через
-    инструментарий (а), без `native_decide`. -/
+/-- **🟢 (PROVEN): naive abc at ε = 0 IS FALSE — a concrete counterexample.**
+    Triple `1 + 8 = 9`: `rad(1·8·9) = rad(72) = rad(2³·3²) = 2·3 = 6 < 9`.
+    The bound `c ≤ rad(abc)` (without ε-margin) is refuted mechanically: ε in the red
+    gate `AbcConjecture` is not decoration. The radical computation is done entirely through
+    toolkit (a), without `native_decide`. -/
 theorem abc_exponent_one_counterexample :
     ∃ a b c : ℕ, 0 < a ∧ 0 < b ∧ a + b = c ∧ Nat.Coprime a b ∧
       natRad (a * b * c) < c := by
@@ -132,12 +132,12 @@ theorem abc_exponent_one_counterexample :
     natRad_prime Nat.prime_two, natRad_prime Nat.prime_three]
   norm_num
 
-/-- **🟢 Двоичная накачка (индукция, несущая семейство):**
-    `3^(2^(k+1)) = 2^(k+3)·m + 1` с положительным `m`. База `k = 0`:
-    `3² = 2³·1 + 1`; шаг — квадрирование `(2^(k+3)·m + 1)² = 2^(k+4)·m' + 1` с
-    `m' = 2^(k+2)·m² + m`. Аддитивная форма выбрана вместо ℕ-вычитания.
-    CORR учтён: индекс сдвинут (у формы `2^(k+2) ∣ 3^(2^k) − 1` база `k = 0`
-    ложна: `4 ∤ 2`). -/
+/-- **🟢 Binary pumping (induction carrying the family):**
+    `3^(2^(k+1)) = 2^(k+3)·m + 1` with positive `m`. Base `k = 0`:
+    `3² = 2³·1 + 1`; step — squaring `(2^(k+3)·m + 1)² = 2^(k+4)·m' + 1` with
+    `m' = 2^(k+2)·m² + m`. The additive form is chosen instead of ℕ-subtraction.
+    CORR accounted for: the index is shifted (for the form `2^(k+2) ∣ 3^(2^k) − 1` the base `k = 0`
+    is false: `4 ∤ 2`). -/
 theorem three_pow_two_pow_eq_two_pow_mul_add_one (k : ℕ) :
     ∃ m : ℕ, 0 < m ∧ 3 ^ 2 ^ (k + 1) = 2 ^ (k + 3) * m + 1 := by
   induction k with
@@ -151,32 +151,32 @@ theorem three_pow_two_pow_eq_two_pow_mul_add_one (k : ℕ) :
     rw [hsplit, hEq]
     ring
 
-/-- **🟢 Делимостная форма накачки (формулировка CORR):**
-    `2^(k+3) ∣ 3^(2^(k+1)) − 1` при всех `k ≥ 0`. Прямое следствие аддитивной
-    формы `three_pow_two_pow_eq_two_pow_mul_add_one`. -/
+/-- **🟢 Divisibility form of the pumping (CORR formulation):**
+    `2^(k+3) ∣ 3^(2^(k+1)) − 1` for all `k ≥ 0`. A direct consequence of the additive
+    form `three_pow_two_pow_eq_two_pow_mul_add_one`. -/
 theorem two_pow_dvd_three_pow_two_pow_sub_one (k : ℕ) :
     2 ^ (k + 3) ∣ 3 ^ 2 ^ (k + 1) - 1 := by
   obtain ⟨m, -, hEq⟩ := three_pow_two_pow_eq_two_pow_mul_add_one k
   exact ⟨m, by rw [hEq, Nat.add_sub_cancel]⟩
 
-/-- **Неограниченная поставка качества при ε = 0** (именованный Prop): для
-    ВСЯКОГО линейного горизонта `K` существует честная abc-тройка, чьё качество
-    пробивает горизонт — `K·rad(a·b·c) < c`. Аналог `UnboundedCertificateSupply`
-    у P/NP: сторона `beyondOwnHorizon` эпистемической связки. -/
+/-- **Unbounded quality supply at ε = 0** (named Prop): for
+    EVERY linear horizon `K` there exists an honest abc-triple whose quality
+    breaks through the horizon — `K·rad(a·b·c) < c`. Analogue of `UnboundedCertificateSupply`
+    in P/NP: the `beyondOwnHorizon` side of the epistemic linkage. -/
 def UnboundedQualitySupplyExponentOne : Prop :=
   ∀ K : ℕ, ∃ a b c : ℕ, 0 < a ∧ 0 < b ∧ a + b = c ∧ Nat.Coprime a b ∧
     K * natRad (a * b * c) < c
 
-/-- **🟢 (ДОКАЗАНО): ПОСТАВКА КАЧЕСТВА ПРИ ε = 0 НЕОГРАНИЧЕНА.** Семейство
+/-- **🟢 (PROVEN): THE QUALITY SUPPLY AT ε = 0 IS UNBOUNDED.** Family
     `a = 1`, `c = 3^(2^(K+1))`, `b = c − 1 = 2^(K+3)·m`:
-    `rad(b·c) = rad(b)·3 ≤ 2m·3`, значит `K·rad(abc) ≤ 6Km < 2^(K+3)·m < c`
-    (последний строгий шаг — `6K < 2^(K+3)`, т.е. `K < 2^K`).
-    Оплачено индукцией `three_pow_two_pow_eq_two_pow_mul_add_one` и
-    мультипликативностью радикала — НЕ пустышка. Классика «c/rad(abc) неограничен»
-    становится зелёной: на ℤ при ε = 0 побег качества РЕАЛЕН — точная
-    противоположность полиномиального `polynomial_abc_no_escape`.
-    ЧЕСТНО: против настоящего abc (ε > 0) это семейство НЕ работает и работать
-    не обязано — вся открытость гейта живёт в ε-слабине. -/
+    `rad(b·c) = rad(b)·3 ≤ 2m·3`, hence `K·rad(abc) ≤ 6Km < 2^(K+3)·m < c`
+    (the last strict step is `6K < 2^(K+3)`, i.e. `K < 2^K`).
+    Paid for by the induction `three_pow_two_pow_eq_two_pow_mul_add_one` and
+    multiplicativity of the radical — NOT a stub. The classic "c/rad(abc) is unbounded"
+    becomes green: over ℤ at ε = 0 the quality escape is REAL — the exact
+    opposite of the polynomial `polynomial_abc_no_escape`.
+    HONESTLY: against real abc (ε > 0) this family does NOT work and need not
+    — all the openness of the gate lives in the ε-slack. -/
 theorem unboundedQualitySupplyExponentOne : UnboundedQualitySupplyExponentOne := by
   intro K
   obtain ⟨m, hm, hEq⟩ := three_pow_two_pow_eq_two_pow_mul_add_one K
@@ -184,7 +184,7 @@ theorem unboundedQualitySupplyExponentOne : UnboundedQualitySupplyExponentOne :=
     mul_pos (pow_pos (by norm_num) (K + 3)) hm, ?_,
     Nat.coprime_one_left _, ?_⟩
   · rw [hEq]; exact Nat.add_comm 1 _
-  · -- K · rad(1·b·c) < c для b = 2^(K+3)·m, c = 3^(2^(K+1)) = b + 1
+  · -- K · rad(1·b·c) < c for b = 2^(K+3)·m, c = 3^(2^(K+1)) = b + 1
     have hbc : Nat.Coprime (2 ^ (K + 3) * m) (3 ^ 2 ^ (K + 1)) := by
       rw [hEq]
       exact Nat.coprime_self_add_right.mpr (Nat.coprime_one_right _)
@@ -193,7 +193,7 @@ theorem unboundedQualitySupplyExponentOne : UnboundedQualitySupplyExponentOne :=
         natRad_prime Nat.prime_three]
     have h2rad : natRad (2 ^ (K + 3)) = 2 := by
       rw [natRad_pow 2 (by omega : K + 3 ≠ 0), natRad_prime Nat.prime_two]
-    -- rad(b) ≤ 2·m: субмультипликативность + rad(2^(K+3)) = 2 + rad(m) ≤ m
+    -- rad(b) ≤ 2·m: submultiplicativity + rad(2^(K+3)) = 2 + rad(m) ≤ m
     have hbrad : natRad (2 ^ (K + 3) * m) ≤ 2 * m := by
       have hd : natRad (2 ^ (K + 3) * m) ∣ natRad (2 ^ (K + 3)) * natRad m :=
         natRad_mul_dvd _ _
@@ -201,7 +201,7 @@ theorem unboundedQualitySupplyExponentOne : UnboundedQualitySupplyExponentOne :=
       have hle : natRad (2 ^ (K + 3) * m) ≤ 2 * natRad m :=
         Nat.le_of_dvd (mul_pos (by norm_num) (natRad_pos m)) hd
       exact hle.trans (Nat.mul_le_mul (Nat.le_refl 2) (natRad_le_self hm.ne'))
-    -- строгий шаг горизонта: 6K < 2^(K+3) (из K < 2^K)
+    -- strict horizon step: 6K < 2^(K+3) (from K < 2^K)
     have h6K : 6 * K < 2 ^ (K + 3) := by
       have h1 : K < 2 ^ K := Nat.lt_two_pow_self
       calc 6 * K ≤ 8 * K := Nat.mul_le_mul (by norm_num) (Nat.le_refl K)
@@ -218,7 +218,7 @@ theorem unboundedQualitySupplyExponentOne : UnboundedQualitySupplyExponentOne :=
 
 /-!
 ################################################################################
-  (в) 🟢 Полиномиальное зеркало стрелки abc ⟹ FLT
+  (c) 🟢 Polynomial mirror of the arrow abc ⟹ FLT
 ################################################################################
 -/
 
@@ -226,17 +226,17 @@ section PolynomialShadow
 
 open Polynomial
 
-/-- **🟢 ТЕНЬ FLT НА ПОЛИНОМАХ (ДОКАЗАНО; полиномиальное зеркало стрелки
-    abc ⟹ FLT).** Над полем `k` с `(n : k) ≠ 0`, `n ≥ 3`: взаимно простые
-    ненулевые `a, b, c : k[X]` с `a^n + b^n = c^n` вынуждены быть константами.
-    Чистая цитата РЕАЛЬНОЙ `Polynomial.flt` (Mathlib/NumberTheory/FLT/Polynomial.lean);
-    mathlib выводит её из `Polynomial.flt_catalan`, а ту — из Мейсона–Стотерса
-    `Polynomial.abc` (наш зелёный якорь `polynomial_abc_shadow`).
-    ЧЕСТНО: на полиномах стрелка «abc-мир ⟹ FLT» зелёная; на ℤ та же стрелка
-    заперта за красным гейтом `AbcConjecture` и здесь НЕ заявляется
-    (`noPolynomialToIntegerAbcClaimed`). Первый мост abc-фронта к соседней
-    FLT-ветви (`BealFront.polynomial_fermat_catalan_shadow` — каталановская форма;
-    здесь — именно FLT-спецслучай). -/
+/-- **🟢 FLT SHADOW OVER POLYNOMIALS (PROVEN; polynomial mirror of the arrow
+    abc ⟹ FLT).** Over a field `k` with `(n : k) ≠ 0`, `n ≥ 3`: coprime
+    nonzero `a, b, c : k[X]` with `a^n + b^n = c^n` are forced to be constants.
+    A pure quote of the REAL `Polynomial.flt` (Mathlib/NumberTheory/FLT/Polynomial.lean);
+    mathlib derives it from `Polynomial.flt_catalan`, and that from Mason–Stothers
+    `Polynomial.abc` (our green anchor `polynomial_abc_shadow`).
+    HONESTLY: over polynomials the arrow "abc-world ⟹ FLT" is green; over ℤ the same arrow
+    is locked behind the red gate `AbcConjecture` and here it is NOT claimed
+    (`noPolynomialToIntegerAbcClaimed`). The first bridge of the abc-front to the neighbouring
+    FLT-branch (`BealFront.polynomial_fermat_catalan_shadow` — the Catalan form;
+    here — specifically the FLT special case). -/
 theorem polynomial_flt_shadow
     {k : Type*} [Field k]
     {n : ℕ} (hn : 3 ≤ n) (chn : (n : k) ≠ 0)
@@ -249,23 +249,23 @@ end PolynomialShadow
 
 /-!
 ################################################################################
-  (г) 🟢 Эпистемическая связка (стиль PNPFirstCause) — для НАИВНОЙ ε = 0-формы
+  (d) 🟢 Epistemic linkage (PNPFirstCause style) — for the NAIVE ε = 0-form
 ################################################################################
 -/
 
 namespace Epistemic
 
-/-- **Равномерный линейный закон качества при ε = 0** (наивное ε = 0-усиление
-    abc): ОДНА константа `K` линейно заземляет все взаимно простые тройки —
-    `c ≤ K·rad(a·b·c)`. ЧЕСТНО: это НЕ гейт `AbcConjecture` (там `K(ε)` при
-    показателе `1 + ε`, ε > 0) — это его наивная линейная форма, и ровно она
-    ниже опровергается зелёно. -/
+/-- **Uniform linear quality law at ε = 0** (naive ε = 0-strengthening
+    of abc): ONE constant `K` linearly grounds all coprime triples —
+    `c ≤ K·rad(a·b·c)`. HONESTLY: this is NOT the gate `AbcConjecture` (there `K(ε)` at
+    exponent `1 + ε`, ε > 0) — it is its naive linear form, and exactly that
+    is refuted green below. -/
 def LinearAbcLaw (K : ℕ) : Prop :=
   ∀ a b c : ℕ, 0 < a → 0 < b → a + b = c → Nat.Coprime a b →
     c ≤ K * natRad (a * b * c)
 
-/-- **🟢 (ДОКАЗАНО): наивный закон `K = 1` опровергнут одним свидетелем** —
-    тройкой `1 + 8 = 9` из `abc_exponent_one_counterexample`. -/
+/-- **🟢 (PROVEN): the naive law `K = 1` is refuted by a single witness** —
+    the triple `1 + 8 = 9` from `abc_exponent_one_counterexample`. -/
 theorem naiveAbcLaw_refuted : ¬ LinearAbcLaw 1 := by
   intro hlaw
   obtain ⟨a, b, c, ha, hb, hsum, hcop, hlt⟩ := abc_exponent_one_counterexample
@@ -273,11 +273,11 @@ theorem naiveAbcLaw_refuted : ¬ LinearAbcLaw 1 := by
   rw [one_mul] at hle
   exact absurd hle (not_le.mpr hlt)
 
-/-- **🟢 ПИЖОНХОЛ-ИНСТАНЦИАЦИЯ (несущая, зеркало `no_fullPayment_of_unboundedSupply`
-    у P/NP):** неограниченная поставка качества несовместима с ЛЮБЫМ равномерным
-    линейным законом — поставка в горизонте `K` бьёт закон `K` в лоб.
-    Оба аргумента грузонесущие: лемма параметризована поставкой (CORR-стиль
-    Чоулы), а не зашита под доказанный факт. -/
+/-- **🟢 PIGEONHOLE INSTANTIATION (load-bearing, mirror of `no_fullPayment_of_unboundedSupply`
+    in P/NP):** the unbounded quality supply is incompatible with ANY uniform
+    linear law — the supply at horizon `K` hits law `K` head-on.
+    Both arguments are load-bearing: the lemma is parameterized by the supply (Chowla's CORR
+    style), not hardwired under a proven fact. -/
 theorem no_linearAbcLaw_of_unboundedSupply
     (hsup : UnboundedQualitySupplyExponentOne)
     (hlaw : ∃ K : ℕ, LinearAbcLaw K) : False := by
@@ -285,71 +285,71 @@ theorem no_linearAbcLaw_of_unboundedSupply
   obtain ⟨a, b, c, ha, hb, hsum, hcop, hlt⟩ := hsup K
   exact absurd (hK a b c ha hb hsum hcop) (not_le.mpr hlt)
 
-/-- **🟢 (ДОКАЗАНО): линейного закона качества НЕТ ни при каком `K`** —
-    оплачено доказанной поставкой `unboundedQualitySupplyExponentOne`.
-    ЧЕСТНО: опровергнута НАИВНАЯ (ε = 0) форма; настоящий гейт `AbcConjecture`
-    (ε > 0) не тронут — там такой поставки нет и быть не обязано. -/
+/-- **🟢 (PROVEN): there is NO linear quality law for any `K`** —
+    paid for by the proven supply `unboundedQualitySupplyExponentOne`.
+    HONESTLY: the NAIVE (ε = 0) form is refuted; the real gate `AbcConjecture`
+    (ε > 0) is not touched — there such a supply does not exist and need not. -/
 theorem no_linearAbcLaw (K : ℕ) : ¬ LinearAbcLaw K :=
   fun hK => no_linearAbcLaw_of_unboundedSupply
     unboundedQualitySupplyExponentOne ⟨K, hK⟩
 
-/-- **Внутреннее самообоснование линейного заземления качества.** Машина
-    одновременно (a) держит равномерный линейный закон качества для КАКОГО-ТО
-    горизонта `K` (`ground`) и (b) видит собственную неограниченную поставку
-    качества за ВСЯКИЙ горизонт (`beyondOwnHorizon`).
-    ЧЕСТНОСТЬ (обязательная, Чоула/PNP-стиль): `beyondOwnHorizon` — ДОКАЗУЕМЫЙ
-    зелёный факт (`unboundedQualitySupplyExponentOne`), поэтому структура
-    семантически эквивалентна паре «закон ∧ ¬закон»
-    (`internalisedAbcGround_semantically_selfNegating` ниже). Содержательность
-    живёт в ОПЛАТЕ контрадикции: индукция `2^(k+3) ∣ 3^(2^(k+1)) − 1` +
-    мультипликативность радикала + пижонхол `no_linearAbcLaw_of_unboundedSupply`.
-    И это эпистемика НАИВНОЙ ε = 0-формы: про сам `AbcConjecture` — ничего. -/
+/-- **Internal self-grounding of linear quality grounding.** The machine
+    simultaneously (a) holds a uniform linear quality law for SOME
+    horizon `K` (`ground`) and (b) sees its own unbounded quality
+    supply past EVERY horizon (`beyondOwnHorizon`).
+    HONESTY (mandatory, Chowla/PNP style): `beyondOwnHorizon` is a PROVABLE
+    green fact (`unboundedQualitySupplyExponentOne`), so the structure
+    is semantically equivalent to the pair "law ∧ ¬law"
+    (`internalisedAbcGround_semantically_selfNegating` below). The substance
+    lives in the PAYMENT of the contradiction: induction `2^(k+3) ∣ 3^(2^(k+1)) − 1` +
+    multiplicativity of the radical + pigeonhole `no_linearAbcLaw_of_unboundedSupply`.
+    And this is epistemics of the NAIVE ε = 0-form: about `AbcConjecture` itself — nothing. -/
 structure InternalisedAbcGround : Prop where
   ground : ∃ K : ℕ, LinearAbcLaw K
   beyondOwnHorizon : UnboundedQualitySupplyExponentOne
 
-/-- «Внутреннее знание причины abc» = внутреннее самообоснование линейного
-    заземления качества (наивная ε = 0-форма). -/
+/-- "Internal knowledge of the abc cause" = internal self-grounding of linear
+    quality grounding (naive ε = 0-form). -/
 abbrev InternalKnowledgeOfAbcCause : Prop := InternalisedAbcGround
 
-/-- **🟢 Самообоснование самоуничтожается** — оба поля грузонесущие: `ground`
-    даёт горизонт `K`, `beyondOwnHorizon` бьёт ровно его (пижонхол
-    `no_linearAbcLaw_of_unboundedSupply`, НЕ ex falso). ЗЕЛЁНАЯ. -/
+/-- **🟢 Self-grounding self-destructs** — both fields are load-bearing: `ground`
+    gives horizon `K`, `beyondOwnHorizon` hits exactly it (pigeonhole
+    `no_linearAbcLaw_of_unboundedSupply`, NOT ex falso). GREEN. -/
 theorem no_internalisedAbcGround : InternalisedAbcGround → False :=
   fun H => no_linearAbcLaw_of_unboundedSupply H.beyondOwnHorizon H.ground
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `pnpCause_unknowable`,
-    `collatzCause_unknowable`, `twinNode_unknowable`): внутреннее линейное
-    самообоснование качества невозможно. ЗЕЛЁНАЯ, без гипотез.
-    ЧЕСТНАЯ ОГОВОРКА (обязательная): это эпистемика НАИВНОЙ формы (ε = 0);
-    настоящий abc-гейт (`AbcConjecture`, ε > 0) этим НЕ решается, НЕ
-    опровергается и никак НЕ затрагивается — для него аналогичная связка
-    вырождается (Стюарт–Тайдеман: известны лишь субполиномиальные побеги;
-    неограниченная (1+ε)-поставка противоречила бы самому abc). -/
+/-- **"CANNOT BE KNOWN FROM INSIDE" — THEOREM** (mirror of `pnpCause_unknowable`,
+    `collatzCause_unknowable`, `twinNode_unknowable`): internal linear
+    self-grounding of quality is impossible. GREEN, without hypotheses.
+    HONEST CAVEAT (mandatory): this is epistemics of the NAIVE form (ε = 0);
+    the real abc-gate (`AbcConjecture`, ε > 0) is NOT solved by this, NOT
+    refuted and in no way touched — for it the analogous linkage
+    degenerates (Stewart–Tijdeman: only subpolynomial escapes are known;
+    an unbounded (1+ε)-supply would contradict abc itself). -/
 theorem abcCause_unknowable : ¬ InternalKnowledgeOfAbcCause :=
   no_internalisedAbcGround
 
-/-- **Самообоснование — семантически «закон ∧ ¬закон» (машинная честность,
-    зеркало `internalisedPNPGround_semantically_selfNegating`):** поскольку
-    `beyondOwnHorizon` доказуем, поля — доказуемо точные дополнения, и структура
-    эквивалентна контрадикторной паре. Содержательность живёт НЕ в форме, а в
-    оплате: семейство `3^(2^(k+1))` + мультипликативность радикала + пижонхол.
-    Обратная стрелка — ex falso (честно). -/
+/-- **Self-grounding is semantically "law ∧ ¬law" (machine honesty,
+    mirror of `internalisedPNPGround_semantically_selfNegating`):** since
+    `beyondOwnHorizon` is provable, the fields are provably exact complements, and the structure
+    is equivalent to the contradictory pair. The substance lives NOT in the form, but in the
+    payment: family `3^(2^(k+1))` + multiplicativity of the radical + pigeonhole.
+    The reverse arrow is ex falso (honestly). -/
 theorem internalisedAbcGround_semantically_selfNegating :
     InternalisedAbcGround ↔
       ((∃ K : ℕ, LinearAbcLaw K) ∧ ¬ (∃ K : ℕ, LinearAbcLaw K)) :=
   ⟨fun H => ⟨H.ground, no_linearAbcLaw_of_unboundedSupply H.beyondOwnHorizon⟩,
    fun h => (h.2 h.1).elim⟩
 
-/-- Итоговый эпистемический статус abc-горизонта (зеркало
-    `pnp_locked_behind_engine_status`, БЕЗ декрет-конъюнкта — у abc границы в
-    `step00FirstCause` нет и не должно быть): поставка качества при ε = 0
-    неограниченна (теорема) / линейного закона нет ни при каком `K` (теорема) /
-    внутреннее самообоснование невозможно (теорема) / импликация «полиномиальный
-    abc ⟹ целочисленный» честно НЕ заявлена (маркер; сам красный гейт
-    `AbcConjecture` живёт в AbcFront и остаётся ОТКРЫТЫМ). Полиномиальная
-    сторона пары — `polynomial_abc_no_escape` (побег запрещён) против
-    `unboundedQualitySupplyExponentOne` (на ℤ при ε = 0 побег РЕАЛЕН). -/
+/-- Final epistemic status of the abc-horizon (mirror of
+    `pnp_locked_behind_engine_status`, WITHOUT the decree conjunct — abc has no boundary in
+    `step00FirstCause` and should not have one): the quality supply at ε = 0 is
+    unbounded (theorem) / there is no linear law for any `K` (theorem) /
+    internal self-grounding is impossible (theorem) / the implication "polynomial
+    abc ⟹ integer" is honestly NOT claimed (marker; the red gate
+    `AbcConjecture` itself lives in AbcFront and remains OPEN). The polynomial
+    side of the pair is `polynomial_abc_no_escape` (escape forbidden) against
+    `unboundedQualitySupplyExponentOne` (over ℤ at ε = 0 escape is REAL). -/
 theorem abc_locked_behind_engine_status :
     UnboundedQualitySupplyExponentOne ∧
     (∀ K : ℕ, ¬ LinearAbcLaw K) ∧
@@ -362,25 +362,25 @@ end Epistemic
 
 /-!
 ################################################################################
-  ИТОГ (LOUD HONEST)
+  SUMMARY (LOUD HONEST)
 
-  🟢 ДОКАЗАНО ЗДЕСЬ (стандартная тройка аксиом):
-     · инструментарий: natRad_pow, natRad_mul_of_coprime, natRad_mul_dvd, natRad_prime;
-     · наивный abc (ε = 0) ложен: abc_exponent_one_counterexample (1+8=9),
-       наивный закон K=1 опровергнут (naiveAbcLaw_refuted);
-     · поставка качества неограниченна: unboundedQualitySupplyExponentOne
-       (семейство 3^(2^(k+1)), индукция two_pow_dvd_three_pow_two_pow_sub_one);
-     · линейного закона нет ни при каком K (no_linearAbcLaw);
-     · полиномиальное зеркало abc ⟹ FLT: polynomial_flt_shadow (цитата Polynomial.flt);
-     · эпистемика наивной формы: no_internalisedAbcGround, abcCause_unknowable,
+  🟢 PROVEN HERE (standard axiom triple):
+     · toolkit: natRad_pow, natRad_mul_of_coprime, natRad_mul_dvd, natRad_prime;
+     · naive abc (ε = 0) is false: abc_exponent_one_counterexample (1+8=9),
+       naive law K=1 refuted (naiveAbcLaw_refuted);
+     · quality supply is unbounded: unboundedQualitySupplyExponentOne
+       (family 3^(2^(k+1)), induction two_pow_dvd_three_pow_two_pow_sub_one);
+     · no linear law for any K (no_linearAbcLaw);
+     · polynomial mirror abc ⟹ FLT: polynomial_flt_shadow (quote of Polynomial.flt);
+     · epistemics of the naive form: no_internalisedAbcGround, abcCause_unknowable,
        internalisedAbcGround_semantically_selfNegating, abc_locked_behind_engine_status.
 
-  🔴 НЕ ТРОНУТО (открыто, как и было): AbcConjecture (целочисленный abc, ε > 0).
-     Эпистемическая связка выше — про НАИВНУЮ ε = 0-форму; для настоящего гейта
-     она вырождается (Стюарт–Тайдеман), и мы этого НЕ скрываем.
+  🔴 NOT TOUCHED (open, as before): AbcConjecture (integer abc, ε > 0).
+     The epistemic linkage above is about the NAIVE ε = 0-form; for the real gate
+     it degenerates (Stewart–Tijdeman), and we do NOT hide this.
 
-  Никакого sorry / native_decide / новой аксиомы; карантин не импортирован;
-  таинт 47 неизменен.
+  No sorry / native_decide / new axiom; the quarantine is not imported;
+  taint 47 is unchanged.
 ################################################################################
 -/
 

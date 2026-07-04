@@ -1,47 +1,47 @@
 /-
-  GoldbachLegendreEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ Гольдбаха и Лежандра
-  (программа Яруса 1: «решить изнутри = построить вечный двигатель»).
-  Эталоны: PNPFirstCause (содержательная пара), CollatzFirstCause (пост-мортем).
-  Фронты: GoldbachManifestationFront (G3⁺, G8), LegendreDesertFront (LG3⁺, LG8,
-  безусловный Бертран no_desert_doubles).
+  GoldbachLegendreEpistemic — EPISTEMIC COMPLEMENT of Goldbach and Legendre
+  (Tier 1 programme: "to solve from within = to build a perpetual engine").
+  Reference models: PNPFirstCause (substantive pair), CollatzFirstCause (post-mortem).
+  Fronts: GoldbachManifestationFront (G3⁺, G8), LegendreDesertFront (LG3⁺, LG8,
+  unconditional Bertrand no_desert_doubles).
 
-  ЧТО ЭТО. «Внутреннее самообоснование решения» для двух объект-свидетельных
-  фронтов зоопарка: якорь масштаба + сведённые книги + манифестация СВОЕГО
-  свидетеля. Самообоснование самоуничтожается (`no_internalised*Ground`), потому
-  «узнать причину изнутри нельзя» — теоремы `goldbachCause_unknowable` /
-  `legendreCause_unknowable`; развилки `*_no_internal_decision_without_engine`
-  показывают: опровергнуть = предъявить двигатель, самообосновать =
-  самоуничтожиться, решает лишь внешняя граница + внешняя decide-проверка.
-  Общая сводка — `goldbachLegendre_locked_behind_engine_status`.
+  WHAT THIS IS. "Internal self-justification of a solution" for two witness-object
+  fronts of the arithmetic zoo: scale anchor + ledger settled + manifestation of
+  ONE'S OWN witness. Self-justification self-destructs (`no_internalised*Ground`),
+  so "the cause cannot be known from within" — theorems `goldbachCause_unknowable` /
+  `legendreCause_unknowable`; the trilemmas `*_no_internal_decision_without_engine`
+  show: to refute = to exhibit an engine, to self-justify =
+  to self-destruct, only the external boundary + external decide-check decides.
+  Overall summary — `goldbachLegendre_locked_behind_engine_status`.
 
-  ЧЕМ ОПЛАЧЕНА СОДЕРЖАТЕЛЬНОСТЬ (честно, по вердикту скептика). Противоречие
-  в `no_internalised*Ground` поставляет НЕ форма P ∧ ¬P, а ЗЕЛЁНАЯ двигательная
-  теорема `no_deviationFlowSupply_at_resolved_scale` (семья → коллизия →
-  двигатель-свидетель → убит lexRank'ом; НЕ ex falso), и форма поставки непуста:
-  `deviationFlowSupply_of_twinBound` строит её зелёно. ЯКОРЬ МАСШТАБА (CORR):
-  поле `ground` («книги сведены») гейчено якорем `anchored` — масштаб НЕ НИЖЕ
-  свидетеля (`V.1 ≤ M0` у Гольдбаха, `V.1 ^ 2 ≤ M0` у Лежандра); без якоря
-  манифестация к проекции неприменима.
+  WHAT PAYS FOR SUBSTANTIVENESS (honestly, by the skeptic's verdict). The contradiction
+  in `no_internalised*Ground` is supplied NOT by the form P ∧ ¬P, but by the GREEN engine
+  theorem `no_deviationFlowSupply_at_resolved_scale` (family → collision →
+  engine-witness → killed by lexRank; NOT ex falso), and the supply form is non-empty:
+  `deviationFlowSupply_of_twinBound` constructs it greenly. SCALE ANCHOR (CORR):
+  the `ground` field ("ledger settled") is gated by the anchor `anchored` — the scale is
+  NO LOWER than the witness (`V.1 ≤ M0` for Goldbach, `V.1 ^ 2 ≤ M0` for Legendre);
+  without the anchor the manifestation cannot be applied to the projection.
 
-  ДВЕ ЧЕСТНЫЕ ДЕГРАДАЦИИ ПРОТИВ ЭТАЛОНОВ (раскрыто): (а) поле
-  `beyondOwnHorizon` — манифестация свидетеля ЧЕРЕЗ закон-определение и никогда
-  не инстанциируется зелёно (тип свидетелей ожидаемо ПУСТ); у PNP аналог
-  `concreteSupply_unbounded_smallScale` зелёно ИСТИНЕН — здесь слой слабее;
-  (б) Collatz-вариант ground := Law / beyondOwnHorizon := ¬Law был бы голым
-  P ∧ ¬P (у Коллатца тавтологичность была оплачена декретом `collatzBoundary`,
-  которого у зоопарка НЕТ по §17-вердикту) — здесь он НЕ используется.
+  TWO HONEST DEGRADATIONS AGAINST REFERENCE MODELS (disclosed): (a) the field
+  `beyondOwnHorizon` — manifestation of the witness THROUGH the law-definition and never
+  instantiated greenly (type of witnesses is expectedly EMPTY); for PNP the analogue
+  `concreteSupply_unbounded_smallScale` is greenly TRUE — this layer is weaker;
+  (b) the Collatz variant ground := Law / beyondOwnHorizon := ¬Law would be a bare
+  P ∧ ¬P (for Collatz the tautologousness was paid by the decree `collatzBoundary`,
+  which the zoo does NOT have per §17-verdict) — it is NOT used here.
 
-  ЧЕСТНОСТЬ. Это модель-внутренняя эпистемическая непознаваемость (как
-  `collatzCause_unknowable`/`pnpCause_unknowable`), а НЕ решение бинарного
-  Гольдбаха (1742) или Лежандра (1808) и НЕ Гёдель (никакой неполноты /
-  неподвижной точки — только двигательная стена). Сводка БЕЗ декрет-конъюнкта —
-  зеркало `pnp_locked_behind_engine_status`, а не collatz-варианта: полей
-  goldbach/legendre в Step00FirstCause нет (§17: серийность обесценила бы
-  карантин), граница входит только ГИПОТЕЗОЙ `TheStrictLastStep00Obligation`.
-  Twin-эпистемика живёт в CausalClosureAxiom §8 под именами
-  InternalisedStep00HorizonBoundary / InternalisedStep00OriginEvent (не Ground).
-  Модуль карантин НЕ импортирует; axiom/sorry/native_decide нет — ЦЕЛИКОМ
-  зелёный, таинт репозитория не меняется.
+  HONESTY. This is model-internal epistemic unknowability (like
+  `collatzCause_unknowable`/`pnpCause_unknowable`), and NOT a solution to binary
+  Goldbach (1742) or Legendre (1808) and NOT Gödel (no incompleteness /
+  fixed point — only the engine wall). The summary WITHOUT the decree-conjunct is
+  a mirror of `pnp_locked_behind_engine_status`, not of the Collatz variant: the fields
+  goldbach/legendre in Step00FirstCause are absent (§17: seriality would devalue the
+  quarantine), the boundary enters only as HYPOTHESIS `TheStrictLastStep00Obligation`.
+  Twin-epistemics lives in CausalClosureAxiom §8 under the names
+  InternalisedStep00HorizonBoundary / InternalisedStep00OriginEvent (not Ground).
+  The module does NOT import quarantine; no axiom/sorry/native_decide — ENTIRELY
+  green, the repository taint does not change.
 -/
 import EuclidsPath.Engine.GoldbachManifestationFront
 import EuclidsPath.Engine.LegendreDesertFront
@@ -54,18 +54,18 @@ namespace GeneratedFlowFormulation
 namespace Epistemic
 
 /-#############################################################################
-  §1. Гольдбах: внутреннее самообоснование и его самоуничтожение (🟢)
+  §1. Goldbach: internal self-justification and its self-destruction (🟢)
 #############################################################################-/
 
-/-- **Внутреннее самообоснование решения Гольдбаха.** Носитель одновременно
-    (a) ЯКОРИТ масштаб не ниже свидетеля (`anchored`, CORR: книги сведены на
-    масштабе не ниже самого нарушающего числа), (b) СВОДИТ книги (`ground` —
-    коллизии леджера разрешаются) и (c) несёт манифестацию СВОЕГО свидетеля
-    (`beyondOwnHorizon`). Форма содержательна не сама по себе: противоречие
-    поставляет зелёная `no_deviationFlowSupply_at_resolved_scale`, а непустота
-    формы поставки предъявлена `deviationFlowSupply_of_twinBound`. ЧЕСТНО:
-    `beyondOwnHorizon` — вера в закон-определение, зелёной инстанции у неё нет
-    (тип `GoldbachViolation` ожидаемо пуст) — слой слабее эталона PNP. -/
+/-- **Internal self-justification of the Goldbach solution.** The carrier simultaneously
+    (a) ANCHORS the scale no lower than the witness (`anchored`, CORR: ledger settled at
+    a scale no lower than the violating number itself), (b) SETTLES the ledger (`ground` —
+    ledger collisions are resolved) and (c) carries the manifestation of ITS OWN witness
+    (`beyondOwnHorizon`). The form is not substantive by itself: the contradiction is
+    supplied by the green `no_deviationFlowSupply_at_resolved_scale`, and the non-emptiness
+    of the supply form is exhibited by `deviationFlowSupply_of_twinBound`. HONESTLY:
+    `beyondOwnHorizon` — belief in the law-definition, it has no green instance
+    (the type `GoldbachViolation` is expectedly empty) — the layer is weaker than the PNP reference model. -/
 structure InternalisedGoldbachGround
     (V : EuclidsPath.GoldbachBranch.GoldbachViolation)
     {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop where
@@ -73,16 +73,16 @@ structure InternalisedGoldbachGround
   ground : SemanticExtendedFlowLedgerCollisionResolves proj
   beyondOwnHorizon : GoldbachViolationManifests V
 
-/-- «Внутреннее знание причины Гольдбаха» = внутреннее самообоснование. -/
+/-- "Internal knowledge of the Goldbach cause" = internal self-justification. -/
 abbrev InternalKnowledgeOfGoldbachCause
     (V : EuclidsPath.GoldbachBranch.GoldbachViolation)
     {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
   InternalisedGoldbachGround V proj
 
-/-- Самообоснование самоуничтожается: манифестация над сведёнными книгами (через
-    якорь) даёт поставку — но на разрешённом масштабе поставки НЕТ (зелёная
-    двигательная теорема `no_deviationFlowSupply_at_resolved_scale`, НЕ форма
-    P ∧ ¬P и НЕ ex falso). ЗЕЛЁНАЯ. -/
+/-- Self-justification self-destructs: manifestation over the settled ledger (through
+    the anchor) yields a supply — but at the resolved scale there IS NO supply (the green
+    engine theorem `no_deviationFlowSupply_at_resolved_scale`, NOT the form
+    P ∧ ¬P and NOT ex falso). GREEN. -/
 theorem no_internalisedGoldbachGround
     {V : EuclidsPath.GoldbachBranch.GoldbachViolation}
     {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0} :
@@ -90,21 +90,21 @@ theorem no_internalisedGoldbachGround
   fun H => no_deviationFlowSupply_at_resolved_scale proj H.ground
     (H.beyondOwnHorizon A M0 H.anchored proj H.ground)
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `pnpCause_unknowable` /
-    `collatzCause_unknowable`): внутреннее знание причины Гольдбаха невозможно.
-    НЕ решение гипотезы 1742 года и НЕ Гёдель — модель-внутренняя стена. -/
+/-- **"CANNOT BE KNOWN FROM WITHIN" — THEOREM** (mirror of `pnpCause_unknowable` /
+    `collatzCause_unknowable`): internal knowledge of the Goldbach cause is impossible.
+    NOT a solution to the 1742 conjecture and NOT Gödel — a model-internal wall. -/
 theorem goldbachCause_unknowable
     {V : EuclidsPath.GoldbachBranch.GoldbachViolation}
     {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0} :
     ¬ InternalKnowledgeOfGoldbachCause V proj :=
   no_internalisedGoldbachGround
 
-/-- **«Несёт двигатель» — ПОДЛИННАЯ КОНСТРУКЦИЯ (не ex falso):** из
-    самообоснования двигатель-свидетель строится КАК ОБЪЕКТ — та же цепь, что
-    в G3⁺ `goldbachViolation_carries_engine`, но топливом служит манифестация
-    ОДНОГО свидетеля из поля `beyondOwnHorizon` (а не весь закон). Вместе с
-    `no_internalisedGoldbachGround` это и есть цена: самообоснование стоит
-    вечного двигателя, которого нет (`no_someConcreteEuclideanEngine`). -/
+/-- **"Carries an engine" — GENUINE CONSTRUCTION (not ex falso):** from
+    self-justification an engine-witness is built AS AN OBJECT — the same chain as
+    in G3⁺ `goldbachViolation_carries_engine`, but fuelled by the manifestation of
+    ONE witness from the field `beyondOwnHorizon` (not the whole law). Together with
+    `no_internalisedGoldbachGround` this is the price: self-justification costs
+    a perpetual engine, which does not exist (`no_someConcreteEuclideanEngine`). -/
 theorem internalisedGoldbachGround_builds_engine
     {V : EuclidsPath.GoldbachBranch.GoldbachViolation}
     {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0} :
@@ -117,18 +117,18 @@ theorem internalisedGoldbachGround_builds_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — развилка Гольдбаха (зеркало
+/-- **"SOLUTION LOCKED BEHIND THE ENGINE" — Goldbach trilemma (mirror of
     `pnp_no_internal_decision_without_engine`):**
-    (1) ОПРОВЕРГНУТЬ изнутри: свидетель + закон + сведённые книги на якорном
-        масштабе манифестируют двигатель КАК ОБЪЕКТ (G3⁺; условно на
-        закон-определение — безусловного аналога
-        `nonHalting_carries_perpetual_engine` у этого фронта нет и быть не
-        может без решения открытой задачи);
-    (2) САМООБОСНОВАТЬ изнутри — самоуничтожается (`no_internalisedGoldbachGround`);
-    (3) РЕШАЕТ только ВНЕШНЯЯ граница (гипотеза `TheStrictLastStep00Obligation`,
-        декретной инстанциации НЕТ — §17) + закон: тогда гипотеза Гольдбаха
-        верна (G3-форма, стена `no_someConcreteEuclideanEngine` уже вложена).
-    НЕ утверждается гёделевская независимость и НЕ решение Гольдбаха. -/
+    (1) REFUTE from within: witness + law + settled ledger at the anchor
+        scale manifest an engine AS AN OBJECT (G3⁺; conditional on the
+        law-definition — there is no unconditional analogue of
+        `nonHalting_carries_perpetual_engine` for this front and there cannot be
+        one without solving the open problem);
+    (2) SELF-JUSTIFY from within — self-destructs (`no_internalisedGoldbachGround`);
+    (3) Only the EXTERNAL boundary decides (hypothesis `TheStrictLastStep00Obligation`,
+        no decree instantiation — §17) + law: then the Goldbach conjecture
+        holds (G3-form, the wall `no_someConcreteEuclideanEngine` is already embedded).
+    Gödelian independence is NOT claimed and this is NOT a solution to Goldbach. -/
 theorem goldbach_no_internal_decision_without_engine :
     (GoldbachManifestationLaw →
       ∀ (V : EuclidsPath.GoldbachBranch.GoldbachViolation) (A M0 : ℕ),
@@ -148,13 +148,13 @@ theorem goldbach_no_internal_decision_without_engine :
       goldbachConjecture_of_manifestation_and_boundary
         no_someConcreteEuclideanEngine hBoundary hLaw⟩
 
-/-- **«ПРОВЕРКА, А НЕ ВЫВОД» — сильнейшая рука серии (зеркало
-    `pnp_verification_not_derivation`):** (1) внутреннее знание причины
-    невозможно (теорема); (2) проверка — БУКВАЛЬНО `decide`: все чётные
-    4..50 разложены машинно (`goldbach_upTo_52`, поточечная разрешимость
-    `GoldbachRep`); (3) потому всякий свидетель ≥ 52 (G8) — решение находимо
-    ровно настолько далеко, насколько досмотрена проверка (литературные
-    4·10^18 НЕ формализованы — зелёно только это). -/
+/-- **"VERIFICATION, NOT DERIVATION" — the strongest arm of the series (mirror of
+    `pnp_verification_not_derivation`):** (1) internal knowledge of the cause is
+    impossible (theorem); (2) verification — LITERALLY `decide`: all even numbers
+    4..50 are decomposed by machine (`goldbach_upTo_52`, pointwise decidability
+    `GoldbachRep`); (3) therefore every witness ≥ 52 (G8) — a solution is findable
+    exactly as far as the verification has been checked (the literary
+    4·10^18 are NOT formalised — only this is green). -/
 theorem goldbach_verification_not_derivation :
     (∀ (V : EuclidsPath.GoldbachBranch.GoldbachViolation) (A M0 : ℕ)
         (proj : SemanticExtendedFlowLedgerProjection A M0),
@@ -167,16 +167,15 @@ theorem goldbach_verification_not_derivation :
    goldbachViolation_ge_52⟩
 
 /-#############################################################################
-  §2. Лежандр: то же самоуничтожение + уникальная бертрановская рука (🟢)
+  §2. Legendre: the same self-destruction + unique Bertrand arm (🟢)
 #############################################################################-/
 
-/-- **Внутреннее самообоснование решения Лежандра** — зеркало гольдбаховского,
-    якорь квадратичный: `V.1 ^ 2 ≤ M0` (масштаб не ниже квадрата точки
-    нарушения — высота отклонения у пустыни квадратична). Те же честные
-    оговорки: содержательность оплачена зелёной
-    `no_deviationFlowSupply_at_resolved_scale`; `beyondOwnHorizon` — вера в
-    закон-определение, зелёной инстанции нет (тип `LegendreViolation` ожидаемо
-    пуст). -/
+/-- **Internal self-justification of the Legendre solution** — mirror of the Goldbach one,
+    with a quadratic anchor: `V.1 ^ 2 ≤ M0` (scale no lower than the square of the
+    violation point — the deviation height for a desert is quadratic). The same honest
+    caveats: substantiveness is paid for by the green
+    `no_deviationFlowSupply_at_resolved_scale`; `beyondOwnHorizon` — belief in the
+    law-definition, no green instance (type `LegendreViolation` is expectedly empty). -/
 structure InternalisedLegendreGround
     (V : EuclidsPath.PrimeDeserts.LegendreViolation)
     {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop where
@@ -184,14 +183,14 @@ structure InternalisedLegendreGround
   ground : SemanticExtendedFlowLedgerCollisionResolves proj
   beyondOwnHorizon : LegendreDesertManifests V
 
-/-- «Внутреннее знание причины Лежандра» = внутреннее самообоснование. -/
+/-- "Internal knowledge of the Legendre cause" = internal self-justification. -/
 abbrev InternalKnowledgeOfLegendreCause
     (V : EuclidsPath.PrimeDeserts.LegendreViolation)
     {A M0 : ℕ} (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
   InternalisedLegendreGround V proj
 
-/-- Самообоснование самоуничтожается — та же зелёная стена
-    `no_deviationFlowSupply_at_resolved_scale` (НЕ P ∧ ¬P, НЕ ex falso). -/
+/-- Self-justification self-destructs — the same green wall
+    `no_deviationFlowSupply_at_resolved_scale` (NOT P ∧ ¬P, NOT ex falso). -/
 theorem no_internalisedLegendreGround
     {V : EuclidsPath.PrimeDeserts.LegendreViolation}
     {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0} :
@@ -199,17 +198,17 @@ theorem no_internalisedLegendreGround
   fun H => no_deviationFlowSupply_at_resolved_scale proj H.ground
     (H.beyondOwnHorizon A M0 H.anchored proj H.ground)
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** для Лежандра (зеркало
-    `goldbachCause_unknowable`). НЕ решение задачи 1808 года и НЕ Гёдель. -/
+/-- **"CANNOT BE KNOWN FROM WITHIN" — THEOREM** for Legendre (mirror of
+    `goldbachCause_unknowable`). NOT a solution to the 1808 problem and NOT Gödel. -/
 theorem legendreCause_unknowable
     {V : EuclidsPath.PrimeDeserts.LegendreViolation}
     {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0} :
     ¬ InternalKnowledgeOfLegendreCause V proj :=
   no_internalisedLegendreGround
 
-/-- **«Несёт двигатель» — подлинная конструкция** (зеркало гольдбаховской):
-    двигатель-свидетель строится как объект из манифестации одного свидетеля
-    Лежандра над сведёнными книгами якорного масштаба. -/
+/-- **"Carries an engine" — genuine construction** (mirror of the Goldbach one):
+    an engine-witness is built as an object from the manifestation of one Legendre
+    witness over the settled ledger of the anchor scale. -/
 theorem internalisedLegendreGround_builds_engine
     {V : EuclidsPath.PrimeDeserts.LegendreViolation}
     {A M0 : ℕ} {proj : SemanticExtendedFlowLedgerProjection A M0} :
@@ -222,14 +221,14 @@ theorem internalisedLegendreGround_builds_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — развилка Лежандра С ЧЕТВЁРТОЙ РУКОЙ**
-    (уникальна в серии): к трём рукам зеркала добавлена БЕЗУСЛОВНАЯ зелёная
-    стена самой арифметики — Бертран: пустыня НЕ удваивается
-    (`no_desert_doubles`, mathlib, никакой открытой задачи) — вместе с честным
-    конъюнктом `NoBertrandToLegendreImplicationClaimed`: интервал Лежандра
-    КОРОЧЕ бертрановского (`legendre_interval_shorter_than_bertrand`), никакая
-    импликация Бертран ⟹ Лежандр НЕ заявлена — четвёртая рука сильна, но
-    квадратичную щель не закрывает. -/
+/-- **"SOLUTION LOCKED BEHIND THE ENGINE" — Legendre trilemma WITH A FOURTH ARM**
+    (unique in the series): to the three mirror arms is added an UNCONDITIONAL green
+    wall of arithmetic itself — Bertrand: a desert does NOT double
+    (`no_desert_doubles`, mathlib, no open problem) — together with the honest
+    conjunct `NoBertrandToLegendreImplicationClaimed`: the Legendre interval is
+    SHORTER than Bertrand's (`legendre_interval_shorter_than_bertrand`), no
+    implication Bertrand ⟹ Legendre is claimed — the fourth arm is strong, but
+    does not close the quadratic gap. -/
 theorem legendre_no_internal_decision_without_engine :
     (LegendreManifestationLaw →
       ∀ (V : EuclidsPath.PrimeDeserts.LegendreViolation) (A M0 : ℕ),
@@ -254,11 +253,11 @@ theorem legendre_no_internal_decision_without_engine :
    fun _ hn => EuclidsPath.PrimeDeserts.no_desert_doubles hn,
    EuclidsPath.PrimeDeserts.noBertrandToLegendreImplicationClaimed_holds⟩
 
-/-- **«ПРОВЕРКА, А НЕ ВЫВОД» для Лежандра:** (1) внутреннее знание причины
-    невозможно (теорема); (2) проверка — буквально `decide`: ниже 11 нарушений
-    нет (`legendre_holds_upTo_10`, поточечная разрешимость
-    `LegendreViolationAt`); (3) потому всякий свидетель ≥ 11 (LG8) —
-    литературная граница (>10^18) НЕ формализована, зелёно только это. -/
+/-- **"VERIFICATION, NOT DERIVATION" for Legendre:** (1) internal knowledge of the cause is
+    impossible (theorem); (2) verification — literally `decide`: no violations below 11
+    (`legendre_holds_upTo_10`, pointwise decidability
+    `LegendreViolationAt`); (3) therefore every witness ≥ 11 (LG8) —
+    the literary bound (>10^18) is NOT formalised, only this is green. -/
 theorem legendre_verification_not_derivation :
     (∀ (V : EuclidsPath.PrimeDeserts.LegendreViolation) (A M0 : ℕ)
         (proj : SemanticExtendedFlowLedgerProjection A M0),
@@ -271,22 +270,22 @@ theorem legendre_verification_not_derivation :
    EuclidsPath.PrimeDeserts.legendreViolation_ge_11⟩
 
 /-#############################################################################
-  §3. Общая сводка: оба решения заперты за статусом двигателя (🟢)
+  §3. Overall summary: both solutions are locked behind the engine status (🟢)
 #############################################################################-/
 
-/-- **ОБЩАЯ СВОДКА «ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» (зеркало
-    `pnp_locked_behind_engine_status`; БЕЗ декрет-конъюнкта — полей
-    goldbach/legendre в Step00FirstCause НЕТ по §17-вердикту, в отличие от
-    collatz-варианта, где декрет был взят и снят):**
-    (1) двигателей нет — зелёная стена (`no_someConcreteEuclideanEngine`);
-    (2) внутреннее знание причины Гольдбаха невозможно (теорема);
-    (3) внутреннее знание причины Лежандра невозможно (теорема);
-    (4) проверенный горизонт Гольдбаха: всякий свидетель ≥ 52 (decide);
-    (5) проверенный горизонт Лежандра: всякий свидетель ≥ 11 (decide);
-    (6) Гольдбаха решает лишь ВНЕШНЯЯ граница (гипотеза) + закон;
-    (7) Лежандра — так же.
-    ЦЕЛИКОМ зелёная; НЕ решает ни одну из задач, НЕ Гёдель — обе гипотезы
-    остаются открытыми входами при запертой изнутри двери. -/
+/-- **OVERALL SUMMARY "LOCKED BEHIND THE ENGINE" (mirror of
+    `pnp_locked_behind_engine_status`; WITHOUT the decree-conjunct — the fields
+    goldbach/legendre are absent from Step00FirstCause per the §17-verdict, unlike
+    the Collatz variant where the decree was taken and lifted):**
+    (1) no engines — green wall (`no_someConcreteEuclideanEngine`);
+    (2) internal knowledge of the Goldbach cause is impossible (theorem);
+    (3) internal knowledge of the Legendre cause is impossible (theorem);
+    (4) verified Goldbach horizon: every witness ≥ 52 (decide);
+    (5) verified Legendre horizon: every witness ≥ 11 (decide);
+    (6) Goldbach is decided only by the EXTERNAL boundary (hypothesis) + law;
+    (7) Legendre — likewise.
+    ENTIRELY green; does NOT solve either problem, NOT Gödel — both conjectures
+    remain open inputs with the door locked from within. -/
 theorem goldbachLegendre_locked_behind_engine_status :
     (¬ SomeConcreteEuclideanEngine) ∧
     (∀ (V : EuclidsPath.GoldbachBranch.GoldbachViolation) (A M0 : ℕ)
@@ -313,7 +312,7 @@ theorem goldbachLegendre_locked_behind_engine_status :
       legendreConjecture_of_manifestation_and_boundary
         no_someConcreteEuclideanEngine hBoundary hLaw⟩
 
-/-! ## Аудит аксиом: модуль ЦЕЛИКОМ зелёный (стандартная тройка), таинт не меняется -/
+/-! ## Axiom audit: the module is ENTIRELY green (standard triple), taint does not change -/
 #print axioms no_internalisedGoldbachGround
 #print axioms goldbachCause_unknowable
 #print axioms internalisedGoldbachGround_builds_engine

@@ -1,47 +1,47 @@
 /-
-  LandauFront — зоо-вход для 4-й проблемы Ландау: простые вида `n² + 1`.
+  LandauFront — arithmetic zoo entry for Landau's 4th problem: primes of the form `n² + 1`.
 
-  ЗЕЛЁНЫЙ МОДУЛЬ (в смысле репозитория): всё ниже доказано полностью
-  (std аксиомы, без sorry). Но — как и в `PolignacBranch` — здесь НЕ решается
-  открытая задача. Двигатель Дирихле из mathlib (`SideInfinitude`) даёт простые
-  в арифметических прогрессиях; однако `n² + 1` — это НЕ арифметическая
-  прогрессия, а квадратичная форма, поэтому бесконечность простых `n² + 1`
-  Дирихле НЕ покрывается и остаётся честным 🔴-гейтом `Landau4thUnbounded`
-  (эвристика Харди–Литтлвуда предсказывает бесконечность — знак ЗА, но НЕ
-  доказательство).
+  GREEN MODULE (in the repository sense): everything below is fully proven
+  (std axioms, no sorry). But — as in `PolignacBranch` — the open problem is NOT solved here.
+  The Dirichlet engine from mathlib (`SideInfinitude`) supplies primes
+  in arithmetic progressions; however `n² + 1` is NOT an arithmetic
+  progression but a quadratic form, so the infinitude of primes `n² + 1`
+  is NOT covered by Dirichlet and remains an honest 🔴-gate `Landau4thUnbounded`
+  (the Hardy–Littlewood heuristic predicts infinitude — a sign FOR, but NOT
+  a proof).
 
-  ⚠️ ГЛАВНАЯ ЧЕСТНОСТЬ: зелёное здесь — ТОЛЬКО структурный мост
-  «неограниченность ⟹ бесконечность множества» (чистая перепаковка через
-  `Set.Infinite`, как `cousinLowersInfinite_of_unbounded` в `PolignacBranch`)
-  плюс один настоящий зелёный факт о вычетах. Новой теории чисел нет.
-  Сама бесконечность простых `n² + 1` — ОТКРЫТА (маркер `NoInfinitudeClaimed`).
-  Лучшее известное (Иванец, 1978): бесконечно много `n² + 1` с не более чем
-  двумя простыми множителями — но это НЕ бесконечность самих простых `n² + 1`.
+  ⚠️ MAIN HONESTY: what is green here is ONLY the structural bridge
+  "unboundedness ⟹ infinitude of the set" (a clean repackaging via
+  `Set.Infinite`, like `cousinLowersInfinite_of_unbounded` in `PolignacBranch`)
+  plus one genuine green fact about residues. No new number theory.
+  The infinitude of primes `n² + 1` itself — is OPEN (marker `NoInfinitudeClaimed`).
+  Best known (Iwaniec, 1978): infinitely many `n² + 1` with at most two prime
+  factors — but this is NOT the infinitude of primes `n² + 1` themselves.
 
-  ЧТО ДОКАЗАНО (std аксиомы, без sorry):
-    * landauPrimes_infinite_of_unbounded — структурный мост: 🔴-гейт
-      `Landau4thUnbounded` ⟹ множество `LandauPrimes` бесконечно
-      (форма `Set.Infinite`, чистая перепаковка);
-    * oddLandauPrime_even_k — зелёный факт о вычетах: если `k` нечётно, то
-      `k² + 1` чётно, поэтому единственное чётное простое такого вида — это
-      `2` (при `k = 1`); все простые `k² + 1 > 2` требуют ЧЁТНОГО `k`.
-  Бесконечность простых `n² + 1` — НЕ здесь и ниоткуда здесь не выводится.
+  WHAT IS PROVEN (std axioms, no sorry):
+    * landauPrimes_infinite_of_unbounded — structural bridge: 🔴-gate
+      `Landau4thUnbounded` ⟹ the set `LandauPrimes` is infinite
+      (shape `Set.Infinite`, clean repackaging);
+    * oddLandauPrime_even_k — green fact about residues: if `k` is odd, then
+      `k² + 1` is even, so the only even prime of this form is
+      `2` (at `k = 1`); every prime `k² + 1 > 2` requires EVEN `k`.
+  The infinitude of primes `n² + 1` — is NOT here and is not derived from anything here.
 -/
 import Mathlib
 set_option autoImplicit false
 
 namespace EuclidsPath.LandauFront
 
-/-- Множество простых Ландау `n² + 1`. -/
+/-- The set of Landau primes `n² + 1`. -/
 def LandauPrimes : Set ℕ := {p | ∃ k : ℕ, p = k ^ 2 + 1 ∧ p.Prime}
 
-/-- 🔴 ГЕЙТ: бесконечно много `k` дают простое `k² + 1` (Харди–Литтлвуд;
-    4-я проблема Ландау). ОТКРЫТА — здесь ниоткуда не выводится. -/
+/-- 🔴 GATE: infinitely many `k` yield a prime `k² + 1` (Hardy–Littlewood;
+    Landau's 4th problem). OPEN — not derived from anything here. -/
 def Landau4thUnbounded : Prop := ∀ N : ℕ, ∃ k : ℕ, N < k ∧ (k ^ 2 + 1).Prime
 
-/-- 🟢 **СТРУКТУРНЫЙ МОСТ (доказано):** неограниченность ⟹ множество простых
-    Ландау бесконечно. Чистая перепаковка через `Set.Infinite`, без новой
-    теории чисел; форма — как у `cousinLowersInfinite_of_unbounded`. -/
+/-- 🟢 **STRUCTURAL BRIDGE (proven):** unboundedness ⟹ the set of Landau primes
+    is infinite. Clean repackaging via `Set.Infinite`, no new number theory;
+    shape analogous to `cousinLowersInfinite_of_unbounded`. -/
 theorem landauPrimes_infinite_of_unbounded (H : Landau4thUnbounded) :
     LandauPrimes.Infinite := by
   apply Set.infinite_of_not_bddAbove
@@ -51,10 +51,10 @@ theorem landauPrimes_infinite_of_unbounded (H : Landau4thUnbounded) :
   have hBlt : B < k ^ 2 + 1 := by nlinarith [hgt]
   exact absurd (hB hmem) (not_le.mpr hBlt)
 
-/-- 🟢 **ЗЕЛЁНЫЙ ФАКТ О ВЫЧЕТАХ (доказано):** если `k` нечётно, то `k² + 1`
-    чётно, значит любое простое такого вида равно `2`; поэтому всякое простое
-    `k² + 1 > 2` требует ЧЁТНОГО `k`. Настоящий зелёный факт о структуре формы,
-    без всякой связи с открытой бесконечностью. -/
+/-- 🟢 **GREEN FACT ABOUT RESIDUES (proven):** if `k` is odd, then `k² + 1`
+    is even, so any prime of this form equals `2`; therefore every prime
+    `k² + 1 > 2` requires EVEN `k`. A genuine green fact about the structure of the form,
+    with no connection to the open infinitude question. -/
 theorem oddLandauPrime_even_k {k : ℕ} (hodd : Odd k) (hp : (k ^ 2 + 1).Prime) :
     k ^ 2 + 1 = 2 := by
   have h2dvd : 2 ∣ k ^ 2 + 1 := by
@@ -66,12 +66,12 @@ theorem oddLandauPrime_even_k {k : ℕ} (hodd : Odd k) (hp : (k ^ 2 + 1).Prime) 
   · omega
   · omega
 
-/-- **ЧЕСТНОСТЬ (охват):** бесконечность простых `n² + 1` здесь НЕ
-    утверждается, НЕ доказана и ниоткуда здесь не выводится. Дирихле
-    (mathlib, `SideInfinitude`) покрывает лишь арифметические прогрессии;
-    `n² + 1` — квадратичная форма, вне досягаемости Дирихле. 4-я проблема
-    Ландау ОТКРЫТА; доказанный выше мост условен (вход — 🔴-гейт
-    `Landau4thUnbounded`) и открытой задачи не решает. -/
+/-- **HONESTY (coverage):** the infinitude of primes `n² + 1` is NOT
+    claimed here, NOT proven, and is not derived from anything here. Dirichlet
+    (mathlib, `SideInfinitude`) covers only arithmetic progressions;
+    `n² + 1` is a quadratic form, beyond Dirichlet's reach. Landau's 4th problem
+    is OPEN; the bridge proven above is conditional (input — 🔴-gate
+    `Landau4thUnbounded`) and does not solve the open problem. -/
 abbrev NoInfinitudeClaimed : Prop := True
 
 theorem noInfinitudeClaimed : NoInfinitudeClaimed := trivial

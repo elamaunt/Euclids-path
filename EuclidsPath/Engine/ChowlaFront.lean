@@ -1,52 +1,52 @@
 /-
-  ChowlaFront — «инженерная тень» гипотез ЧАУЛЫ и САРНАКА, заземлённая на РЕАЛЬНОЙ функции
-  Лиувилля `λ = (−1)^Ω` и на узле чётности-ранга проекта.
+  ChowlaFront — the "engineering shadow" of the CHOWLA and SARNAK conjectures, grounded on the REAL
+  Liouville function `λ = (−1)^Ω` and on the parity-rank node of the project.
 
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКИЙ ЧЕСТНЫЙ ЗАГОЛОВОК. ЧТО ЗДЕСЬ ЗЕЛЁНОЕ И ЧТО ЧЕСТНО ОСТАЁТСЯ ОТКРЫТЫМ. │
+  │  LOUD HONEST HEADER. WHAT IS GREEN HERE AND WHAT HONESTLY REMAINS OPEN.  │
   └───────────────────────────────────────────────────────────────────────────┘
 
-  ИНЖЕНЕРНАЯ ТЕНЬ ЧАУЛЫ — ЭТО САМ УЗЕЛ ЧЁТНОСТИ-РАНГА. Лиувилль `λ(n) = (−1)^Ω(n)` — это НАШ
-  инвариант чётности ранга (`Ω = cardFactors = rank` у RankNode, см. `RiemannLiouville`). Гипотеза
-  Чаулы утверждает, что эта чётность НЕ КОРРЕЛИРУЕТ поперёк сдвигов: знак `λ(n)` и знак `λ(n+h)`
-  ведут себя «как независимые», их произведение суммируется в `o(x)`. Это ровно та же стена «чётность
-  ранга не имеет права схлопнуться в одно значение», что стоит за близнецами и за Риманом. Здесь мы
-  переиспользуем `RiemannLiouville` (флип знака при умножении на простое, `λ² = 1`, диагональная
-  корреляция) и предъявляем ЧЕСТНЫЙ красный вход — сама оценка `o(x)` (Чаула) и Сарнак.
+  THE ENGINEERING SHADOW OF CHOWLA IS THE PARITY-RANK NODE ITSELF. Liouville `λ(n) = (−1)^Ω(n)` is OUR
+  parity-rank invariant (`Ω = cardFactors = rank` at RankNode, see `RiemannLiouville`). The Chowla
+  conjecture asserts that this parity DOES NOT CORRELATE across shifts: the sign `λ(n)` and the sign `λ(n+h)`
+  behave "as independent", their product sums to `o(x)`. This is exactly the same wall — "parity of
+  rank has no right to collapse to a single value" — that stands behind the twins and behind Riemann. Here we
+  reuse `RiemannLiouville` (sign flip on multiplication by a prime, `λ² = 1`, diagonal
+  correlation) and present an HONEST red input — the estimate `o(x)` itself (Chowla) and Sarnak.
 
-  🟢 ЗЕЛЁНОЕ (машинно, в этом файле, над РЕАЛЬНОЙ `ArithmeticFunction.liouville`):
-   · `liouvilleSum` — суммирующая функция `L(x) = Σ_{n≤x} λ(n)` (тот же объект, что `RiemannLiouville.L`,
-     здесь переизложен под именем корреляции сдвига 0).
-   · `chowlaCorrelation h x` — двухточечная корреляция `Σ_{n≤x} λ(n)·λ(n+h)` над РЕАЛЬНОЙ `λ`.
-   · `liouville_sq_eq_one` — `λ(n)² = 1` для `n ≠ 0` (знак `±1`): совершенная САМОкорреляция.
-   · `chowla_zero_shift` — при сдвиге `h = 0` корреляция есть `Σ λ(n)²` (диагональ).
-   · `chowlaCorrelation_zero_eq_card` — диагональ равна `x`: `chowlaCorrelation 0 x = x`. Совершенная
-     самокорреляция чётности ранга (каждый терм `λ(n)² = 1` на `Icc 1 x`).
-   · `chowla_parity_flip` — переизложение `RiemannLiouville.liouville_flip_of_mul_prime`: умножение
-     аргумента на простое ФЛИПАЕТ `λ`. Это узел чётности-ранга (`deleteFactor`, `r → r−1`) в терминах `λ`.
+  🟢 GREEN (machine-verified, in this file, over the REAL `ArithmeticFunction.liouville`):
+   · `liouvilleSum` — the Liouville summatory function `L(x) = Σ_{n≤x} λ(n)` (the same object as `RiemannLiouville.L`,
+     here restated under the name of the shift-0 correlation).
+   · `chowlaCorrelation h x` — the two-point Liouville correlation `Σ_{n≤x} λ(n)·λ(n+h)` over the REAL `λ`.
+   · `liouville_sq_eq_one` — `λ(n)² = 1` for `n ≠ 0` (sign `±1`): perfect SELF-correlation.
+   · `chowla_zero_shift` — at shift `h = 0` the correlation is `Σ λ(n)²` (the diagonal).
+   · `chowlaCorrelation_zero_eq_card` — the diagonal equals `x`: `chowlaCorrelation 0 x = x`. Perfect
+     self-correlation of parity-rank (each term `λ(n)² = 1` on `Icc 1 x`).
+   · `chowla_parity_flip` — a restatement of `RiemannLiouville.liouville_flip_of_mul_prime`: multiplying
+     the argument by a prime FLIPS `λ`. This is the parity-rank node (`deleteFactor`, `r → r−1`) in terms of `λ`.
 
-  🔴 ЧЕСТНО ОТКРЫТОЕ (НЕ доказано здесь; названные предикаты, НЕ теоремы, НЕ `sorry`, НЕ аксиома):
-   · `ChowlaConjecture` — гипотеза Чаулы (двухточечная форма): сдвинутая корреляция Лиувилля есть
-     `o(x)`. ГЕНУИННО ОТКРЫТА. Тао доказал ЛИШЬ логарифмически-усреднённую версию (Chowla, 2016) и
-     нечётные моменты (odd-order, Tao–Teräväinen 2017) — полная (неусреднённая) Чаула ОТКРЫТА. Мы это
-     говорим прямо и НЕ выдаём усреднённый результат за полный.
-   · `SarnakConjecture` — гипотеза Сарнака: ортогональность Мёбиуса `μ` любой ограниченной
-     последовательности нулевой энтропии. Названа абстрактно над РЕАЛЬНОЙ `ArithmeticFunction.moebius`.
-     ОТКРЫТА (известно: Чаула ⟹ Сарнак; обратное открыто; полная Сарнак не доказана).
+  🔴 HONESTLY OPEN (NOT proven here; named predicates, NOT theorems, NOT `sorry`, NOT an axiom):
+   · `ChowlaConjecture` — the Chowla conjecture (two-point form): the shifted Liouville correlation is
+     `o(x)`. GENUINELY OPEN. Tao proved ONLY the logarithmically-averaged version (Chowla, 2016) and
+     odd-order moments (Tao–Teräväinen 2017) — the full (non-averaged) Chowla IS OPEN. We state this
+     directly and do NOT pass the averaged result off as the full one.
+   · `SarnakConjecture` — the Sarnak conjecture: orthogonality of Möbius `μ` to any bounded
+     zero-entropy sequence. Named abstractly over the REAL `ArithmeticFunction.moebius`.
+     OPEN (known: Chowla ⟹ Sarnak; the converse is open; the full Sarnak is not proven).
 
-  ЧЕСТНАЯ НОВИЗНА. Гипотеза Чаулы НИГДЕ не формализована. Здесь — ПЕРВОЕ структурное прочтение
-  «Чаула = узел чётности-ранга не коррелирует поперёк сдвигов», ЗАЗЕМЛЁННОЕ на РЕАЛЬНОЙ `λ`/`μ` mathlib.
-  ЭТО НЕ ДОКАЗАТЕЛЬСТВО ЧАУЛЫ И НЕ ДОКАЗАТЕЛЬСТВО САРНАКА.
+  HONEST NOVELTY. The Chowla conjecture has NEVER been formalized. Here is the FIRST structural reading
+  "Chowla = parity-rank node does not correlate across shifts", GROUNDED on the REAL `λ`/`μ` of mathlib.
+  THIS IS NOT A PROOF OF CHOWLA AND NOT A PROOF OF SARNAK.
 
-  Никакого `sorry`, никакого `admit`, никакого `native_decide`, никакой новой аксиомы. Зелёные
-  грузонесущие — стандартная тройка `propext` / `Classical.choice` / `Quot.sound`. Такса репозитория
-  (47) этим файлом НЕ меняется.
+  No `sorry`, no `admit`, no `native_decide`, no new axiom. The green
+  load-bearing declarations use the standard triple `propext` / `Classical.choice` / `Quot.sound`. The repository
+  taint count (47) is NOT changed by this file.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
-    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/ChowlaFront.lean → ноль ошибок.
+  Compilation: cd /f/Primes/Euclids-path &&
+    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/ChowlaFront.lean → zero errors.
 
-  Родство: EuclidsPath/Engine/RiemannLiouville.lean (`liouville_eq_neg_one_pow_rank`,
-    `liouville_flip_of_mul_prime`, `L`); EuclidsPath/Engine/UniversalEngine.lean (движок/ранг).
+  Kinship: EuclidsPath/Engine/RiemannLiouville.lean (`liouville_eq_neg_one_pow_rank`,
+    `liouville_flip_of_mul_prime`, `L`); EuclidsPath/Engine/UniversalEngine.lean (engine/rank).
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannLiouville
@@ -58,27 +58,27 @@ namespace EuclidsPath.ChowlaFront
 
 open ArithmeticFunction
 
-/-! ### 🟢 Зелёное ядро: РЕАЛЬНАЯ `λ` и узел чётности-ранга -/
+/-! ### 🟢 Green core: the REAL `λ` and the parity-rank node -/
 
-/-- Суммирующая функция Лиувилля `L(x) = Σ_{n=1}^{x} λ(n)` (= сдвиг `h = 0` без квадрата;
-    тот же объект, что `RiemannLiouville.L`). -/
+/-- Liouville summatory function `L(x) = Σ_{n=1}^{x} λ(n)` (= shift `h = 0` without the square;
+    the same object as `RiemannLiouville.L`). -/
 def liouvilleSum (x : ℕ) : ℤ :=
   ∑ n ∈ Finset.Icc 1 x, ArithmeticFunction.liouville n
 
-/-- Двухточечная корреляция Лиувилля `Σ_{n=1}^{x} λ(n)·λ(n+h)` над РЕАЛЬНОЙ `λ`. Гипотеза Чаулы
-    утверждает, что при `h > 0` эта сумма есть `o(x)`. -/
+/-- Two-point Liouville correlation `Σ_{n=1}^{x} λ(n)·λ(n+h)` over the REAL `λ`. The Chowla
+    conjecture asserts that for `h > 0` this sum is `o(x)`. -/
 def chowlaCorrelation (h x : ℕ) : ℤ :=
   ∑ n ∈ Finset.Icc 1 x, ArithmeticFunction.liouville n * ArithmeticFunction.liouville (n + h)
 
-/-- **`λ(n)² = 1` для `n ≠ 0` (знак `±1`).** Совершенная САМОкорреляция: чётность ранга, возведённая
-    в квадрат, всегда `1`. Из `λ(n) = (−1)^Ω(n)` (mathlib `liouville_apply`). -/
+/-- **`λ(n)² = 1` for `n ≠ 0` (sign `±1`).** Perfect SELF-correlation: parity of rank, squared,
+    is always `1`. Follows from `λ(n) = (−1)^Ω(n)` (mathlib `liouville_apply`). -/
 theorem liouville_sq_eq_one {n : ℕ} (hn : n ≠ 0) :
     ArithmeticFunction.liouville n * ArithmeticFunction.liouville n = 1 := by
   rw [liouville_apply hn, ← pow_add, ← two_mul, pow_mul]
   simp
 
-/-- **Сдвиг `h = 0` — это диагональ `Σ λ(n)²`.** Двухточечная корреляция при нулевом сдвиге
-    вырождается в сумму квадратов Лиувилля. -/
+/-- **Shift `h = 0` is the diagonal `Σ λ(n)²`.** The two-point correlation at zero shift
+    degenerates to the sum of Liouville squares. -/
 theorem chowla_zero_shift (x : ℕ) :
     chowlaCorrelation 0 x
       = ∑ n ∈ Finset.Icc 1 x, ArithmeticFunction.liouville n ^ 2 := by
@@ -87,9 +87,9 @@ theorem chowla_zero_shift (x : ℕ) :
   intro n _
   rw [Nat.add_zero, sq]
 
-/-- **Диагональ равна `x`: `chowlaCorrelation 0 x = x`.** Совершенная самокорреляция чётности ранга:
-    каждый терм `λ(n)² = 1` на диапазоне `Icc 1 x` (там `n ≥ 1 ≠ 0`), а их `x` штук. Это резкий
-    контраст с гипотезой Чаулы для `h > 0` (там сумма обязана быть `o(x)`). -/
+/-- **The diagonal equals `x`: `chowlaCorrelation 0 x = x`.** Perfect self-correlation of parity-rank:
+    each term `λ(n)² = 1` on the range `Icc 1 x` (where `n ≥ 1 ≠ 0`), and there are `x` of them. This is a sharp
+    contrast with the Chowla conjecture for `h > 0` (where the sum must be `o(x)`). -/
 theorem chowlaCorrelation_zero_eq_card (x : ℕ) :
     chowlaCorrelation 0 x = (x : ℤ) := by
   have hpt : ∀ n ∈ Finset.Icc 1 x,
@@ -103,42 +103,42 @@ theorem chowlaCorrelation_zero_eq_card (x : ℕ) :
   rw [Finset.sum_congr rfl hpt, Finset.sum_const]
   simp [Nat.card_Icc]
 
-/-- **Флип чётности при умножении на простое (узел чётности-ранга в терминах `λ`).** Переизложение
-    `RiemannLiouville.liouville_flip_of_mul_prime`: умножение аргумента на простое `p` ФЛИПАЕТ знак
-    Лиувилля, `λ(p·m) = −λ(m)`. Это ровно `RankNode.deleteFactor` (`r → r−1`), делающий шаг спуска в
-    чётности ранга. Именно ЭТУ управляемую динамику знака Чаула запрещает коррелировать поперёк
-    сдвигов. -/
+/-- **Parity flip on multiplication by a prime (the parity-rank node in terms of `λ`).** A restatement of
+    `RiemannLiouville.liouville_flip_of_mul_prime`: multiplying the argument by a prime `p` FLIPS the
+    Liouville sign, `λ(p·m) = −λ(m)`. This is exactly `RankNode.deleteFactor` (`r → r−1`), making the descent step in
+    parity-rank. It is precisely THIS controlled sign dynamics that Chowla forbids from correlating across
+    shifts. -/
 theorem chowla_parity_flip {p m : ℕ} (hp : p.Prime) :
     ArithmeticFunction.liouville (p * m) = - ArithmeticFunction.liouville m :=
   EuclidsPath.RiemannLiouville.liouville_flip_of_mul_prime hp
 
-/-- Связь с `RiemannLiouville.L`: наша `liouvilleSum` — тот же объект. -/
+/-- Connection to `RiemannLiouville.L`: our `liouvilleSum` is the same object. -/
 theorem liouvilleSum_eq_L (x : ℕ) :
     liouvilleSum x = EuclidsPath.RiemannLiouville.L x := rfl
 
-/-! ### 🔴 Честные красные входы: НАЗВАННЫЕ предикаты над РЕАЛЬНОЙ `λ`/`μ`, НЕ теоремы -/
+/-! ### 🔴 Honest red inputs: NAMED predicates over the REAL `λ`/`μ`, NOT theorems -/
 
-/-- 🔴 **Гипотеза Чаулы (двухточечная форма).** Сдвинутая корреляция Лиувилля есть `o(x)`: для любого
-    `h > 0` и любого `ε > 0` найдётся порог `X`, за которым `|Σ_{n≤x} λ(n)λ(n+h)| ≤ ε·x`. ОТКРЫТА.
-    (Тао 2016 доказал ЛИШЬ логарифмически-усреднённую версию; полная неусреднённая Чаула — открыта.)
-    Это НАЗВАННЫЙ предикат над РЕАЛЬНОЙ `chowlaCorrelation`, а НЕ теорема. -/
+/-- 🔴 **Chowla conjecture (two-point form).** The shifted Liouville correlation is `o(x)`: for any
+    `h > 0` and any `ε > 0` there exists a threshold `X` beyond which `|Σ_{n≤x} λ(n)λ(n+h)| ≤ ε·x`. OPEN.
+    (Tao 2016 proved ONLY the logarithmically-averaged version; the full non-averaged Chowla is open.)
+    This is a NAMED predicate over the REAL `chowlaCorrelation`, NOT a theorem. -/
 def ChowlaConjecture : Prop :=
   ∀ h : ℕ, 0 < h → ∀ ε : ℝ, 0 < ε → ∃ X : ℕ, ∀ x : ℕ, X ≤ x →
     |(chowlaCorrelation h x : ℝ)| ≤ ε * (x : ℝ)
 
-/-- 🔴 **Гипотеза Сарнака (ортогональность Мёбиуса нулевой энтропии).** Для любой ограниченной
-    последовательности `a : ℕ → ℝ` (константа границы `B`), которая «нулевой энтропии» в смысле
-    заданного предиката `zeroEntropy`, средняя корреляция Мёбиуса `μ` с `a` стремится к нулю:
-    `(1/x)·Σ_{n≤x} μ(n)·a(n) → 0`. Абстрактный НАЗВАННЫЙ предикат над РЕАЛЬНОЙ
-    `ArithmeticFunction.moebius`; свойство «нулевой энтропии» оставлено параметром `zeroEntropy` —
-    честно не вшито (динамическая часть — вне арифметики). ОТКРЫТА (Чаула ⟹ Сарнак; полная Сарнак не
-    доказана). Это предикат, а НЕ теорема. -/
+/-- 🔴 **Sarnak conjecture (Möbius orthogonality to zero-entropy sequences).** For any bounded
+    sequence `a : ℕ → ℝ` (bound constant `B`) that is "zero-entropy" in the sense of
+    the given predicate `zeroEntropy`, the average Möbius `μ` correlation with `a` tends to zero:
+    `(1/x)·Σ_{n≤x} μ(n)·a(n) → 0`. An abstract NAMED predicate over the REAL
+    `ArithmeticFunction.moebius`; the "zero-entropy" property is left as a parameter `zeroEntropy` —
+    honestly not hard-wired (the dynamical part lies outside arithmetic). OPEN (Chowla ⟹ Sarnak; the full Sarnak is not
+    proven). This is a predicate, NOT a theorem. -/
 def SarnakConjecture (zeroEntropy : (ℕ → ℝ) → Prop) : Prop :=
   ∀ a : ℕ → ℝ, zeroEntropy a → (∃ B : ℝ, ∀ n : ℕ, |a n| ≤ B) →
     ∀ ε : ℝ, 0 < ε → ∃ X : ℕ, ∀ x : ℕ, X ≤ x →
       |(∑ n ∈ Finset.Icc 1 x, (ArithmeticFunction.moebius n : ℝ) * a n)| ≤ ε * (x : ℝ)
 
-/-! ### Аудит аксиом зелёных грузонесущих -/
+/-! ### Axiom audit for the green load-bearing declarations -/
 
 #print axioms liouville_sq_eq_one
 #print axioms chowla_zero_shift

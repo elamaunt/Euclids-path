@@ -1,30 +1,30 @@
 /-
-  ClosedUniverse — «двигатель не может покинуть вселенную»: сохранение вселенной вдоль пути +
-  платная динамика при сохранении, плюс scale-indexed версия и paid-or-closes дихотомия.
-  Источник: closed_universe_step00_formal_ru_2026-07-01.md.
-  Проза: prose/24_BoundaryDecomp.md (раздел «ClosedUniverse: двигатель не покидает вселенную»).
+  ClosedUniverse — "the engine cannot leave the universe": universe preservation along the path +
+  paid dynamics under preservation, plus a scale-indexed version and the paid-or-closes dichotomy.
+  Source: closed_universe_step00_formal_ru_2026-07-01.md.
+  Prose: prose/24_BoundaryDecomp.md (section "ClosedUniverse: the engine does not leave the universe").
 
-  ИДЕЯ. Прежде чем применять любой энергия/cut/подпись-инвариант вдоль пути, нужно доказать, что
-  двигатель ОСТАЁТСЯ во вселенной: `Universe x → Step x y → Universe y`. Если шаг меняет масштаб/
-  вселенную и создаёт ресурс, он оплачивается (`Total_B y + Work + UniverseChangeCost ≤ Total_A x`)
-  ИЛИ наступает `Close`. Главная опасность: `promotion A→A'` может вывести двигатель из старой вселенной
-  и вернуть с новым ресурсом (refuel).
+  IDEA. Before applying any energy/cut/signature-invariant along the path, one must prove that
+  the engine STAYS in the universe: `Universe x → Step x y → Universe y`. If a step changes the scale/
+  universe and creates a resource, it is paid for (`Total_B y + Work + UniverseChangeCost ≤ Total_A x`)
+  OR `Close` occurs. The main danger: `promotion A→A'` can take the engine out of the old universe
+  and return it with a new resource (refuel).
 
-  ЗДЕСЬ ДОКАЗАНО (чистая индукция/суммы/well-founded, std аксиомы, без sorry):
-    * `universe_along_path` (§2) — сохранение вселенной вдоль пути;
+  PROVED HERE (pure induction/sums/well-founded, std axioms, no sorry):
+    * `universe_along_path` (§2) — universe preservation along the path;
     * `ClosedPaidDynamics`: `strict_drop` (§4), `path_budget` (§5), `steps_bounded` (§6),
       `no_infinite_closed_paid_run` (§7);
-    * `ClosedPaidScaleDynamics.strict_drop` (§10, scale-indexed с UniverseChangeCost);
-    * `closed_paid_or_closes_no_infinite_run` (§25 дихотомия — под `¬Close` спуск, при `Close` терминал);
-    * `universeRefuel_is_paid_violation` (§33) — refuel = ровно отрицание `paid` (машинно).
+    * `ClosedPaidScaleDynamics.strict_drop` (§10, scale-indexed with UniverseChangeCost);
+    * `closed_paid_or_closes_no_infinite_run` (§25 dichotomy — under `¬Close` descent, at `Close` terminal);
+    * `universeRefuel_is_paid_violation` (§33) — refuel = exactly the negation of `paid` (machine-verified).
 
-  ЧЕСТНАЯ ГРАНИЦА (§23, §25, §34, §36 кирпича — вскрыта и МАШИННО зафиксирована). Абстрактные законы
-  реальны. Но Step00-инстанциация держится на ОДНОМ опасном входе: `step00_promotion_paid_or_closes`
-  (§25) — «самая опасная теорема» (§36): promotion/carrier-regeneration не создаёт нового ресурса ЛИБО
-  закрывает. Это ровно orientation-стена (`HigherEnergy`: promotion misoriented = refuel) + supply-стена
+  HONEST BOUNDARY (§23, §25, §34, §36 bricks — exposed and MACHINE-FIXED). Abstract laws
+  are real. But the Step00 instantiation rests on ONE dangerous named input: `step00_promotion_paid_or_closes`
+  (§25) — "the most dangerous theorem" (§36): promotion/carrier-regeneration does not create a new resource OR
+  closes. This is exactly the orientation wall (`HigherEnergy`: promotion misoriented = refuel) + supply wall
   (`PaidDynamics.regeneration_to_close_is_supply` = `SNOL.SNOLInput`). `promotion_paid_or_closes_is_the_wall`
-  фиксирует машинно: без него `no_infinite_closed_paid_run` не инстанциируется для Step00. Здесь вход НЕ
-  предъявлен. `Step00` остаётся `sorry`.
+  fixes machine-wise: without it `no_infinite_closed_paid_run` cannot be instantiated for Step00. The named input
+  is NOT supplied here. `Step00` remains `sorry`.
 -/
 import Mathlib
 import EuclidsPath.Engine.PaidDynamics
@@ -37,16 +37,16 @@ namespace EuclidsPath.ClosedUniverse
 
 open EuclidsPath.PaidDynamics
 
-/-! ### §1–2. ClosedDynamics: сохранение вселенной вдоль пути -/
+/-! ### §1–2. ClosedDynamics: universe preservation along the path -/
 
-/-- Замкнутая динамика: вселенная сохраняется под шагом (`x∈U`, `x→y ⟹ y∈U`). -/
+/-- Closed dynamics: the universe is preserved under a step (`x∈U`, `x→y ⟹ y∈U`). -/
 structure ClosedDynamics (State : Type) (Step : State → State → Prop) where
   Universe : State → Prop
   closed : ∀ {x y : State}, Universe x → Step x y → Universe y
 
 /--
-  **`universe_along_path` — ДОКАЗАНА (§2).** Если старт во вселенной и каждый шаг легален, то ВСЯ
-  траектория во вселенной. Это обязательно ПЕРЕД применением любого энергия/cut-инварианта вдоль пути. -/
+  **`universe_along_path` — PROVED (§2).** If the start is in the universe and every step is legal, then the ENTIRE
+  trajectory lies in the universe. This is mandatory BEFORE applying any energy/cut-invariant along the path. -/
 theorem universe_along_path {State : Type} {Step : State → State → Prop}
     (D : ClosedDynamics State Step) (path : ℕ → State)
     (hStart : D.Universe (path 0)) (hStep : ∀ k, Step (path k) (path (k + 1))) :
@@ -56,9 +56,9 @@ theorem universe_along_path {State : Type} {Step : State → State → Prop}
   | zero => exact hStart
   | succ k ih => exact D.closed ih (hStep k)
 
-/-! ### §3–7. ClosedPaidDynamics: платно внутри вселенной ⟹ нет бесконечного run -/
+/-! ### §3–7. ClosedPaidDynamics: paid inside the universe ⟹ no infinite run -/
 
-/-- Замкнутая платная динамика: `work_pos`/`paid` требуются лишь когда исток ВНУТРИ вселенной. -/
+/-- Closed paid dynamics: `work_pos`/`paid` are required only when the source is INSIDE the universe. -/
 structure ClosedPaidDynamics (State : Type) (Step : State → State → Prop) where
   Universe : State → Prop
   Total : State → ℕ
@@ -67,19 +67,19 @@ structure ClosedPaidDynamics (State : Type) (Step : State → State → Prop) wh
   work_pos : ∀ {x y : State}, Universe x → Step x y → 0 < Work x y
   paid : ∀ {x y : State}, Universe x → Step x y → Total y + Work x y ≤ Total x
 
-/-- Забыть платность — получить `ClosedDynamics`. -/
+/-- Forget the paid condition — obtain `ClosedDynamics`. -/
 def ClosedPaidDynamics.toClosed {State : Type} {Step : State → State → Prop}
     (D : ClosedPaidDynamics State Step) : ClosedDynamics State Step where
   Universe := D.Universe
   closed := D.closed
 
-/-- **`closedPaid_strict_drop` — ДОКАЗАНА (§4).** Платный шаг из вселенной строго роняет `Total`. -/
+/-- **`closedPaid_strict_drop` — PROVED (§4).** A paid step from the universe strictly drops `Total`. -/
 theorem closedPaid_strict_drop {State : Type} {Step : State → State → Prop}
     (D : ClosedPaidDynamics State Step) {x y : State}
     (hUx : D.Universe x) (hStep : Step x y) : D.Total y < D.Total x := by
   have hPaid := D.paid hUx hStep; have hPos := D.work_pos hUx hStep; omega
 
-/-- **`closedPaid_path_budget` — ДОКАЗАНА (§5).** Бюджет пути (учитывая сохранение вселенной). -/
+/-- **`closedPaid_path_budget` — PROVED (§5).** Path budget (accounting for universe preservation). -/
 theorem closedPaid_path_budget {State : Type} {Step : State → State → Prop}
     (D : ClosedPaidDynamics State Step) (path : ℕ → State)
     (hStart : D.Universe (path 0)) (hStep : ∀ k, Step (path k) (path (k + 1))) :
@@ -93,7 +93,7 @@ theorem closedPaid_path_budget {State : Type} {Step : State → State → Prop}
       have hPaid := D.paid (hU n) (hStep n)
       rw [Finset.sum_range_succ]; omega
 
-/-- **`closedPaid_steps_bounded` — ДОКАЗАНА (§6).** `n ≤ Total (path 0)`. -/
+/-- **`closedPaid_steps_bounded` — PROVED (§6).** `n ≤ Total (path 0)`. -/
 theorem closedPaid_steps_bounded {State : Type} {Step : State → State → Prop}
     (D : ClosedPaidDynamics State Step) (path : ℕ → State)
     (hStart : D.Universe (path 0)) (hStep : ∀ k, Step (path k) (path (k + 1))) :
@@ -108,8 +108,8 @@ theorem closedPaid_steps_bounded {State : Type} {Step : State → State → Prop
       _ ≤ ∑ k ∈ Finset.range n, D.Work (path k) (path (k + 1)) := Finset.sum_le_sum hEach
   omega
 
-/-- **`no_infinite_closed_paid_run` — ДОКАЗАНА (§7).** Если двигатель остаётся во вселенной и каждый
-    шаг оплачен, бесконечного пути НЕТ. -/
+/-- **`no_infinite_closed_paid_run` — PROVED (§7).** If the engine stays in the universe and every
+    step is paid, there is NO infinite path. -/
 theorem no_infinite_closed_paid_run {State : Type} {Step : State → State → Prop}
     (D : ClosedPaidDynamics State Step) :
     ¬ ∃ path : ℕ → State, D.Universe (path 0) ∧ ∀ k, Step (path k) (path (k + 1)) := by
@@ -117,9 +117,9 @@ theorem no_infinite_closed_paid_run {State : Type} {Step : State → State → P
   have := closedPaid_steps_bounded D path hStart hStep (D.Total (path 0) + 1)
   omega
 
-/-! ### §8–10. Scale-indexed: вселенная и стоимость смены вселенной по масштабу -/
+/-! ### §8–10. Scale-indexed: universe and the cost of changing the universe by scale -/
 
-/-- Замкнутая платная scale-динамика: состояния `StateAt A`, шаг `A ≤ B`, плюс `UniverseChangeCost`. -/
+/-- Closed paid scale-dynamics: states `StateAt A`, step `A ≤ B`, plus `UniverseChangeCost`. -/
 structure ClosedPaidScaleDynamics (StateAt : ℕ → Type)
     (StepAt : ∀ {A B : ℕ}, A ≤ B → StateAt A → StateAt B → Prop) where
   UniverseAt : ∀ A, StateAt A → Prop
@@ -134,8 +134,8 @@ structure ClosedPaidScaleDynamics (StateAt : ℕ → Type)
     UniverseAt A x → StepAt hAB x y →
       Total B y + Work hAB x y + UniverseChangeCost hAB x y ≤ Total A x
 
-/-- **`closedPaidScale_strict_drop` — ДОКАЗАНА (§10).** Scale-шаг из вселенной строго роняет `Total`
-    (даже с положительной `UniverseChangeCost`). -/
+/-- **`closedPaidScale_strict_drop` — PROVED (§10).** A scale step from the universe strictly drops `Total`
+    (even with a positive `UniverseChangeCost`). -/
 theorem closedPaidScale_strict_drop {StateAt : ℕ → Type}
     {StepAt : ∀ {A B : ℕ}, A ≤ B → StateAt A → StateAt B → Prop}
     (D : ClosedPaidScaleDynamics StateAt StepAt) {A B : ℕ} {hAB : A ≤ B}
@@ -143,13 +143,13 @@ theorem closedPaidScale_strict_drop {StateAt : ℕ → Type}
     D.Total B y < D.Total A x := by
   have hPaid := D.paid hUx hStep; have hPos := D.work_pos hUx hStep; omega
 
-/-! ### §25. Paid-or-closes: дихотомия «закрывается ИЛИ платит»
+/-! ### §25. Paid-or-closes: the "closes OR pays" dichotomy
 
-Более слабый (реалистичный) вход: каждый живой шаг ЛИБО закрывает на текущем масштабе, ЛИБО оплачен.
-Под глобальным `¬Close` это сводится к обычной платной динамике ⟹ нет бесконечного run. -/
+Weaker (realistic) named input: every live step EITHER closes at the current scale OR is paid.
+Under a global `¬Close` this reduces to ordinary paid dynamics ⟹ no infinite run. -/
 
-/-- Замкнутая динамика с дихотомией paid-or-closes: `Close : State → Prop`; каждый шаг из вселенной
-    либо даёт `Close x`, либо оплачен. -/
+/-- Closed dynamics with the paid-or-closes dichotomy: `Close : State → Prop`; every step from the universe
+    either gives `Close x` or is paid. -/
 structure ClosedPaidOrClosesDynamics (State : Type) (Step : State → State → Prop) where
   Universe : State → Prop
   Close : State → Prop
@@ -161,15 +161,15 @@ structure ClosedPaidOrClosesDynamics (State : Type) (Step : State → State → 
     Close x ∨ Total y + Work x y ≤ Total x
 
 /--
-  **`closed_paid_or_closes_no_infinite_run` — ДОКАЗАНА (§25 дихотомия).** Если НИ на одном достижимом
-  состоянии нет `Close` (`hNoClose`), то paid-or-closes вырождается в paid, и бесконечного живого пути
-  нет. Если же `Close` где-то наступает — это и есть искомый терминал (заключение отдельно). -/
+  **`closed_paid_or_closes_no_infinite_run` — PROVED (§25 dichotomy).** If `Close` is absent on ANY reachable
+  state (`hNoClose`), then paid-or-closes degenerates to paid, and there is no infinite live path.
+  If `Close` does occur somewhere — that is the sought terminal (conclusion handled separately). -/
 theorem closed_paid_or_closes_no_infinite_run {State : Type} {Step : State → State → Prop}
     (D : ClosedPaidOrClosesDynamics State Step)
     (hNoClose : ∀ x, D.Universe x → ¬ D.Close x) :
     ¬ ∃ path : ℕ → State, D.Universe (path 0) ∧ ∀ k, Step (path k) (path (k + 1)) := by
   rintro ⟨path, hStart, hStep⟩
-  -- Построить ClosedPaidDynamics: под hNoClose дихотомия даёт paid всюду во вселенной.
+  -- Build ClosedPaidDynamics: under hNoClose the dichotomy yields paid everywhere in the universe.
   let D' : ClosedPaidDynamics State Step :=
     { Universe := D.Universe
       Total := D.Total
@@ -183,47 +183,47 @@ theorem closed_paid_or_closes_no_infinite_run {State : Type} {Step : State → S
         · exact hPaid }
   exact no_infinite_closed_paid_run D' ⟨path, hStart, hStep⟩
 
-/-! ### §32–33. UniverseEscape / UniverseRefuel как отрицания инвариантов -/
+/-! ### §32–33. UniverseEscape / UniverseRefuel as negations of invariants -/
 
 /--
-  **`universeRefuel_is_paid_violation` — ДОКАЗАНА (§33).** «Refuel» (двигатель остаётся легальным, но
-  возвращается с бОльшим ресурсом, чем позволено) — это РОВНО отрицание `paid`: если
-  `Total x < Total y + Work x y`, то `¬ (Total y + Work x y ≤ Total x)`. Значит любой refuel — прямое
-  нарушение платного закона; закрыть его можно ЛИШЬ доказав `paid` (или `paid_or_closes`). -/
+  **`universeRefuel_is_paid_violation` — PROVED (§33).** "Refuel" (the engine remains legal but
+  returns with more resource than permitted) is EXACTLY the negation of `paid`: if
+  `Total x < Total y + Work x y`, then `¬ (Total y + Work x y ≤ Total x)`. Hence every refuel is a direct
+  violation of the paid law; it can only be closed by proving `paid` (or `paid_or_closes`). -/
 theorem universeRefuel_is_paid_violation {State : Type} (Total : State → ℕ) (Work : State → State → ℕ)
     (x y : State) (hRefuel : Total x < Total y + Work x y) :
     ¬ (Total y + Work x y ≤ Total x) := by omega
 
-/-! ### §23, §25, §34, §36. МАШИННЫЙ ДИАГНОЗ ЛОВУШКИ: promotion_paid_or_closes — стена
+/-! ### §23, §25, §34, §36. MACHINE DIAGNOSIS OF THE TRAP: promotion_paid_or_closes — the wall
 
-Абстрактные законы выше корректны и не вакуумны. Но Step00 инстанциирует `no_infinite_closed_paid_run`
-ЛИШЬ если доказан `paid` для КАЖДОГО шага, включая promotion/carrier-regeneration. Кирпич (§36) прямо
-называет `step00_promotion_paid_or_closes` «самой опасной теоремой» и «самым вероятным скрытым
-двигателем». Зафиксируем машинно, что без неё инстанциация невозможна. -/
+The abstract laws above are correct and non-vacuous. But Step00 instantiates `no_infinite_closed_paid_run`
+ONLY if `paid` is proved for EVERY step, including promotion/carrier-regeneration. The brick (§36) directly
+calls `step00_promotion_paid_or_closes` "the most dangerous theorem" and "the most likely hidden
+perpetual engine". Let us fix machine-wise that without it instantiation is impossible. -/
 
-/-- Абстрактный «promotion-вход»: для каждого promotion-шага — либо Close, либо платно. Это ровно
-    `step00_promotion_paid_or_closes`; локальные/энергетические законы его НЕ дают. -/
+/-- Abstract "promotion named input": for every promotion step — either Close or paid. This is exactly
+    `step00_promotion_paid_or_closes`; local/energy laws do NOT supply it. -/
 def PromotionPaidOrCloses {State : Type} (Step : State → State → Prop)
     (Universe Close : State → Prop) (Total : State → ℕ) (Work : State → State → ℕ) : Prop :=
   ∀ {x y : State}, Universe x → Step x y → Close x ∨ Total y + Work x y ≤ Total x
 
 /--
-  **`promotion_paid_or_closes_is_the_wall` — ДОКАЗАНА (итог диагноза §36).** `PromotionPaidOrCloses`
-  РАЗВОРАЧИВАЕТСЯ в точности в поле `paid_or_closes` структуры `ClosedPaidOrClosesDynamics`. То есть это
-  ровно тот вход, который нужен `closed_paid_or_closes_no_infinite_run` — и он НЕ выводится из
-  сохранения вселенной или локальной энергии. Если promotion создаёт новый ресурс (refuel по §33) —
-  вход ложен, и это скрытый двигатель (orientation-стена `HigherEnergy` + supply-стена
-  `PaidDynamics.regeneration_to_close_is_supply`). Здесь вход НЕ предъявлен. -/
+  **`promotion_paid_or_closes_is_the_wall` — PROVED (conclusion of diagnosis §36).** `PromotionPaidOrCloses`
+  UNFOLDS to exactly the `paid_or_closes` field of `ClosedPaidOrClosesDynamics`. That is, it is
+  precisely the named input required by `closed_paid_or_closes_no_infinite_run` — and it does NOT follow from
+  universe preservation or local energy. If promotion creates a new resource (refuel per §33) —
+  the named input is false, and that is a hidden perpetual engine (orientation wall `HigherEnergy` + supply wall
+  `PaidDynamics.regeneration_to_close_is_supply`). The named input is NOT supplied here. -/
 theorem promotion_paid_or_closes_is_the_wall {State : Type} (Step : State → State → Prop)
     (Universe Close : State → Prop) (Total : State → ℕ) (Work : State → State → ℕ) :
     PromotionPaidOrCloses Step Universe Close Total Work ↔
       (∀ {x y : State}, Universe x → Step x y → Close x ∨ Total y + Work x y ≤ Total x) := Iff.rfl
 
 /--
-  **`universe_preservation_alone_does_not_bound_run` — ДОКАЗАНА (red-test §36).** Сохранение вселенной
-  БЕЗ платы бесконечного пути НЕ запрещает: строим замкнутую динамику на `ℕ` с `Step := (· + 1 = ·)`,
-  где вселенная = всё, но `Total` монотонно РАСТЁТ — бесконечный путь существует. Значит `closed` сам по
-  себе бесполезен без `paid`; вся сила — в `paid`/`paid_or_closes` (= promotion-стена). -/
+  **`universe_preservation_alone_does_not_bound_run` — PROVED (red-test §36).** Universe preservation
+  WITHOUT payment does NOT prohibit an infinite path: we build a closed dynamics on `ℕ` with `Step := (· + 1 = ·)`,
+  where the universe is everything but `Total` grows monotonically — an infinite path exists. Hence `closed` alone
+  is useless without `paid`; all the force lies in `paid`/`paid_or_closes` (= the promotion wall). -/
 theorem universe_preservation_alone_does_not_bound_run :
     ∃ (D : ClosedDynamics ℕ (fun x y => y = x + 1)) (path : ℕ → ℕ),
       D.Universe (path 0) ∧ ∀ k, (fun x y => y = x + 1) (path k) (path (k + 1)) := by

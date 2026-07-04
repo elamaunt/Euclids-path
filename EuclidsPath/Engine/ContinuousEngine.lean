@@ -1,70 +1,70 @@
 /-
-  ContinuousEngine — ПЕРВЫЙ формальный НЕПРЕРЫВНО-ВРЕМЕННОЙ вечный двигатель над ℝ
-  и ЧЕСТНАЯ, машинно-проверенная КАРТА того, где показание двигателя переносится на
-  континуум, а где оно ПРИНЦИПИАЛЬНО НЕ ДОСТАЁТ до настоящего Навье–Стокса.
+  ContinuousEngine — the FIRST formal CONTINUOUS-TIME perpetual engine over ℝ
+  and an HONEST, machine-checked MAP of where the engine reading carries over to
+  the continuum, and where it PRINCIPLY FAILS TO REACH the genuine Navier–Stokes.
 
   ┌───────────────────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКИЙ ЧЕСТНЫЙ ЗАГОЛОВОК — ЧТО ЗДЕСЬ ЕСТЬ И ЧЕГО НЕТ.                                    │
+  │  LOUD HONEST HEADER — WHAT IS HERE AND WHAT IS NOT.                                       │
   └───────────────────────────────────────────────────────────────────────────────────────┘
 
-  ЧТО ЭТОТ МОДУЛЬ ДОСТИГАЕТ (зелёно, машинно, без sorry/axiom/native_decide):
-    • M1 — ПЕРВЫЙ формальный НЕПРЕРЫВНО-ВРЕМЕННОЙ вечный двигатель. Над ℝ функция
-        `H(t) = r^t` (`0 < r < 1`) СТРОГО-МУЛЬТИПЛИКАТИВНО убывает
-        (`H s ≤ r^(s−t)·H t` для `t ≤ s`), при этом ВЕЧНО ПОЛОЖИТЕЛЬНА и не
-        обрывается ни в какой момент: `continuous_engine_exists`. Это ℝ-аналог того,
-        что дискретная невозможность `EPMI.no_infinite_descent` (ℕ ЗАПРЕЩАЕТ бесконечный
-        спуск) на континууме ЛОЖНА: двигатель работает вечно. НОВОЕ здесь — непрерывное
-        время `r^t` над ВСЕМ ℝ через `Real.rpow`; дискретно-индексная форма `(1/2)^n` уже
-        существует как `DissipativeCascade.real_positive_work_not_wellfounded` (цитируется,
-        не пере-выводится).
-    • M2 — СХОДИМОСТЬ ≠ ПРОТИВОРЕЧИЕ. Ограниченный снизу антитонный бюджет
-        `H : ℕ → ℝ` СХОДИТСЯ (к `⨅ n, H n ≥ 0`), а НЕ даёт `False`:
-        `boundedBelow_antitone_converges`. Спуск СХОДИТСЯ, а не «фундирует».
-    • M3 — КОНЕЧНО-ВРЕМЕННАЯ СУПЕРЗАДАЧА (supertask). Масштаб кованого каскада
-        `NavierStokesFront.cookedProfileCascade` уходит В НОЛЬ (`→ 0`) ДО конечного `T=1`:
-        `cascade_scale_tendsto_zero`. Завершённый бесконечный спуск к масштабу 0 за
-        конечное время — то, что ℝ допускает, а ℕ (`no_infinite_descent`) запрещает.
-        Свидетели переиспользованы из `NavierStokesFront` (не пере-выводятся).
-    • M4 — СВЯЗЬ КЛЭЯ КАК ЯЗЫКОВОЕ ТОЖДЕСТВО. «Двигатель работает до T» ⟺ «BKM-контроль
-        вихря нарушен» — это `Iff.rfl` (`continuousEngine_runs_iff_not_vorticityControl`),
-        ГРОМКО раскрытое как определение-через-определение, БЕЗ новой математики (зеркало
-        существующего `NavierStokesClay.vorticityBlowup_is_deviation`). Плюс — карта ЧЕТЫРЁХ
-        строгих критериев взрыва как УСЛОВНЫХ характеризаций (см. §M4).
-    • M5 — ЧЕСТНЫЙ ЭНДПОИНТ. Непрерывный двигатель существует БЕЗУСЛОВНО
-        (`continuous_engine_exists_unconditionally`), поэтому из «∃ двигатель» (истинного
-        утверждения) НИЧЕГО про открытое ядро `GlobalVorticityControl` не следует: истинная
-        посылка не несёт направленного содержания. Переиспользуется машинно-проверенная
-        `NavierStokesClay.greenBudget_strictly_weaker_than_vorticityControl` («бюджетная
-        машина СТРОГО СЛАБЕЕ открытого ядра»).
+  WHAT THIS MODULE ACHIEVES (green, machine-checked, no sorry/axiom/native_decide):
+    • M1 — the FIRST formal CONTINUOUS-TIME perpetual engine. Over ℝ the function
+        `H(t) = r^t` (`0 < r < 1`) decays STRICTLY-MULTIPLICATIVELY
+        (`H s ≤ r^(s−t)·H t` for `t ≤ s`), while remaining ETERNALLY POSITIVE and never
+        terminating at any moment: `continuous_engine_exists`. This is the ℝ-analogue of
+        the fact that the discrete impossibility `EPMI.no_infinite_descent` (ℕ FORBIDS infinite
+        descent) is FALSE on the continuum: the engine runs forever. What is NEW here is continuous
+        time `r^t` over ALL of ℝ via `Real.rpow`; the discrete-index form `(1/2)^n` already
+        exists as `DissipativeCascade.real_positive_work_not_wellfounded` (cited,
+        not re-derived).
+    • M2 — CONVERGENCE ≠ CONTRADICTION. A bounded-below antitone budget
+        `H : ℕ → ℝ` CONVERGES (to `⨅ n, H n ≥ 0`), and does NOT yield `False`:
+        `boundedBelow_antitone_converges`. The descent CONVERGES, it does not "well-found".
+    • M3 — FINITE-TIME SUPERTASK. The scale of the forged cascade
+        `NavierStokesFront.cookedProfileCascade` goes TO ZERO (`→ 0`) BEFORE the finite `T=1`:
+        `cascade_scale_tendsto_zero`. A completed infinite descent to scale 0 in
+        finite time — what ℝ permits but ℕ (`no_infinite_descent`) forbids.
+        The witnesses are reused from `NavierStokesFront` (not re-derived).
+    • M4 — THE CLAY LINK AS A LINGUISTIC IDENTITY. "The engine runs up to T" ⟺ "BKM vorticity
+        control is violated" — this is `Iff.rfl` (`continuousEngine_runs_iff_not_vorticityControl`),
+        LOUDLY disclosed as definition-through-definition, WITHOUT new mathematics (a mirror of
+        the existing `NavierStokesClay.vorticityBlowup_is_deviation`). Plus — a map of FOUR
+        rigorous blowup criteria as CONDITIONAL characterizations (see §M4).
+    • M5 — HONEST ENDPOINT. The continuous engine exists UNCONDITIONALLY
+        (`continuous_engine_exists_unconditionally`), hence from "∃ engine" (a true
+        statement) NOTHING about the open core `GlobalVorticityControl` follows: a true
+        premise carries no directional content. The machine-checked
+        `NavierStokesClay.greenBudget_strictly_weaker_than_vorticityControl` ("the budget
+        machine is STRICTLY WEAKER than the open core") is reused.
 
-  ЧЕГО ЭТОТ МОДУЛЬ НЕ ДОСТИГАЕТ (КРАСНЫЕ ЛИНИИ — ГРОМКО):
-    • Это НЕ решение и НЕ «удар» по задаче тысячелетия. Настоящий 3D-Навье–Стокс НЕ
-      затронут ни на шаг.
-    • Доказать ВЗРЫВ настоящего НС (утверждение C формулировки Клэя) СТОЛЬ ЖЕ ОТКРЫТО,
-      как регулярность (A). Абстрактный двигатель РАЗВЯЗАН (decoupled) от НЕЛИНЕЙНОСТИ НС:
-      его форсирующий вход `superlinearDrive` НАЗВАН и живёт ТОЛЬКО в дискретной модели
-      Каца–Павловича (`DyadicBlowup.DyadicSolution.superlinearDrive`), а не в самих
-      уравнениях НС.
-    • Барьер СУПЕРКРИТИЧНОСТИ Тао (Tao, J. Amer. Math. Soc. 29 (2016) 601–674): усреднённый
-      НС СОХРАНЯЕТ энергетическое тождество, но ВЗРЫВАЕТСЯ ⟹ никакой чисто
-      энергетический/спусковой аргумент не может РЕШИТЬ настоящий НС. Именно поэтому
-      двигательное показание НЕ ДОСТАЁТ до континуума НС.
-    • Открытое ядро `NavierStokesClay.GlobalVorticityControl` остаётся ЕДИНСТВЕННЫМ 🔴
-      барьером, НЕТРОНУТЫМ. Мы НЕ подделываем доказательство независимости и НЕ
-      изобретаем `Prop`, притворяющийся, что решает НС.
+  WHAT THIS MODULE DOES NOT ACHIEVE (RED LINES — LOUD):
+    • This is NOT a solution and NOT a "strike" at the millennium problem. The genuine 3D
+      Navier–Stokes is NOT touched by a single step.
+    • To prove BLOWUP of the genuine NS (statement C of the Clay formulation) is JUST AS OPEN
+      as regularity (A). The abstract engine is DECOUPLED from the NONLINEARITY of NS:
+      its forcing input `superlinearDrive` is NAMED and lives ONLY in the discrete
+      Katz–Pavlović model (`DyadicBlowup.DyadicSolution.superlinearDrive`), not in the NS
+      equations themselves.
+    • Tao's SUPERCRITICALITY barrier (Tao, J. Amer. Math. Soc. 29 (2016) 601–674): the averaged
+      NS PRESERVES the energy identity yet BLOWS UP ⟹ no purely
+      energy/descent argument can SOLVE the genuine NS. This is exactly why the
+      engine reading FAILS TO REACH the NS continuum.
+    • The open core `NavierStokesClay.GlobalVorticityControl` remains the SOLE 🔴
+      barrier, UNTOUCHED. We do NOT forge a proof of independence and do NOT
+      invent a `Prop` pretending to solve NS.
 
-  Никакого `sorry`, никакой новой аксиомы, никакого `native_decide`; такса репозитория
-  (propext / Classical.choice / Quot.sound) неизменна — 45. Красная линия (связь с
-  простыми числами) нетронута.
+  No `sorry`, no new axiom, no `native_decide`; the repository taint
+  (propext / Classical.choice / Quot.sound) is unchanged — 45. The red line (the link to
+  prime numbers) is untouched.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
-    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/ContinuousEngine.lean → ноль ошибок.
+  Compilation: cd /f/Primes/Euclids-path &&
+    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/ContinuousEngine.lean → zero errors.
 
-  Родство: EuclidsPath/Engine/EPMI.lean (`no_infinite_descent` — дискретный контраст);
+  Kinship: EuclidsPath/Engine/EPMI.lean (`no_infinite_descent` — the discrete contrast);
     EuclidsPath/Engine/DissipativeCascade.lean (`real_positive_work_not_wellfounded` — ℝ-(1/2)ⁿ);
-    EuclidsPath/Engine/NavierStokesFront.lean (`cookedProfileCascade` — supertask-свидетель);
-    EuclidsPath/Engine/NavierStokesClayReduction.lean (`GlobalVorticityControl` — открытое ядро);
-    EuclidsPath/Engine/DyadicBlowup.lean (`superlinearDrive` — именованный форсинг + барьер Тао).
+    EuclidsPath/Engine/NavierStokesFront.lean (`cookedProfileCascade` — supertask witness);
+    EuclidsPath/Engine/NavierStokesClayReduction.lean (`GlobalVorticityControl` — the open core);
+    EuclidsPath/Engine/DyadicBlowup.lean (`superlinearDrive` — named forcing + Tao's barrier).
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -86,65 +86,65 @@ open scoped BigOperators
 
 /-!
 ################################################################################
-  M1. ГЕНУИННО-НОВЫЙ НЕПРЕРЫВНО-ВРЕМЕННОЙ ДВИГАТЕЛЬ (зелёно, малый)
+  M1. GENUINELY-NEW CONTINUOUS-TIME ENGINE (green, small)
 ################################################################################
 
-Дискретный движок `EPMI` невозможен ровно потому, что высоты живут в ℕ, а ℕ
-фундирована (well-founded): любой строгий `A`-спуск за конечное число шагов
-уходит ниже 1 — противоречие (`no_infinite_descent`). НЕПРЕРЫВНОЕ время над ℝ
-этого барьера НЕ имеет: `H(t) = r^t` строго-мультипликативно убывает и всё же
-ВЕЧНО положительна. Это и есть «непрерывный вечный двигатель» — первая его
-формализация над ВСЕМ ℝ. -/
+The discrete engine `EPMI` is impossible precisely because the heights live in ℕ, and ℕ
+is well-founded: any strict `A`-descent drops below 1 in finitely many steps —
+a contradiction (`no_infinite_descent`). CONTINUOUS time over ℝ does NOT have
+this barrier: `H(t) = r^t` decays strictly-multiplicatively yet remains
+ETERNALLY positive. This is exactly the "continuous perpetual engine" — its first
+formalization over ALL of ℝ. -/
 
-/-- **Непрерывно-временной вечный двигатель.** Функция «высоты/энергии»
-    `H : ℝ → ℝ` есть двигатель со скоростью убывания `r`, если:
-      (i)   `H` всюду СТРОГО положительна (двигатель никогда не глохнет);
-      (ii)  `0 < r < 1` (строгая скорость убывания);
-      (iii) СТРОГО-МУЛЬТИПЛИКАТИВНЫЙ спуск: за интервал `[t,s]` высота падает
-            не медленнее чем в `r^(s−t)` раз, `H s ≤ r^(s−t) · H t` для `t ≤ s`.
-    Показатель `s − t` — ВЕЩЕСТВЕННЫЙ, поэтому используется `Real.rpow`. Это
-    непрерывно-временной аналог дискретного `DescentStep`/`no_perpetual_engine`
-    из `EPMI`: там спуск ЗАПРЕЩЁН (ℕ фундирована), здесь он ВЕЧНО ИДЁТ. -/
+/-- **Continuous-time perpetual engine.** A "height/energy" function
+    `H : ℝ → ℝ` is an engine with decay rate `r` if:
+      (i)   `H` is everywhere STRICTLY positive (the engine never stalls);
+      (ii)  `0 < r < 1` (a strict decay rate);
+      (iii) STRICTLY-MULTIPLICATIVE descent: over an interval `[t,s]` the height drops
+            no slower than by a factor `r^(s−t)`, `H s ≤ r^(s−t) · H t` for `t ≤ s`.
+    The exponent `s − t` is REAL, hence `Real.rpow` is used. This is
+    the continuous-time analogue of the discrete `DescentStep`/`no_perpetual_engine`
+    from `EPMI`: there descent is FORBIDDEN (ℕ is well-founded), here it RUNS ETERNALLY. -/
 def ContinuousEngine (H : ℝ → ℝ) (r : ℝ) : Prop :=
   (∀ t, 0 < H t) ∧ 0 < r ∧ r < 1 ∧ ∀ t s, t ≤ s → H s ≤ r ^ (s - t) * H t
 
-/-- **🟢 `continuous_engine_exists` — ДОКАЗАНА (ЯДРО M1, генуинно новое).**
-    Для всякого `0 < r < 1` функция `H(t) = r^t` (rpow) есть непрерывно-временной
-    вечный двигатель со скоростью `r`. Положительность — `Real.rpow_pos_of_pos`;
-    спуск — фактически РАВЕНСТВО `r^s = r^(s−t) · r^t` (через `Real.rpow_add` после
-    `s = (s − t) + t`), поэтому `≤` берётся `le_of_eq`. Это ℝ-реализация того, что
-    дискретный `EPMI.no_infinite_descent` над ℕ ЛОЖЕН: двигатель работает вечно. -/
+/-- **🟢 `continuous_engine_exists` — PROVEN (CORE of M1, genuinely new).**
+    For every `0 < r < 1` the function `H(t) = r^t` (rpow) is a continuous-time
+    perpetual engine with rate `r`. Positivity — `Real.rpow_pos_of_pos`;
+    descent — actually an EQUALITY `r^s = r^(s−t) · r^t` (via `Real.rpow_add` after
+    `s = (s − t) + t`), so `≤` is taken via `le_of_eq`. This is the ℝ-realization of the fact
+    that the discrete `EPMI.no_infinite_descent` over ℕ is FALSE: the engine runs forever. -/
 theorem continuous_engine_exists {r : ℝ} (hr0 : 0 < r) (hr1 : r < 1) :
     ContinuousEngine (fun t => r ^ t) r := by
   refine ⟨fun t => Real.rpow_pos_of_pos hr0 t, hr0, hr1, ?_⟩
   intro t s hts
-  -- r^s = r^((s-t)+t) = r^(s-t) * r^t  (равенство), значит ≤ через le_of_eq
+  -- r^s = r^((s-t)+t) = r^(s-t) * r^t  (equality), hence ≤ via le_of_eq
   have hsplit : s = (s - t) + t := by ring
   have heq : r ^ s = r ^ (s - t) * r ^ t := by
     calc r ^ s = r ^ ((s - t) + t) := by rw [← hsplit]
       _ = r ^ (s - t) * r ^ t := Real.rpow_add hr0 _ _
   exact le_of_eq heq
 
-/-- **🟢 `continuous_engine_exists_unconditionally` — ДОКАЗАНА (безусловная
-    обитаемость).** Непрерывно-временной вечный двигатель СУЩЕСТВУЕТ безусловно —
-    берём `r = 1/2`, `H(t) = (1/2)^t`. Это истинное утверждение БЕЗ всяких
-    НС-гипотез; оно ЯКОРИТ честный эндпоинт M5: из истинной посылки «∃ двигатель»
-    ничего про открытое ядро НС не выводимо. -/
+/-- **🟢 `continuous_engine_exists_unconditionally` — PROVEN (unconditional
+    inhabitation).** A continuous-time perpetual engine EXISTS unconditionally —
+    take `r = 1/2`, `H(t) = (1/2)^t`. This is a true statement WITHOUT any
+    NS hypotheses; it ANCHORS the honest endpoint M5: from the true premise "∃ engine"
+    nothing about the open core of NS is derivable. -/
 theorem continuous_engine_exists_unconditionally :
     ∃ (H : ℝ → ℝ) (r : ℝ), ContinuousEngine H r :=
   ⟨fun t => (1 / 2 : ℝ) ^ t, 1 / 2,
     continuous_engine_exists (by norm_num) (by norm_num)⟩
 
-/-- **🟢 `discrete_forbids_continuous_realizes` — ДОКАЗАНА (ГЛАВНЫЙ КОНТРАСТ).**
-    Точная юкстапозиция двух показаний:
-      • слева  — `EPMI.no_infinite_descent`: над ℕ бесконечный `A`-спуск (`A ≥ 1`)
-        даёт `False` — двигатель НЕВОЗМОЖЕН (ℕ фундирована);
-      • справа — `continuous_engine_exists`: над ℝ `H(t)=r^t` РЕАЛИЗУЕТ вечный
-        строго-мультипликативный спуск — двигатель РАБОТАЕТ.
-    Смысл: невозможность двигателя ЕСТЬ well-foundedness ℕ, которой ℝ лишена.
-    Дискретно-индексная (1/2)ⁿ-форма уже существует как
-    `DissipativeCascade.real_positive_work_not_wellfounded` — здесь НОВОЕ значение
-    в непрерывном времени `r^t` над всем ℝ. -/
+/-- **🟢 `discrete_forbids_continuous_realizes` — PROVEN (THE MAIN CONTRAST).**
+    An exact juxtaposition of two readings:
+      • left  — `EPMI.no_infinite_descent`: over ℕ an infinite `A`-descent (`A ≥ 1`)
+        yields `False` — the engine is IMPOSSIBLE (ℕ is well-founded);
+      • right — `continuous_engine_exists`: over ℝ `H(t)=r^t` REALIZES an eternal
+        strictly-multiplicative descent — the engine RUNS.
+    The point: the impossibility of the engine IS the well-foundedness of ℕ, which ℝ lacks.
+    The discrete-index (1/2)ⁿ-form already exists as
+    `DissipativeCascade.real_positive_work_not_wellfounded` — here the NEW content
+    is continuous time `r^t` over all of ℝ. -/
 theorem discrete_forbids_continuous_realizes :
     (∀ {A : Nat}, 1 ≤ A → ∀ (H : Nat → Nat),
         (∀ t, EuclidsPath.Engine.DescentStep A (H t) (H (t + 1))) → False)
@@ -155,9 +155,9 @@ theorem discrete_forbids_continuous_realizes :
   · intro r hr0 hr1
     exact continuous_engine_exists hr0 hr1
 
-/-- Явная перекличка с существующей ℝ-(1/2)ⁿ-формой: дискретно-индексный вечный
-    спуск над ℝ уже машинно зафиксирован в `DissipativeCascade`. Мы цитируем его
-    (НЕ пере-выводим), чтобы подчеркнуть: НОВОЕ в M1 — НЕПРЕРЫВНОЕ время `r^t`. -/
+/-- An explicit echo of the existing ℝ-(1/2)ⁿ-form: the discrete-index eternal
+    descent over ℝ is already machine-recorded in `DissipativeCascade`. We cite it
+    (do NOT re-derive), to emphasize: what is NEW in M1 is CONTINUOUS time `r^t`. -/
 theorem cite_discrete_index_real_descent :
     ∃ a : ℕ → ℝ, (∀ n, a (n + 1) < a n) ∧ (∀ n, 0 < a n) ∧
       (∀ n, 0 < a n - a (n + 1)) :=
@@ -165,19 +165,19 @@ theorem cite_discrete_index_real_descent :
 
 /-!
 ################################################################################
-  M2. СХОДИМОСТЬ ≠ ПРОТИВОРЕЧИЕ (зелёно)
+  M2. CONVERGENCE ≠ CONTRADICTION (green)
 ################################################################################
 
-Ограниченный снизу антитонный ℝ-бюджет НЕ обязан «фундироваться» и давать `False`.
-Он СХОДИТСЯ. Это дополняет `CascadeBudget.finite_budget_bounds_uniform_dissipation`
-(которому нужна РАВНОМЕРНАЯ нижняя граница β на шаг) и `budget_misses_nonuniform`:
-без равномерности спуск не конечен, но и не противоречив — он просто сходится. -/
+A bounded-below antitone ℝ-budget is NOT obliged to "well-found" and yield `False`.
+It CONVERGES. This complements `CascadeBudget.finite_budget_bounds_uniform_dissipation`
+(which needs a UNIFORM lower bound β per step) and `budget_misses_nonuniform`:
+without uniformity the descent is not finite, but neither is it contradictory — it simply converges. -/
 
-/-- **🟢 `boundedBelow_antitone_converges` — ДОКАЗАНА (M2).** Всякий ограниченный
-    снизу (`0 ≤ H n`) антитонный `H : ℕ → ℝ` СХОДИТСЯ к пределу `L ≥ 0`. Предел —
-    `⨅ n, H n`; `Tendsto` даёт `tendsto_atTop_ciInf`, а `0 ≤ ⨅` — `le_ciInf`.
-    Мораль: убывающий энергобюджет НЕ порождает `False`, он ИМЕЕТ предел; спуск
-    СХОДИТСЯ, а не well-found'ится — ровно то, чего нет у дискретного ℕ-движка. -/
+/-- **🟢 `boundedBelow_antitone_converges` — PROVEN (M2).** Every bounded-below
+    (`0 ≤ H n`) antitone `H : ℕ → ℝ` CONVERGES to a limit `L ≥ 0`. The limit —
+    `⨅ n, H n`; `Tendsto` is given by `tendsto_atTop_ciInf`, and `0 ≤ ⨅` by `le_ciInf`.
+    Moral: a decaying energy budget does NOT produce `False`, it HAS a limit; the descent
+    CONVERGES rather than well-founding — exactly what the discrete ℕ-engine lacks. -/
 theorem boundedBelow_antitone_converges (H : ℕ → ℝ)
     (hanti : Antitone H) (hbdd : ∀ n, 0 ≤ H n) :
     ∃ L, 0 ≤ L ∧ Tendsto H atTop (𝓝 L) := by
@@ -191,27 +191,27 @@ theorem boundedBelow_antitone_converges (H : ℕ → ℝ)
 
 /-!
 ################################################################################
-  M3. КОНЕЧНО-ВРЕМЕННАЯ СУПЕРЗАДАЧА (зелёно, переиспользование)
+  M3. FINITE-TIME SUPERTASK (green, reuse)
 ################################################################################
 
-Кованый каскад `NavierStokesFront.cookedProfileCascade` живёт на временах
-`tₙ = 1 − 2⁻ⁿ < T = 1`; его масштаб (профиль) равен `cookedProfile(tₙ) = 2⁻ⁿ`.
-Значит масштаб уходит В НОЛЬ ДО конечного момента `T = 1` — завершённый
-бесконечный спуск за конечное время, который ℝ допускает, а ℕ
-(`EPMI.no_infinite_descent`) запрещает. Свидетели переиспользованы. -/
+The forged cascade `NavierStokesFront.cookedProfileCascade` lives at times
+`tₙ = 1 − 2⁻ⁿ < T = 1`; its scale (profile) equals `cookedProfile(tₙ) = 2⁻ⁿ`.
+Hence the scale goes TO ZERO BEFORE the finite moment `T = 1` — a completed
+infinite descent in finite time, which ℝ permits but ℕ
+(`EPMI.no_infinite_descent`) forbids. The witnesses are reused. -/
 
-/-- **🟢 `cascade_scale_tendsto_zero` — ДОКАЗАНА (M3, supertask).** Масштаб
-    кованого каскада на этапах `n` есть `cookedProfile (times n) = 2⁻ⁿ` (через
-    существующие `cookedProfileCascade_times` + `cookedProfile_at_stage`), и он
-    `→ 0` при `n → ∞` (`tendsto_pow_atTop_nhds_zero_of_lt_one`, база `1/2`).
-    Т.к. все `times n < 1`, это ЗАВЕРШЁННЫЙ бесконечный спуск к масштабу 0 ДО
-    конечного `T = 1` — суперзадача. Реюз `NavierStokesFront`. -/
+/-- **🟢 `cascade_scale_tendsto_zero` — PROVEN (M3, supertask).** The scale of the
+    forged cascade at stages `n` is `cookedProfile (times n) = 2⁻ⁿ` (via
+    the existing `cookedProfileCascade_times` + `cookedProfile_at_stage`), and it
+    `→ 0` as `n → ∞` (`tendsto_pow_atTop_nhds_zero_of_lt_one`, base `1/2`).
+    Since all `times n < 1`, this is a COMPLETED infinite descent to scale 0 BEFORE
+    the finite `T = 1` — a supertask. Reuse of `NavierStokesFront`. -/
 theorem cascade_scale_tendsto_zero :
     Tendsto
       (fun n => NavierStokesFront.cookedProfile
         (NavierStokesFront.cookedProfileCascade.times n))
       atTop (𝓝 0) := by
-  -- на этапе n масштаб равен (1/2)^n
+  -- at stage n the scale equals (1/2)^n
   have hval : (fun n => NavierStokesFront.cookedProfile
         (NavierStokesFront.cookedProfileCascade.times n))
       = (fun n => (1 / 2 : ℝ) ^ n) := by
@@ -221,10 +221,10 @@ theorem cascade_scale_tendsto_zero :
   rw [hval]
   exact tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
 
-/-- Спутник M3: кованый каскад НЕ равномерен (падения `2⁻⁽ⁿ⁺¹⁾` ускользают под
-    всякий `δ`). Переэкспортируем `cookedProfileCascade_not_uniform` — именно
-    НЕравномерность и позволяет supertask'у ускользать от бюджетной машины (M2
-    убивает лишь равномерные спуски). Это связка M2↔M3↔M5. -/
+/-- M3 companion: the forged cascade is NOT uniform (the drops `2⁻⁽ⁿ⁺¹⁾` slip below
+    any `δ`). We re-export `cookedProfileCascade_not_uniform` — it is precisely
+    NON-uniformity that lets the supertask slip past the budget machine (M2
+    kills only uniform descents). This is the M2↔M3↔M5 linkage. -/
 theorem cascade_scale_not_uniform (δ : ℝ) (hδ : 0 < δ) :
     ¬ ∀ n, δ ≤ NavierStokesFront.cookedProfile
               (NavierStokesFront.cookedProfileCascade.times n)
@@ -234,26 +234,26 @@ theorem cascade_scale_not_uniform (δ : ℝ) (hδ : 0 < δ) :
 
 /-!
 ################################################################################
-  M4. ДВИЖОК ⟺ ВИХРЬ КАК ЯЗЫКОВОЕ ТОЖДЕСТВО + КРИТЕРИИ ВЗРЫВА (зелёно, Prop)
+  M4. ENGINE ⟺ VORTICITY AS A LINGUISTIC IDENTITY + BLOWUP CRITERIA (green, Prop)
 ################################################################################
 
-Отрицание BKM-контроля вихря — это ровно «двигатель работает до T». Мы ГРОМКО
-раскрываем: связь — определение-через-определение (`Iff.rfl`), НИКАКОЙ новой
-математики (зеркало `NavierStokesClay.vorticityBlowup_is_deviation`). -/
+The negation of BKM vorticity control is exactly "the engine runs up to T". We LOUDLY
+disclose: the link is definition-through-definition (`Iff.rfl`), NO new
+mathematics (a mirror of `NavierStokesClay.vorticityBlowup_is_deviation`). -/
 
-/-- **`ContinuousEngineRuns u T`** — «непрерывный двигатель РАБОТАЕТ до времени
-    `T` на решении `u`»: BKM-величина вихря НЕ ограничена на `[0,T]`, т.е.
-    `¬ VorticityTimeIntegrable u T`. Это язык двигательной ветки для той же
-    финитно-временной сингулярной девиации, что и в `NavierStokesClay`. -/
+/-- **`ContinuousEngineRuns u T`** — "the continuous engine RUNS up to time
+    `T` on the solution `u`": the BKM vorticity quantity is NOT bounded on `[0,T]`, i.e.
+    `¬ VorticityTimeIntegrable u T`. This is the engine-branch language for the same
+    finite-time singular deviation as in `NavierStokesClay`. -/
 def ContinuousEngineRuns (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
     (T : ℝ) : Prop :=
   ¬ EuclidsPath.NavierStokesClay.VorticityTimeIntegrable u T
 
-/-- **🟢 `continuousEngine_runs_iff_not_vorticityControl` — ДОКАЗАНА (`Iff.rfl`).**
-    ГРОМКО РАСКРЫТО: «двигатель работает до T» ⟺ «нарушен BKM-контроль вихря» —
-    это определение-через-определение, БЕЗ нового математического содержания
-    (зеркало существующего `NavierStokesClay.vorticityBlowup_is_deviation`).
-    Связь Клэя тут — ЯЗЫКОВОЕ ТОЖДЕСТВО, не мост-теорема и не продвижение НС. -/
+/-- **🟢 `continuousEngine_runs_iff_not_vorticityControl` — PROVEN (`Iff.rfl`).**
+    LOUDLY DISCLOSED: "the engine runs up to T" ⟺ "BKM vorticity control is violated" —
+    this is definition-through-definition, WITHOUT new mathematical content
+    (a mirror of the existing `NavierStokesClay.vorticityBlowup_is_deviation`).
+    The Clay link here is a LINGUISTIC IDENTITY, not a bridge-theorem and not an advance on NS. -/
 theorem continuousEngine_runs_iff_not_vorticityControl
     (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3) (T : ℝ) :
     ContinuousEngineRuns u T ↔
@@ -261,42 +261,42 @@ theorem continuousEngine_runs_iff_not_vorticityControl
   Iff.rfl
 
 /-!
-### §M4bis. ЧЕТЫРЕ СТРОГИХ КРИТЕРИЯ ВЗРЫВА КАК УСЛОВНЫЕ ХАРАКТЕРИЗАЦИИ
+### §M4bis. FOUR RIGOROUS BLOWUP CRITERIA AS CONDITIONAL CHARACTERIZATIONS
 
-ВНИМАНИЕ (ГРОМКО): каждый из четырёх ниже — НАСТОЯЩАЯ теорема литературы, но она
-УСЛОВНА: она характеризует/исключает взрыв ПРИ выполнении своей посылки и НЕ
-утверждает, что взрыв ПРОИСХОДИТ. Все они указывают на репозиторный суррогат BKM —
-`NavierStokesClay.VorticityTimeIntegrable` (равномерная оценка sup вихря на [0,T]).
+ATTENTION (LOUD): each of the four below is a GENUINE theorem of the literature, but it is
+CONDITIONAL: it characterizes/excludes blowup GIVEN its own premise and does NOT
+assert that blowup OCCURS. They all point to the repository BKM surrogate —
+`NavierStokesClay.VorticityTimeIntegrable` (a uniform estimate of sup vorticity on [0,T]).
 
   (1) Beale–Kato–Majda (Comm. Math. Phys. 94 (1984) 61–66):
-        взрыв в T ⟺ ∫₀ᵀ ‖ω(t)‖_{L^∞} dt = ∞.
-      УСЛОВНО: это КРИТЕРИЙ продолжения, НЕ утверждение о наличии взрыва.
-      Репо-суррогат: `VorticityTimeIntegrable` — конечность sup вихря на [0,T].
+        blowup at T ⟺ ∫₀ᵀ ‖ω(t)‖_{L^∞} dt = ∞.
+      CONDITIONALLY: this is a CONTINUATION criterion, NOT a statement about the presence of blowup.
+      Repo surrogate: `VorticityTimeIntegrable` — finiteness of sup vorticity on [0,T].
 
-  (2) Prodi–Serrin–Ладыженская (регулярность):
-        u ∈ L^s_t L^r_x с 2/s + 3/r ≤ 1, r > 3  ⟹  решение регулярно.
-      УСЛОВНО: гипотеза интегрируемости НЕ доказана для произвольных данных.
+  (2) Prodi–Serrin–Ladyzhenskaya (regularity):
+        u ∈ L^s_t L^r_x with 2/s + 3/r ≤ 1, r > 3  ⟹  the solution is regular.
+      CONDITIONALLY: the integrability hypothesis is NOT proven for arbitrary data.
 
-  (3) Escauriaza–Seregin–Šverák (Uspekhi Mat. Nauk 58 (2003); эндпоинт L^∞_t L^3_x):
-        u ∈ L^∞_t L^3_x  ⟹  регулярность (критический эндпоинт (2)).
-      УСЛОВНО: посылка — сильное предположение, не следствие.
+  (3) Escauriaza–Seregin–Šverák (Uspekhi Mat. Nauk 58 (2003); endpoint L^∞_t L^3_x):
+        u ∈ L^∞_t L^3_x  ⟹  regularity (the critical endpoint of (2)).
+      CONDITIONALLY: the premise is a strong assumption, not a consequence.
 
   (4) Constantin–Fefferman (Indiana Univ. Math. J. 42 (1993) 775–789):
-        липшицевость НАПРАВЛЕНИЯ вихря ξ = ω/‖ω‖ в области интенсивной завихрённости
-        ⟹  отсутствие сингулярности.
-      УСЛОВНО: геометрическое условие на направление, не гарантировано.
+        Lipschitz continuity of the vorticity DIRECTION ξ = ω/‖ω‖ in a region of intense vorticity
+        ⟹  absence of singularity.
+      CONDITIONALLY: a geometric condition on the direction, not guaranteed.
 
-Мы НЕ формализуем эти четыре как теоремы (они требуют аналитической
-инфраструктуры вне охвата модуля) — мы НАЗЫВАЕМ их и честно помечаем как
-УСЛОВНЫЕ, указывая на `VorticityTimeIntegrable` как на BKM-суррогат репозитория.
-Ни один из них НЕ утверждает, что взрыв происходит — как и весь модуль. -/
+We do NOT formalize these four as theorems (they require analytic
+infrastructure beyond the module's scope) — we NAME them and honestly mark them as
+CONDITIONAL, pointing to `VorticityTimeIntegrable` as the repository BKM surrogate.
+None of them ASSERTS that blowup occurs — just like the whole module. -/
 
-/-- **`bkm_surrogate_is_vorticity_integrable` — ДОКАЗАНА (`Iff.rfl`, разметка).**
-    Репозиторный суррогат критерия Била–Като–Майды — это в точности
-    `VorticityTimeIntegrable`: существование равномерной мажоранты sup вихря на
-    `[0,T]`. Мы фиксируем это тождество определений (без нового содержания), чтобы
-    все четыре критерия §M4bis имели ЕДИНУЮ репо-точку привязки. Критерий УСЛОВЕН:
-    он НЕ утверждает ни взрыва, ни его отсутствия. -/
+/-- **`bkm_surrogate_is_vorticity_integrable` — PROVEN (`Iff.rfl`, labeling).**
+    The repository surrogate of the Beale–Kato–Majda criterion is exactly
+    `VorticityTimeIntegrable`: the existence of a uniform majorant of sup vorticity on
+    `[0,T]`. We fix this identity of definitions (without new content) so that
+    all four criteria of §M4bis have a SINGLE repo anchor point. The criterion is CONDITIONAL:
+    it asserts NEITHER blowup nor its absence. -/
 theorem bkm_surrogate_is_vorticity_integrable
     (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3) (T : ℝ) :
     EuclidsPath.NavierStokesClay.VorticityTimeIntegrable u T ↔
@@ -307,20 +307,20 @@ theorem bkm_surrogate_is_vorticity_integrable
 
 /-!
 ################################################################################
-  M5. ЧЕСТНЫЙ ЭНДПОИНТ (зелёные свидетели + РАСКРЫТАЯ доктрина; БЕЗ фейка)
+  M5. HONEST ENDPOINT (green witnesses + DISCLOSED doctrine; NO fake)
 ################################################################################
 
-Машинно-проверенная половина эндпоинта — зелёные свидетели M1–M3 плюс
-переиспользование `greenBudget_strictly_weaker_than_vorticityControl`. Открытое
-ядро `GlobalVorticityControl` мы НЕ трогаем и НЕ подделываем независимость. -/
+The machine-checked half of the endpoint — the green witnesses M1–M3 plus
+the reuse of `greenBudget_strictly_weaker_than_vorticityControl`. The open
+core `GlobalVorticityControl` we do NOT touch and do NOT forge independence. -/
 
-/-- **🟢 `engineBudget_strictly_weaker_than_open_core` — ПЕРЕИСПОЛЬЗОВАНА (M5).**
-    Прямой реюз машинно-проверенной `NavierStokesClay.
-    greenBudget_strictly_weaker_than_vorticityControl`: зелёная БЮДЖЕТНАЯ машина
-    двигателя СТРОГО СЛАБЕЕ открытого ядра. Свидетель — тот же кованый
-    неравномерный каскад: для любого `δ>0` его падения ускользают, значит бюджет
-    (убивающий лишь равномерные каскады) НЕ доказывает `GlobalVorticityControl`.
-    Это анти-теорема (граница), а НЕ мост. -/
+/-- **🟢 `engineBudget_strictly_weaker_than_open_core` — REUSED (M5).**
+    A direct reuse of the machine-checked `NavierStokesClay.
+    greenBudget_strictly_weaker_than_vorticityControl`: the green engine BUDGET
+    machine is STRICTLY WEAKER than the open core. The witness — the same forged
+    non-uniform cascade: for any `δ>0` its drops slip away, so the budget
+    (which kills only uniform cascades) does NOT prove `GlobalVorticityControl`.
+    This is an anti-theorem (a boundary), NOT a bridge. -/
 theorem engineBudget_strictly_weaker_than_open_core (δ : ℝ) (hδ : 0 < δ) :
     ¬ ∀ n : ℕ, δ ≤
         NavierStokesFront.cookedProfile
@@ -330,23 +330,23 @@ theorem engineBudget_strictly_weaker_than_open_core (δ : ℝ) (hδ : 0 < δ) :
   EuclidsPath.NavierStokesClay.greenBudget_strictly_weaker_than_vorticityControl δ hδ
 
 /--
-**🟢 `millennium_endpoint_unreachable_by_engine` — ДОКАЗАНА (честное ЯДРО M5).**
+**🟢 `millennium_endpoint_unreachable_by_engine` — PROVEN (the honest CORE of M5).**
 
-Это НЕ доказательство независимости и НЕ решение НС — это ЧЕСТНЫЙ зелёный якорь.
-Заключение — КОНЪЮНКЦИЯ трёх ИСТИННЫХ зелёных фактов:
-  (a) непрерывный вечный двигатель существует БЕЗУСЛОВНО (`∃ H r, ContinuousEngine H r`);
-  (b) ограниченный снизу антитонный бюджет СХОДИТСЯ, а не даёт `False` (M2);
-  (c) масштаб supertask-каскада уходит в 0 до конечного T (M3).
+This is NOT a proof of independence and NOT a solution of NS — it is an HONEST green anchor.
+The conclusion — a CONJUNCTION of three TRUE green facts:
+  (a) a continuous perpetual engine exists UNCONDITIONALLY (`∃ H r, ContinuousEngine H r`);
+  (b) a bounded-below antitone budget CONVERGES, it does not yield `False` (M2);
+  (c) the supertask cascade's scale goes to 0 before the finite T (M3).
 
-ГРОМКО И ЧЕСТНО (см. заголовок и доктрину ниже): из ИСТИННОЙ посылки «∃ двигатель»
-НИЧЕГО про `GlobalVorticityControl` НЕ выводимо — истинная посылка логически
-ИНЕРТНА относительно открытого ядра (она не является ни его причиной, ни
-следствием). Абстрактный двигатель РАЗВЯЗАН от нелинейности НС: форсинг
-`superlinearDrive` НАЗВАН и живёт лишь в дискретной модели Каца–Павловича
-(`DyadicBlowup.DyadicSolution.superlinearDrive`). Барьер Тао (JAMS 2016) блокирует
-любой энергетический/спусковой аргумент. Открытое ядро остаётся ЕДИНСТВЕННЫМ 🔴,
-нетронутым. Мы НЕ изобретаем `Prop`, притворяющийся, что решает НС или доказывает
-независимость. -/
+LOUDLY AND HONESTLY (see the header and doctrine below): from the TRUE premise "∃ engine"
+NOTHING about `GlobalVorticityControl` is derivable — a true premise is logically
+INERT relative to the open core (it is neither its cause nor its
+consequence). The abstract engine is DECOUPLED from the nonlinearity of NS: the forcing
+`superlinearDrive` is NAMED and lives only in the discrete Katz–Pavlović model
+(`DyadicBlowup.DyadicSolution.superlinearDrive`). Tao's barrier (JAMS 2016) blocks
+any energy/descent argument. The open core remains the SOLE 🔴,
+untouched. We do NOT invent a `Prop` pretending to solve NS or prove
+independence. -/
 theorem millennium_endpoint_unreachable_by_engine :
     (∃ (H : ℝ → ℝ) (r : ℝ), ContinuousEngine H r)
     ∧ (∀ (H : ℕ → ℝ), Antitone H → (∀ n, 0 ≤ H n) →
@@ -359,12 +359,12 @@ theorem millennium_endpoint_unreachable_by_engine :
   intro H hanti hbdd
   exact boundedBelow_antitone_converges H hanti hbdd
 
-/-- Явное свидетельство «форсинг НАЗВАН и заперт в дискретной модели»: единственный
-    источник суперлинейного драйва в репозитории — поле `superlinearDrive` структуры
-    `DyadicBlowup.DyadicSolution` (модель Каца–Павловича), а НЕ уравнения НС. Мы
-    цитируем его тип, подтверждая развязку абстрактного двигателя от нелинейности НС.
-    (Из обитаемости `DyadicSolution` следовало бы `False` — `dyadic_blowup`, — поэтому
-    сам форсинг локально реализуем, но глобально взрывает, и к НС НЕ переносится.) -/
+/-- Explicit evidence that "the forcing is NAMED and locked in the discrete model": the sole
+    source of superlinear drive in the repository is the field `superlinearDrive` of the structure
+    `DyadicBlowup.DyadicSolution` (the Katz–Pavlović model), NOT the NS equations. We
+    cite its type, confirming the decoupling of the abstract engine from the nonlinearity of NS.
+    (Inhabitation of `DyadicSolution` would yield `False` — `dyadic_blowup` — so
+    the forcing itself is locally realizable but globally blows up, and does NOT carry over to NS.) -/
 theorem named_forcing_lives_only_in_discrete_model
     (sol : EuclidsPath.DyadicBlowup.DyadicSolution) :
     ∀ t, 0 ≤ t →
@@ -373,37 +373,37 @@ theorem named_forcing_lives_only_in_discrete_model
 
 /-!
 ################################################################################
-  M6. ГДЕ ДВИГАТЕЛЬ НЕВОЗМОЖЕН: РАВНОМЕРНЫЙ ДРЕНАЖ НА КОНЕЧНОМ ТОПЛИВЕ (зелёно)
+  M6. WHERE THE ENGINE IS IMPOSSIBLE: UNIFORM DRAIN ON FINITE FUEL (green)
 ################################################################################
 
-M1 показал: непрерывный двигатель `H(t)=r^t` РАБОТАЕТ вечно. Но НЕ ВСЯКОЕ убывание
-вечно, и здесь — точная демаркация ГДЕ двигатель НЕВОЗМОЖЕН.
+M1 showed: the continuous engine `H(t)=r^t` RUNS forever. But NOT EVERY decay is
+eternal, and here is the exact demarcation of WHERE the engine is IMPOSSIBLE.
 
-Ключ (машинно): «убывать на конечном топливе» само по себе эндпоинта НЕ гарантирует —
-`r^t` убывает на конечном топливе `H 0 = 1` и всё же вечно положителен (M1), лишь
-СХОДЯСЬ (M2), а не достигая нуля. Неизбежным эндпоинт делает РАВНОМЕРНОСТЬ дренажа:
-если мгновенная скорость `H' ≤ −β` держится с ЕДИНЫМ порогом `β > 0`, то из конечного
-топлива `H 0` высота обязана пересечь ноль за конечное `T ≤ H 0 / β` — вечная
-положительность СТАНОВИТСЯ НЕВОЗМОЖНОЙ. Значит двигатель невозможен ровно в РАВНОМЕРНОМ
-режиме, а уцелевает исключительно НЕравномерностью (скорость дренажа обязана убывать к
-нулю). Ядро — переиспользование `CascadeBudget.finite_budget_bounds_uniform_dissipation`.
+The key (machine-wise): "to decay on finite fuel" by itself does NOT guarantee an endpoint —
+`r^t` decays on finite fuel `H 0 = 1` yet is eternally positive (M1), merely
+CONVERGING (M2), never reaching zero. What makes the endpoint inevitable is the UNIFORMITY of drain:
+if the instantaneous rate `H' ≤ −β` holds with a SINGLE threshold `β > 0`, then from finite
+fuel `H 0` the height must cross zero in finite `T ≤ H 0 / β` — eternal
+positivity BECOMES IMPOSSIBLE. Hence the engine is impossible exactly in the UNIFORM
+regime, and survives solely by NON-uniformity (the drain rate must decay to
+zero). The core — a reuse of `CascadeBudget.finite_budget_bounds_uniform_dissipation`.
 
-ЧЕСТНАЯ ГРАНИЦА (та же, что у всего модуля): именно поэтому показание двигателя НЕ
-достаёт до настоящего НС — реальная диссипация НЕравномерна (кованый каскад
-`cookedProfileCascade` ускользает под всякий `β`, M3/`budget_misses_nonuniform`), то есть
-НС сидит на ВОЗМОЖНОЙ, неравномерной стороне демаркации, где конечный бюджет НЕ решает
-исход (барьер Тао, JAMS 2016). M6 картирует границу, а не закрывает задачу. -/
+THE HONEST BOUNDARY (the same one as the whole module's): this is precisely why the engine reading does NOT
+reach the genuine NS — the real dissipation is NON-uniform (the forged cascade
+`cookedProfileCascade` slips below any `β`, M3/`budget_misses_nonuniform`), that is,
+NS sits on the POSSIBLE, non-uniform side of the demarcation, where a finite budget does NOT decide
+the outcome (Tao's barrier, JAMS 2016). M6 maps the boundary, it does not close the problem. -/
 
-/-- **🟢 `uniform_drain_forbids_eternal_engine` — ДОКАЗАНА (M6, ядро замечания).**
-    НЕ существует функции `H`, которая ОДНОВРЕМЕННО:
-      (i)   вечно строго положительна на `[0,∞)` (двигатель не глохнет);
-      (ii)  дифференцируема с производной `H' t`;
-      (iii) убывает РАВНОМЕРНО: `H' t ≤ −β` с ЕДИНЫМ `β > 0`.
-    Причина: равномерный дренаж из конечного топлива `H 0` пересекает ноль за
-    `T ≤ H 0 / β` (бюджет-лемма `finite_budget_bounds_uniform_dissipation`), что при
-    `T := H 0 / β + 1` противоречит `0 < H T`. Точная запись замечания «эндпоинт
-    НЕИЗБЕЖЕН при равномерном убывании на конечном топливе»: двигатель невозможен
-    ИМЕННО здесь. Все три гипотезы реально потребляются. -/
+/-- **🟢 `uniform_drain_forbids_eternal_engine` — PROVEN (M6, the core of the remark).**
+    There is NO function `H` that SIMULTANEOUSLY:
+      (i)   is eternally strictly positive on `[0,∞)` (the engine does not stall);
+      (ii)  is differentiable with derivative `H' t`;
+      (iii) decays UNIFORMLY: `H' t ≤ −β` with a SINGLE `β > 0`.
+    The reason: uniform drain from finite fuel `H 0` crosses zero in
+    `T ≤ H 0 / β` (the budget lemma `finite_budget_bounds_uniform_dissipation`), which at
+    `T := H 0 / β + 1` contradicts `0 < H T`. The exact record of the remark "the endpoint
+    is INEVITABLE under uniform decay on finite fuel": the engine is impossible
+    EXACTLY here. All three hypotheses are genuinely consumed. -/
 theorem uniform_drain_forbids_eternal_engine
     (H H' : ℝ → ℝ) (β : ℝ) (hβ : 0 < β)
     (hderiv : ∀ t, 0 ≤ t → HasDerivAt H (H' t) t)
@@ -424,14 +424,14 @@ theorem uniform_drain_forbids_eternal_engine
   simp only [hTdef] at hbound
   linarith
 
-/-- **🟢 `continuous_engine_is_nonuniform` — ДОКАЗАНА (M6, ЧЕМ уцелевает двигатель).**
-    Двигатель `H(t)=r^t` (`0<r<1`), будучи вечно положительным (M1), НЕ МОЖЕТ дренировать
-    равномерно: не существует единого порога `β>0` и производной `H'`, для которых
-    `H' ≤ −β` на всём `[0,∞)`. Именно НЕравномерность (скорость дренажа обязана убывать
-    к нулю) — то, ЧЕМ двигатель обходит неизбежный эндпоинт равномерного режима.
-    Следствие `uniform_drain_forbids_eternal_engine` + положительность
-    `Real.rpow_pos_of_pos`. (Условие `r<1` — часть спецификации двигателя; сама
-    неравномерность держится и без него, поэтому здесь оно помечено как неиспользуемое.) -/
+/-- **🟢 `continuous_engine_is_nonuniform` — PROVEN (M6, BY WHAT the engine survives).**
+    The engine `H(t)=r^t` (`0<r<1`), being eternally positive (M1), CANNOT drain
+    uniformly: there is no single threshold `β>0` and derivative `H'` for which
+    `H' ≤ −β` on all of `[0,∞)`. It is precisely NON-uniformity (the drain rate must decay
+    to zero) that is BY WHICH the engine evades the inevitable endpoint of the uniform regime.
+    A consequence of `uniform_drain_forbids_eternal_engine` + the positivity
+    `Real.rpow_pos_of_pos`. (The condition `r<1` is part of the engine specification; the
+    non-uniformity itself holds without it, so here it is marked as unused.) -/
 theorem continuous_engine_is_nonuniform {r : ℝ} (hr0 : 0 < r) (_hr1 : r < 1) :
     ¬ ∃ (β : ℝ) (H' : ℝ → ℝ), 0 < β ∧
         (∀ t, 0 ≤ t → HasDerivAt (fun s => r ^ s) (H' t) t) ∧
@@ -440,16 +440,16 @@ theorem continuous_engine_is_nonuniform {r : ℝ} (hr0 : 0 < r) (_hr1 : r < 1) :
   exact uniform_drain_forbids_eternal_engine (fun s => r ^ s) H' β hβ hderiv hdrain
     (fun t _ => Real.rpow_pos_of_pos hr0 t)
 
-/-- **🟢 `continuous_engine_dividing_line` — ДОКАЗАНА (M6, КОРОНА ответа «где невозможен»).**
-    Точная демаркация двух сторон:
-      (A) НЕВОЗМОЖЕН на РАВНОМЕРНОЙ стороне — никакая вечно-положительная `H` с
-          равномерным дренажом `H' ≤ −β` (`β>0`) не существует (эндпоинт неизбежен за
+/-- **🟢 `continuous_engine_dividing_line` — PROVEN (M6, the CROWN of the answer "where impossible").**
+    The exact demarcation of the two sides:
+      (A) IMPOSSIBLE on the UNIFORM side — no eternally-positive `H` with
+          uniform drain `H' ≤ −β` (`β>0`) exists (the endpoint is inevitable within
           `T ≤ H 0/β`);
-      (B) ВОЗМОЖЕН на НЕравномерной стороне — двигатель существует безусловно
-          (`continuous_engine_exists_unconditionally`), причём это мультипликативный
-          `r^t`, чья скорость дренажа убывает к нулю (`continuous_engine_is_nonuniform`).
-    Демаркатор — РАВНОМЕРНОСТЬ дренажа: единый порог `β>0` убивает вечность, его
-    отсутствие её допускает. Это машинный ответ на вопрос «где двигатель невозможен». -/
+      (B) POSSIBLE on the NON-uniform side — the engine exists unconditionally
+          (`continuous_engine_exists_unconditionally`), and it is the multiplicative
+          `r^t`, whose drain rate decays to zero (`continuous_engine_is_nonuniform`).
+    The demarcator — the UNIFORMITY of drain: a single threshold `β>0` kills eternity, its
+    absence permits it. This is the machine answer to the question "where is the engine impossible". -/
 theorem continuous_engine_dividing_line :
     (∀ (H H' : ℝ → ℝ) (β : ℝ), 0 < β →
         (∀ t, 0 ≤ t → HasDerivAt H (H' t) t) →
@@ -462,41 +462,41 @@ theorem continuous_engine_dividing_line :
 
 /-!
 ################################################################################
-  ИТОГ (LOUD HONEST): что доказано, что переиспользовано, что ОСТАЁТСЯ ОТКРЫТЫМ
+  SUMMARY (LOUD HONEST): what is proven, what is reused, what REMAINS OPEN
 ################################################################################
 
-  🟢 ГЕНУИННО НОВОЕ (машинно, в этом модуле):
-     · `ContinuousEngine` / `continuous_engine_exists` — ПЕРВЫЙ формальный
-       непрерывно-временной вечный двигатель `H(t)=r^t` над всем ℝ (M1);
-     · `continuous_engine_exists_unconditionally` — безусловная обитаемость (якорь M5);
-     · `discrete_forbids_continuous_realizes` — точный контраст ℕ-запрет ↔ ℝ-реализация;
-     · `boundedBelow_antitone_converges` — сходимость ≠ противоречие (M2);
-     · `cascade_scale_tendsto_zero` — supertask: масштаб → 0 до T (M3, поверх реюза);
+  🟢 GENUINELY NEW (machine-checked, in this module):
+     · `ContinuousEngine` / `continuous_engine_exists` — the FIRST formal
+       continuous-time perpetual engine `H(t)=r^t` over all of ℝ (M1);
+     · `continuous_engine_exists_unconditionally` — unconditional inhabitation (M5 anchor);
+     · `discrete_forbids_continuous_realizes` — the exact contrast ℕ-prohibition ↔ ℝ-realization;
+     · `boundedBelow_antitone_converges` — convergence ≠ contradiction (M2);
+     · `cascade_scale_tendsto_zero` — supertask: scale → 0 before T (M3, atop the reuse);
      · `ContinuousEngineRuns` / `continuousEngine_runs_iff_not_vorticityControl` —
-       языковое тождество Клэя `Iff.rfl` (M4);
-     · `millennium_endpoint_unreachable_by_engine` — честный конъюнктивный якорь (M5);
-     · `uniform_drain_forbids_eternal_engine` — ГДЕ двигатель НЕВОЗМОЖЕН: равномерный
-       дренаж на конечном топливе форсирует эндпоинт за `T ≤ H0/β` (M6);
-     · `continuous_engine_is_nonuniform` — `r^t` уцелевает лишь НЕравномерностью (M6);
-     · `continuous_engine_dividing_line` — корона: демаркатор есть равномерность (M6).
+       the Clay linguistic identity `Iff.rfl` (M4);
+     · `millennium_endpoint_unreachable_by_engine` — the honest conjunctive anchor (M5);
+     · `uniform_drain_forbids_eternal_engine` — WHERE the engine is IMPOSSIBLE: uniform
+       drain on finite fuel forces the endpoint within `T ≤ H0/β` (M6);
+     · `continuous_engine_is_nonuniform` — `r^t` survives only by NON-uniformity (M6);
+     · `continuous_engine_dividing_line` — the crown: the demarcator is uniformity (M6).
 
-  🟢 ПЕРЕИСПОЛЬЗОВАНО (цитируется/переэкспортируется, НЕ пере-выводится):
+  🟢 REUSED (cited/re-exported, NOT re-derived):
      · `DissipativeCascade.real_positive_work_not_wellfounded` (ℝ-(1/2)ⁿ, M1);
-     · `EPMI.no_infinite_descent` (дискретный запрет, M1-контраст);
+     · `EPMI.no_infinite_descent` (the discrete prohibition, M1 contrast);
      · `NavierStokesFront.cookedProfileCascade` + `cookedProfile_at_stage` (M3);
      · `NavierStokesClay.greenBudget_strictly_weaker_than_vorticityControl` (M5);
      · `NavierStokesClay.VorticityTimeIntegrable` / `vorticity` (M4);
-     · `DyadicBlowup.DyadicSolution.superlinearDrive` (M5, именованный форсинг).
+     · `DyadicBlowup.DyadicSolution.superlinearDrive` (M5, named forcing).
 
-  🔴 ОСТАЁТСЯ ОТКРЫТЫМ (НЕТРОНУТО, ЕДИНСТВЕННЫЙ барьер):
-     · `NavierStokesClay.GlobalVorticityControl` — суперкритическая a-priori оценка
-       вихря. Этот модуль её НЕ доказывает, НЕ ослабляет и НЕ обходит.
+  🔴 REMAINS OPEN (UNTOUCHED, the SOLE barrier):
+     · `NavierStokesClay.GlobalVorticityControl` — the supercritical a-priori estimate
+       of vorticity. This module does NOT prove it, does NOT weaken it, and does NOT bypass it.
 
-  ГЛАВНОЕ (ГРОМКО): модуль НЕ решает и НЕ «ударяет» задачу тысячелетия. Взрыв
-  настоящего НС (C) столь же ОТКРЫТ, как регулярность (A). Двигатель РАЗВЯЗАН от
-  нелинейности НС; барьер Тао (JAMS 2016) блокирует энергетический/спусковой путь.
-  Никакого `sorry`, никакой новой аксиомы, никакого `native_decide`; такса 45
-  неизменна; красная линия нетронута. M5 НЕ подделывает ни независимость, ни решение.
+  THE MAIN POINT (LOUD): the module does NOT solve and does NOT "strike" the millennium problem. Blowup
+  of the genuine NS (C) is just as OPEN as regularity (A). The engine is DECOUPLED from
+  the nonlinearity of NS; Tao's barrier (JAMS 2016) blocks the energy/descent route.
+  No `sorry`, no new axiom, no `native_decide`; the taint 45
+  is unchanged; the red line is untouched. M5 forges NEITHER independence NOR a solution.
 -/
 
 #print axioms continuous_engine_exists

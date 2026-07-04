@@ -1,29 +1,29 @@
 /-
-  ClassicalPNPBridge — строгий мост Step00-локального P/NP к классическим
-  классам + extraction-слой. Кирпичи: classical_pnp_bridge_strict +
-  p_decider_extraction_field. Проза: prose/24 (§12).
+  ClassicalPNPBridge — strict bridge from Step00-local P/NP to classical
+  classes + extraction layer. Bricks: classical_pnp_bridge_strict +
+  p_decider_extraction_field. Prose: prose/24 (§12).
 
-  НЕ доказательство P ≠ NP (BridgeScopeGuard кирпича). Всё — условная сборка:
+  NOT a proof of P ≠ NP (BridgeScopeGuard of the brick). Everything is a conditional assembly:
     * ClassicalProblem/PolyManyOneReduction/ClassicalComplexityFrame
-      (InP/InNP АБСТРАКТНЫ; замыкание P под poly-preimage);
-    * Step00LocalNode (verifier + local success) + twin/small-scale обструкции;
-    * Step00ToClassicalBridge: несущее поле — P_decider_extracts_local_success;
-      несжимаемость + мост ⟹ ClassesSeparate (относительно фрейма!);
-    * extraction-слой: PDecider (sound/complete) + ConcretePAccess +
-      LocalResolverTarget + CanonicalResolverReconstruction ⟹ недостающее
-      поле построено (extracts_local_success); NP-hardness бухгалтерия §4.
+      (InP/InNP ABSTRACT; closure of P under poly-preimage);
+    * Step00LocalNode (verifier + local success) + twin/small-scale obstructions;
+    * Step00ToClassicalBridge: the carrier field is P_decider_extracts_local_success;
+      incompressibility + bridge ⟹ ClassesSeparate (relative to frame!);
+    * extraction layer: PDecider (sound/complete) + ConcretePAccess +
+      LocalResolverTarget + CanonicalResolverReconstruction ⟹ the missing
+      field is built (extracts_local_success); NP-hardness bookkeeping §4.
 
-  КОНКРЕТНАЯ ИНСТАНЦИАЦИЯ (при интеграции): concreteNode из LocalPNP.Concrete;
-  P-сторона — теорема; ПРИ A ≤ 4 НЕСЖИМАЕМОСТЬ УЗЛА — ТЕОРЕМА (5-адическая
-  цепь) — вторая половина RemainingClassicalBridgeObligation закрыта на малых
-  масштабах безусловно; twin/small-scale обструкции инстанциированы.
+  CONCRETE INSTANTIATION (on integration): concreteNode from LocalPNP.Concrete;
+  P-side is a theorem; FOR A ≤ 4 NODE INCOMPRESSIBILITY IS A THEOREM (5-adic
+  chain) — the second half of RemainingClassicalBridgeObligation is closed at small
+  scales unconditionally; twin/small-scale obstructions are instantiated.
 
-  ⚠️ МАШИННАЯ ЧЕСТНОСТЬ: trivialFrame_separates_for_free — фрейм абстрактен,
-  тривиальный фрейм разделяет классы ДАРОМ: без реальной модели машин никакого
-  утверждения о настоящих P/NP нет; вся тяжесть — в верности фрейма + в
-  CanonicalResolverReconstruction (живой фронт §7 extraction-кирпича).
-  regateReconstruction — аудит-гейты свободны (маркеры, не проверки).
-  Фикс кирпича: not_accepts_of_run_false — композиция равенств Bool.
+  ⚠️ MACHINE HONESTY: trivialFrame_separates_for_free — the frame is abstract,
+  the trivial frame separates classes FOR FREE: without a real machine model there is no
+  claim about actual P/NP; all the weight lies in the correctness of the frame and in
+  CanonicalResolverReconstruction (live front §7 of the extraction brick).
+  regateReconstruction — audit gates are free (markers, not checks).
+  Brick fix: not_accepts_of_run_false — composition of Bool equalities.
 -/
 import Mathlib
 import EuclidsPath.Engine.LocalPNPNode
@@ -953,36 +953,36 @@ end PDeciderExtraction
 end ClassicalPNPBridge
 end EuclidsPath
 
-/-! Конкретная инстанциация узла + машинная честность -/
+/-! Concrete node instantiation + machine honesty -/
 
 namespace EuclidsPath
 namespace ClassicalPNPBridge
 
 open EuclidsPath.LocalPNP EuclidsPath.LocalPNP.Concrete
 
-/-- Конкретный узел из локального P/NP-модуля (обе стороны). -/
+/-- Concrete node from the local P/NP module (both sides). -/
 def concreteNode (A M0 : ℕ) : Step00LocalNode where
   VerifierEasy :=
     ∀ i, GenealogyCertificate.VerificationEasy ((concreteFamily A M0).cert i)
   LocalPSuccess := EuclidsPath.LocalPNP.LocalPSuccess (concreteProblem A M0)
 
-/-- P-сторона конкретного узла — теорема (verificationEasy_always). -/
+/-- P-side of the concrete node is a theorem (verificationEasy_always). -/
 theorem concreteNode_verifierEasy (A M0 : ℕ) :
     (concreteNode A M0).VerifierEasy :=
   fun i => GenealogyCertificate.verificationEasy_always _
 
-/-- **При A ≤ 4 несжимаемость конкретного узла — ТЕОРЕМА** (5-адическая цепь). -/
+/-- **For A ≤ 4 incompressibility of the concrete node is a THEOREM** (5-adic chain). -/
 theorem concreteNode_incompressible_smallScale {A : ℕ} (hA : A ≤ 4) :
     (concreteNode A 1).LocalSearchIncompressible :=
   concrete_localSearchIncompressible_smallScale hA
 
-/-- Конкретная small-scale обструкция для моста. -/
+/-- Concrete small-scale obstruction for the bridge. -/
 def concreteSmallScaleObstruction (A : ℕ) :
     SmallScaleLocalObstruction (concreteNode A 1) where
   A := A
   blocks := fun hA => concreteNode_incompressible_smallScale hA
 
-/-- Конкретная twin-обструкция: локальный P-успех детектирует twin выше M0. -/
+/-- Concrete twin obstruction: local P-success detects a twin above M0. -/
 noncomputable def concreteTwinObstruction (A M0 : ℕ) :
     TwinBoundLocalObstruction (concreteNode A M0) where
   M0 := M0
@@ -992,10 +992,10 @@ noncomputable def concreteTwinObstruction (A M0 : ℕ) :
     rcases h with ⟨S⟩
     exact (concreteTwinDetector A M0).detects S
 
-/-- **ЧЕСТНОСТЬ (относительность фрейма):** InP/InNP абстрактны — тривиальный
-    фрейм делает «разделение классов» БЕСПЛАТНЫМ. Никакое утверждение о
-    настоящих P/NP не возникает, пока фрейм не инстанциирован реальной
-    моделью машин; вся тяжесть — в верности фрейма и в извлечении. -/
+/-- **HONESTY (frame relativity):** InP/InNP are abstract — the trivial
+    frame makes "class separation" FREE. No claim about actual P/NP arises
+    until the frame is instantiated with a real machine model; all the weight
+    lies in the correctness of the frame and in extraction. -/
 def trivialFrame : ClassicalComplexityFrame where
   InP := fun _ => False
   InNP := fun _ => True
@@ -1005,8 +1005,8 @@ theorem trivialFrame_separates_for_free :
     trivialFrame.ClassesSeparate :=
   ⟨⟨PUnit, fun _ => True⟩, trivial, fun h => h⟩
 
-/-- **ЧЕСТНОСТЬ (гейты свободны):** аудит-поля Prop-типа перегейтируются в
-    True — документирующие маркеры, не машинные проверки. -/
+/-- **HONESTY (gates are free):** audit fields of Prop type are gated to
+    True — documentary markers, not machine checks. -/
 def PDeciderExtraction.regateReconstruction
     {L : ClassicalProblem} {N : Step00LocalNode}
     {Target : PDeciderExtraction.LocalResolverTarget N}

@@ -1,46 +1,46 @@
 /-
-  BealFront — «теневой фронт» гипотез БИЛА и ФЕРМА–КАТАЛАНА, заземлённый на
-  РЕАЛЬНО ДОКАЗАННУЮ полиномиальную теорему Ферма–Каталана и на спуск Ферма для
-  FLT n = 3 / n = 4 в mathlib. БЕСКОНЕЧНЫЙ СПУСК ФЕРМА — это буквально движок
-  этого проекта (невозможность вечного двигателя).
+  BealFront — the "shadow front" of the BEAL and FERMAT–CATALAN conjectures, grounded on
+  the ACTUALLY PROVEN polynomial Fermat–Catalan theorem and on Fermat descent for
+  FLT n = 3 / n = 4 in mathlib. FERMAT'S INFINITE DESCENT is literally the engine
+  of this project (impossibility of a perpetual engine).
 
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКИЙ ЧЕСТНЫЙ ЗАГОЛОВОК — ЧТО ЗДЕСЬ ЗЕЛЁНОЕ И ЧТО ЧЕСТНО ОТКРЫТО.          │
+  │  LOUD HONEST HEADLINE — WHAT HERE IS GREEN AND WHAT IS HONESTLY OPEN.        │
   └───────────────────────────────────────────────────────────────────────────┘
 
-  1. ЗЕЛЁНЫЙ ЯКОРЬ (доказано в mathlib, цитируется дословно, НЕ пере-выводится):
-     · `Polynomial.flt_catalan` — полиномиальная теорема Ферма–Каталана: при
-       `1/p + 1/q + 1/r < 1` (в целочисленной форме `q*r + r*p + p*q ≤ p*q*r`),
-       для взаимно простых `a, b` из `C u*a^p + C v*b^q + C w*c^r = 0` следует, что
-       `a, b, c` — КОНСТАНТЫ (`natDegree = 0`). Это ДОКАЗАННЫЙ полиномиальный аналог
-       Била/Ферма–Каталана; его характеристический бесконечный спуск ЕСТЬ чтение
-       движка: нет вечного спуска нетривиальных решений.
-     · `fermatLastTheoremFour` и `fermatLastTheoremThree` — доказанные частные
-       случаи Великой теоремы Ферма, ПОЛУЧЕННЫЕ методом бесконечного спуска
-       (Fermat42 minimal descent в `FLT/Four.lean`) — тот же движок EPMI.
+  1. GREEN ANCHOR (proven in mathlib, cited verbatim, NOT re-derived):
+     · `Polynomial.flt_catalan` — the polynomial Fermat–Catalan theorem: under
+       `1/p + 1/q + 1/r < 1` (in integer form `q*r + r*p + p*q ≤ p*q*r`),
+       for coprime `a, b`, from `C u*a^p + C v*b^q + C w*c^r = 0` it follows that
+       `a, b, c` are CONSTANTS (`natDegree = 0`). This is the PROVEN polynomial analogue
+       of Beal/Fermat–Catalan; its characteristic infinite descent IS a reading
+       of the engine: there is no perpetual descent of nontrivial solutions.
+     · `fermatLastTheoremFour` and `fermatLastTheoremThree` — the proven special
+       cases of Fermat's Last Theorem, OBTAINED by the method of infinite descent
+       (Fermat42 minimal descent in `FLT/Four.lean`) — the same EPMI engine.
 
-  2. ЗЕЛЁНОЕ ПРОЧТЕНИЕ ДВИЖКА (репозиторий): «descent ⟹ вечный двигатель ⟹ ложь».
-     Если бы Бил-подобное решение порождало бесконечный строгий спуск ранга-размера
-     решения, это был бы вечный двигатель на ℕ — запрещённый
+  2. GREEN READING OF THE ENGINE (repository): "descent ⟹ perpetual engine ⟹ false".
+     If a Beal-like solution generated an infinite strictly descending chain of the
+     solution's rank-size, it would be a perpetual engine on ℕ — forbidden by
      `UniversalEngine.no_perpetual_engine_of_natRank` / `EPMI.no_infinite_descent`.
-     Это СТРУКТУРНАЯ половина, честно заземлённая (не доказательство Била).
+     This is the STRUCTURAL half, honestly grounded (not a proof of Beal).
 
-  3. 🔴 ОТКРЫТОЕ (названо, НЕ доказано): целочисленная гипотеза Била и полная
-     гипотеза Ферма–Каталана. Дармон–Гранвилль (через Фалтингса) доказали лишь
-     КОНЕЧНОСТЬ решений при ФИКСИРОВАННОЙ тройке показателей; полный Бил открыт
-     (премия $1M). Здесь эти утверждения — честные `def`-гейты, они НЕ доказаны.
+  3. 🔴 OPEN (named, NOT proven): the integer Beal conjecture and the full
+     Fermat–Catalan conjecture. Darmon–Granville (via Faltings) proved only the
+     FINITENESS of solutions for a FIXED triple of exponents; full Beal is open
+     ($1M prize). Here these statements are honest `def`-gates, they are NOT proven.
 
-  ЧЕСТНАЯ НОВИЗНА: глубокая математика (полиномиальный Ферма–Каталан, FLT 3/4) —
-  это mathlib; вклад модуля — ВЛОЖЕНИЕ этих реальных якорей в язык движка +
-  честная демаркация зелёного и открытого. Формализация/унификация, не новая
-  глубокая математика. Никакого `sorry`, никакой новой аксиомы, никакого
-  `native_decide`; такса репозитория (47) неизменна. Зелёные обёртки — стандартная
-  тройка `propext` / `Classical.choice` / `Quot.sound`.
+  HONEST NOVELTY: the deep mathematics (polynomial Fermat–Catalan, FLT 3/4) is
+  mathlib; the module's contribution is the EMBEDDING of these real anchors into the
+  engine language + an honest demarcation of green and open. Formalization/unification, not new
+  deep mathematics. No `sorry`, no new axiom, no
+  `native_decide`; the repository's taint (47) is unchanged. The green wrappers use the standard
+  trio `propext` / `Classical.choice` / `Quot.sound`.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
-    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/BealFront.lean → ноль ошибок.
+  Compilation: cd /f/Primes/Euclids-path &&
+    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/BealFront.lean → zero errors.
 
-  Родство: EuclidsPath/Engine/UniversalEngine.lean (`no_perpetual_engine_of_natRank`);
+  Kinship: EuclidsPath/Engine/UniversalEngine.lean (`no_perpetual_engine_of_natRank`);
     EuclidsPath/Engine/EPMI.lean (`no_infinite_descent`, `DescentStep`);
     Mathlib/NumberTheory/FLT/Polynomial.lean (`Polynomial.flt_catalan`);
     Mathlib/NumberTheory/FLT/Four.lean (`fermatLastTheoremFour`);
@@ -58,17 +58,17 @@ open Polynomial
 
 /-!
 ################################################################################
-  🟢 ЗЕЛЁНОЕ ЯДРО — спуск Ферма ЕСТЬ движок; полиномиальный аналог ДОКАЗАН.
+  🟢 GREEN CORE — Fermat descent IS the engine; the polynomial analogue is PROVEN.
 ################################################################################
 -/
 
-/-- **🟢 ЗЕЛЁНАЯ ТЕНЬ (доказано, цитата `Polynomial.flt_catalan`):**
-    полиномиальная теорема Ферма–Каталана над ЛЮБЫМ полем `k`. При условии
-    `1/p + 1/q + 1/r < 1` (целочисленно `q*r + r*p + p*q ≤ p*q*r`), при
-    взаимно простых `a, b` и ненулевых коэффициентах уравнение
-    `C u*a^p + C v*b^q + C w*c^r = 0` вынуждает `a, b, c` быть КОНСТАНТАМИ.
-    Это ДОКАЗАННЫЙ полиномиальный аналог Била/Ферма–Каталана — «зелёная тень».
-    Обёртка НЕ добавляет математики: она дословно вызывает mathlib. -/
+/-- **🟢 GREEN SHADOW (proven, citation of `Polynomial.flt_catalan`):**
+    the polynomial Fermat–Catalan theorem over ANY field `k`. Under the condition
+    `1/p + 1/q + 1/r < 1` (integrally `q*r + r*p + p*q ≤ p*q*r`), for
+    coprime `a, b` and nonzero coefficients the equation
+    `C u*a^p + C v*b^q + C w*c^r = 0` forces `a, b, c` to be CONSTANTS.
+    This is the PROVEN polynomial analogue of Beal/Fermat–Catalan — the "green shadow".
+    The wrapper adds NO mathematics: it calls mathlib verbatim. -/
 theorem polynomial_fermat_catalan_shadow
     {k : Type*} [Field k]
     {p q r : ℕ} (hp : p ≠ 0) (hq : q ≠ 0) (hr : r ≠ 0)
@@ -80,12 +80,12 @@ theorem polynomial_fermat_catalan_shadow
     a.natDegree = 0 ∧ b.natDegree = 0 ∧ c.natDegree = 0 :=
   Polynomial.flt_catalan hp hq hr hineq chp chq chr ha hb hc hab hu hv hw heq
 
-/-- **🟢 НЕ-ВАКУУМНОСТЬ (свидетель над `ℚ`):** конкретная невырожденная
-    инстанция зелёной тени. Возьмём `p = q = r = 3` (тогда
-    `q*r + r*p + p*q = 27 = p*q*r`, условие выполнено), поле `ℚ`
-    (характеристика 0, все `(3 : ℚ) ≠ 0`). Для любых взаимно простых ненулевых
-    `a, b` и ненулевых `c, u, v, w` с `C u*a^3 + C v*b^3 + C w*c^3 = 0`
-    получаем, что `a, b, c` — константы. Тень применима, а не пуста. -/
+/-- **🟢 NON-VACUITY (witness over `ℚ`):** a concrete non-degenerate
+    instance of the green shadow. Take `p = q = r = 3` (then
+    `q*r + r*p + p*q = 27 = p*q*r`, the condition holds), field `ℚ`
+    (characteristic 0, all `(3 : ℚ) ≠ 0`). For any coprime nonzero
+    `a, b` and nonzero `c, u, v, w` with `C u*a^3 + C v*b^3 + C w*c^3 = 0`
+    we get that `a, b, c` are constants. The shadow is applicable, not empty. -/
 theorem polynomial_fermat_catalan_shadow_cubic
     {a b c : ℚ[X]} (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) (hab : IsCoprime a b)
     {u v w : ℚ} (hu : u ≠ 0) (hv : v ≠ 0) (hw : w ≠ 0)
@@ -97,42 +97,42 @@ theorem polynomial_fermat_catalan_shadow_cubic
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
     ha hb hc hab hu hv hw heq
 
-/-- **🟢 РЕАЛЬНЫЙ СПУСК ФЕРМА, n = 4 (доказано, цитата `fermatLastTheoremFour`):**
-    ненулевые натуральные `a, b, c` не дают `a^4 + b^4 = c^4`. Доказано в mathlib
-    БЕСКОНЕЧНЫМ СПУСКОМ (Fermat42 minimal descent) — тем же движком EPMI, что
-    запрещает вечный двигатель. -/
+/-- **🟢 REAL FERMAT DESCENT, n = 4 (proven, citation of `fermatLastTheoremFour`):**
+    nonzero naturals `a, b, c` do not give `a^4 + b^4 = c^4`. Proven in mathlib
+    by INFINITE DESCENT (Fermat42 minimal descent) — by the same EPMI engine that
+    forbids a perpetual engine. -/
 theorem flt_four_is_descent : FermatLastTheoremFor 4 :=
   fermatLastTheoremFour
 
-/-- **🟢 РЕАЛЬНЫЙ СПУСК ФЕРМА, n = 3 (доказано, цитата `fermatLastTheoremThree`):**
-    ненулевые натуральные `a, b, c` не дают `a^3 + b^3 = c^3`. Тот же движок
-    бесконечного спуска. -/
+/-- **🟢 REAL FERMAT DESCENT, n = 3 (proven, citation of `fermatLastTheoremThree`):**
+    nonzero naturals `a, b, c` do not give `a^3 + b^3 = c^3`. The same infinite
+    descent engine. -/
 theorem flt_three_is_descent : FermatLastTheoremFor 3 :=
   fermatLastTheoremThree
 
-/-- **🟢 РАЗВЁРНУТАЯ ФОРМА n = 4:** для ненулевых `a, b, c : ℕ` имеем
-    `a^4 + b^4 ≠ c^4`. Прямое чтение доказанного `flt_four_is_descent`. -/
+/-- **🟢 EXPANDED FORM n = 4:** for nonzero `a, b, c : ℕ` we have
+    `a^4 + b^4 ≠ c^4`. A direct reading of the proven `flt_four_is_descent`. -/
 theorem no_fermat_four (a b c : ℕ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :
     a ^ 4 + b ^ 4 ≠ c ^ 4 :=
   flt_four_is_descent a b c ha hb hc
 
 /-!
 ################################################################################
-  🟢 ЗЕЛЁНОЕ ПРОЧТЕНИЕ ДВИЖКА: descent-размера решения ⟹ вечный двигатель ⟹ ложь.
+  🟢 GREEN READING OF THE ENGINE: descent of the solution's size ⟹ perpetual engine ⟹ false.
 ################################################################################
 -/
 
-/-- Ранг-модель Била: «размер» гипотетической цепи решений — натуральное число.
-    `SolutionRank.size` — высота, которую спуск был бы обязан строго уменьшать. -/
+/-- The Beal rank-model: the "size" of a hypothetical solution chain — a natural number.
+    `SolutionRank.size` — the height that descent would be obliged to strictly decrease. -/
 structure SolutionRank where
   size : ℕ
 
-/-- **🟢 DESCENT-НЕТ-ДВИГАТЕЛЯ (доказано, коралларий `no_perpetual_engine_of_natRank`):**
-    если бы Бил-подобное решение порождало бесконечную цепь `sol : ℕ → SolutionRank`,
-    в которой каждый шаг СТРОГО уменьшает `size` (модель бесконечного спуска
-    размера решения), это был бы вечный двигатель на ℕ — невозможный. Это
-    СТРУКТУРНАЯ половина: она честно не является доказательством Била, а фиксирует,
-    что бесконечный спуск решений запрещён тем же движком, что и у Ферма. -/
+/-- **🟢 DESCENT-NO-ENGINE (proven, corollary of `no_perpetual_engine_of_natRank`):**
+    if a Beal-like solution generated an infinite chain `sol : ℕ → SolutionRank`,
+    in which every step STRICTLY decreases `size` (a model of infinite descent
+    of the solution's size), it would be a perpetual engine on ℕ — impossible. This
+    is the STRUCTURAL half: it honestly is not a proof of Beal, but records
+    that infinite descent of solutions is forbidden by the same engine as Fermat's. -/
 theorem no_perpetual_solution_descent
     (sol : ℕ → SolutionRank)
     (hchain : ∀ t, (sol (t + 1)).size < (sol t).size) : False := by
@@ -142,18 +142,18 @@ theorem no_perpetual_solution_descent
     (fun x y hxy => hxy)
   exact ⟨sol, hchain⟩
 
-/-- **🟢 ЧЕРЕЗ EPMI (доказано, коралларий `EPMI.no_infinite_descent`):** та же
-    невозможность в форме clean-descent EPMI. При `A ≥ 1` бесконечная цепь высот
-    с шагом `DescentStep A (H t) (H (t+1))` (то есть `A · H(t+1) < H t`) даёт
-    ложь — буквально спуск Ферма как невозможность вечного двигателя. -/
+/-- **🟢 VIA EPMI (proven, corollary of `EPMI.no_infinite_descent`):** the same
+    impossibility in EPMI clean-descent form. For `A ≥ 1` an infinite chain of heights
+    with step `DescentStep A (H t) (H (t+1))` (that is, `A · H(t+1) < H t`) yields
+    false — literally Fermat descent as the impossibility of a perpetual engine. -/
 theorem no_perpetual_solution_descent_epmi
     {A : ℕ} (hA : 1 ≤ A) (H : ℕ → ℕ)
     (hchain : ∀ t, EuclidsPath.Engine.DescentStep A (H t) (H (t + 1))) : False :=
   EuclidsPath.Engine.no_infinite_descent hA H hchain
 
-/-- **🟢 НЕ-ВАКУУМНОСТЬ ранг-модели:** свидетель убывающей КОНЕЧНОЙ цепи размеров
-    (обрывается, а не бесконечна): `sol t = ⟨N - t⟩` строго убывает, пока `t < N`.
-    Модель обитаема; движок запрещает именно БЕСКОНЕЧНЫЙ вариант. -/
+/-- **🟢 NON-VACUITY of the rank-model:** a witness of a decreasing FINITE chain of sizes
+    (it terminates, is not infinite): `sol t = ⟨N - t⟩` strictly decreases while `t < N`.
+    The model is inhabited; the engine forbids precisely the INFINITE variant. -/
 theorem solution_rank_finite_descent_witness (N : ℕ) :
     ∀ t, t < N → (⟨N - (t + 1)⟩ : SolutionRank).size < (⟨N - t⟩ : SolutionRank).size := by
   intro t ht
@@ -162,29 +162,29 @@ theorem solution_rank_finite_descent_witness (N : ℕ) :
 
 /-!
 ################################################################################
-  🔴 ЧЕСТНЫЕ ГЕЙТЫ — ОТКРЫТЫЕ утверждения, НЕ доказаны (это `def`-Props).
+  🔴 HONEST GATES — OPEN statements, NOT proven (these are `def`-Props).
 ################################################################################
 -/
 
-/-- 🔴 **Гипотеза Била (ОТКРЫТА, премия $1M).** Если `A^x + B^y = C^z` с
-    положительными `A, B, C`, показателями `x, y, z > 2` и попарно взаимно
-    простыми `A, B, C`, то такого решения НЕ существует (взаимная простота ведёт
-    к противоречию). Эквивалентно: любое решение с `x, y, z > 2` вынуждает `A, B, C`
-    иметь общий простой делитель. НЕ доказана; здесь лишь честно НАЗВАНА. -/
+/-- 🔴 **Beal conjecture (OPEN, $1M prize).** If `A^x + B^y = C^z` with
+    positive `A, B, C`, exponents `x, y, z > 2` and pairwise coprime
+    `A, B, C`, then such a solution does NOT exist (coprimality leads
+    to a contradiction). Equivalently: any solution with `x, y, z > 2` forces `A, B, C`
+    to share a common prime divisor. NOT proven; here it is merely honestly NAMED. -/
 def BealConjecture : Prop :=
   ∀ A B C x y z : ℕ, 0 < A → 0 < B → 0 < C → 2 < x → 2 < y → 2 < z →
     A ^ x + B ^ y = C ^ z →
     Nat.Coprime A B → Nat.Coprime B C → Nat.Coprime A C → False
 
-/-- 🔴 **Гипотеза Ферма–Каталана (ОТКРЫТА, каноническая форма).** Множество
-    ТРОЕК СТЕПЕНЕЙ `(a^x, b^y, c^z)` — именно значений, не кортежей параметров —
-    взаимно простых положительных `a, b, c` с показателями при
-    `1/x + 1/y + 1/z < 1` (целочисленно `y*z + z*x + x*y < x*y*z`) и
-    `a^x + b^y = c^z`, КОНЕЧНО. Известно ровно 10 решений (наименьшее —
-    `1 + 2^3 = 3^2`); Дармон–Гранвилль доказали конечность лишь при
-    ФИКСИРОВАННОЙ тройке показателей (через Фалтингса); равномерная конечность
-    открыта. НЕ доказана; честно НАЗВАНА. (Почему значения, а не кортежи —
-    см. `fermatCatalan_tupleForm_refuted` ниже.) -/
+/-- 🔴 **Fermat–Catalan conjecture (OPEN, canonical form).** The set
+    of POWER TRIPLES `(a^x, b^y, c^z)` — precisely of values, not parameter tuples —
+    of coprime positive `a, b, c` with exponents satisfying
+    `1/x + 1/y + 1/z < 1` (integrally `y*z + z*x + x*y < x*y*z`) and
+    `a^x + b^y = c^z`, is FINITE. Exactly 10 solutions are known (the smallest is
+    `1 + 2^3 = 3^2`); Darmon–Granville proved finiteness only for a
+    FIXED triple of exponents (via Faltings); uniform finiteness
+    is open. NOT proven; honestly NAMED. (Why values, not tuples —
+    see `fermatCatalan_tupleForm_refuted` below.) -/
 def FermatCatalanConjecture : Prop :=
   {t : ℕ × ℕ × ℕ |
       ∃ a b c x y z : ℕ, t = (a ^ x, b ^ y, c ^ z) ∧
@@ -193,9 +193,9 @@ def FermatCatalanConjecture : Prop :=
         Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c ∧
         a ^ x + b ^ y = c ^ z}.Finite
 
-/-- Прежняя (наивная) запись гейта: конечность множества 6-КОРТЕЖЕЙ
-    `(a, b, c, x, y, z)`. Оставлена под отдельным именем как урок формализации —
-    она ЛОЖНА (см. `fermatCatalan_tupleForm_refuted`). -/
+/-- The former (naive) rendering of the gate: finiteness of the set of 6-TUPLES
+    `(a, b, c, x, y, z)`. Kept under a separate name as a formalization lesson —
+    it is FALSE (see `fermatCatalan_tupleForm_refuted`). -/
 def FermatCatalanTupleForm : Prop :=
   {t : ℕ × ℕ × ℕ × ℕ × ℕ × ℕ |
       ∃ a b c x y z : ℕ, t = (a, b, c, x, y, z) ∧
@@ -204,10 +204,10 @@ def FermatCatalanTupleForm : Prop :=
         Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c ∧
         a ^ x + b ^ y = c ^ z}.Finite
 
-/-- 🟢 **УРОК ФОРМАЛИЗАЦИИ: кортежная форма гейта ЛОЖНА.** Семейство
-    `1^(m+7) + 2^3 = 3^2` (взаимная простота очевидна, условие показателей
-    выполнено при всех m) даёт бесконечно много РАЗНЫХ 6-кортежей — при том,
-    что тройка значений одна: `(1, 8, 9)`. Гейт обязан считать значения. -/
+/-- 🟢 **FORMALIZATION LESSON: the tuple form of the gate is FALSE.** The family
+    `1^(m+7) + 2^3 = 3^2` (coprimality is obvious, the exponent condition
+    holds for all m) yields infinitely many DISTINCT 6-tuples — while
+    the triple of values is single: `(1, 8, 9)`. The gate must count values. -/
 theorem fermatCatalan_tupleForm_refuted : ¬ FermatCatalanTupleForm := by
   intro hfin
   refine Set.infinite_of_injective_forall_mem
@@ -224,36 +224,36 @@ theorem fermatCatalan_tupleForm_refuted : ¬ FermatCatalanTupleForm := by
       Nat.coprime_one_left 2, by decide, Nat.coprime_one_left 3,
       by simp⟩
 
-/-- **🟢 ЧЕСТНОСТЬ ОХВАТА:** мы НЕ утверждаем и НЕ доказываем `BealConjecture` или
-    `FermatCatalanConjecture` — это `def`-гейты. Доказаны только полиномиальная тень
-    (`polynomial_fermat_catalan_shadow`) и реальный спуск Ферма n = 3/4
-    (`flt_three_is_descent`, `flt_four_is_descent`), плюс структурная невозможность
-    вечного спуска. Маркер охвата фиксирует границу честности. -/
+/-- **🟢 HONESTY OF SCOPE:** we do NOT assert and do NOT prove `BealConjecture` or
+    `FermatCatalanConjecture` — these are `def`-gates. Only the polynomial shadow
+    (`polynomial_fermat_catalan_shadow`) and the real Fermat descent n = 3/4
+    (`flt_three_is_descent`, `flt_four_is_descent`) are proven, plus the structural impossibility
+    of perpetual descent. The scope marker fixes the boundary of honesty. -/
 abbrev NotAProofOfBeal : Prop := True
 
 theorem notAProofOfBeal : NotAProofOfBeal := trivial
 
 /-!
 ################################################################################
-  🟢 ЗЕЛЁНЫЕ КЛАССЫ ПОКАЗАТЕЛЕЙ БИЛА — диагонали (3,3,3) и (4,4,4) закрыты.
+  🟢 GREEN BEAL EXPONENT CLASSES — the diagonals (3,3,3) and (4,4,4) are closed.
 ################################################################################
 -/
 
-/-- **🟢 ЗЕЛЁНЫЙ КЛАСС БИЛА (3,3,3):** при показателях `x = y = z = 3` решений
-    уравнения Била НЕТ ВООБЩЕ — даже без взаимной простоты: `A^3 + B^3 = C^3`
-    невозможно для положительных `A, B, C`. Прямой вывод из
-    `flt_three_is_descent` (спуск Ферма, mathlib). В частности, диагональный
-    класс гейта `BealConjecture` при `(3,3,3)` зелёный: взаимно простых решений
-    нет, потому что нет никаких. -/
+/-- **🟢 GREEN BEAL CLASS (3,3,3):** for exponents `x = y = z = 3` there are NO solutions
+    of the Beal equation AT ALL — even without coprimality: `A^3 + B^3 = C^3`
+    is impossible for positive `A, B, C`. A direct consequence of
+    `flt_three_is_descent` (Fermat descent, mathlib). In particular, the diagonal
+    class of the `BealConjecture` gate at `(3,3,3)` is green: there are no coprime
+    solutions, because there are none at all. -/
 theorem beal_no_solution_exponent_three
     (A B C : ℕ) (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
     (heq : A ^ 3 + B ^ 3 = C ^ 3) : False :=
   flt_three_is_descent A B C hA.ne' hB.ne' hC.ne' heq
 
-/-- **🟢 ЗЕЛЁНЫЙ КЛАСС БИЛА (4,4,4):** при показателях `x = y = z = 4` решений
-    нет вообще (из `flt_four_is_descent` — исторический бесконечный спуск Ферма).
-    Диагональный класс гейта `BealConjecture` при `(4,4,4)` зелёный, взаимная
-    простота не нужна. -/
+/-- **🟢 GREEN BEAL CLASS (4,4,4):** for exponents `x = y = z = 4` there are no
+    solutions at all (from `flt_four_is_descent` — Fermat's historic infinite descent).
+    The diagonal class of the `BealConjecture` gate at `(4,4,4)` is green, coprimality
+    is not needed. -/
 theorem beal_no_solution_exponent_four
     (A B C : ℕ) (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
     (heq : A ^ 4 + B ^ 4 = C ^ 4) : False :=
@@ -261,16 +261,16 @@ theorem beal_no_solution_exponent_four
 
 /-!
 ################################################################################
-  🟢 НЕВАКУУМНЫЕ СВИДЕТЕЛИ ГЕЙТОВ — множество обитаемо, гипотеза простоты несуща.
+  🟢 NON-VACUOUS GATE WITNESSES — the set is inhabited, the coprimality hypothesis is load-bearing.
 ################################################################################
 -/
 
-/-- **🟢 НЕ-ВАКУУМНОСТЬ FC-ГЕЙТА:** тройка ЗНАЧЕНИЙ `(1, 8, 9)` — наименьшее
-    решение Ферма–Каталана `1^7 + 2^3 = 3^2` — принадлежит множеству, конечность
-    которого утверждает `FermatCatalanConjecture` (тот же сет-литерал дословно).
-    Показатели `(x, y, z) = (7, 3, 2)`: `y·z + z·x + x·y = 41 < 42 = x·y·z`,
-    попарная взаимная простота оснований `1, 2, 3` очевидна. Гейт говорит о
-    НЕПУСТОМ множестве — вопрос о его конечности не вакуумен. -/
+/-- **🟢 NON-VACUITY OF THE FC-GATE:** the triple of VALUES `(1, 8, 9)` — the smallest
+    Fermat–Catalan solution `1^7 + 2^3 = 3^2` — belongs to the set whose finiteness
+    is asserted by `FermatCatalanConjecture` (the same set-literal verbatim).
+    Exponents `(x, y, z) = (7, 3, 2)`: `y·z + z·x + x·y = 41 < 42 = x·y·z`,
+    the pairwise coprimality of the bases `1, 2, 3` is obvious. The gate speaks of
+    a NONEMPTY set — the question of its finiteness is not vacuous. -/
 theorem fermatCatalan_value_witness :
     ((1, 8, 9) : ℕ × ℕ × ℕ) ∈
       {t : ℕ × ℕ × ℕ |
@@ -285,11 +285,11 @@ theorem fermatCatalan_value_witness :
     Nat.coprime_one_left 2, by decide, Nat.coprime_one_left 3,
     by norm_num⟩
 
-/-- **🟢 ГИПОТЕЗА ВЗАИМНОЙ ПРОСТОТЫ — НЕСУЩАЯ:** без неё Бил-уравнение обитаемо:
-    `2^3 + 2^3 = 2^4` (то есть 8 + 8 = 16) с показателями `x = y = 3 > 2`,
-    `z = 4 > 2` и ОБЩИМ ДЕЛИТЕЛЕМ 2 у всех трёх оснований. Условие взаимной
-    простоты в `BealConjecture` — не украшение: убрать его нельзя, контрпример
-    предъявлен. -/
+/-- **🟢 COPRIMALITY HYPOTHESIS — LOAD-BEARING:** without it the Beal equation is inhabited:
+    `2^3 + 2^3 = 2^4` (that is, 8 + 8 = 16) with exponents `x = y = 3 > 2`,
+    `z = 4 > 2` and a COMMON DIVISOR 2 across all three bases. The coprimality
+    condition in `BealConjecture` is not decoration: it cannot be removed, a counterexample
+    is exhibited. -/
 theorem beal_common_factor_witness :
     ∃ A B C x y z : ℕ,
       0 < A ∧ 0 < B ∧ 0 < C ∧ 2 < x ∧ 2 < y ∧ 2 < z ∧
@@ -299,14 +299,14 @@ theorem beal_common_factor_witness :
 
 /-!
 ################################################################################
-  🟢 ПОЛИНОМИАЛЬНЫЙ БИЛ — именованная тень (все показатели ≥ 3, поле char 0).
+  🟢 POLYNOMIAL BEAL — a named shadow (all exponents ≥ 3, field char 0).
 ################################################################################
 -/
 
-/-- **🟢 АРИФМЕТИКА БИЛ-ПОКАЗАТЕЛЕЙ:** при `3 ≤ p, q, r` выполнено
-    FC-условие `q·r + r·p + p·q ≤ p·q·r` — каждое слагаемое слева не превышает
-    трети правой части. Именно это неравенство отделяет Бил-показатели от
-    сферических/эллиптических троек. -/
+/-- **🟢 ARITHMETIC OF BEAL EXPONENTS:** for `3 ≤ p, q, r` the
+    FC-condition `q·r + r·p + p·q ≤ p·q·r` holds — each summand on the left does not exceed
+    a third of the right-hand side. It is precisely this inequality that separates Beal exponents from
+    spherical/elliptic triples. -/
 theorem fc_ineq_of_three_le {p q r : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q) (hr : 3 ≤ r) :
     q * r + r * p + p * q ≤ p * q * r := by
   have h1 : 3 * (q * r) ≤ p * (q * r) := Nat.mul_le_mul hp le_rfl
@@ -314,14 +314,14 @@ theorem fc_ineq_of_three_le {p q r : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q) (hr : 3 
   have h3 : 3 * (p * q) ≤ r * (p * q) := Nat.mul_le_mul hr le_rfl
   nlinarith [h1, h2, h3]
 
-/-- **🟢 ПОЛИНОМИАЛЬНЫЙ БИЛ (доказано; специализация `Polynomial.flt_catalan`
-    при `u = v = 1, w = −1`):** над полем характеристики 0 из `a^x + b^y = c^z`
-    при взаимно простых `a, b`, ненулевых `a, b, c` и показателях
-    `x, y, z ≥ 3` следует, что `a, b, c` — КОНСТАНТЫ. Буквально «теорема Била
-    над `k[X]»`: нетривиальных полиномиальных решений нет. ЧЕСТНОСТЬ:
-    целочисленный Бил отсюда НЕ следует (полиномиальная тень, не решение
-    гейта); равные показатели `x = y = z = n ≥ 3` дают полиномиальный FLT
-    как частный случай. -/
+/-- **🟢 POLYNOMIAL BEAL (proven; specialization of `Polynomial.flt_catalan`
+    at `u = v = 1, w = −1`):** over a field of characteristic 0, from `a^x + b^y = c^z`
+    with coprime `a, b`, nonzero `a, b, c` and exponents
+    `x, y, z ≥ 3` it follows that `a, b, c` are CONSTANTS. Literally the "Beal theorem
+    over `k[X]»`: there are no nontrivial polynomial solutions. HONESTY:
+    integer Beal does NOT follow from this (a polynomial shadow, not a solution
+    of the gate); equal exponents `x = y = z = n ≥ 3` give polynomial FLT
+    as a special case. -/
 theorem polynomial_beal_shadow
     {k : Type*} [Field k] [CharZero k]
     {x y z : ℕ} (hx : 3 ≤ x) (hy : 3 ≤ y) (hz : 3 ≤ z)
@@ -344,93 +344,93 @@ theorem polynomial_beal_shadow
 
 /-!
 ################################################################################
-  ЭПИСТЕМИЧЕСКАЯ СВЯЗКА БИЛА — ФОРМА КОЛЛАТЦА, ЧЕСТНО ФОРМАЛЬНАЯ.
+  EPISTEMIC LINK OF BEAL — A COLLATZ FORM, HONESTLY FORMAL.
 ################################################################################
 -/
 
-/-- **Внутреннее самообоснование Била — форма Коллатца, ЧЕСТНО ФОРМАЛЬНАЯ.**
-    Несёт сам гейт (`ground : BealConjecture`) и свидетельство собственной
-    запредельности (`beyondOwnHorizon : ¬ BealConjecture`).
+/-- **Internal self-grounding of Beal — a Collatz form, HONESTLY FORMAL.**
+    Carries the gate itself (`ground : BealConjecture`) and a witness of its own
+    beyond-the-horizon nature (`beyondOwnHorizon : ¬ BealConjecture`).
 
-    ГРОМКАЯ ЧЕСТНОСТЬ (обязательная, по вердикту скептика «завышена на
-    полступени»): это буквально пара `P` / `¬P` — та же вырожденная форма, что
-    `InternalisedCollatzGround`, и НИЖЕ P/NP-механики (`InternalisedPNPGround`,
-    где `beyondOwnHorizon` — независимо оплаченный зелёный факт). ОПЛАТЫ
-    ДВИГАТЕЛЬНЫМ ФАКТОМ ЗДЕСЬ НЕТ И БЫТЬ НЕ МОЖЕТ в известной математике:
-    опровержение Била — одиночный контрпример `(A, B, C, x, y, z)`, конечная
-    точка; он не порождает ни нисходящей цепи (спуска Ферма для общего Била не
-    существует), ни неограниченной поставки — если что и возникает, то
-    ВОСХОДЯЩИЙ побег размеров, а не спуск, и стена
-    `no_perpetual_solution_descent` его не кусает. Связка формальна;
-    содержательное — РЯДОМ, отдельными теоремами: полиномиальная тень
-    `polynomial_beal_shadow` и зелёные диагональные классы
+    LOUD HONESTY (mandatory, per the skeptic's verdict "overstated by
+    half a step"): this is literally a pair `P` / `¬P` — the same degenerate form as
+    `InternalisedCollatzGround`, and BELOW the P/NP mechanics (`InternalisedPNPGround`,
+    where `beyondOwnHorizon` is an independently paid green fact). THERE IS
+    NO PAYMENT BY AN ENGINE FACT HERE AND THERE CANNOT BE in known mathematics:
+    a refutation of Beal is a single counterexample `(A, B, C, x, y, z)`, a finite
+    point; it generates neither a descending chain (there is no Fermat descent for general
+    Beal), nor an unbounded supply — if anything arises, it is
+    an ASCENDING escape of sizes, not a descent, and the wall
+    `no_perpetual_solution_descent` does not bite it. The link is formal;
+    the substantive part is NEARBY, in separate theorems: the polynomial shadow
+    `polynomial_beal_shadow` and the green diagonal classes
     `beal_no_solution_exponent_three` / `beal_no_solution_exponent_four`. -/
 structure InternalisedBealGround : Prop where
   ground : BealConjecture
   beyondOwnHorizon : ¬ BealConjecture
 
-/-- «Внутреннее знание причины Била» = внутреннее самообоснование гейта
-    (зеркало `InternalKnowledgeOfCollatzCause`; та же честная оговорка). -/
+/-- "Internal knowledge of the Beal cause" = internal self-grounding of the gate
+    (mirror of `InternalKnowledgeOfCollatzCause`; the same honest caveat). -/
 abbrev InternalKnowledgeOfBealCause : Prop := InternalisedBealGround
 
-/-- Самообоснование самоуничтожается — ПО ФОРМЕ
-    (`fun H => H.beyondOwnHorizon H.ground`), как у Коллатца; двигательной
-    оплаты честно НЕТ — см. докстроку `InternalisedBealGround`. ЗЕЛЁНАЯ;
-    из аксиом — только `propext` (тянется через `Nat.Coprime` внутри гейта
-    `BealConjecture`), ни `Classical.choice`, ни `Quot.sound`. -/
+/-- Self-grounding self-destructs — BY FORM
+    (`fun H => H.beyondOwnHorizon H.ground`), as with Collatz; there honestly is NO
+    engine payment — see the docstring of `InternalisedBealGround`. GREEN;
+    of axioms — only `propext` (pulled in via `Nat.Coprime` inside the gate
+    `BealConjecture`), neither `Classical.choice` nor `Quot.sound`. -/
 theorem no_internalisedBealGround : InternalisedBealGround → False :=
   fun H => H.beyondOwnHorizon H.ground
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — теорема ФОРМЫ** (зеркало
-    `collatzCause_unknowable`): внутреннее самообоснование Била невозможно.
-    ЧЕСТНОСТЬ: в отличие от `pnpCause_unknowable`, противоречие не оплачено
-    пижонхолом/поставкой — это формальная связка; её содержательные соседи —
-    `polynomial_beal_shadow` и классы (3,3,3)/(4,4,4). НЕ Гёдель и НЕ решение
-    Била. -/
+/-- **"CANNOT BE KNOWN FROM INSIDE" — a theorem of FORM** (mirror of
+    `collatzCause_unknowable`): internal self-grounding of Beal is impossible.
+    HONESTY: unlike `pnpCause_unknowable`, the contradiction is not paid by
+    a pigeonhole/supply — it is a formal link; its substantive neighbours are
+    `polynomial_beal_shadow` and the classes (3,3,3)/(4,4,4). NOT Gödel and NOT a solution
+    of Beal. -/
 theorem bealCause_unknowable : ¬ InternalKnowledgeOfBealCause :=
   no_internalisedBealGround
 
 /-!
 ################################################################################
-  ИТОГ (LOUD HONEST): что зелёное, что переиспользовано, что ОТКРЫТО.
+  SUMMARY (LOUD HONEST): what is green, what is reused, what is OPEN.
 ################################################################################
 
-  🟢 ЗЕЛЁНОЕ (доказано машинно в этом модуле — обёртки/корралларии):
-     · `polynomial_fermat_catalan_shadow` — дословная цитата `Polynomial.flt_catalan`
-       (ДОКАЗАННЫЙ полиномиальный Ферма–Каталан);
-     · `polynomial_fermat_catalan_shadow_cubic` — не-вакуумная инстанция над `ℚ`;
-     · `flt_four_is_descent` / `flt_three_is_descent` — цитаты `fermatLastTheoremFour`
-       / `fermatLastTheoremThree` (ДОКАЗАНЫ бесконечным спуском);
-     · `no_fermat_four` — развёрнутая форма n = 4;
-     · `no_perpetual_solution_descent` — коралларий `no_perpetual_engine_of_natRank`;
-     · `no_perpetual_solution_descent_epmi` — коралларий `EPMI.no_infinite_descent`;
-     · `solution_rank_finite_descent_witness` — не-вакуумность ранг-модели;
+  🟢 GREEN (machine-proven in this module — wrappers/corollaries):
+     · `polynomial_fermat_catalan_shadow` — a verbatim citation of `Polynomial.flt_catalan`
+       (the PROVEN polynomial Fermat–Catalan);
+     · `polynomial_fermat_catalan_shadow_cubic` — a non-vacuous instance over `ℚ`;
+     · `flt_four_is_descent` / `flt_three_is_descent` — citations of `fermatLastTheoremFour`
+       / `fermatLastTheoremThree` (PROVEN by infinite descent);
+     · `no_fermat_four` — the expanded form n = 4;
+     · `no_perpetual_solution_descent` — a corollary of `no_perpetual_engine_of_natRank`;
+     · `no_perpetual_solution_descent_epmi` — a corollary of `EPMI.no_infinite_descent`;
+     · `solution_rank_finite_descent_witness` — non-vacuity of the rank-model;
      · `beal_no_solution_exponent_three` / `beal_no_solution_exponent_four` —
-       зелёные диагональные классы Била (3,3,3)/(4,4,4): решений нет вовсе,
-       взаимная простота не нужна (спуск Ферма);
-     · `fermatCatalan_value_witness` — FC-гейт не вакуумен: (1,8,9) = 1^7+2^3=3^2
-       лежит в множестве значений;
-     · `beal_common_factor_witness` — гипотеза взаимной простоты несуща:
-       2^3+2^3=2^4 с общим делителем 2;
-     · `fc_ineq_of_three_le` + `polynomial_beal_shadow` — «теорема Била над k[X]»
-       (специализация `flt_catalan`, u=v=1, w=−1, char 0);
-     · `no_internalisedBealGround` / `bealCause_unknowable` — эпистемическая
-       СВЯЗКА-ФОРМА (честно: пара ground/¬ground БЕЗ двигательной оплаты, форма
-       Коллатца, ниже P/NP-механики — см. докстроку `InternalisedBealGround`).
+       the green diagonal Beal classes (3,3,3)/(4,4,4): there are no solutions at all,
+       coprimality is not needed (Fermat descent);
+     · `fermatCatalan_value_witness` — the FC-gate is not vacuous: (1,8,9) = 1^7+2^3=3^2
+       lies in the set of values;
+     · `beal_common_factor_witness` — the coprimality hypothesis is load-bearing:
+       2^3+2^3=2^4 with a common divisor 2;
+     · `fc_ineq_of_three_le` + `polynomial_beal_shadow` — the "Beal theorem over k[X]"
+       (specialization of `flt_catalan`, u=v=1, w=−1, char 0);
+     · `no_internalisedBealGround` / `bealCause_unknowable` — the epistemic
+       LINK-FORM (honestly: a ground/¬ground pair WITHOUT engine payment, a Collatz
+       form, below the P/NP mechanics — see the docstring of `InternalisedBealGround`).
 
-  🟢 ПЕРЕИСПОЛЬЗОВАНО (цитируется, НЕ пере-выводится):
-     · `Polynomial.flt_catalan` (полиномиальный Ферма–Каталан, mathlib);
-     · `fermatLastTheoremFour` / `fermatLastTheoremThree` (FLT спуском, mathlib);
+  🟢 REUSED (cited, NOT re-derived):
+     · `Polynomial.flt_catalan` (polynomial Fermat–Catalan, mathlib);
+     · `fermatLastTheoremFour` / `fermatLastTheoremThree` (FLT by descent, mathlib);
      · `UniversalEngine.no_perpetual_engine_of_natRank`, `EPMI.no_infinite_descent`.
 
-  🔴 ОТКРЫТО (названо, НЕ доказано — `def`-гейты):
-     · `BealConjecture` — целочисленная гипотеза Била (премия $1M);
-     · `FermatCatalanConjecture` — полная (равномерная) гипотеза Ферма–Каталана
-       (Дармон–Гранвилль: лишь конечность при ФИКСИРОВАННЫХ показателях).
+  🔴 OPEN (named, NOT proven — `def`-gates):
+     · `BealConjecture` — the integer Beal conjecture ($1M prize);
+     · `FermatCatalanConjecture` — the full (uniform) Fermat–Catalan conjecture
+       (Darmon–Granville: only finiteness for FIXED exponents).
 
-  ЧЕСТНАЯ НОВИЗНА: глубокая математика — mathlib; вклад — вложение реальных якорей
-  в язык движка и честная демаркация. НЕ доказательство Била. Никакого `sorry`,
-  никакой новой аксиомы, никакого `native_decide`; такса 47 неизменна.
+  HONEST NOVELTY: the deep mathematics is mathlib; the contribution is the embedding of real anchors
+  into the engine language and an honest demarcation. NOT a proof of Beal. No `sorry`,
+  no new axiom, no `native_decide`; the taint 47 is unchanged.
 -/
 
 #print axioms polynomial_fermat_catalan_shadow

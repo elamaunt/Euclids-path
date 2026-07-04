@@ -1,17 +1,17 @@
 /-
-  Последнее звено: построение CarrierData из бесконечности carrier. Проза: prose/33_CarrierBridge.md.
+  The final link: constructing CarrierData from the infinitude of the carrier. Prose: prose/33_CarrierBridge.md.
 
-  ProductCore.product_core_engine_of_carrier берёт carrier-данные:
-    бесконечное S стартов + node:ι→RankNode r (InjOn) + AmbientLegal ⟹ Engine.
-  Здесь это строится из УЖЕ ДОКАЗАННОГО `Residuals.carrier_nonempty_above` (clean центр выше любого N
-  ⟹ carrier бесконечен).
+  ProductCore.product_core_engine_of_carrier takes carrier data:
+    infinite S of starts + node:ι→RankNode r (InjOn) + AmbientLegal ⟹ Engine.
+  Here this is built from the ALREADY PROVEN `Residuals.carrier_nonempty_above` (a clean center above any N
+  ⟹ the carrier is infinite).
 
-  Доказуемо здесь:
-    • carrier бесконечен (из carrier_nonempty_above);
-    • distinct centers ⟹ distinct cores (через значение 6m+σ).
-  Единственный реальный вход (factorization): каждый legal `6m+σ` раскладывается в `RankNode r`
-  (простые факторы >A, фиксированный r после pigeonhole по рангу). Это существование разложения —
-  его даёт carrier/сито, не аксиома двигателя. Выделен явно как `FactorizationData`.
+  Provable here:
+    • the carrier is infinite (from carrier_nonempty_above);
+    • distinct centers ⟹ distinct cores (via the value 6m+σ).
+  The sole real input (factorization): every legal `6m+σ` factors into a `RankNode r`
+  (prime factors >A, fixed r after pigeonhole by rank). This is the existence of the factorization —
+  it comes from the carrier/sieve, not from the engine axiom. Isolated explicitly as `FactorizationData`.
 -/
 import Mathlib
 import EuclidsPath.Engine.ProductCore
@@ -24,14 +24,14 @@ namespace EuclidsPath.CarrierBridge
 
 open EuclidsPath.ProductCore EuclidsPath.Residuals
 
-/-! ### Carrier бесконечен (из carrier_nonempty_above) -/
+/-! ### Carrier is infinite (from carrier_nonempty_above) -/
 
-/-- Множество clean-центров (ℕ) при заданном `A`. -/
+/-- The set of clean centers (ℕ) for a given `A`. -/
 def CleanCenters (A : ℕ) : Set ℕ := {m | CleanZ A (m : ℤ)}
 
 /--
-  **Carrier бесконечен — ДОКАЗАНО.** `carrier_nonempty_above` даёт clean-центр выше любого `N`,
-  значит `CleanCenters A` не ограничено сверху ⟹ бесконечно. -/
+  **Carrier is infinite — PROVEN.** `carrier_nonempty_above` gives a clean center above any `N`,
+  so `CleanCenters A` is unbounded above ⟹ infinite. -/
 theorem cleanCenters_infinite (A : ℕ) : (CleanCenters A).Infinite := by
   apply Set.infinite_of_not_bddAbove
   rw [not_bddAbove_iff]
@@ -39,15 +39,15 @@ theorem cleanCenters_infinite (A : ℕ) : (CleanCenters A).Infinite := by
   obtain ⟨m, hmN, hclean⟩ := carrier_nonempty_above A N
   exact ⟨m, hclean, hmN⟩
 
-/-! ### Factorization data — единственный реальный вход (от carrier/сита) -/
+/-! ### Factorization data — the sole real input (from the carrier/sieve) -/
 
 /--
-  **FactorizationData** — структурный вход: для бесконечного подмножества clean-центров одного
-  ранга `r` (`1≤r≤4`), каждый центр `m` даёт `RankNode r` (факторы — простые `>A` стороны `6m+σ`),
-  с AmbientLegal (факторы делят `6m+σ ≤ 6X_A+1`), и разные центры ⟹ разные node.
+  **FactorizationData** — the structural input: for an infinite subset of clean centers of a single
+  rank `r` (`1≤r≤4`), each center `m` yields a `RankNode r` (factors are primes `>A` on the sides of `6m+σ`),
+  with AmbientLegal (factors divide `6m+σ ≤ 6X_A+1`), and distinct centers ⟹ distinct nodes.
 
-  Это НЕ аксиома двигателя — это существование факторизации + pigeonhole по рангу, которое даёт
-  carrier (сито/арифметика, `rank≤4` проверен численно). Выделено явно как единственный остаток. -/
+  This is NOT the engine axiom — it is the existence of the factorization + pigeonhole by rank, which gives the
+  carrier (sieve/arithmetic, `rank≤4` verified numerically). Isolated explicitly as the sole remaining input. -/
 structure FactorizationData (A X_A : ℕ) where
   r : ℕ
   hr : 1 ≤ r ∧ r ≤ 4
@@ -58,18 +58,18 @@ structure FactorizationData (A X_A : ℕ) where
   hamb : ∀ m ∈ S, AmbientLegal X_A (node m).factors
 
 /--
-  **ПОСЛЕДНЕЕ ЗВЕНО: CarrierData ⟹ Engine.** Если carrier даёт `FactorizationData` (бесконечно
-  много стартов фиксированного ранга, факторизованных в AmbientLegal-RankNode, инъективно), то при
-  separating scale — `Engine`. Это `product_core_engine_of_carrier`, подставленный данными carrier.
-  Вся pump-машина (descent, база, pigeonhole) доказана; вход — только `FactorizationData`. -/
+  **THE FINAL LINK: CarrierData ⟹ Engine.** If the carrier yields `FactorizationData` (infinitely
+  many starts of fixed rank, factored into AmbientLegal-RankNode, injectively), then at
+  separating scale — `Engine`. This is `product_core_engine_of_carrier` instantiated with the carrier data.
+  The entire pump machine (descent, base, pigeonhole) is proven; the only input is `FactorizationData`. -/
 theorem engine_of_factorization {A X_A P_A : ℕ} {Engine : Prop} [NeZero P_A]
     (hsep : 6 * X_A + 1 < P_A) (F : FactorizationData A X_A) : Engine :=
   product_core_engine_of_carrier hsep F.hr F.S F.hS F.node F.hinj F.hamb
 
-/-! ### Построение FactorizationData: infinite-pigeonhole по рангу (доказано) -/
+/-! ### Building FactorizationData: infinite pigeonhole by rank (proven) -/
 
-/-- **Infinite-pigeonhole по `Fin (n+1)` — ДОКАЗАНО.** Бесконечное `S`, разбитое функцией `f` на
-    `n+1` классов ⟹ один класс бесконечен. -/
+/-- **Infinite pigeonhole on `Fin (n+1)` — PROVEN.** An infinite `S` partitioned by a function `f` into
+    `n+1` classes ⟹ one class is infinite. -/
 theorem exists_infinite_fiber {α : Type*} {n : ℕ} (S : Set α) (hS : S.Infinite)
     (f : α → Fin (n + 1)) : ∃ c, {x | x ∈ S ∧ f x = c}.Infinite := by
   by_contra h
@@ -79,11 +79,11 @@ theorem exists_infinite_fiber {α : Type*} {n : ℕ} (S : Set α) (hS : S.Infini
   exact hS ((Set.finite_iUnion (fun c => h c)).subset hsub)
 
 /--
-  **Построение FactorizationData из carrier + factorize-карты (полу-доказано).** Дано: бесконечный
-  carrier `C`, ранг-функция `rankOf : ℕ → Fin 4` (число больших простых факторов, ≤4 — арифметика),
-  node-карта `mk : ℕ → RankNode` для каждого ранга, инъективная и AmbientLegal. Тогда есть
-  `FactorizationData`. Здесь — infinite-pigeonhole по рангу (доказан); вход — лишь сами карты
-  `mk`/`amb` (факторизация), привязанные к рангу. -/
+  **Building FactorizationData from the carrier + factorize maps (partially proven).** Given: an infinite
+  carrier `C`, a rank function `rankOf : ℕ → Fin 4` (number of large prime factors, ≤4 — arithmetic),
+  a node map `mk : ℕ → RankNode` for each rank, injective and AmbientLegal. Then there exists
+  `FactorizationData`. Here — infinite pigeonhole by rank (proven); the only input is the maps
+  `mk`/`amb` (factorization) tied to rank. -/
 noncomputable def factorizationData_of_carrier {A X_A : ℕ}
     (C : Set ℕ) (hC : C.Infinite)
     (rankOf : ℕ → Fin 4)
@@ -103,10 +103,10 @@ noncomputable def factorizationData_of_carrier {A X_A : ℕ}
     hamb := fun m hm => hamb c m hm.1 hm.2 }
 
 /--
-  **ФИНАЛ от carrier + node-карт.** Если задана node-карта `mkNode` (факторизация центра в RankNode
-  данного ранга), инъективная и AmbientLegal на каждом ранге, то при separating scale бесконечный
-  carrier ⟹ Engine. Infinite-pigeonhole по рангу + вся pump-машина доказаны; вход — только сами
-  `rankOf`/`mkNode`/`hinj`/`hamb` (факторизация `6m+σ` от carrier). -/
+  **FINALE from carrier + node maps.** Given a node map `mkNode` (factorization of a center into a RankNode
+  of the given rank), injective and AmbientLegal at every rank, then at separating scale an infinite
+  carrier ⟹ Engine. Infinite pigeonhole by rank + the entire pump machine are proven; the only input is
+  `rankOf`/`mkNode`/`hinj`/`hamb` (factorization of `6m+σ` from the carrier). -/
 theorem engine_of_carrier_and_factorize {A X_A P_A : ℕ} {Engine : Prop} [NeZero P_A]
     (hsep : 6 * X_A + 1 < P_A)
     (C : Set ℕ) (hC : C.Infinite)

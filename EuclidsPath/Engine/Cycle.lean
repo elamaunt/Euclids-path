@@ -1,9 +1,9 @@
 /-
-  Ацикличность (rigidity повторов). Проза: prose/21_Cycle.md (после зелёного Lean).
-  Источник: каталог §31/§58 (fuel-law / factor-repeat rigidity): большой множитель на линейном
-  train не может повторяться чаще, чем позволяет шаг. Это запрещает «бесконечный повтор» и вместе
-  с EPMI даёт ацикличность descent-леса.
-  Элементарно (делимость + взаимная простота).
+  Acyclicity (rigidity of repetitions). Prose: prose/21_Cycle.md (after green Lean).
+  Source: catalogue §31/§58 (fuel-law / factor-repeat rigidity): a large factor on a linear
+  train cannot repeat more often than the step allows. This forbids "infinite repetition" and,
+  together with EPMI, gives acyclicity of the descent forest.
+  Elementary (divisibility + coprimality).
 -/
 import Mathlib
 
@@ -12,8 +12,8 @@ set_option autoImplicit false
 namespace EuclidsPath.Engine
 
 /--
-  **Factor-repeat rigidity.** Если `ℓ` делит `N₀ + q·n₁` и `N₀ + q·n₂` на линейном train, и
-  `(ℓ, q) = 1`, то `ℓ ∣ (n₂ − n₁)`. Большой делитель «привязывает» повтор к шагу — повторов мало.
+  **Factor-repeat rigidity.** If `ℓ` divides `N₀ + q·n₁` and `N₀ + q·n₂` on a linear train, and
+  `(ℓ, q) = 1`, then `ℓ ∣ (n₂ − n₁)`. A large divisor "anchors" the repetition to the step — repetitions are few.
 -/
 theorem factor_repeat_rigidity {ℓ q N0 n1 n2 : ℤ}
     (h1 : ℓ ∣ N0 + q * n1) (h2 : ℓ ∣ N0 + q * n2) (hcop : IsCoprime ℓ q) :
@@ -25,9 +25,9 @@ theorem factor_repeat_rigidity {ℓ q N0 n1 n2 : ℤ}
   exact hcop.dvd_of_dvd_mul_left hd
 
 /--
-  **Fuel-law (перенос двойки между сторонами).** Если `p ∣ B_α` и `p ∣ R_β` на противоположных
-  сторонах звёздного прямоугольника (`a·B_α = …`, см. det-форму), то `p ∣ 2 + a·q·(β − α)`.
-  Здесь — чистая делимостная форма: из `p ∣ aα + c` и `p ∣ aβ + c − 2` следует `p ∣ a(β−α) − 2`.
+  **Fuel-law (transfer of the two between sides).** If `p ∣ B_α` and `p ∣ R_β` on opposite
+  sides of the star rectangle (`a·B_α = …`, see det-form), then `p ∣ 2 + a·q·(β − α)`.
+  Here — pure divisibility form: from `p ∣ aα + c` and `p ∣ aβ + c − 2` it follows that `p ∣ a(β−α) − 2`.
 -/
 theorem cross_side_fuel {p a c α β : ℤ}
     (h1 : p ∣ a * α + c) (h2 : p ∣ a * β + c - 2) :

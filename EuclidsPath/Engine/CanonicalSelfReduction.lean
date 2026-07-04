@@ -1,26 +1,26 @@
 /-
-  CanonicalSelfReduction — self-reduction «P-decider ⟹ локальный резолвер»
-  как протокол с топливом (кирпич: canonical_resolver_self_reduction).
-  Проза: prose/24 (§12).
+  CanonicalSelfReduction — self-reduction «P-decider ⟹ local resolver»
+  as a fuel-based protocol (brick: canonical_resolver_self_reduction).
+  Prose: prose/24 (§12).
 
-  Кирпич: FaithfulPFrame (True/False-языки обязаны быть в P — отсекает
-  дегенеративные фреймы!), транскрипты запросов с честностью, ограниченный
-  адаптивный протокол (fuel строго падает на шаге), терминальный декодер,
+  Brick: FaithfulPFrame (True/False-languages must be in P — cuts off
+  degenerate frames!), query transcripts with faithfulness, bounded
+  adaptive protocol (fuel strictly decreases at each step), terminal decoder,
   DeciderGuidedSelfReduction ⟹ CanonicalResolverReconstruction ⟹
-  extraction-field ⟹ StrictStep00ClassicalEncoding ⟹ разделение классов
-  (при несжимаемости); FaithfulSelfReductionFront.
+  extraction-field ⟹ StrictStep00ClassicalEncoding ⟹ class separation
+  (under incompressibility); FaithfulSelfReductionFront.
 
-  ГЕНЕРИЧЕСКОЕ ЗАКРЫТИЕ (при интеграции): runSteps/canonicalRun —
-  fuel-исполнитель протокола с ДОКАЗАННОЙ терминацией
-  (runSteps_done_of_fuel: строгое падение fuel + спуск в ℕ) — поля
-  run/run_done закрываются конструктором selfReduction_of_protocol_and_decoder;
-  живой остаток фронта = протокол + терминальный декодер (+ верный фрейм).
+  GENERIC CLOSURE (upon integration): runSteps/canonicalRun —
+  fuel-executor of the protocol with PROVED termination
+  (runSteps_done_of_fuel: strict decrease of fuel + descent in ℕ) — fields
+  run/run_done are closed by constructor selfReduction_of_protocol_and_decoder;
+  live front remainder = protocol + terminal decoder (+ faithful frame).
 
-  ⚠️ МАШИННАЯ ЧЕСТНОСТЬ: trivialFrame_not_faithful — тривиальный фрейм
-  (InP := False) НЕ faithful (False-язык обязан быть в P) — петля с
-  trivialFrame_separates_for_free замкнута: дегенерация отсечена машинно.
-  Аудит-гейты по-прежнему свободны (True-конструктор это показывает).
-  Фикс кирпича: невыводимый implicit Target в поле terminalDecoder.
+  ⚠️ MACHINE FAITHFULNESS: trivialFrame_not_faithful — the trivial frame
+  (InP := False) is NOT faithful (the False-language must be in P) — the loop with
+  trivialFrame_separates_for_free is closed: degeneration is machine-cut.
+  Audit gates remain free (the True-constructor demonstrates this).
+  Brick fix: non-inferrable implicit Target in the terminalDecoder field.
 -/
 import Mathlib
 import EuclidsPath.Engine.ClassicalPNPBridge
@@ -605,14 +605,14 @@ end PDeciderExtraction
 end ClassicalPNPBridge
 end EuclidsPath
 
-/-! Генерическое закрытие run-полей + машинная честность -/
+/-! Generic closure of run-fields + machine faithfulness -/
 
 namespace EuclidsPath
 namespace ClassicalPNPBridge
 namespace PDeciderExtraction
 namespace CanonicalSelfReduction
 
-/-- Генерический исполнитель протокола: fuel-рекурсия. -/
+/-- Generic protocol executor: fuel-recursion. -/
 noncomputable def runSteps
     {L : ClassicalProblem}
     {Q : GenealogyDecisionQueryInterface L}
@@ -625,8 +625,8 @@ noncomputable def runSteps
       if h : P.done s then s
       else runSteps P D n (P.step D s h)
 
-/-- **ТЕРМИНАЦИЯ ДОКАЗАНА:** при бюджете ≥ fuel исполнитель достигает done
-    (строгое падение fuel на каждом шаге + спуск в ℕ). -/
+/-- **TERMINATION PROVED:** given budget ≥ fuel the executor reaches done
+    (strict decrease of fuel at each step + descent in ℕ). -/
 theorem runSteps_done_of_fuel
     {L : ClassicalProblem}
     {Q : GenealogyDecisionQueryInterface L}
@@ -651,7 +651,7 @@ theorem runSteps_done_of_fuel
           have hlt := P.fuel_decreases_step D s hNotDone
           omega
 
-/-- Канонический запуск с бюджетом протокола. -/
+/-- Canonical run with the protocol's budget. -/
 noncomputable def canonicalRun
     {L : ClassicalProblem}
     {Q : GenealogyDecisionQueryInterface L}
@@ -667,9 +667,9 @@ theorem canonicalRun_done
     P.done (canonicalRun P D) :=
   runSteps_done_of_fuel P D P.initial_fuel_bound P.init P.fuel_init_le
 
-/-- **ГЕНЕРИЧЕСКИЙ КОНСТРУКТОР:** self-reduction из (протокол + декодер) —
-    поля run/run_done закрыты каноническим исполнителем; гейты — True
-    (честно: маркеры). Остаток фронта = протокол + декодер. -/
+/-- **GENERIC CONSTRUCTOR:** self-reduction from (protocol + decoder) —
+    fields run/run_done are closed by the canonical executor; gates — True
+    (honestly: markers). Front remainder = protocol + decoder. -/
 noncomputable def selfReduction_of_protocol_and_decoder
     {L : ClassicalProblem}
     {N : Step00LocalNode}
@@ -692,9 +692,9 @@ noncomputable def selfReduction_of_protocol_and_decoder
   no_oracle_leak := True
   no_oracle_leak_proof := trivial
 
-/-- **ЧЕСТНОСТЬ (замыкает петлю с trivialFrame):** тривиальный фрейм НЕ
-    faithful — FaithfulPFrame требует False-язык в P, у trivialFrame
-    InP := False. Дегенеративный фрейм машинно отсечён. -/
+/-- **FAITHFULNESS (closes the loop with trivialFrame):** the trivial frame is NOT
+    faithful — FaithfulPFrame requires the False-language in P, but trivialFrame has
+    InP := False. The degenerate frame is machine-cut. -/
 theorem trivialFrame_not_faithful
     (F : FaithfulPFrame ClassicalPNPBridge.trivialFrame) : False :=
   F.false_inP

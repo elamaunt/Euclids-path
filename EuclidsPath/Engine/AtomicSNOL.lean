@@ -1,47 +1,47 @@
 /-
   Atomic SNOL-free graph + SNOL demacrofication — Step00 post-audit re-architecture.
-  Источник: step00_post_audit_to_snol_deriv_final_residuals_ru_2026-07-01.md.
-  Проза: prose/24_BoundaryDecomp.md (раздел «Атомизация SNOL»).
+  Source: step00_post_audit_to_snol_deriv_final_residuals_ru_2026-07-01.md.
+  Prose: prose/24_BoundaryDecomp.md (section "SNOL Atomisation").
 
-  ЗАЧЕМ. Аудиты v3/v4 показали, что абстрактная labelled-машина (`LabelledFanIn.lean`) держится на
-  `hAll : ∀x, Legal x` (ложно на `6m±1`), а SNOL как macro-edge даёт тяжёлую seed⇒engine стену. Этот
-  модуль — СТРУКТУРНЫЙ рефакторинг по brick'у (два честных выигрыша, но НЕ арифметический прогресс):
-    (1) устранена ЛОЖНАЯ гипотеза `hAll`: `dichotomy_legal` берёт `Legal := fun _ => True`, и `hAll`
-        разряжается ИСТИННЫМ термом `fun _ => trivial` (в отличие от прежнего ложного `∀x, Legal x`);
-    (2) SNOL перестаёт быть atomic edge: он — `SNOLDeriv` (индуктивная замкнутость atomic-шагов +
-        composition + terminal engine/twin), и `SNOLDeriv_expand_or_closes` разворачивает её в atomic
-        path ИЛИ закрывает.
+  WHY. Audits v3/v4 showed that the abstract labelled machine (`LabelledFanIn.lean`) relies on
+  `hAll : ∀x, Legal x` (false on `6m±1`), and SNOL as a macro-edge creates a heavy seed⇒engine wall. This
+  module is a STRUCTURAL refactoring by brick (two honest wins, but NOT arithmetic progress):
+    (1) the FALSE hypothesis `hAll` is eliminated: `dichotomy_legal` takes `Legal := fun _ => True`, and `hAll`
+        discharges with the TRUE term `fun _ => trivial` (unlike the former false `∀x, Legal x`);
+    (2) SNOL ceases to be an atomic edge: it becomes `SNOLDeriv` (inductive closure of atomic steps +
+        composition + terminal engine/twin), and `SNOLDeriv_expand_or_closes` unfolds it into an atomic
+        path OR closes.
 
-  ЧЕСТНЫЙ СТАТУС (уточнён адверсариальным аудитом; НЕ переоцениваем):
-  ДОКАЗАНО здесь (абстрактно, стандартные аксиомы, без sorry):
-    * `dichotomy_legal` — König-дихотомия при `Legal := True` (ложный `hAll` снят соундно);
-    * `SNOLDeriv_expand_or_closes` (R7) — ИСТИННАЯ, но СТРУКТУРНО ТАВТОЛОГИЧНАЯ: дизъюнкты
-      (`AtomicPath ∨ Engine ∨ Twin`) в точной биекции с конструкторами свободного индуктива; НУЛЕВОЕ
-      арифметическое содержание (composition уже был бесплатен через `ReflTransGen.trans`);
+  HONEST STATUS (refined by adversarial audit; NOT overstating):
+  PROVED here (abstractly, standard axioms, no sorry):
+    * `dichotomy_legal` — König dichotomy with `Legal := True` (false `hAll` soundly discharged);
+    * `SNOLDeriv_expand_or_closes` (R7) — TRUE, but STRUCTURALLY TAUTOLOGICAL: the disjuncts
+      (`AtomicPath ∨ Engine ∨ Twin`) are in exact bijection with the constructors of the free inductive; ZERO
+      arithmetic content (composition was already free via `ReflTransGen.trans`);
     * `AtomicPath.append`, `atomicLabelledFanIn_closes`, `no_atomicInfiniteLegalDescent_of_height`,
-      `macroPath_expand_or_closes` — структура/EPMI/конечная графовая теория.
+      `macroPath_expand_or_closes` — structure/EPMI/finite graph theory.
 
-  ЧЕГО ЭТОТ РЕФАКТОРИНГ НЕ ДЕЛАЕТ (важно):
-    * `hAll` устранён как ЛОЖНАЯ гипотеза, но НЕ как ОБЯЗАТЕЛЬСТВО: с `Legal := True` теоремы говорят о
-      ПОЛНОМ типе `σ` без фильтра легальности, поэтому любая инстанциация на legal-subtype обязана
-      дополнительно (a) построить `AtomicStep` legality-closed и (b) дать легальный `hGlobal`. Legal
-      subtype здесь НИГДЕ не построен — обязательство ПЕРЕНЕСЕНО в абстрактный `AtomicStep`/`hGlobal`.
-    * R8 (`SNOLBoundaryToDeriv`) — НЕ гипотеза финальной теоремы `twin_of_atomicDeterminism_and_absorption`.
-      Это вход ОТДЕЛЬНОЙ, НЕ подключённой ветки (`SNOLDeriv`/`macroPath`). Нельзя говорить «всё сведено
-      к одному R8».
-    * `SNOLDeriv_expand_or_closes` — бухгалтерия, НЕ прогресс: вся SNOL/old-peel арифметика по-прежнему
-      целиком в R8, а R8 definitionally взаимозаменяем со старым входом `hSNOLexpand`.
+  WHAT THIS REFACTORING DOES NOT DO (important):
+    * `hAll` is eliminated as a FALSE hypothesis, but NOT as an OBLIGATION: with `Legal := True` the theorems speak about
+      the FULL type `σ` without a legality filter, so any instantiation on a legal-subtype is obliged
+      additionally (a) to build `AtomicStep` legality-closed and (b) to provide a legal `hGlobal`. The legal
+      subtype is NOWHERE built here — the obligation is TRANSFERRED to the abstract `AtomicStep`/`hGlobal`.
+    * R8 (`SNOLBoundaryToDeriv`) is NOT a hypothesis of the final theorem `twin_of_atomicDeterminism_and_absorption`.
+      It is an input of a SEPARATE, NOT connected branch (`SNOLDeriv`/`macroPath`). One cannot say "everything is reduced
+      to a single R8".
+    * `SNOLDeriv_expand_or_closes` — bookkeeping, NOT progress: all SNOL/old-peel arithmetic remains
+      entirely in R8, and R8 is definitionally interchangeable with the old input `hSNOLexpand`.
 
-  РЕАЛЬНЫЙ ОСТАТОК СОБРАННОЙ ЦЕПИ (`twin_of_atomicDeterminism_and_absorption`):
-    `{ hDet (AtomicLocalDeterminism — несёт boundary/old-peel/SNOL-детерминизм, синтаксически без
-       snol-случая, но по сути та же стена, лишь снят ярлык), hdrop (ацикличность/well-foundedness
-       ко-высоты на `6m±1`), инстанциация к `TwinCenterZ`/`CoreSig`/`Step00.EuclideanEngine` }`,
-    плюс R8 как ОТДЕЛЬНЫЙ вход НЕсобранной SNOL-ветки.
+  REAL REMAINDER OF THE ASSEMBLED CHAIN (`twin_of_atomicDeterminism_and_absorption`):
+    `{ hDet (AtomicLocalDeterminism — carries boundary/old-peel/SNOL-determinism, syntactically without
+       the snol-case, but in substance the same wall, only the label is removed), hdrop (acyclicity/well-foundedness
+       of co-height on `6m±1`), instantiation to `TwinCenterZ`/`CoreSig`/`Step00.EuclideanEngine` }`,
+    plus R8 as a SEPARATE input of the unassembled SNOL-branch.
 
-  ВЫВОД (аудит): прогресс ЛАТЕРАЛЬНЫЙ — два структурных выигрыша (снят ложный `hAll`; SNOL-composition
-  доказан, а не предположен), но содержательная арифметика лишь ПЕРЕНЕСЕНА в более чистые места, не
-  снята. Красная линия цела (никакого counting/вероятностей). Машина абстрактна и ничем не потребляется.
-  Это НЕ шаг к доказательству близнецов. `Step00` остаётся `sorry`.
+  CONCLUSION (audit): progress is LATERAL — two structural wins (false `hAll` discharged; SNOL-composition
+  proved rather than assumed), but the substantive arithmetic is merely TRANSFERRED to cleaner places, not
+  discharged. The red line is intact (no counting/probabilities). The machine is abstract and consumed by nothing.
+  This is NOT a step toward proving twins. `Step00` remains `sorry`.
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -56,26 +56,26 @@ open EuclidsPath.LabelledFanIn
 
 variable {σ : Type*}
 
-/-! ### §9–10. Atomic SNOL-free граф и путь
+/-! ### §9–10. Atomic SNOL-free graph and path
 
-`AtomicStep` — атомарный шаг (activeDelete/oldPeel/oldCorridor/boundaryExact/boundaryPeel + terminal
-seeds). SNOL и absorber СЮДА не входят как конструкторы. `AtomicPath` — конечный путь по atomic шагам. -/
+`AtomicStep` — an atomic step (activeDelete/oldPeel/oldCorridor/boundaryExact/boundaryPeel + terminal
+seeds). SNOL and absorber do NOT enter here as constructors. `AtomicPath` — a finite path over atomic steps. -/
 
-/-- Атомарный путь `U ⇝ V` — рефлексивно-транзитивное замыкание atomic шага. -/
+/-- Atomic path `U ⇝ V` — the reflexive-transitive closure of the atomic step. -/
 abbrev AtomicPath (AtomicStep : σ → σ → Prop) : σ → σ → Prop := Relation.ReflTransGen AtomicStep
 
-/-- **`AtomicPath.append` — ДОКАЗАНА** (= транзитивность `ReflTransGen`). -/
+/-- **`AtomicPath.append` — PROVED** (= transitivity of `ReflTransGen`). -/
 theorem AtomicPath.append {AtomicStep : σ → σ → Prop} {U W V : σ}
     (h1 : AtomicPath AtomicStep U W) (h2 : AtomicPath AtomicStep W V) : AtomicPath AtomicStep U V :=
   h1.trans h2
 
-/-! ### §16–17. SNOL как конечная деривация + разворачивание (R7)
+/-! ### §16–17. SNOL as a finite derivation + unfolding (R7)
 
-Вместо opaque macro-edge SNOL — `SNOLDeriv`: наименьшая замкнутость atomic-шагов относительно
-композиции с terminal engine/twin. Тогда «SNOL раскрывается» — это структурная индукция. -/
+Instead of an opaque macro-edge SNOL — `SNOLDeriv`: the least closure of atomic steps under
+composition with terminal engine/twin. Then "SNOL unfolds" is structural induction. -/
 
-/-- `SNOLDeriv` (§16): конечная деривация SNOL-события из atomic шагов, композиции и terminal
-    engine/twin. Boundary exact/peel — atomic шаги, НЕ отдельные macro-конструкторы. -/
+/-- `SNOLDeriv` (§16): finite derivation of a SNOL event from atomic steps, composition, and terminal
+    engine/twin. Boundary exact/peel — atomic steps, NOT separate macro-constructors. -/
 inductive SNOLDeriv (AtomicStep : σ → σ → Prop) (Engine : Prop) (Twin : Prop) : σ → σ → Prop
   | atomic {U V} : AtomicStep U V → SNOLDeriv AtomicStep Engine Twin U V
   | comp {U W V} : SNOLDeriv AtomicStep Engine Twin U W → SNOLDeriv AtomicStep Engine Twin W V →
@@ -84,10 +84,10 @@ inductive SNOLDeriv (AtomicStep : σ → σ → Prop) (Engine : Prop) (Twin : Pr
   | twin {U V} : Twin → SNOLDeriv AtomicStep Engine Twin U V
 
 /--
-  **§17 (`SNOLDeriv_expand_or_closes`) — ДОКАЗАНА (R7, ядро демакрофикации).** Всякая SNOL-деривация
-  ЛИБО разворачивается в конечный atomic путь `U ⇝ V`, ЛИБО уже закрывает Step00 (engine/twin).
-  Индукция по деривации: atomic ⟹ путь длины 1; comp ⟹ append путей (или пропуск закрытия);
-  engine/twin ⟹ соответствующий terminal. -/
+  **§17 (`SNOLDeriv_expand_or_closes`) — PROVED (R7, core of demacrofication).** Every SNOL derivation
+  EITHER unfolds into a finite atomic path `U ⇝ V`, OR already closes Step00 (engine/twin).
+  Induction on the derivation: atomic ⟹ path of length 1; comp ⟹ append of paths (or skip closure);
+  engine/twin ⟹ the corresponding terminal. -/
 theorem SNOLDeriv_expand_or_closes {AtomicStep : σ → σ → Prop} {Engine Twin : Prop} {U V : σ}
     (h : SNOLDeriv AtomicStep Engine Twin U V) :
     AtomicPath AtomicStep U V ∨ Engine ∨ Twin := by
@@ -104,16 +104,16 @@ theorem SNOLDeriv_expand_or_closes {AtomicStep : σ → σ → Prop} {Engine Twi
   | engine he => exact Or.inr (Or.inl he)
   | twin ht => exact Or.inr (Or.inr ht)
 
-/-! ### §2–4. Легальный subtype устраняет `hAll` (структурно)
+/-! ### §2–4. Legal subtype eliminates `hAll` (structurally)
 
-Ключ к устранению `hAll`: работать на `σ` = legal subtype, где `Legal := fun _ => True` выполняется
-by construction, поэтому гипотеза всеобщей легальности разряжается `fun _ => trivial`. -/
+Key to eliminating `hAll`: work on `σ` = legal subtype, where `Legal := fun _ => True` holds
+by construction, so the universal-legality hypothesis discharges with `fun _ => trivial`. -/
 
 /--
-  **`dichotomy_legal` — ДОКАЗАНА (König-дихотомия БЕЗ `hAll`).** На legal-графе (любой `σ`,
-  `Legal := True`) König-дихотомия из `LabelledFanIn.lean` выполняется без гипотезы всеобщей
-  легальности: она разряжается тривиально. Это структурно снимает возражение аудита о ложном `hAll`
-  на реальном графе `6m±1` — легальность встроена в тип состояний. -/
+  **`dichotomy_legal` — PROVED (König dichotomy WITHOUT `hAll`).** On a legal graph (any `σ`,
+  `Legal := True`) the König dichotomy from `LabelledFanIn.lean` holds without the universal-legality
+  hypothesis: it discharges trivially. This structurally removes the audit objection about the false `hAll`
+  on the real `6m±1` graph — legality is built into the state type. -/
 theorem dichotomy_legal {Lbl : Type*} [Finite Lbl]
     {RealStep : σ → σ → Prop} {OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     (hGlobal : GlobalOldAbsorption RealStep OldAbsorber Fresh)
@@ -121,24 +121,24 @@ theorem dichotomy_legal {Lbl : Type*} [Finite Lbl]
     LabelledFanIn RealStep (fun _ => True) edgeSig ∨ InfiniteLegalDescent RealStep :=
   absorption_labelled_dichotomy hGlobal hOldFin (fun _ => trivial)
 
-/-! ### §12. Atomic fan-in закрывает Step00
+/-! ### §12. Atomic fan-in closes Step00
 
-`AtomicLocalDeterminism` (все atomic пары с равной меткой ⟹ равенство ∨ engine ∨ twin) + atomic
-fan-in ⟹ engine ∨ twin. Это atomic-версия consumer'а, теперь с двумя terminal исходами. -/
+`AtomicLocalDeterminism` (all atomic pairs with equal label ⟹ equality ∨ engine ∨ twin) + atomic
+fan-in ⟹ engine ∨ twin. This is the atomic version of the consumer, now with two terminal outcomes. -/
 
-/-- `AtomicLocalDeterminism`: для atomic-пар с равной меткой — равенство ∨ engine ∨ twin. -/
+/-- `AtomicLocalDeterminism`: for atomic pairs with equal label — equality ∨ engine ∨ twin. -/
 def AtomicLocalDeterminism {Lbl : Type*} (AtomicStep : σ → σ → Prop) (edgeSig : σ → σ → Lbl)
     (Engine Twin : Prop) : Prop :=
   ∀ U₁ U₂ V, AtomicStep U₁ V → AtomicStep U₂ V → edgeSig U₁ V = edgeSig U₂ V →
     U₁ = U₂ ∨ Engine ∨ Twin
 
-/-- `AtomicLabelledFanIn`: два разных предшественника одного `V` с равной atomic-меткой. -/
+/-- `AtomicLabelledFanIn`: two distinct predecessors of a single `V` with equal atomic label. -/
 def AtomicLabelledFanIn {Lbl : Type*} (AtomicStep : σ → σ → Prop) (edgeSig : σ → σ → Lbl) : Prop :=
   ∃ U₁ U₂ V, U₁ ≠ U₂ ∧ AtomicStep U₁ V ∧ AtomicStep U₂ V ∧ edgeSig U₁ V = edgeSig U₂ V
 
 /--
-  **§12 (`atomicLabelledFanIn_closes`) — ДОКАЗАНА.** Atomic fan-in + atomic local determinism ⟹
-  engine ∨ twin. Равенство предшественников противоречит `U₁ ≠ U₂`, значит остаётся engine/twin. -/
+  **§12 (`atomicLabelledFanIn_closes`) — PROVED.** Atomic fan-in + atomic local determinism ⟹
+  engine ∨ twin. Equality of predecessors contradicts `U₁ ≠ U₂`, so engine/twin remains. -/
 theorem atomicLabelledFanIn_closes {Lbl : Type*} {AtomicStep : σ → σ → Prop} {edgeSig : σ → σ → Lbl}
     {Engine Twin : Prop}
     (hDet : AtomicLocalDeterminism AtomicStep edgeSig Engine Twin)
@@ -148,15 +148,15 @@ theorem atomicLabelledFanIn_closes {Lbl : Type*} {AtomicStep : σ → σ → Pro
   · exact absurd heq hne
   · exact hcl
 
-/-! ### §14. Нет atomic бесконечного спуска (EPMI-мост) -/
+/-! ### §14. No atomic infinite descent (EPMI bridge) -/
 
-/-- Atomic бесконечный спуск: `X (n+1) → X n` по atomic шагам. -/
+/-- Atomic infinite descent: `X (n+1) → X n` via atomic steps. -/
 def AtomicInfiniteLegalDescent (AtomicStep : σ → σ → Prop) : Prop :=
   ∃ X : ℕ → σ, ∀ n, AtomicStep (X (n + 1)) (X n)
 
 /--
-  **§14 (`no_atomicInfiniteLegalDescent_of_height`) — ДОКАЗАНА.** При строго убывающей вдоль atomic
-  шага высоте (EPMI) atomic бесконечного спуска нет — та же well-foundedness ℕ, что в `no_infinite_descent`. -/
+  **§14 (`no_atomicInfiniteLegalDescent_of_height`) — PROVED.** When the height strictly decreases along every atomic
+  step (EPMI) there is no atomic infinite descent — the same well-foundedness of ℕ as in `no_infinite_descent`. -/
 theorem no_atomicInfiniteLegalDescent_of_height {AtomicStep : σ → σ → Prop} (height : σ → ℕ)
     (hdrop : ∀ {u v}, AtomicStep u v → height u < height v) :
     ¬ AtomicInfiniteLegalDescent AtomicStep := by
@@ -167,15 +167,15 @@ theorem no_atomicInfiniteLegalDescent_of_height {AtomicStep : σ → σ → Prop
   have := hdrop (hX n)
   omega
 
-/-! ### §20–21. Разворачивание macro-шага и macro-пути
+/-! ### §20–21. Unfolding of a macro-step and a macro-path
 
-Macro-путь (с SNOL-макро-рёбрами) разворачивается в atomic путь ИЛИ закрывается, при условии, что
-SNOL разворачивается (`hSNOLexpand`). Это структурная индукция по macro-пути. -/
+A macro-path (with SNOL macro-edges) unfolds into an atomic path OR closes, provided that
+SNOL unfolds (`hSNOLexpand`). This is structural induction on the macro-path. -/
 
 /--
-  **§20 (`macroStep_expand_or_closes`) — ДОКАЗАНА при `hSNOLexpand`.** Один macro-шаг (atomic ИЛИ
-  SNOL-макро) разворачивается в atomic путь или закрывает Step00. Atomic-шаг ⟹ путь длины 1;
-  SNOL-макро ⟹ по `hSNOLexpand`. -/
+  **§20 (`macroStep_expand_or_closes`) — PROVED given `hSNOLexpand`.** One macro-step (atomic OR
+  SNOL-macro) unfolds into an atomic path or closes Step00. Atomic step ⟹ path of length 1;
+  SNOL-macro ⟹ by `hSNOLexpand`. -/
 theorem macroStep_expand_or_closes {AtomicStep : σ → σ → Prop} {SNOLMacro : σ → σ → Prop}
     {Engine Twin : Prop} {U V : σ}
     (hSNOLexpand : ∀ {a b}, SNOLMacro a b → AtomicPath AtomicStep a b ∨ Engine ∨ Twin)
@@ -186,9 +186,9 @@ theorem macroStep_expand_or_closes {AtomicStep : σ → σ → Prop} {SNOLMacro 
   · exact hSNOLexpand hsn
 
 /--
-  **§21 (`macroPath_expand_or_closes`) — ДОКАЗАНА при `hSNOLexpand`.** Весь macro-путь (замыкание
-  «atomic ∨ SNOL-макро») разворачивается в atomic путь или закрывается. Индукция по `ReflTransGen`
-  macro-шага; append atomic-путей на каждом звене, пропуск закрытия. -/
+  **§21 (`macroPath_expand_or_closes`) — PROVED given `hSNOLexpand`.** The entire macro-path (closure of
+  "atomic ∨ SNOL-macro") unfolds into an atomic path or closes. Induction on `ReflTransGen` of the
+  macro-step; append of atomic paths at each link, skip closure. -/
 theorem macroPath_expand_or_closes {AtomicStep : σ → σ → Prop} {SNOLMacro : σ → σ → Prop}
     {Engine Twin : Prop} {U V : σ}
     (hSNOLexpand : ∀ {a b}, SNOLMacro a b → AtomicPath AtomicStep a b ∨ Engine ∨ Twin)
@@ -197,7 +197,7 @@ theorem macroPath_expand_or_closes {AtomicStep : σ → σ → Prop} {SNOLMacro 
   induction hpath with
   | refl => exact Or.inl Relation.ReflTransGen.refl
   | tail hstep hlast ih =>
-    -- hstep : macro-путь до предпоследнего; hlast : последний macro-шаг; ih : разворот префикса
+    -- hstep : macro-path up to the penultimate node; hlast : last macro-step; ih : unfolding of the prefix
     rcases ih with pfx | e | t
     · rcases macroStep_expand_or_closes hSNOLexpand hlast with plast | e | t
       · exact Or.inl (pfx.trans plast)
@@ -206,24 +206,24 @@ theorem macroPath_expand_or_closes {AtomicStep : σ → σ → Prop} {SNOLMacro 
     · exact Or.inr (Or.inl e)
     · exact Or.inr (Or.inr t)
 
-/-! ### §26. Вход R8 (SNOL-ветка) — ОТДЕЛЬНАЯ, НЕ подключена к финальной теореме
+/-! ### §26. Input R8 (SNOL-branch) — SEPARATE, NOT connected to the final theorem
 
-ВАЖНО: эта SNOL-ветка (`SNOLBoundaryToDeriv` → `snolMacro_expands_of_bridge` → `macroPath...`) —
-СЕПАРАТНАЯ. Она НЕ является гипотезой `twin_of_atomicDeterminism_and_absorption`: та работает уже на
-atomic-графе. R8 нужен, только если строить macro→atomic разворачивание отдельно. По аудиту: `R8`
-definitionally взаимозаменяем со старым входом `hSNOLexpand`, а вся SNOL/old-peel арифметика — в нём.
-Подаём как явную гипотезу. -/
+IMPORTANT: this SNOL-branch (`SNOLBoundaryToDeriv` → `snolMacro_expands_of_bridge` → `macroPath...`) is
+SEPARATE. It is NOT a hypothesis of `twin_of_atomicDeterminism_and_absorption`: that theorem already operates on the
+atomic graph. R8 is needed only if one builds the macro→atomic unfolding separately. By audit: `R8`
+is definitionally interchangeable with the old input `hSNOLexpand`, and all SNOL/old-peel arithmetic lives in it.
+Supplied as an explicit hypothesis. -/
 
-/-- R8: старый SNOL-предикат ⟹ `SNOLDeriv` ∨ engine ∨ twin. Содержательный вход SNOL-ВЕТКИ (в реальном
-    графе — арифметика SNOL/old-peel); НЕ разряжается вакуумно (`.engine` требует реального `Engine`,
-    которого нет). Взаимозаменяем со старым `hSNOLexpand`. -/
+/-- R8: old SNOL predicate ⟹ `SNOLDeriv` ∨ engine ∨ twin. Substantive input of the SNOL-BRANCH (in the real
+    graph — SNOL/old-peel arithmetic); NOT dischargeable vacuously (`.engine` requires a real `Engine`,
+    which is absent). Interchangeable with the old `hSNOLexpand`. -/
 def SNOLBoundaryToDeriv (SNOLMacro AtomicStep : σ → σ → Prop) (Engine Twin : Prop) : Prop :=
   ∀ {U V}, SNOLMacro U V → SNOLDeriv AtomicStep Engine Twin U V ∨ Engine ∨ Twin
 
 /--
-  **`snolMacro_expands_of_bridge` — ДОКАЗАНА при R8.** Из красной линии R8 (`SNOLBoundaryToDeriv`)
-  следует, что SNOL-макро разворачивается в atomic путь или закрывает: применяем bridge, затем
-  `SNOLDeriv_expand_or_closes`. Это делает `hSNOLexpand` (нужный для §20–21) следствием R8. -/
+  **`snolMacro_expands_of_bridge` — PROVED given R8.** From the red line R8 (`SNOLBoundaryToDeriv`)
+  it follows that SNOL-macro unfolds into an atomic path or closes: apply the bridge, then
+  `SNOLDeriv_expand_or_closes`. This makes `hSNOLexpand` (needed for §20–21) a consequence of R8. -/
 theorem snolMacro_expands_of_bridge {AtomicStep SNOLMacro : σ → σ → Prop} {Engine Twin : Prop}
     (hBridge : SNOLBoundaryToDeriv SNOLMacro AtomicStep Engine Twin)
     {U V : σ} (h : SNOLMacro U V) : AtomicPath AtomicStep U V ∨ Engine ∨ Twin := by
@@ -232,23 +232,23 @@ theorem snolMacro_expands_of_bridge {AtomicStep SNOLMacro : σ → σ → Prop} 
   · exact Or.inr (Or.inl e)
   · exact Or.inr (Or.inr t)
 
-/-! ### §23–24. Финальная сборка на atomic-графе (остаток = `hDet` + `hdrop` + инстанциация)
+/-! ### §23–24. Final assembly on the atomic graph (remainder = `hDet` + `hdrop` + instantiation)
 
-Собираем цепь на atomic-графе. Под EPMI (atomic height растёт вдоль ребра ⟹ нет atomic спуска) и при
-atomic local determinism, atomic-fan-in закрывает (engine/twin). Дихотомия (`dichotomy_legal`) даёт
-fan-in или спуск; спуск запрещён; fan-in закрывает.
+We assemble the chain on the atomic graph. Under EPMI (atomic height grows along each edge ⟹ no atomic descent) and with
+atomic local determinism, atomic fan-in closes (engine/twin). The dichotomy (`dichotomy_legal`) gives
+fan-in or descent; descent is forbidden; fan-in closes.
 
-ЧЕСТНО (по аудиту): реальный несведённый остаток ЭТОЙ цепи — `hDet` (несёт boundary/old-peel/SNOL-
-детерминизм — синтаксически без snol-случая, но по сути та же стена), `hdrop` (ацикличность/
-well-foundedness ко-высоты на `6m±1`) и инстанциация. Ветка R8/SNOLDeriv сюда НЕ входит. -/
+HONESTLY (by audit): the real unreduced remainder of THIS chain is `hDet` (carries boundary/old-peel/SNOL-
+determinism — syntactically without the snol-case, but in substance the same wall), `hdrop` (acyclicity/
+well-foundedness of co-height on `6m±1`) and instantiation. The R8/SNOLDeriv branch does NOT enter here. -/
 
 /--
-  **§23 (`atomicGlobalAbsorption_closes`) — ДОКАЗАНА (atomic-сборка под EPMI).** На atomic-графе:
-  atomic global absorption + конечность absorber'ов + конечный alphabet + atomic local determinism +
-  строго растущая atomic height ⟹ engine ∨ twin. König-дихотомия (без `hAll`) + EPMI + atomic consumer.
+  **§23 (`atomicGlobalAbsorption_closes`) — PROVED (atomic assembly under EPMI).** On the atomic graph:
+  atomic global absorption + finiteness of absorbers + finite alphabet + atomic local determinism +
+  strictly growing atomic height ⟹ engine ∨ twin. König dichotomy (without `hAll`) + EPMI + atomic consumer.
 
-  Это atomic-версия финала: вся König/counting/EPMI часть закрыта; входы — atomic local determinism
-  (exact-компоненты, арифметика инстанциации) и конечности. -/
+  This is the atomic version of the final theorem: the entire König/counting/EPMI part is closed; inputs — atomic local determinism
+  (exact-components, instantiation arithmetic) and finiteness conditions. -/
 theorem atomicGlobalAbsorption_closes {Lbl : Type*} [Finite Lbl]
     {AtomicStep : σ → σ → Prop} {OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     {Engine Twin : Prop} (height : σ → ℕ)
@@ -257,26 +257,26 @@ theorem atomicGlobalAbsorption_closes {Lbl : Type*} [Finite Lbl]
     (hOldFin : {O | OldAbsorber O}.Finite)
     (hDet : AtomicLocalDeterminism AtomicStep edgeSig Engine Twin) :
     Engine ∨ Twin := by
-  -- König-дихотомия на legal-графе (без hAll)
+  -- König dichotomy on the legal graph (without hAll)
   rcases dichotomy_legal (edgeSig := edgeSig) hGlobal hOldFin with hfan | hinf
-  · -- LabelledFanIn (с Legal := True) ⟹ AtomicLabelledFanIn
+  · -- LabelledFanIn (with Legal := True) ⟹ AtomicLabelledFanIn
     obtain ⟨U₁, U₂, V, hne, _, _, _, hs1, hs2, hsig⟩ := hfan
     exact atomicLabelledFanIn_closes hDet ⟨U₁, U₂, V, hne, hs1, hs2, hsig⟩
-  · -- InfiniteLegalDescent запрещён EPMI
+  · -- InfiniteLegalDescent is forbidden by EPMI
     exact absurd hinf (no_atomicInfiniteLegalDescent_of_height height hdrop)
 
 /--
-  **§24 (`twin_of_atomicDeterminism_and_absorption`) — ДОКАЗАНА (финальная форма под входами).** Под
-  `¬Twin` и `¬Engine` (EPMI), если atomic global absorption получается из `¬Twin` (`hNoNew_to_abs`),
-  то `atomicGlobalAbsorption_closes` даёт engine ∨ twin — противоречие. Значит `Twin`.
+  **§24 (`twin_of_atomicDeterminism_and_absorption`) — PROVED (final form under given inputs).** Under
+  `¬Twin` and `¬Engine` (EPMI), if atomic global absorption follows from `¬Twin` (`hNoNew_to_abs`),
+  then `atomicGlobalAbsorption_closes` yields engine ∨ twin — a contradiction. Hence `Twin`.
 
-  ВАЖНО (честность, по аудиту): в ЭТОЙ теореме НЕТ гипотезы-bridge R8 (`SNOLBoundaryToDeriv`) — поэтому
-  прежнее имя `step00_final_of_bridge` вводило в заблуждение и переименовано. Реальный остаток ЭТОЙ
-  цепи — это `hDet` (несёт SNOL/boundary/old-peel-детерминизм, синтаксически без snol-случая, но по
-  сути та же стена), `hdrop` (ацикличность/well-foundedness ко-высоты на `6m±1`), и вся инстанциация
-  (`Twin := ∃ m>M₀, TwinCenter m`, `Engine := Step00.EuclideanEngine`, привязка `σ`/`AtomicStep`/`edgeSig`
-  к `TwinCenterZ`/`CoreSig`, `hNoNew_to_abs`, `hOldFin`, `[Finite Lbl]`). R8/`SNOLDeriv` — ОТДЕЛЬНАЯ,
-  НЕ подключённая к этой теореме ветка. Это форма редукции, НЕ закрытие. -/
+  IMPORTANT (honesty, by audit): THIS theorem has NO bridge hypothesis R8 (`SNOLBoundaryToDeriv`) — therefore
+  the former name `step00_final_of_bridge` was misleading and has been renamed. The real remainder of THIS
+  chain is `hDet` (carries SNOL/boundary/old-peel-determinism, syntactically without the snol-case, but in
+  substance the same wall), `hdrop` (acyclicity/well-foundedness of co-height on `6m±1`), and all instantiation
+  (`Twin := ∃ m>M₀, TwinCenter m`, `Engine := Step00.EuclideanEngine`, binding of `σ`/`AtomicStep`/`edgeSig`
+  to `TwinCenterZ`/`CoreSig`, `hNoNew_to_abs`, `hOldFin`, `[Finite Lbl]`). R8/`SNOLDeriv` — a SEPARATE,
+  NOT connected to this theorem branch. This is a form of reduction, NOT closure. -/
 theorem twin_of_atomicDeterminism_and_absorption {Lbl : Type*} [Finite Lbl]
     {AtomicStep : σ → σ → Prop} {OldAbsorber Fresh : σ → Prop} {edgeSig : σ → σ → Lbl}
     {Engine Twin : Prop} (height : σ → ℕ)

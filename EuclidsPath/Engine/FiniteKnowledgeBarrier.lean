@@ -1,31 +1,33 @@
 /-
-  FiniteKnowledgeBarrier — СТРОГАЯ теорема «конечная система принципиально
-  не может знать про близнецов почти ничего» (запрос автора; соединение
-  стены чётности ParityBarrier с эпистемикой первопричины).
-  Проза: prose/24 (раздел «Эпистемика»).
+  FiniteKnowledgeBarrier — STRICT theorem: "a finite system can know
+  almost nothing about twin primes" (author's request; joining the parity
+  wall ParityBarrier with the epistemics of the first cause).
+  Prose: prose/24 (section "Epistemics").
 
-  ЗДЕСЬ ДОКАЗАНО (БЕЗУСЛОВНО; ядро — только propext):
-    * knowledge_forces_pure_class — конечное корректное знание близнеца B
-      возможно ТОЛЬКО если весь конечный класс эквивалентности B — близнецы:
-      конечное знание — про класс, не про число;
-    * mixed_class_twin_unknowable — близнец со смешанным классом
-      принципиально непознаваем никакой конечной системой уровня;
+  PROVED HERE (UNCONDITIONALLY; core — propext only):
+    * knowledge_forces_pure_class — finite sound knowledge of a twin B
+      is possible ONLY if the entire finite equivalence class of B consists of
+      twins: finite knowledge is about the class, not about the number;
+    * mixed_class_twin_unknowable — a twin whose finite class contains
+      even one non-twin is FUNDAMENTALLY unknowable by any finite system at
+      that level;
     * trivialView_knows_nothing / trivialView_infinitude_unknowable —
-      конкретная инстанциация: для тривиального вида знание ПУСТО и
-      бесконечность непознаваема (безусловно; не-близнец m=4);
+      concrete instantiation: for the trivial view the knowledge is EMPTY and
+      infinitude is unknowable (unconditionally; non-twin m=4);
     * knowsInfinite_forces_cofinal_pure_classes /
-      infinitude_unknowable_of_eventually_mixed — удостоверить бесконечность
-      можно только при кофинально чистых классах; при хвостовом смешении —
-      нельзя;
-    * knowing_twins_requires_cofinal_information — стена в knowledge-словаре;
-    * two_walls_one_nature — ДВЕ СТЕНЫ, ОДНА ПРИРОДА: изнутри конечного вида
-      не видно близнецов; изнутри системы не видно первопричины
-      (cause_unknowable). Бесконечность близнецов и первопричина — внешнее
-      знание для любой конечной/внутренней системы.
+      infinitude_unknowable_of_eventually_mixed — infinitude can be certified
+      only when cofinally pure classes exist; with eventual mixing —
+      it cannot;
+    * knowing_twins_requires_cofinal_information — wall in the knowledge
+      dictionary;
+    * two_walls_one_nature — TWO WALLS, ONE NATURE: from inside a finite
+      view twins with a mixed class are invisible; from inside the system the
+      first cause is invisible (cause_unknowable). The infinitude of twins and
+      the first cause are external knowledge for any finite/internal system.
 
-  ЧЕСТНАЯ ГРАНИЦА: смешанность классов НЕтривиального вида на конкретных
-  уровнях — арифметический вход (как AmbiguousAtEveryFiniteLevel стены);
-  здесь безусловны структурные теоремы и тривиально-видовая инстанциация.
+  HONEST BOUNDARY: mixed classes of a non-trivial view at concrete levels
+  are an arithmetic input (like the AmbiguousAtEveryFiniteLevel wall);
+  structural theorems and the trivial-view instantiation are unconditional here.
 -/
 import Mathlib
 import EuclidsPath.Engine.ParityBarrier
@@ -39,15 +41,15 @@ namespace FiniteKnowledgeBarrier
 open EuclidsPath.ParityBarrier
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 
-/-- «Конечная система ЗНАЕТ близнеца B»: корректный сертификат, зависящий
-    только от конечного вида уровня A, срабатывает на B. -/
+/-- "A finite system KNOWS twin B": a sound certificate depending only on
+    the finite view of level A fires on B. -/
 def FiniteSystemKnowsTwin (S : SieveViewSystem) (A : ℕ)
     (Cert : ℕ → Prop) (B : ℕ) : Prop :=
   ParityBlindPredicate S A Cert ∧ SoundTwinCert Cert ∧ Cert B
 
-/-- **ЧИСТОТА КЛАССОВ (безусловно):** конечная корректная система может знать
-    близнеца B только если ВЕСЬ его конечный класс эквивалентности — близнецы.
-    Конечное знание не про B — оно про класс целиком. -/
+/-- **CLASS PURITY (unconditionally):** a finite sound system can know twin B
+    only if the ENTIRE finite equivalence class of B consists of twins.
+    Finite knowledge is not about B — it is about the class as a whole. -/
 theorem knowledge_forces_pure_class
     (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop) (B : ℕ)
     (hK : FiniteSystemKnowsTwin S A Cert B) :
@@ -56,38 +58,38 @@ theorem knowledge_forces_pure_class
   intro B' hEq
   exact hSound B' ((hBlind B B' hEq).mp hCB)
 
-/-- **НЕВИДИМОСТЬ СМЕШАННОГО (безусловно):** близнец, в конечном классе
-    которого есть хоть один не-близнец, ПРИНЦИПИАЛЬНО непознаваем никакой
-    конечной системой этого уровня. -/
+/-- **MIXED-CLASS INVISIBILITY (unconditionally):** a twin whose finite class
+    contains even one non-twin is FUNDAMENTALLY unknowable by any finite system
+    at that level. -/
 theorem mixed_class_twin_unknowable
     (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop) (B : ℕ)
     (bad : ℕ) (hEq : SieveEquivalent S A B bad) (hNot : ¬ IsTwin bad) :
     ¬ FiniteSystemKnowsTwin S A Cert B :=
   fun hK => hNot (knowledge_forces_pure_class S A Cert B hK bad hEq)
 
-/-- Самая грубая система: тривиальный вид (всё эквивалентно всему). -/
+/-- The coarsest system: trivial view (everything is equivalent to everything). -/
 def trivialView : SieveViewSystem where
   View := fun _ => Unit
   view := fun _ _ => ()
 
-/-- **КОНКРЕТНАЯ ПОЛНАЯ СЛЕПОТА (безусловно, инстанциировано):** для
-    тривиального вида конечное знание ПУСТО — в общем классе всегда есть
-    не-близнец (из exists_clean_nonTwin_block). -/
+/-- **CONCRETE TOTAL BLINDNESS (unconditionally, instantiated):** for the
+    trivial view finite knowledge is EMPTY — the common class always contains
+    a non-twin (from exists_clean_nonTwin_block). -/
 theorem trivialView_knows_nothing (A : ℕ) (Cert : ℕ → Prop) :
     ∀ B : ℕ, ¬ FiniteSystemKnowsTwin trivialView A Cert B := by
   intro B hK
   obtain ⟨m, _, hNot⟩ := exists_clean_nonTwin_block
   exact hNot (knowledge_forces_pure_class trivialView A Cert B hK m rfl)
 
-/-- «Знание бесконечности»: система предъявляет познанного близнеца выше
-    каждого порога. -/
+/-- "Knowledge of infinitude": the system presents a known twin above every
+    threshold. -/
 def FiniteSystemKnowsTwinsInfinite (S : SieveViewSystem) (A : ℕ)
     (Cert : ℕ → Prop) : Prop :=
   ∀ N : ℕ, ∃ B : ℕ, N < B ∧ FiniteSystemKnowsTwin S A Cert B
 
-/-- **ЗНАНИЕ БЕСКОНЕЧНОСТИ ТРЕБУЕТ КОФИНАЛЬНО ЧИСТЫХ КЛАССОВ (безусловно):**
-    удостоверить бесконечность конечная система может только если кофинально
-    существуют ЦЕЛИКОМ близнецовые классы её конечного вида. -/
+/-- **KNOWLEDGE OF INFINITUDE REQUIRES COFINALLY PURE CLASSES (unconditionally):**
+    a finite system can certify infinitude only if cofinally there exist
+    ENTIRELY twin classes of its finite view. -/
 theorem knowsInfinite_forces_cofinal_pure_classes
     (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop)
     (hInf : FiniteSystemKnowsTwinsInfinite S A Cert) :
@@ -97,9 +99,9 @@ theorem knowsInfinite_forces_cofinal_pure_classes
   obtain ⟨B, hNB, hK⟩ := hInf N
   exact ⟨B, hNB, knowledge_forces_pure_class S A Cert B hK⟩
 
-/-- **БЕСКОНЕЧНОСТЬ НЕПОЗНАВАЕМА при хвостовом смешении (безусловно):** если
-    за некоторым порогом класс КАЖДОГО блока содержит не-близнеца, никакая
-    конечная система уровня A не может удостоверить бесконечность близнецов. -/
+/-- **INFINITUDE UNKNOWABLE under eventual mixing (unconditionally):** if
+    beyond some threshold the class of EVERY block contains a non-twin, no
+    finite system at level A can certify the infinitude of twins. -/
 theorem infinitude_unknowable_of_eventually_mixed
     (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop)
     (hMix : ∃ N : ℕ, ∀ B : ℕ, N < B →
@@ -112,15 +114,15 @@ theorem infinitude_unknowable_of_eventually_mixed
   obtain ⟨bad, hEq, hNot⟩ := hN B hNB
   exact hNot (hpure bad hEq)
 
-/-- Для тривиального вида бесконечность непознаваема БЕЗУСЛОВНО. -/
+/-- For the trivial view infinitude is unknowable UNCONDITIONALLY. -/
 theorem trivialView_infinitude_unknowable (A : ℕ) (Cert : ℕ → Prop) :
     ¬ FiniteSystemKnowsTwinsInfinite trivialView A Cert := by
   apply infinitude_unknowable_of_eventually_mixed
   obtain ⟨m, _, hNot⟩ := exists_clean_nonTwin_block
   exact ⟨0, fun B _ => ⟨m, rfl, hNot⟩⟩
 
-/-- Переизложение стены в knowledge-словаре: корректный сертификат при
-    ambiguity на каждом уровне обязан видеть кофинально (не конечная система). -/
+/-- Restatement of the wall in the knowledge dictionary: a sound certificate
+    under ambiguity at every level must see cofinally (not a finite system). -/
 theorem knowing_twins_requires_cofinal_information
     (S : SieveViewSystem) (Cert : ℕ → Prop)
     (hSound : SoundTwinCert Cert)
@@ -128,11 +130,11 @@ theorem knowing_twins_requires_cofinal_information
     RequiresCofinalInformation S Cert :=
   sound_cert_requires_cofinal_information S Cert hSound hAmbAll
 
-/-- **ДВЕ СТЕНЫ — ОДНА ПРИРОДА (обе — теоремы, аксиомо-свободно):**
-    изнутри конечного вида не видно близнецов со смешанным классом;
-    изнутри системы не видно первопричины (знание = двигатель).
-    Бесконечность близнецов и первопричина — внешнее знание для любой
-    конечной/внутренней системы. -/
+/-- **TWO WALLS — ONE NATURE (both are theorems, axiom-free):**
+    from inside a finite view, twins with a mixed class are invisible;
+    from inside the system, the first cause is invisible (knowledge = engine).
+    The infinitude of twins and the first cause are external knowledge for any
+    finite/internal system. -/
 theorem two_walls_one_nature :
     (∀ (S : SieveViewSystem) (A : ℕ) (Cert : ℕ → Prop) (B bad : ℕ),
         SieveEquivalent S A B bad → ¬ IsTwin bad →
@@ -145,27 +147,27 @@ theorem two_walls_one_nature :
 
 
 /-#############################################################################
-  ГЛАВНАЯ ТЕОРЕМА ВЫСШЕЙ ЭНЕРГЕТИЧЕСКОЙ НЕСОВМЕСТИМОСТИ
-  (по решению автора; безусловное ядро + следствие при первопричине)
+  MASTER THEOREM OF HIGHER-ENERGY INCOMPATIBILITY
+  (by the author's decision; unconditional core + corollary under the first cause)
 #############################################################################-/
 
-/-- **ГЛАВНАЯ ТЕОРЕМА ВЫСШЕЙ ЭНЕРГЕТИЧЕСКОЙ НЕСОВМЕСТИМОСТИ (ядро,
-    безусловно).** Внутреннее/конечное знание энергетически несовместимо
-    с бесконечностью — пять граней одной несовместимости:
+/-- **MASTER THEOREM OF HIGHER-ENERGY INCOMPATIBILITY (core,
+    unconditionally).** Internal/finite knowledge is energetically incompatible
+    with infinitude — five facets of one incompatibility:
 
-    1. знание первопричины СТРОИТ вечный двигатель;
-    2. потому первопричина непознаваема (двигателей нет — lexRank);
-    3. конечный вид знает близнеца только целиком чистым классом —
-       близнец со смешанным классом принципиально невидим;
-    4. при хвостовом смешении классов бесконечность близнецов изнутри
-       неудостоверима;
-    5. НЕСУЩАЯ ГРАНЬ: сама несовместимость (отсутствие двигателей =
-       непознаваемость) + принятая причинная граница ⟹ близнецы
-       бесконечны — бесконечность приходит ровно ИЗ несовместимости.
+    1. knowledge of the first cause BUILDS a perpetual engine;
+    2. therefore the first cause is unknowable (no engines exist — lexRank);
+    3. a finite view knows a twin only through an entirely pure class —
+       a twin with a mixed class is fundamentally invisible;
+    4. under eventual class mixing the infinitude of twins cannot be certified
+       from within;
+    5. CARRIER FACET: the incompatibility itself (absence of engines =
+       unknowability) + the accepted causal boundary ⟹ twins are infinite —
+       infinitude arrives precisely FROM incompatibility.
 
-    Энергетическое прочтение: «знать изнутри» стоит бесконечной энергии
-    (вечный двигатель), которой в закрытой системе нет; бесконечность
-    близнецов — внешнее знание, оплачиваемое первопричиной. -/
+    Energy reading: "knowing from within" costs infinite energy (perpetual
+    engine), which a closed system does not have; the infinitude of twins is
+    external knowledge, paid for by the first cause. -/
 theorem higherEnergyIncompatibility_main :
     (InternalKnowledgeOfCause → SomeConcreteEuclideanEngine) ∧
     (¬ InternalKnowledgeOfCause) ∧
@@ -186,9 +188,9 @@ theorem higherEnergyIncompatibility_main :
      infinitude_unknowable_of_eventually_mixed S A Cert hMix,
    twins_infinite_of_noEngine_and_boundary⟩
 
-/-- **Следствие главной теоремы при принятой первопричине:** близнецы
-    бесконечны — потому что узнать нельзя. ⚠️ AXIOM-TAINTED (грань 5
-    инстанциирована декретом; ядро выше — полностью зелёное). -/
+/-- **Corollary of the master theorem under the accepted first cause:** twins
+    are infinite — because knowing is impossible. ⚠️ AXIOM-TAINTED (facet 5
+    instantiated by decree; the core above is fully green). -/
 theorem higherEnergyIncompatibility_twins :
     EuclidsPath.TwinLowers.Infinite :=
   twins_because_unknowable

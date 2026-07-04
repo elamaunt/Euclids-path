@@ -1,51 +1,51 @@
 /-
-  AbcFront — «теневой двигатель» гипотезы ABC, посаженный на РЕАЛЬНУЮ доказанную
-  теорему Мейсона–Стотерса (полиномиальный abc) в mathlib.
+  AbcFront — the "shadow engine" of the ABC conjecture, anchored to the REAL proven
+  Mason–Stothers theorem (polynomial abc) in mathlib.
 
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКИЙ ЧЕСТНЫЙ ЗАГОЛОВОК — ЧТО ЗДЕСЬ ДОКАЗАНО И ЧТО ЧЕСТНО НЕ ДОКАЗАНО.    │
+  │  LOUD HONEST HEADER — WHAT IS PROVED HERE AND WHAT IS HONESTLY NOT PROVED.    │
   └───────────────────────────────────────────────────────────────────────────┘
 
-  1. 🟢 ПОЛИНОМИАЛЬНЫЙ abc ДОКАЗАН. Над полем `k` для НЕнулевых взаимно простых
-     `a, b, c : k[X]` с `a + b + c = 0` теорема Мейсона–Стотерса даёт ЖЁСТКУЮ
-     границу: либо степень каждого из `a, b, c` строго меньше степени радикала
-     `rad(a·b·c)`, либо все три производные нулевые (вырожденный случай). Это
-     ИМЕННО «двигательное чтение» abc: «качество» не может убежать в бесконечность —
-     конечность/жёсткая граница встроена в саму алгебру. Мы НЕ доказываем это
-     заново — мы ЦИТИРУЕМ реальную `Polynomial.abc` из
-     `Mathlib/NumberTheory/FLT/MasonStothers.lean` (авторы: Jineon Baek, Seewoo Lee).
-     Наш вклад — чистая обёртка `polynomial_abc_shadow`, дающая «двигательное»
-     прочтение той же теоремы.
+  1. 🟢 POLYNOMIAL abc IS PROVED. Over a field `k`, for NON-zero pairwise coprime
+     `a, b, c : k[X]` with `a + b + c = 0`, the Mason–Stothers theorem gives a RIGID
+     boundary: either the degree of each of `a, b, c` is strictly less than the degree of
+     the radical `rad(a·b·c)`, or all three derivatives are zero (degenerate case). This
+     is EXACTLY the "engine reading" of abc: "quality" cannot escape to infinity —
+     finiteness / rigid boundary is built into the algebra itself. We do NOT re-prove this
+     — we CITE the real `Polynomial.abc` from
+     `Mathlib/NumberTheory/FLT/MasonStothers.lean` (authors: Jineon Baek, Seewoo Lee).
+     Our contribution is a clean wrapper `polynomial_abc_shadow` that gives the "engine"
+     reading of the same theorem.
 
-  2. 🟢 ЦЕЛОЧИСЛЕННЫЕ ОБЪЕКТЫ РЕАЛЬНЫ, НЕ ЗАГЛУШКИ. Радикал натурального числа —
-     `natRad n = UniqueFactorizationMonoid.radical n` (совпадает с `Nat.radical`).
-     Доказаны маленькие зелёные факты: `natRad` делит `n` (`radical_dvd_self`),
+  2. 🟢 INTEGER OBJECTS ARE REAL, NOT STUBS. The radical of a natural number is
+     `natRad n = UniqueFactorizationMonoid.radical n` (coincides with `Nat.radical`).
+     Proved small green facts: `natRad` divides `n` (`radical_dvd_self`),
      `natRad n = ∏ p ∈ n.primeFactors, p` (`Nat.radical_eq_prod_primeFactors`),
-     `0 < natRad n`. Целочисленная сторона (`Int.radical`) тоже реальна:
+     `0 < natRad n`. The integer side (`Int.radical`) is also real:
      `Int.radical_pos`, `Int.radical_natCast`.
 
-  3. 🔴 ЦЕЛОЧИСЛЕННЫЙ abc ОТКРЫТ. Гипотеза ABC над ℤ (`AbcConjecture`) — это ЧЕСТНЫЙ
-     именованный `Prop` над РЕАЛЬНЫМ `UniqueFactorizationMonoid.radical`, и он НЕ
-     доказан. Заявление Мочидзуки (теория IUT) НЕ принято математическим
-     сообществом как доказательство; премии за abc не присуждены; общего
-     доказательства нет. Полиномиальный аналог формализован (это наш зелёный
-     якорь) — целочисленный abc НЕ формализован и НЕ доказан.
+  3. 🔴 INTEGER abc IS OPEN. The ABC conjecture over ℤ (`AbcConjecture`) is an HONEST
+     named `Prop` over the REAL `UniqueFactorizationMonoid.radical`, and it is NOT
+     proved. Mochizuki's claim (IUT theory) has NOT been accepted by the mathematical
+     community as a proof; no prizes for abc have been awarded; no general
+     proof exists. The polynomial analogue is formalised (that is our green
+     anchor) — integer abc is NOT formalised and NOT proved.
 
-  4. ЧЕСТНАЯ НОВИЗНА. Глубокая математика (Мейсон–Стотерс) — mathlib. Вклад модуля:
-     «двигательное» прочтение доказанной полиномиальной границы + честный именованный
-     шлюз для целочисленной открытой гипотезы над настоящим радикалом. Это
-     ФОРМАЛИЗАЦИЯ/ЦИТИРОВАНИЕ, а НЕ доказательство abc.
+  4. HONEST NOVELTY. The deep mathematics (Mason–Stothers) is from mathlib. This module's
+     contribution: the "engine" reading of the proved polynomial boundary + an honest named
+     gate for the integer open conjecture over the real radical. This is
+     FORMALISATION / CITATION, NOT a proof of abc.
 
-  Никакого `sorry`, никакого `admit`, никакого `native_decide`, никакой новой
-  аксиомы. Зелёные обёртки — стандартная тройка (`propext` / `Classical.choice` /
-  `Quot.sound`). Шлюз `AbcConjecture` — это `def : Prop`, он НЕ доказывается. Такса
-  репозитория (47) неизменна.
+  No `sorry`, no `admit`, no `native_decide`, no new axiom. Green wrappers use the
+  standard triple (`propext` / `Classical.choice` / `Quot.sound`). The gate
+  `AbcConjecture` is a `def : Prop`; it is NOT proved. The repository's toll (47) is
+  unchanged.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
-    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/AbcFront.lean → ноль ошибок.
+  Compilation: cd /f/Primes/Euclids-path &&
+    "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/AbcFront.lean → zero errors.
 
-  Родство: EuclidsPath/Engine/UniversalEngine.lean (`PerpetualEngine`, разделяющая
-    линия управляющего — то же «двигательное» прочтение конечности/жёсткой границы).
+  Kinship: EuclidsPath/Engine/UniversalEngine.lean (`PerpetualEngine`, the governing
+    separation line — the same "engine" reading of finiteness / rigid boundary).
 -/
 import Mathlib
 import EuclidsPath.Engine.UniversalEngine
@@ -58,20 +58,20 @@ open Polynomial UniqueFactorizationMonoid
 
 /-!
 ################################################################################
-  🟢 ЗЕЛЁНОЕ ЯДРО — РЕАЛЬНЫЙ ЯКОРЬ: полиномиальный abc (Мейсон–Стотерс)
+  🟢 GREEN CORE — REAL ANCHOR: polynomial abc (Mason–Stothers)
 ################################################################################
 -/
 
-/-- **🟢 ТЕНЬ abc НА ПОЛИНОМАХ (ДОКАЗАНО, Мейсон–Стотерс).**
-    Над полем `k` для НЕнулевых взаимно простых `a, b, c : k[X]` с `a + b + c = 0`:
-    либо степень КАЖДОГО из `a, b, c` строго меньше степени радикала `rad(a·b·c)`
-    (жёсткая граница качества — «двигатель не может убежать»), либо все три
-    производные нулевые (вырожденный случай).
+/-- **🟢 ABC SHADOW ON POLYNOMIALS (PROVED, Mason–Stothers).**
+    Over a field `k`, for NON-zero pairwise coprime `a, b, c : k[X]` with `a + b + c = 0`:
+    either the degree of EACH of `a, b, c` is strictly less than the degree of `rad(a·b·c)`
+    (rigid quality boundary — "the engine cannot escape"), or all three
+    derivatives are zero (degenerate case).
 
-    Это чистая обёртка над РЕАЛЬНОЙ `Polynomial.abc` из mathlib
-    (`Mathlib/NumberTheory/FLT/MasonStothers.lean`): доказательство —
-    `Polynomial.abc …`, мы лишь даём ему «двигательное» имя. Радикал —
-    `Polynomial.radical = UniqueFactorizationMonoid.radical` на `k[X]`. -/
+    This is a clean wrapper over the REAL `Polynomial.abc` from mathlib
+    (`Mathlib/NumberTheory/FLT/MasonStothers.lean`): the proof is
+    `Polynomial.abc …`; we merely give it an "engine" name. The radical is
+    `Polynomial.radical = UniqueFactorizationMonoid.radical` on `k[X]`. -/
 theorem polynomial_abc_shadow
     {k : Type*} [Field k] [DecidableEq k]
     {a b c : k[X]} (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0)
@@ -82,10 +82,10 @@ theorem polynomial_abc_shadow
       (derivative a = 0 ∧ derivative b = 0 ∧ derivative c = 0) :=
   Polynomial.abc ha hb hc hab hsum
 
-/-- **🟢 «Нет бесконечного побега» (двигательное прочтение).** В НЕвырожденном
-    случае (хотя бы одна производная ненулевая) полиномиальный abc заставляет
-    степень каждого слагаемого лежать СТРОГО НИЖЕ степени радикала произведения:
-    жёсткая конечная граница, встроенная в алгебру. Тоже цитата `Polynomial.abc`. -/
+/-- **🟢 "No infinite escape" (engine reading).** In the NON-degenerate
+    case (at least one derivative non-zero), polynomial abc forces
+    the degree of each summand to lie STRICTLY BELOW the degree of the radical of the product:
+    a rigid finite boundary built into the algebra. Also a citation of `Polynomial.abc`. -/
 theorem polynomial_abc_no_escape
     {k : Type*} [Field k] [DecidableEq k]
     {a b c : k[X]} (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0)
@@ -98,42 +98,42 @@ theorem polynomial_abc_no_escape
 
 /-!
 ################################################################################
-  🟢 ЗЕЛЁНЫЕ ЦЕЛОЧИСЛЕННЫЕ ОБЪЕКТЫ — настоящий радикал, не заглушка
+  🟢 GREEN INTEGER OBJECTS — real radical, not a stub
 ################################################################################
 -/
 
-/-- Радикал натурального числа как настоящий объект mathlib
-    (`UniqueFactorizationMonoid.radical`, совпадает с `Nat.radical`). -/
+/-- The radical of a natural number as a genuine mathlib object
+    (`UniqueFactorizationMonoid.radical`, coincides with `Nat.radical`). -/
 noncomputable def natRad (n : ℕ) : ℕ := UniqueFactorizationMonoid.radical n
 
-/-- **🟢 (ДОКАЗАНО):** радикал делит своё число — `natRad n ∣ n`. Цитата
-    `UniqueFactorizationMonoid.radical_dvd_self`; радикал реален. -/
+/-- **🟢 (PROVED):** the radical divides its number — `natRad n ∣ n`. Citation of
+    `UniqueFactorizationMonoid.radical_dvd_self`; the radical is real. -/
 theorem natRad_dvd_self (n : ℕ) : natRad n ∣ n :=
   UniqueFactorizationMonoid.radical_dvd_self
 
-/-- **🟢 (ДОКАЗАНО):** явная формула радикала — произведение простых делителей.
-    Цитата `Nat.radical_eq_prod_primeFactors`. -/
+/-- **🟢 (PROVED):** explicit formula for the radical — the product of prime divisors.
+    Citation of `Nat.radical_eq_prod_primeFactors`. -/
 theorem natRad_eq_prod_primeFactors (n : ℕ) :
     natRad n = ∏ p ∈ n.primeFactors, p :=
   Nat.radical_eq_prod_primeFactors
 
-/-- **🟢 (ДОКАЗАНО):** положительность радикала — `0 < natRad n`. Цитата
+/-- **🟢 (PROVED):** positivity of the radical — `0 < natRad n`. Citation of
     `Nat.radical_pos`. -/
 theorem natRad_pos (n : ℕ) : 0 < natRad n :=
   Nat.radical_pos n
 
-/-- **🟢 (ДОКАЗАНО):** для `n ≠ 0` радикал не превосходит само число — `natRad n ≤ n`.
-    Цитата `Nat.radical_le_self_iff`. -/
+/-- **🟢 (PROVED):** for `n ≠ 0` the radical does not exceed the number itself — `natRad n ≤ n`.
+    Citation of `Nat.radical_le_self_iff`. -/
 theorem natRad_le_self {n : ℕ} (hn : n ≠ 0) : natRad n ≤ n :=
   Nat.radical_le_self_iff.mpr hn
 
-/-- **🟢 (ДОКАЗАНО):** целочисленный радикал тоже реален — `0 < Int.radical z`.
-    Цитата `Int.radical_pos`; ссылка на `Int.radical`. -/
+/-- **🟢 (PROVED):** the integer radical is also real — `0 < Int.radical z`.
+    Citation of `Int.radical_pos`; reference to `Int.radical`. -/
 theorem intRad_pos (z : ℤ) : 0 < UniqueFactorizationMonoid.radical z :=
   Int.radical_pos z
 
-/-- **🟢 (ДОКАЗАНО):** согласованность целого и натурального радикалов —
-    `radical (n : ℤ) = radical n`. Цитата `Int.radical_natCast`. -/
+/-- **🟢 (PROVED):** consistency of the integer and natural radicals —
+    `radical (n : ℤ) = radical n`. Citation of `Int.radical_natCast`. -/
 theorem intRad_natCast (n : ℕ) :
     UniqueFactorizationMonoid.radical (n : ℤ)
       = ((UniqueFactorizationMonoid.radical n : ℕ) : ℤ) :=
@@ -141,54 +141,54 @@ theorem intRad_natCast (n : ℕ) :
 
 /-!
 ################################################################################
-  🔴 ЧЕСТНЫЙ ШЛЮЗ — ЦЕЛОЧИСЛЕННЫЙ abc (именованный Prop, НЕ доказан)
+  🔴 HONEST GATE — INTEGER abc (named Prop, NOT proved)
 ################################################################################
 -/
 
-/-- 🔴 **Гипотеза ABC (целые числа): ОТКРЫТА.** Для взаимно простых `a + b = c`
-    при любом `ε > 0` число `c` ограничено `K · rad(a·b·c)^(1+ε)` с константой
-    `K = K(ε)`. Радикал — РЕАЛЬНЫЙ `UniqueFactorizationMonoid.radical` на ℕ.
+/-- 🔴 **ABC Conjecture (integers): OPEN.** For coprime `a + b = c`,
+    for any `ε > 0` the number `c` is bounded by `K · rad(a·b·c)^(1+ε)` with constant
+    `K = K(ε)`. The radical is the REAL `UniqueFactorizationMonoid.radical` on ℕ.
 
-    ЧЕСТНО: это НЕ доказано. Заявление Мочидзуки (IUT) НЕ принято сообществом;
-    премии не присуждены; общего доказательства нет. Полиномиальный аналог
-    (Мейсон–Стотерс) доказан и процитирован выше как зелёный якорь — но
-    целочисленный случай сюда НЕ переносится. Это `def : Prop`, мы его НЕ
-    доказываем и НЕ используем как факт. -/
+    HONESTLY: this is NOT proved. Mochizuki's claim (IUT) has NOT been accepted by the community;
+    no prizes have been awarded; there is no general proof. The polynomial analogue
+    (Mason–Stothers) is proved and cited above as the green anchor — but the
+    integer case does NOT transfer here. This is a `def : Prop`; we do NOT
+    prove it and do NOT use it as a fact. -/
 def AbcConjecture : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ K : ℝ, 0 < K ∧ ∀ a b c : ℕ, 0 < a → 0 < b → a + b = c →
     Nat.Coprime a b →
       (c : ℝ) ≤ K * ((UniqueFactorizationMonoid.radical (a * b * c) : ℕ) : ℝ) ^ (1 + ε)
 
-/-- **🟢 ЧЕСТНОСТЬ (охват):** мы НЕ утверждаем `AbcConjecture` как теорему и НЕ
-    выводим его из полиномиального abc. Полиномиальная граница `polynomial_abc_shadow`
-    ДОКАЗАНА; целочисленный `AbcConjecture` остаётся ОТКРЫТЫМ. Маркер того, что
-    импликация «полиномиальный abc ⟹ целочисленный abc» здесь НЕ заявлена. -/
+/-- **🟢 HONESTY (scope):** we do NOT claim `AbcConjecture` as a theorem and do NOT
+    derive it from polynomial abc. The polynomial boundary `polynomial_abc_shadow`
+    is PROVED; integer `AbcConjecture` remains OPEN. A marker that the
+    implication "polynomial abc ⟹ integer abc" is NOT claimed here. -/
 abbrev NoPolynomialToIntegerAbcClaimed : Prop := True
 
 theorem noPolynomialToIntegerAbcClaimed : NoPolynomialToIntegerAbcClaimed := trivial
 
 /-!
 ################################################################################
-  ИТОГ (LOUD HONEST)
+  SUMMARY (LOUD HONEST)
 ################################################################################
 
-  🟢 РЕАЛЬНЫЙ ЯКОРЬ (цитируется, НЕ пере-выводится):
-     · `Polynomial.abc` (Мейсон–Стотерс, `Mathlib/NumberTheory/FLT/MasonStothers.lean`)
-       — обёрнута как `polynomial_abc_shadow` / `polynomial_abc_no_escape`;
+  🟢 REAL ANCHOR (cited, NOT re-derived):
+     · `Polynomial.abc` (Mason–Stothers, `Mathlib/NumberTheory/FLT/MasonStothers.lean`)
+       — wrapped as `polynomial_abc_shadow` / `polynomial_abc_no_escape`;
      · `UniqueFactorizationMonoid.radical` / `Nat.radical` / `Int.radical`
        (`Mathlib/RingTheory/Radical/…`) — `natRad*`, `intRad*`.
 
-  🟢 ГЕНУИННО НОВОЕ (в этом модуле, тонкий слой):
-     · «двигательное» прочтение доказанной полиномиальной границы (нет бесконечного
-       побега качества = конечность встроена в алгебру);
-     · `natRad` и его маленькие зелёные факты (делимость, формула, положительность);
-     · честный именованный шлюз `AbcConjecture` над НАСТОЯЩИМ радикалом.
+  🟢 GENUINELY NEW (in this module, a thin layer):
+     · the "engine" reading of the proved polynomial boundary (no infinite
+       quality escape = finiteness built into the algebra);
+     · `natRad` and its small green facts (divisibility, formula, positivity);
+     · the honest named gate `AbcConjecture` over the REAL radical.
 
-  🔴 ОТКРЫТО (НЕ доказано, НЕ формализовано):
-     · целочисленный abc (`AbcConjecture`). IUT-Мочидзуки НЕ принято; премии не
-       присуждены. Это `def : Prop`, а не теорема.
+  🔴 OPEN (NOT proved, NOT formalised):
+     · integer abc (`AbcConjecture`). Mochizuki's IUT has NOT been accepted; no prizes
+       awarded. This is a `def : Prop`, not a theorem.
 
-  Никакого `sorry`/`admit`/`native_decide`/новой аксиомы. Такса 47 неизменна.
+  No `sorry`/`admit`/`native_decide`/new axiom. The repository's toll (47) is unchanged.
 -/
 
 #print axioms polynomial_abc_shadow

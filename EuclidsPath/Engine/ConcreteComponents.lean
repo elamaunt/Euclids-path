@@ -2,30 +2,33 @@
   Concrete components — discharge REAL inputs from already-proven arithmetic, and pin the
   irreducible wall to ONE counting statement.
 
-  МОТИВАЦИЯ. Последний аудит (`AtomicSNOL`) отметил: `hDet` (компонентный детерминизм) — «старая стена,
-  свёрнутая в равномерный квантор», а её компоненты «заявлены, но не доказаны». Здесь мы ЧЕСТНО
-  доказываем те компоненты, что ВЫВОДЯТСЯ из уже проверенной арифметики (`SeparatingScale`,
-  `Residuals`), и явно локализуем единственный НЕсводимый вход — counting `bad.card < carrier.card`
-  в `A²`-окне (то же, что `SNOL.SNOLInput`). Это НЕ закрытие: настоящая стена — плотность clean-центров
-  ниже `A²`, а она за красной линией. Но два входа переведены из гипотез в теоремы.
+  MOTIVATION. The last audit (`AtomicSNOL`) noted: `hDet` (component determinism) is "an old wall
+  folded into a uniform quantifier", and its components are "claimed but not proven". Here we HONESTLY
+  prove those components that FOLLOW from already-verified arithmetic (`SeparatingScale`,
+  `Residuals`), and explicitly localise the single NON-reducible input — the counting statement
+  `bad.card < carrier.card` in the `A²`-window (same as `SNOL.SNOLInput`). This is NOT a closure:
+  the real wall is the density of clean centers below `A²`, and that lies beyond the red line.
+  But two inputs have been promoted from hypotheses to theorems.
 
-  ДОКАЗАНО здесь РЕАЛЬНО (стандартные аксиомы, без sorry) — два genuine discharge + обёртка:
-    * `active_component_determinism` — active-ребро детерминировано меткой (residue mod P_A). Выводится
-      из `SeparatingScale.eq_of_modEq_of_lt` + `legal_lift_lt_primorial`. Это НАСТОЯЩИЙ перевод одной из
-      «четырёх exact-компонент» из гипотезы в теорему (как раньше König), а не переклейка ярлыка.
-    * `oldPeel_component_determinism` — old-peel-ребро (`U = p·V`, `p` из метки) детерминировано.
-    * `twin_center_of_clean_small` — clean-центр с малыми сторонами (`< A²`) есть twin (обёртка
-      `sink_is_twin`).
+  PROVEN HERE FOR REAL (standard axioms, no sorry) — two genuine discharges + a wrapper:
+    * `active_component_determinism` — an active edge is determined by its label (residue mod P_A).
+      Derived from `SeparatingScale.eq_of_modEq_of_lt` + `legal_lift_lt_primorial`. This is a REAL
+      promotion of one of the "four exact components" from hypothesis to theorem (like König before),
+      not a label swap.
+    * `oldPeel_component_determinism` — an old-peel edge (`U = p·V`, `p` from the label) is determined.
+    * `twin_center_of_clean_small` — a clean center with small sides (`< A²`) is a twin (wrapper
+      for `sink_is_twin`).
 
-  ЧЕСТНАЯ ГРАНИЦА (машинно-проверена в §4): финальная «редукция» к `SmallCleanSupply` — ЦИРКУЛЯРНА.
-  `smallCleanSupply_iff_goal` ДОКАЗЫВАЕТ `SmallCleanSupply ⟺ (∀N ∃ twin m>N)`: twin-центр `m≥2` сам
-  является малым clean-центром при `A=6m−2`. То есть `SmallCleanSupply` — это ЦЕЛЬ, переписанная в
-  `A²`-оконных терминах, а НЕ вход-редукция. Я это признаю прямо, а не выдаю за продвижение.
+  HONEST BOUNDARY (machine-verified in §4): the final "reduction" to `SmallCleanSupply` is CIRCULAR.
+  `smallCleanSupply_iff_goal` PROVES `SmallCleanSupply ⟺ (∀N ∃ twin m>N)`: a twin center `m≥2` is
+  itself a small clean center at `A=6m−2`. That is, `SmallCleanSupply` is the GOAL rewritten in
+  `A²`-window terms, and NOT an input reduction. I state this directly, rather than presenting it as progress.
 
-  ИТОГ (честно). РЕАЛЬНО продвинуто: active/old-peel компоненты детерминизма теперь ДОКАЗАНЫ из
-  separating scale (сузили `hDet`). НЕ продвинуто: настоящая стена — плотность малых clean-центров ниже
-  `A²` (эквивалент counting-условия `SNOL.SNOLInput`), она за красной линией (распределение простых) и
-  здесь НЕ сдвинута; `SmallCleanSupply` эквивалентна цели. `Step00` остаётся `sorry`.
+  SUMMARY (honestly). GENUINELY advanced: the active/old-peel components of determinism are now
+  PROVEN from separating scale (narrowing `hDet`). NOT advanced: the real wall — the density of small
+  clean centers below `A²` (equivalent to the counting condition `SNOL.SNOLInput`) — lies beyond the
+  red line (distribution of primes) and is NOT moved here; `SmallCleanSupply` is equivalent to the goal.
+  `Step00` remains `sorry`.
 -/
 import Mathlib
 import EuclidsPath.Engine.SeparatingScale
@@ -39,17 +42,19 @@ namespace EuclidsPath.ConcreteComponents
 
 open EuclidsPath.SeparatingScale EuclidsPath.Residuals
 
-/-! ### 1. Active-компонента — ДОКАЗАНА из separating scale (реальный discharge)
+/-! ### 1. Active component — PROVEN from separating scale (real discharge)
 
-Active-ребро `U → V` над центром: `U = a · V`, где `a > 0` — legal factor (делит carrier-side
-`N ≤ 6X_A+1`). Метка ребра — residue `a mod P_A`. Утверждение детерминизма: два active-предшественника
-одного `V` с равной меткой равны. Это выводится ЦЕЛИКОМ из уже доказанной separating-scale арифметики. -/
+An active edge `U → V` over a center: `U = a · V`, where `a > 0` is a legal factor (divides the
+carrier-side `N ≤ 6X_A+1`). The edge label is the residue `a mod P_A`. The determinism claim: two
+active predecessors of the same `V` with equal labels are equal. This follows ENTIRELY from the
+already-proven separating-scale arithmetic. -/
 
 /--
-  **`active_component_determinism` — ДОКАЗАНА.** Два legal active-фактора `a₁, a₂` над общим `V` с
-  равной меткой (`a₁ ≡ a₂ (mod P_A)`) при separating scale дают равные состояния `a₁·V = a₂·V`.
-  Вывод: `legal_lift_lt_primorial` даёт `aᵢ < P_A`; `eq_of_modEq_of_lt` даёт `a₁ = a₂`. Это РЕАЛЬНЫЙ
-  discharge active-компоненты `hDet`, а не переименование: всё опирается на проверенные леммы. -/
+  **`active_component_determinism` — PROVEN.** Two legal active factors `a₁, a₂` over a shared `V`
+  with equal label (`a₁ ≡ a₂ (mod P_A)`) under separating scale yield equal states `a₁·V = a₂·V`.
+  Derivation: `legal_lift_lt_primorial` gives `aᵢ < P_A`; `eq_of_modEq_of_lt` gives `a₁ = a₂`.
+  This is a REAL discharge of the active component of `hDet`, not a renaming: everything rests on
+  verified lemmas. -/
 theorem active_component_determinism {X_A P_A : ℕ} (hsep : 6 * X_A + 1 < P_A)
     {a₁ a₂ V N₁ N₂ : ℕ}
     (hpos₁ : 0 < a₁) (hpos₂ : 0 < a₂)
@@ -62,20 +67,21 @@ theorem active_component_determinism {X_A P_A : ℕ} (hsep : 6 * X_A + 1 < P_A)
   rw [eq_of_modEq_of_lt h1 h2 hlabel]
 
 /--
-  **`oldPeel_component_determinism` — ДОКАЗАНА (тривиально, но честно).** Old-peel-ребро над `V`
-  имеет вид `U = p · V`, где простое `p` ПОЛНОСТЬЮ определяется меткой (метка old-peel-ребра хранит
-  `p`). Значит равная метка ⟹ равное `p` ⟹ равное `U`. Здесь метка = сам `p` (`p₁ = p₂` как гипотеза
-  равенства меток), и заключение — прямое переписывание. -/
+  **`oldPeel_component_determinism` — PROVEN (trivially, but honestly).** An old-peel edge over `V`
+  has the form `U = p · V`, where the prime `p` is FULLY determined by the label (the old-peel edge
+  label stores `p`). Hence equal label ⟹ equal `p` ⟹ equal `U`. Here the label is `p` itself
+  (`p₁ = p₂` as the label-equality hypothesis), and the conclusion is a direct rewrite. -/
 theorem oldPeel_component_determinism {p₁ p₂ V : ℕ} (hlabel : p₁ = p₂) :
     p₁ * V = p₂ * V := by rw [hlabel]
 
-/-! ### 2. Sink ⇒ twin и clean-центр выше N — обёртки проверенного
+/-! ### 2. Sink ⇒ twin and clean center above N — wrappers for the proven
 
-`sink_is_twin` уже доказано: clean-центр с обеими сторонами `< A²` есть twin. `carrier_nonempty_above`
-даёт clean-центр выше любого `N`. Проблема (Step00Close): centre из `carrier_nonempty_above` слишком
-большой (`> A²`), так что `sink_is_twin` неприменим. Формализуем это ТОЧНО. -/
+`sink_is_twin` is already proven: a clean center with both sides `< A²` is a twin.
+`carrier_nonempty_above` gives a clean center above any `N`. The problem (Step00Close): the center
+from `carrier_nonempty_above` is too large (`> A²`), so `sink_is_twin` does not apply. We formalise
+this PRECISELY. -/
 
-/-- Обёртка `sink_is_twin`: clean-центр `m ≥ 1` с обеими сторонами `< A²` — twin. -/
+/-- Wrapper for `sink_is_twin`: a clean center `m ≥ 1` with both sides `< A²` is a twin. -/
 theorem twin_center_of_clean_small {A m : ℕ} (hm : 1 ≤ m)
     (hlo2 : 6 * m - 1 < A * A) (hhi2 : 6 * m + 1 < A * A)
     (hcl : ∀ q : ℕ, q.Prime → q ≤ A → ¬ (q ∣ (6 * m - 1) ∨ q ∣ (6 * m + 1))) :
@@ -84,23 +90,25 @@ theorem twin_center_of_clean_small {A m : ℕ} (hm : 1 ≤ m)
   have h := sink_is_twin (A := A) (m := m) (by omega) (by omega) hlo2 hhi2 hcl
   exact h
 
-/-! ### 3. Единственный counting-вход и финальная редукция
+/-! ### 3. The single counting input and the final reduction
 
-Всё выше — арифметика и обёртки. Оставшаяся трудность — ЕДИНСТВЕННОЕ counting-утверждение: на каждом
-масштабе найти clean-центр В ОКНЕ `(N, A²/6)` (достаточно малый, чтобы `sink_is_twin` сработал). Это
-плотностное утверждение о clean-центрах ниже `A²`; оно за красной линией. Подаём явной гипотезой. -/
+Everything above is arithmetic and wrappers. The remaining difficulty is the SINGLE counting claim:
+at every scale, find a clean center IN THE WINDOW `(N, A²/6)` (small enough for `sink_is_twin` to
+fire). This is a density statement about clean centers below `A²`; it lies beyond the red line.
+We supply it as an explicit hypothesis. -/
 
-/-- `SmallCleanSupply`: для каждого `N` найдётся масштаб `A` и clean-центр `m` в окне `N < m` и
-    `6m+1 < A²`, ни один старый `q ≤ A` не делит стороны. ЕДИНСТВЕННЫЙ несводимый вход (counting/density,
-    красная линия). Эквивалент counting-условия `SNOL.SNOLInput`. -/
+/-- `SmallCleanSupply`: for every `N` there exists a scale `A` and a clean center `m` in the window
+    `N < m` and `6m+1 < A²`, with no old prime `q ≤ A` dividing either side. The SINGLE
+    non-reducible input (counting/density, red line). Equivalent to the counting condition
+    `SNOL.SNOLInput`. -/
 def SmallCleanSupply : Prop :=
   ∀ N : ℕ, ∃ A m : ℕ, 1 ≤ m ∧ N < m ∧ 6 * m + 1 < A * A ∧ 6 * m - 1 < A * A ∧
     (∀ q : ℕ, q.Prime → q ≤ A → ¬ (q ∣ (6 * m - 1) ∨ q ∣ (6 * m + 1)))
 
 /--
-  **`twinCenter_unbounded_of_smallCleanSupply` — ДОКАЗАНА при `SmallCleanSupply`.** Если counting-вход
-  выполнен (для каждого `N` есть достаточно малый clean-центр выше `N`), то twin-центров неограниченно
-  много: каждый такой clean-центр в окне `< A²` — twin (`twin_center_of_clean_small`). -/
+  **`twinCenter_unbounded_of_smallCleanSupply` — PROVEN given `SmallCleanSupply`.** If the counting
+  input holds (for every `N` there is a sufficiently small clean center above `N`), then twin centers
+  are unbounded: every such clean center in the window `< A²` is a twin (`twin_center_of_clean_small`). -/
 theorem twinCenter_unbounded_of_smallCleanSupply (H : SmallCleanSupply) :
     ∀ N : ℕ, ∃ m, N < m ∧ IsTwinCenter m := by
   intro N
@@ -108,32 +116,33 @@ theorem twinCenter_unbounded_of_smallCleanSupply (H : SmallCleanSupply) :
   exact ⟨m, hN, twin_center_of_clean_small hm hlo hhi hcl⟩
 
 /--
-  **`twin_prime_conjecture_of_smallCleanSupply` — ДОКАЗАНА при `SmallCleanSupply`.** Финальная
-  редукция: counting-вход ⟹ `TwinLowers.Infinite` (через уже доказанный
-  `NonCover.infinite_of_unbounded_centers`). Единственный несведённый вход — `SmallCleanSupply`. -/
+  **`twin_prime_conjecture_of_smallCleanSupply` — PROVEN given `SmallCleanSupply`.** Final
+  reduction: counting input ⟹ `TwinLowers.Infinite` (via the already-proven
+  `NonCover.infinite_of_unbounded_centers`). The single unresolved input is `SmallCleanSupply`. -/
 theorem twin_prime_conjecture_of_smallCleanSupply (H : SmallCleanSupply) :
     TwinLowers.Infinite :=
   EuclidsPath.infinite_of_unbounded_centers (twinCenter_unbounded_of_smallCleanSupply H)
 
 /--
-  **Контрапозиция.** `TwinLowers` конечно + `SmallCleanSupply` ⟹ `False`. -/
+  **Contrapositive.** `TwinLowers` finite + `SmallCleanSupply` ⟹ `False`. -/
 theorem finite_contradicts_smallCleanSupply (hfin : ¬ TwinLowers.Infinite) (H : SmallCleanSupply) :
     False :=
   hfin (twin_prime_conjecture_of_smallCleanSupply H)
 
-/-! ### 4. ЧЕСТНЫЙ САМО-АУДИТ: `SmallCleanSupply` ЭКВИВАЛЕНТНА цели (⟹ НЕ редукция)
+/-! ### 4. HONEST SELF-AUDIT: `SmallCleanSupply` is EQUIVALENT to the goal (⟹ NOT a reduction)
 
-Ниже — машинно-проверенное признание границы честности. `SmallCleanSupply` НЕ является настоящим
-входом-редукцией: она ЛОГИЧЕСКИ ЭКВИВАЛЕНТНА самой цели `∀N ∃ twin m>N`. Обратное направление
-(`goal → SmallCleanSupply`) доказано ниже: twin-центр `m ≥ 2` сам является малым clean-центром при
-`A = 6m−2` (стороны `6m±1` просты, значит не делятся старыми `q ≤ A < 6m−1`; окно `6m+1 < A²`
-выполнено). Поэтому `twin_prime_conjecture_of_smallCleanSupply` — это цель, переписанная в
-`A²`-оконных терминах, а НЕ продвижение. -/
+Below is a machine-verified acknowledgement of the honesty boundary. `SmallCleanSupply` is NOT a
+genuine input reduction: it is LOGICALLY EQUIVALENT to the goal `∀N ∃ twin m>N` itself. The
+reverse direction (`goal → SmallCleanSupply`) is proven below: a twin center `m ≥ 2` is itself a
+small clean center at `A = 6m−2` (the sides `6m±1` are prime, so no old `q ≤ A < 6m−1` divides
+them; the window `6m+1 < A²` holds). Therefore `twin_prime_conjecture_of_smallCleanSupply` is the
+goal rewritten in `A²`-window terms, and NOT an advance. -/
 
 /--
-  **`goal_implies_smallCleanSupply` — ДОКАЗАНА (само-аудит: обратное направление эквивалентности).**
-  `(∀N ∃ twin m>N) ⟹ SmallCleanSupply`. Значит `SmallCleanSupply ⟺ цель`, и её нельзя выдавать за
-  редукцию: это цель в другой записи. Twin `m≥2` — малый clean-центр при `A=6m−2`. -/
+  **`goal_implies_smallCleanSupply` — PROVEN (self-audit: the reverse direction of the equivalence).**
+  `(∀N ∃ twin m>N) ⟹ SmallCleanSupply`. Hence `SmallCleanSupply ⟺ goal`, and it must not be
+  presented as a reduction: it is the goal in different notation. A twin `m≥2` is a small clean
+  center at `A=6m−2`. -/
 theorem goal_implies_smallCleanSupply
     (hgoal : ∀ N : ℕ, ∃ m, N < m ∧ IsTwinCenter m) : SmallCleanSupply := by
   intro N
@@ -156,11 +165,12 @@ theorem goal_implies_smallCleanSupply
       · omega
 
 /--
-  **`smallCleanSupply_iff_goal` — ДОКАЗАНА (эквивалентность, а не редукция).** Полное признание:
-  `SmallCleanSupply ⟺ (∀N ∃ twin m>N)`. Обе стороны эквивалентны `TwinLowers.Infinite`. Вывод: этот
-  файл ДОКАЗЫВАЕТ РЕАЛЬНО две вещи (active/old-peel компоненты детерминизма из separating scale;
-  обёртку sink⇒twin), но финальная «редукция» к `SmallCleanSupply` ЦИРКУЛЯРНА и здесь помечена как
-  таковая. Настоящая стена (плотность малых clean-центров) не сдвинута. -/
+  **`smallCleanSupply_iff_goal` — PROVEN (equivalence, not a reduction).** Full acknowledgement:
+  `SmallCleanSupply ⟺ (∀N ∃ twin m>N)`. Both sides are equivalent to `TwinLowers.Infinite`.
+  Conclusion: this file GENUINELY PROVES two things (the active/old-peel components of determinism
+  from separating scale; the sink⇒twin wrapper), but the final "reduction" to `SmallCleanSupply`
+  is CIRCULAR and is marked as such here. The real wall (density of small clean centers) has not
+  been moved. -/
 theorem smallCleanSupply_iff_goal :
     SmallCleanSupply ↔ (∀ N : ℕ, ∃ m, N < m ∧ IsTwinCenter m) :=
   ⟨twinCenter_unbounded_of_smallCleanSupply, goal_implies_smallCleanSupply⟩

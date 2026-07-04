@@ -1,60 +1,60 @@
 /-
-  FermatManifestationFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль ветви Ферма
-  программы вечного двигателя: «опровергнуть Ферма-близнецов = предъявить
-  вечный двигатель», проведённое манифестационной архитектурой Римана —
-  СТРУКТУРНОЕ ЗЕРКАЛО Софи-Жермен-фронта и Мерсенн-фронта (гл. 43), с
-  данными Ферма (минус-сторона центра `c_k = (F_k + 1)/6`, квадратичная цепь).
+  FermatManifestationFront — GREEN (axiom-free) module of the Fermat branch
+  of the perpetual engine programme: "to refute Fermat twins = to exhibit a
+  perpetual engine", carried out via the Riemann manifestation architecture —
+  STRUCTURAL MIRROR of the Sophie-Germain front and Mersenne front (ch. 43),
+  with Fermat data (minus-side of the center `c_k = (F_k + 1)/6`, quadratic chain).
 
-  Отклонение здесь — НЕ объект-данные (как off-critical нуль), а Π-свидетель:
-  `FermatTwinAbsenceAbove P` — отсутствие Ферма-близнецов выше порога P
-  (зеркало `SGAbsenceAbove` и `MersenneTwinAbsenceAbove`). Закон манифестации
-  ГЕЙЧЕН этим свидетелем: негейченная форма (∀ P, Manifests P) взорвала бы
-  принятую границу — как манифестационные кандидаты ЯМ и НС (раскрыто ниже).
+  The deviation here is NOT a data object (like an off-critical zero) but a Π-witness:
+  `FermatTwinAbsenceAbove P` — absence of Fermat twins above threshold P
+  (mirror of `SGAbsenceAbove` and `MersenneTwinAbsenceAbove`). The manifestation law
+  is GATED by this witness: the ungated form (∀ P, Manifests P) would explode the
+  accepted boundary — as do the YM and NS manifestation candidates (disclosed below).
 
-  Архитектура (зеркало SophieGermainManifestationFront, M1–M9):
-    * плумбинг отрицаний: свидетель отсутствия ⟺ ¬неограниченность;
-    * КВАДРАТИЧНАЯ цепь центров (минус-сторона: `c' + 4c = 6c² + 1`,
-      раскрытие ветви `fermatCenter_chain`) строго растёт
-      (`fermatCenter_strictMono_from_one`) — И КЛЮЧЕВОЕ РАСКРЫТИЕ: цепь НЕ
-      ПИЛИТСЯ (`isEmpty_properCenterPeel_three_one`) — квадратичная цепь не
-      несёт тождества с постоянным простым делителем (в отличие от линейной
-      5c + 1 у 5-адики); уже шаг 3 → 1 пуст (стороны 17 и 19 просты, цели
-      лишь 5 и 7). Потому КОВАНОГО свидетеля в этой ветви НЕ СУЩЕСТВУЕТ — в
-      отличие от ЯМ (cookedLadder) и НС (cookedProfileCascade), в точности как
-      у Римана, Мерсенна и Софи Жермен;
-    * закон манифестации `FermatManifestationLaw` (якорь M0 := P, потребляется
-      через le_refl); Impossible-сторона — зелёная теорема
-      `no_deviationFlowSupply_at_resolved_scale` (переиспользована), НЕ декрет;
-    * ESSENCE M3: нет двигателей + принятая граница + закон ⟹ Ферма-близнецы
-      неограничены (все три гипотезы подлинно потребляются);
-    * ЧИТАЕМАЯ ФОРМА M3⁺ `fermatRefutation_carries_engine`: свидетель
-      отсутствия + закон + сведённые книги ⟹ двигатель-СВИДЕТЕЛЬ как объект.
+  Architecture (mirror of SophieGermainManifestationFront, M1–M9):
+    * negation plumbing: absence witness ⟺ ¬unboundedness;
+    * QUADRATIC chain of centers (minus-side: `c' + 4c = 6c² + 1`,
+      branch disclosure `fermatCenter_chain`) strictly grows
+      (`fermatCenter_strictMono_from_one`) — AND KEY DISCLOSURE: the chain does NOT
+      PEEL (`isEmpty_properCenterPeel_three_one`) — the quadratic chain carries no
+      identity with a constant prime divisor (unlike the linear
+      5c + 1 of the 5-adic); already step 3 → 1 is empty (sides 17 and 19 are prime,
+      goal sides are only 5 and 7). Therefore a FORGED witness in this branch DOES NOT
+      EXIST — unlike YM (cookedLadder) and NS (cookedProfileCascade), exactly as with
+      Riemann, Mersenne, and Sophie Germain;
+    * manifestation law `FermatManifestationLaw` (anchor M0 := P, consumed
+      via le_refl); Impossible-side — the green theorem
+      `no_deviationFlowSupply_at_resolved_scale` (reused), NOT a decree;
+    * ESSENCE M3: no engines + accepted boundary + law ⟹ Fermat twins are unbounded
+      (all three hypotheses are genuinely consumed);
+    * READABLE FORM M3⁺ `fermatRefutation_carries_engine`: absence witness
+      + law + balanced ledger ⟹ engine-WITNESS as an object.
 
-  ТРИЛЕММА ЧЕТВЁРТОГО ПОЛЯ ПРОЙДЕНА (V1: не опровержим — любой свидетель
-  отсутствия ≥ 65537 (M8) зелёно, а ПРЕДЪЯВИТЬ свидетеля = решить открытую
-  задачу о хвосте Ферма-близнецов; V2: не доказуем и не вакуумен зелёно — при
-  границе закон ⟺ открытая неограниченность (M7), вакуумность гейта ⟺ та же
-  открытая задача; V3: границу не взрывает — коваться нечему, isEmpty зелёно).
-  НО ПОЛЕ НЕ ДОБАВЛЕНО — НАМЕРЕННО: ⚠️ ЗНАК ЭВРИСТИКИ ИНВЕРТИРОВАН ЖЁСТЧЕ, ЧЕМ
-  У МЕРСЕННА. Простыми известны лишь F₀–F₄, а F₅–F₃₂ ДОКАЗУЕМО составны, так что
-  вход `FermatTwinCentersUnbounded` скорее всего ЛОЖЕН — тут ожидаемая
-  истинность границы отрицательна ещё резче Мерсенна (там сумма по twin-парам
-  сходится, но бесконечности прямо не запрещает; здесь известный хвост составных
-  чисел Ферма огромен). Риман был ставкой на ожидаемо-истинное; Ферма был бы
-  границей с самой отрицательной ожидаемой истинностью в программе. И ВСЁ ЖЕ
-  ПОЛЯ НЕТ — вердикт §16 и §17: манифестационные поля за пределами Римана
-  программа не умножает; закон живёт здесь ОПРЕДЕЛЕНИЕМ (как
-  RiemannManifestationLaw до §10), непротиворечивость карантина на него НЕ
-  ставится. См. §16-комментарий карантина и prose/43.
+  FOURTH-FIELD TRILEMMA PASSED (V1: not refutable — any absence witness
+  ≥ 65537 (M8) is green, and EXHIBITING a witness = solving the open
+  question about the Fermat-twin tail; V2: not provable and not vacuous green — under
+  the boundary the law ⟺ open unboundedness (M7), vacuity of gate ⟺ same
+  open question; V3: does not explode the boundary — nothing to forge, isEmpty green).
+  BUT THE FIELD IS NOT ADDED — DELIBERATELY: ⚠️ THE HEURISTIC SIGN IS INVERTED MORE
+  SHARPLY THAN FOR MERSENNE. Only F₀–F₄ are known prime, while F₅–F₃₂ are PROVABLY
+  composite, so the input `FermatTwinCentersUnbounded` is most likely FALSE — the
+  expected truth of the boundary is negative here even more sharply than Mersenne
+  (there the sum over twin pairs converges but does not directly forbid infinitude;
+  here the known tail of composite Fermat numbers is enormous). Riemann was a bet on
+  the expected-true; Fermat would be the boundary with the most negative expected
+  truth in the programme. AND YET THE FIELD IS ABSENT — verdict of §16 and §17:
+  the programme does not multiply manifestation fields beyond Riemann; the law lives
+  here AS A DEFINITION (like RiemannManifestationLaw before §10), and the quarantine
+  consistency is NOT staked on it. See the §16 quarantine comment and prose/43.
 
-  РАСКРЫТИЕ ЗАИМСТВОВАНИЯ L1: объект поставки `DeviationFlowSupply` и его
-  свидетель содержательности (римановская L1) ВЗЯТЫ у римановского фронта и
-  здесь не передоказываются; Impossible-сторона на разрешённых масштабах —
-  зелёная L2, никогда не декрет.
+  BORROWING DISCLOSURE L1: the supply object `DeviationFlowSupply` and its
+  non-triviality witness (Riemann L1) ARE TAKEN from the Riemann front and
+  are not reproved here; the Impossible-side on resolved scales is
+  green L2, never a decree.
 
-  ЗАПРЕТ ВАКУУМНОСТИ №3: никаких свободных Prop-полей, свободных гейтов и
-  переименованных выводов — каждая гипотеза именована арифметически.
-  Модуль карантин НЕ импортирует; axiom и sorry нет.
+  VACUITY BAN №3: no free Prop-fields, free gates, or renamed conclusions —
+  every hypothesis is arithmetically named.
+  The module does NOT import quarantine; no axiom and no sorry.
 -/
 import Mathlib
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -68,18 +68,18 @@ namespace ConcreteStep00Graph
 namespace GeneratedFlowFormulation
 
 /-#############################################################################
-  §1. Свидетель отклонения: отсутствие Ферма-близнецов выше порога
+  §1. Deviation witness: absence of Fermat twins above threshold
 #############################################################################-/
 
-/-- **Отсутствие Ферма-близнецов выше `P`** (Π-свидетель, зеркало
-    `SGAbsenceAbove` и `MersenneTwinAbsenceAbove`): каждое число Ферма `F_k`
-    (при `k ≥ 1`), у которого `F_k` и `F_k + 2` оба просты, сидит по младшему
-    члену `F_k` не выше `P`. -/
+/-- **Absence of Fermat twins above `P`** (Π-witness, mirror of
+    `SGAbsenceAbove` and `MersenneTwinAbsenceAbove`): every Fermat number `F_k`
+    (for `k ≥ 1`) such that `F_k` and `F_k + 2` are both prime sits, by its
+    lesser member `F_k`, no higher than `P`. -/
 def FermatTwinAbsenceAbove (P : ℕ) : Prop :=
   ∀ k : ℕ, 1 ≤ k → (Nat.fermatNumber k).Prime →
     (Nat.fermatNumber k + 2).Prime → Nat.fermatNumber k ≤ P
 
-/-- Плумбинг: из ограниченности извлекается свидетель отсутствия. -/
+/-- Plumbing: an absence witness is extracted from boundedness. -/
 theorem exists_fermatAbsence_of_not_unbounded
     (h : ¬ EuclidsPath.FermatBranch.FermatTwinCentersUnbounded) :
     ∃ P : ℕ, FermatTwinAbsenceAbove P := by
@@ -90,7 +90,7 @@ theorem exists_fermatAbsence_of_not_unbounded
     by_contra hgt
     exact hP k h1 (by omega) h2 h3⟩
 
-/-- Плумбинг: неограниченность ⟺ свидетелей отсутствия нет. -/
+/-- Plumbing: unboundedness ⟺ no absence witnesses. -/
 theorem fermatTwinCentersUnbounded_iff_no_absence :
     EuclidsPath.FermatBranch.FermatTwinCentersUnbounded ↔
       ∀ P : ℕ, ¬ FermatTwinAbsenceAbove P := by
@@ -104,10 +104,10 @@ theorem fermatTwinCentersUnbounded_iff_no_absence :
     obtain ⟨P, hAbs⟩ := exists_fermatAbsence_of_not_unbounded h
     exact hNo P hAbs
 
-/-- **M8 (локализация домена свидетеля, зеркало SG8):** всякая граница
-    отсутствия ≥ 65537 — пара `(F₄, F₄ + 2) = (65537, 65539)` при `k = 4`
-    зелёно существует (`fermat_twin_instances` ветви — самая сильная
-    конкретная локализация близнецов в программе). -/
+/-- **M8 (witness-domain localisation, mirror of SG8):** every absence bound
+    is ≥ 65537 — the pair `(F₄, F₄ + 2) = (65537, 65539)` at `k = 4`
+    exists greenly (`fermat_twin_instances` of the branch — the strongest
+    concrete twin localisation in the programme). -/
 theorem fermatAbsenceBound_ge_65537 {P : ℕ}
     (hAbs : FermatTwinAbsenceAbove P) : 65537 ≤ P := by
   have hF4 : Nat.fermatNumber 4 = 65537 := by norm_num [Nat.fermatNumber]
@@ -117,31 +117,31 @@ theorem fermatAbsenceBound_ge_65537 {P : ℕ}
   omega
 
 /-#############################################################################
-  §2. Квадратичная цепь центров: строго растёт — и НЕ ПИЛИТСЯ (нет ковки)
+  §2. Quadratic chain of centers: strictly grows — and does NOT PEEL (no forging)
 #############################################################################-/
 
-/-- Ремарка-стыковка с раскрытием ветви: на минус-стороне цепь центров Ферма
-    КВАДРАТИЧНА (`fermatCenter_chain`: `c' + 4c = 6c² + 1`) и строго уходит
-    вверх на каждом шаге при `k ≥ 1` (`fermatCenter_strictMono_from_one`) — как
-    удвоение `m → 2m` у Софи Жермен и база-4 `m → 4m+1` у Мерсенна. Рост есть,
-    но именно он делает раскрытие ниже содержательным: расти цепь умеет,
-    ПИЛИТЬ — нет. -/
+/-- Bridging remark to the branch disclosure: on the minus-side the Fermat center
+    chain is QUADRATIC (`fermatCenter_chain`: `c' + 4c = 6c² + 1`) and strictly
+    climbs at every step for `k ≥ 1` (`fermatCenter_strictMono_from_one`) — like
+    the doubling `m → 2m` of Sophie Germain and the base-4 `m → 4m+1` of Mersenne.
+    Growth exists, but it is precisely that which makes the disclosure below
+    non-trivial: the chain can grow, but it cannot PEEL. -/
 theorem fermatCenter_lt_succ {k : ℕ} (hk : 1 ≤ k) :
     EuclidsPath.FermatBranch.fermatCenter k <
       EuclidsPath.FermatBranch.fermatCenter (k + 1) :=
   EuclidsPath.FermatBranch.fermatCenter_strictMono_from_one hk
 
-/-- **КЛЮЧЕВОЕ РАСКРЫТИЕ (контраст с 5-адикой, зеркало
-    `isEmpty_properCenterPeel_two_one` и `isEmpty_properCenterPeel_five_one`):
-    квадратичная цепь центров Ферма НЕ пилится.**
-    У 5-адической цепи `c → 5c+1` есть тождество `6(5x+1)−1 = 5(6x+1)` с
-    ПРОСТЫМ постоянным делителем 5 — потому она строит потоки при A ≤ 4.
-    У квадратичной цепи Ферма `c' + 4c = 6c² + 1` такого тождества с постоянным
-    простым делителем НЕТ (`fermatCenter_chain` раскрывает её без деления):
-    уже шаг 3 → 1 не несёт собственного пила НИ ПРИ КАКОМ масштабе — стороны
-    17 и 19 просты, стороны цели — лишь 5 и 7. Следствие: Ферма-цепь НЕ строит
-    безусловной поставки потоков — КОВАНОГО свидетеля (паттерн V3 ЯМ и НС)
-    в этой ветви не существует. -/
+/-- **KEY DISCLOSURE (contrast with the 5-adic, mirror of
+    `isEmpty_properCenterPeel_two_one` and `isEmpty_properCenterPeel_five_one`):
+    the quadratic Fermat center chain does NOT PEEL.**
+    The 5-adic chain `c → 5c+1` has the identity `6(5x+1)−1 = 5(6x+1)` with
+    PRIME constant divisor 5 — hence it builds flows for A ≤ 4.
+    The quadratic Fermat chain `c' + 4c = 6c² + 1` has no such identity with a
+    constant prime divisor (`fermatCenter_chain` discloses it without division):
+    already step 3 → 1 carries no intrinsic peel AT ANY SCALE — sides 17 and 19 are
+    prime, goal sides are only 5 and 7. Consequence: the Fermat chain does NOT build
+    an unconditional supply of flows — a FORGED witness (the YM and NS V3 pattern)
+    does not exist in this branch. -/
 theorem isEmpty_properCenterPeel_three_one (A : ℕ) :
     IsEmpty (ProperCenterPeel A 3 1) := by
   constructor
@@ -149,38 +149,38 @@ theorem isEmpty_properCenterPeel_three_one (A : ℕ) :
   cases inS <;> cases outS <;> simp only [sideValue] at hfac <;> omega
 
 /-#############################################################################
-  §3. Закон манифестации (гейченный свидетелем; поле НЕ декретировано)
+  §3. Manifestation law (gated by witness; field is NOT decreed)
 #############################################################################-/
 
-/-- Отсутствие выше `P` манифестирует арифметически: на каждом
-    леджер-масштабе не ниже `P`, всюду где проекция сводит книги, отсутствие
-    проявляется неоплатимой бесконечной поставкой потоков. Якорь `P ≤ M0`
-    потребляется ниже только через `le_refl` (паттерн Римана). Причинная
-    форма: «опровержение обязано проявиться там, где книги сведены» — НЕ
-    утверждение о самих Ферма-близнецах. -/
+/-- Absence above `P` manifests arithmetically: at every ledger scale
+    no lower than `P`, wherever the projection balances the ledger, the absence
+    manifests as an unpayable infinite supply of flows. The anchor `P ≤ M0`
+    is consumed below only via `le_refl` (Riemann pattern). Causal
+    form: "a refutation must manifest where the ledger is balanced" — NOT
+    a statement about Fermat twins themselves. -/
 def FermatAbsenceManifests (P : ℕ) : Prop :=
   ∀ (A M0 : ℕ), P ≤ M0 →
     ∀ proj : SemanticExtendedFlowLedgerProjection A M0,
       SemanticExtendedFlowLedgerCollisionResolves proj →
         DeviationFlowSupply A M0
 
-/-- **ЗАКОН МАНИФЕСТАЦИИ ФЕРМА** — гейчен свидетелем отсутствия.
-    Негейченная форма `∀ P, FermatAbsenceManifests P` при P := 0 вместе с
-    принятой границей дала бы поставку на разрешённом масштабе — противоречие
-    с зелёной L2 (точный механизм провала манифестационных кандидатов ЯМ и НС).
-    Гейт по зелёно-непредъявимому свидетелю — то, что отличает эту форму.
-    ПОЛЕ НЕ ДЕКРЕТИРОВАНО — при том, что знак эвристики ИНВЕРТИРОВАН ЖЁСТЧЕ
-    Мерсенна (F₅–F₃₂ составны; вердикт §16 и §17, см. шапку). -/
+/-- **FERMAT MANIFESTATION LAW** — gated by the absence witness.
+    The ungated form `∀ P, FermatAbsenceManifests P` at P := 0 together with
+    the accepted boundary would yield a supply at a resolved scale — contradiction
+    with green L2 (the exact failure mechanism of the YM and NS manifestation
+    candidates). Gate by a greenly-unpresentable witness is what distinguishes this form.
+    THE FIELD IS NOT DECREED — even though the heuristic sign is INVERTED MORE SHARPLY
+    than Mersenne (F₅–F₃₂ are composite; verdict of §16 and §17, see header). -/
 def FermatManifestationLaw : Prop :=
   ∀ P : ℕ, FermatTwinAbsenceAbove P → FermatAbsenceManifests P
 
 /-#############################################################################
-  §4. ESSENCE и читаемая форма: опровержение предъявляет двигатель
+  §4. ESSENCE and readable form: refutation exhibits the engine
 #############################################################################-/
 
-/-- **M3⁺ — ЧИТАЕМАЯ ФОРМА «опровержение = двигатель»:** свидетель отсутствия
-    + закон + сведённые книги на масштабе не ниже P МАНИФЕСТИРУЮТ вечный
-    двигатель — как ОБЪЕКТ, до убийства lexRank'ом. -/
+/-- **M3⁺ — READABLE FORM "refutation = engine":** absence witness
+    + law + balanced ledger at scale no lower than P MANIFEST a perpetual
+    engine — as an OBJECT, prior to killing by lexRank. -/
 theorem fermatRefutation_carries_engine
     (hLaw : FermatManifestationLaw)
     {P : ℕ} (hAbs : FermatTwinAbsenceAbove P)
@@ -195,12 +195,12 @@ theorem fermatRefutation_carries_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- **M3 — ESSENCE (зеркало SG3 и римановской L3):** двигателей нет +
-    принятая граница + закон манифестации ⟹ Ферма-близнецы неограничены.
-    Все три гипотезы потребляются ПО-НАСТОЯЩЕМУ: из конечности извлекается
-    свидетель отсутствия P; граница даёт разрешение ровно на масштабе
-    M0 := P; закон поставляет семью 𝓕 (не ex falso); из коллизии строится
-    двигатель-СВИДЕТЕЛЬ; убивает его именно hNoEngine. -/
+/-- **M3 — ESSENCE (mirror of SG3 and Riemann L3):** no engines +
+    accepted boundary + manifestation law ⟹ Fermat twins are unbounded.
+    All three hypotheses are GENUINELY consumed: from finiteness an absence
+    witness P is extracted; the boundary gives resolution exactly at scale
+    M0 := P; the law supplies family 𝓕 (not ex falso); from the collision an
+    engine-WITNESS is built; it is killed by exactly hNoEngine. -/
 theorem fermatTwinsUnbounded_of_noEngine_and_boundary_and_manifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -214,8 +214,8 @@ theorem fermatTwinsUnbounded_of_noEngine_and_boundary_and_manifestation
   exact hNoEngine ⟨A, P,
     fermatRefutation_carries_engine hLaw hAbs (le_refl P) (projOf P) hResolves⟩
 
-/-- Зелёное доведение до цели программы: та же тройка ⟹ близнецы бесконечны
-    (через ЕДИНСТВЕННОЕ честное направление ветви Ферма ⟹ близнецы,
+/-- Green path to the programme's goal: the same triple ⟹ twins are infinite
+    (via the ONLY honest direction of the Fermat branch ⟹ twins,
     `twinLowersInfinite_of_fermatTwins`). -/
 theorem twinLowersInfinite_of_noEngine_boundary_and_fermatManifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
@@ -227,22 +227,22 @@ theorem twinLowersInfinite_of_noEngine_boundary_and_fermatManifestation
       hNoEngine hBoundary hLaw)
 
 /-#############################################################################
-  §5. Аудиты честности (M5–M9)
+  §5. Honesty audits (M5–M9)
 #############################################################################-/
 
-/-- **M5 (вакуумная обратная сторона, зеркало SG5):** неограниченность ⟹
-    закон вакуумно — гейт отсутствия пуст. Несущая сторона — M3, и ей
-    нужна граница. -/
+/-- **M5 (vacuous converse, mirror of SG5):** unboundedness ⟹
+    law vacuously — the absence gate is empty. The load-bearing side is M3, and
+    it requires the boundary. -/
 theorem fermatManifestationLaw_of_unbounded
     (H : EuclidsPath.FermatBranch.FermatTwinCentersUnbounded) :
     FermatManifestationLaw := fun P hAbs =>
   ((fermatTwinCentersUnbounded_iff_no_absence.mp H) P hAbs).elim
 
-/-- **M6 (точная зелёная характеризация, зеркало SG6):** закон ⟺ «отсутствие
-    выше P заморозило бы всякий разрешающий леджер на масштабах ≥ P».
-    Обратное направление — ex falso от ¬resolves (раскрыто). Гейт-гипотеза
-    потенциально пуста — потому характеризация НЕ коллапсирует в глобальную
-    заморозку (асимметрия с негейченными формами ЯМ и НС). -/
+/-- **M6 (exact green characterisation, mirror of SG6):** law ⟺ "absence
+    above P would freeze every resolving ledger at scales ≥ P".
+    Reverse direction — ex falso from ¬resolves (disclosed). Gate hypothesis
+    is potentially empty — so the characterisation does NOT collapse into global
+    freeze (asymmetry with the ungated YM and NS forms). -/
 theorem fermatManifestationLaw_iff_no_resolution_above_absence :
     FermatManifestationLaw ↔
       ∀ P : ℕ, FermatTwinAbsenceAbove P →
@@ -256,12 +256,13 @@ theorem fermatManifestationLaw_iff_no_resolution_above_absence :
   · intro hFreeze P hAbs A M0 hle proj hres
     exact ((hFreeze P hAbs A M0 hle proj) hres).elim
 
-/-- **M7 — ГЛАВНЫЙ АУДИТ ЦЕНЫ (зеркало SG7 и M7 Мерсенна):** при границе закон
-    ⟺ неограниченность Ферма-близнецов — четвёртое поле было бы ровно
-    Ферма-гипотезной силы. БЕЗ границы «закон ⟹ неограниченность» зелёно не
-    собирается (M3 требует границу). ⚠️ ИМЕННО ЗДЕСЬ видно, почему поле
-    отложено: эвристика направлена ПРОТИВ правой части этого ⟺ ЖЁСТЧЕ, чем у
-    Мерсенна — просты лишь F₀–F₄, а F₅–F₃₂ доказуемо составны. -/
+/-- **M7 — MAIN PRICE AUDIT (mirror of SG7 and Mersenne M7):** under the boundary,
+    law ⟺ unboundedness of Fermat twins — the fourth field would have exactly
+    Fermat-conjecture strength. WITHOUT the boundary "law ⟹ unboundedness" does not
+    assemble greenly (M3 requires the boundary). ⚠️ IT IS PRECISELY HERE that one sees
+    why the field is deferred: the heuristic is directed AGAINST the right-hand side of
+    this ⟺ MORE SHARPLY than Mersenne — only F₀–F₄ are prime, while F₅–F₃₂ are
+    provably composite. -/
 theorem fermatManifestationLaw_iff_unbounded_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     FermatManifestationLaw ↔
@@ -270,7 +271,7 @@ theorem fermatManifestationLaw_iff_unbounded_of_boundary
       no_someConcreteEuclideanEngine hBoundary,
    fermatManifestationLaw_of_unbounded⟩
 
-/-- Тип-свидетель для bundling-аудита (subtype — front_pair работает с Type). -/
+/-- Witness type for the bundling audit (subtype — front_pair works with Type). -/
 abbrev FermatAbsenceWitness : Type := {P : ℕ // FermatTwinAbsenceAbove P}
 
 theorem nonempty_fermatAbsenceWitness_iff :
@@ -283,17 +284,16 @@ theorem nonempty_fermatAbsenceWitness_iff :
     obtain ⟨P, hAbs⟩ := exists_fermatAbsence_of_not_unbounded h
     exact ⟨⟨P, hAbs⟩⟩
 
-/-- Закон в Bridge-форме над типом свидетелей. -/
+/-- Law in Bridge-form over the witness type. -/
 theorem fermatManifestationLaw_iff_bridge :
     FermatManifestationLaw ↔
       EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun W : FermatAbsenceWitness => FermatAbsenceManifests W.1) :=
   ⟨fun hLaw W => hLaw W.1 W.2, fun hB P hAbs => hB ⟨P, hAbs⟩⟩
 
-/-- **M9 (bundling-аудит, инстанциация осуждающей машины):** связка
-    Bridge∧Impossible ⟺ «свидетелей отсутствия нет» — декретироваться могла
-    бы ТОЛЬКО Bridge-сторона; Impossible-сторона на разрешённых масштабах —
-    зелёная L2, никогда не декрет. -/
+/-- **M9 (bundling audit, instantiation of the convicting machine):** the bundle
+    Bridge∧Impossible ⟺ "no absence witnesses" — ONLY the Bridge-side could be
+    decreed; the Impossible-side on resolved scales is green L2, never a decree. -/
 theorem fermatManifestation_bundling_audit :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun W : FermatAbsenceWitness => FermatAbsenceManifests W.1) ∧
@@ -302,8 +302,8 @@ theorem fermatManifestation_bundling_audit :
       ¬ Nonempty FermatAbsenceWitness :=
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_no_zero _
 
--- Машинная видимость чистоты в build-логе
--- (ожидаемо [propext, Classical.choice, Quot.sound] — БЕЗ step00FirstCause):
+-- Machine-visible purity in the build log
+-- (expected [propext, Classical.choice, Quot.sound] — WITHOUT step00FirstCause):
 #print axioms fermatTwinsUnbounded_of_noEngine_and_boundary_and_manifestation
 #print axioms fermatRefutation_carries_engine
 #print axioms fermatManifestationLaw_iff_unbounded_of_boundary

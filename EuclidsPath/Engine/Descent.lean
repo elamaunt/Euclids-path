@@ -1,15 +1,16 @@
 /-
-  Descent и «перенос двойки» (boundary-law).
-  Проза: prose/18_Descent.md (после зелёного Lean).
+  Descent and the "two-carry" (boundary-law).
+  Prose: prose/18_Descent.md (after the green Lean).
 
-  Идея автора: ветвь спуска «платит переносом двойки вперёд». Конкретно: при clean-descent
-  сторона `6m−1 = a·U` теряет активный множитель `a>A`, остаётся `U = b·v` (b,v>A простые),
-  и `U = 6m'+ε`. Противоположная сторона спущенного центра равна `U − 2ε` — это и есть
-  «перенесённая двойка». Малый старый простой `p≤A` НЕ может делить `U` (его множители > A),
-  поэтому единственное препятствие (выход из clean-core, boundary-exit ⊥) — делимость
-  `p ∣ (U − 2ε)`. Невозможность бесконечного такого переноса — это EPMI (Engine/EPMI).
+  Author's idea: the descent branch "pays by carrying the two forward". Concretely: in a
+  clean-descent, the side `6m−1 = a·U` loses the active factor `a>A`, leaving `U = b·v`
+  (b,v>A primes), with `U = 6m'+ε`. The opposite side of the descended centre equals
+  `U − 2ε` — that is the "carried two". A small old prime `p≤A` CANNOT divide `U`
+  (its factors are > A), so the only obstruction (exit from the clean-core, boundary-exit ⊥)
+  is divisibility `p ∣ (U − 2ε)`. The impossibility of an infinite such carry is EPMI
+  (Engine/EPMI).
 
-  Всё элементарно (делимость + кольцо). Запрещённого (анализ/распределение/сито) нет.
+  Everything is elementary (divisibility + ring). Nothing forbidden (analysis/distribution/sieve).
 -/
 import Mathlib
 
@@ -17,12 +18,12 @@ set_option autoImplicit false
 
 namespace EuclidsPath.Engine
 
-/-- Противоположная сторона спущенного центра: `6m'−ε = U − 2ε`, если `U = 6m'+ε`. «Двойка вперёд». -/
+/-- The opposite side of the descended centre: `6m'−ε = U − 2ε`, given `U = 6m'+ε`. "Two forward". -/
 theorem two_carry_opposite {m' U ε : ℤ} (hU : U = 6 * m' + ε) :
     6 * m' - ε = U - 2 * ε := by
   linear_combination -hU
 
-/-- Малый простой `p ≤ A` не делит произведение двух простых, больших `A`. (`U = b·v`, `b,v>A`.) -/
+/-- A small prime `p ≤ A` does not divide the product of two primes larger than `A`. (`U = b·v`, `b,v>A`.) -/
 theorem no_small_divisor {A b v p : ℕ} (hb : b.Prime) (hv : v.Prime)
     (hAb : A < b) (hAv : A < v) (hp : p.Prime) (hpA : p ≤ A) : ¬ p ∣ (b * v) := by
   intro hdvd
@@ -33,9 +34,9 @@ theorem no_small_divisor {A b v p : ℕ} (hb : b.Prime) (hv : v.Prime)
     omega
 
 /--
-  **Boundary-law = перенос двойки.** Если `p` не делит сторону-произведение `U`, то любое
-  препятствие на спущенном центре — это делимость противоположной стороны `U − 2ε`
-  (= «перенесённая двойка»), а не дефект самой стороны-произведения.
+  **Boundary-law = two-carry.** If `p` does not divide the product-side `U`, then any
+  obstruction on the descended centre is divisibility of the opposite side `U − 2ε`
+  (= "the carried two"), not a defect of the product-side itself.
 -/
 theorem obstruction_on_opposite {U twoε sideProd sideOpp p : ℤ}
     (hprod : sideProd = U) (_hopp : sideOpp = U - twoε) (hpU : ¬ p ∣ U) :

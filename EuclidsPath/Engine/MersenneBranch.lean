@@ -1,23 +1,23 @@
 /-
-  MersenneBranch — честный мост Мерсенн ↔ близнецы.
+  MersenneBranch — an honest bridge Mersenne ↔ twins.
 
-  ⚠️ ГЛАВНАЯ ЧЕСТНОСТЬ: бесконечность простых Мерсенна НЕ следует из гипотезы
-  близнецов — ни тривиально, ни известным способом. Это НЕЗАВИСИМЫЕ открытые
-  проблемы: близнецы дают ∞ twin-центров, но ничего не говорят об экспоненциально
-  редких центрах Мерсенна. Импликация «близнецы ⟹ Мерсенн» здесь НЕ утверждается
-  (маркер NoTwinsToMersenneImplicationClaimed).
+  ⚠️ CORE HONESTY: the infinitude of Mersenne primes does NOT follow from the twin-prime
+  hypothesis — neither trivially nor by any known route. These are INDEPENDENT open
+  problems: twins yield ∞ twin-centers, but say nothing about the exponentially
+  rare Mersenne centers. The implication "twins ⟹ Mersenne" is NOT claimed here
+  (marker NoTwinsToMersenneImplicationClaimed).
 
-  ЧТО ДОКАЗАНО (mathlib mersenne, std аксиомы, без sorry):
-    * mersenne_eq_sixCenter_add_one — ВЛОЖЕНИЕ в язык программы: при нечётном p
-      число Мерсенна 2^p − 1 = 6·m_p + 1 — ПЛЮС-сторона центра
+  WHAT IS PROVEN (mathlib mersenne, std axioms, no sorry):
+    * mersenne_eq_sixCenter_add_one — EMBEDDING into the programme's language: for odd p
+      the Mersenne number 2^p − 1 = 6·m_p + 1 — the PLUS side of the center
       m_p = (2^(p−1) − 1)/3;
-    * isTwinCenter_mersenneCenter_iff — twin-критерий центра Мерсенна:
-      m_p — twin-центр ⟺ 2^p − 3 и 2^p − 1 оба просты;
-    * mersenne_twin_instances — конкретные Мерсенн-близнецы: p = 3 даёт (5, 7),
-      p = 5 даёт (29, 31);
-    * twinLowersInfinite_of_mersenneTwins — ЕДИНСТВЕННАЯ тривиальная импликация,
-      и она в ОБРАТНУЮ сторону: ∞ Мерсенн-близнецов ⟹ гипотеза близнецов.
-  MersennePrimesInfinite — цель-маркер, ниоткуда здесь не выводится.
+    * isTwinCenter_mersenneCenter_iff — twin-center criterion for a Mersenne center:
+      m_p is a twin-center ⟺ 2^p − 3 and 2^p − 1 are both prime;
+    * mersenne_twin_instances — concrete Mersenne twins: p = 3 gives (5, 7),
+      p = 5 gives (29, 31);
+    * twinLowersInfinite_of_mersenneTwins — THE ONLY trivial implication,
+      and it goes in the REVERSE direction: ∞ Mersenne twins ⟹ twin-prime conjecture.
+  MersennePrimesInfinite — a goal-marker, derived from nothing here.
 -/
 import Mathlib
 import EuclidsPath.Step00_Overview
@@ -28,11 +28,11 @@ namespace EuclidsPath.MersenneBranch
 
 open EuclidsPath
 
-/-- Центр Мерсенна: `m_p = (2^(p−1) − 1)/3` (для нечётного `p` деление точное). -/
+/-- Mersenne center: `m_p = (2^(p−1) − 1)/3` (for odd `p` the division is exact). -/
 def mersenneCenter (p : ℕ) : ℕ := (2 ^ (p - 1) - 1) / 3
 
-/-- **ВЛОЖЕНИЕ В ЯЗЫК ПРОГРАММЫ (доказано):** при нечётном `p` число Мерсенна —
-    ПЛЮС-сторона центра: `2^p − 1 = 6·m_p + 1`. -/
+/-- **EMBEDDING INTO THE PROGRAMME'S LANGUAGE (proven):** for odd `p` the Mersenne number is the
+    PLUS side of the center: `2^p − 1 = 6·m_p + 1`. -/
 theorem mersenne_eq_sixCenter_add_one {p : ℕ} (hp : Odd p) :
     mersenne p = 6 * mersenneCenter p + 1 := by
   obtain ⟨k, rfl⟩ := hp
@@ -58,8 +58,8 @@ theorem mersenne_eq_sixCenter_add_one {p : ℕ} (hp : Odd p) :
     _ = 6 * c + 1 := hval
     _ = 6 * mersenneCenter (2 * k + 1) + 1 := by rw [hc]
 
-/-- **TWIN-КРИТЕРИЙ ЦЕНТРА МЕРСЕННА (доказано):** центр `m_p` — twin-центр ⟺
-    `2^p − 3` и `2^p − 1` оба просты. -/
+/-- **TWIN-CENTER CRITERION FOR THE MERSENNE CENTER (proven):** center `m_p` is a twin-center ⟺
+    `2^p − 3` and `2^p − 1` are both prime. -/
 theorem isTwinCenter_mersenneCenter_iff {p : ℕ} (hp : Odd p) (h2 : 2 ≤ p) :
     IsTwinCenter (mersenneCenter p) ↔
       (2 ^ p - 3).Prime ∧ (mersenne p).Prime := by
@@ -83,7 +83,7 @@ theorem isTwinCenter_mersenneCenter_iff {p : ℕ} (hp : Odd p) (h2 : 2 ≤ p) :
     · have : 6 * mersenneCenter p + 1 = 2 ^ p - 1 := by omega
       rw [this]; exact hhi
 
-/-- Конкретные Мерсенн-близнецы: `p = 3` даёт пару `(5, 7)`, `p = 5` — `(29, 31)`. -/
+/-- Concrete Mersenne twins: `p = 3` gives the pair `(5, 7)`, `p = 5` gives `(29, 31)`. -/
 theorem mersenne_twin_instances :
     IsTwinCenter (mersenneCenter 3) ∧ IsTwinCenter (mersenneCenter 5) := by
   constructor
@@ -92,12 +92,12 @@ theorem mersenne_twin_instances :
   · rw [isTwinCenter_mersenneCenter_iff ⟨2, by norm_num⟩ (by norm_num)]
     constructor <;> norm_num [mersenne]
 
-/-- Неограниченность Мерсенн-близнецов (гипотеза-ВХОД, много сильнее близнецов). -/
+/-- Unboundedness of Mersenne twins (named input hypothesis, much stronger than twins). -/
 def MersenneTwinCentersUnbounded : Prop :=
   ∀ N : ℕ, ∃ p : ℕ, N < 2 ^ p - 3 ∧ (2 ^ p - 3).Prime ∧ (mersenne p).Prime
 
-/-- **ЧЕСТНОЕ НАПРАВЛЕНИЕ (доказано):** Мерсенн-близнецы ⟹ близнецы.
-    Это ЕДИНСТВЕННАЯ тривиальная импликация между темами — и она в ЭТУ сторону. -/
+/-- **HONEST DIRECTION (proven):** Mersenne twins ⟹ twins.
+    This is THE ONLY trivial implication between the topics — and it goes in THIS direction. -/
 theorem twinLowersInfinite_of_mersenneTwins
     (H : MersenneTwinCentersUnbounded) : TwinLowers.Infinite := by
   apply Set.infinite_of_not_bddAbove
@@ -116,14 +116,14 @@ theorem twinLowersInfinite_of_mersenneTwins
     exact h2
   exact absurd (hB hmem) (not_le.mpr hgt)
 
-/-- Цель-маркер: бесконечность простых Мерсенна. НЕ выводится здесь ниоткуда. -/
+/-- Goal-marker: infinitude of Mersenne primes. NOT derived here from anything. -/
 def MersennePrimesInfinite : Prop :=
   ∀ N : ℕ, ∃ p : ℕ, N < p ∧ p.Prime ∧ (mersenne p).Prime
 
-/-- **ЧЕСТНОСТЬ (охват):** импликация `близнецы ⟹ Мерсенн` НЕ утверждается,
-    НЕ доказана и НЕ известна математике: близнецы дают ∞ twin-центров, но
-    ничего не говорят о центрах Мерсенна (экспоненциально редких). Обратная
-    тривиальна и доказана выше. -/
+/-- **HONESTY (coverage):** the implication `twins ⟹ Mersenne` is NOT claimed,
+    NOT proven, and NOT known to mathematics: twins yield ∞ twin-centers, but
+    say nothing about Mersenne centers (exponentially rare). The converse is
+    trivial and proven above. -/
 abbrev NoTwinsToMersenneImplicationClaimed : Prop := True
 
 theorem noTwinsToMersenneImplicationClaimed :

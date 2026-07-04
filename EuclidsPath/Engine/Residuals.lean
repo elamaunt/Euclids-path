@@ -1,15 +1,15 @@
 /-
-  Step00 residuals — формализация авторских закрывающих лемм.
-  Источник: step00_residuals_formal_proofs_ru_2026-06-30-1.md. Проза: prose/22_Residuals.md.
+  Step00 residuals — formalisation of the author's closing lemmas.
+  Source: step00_residuals_formal_proofs_ru_2026-06-30-1.md. Prose: prose/22_Residuals.md.
 
-  Закрывает остатки Lean-аудита БЕЗ распределения/плотности:
-    ② start  — конструктивный clean-центр выше любого N (primorial), плотность НЕ нужна;
-    ③ sink⇒twin — clean non-twin ⟹ active edge ⟹ sink = twin (чётность элементарна);
-    sink above N — при A>6N+1 twin-центр автоматически выше N;
-    ① height — active descent строго уменьшает высоту.
+  Closes the remaining items of the Lean audit WITHOUT distribution/density:
+    ② start  — constructive clean center above any N (primorial), density NOT needed;
+    ③ sink⇒twin — clean non-twin ⟹ active edge ⟹ sink = twin (parity is elementary);
+    sink above N — when A>6N+1 the twin center is automatically above N;
+    ① height — active descent strictly decreases height.
 
-  Авторская идея ② (§2): m=(N+1)·P_A, где P_A — произведение простых 5≤p≤A, делает обе стороны
-  6m±1 ≡ ±1 (mod q) для всех q≤A ⟹ Clean. Existential Step00 не требует carrier-density.
+  Author's idea ② (§2): m=(N+1)·P_A, where P_A is the product of primes 5≤p≤A, makes both sides
+  6m±1 ≡ ±1 (mod q) for all q≤A ⟹ Clean. Existential Step00 does not require carrier-density.
 -/
 import Mathlib
 
@@ -17,16 +17,16 @@ set_option autoImplicit false
 
 namespace EuclidsPath.Residuals
 
-/-- `CleanZ A m`: ни один простой `q ≤ A` не делит ни одну сторону `6m−1`, `6m+1` (в ℤ). -/
+/-- `CleanZ A m`: no prime `q ≤ A` divides either side `6m−1`, `6m+1` (in ℤ). -/
 def CleanZ (A : ℕ) (m : ℤ) : Prop :=
   ∀ q : ℕ, q.Prime → q ≤ A → ¬ ((q : ℤ) ∣ (6 * m - 1) ∨ (q : ℤ) ∣ (6 * m + 1))
 
-/-- `TwinCenterZ m`: обе стороны `6m−1`, `6m+1` простые (в ℕ, для `m ≥ 1`). -/
+/-- `TwinCenterZ m`: both sides `6m−1`, `6m+1` are prime (in ℕ, for `m ≥ 1`). -/
 def TwinCenterZ (m : ℕ) : Prop := (6 * m - 1).Prime ∧ (6 * m + 1).Prime
 
-/-! ### Остаток ② — конструктивный clean-старт выше N (БЕЗ плотности) -/
+/-! ### Residual ② — constructive clean start above N (WITHOUT density) -/
 
-/-- Старый примориал `P_A = ∏_{5≤p≤A, p prime} p` (как ℕ). -/
+/-- Old primorial `P_A = ∏_{5≤p≤A, p prime} p` (as ℕ). -/
 def oldPrimorial (A : ℕ) : ℕ :=
   (Finset.range (A + 1)).prod (fun p => if p.Prime ∧ 5 ≤ p then p else 1)
 
@@ -37,28 +37,28 @@ theorem oldPrimorial_pos (A : ℕ) : 0 < oldPrimorial A := by
   · simp [h]; exact h.1.pos
   · simp [h]
 
-/-- Каждый простой `5 ≤ q ≤ A` делит `oldPrimorial A` (он — один из множителей). -/
+/-- Every prime `5 ≤ q ≤ A` divides `oldPrimorial A` (it is one of the factors). -/
 theorem prime_dvd_oldPrimorial {A q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q) (hqA : q ≤ A) :
     q ∣ oldPrimorial A := by
   unfold oldPrimorial
   have hmem : q ∈ Finset.range (A + 1) := Finset.mem_range.mpr (by omega)
   have hd := Finset.dvd_prod_of_mem (fun p => if p.Prime ∧ 5 ≤ p then p else 1) hmem
-  -- фактор при q равен q (т.к. q.Prime ∧ 5 ≤ q)
+  -- the factor at q equals q (since q.Prime ∧ 5 ≤ q)
   simpa [hq, hq5] using hd
 
 /--
-  **`primorial_multiple_clean` (Лемма 2.2.1).** Для `A`, `k ≥ 1`: центр `m = k·P_A` — clean
-  (ни один простой `q ≤ A` не делит `6m±1`). Доказательство: для `q≥5` `q∣m` ⟹ `6m±1≡±1`;
-  для `q=2,3` стороны нечётны и `≢0 mod 3`. -/
+  **`primorial_multiple_clean` (Lemma 2.2.1).** For `A`, `k ≥ 1`: center `m = k·P_A` is clean
+  (no prime `q ≤ A` divides `6m±1`). Proof: for `q≥5` `q∣m` ⟹ `6m±1≡±1`;
+  for `q=2,3` the sides are odd and `≢0 mod 3`. -/
 theorem primorial_multiple_clean (A k : ℕ) (_hk : 1 ≤ k) :
     CleanZ A ((k * oldPrimorial A : ℕ) : ℤ) := by
   intro q hq hqA
   rcases lt_or_ge q 5 with h5 | h5
-  · -- q ∈ {2,3} (простые <5): 6m±1 не делится
+  · -- q ∈ {2,3} (primes <5): 6m±1 not divisible
     interval_cases q
     · exact absurd hq (by decide)
     · exact absurd hq (by decide)
-    · -- q=2: 6m±1 нечётны
+    · -- q=2: 6m±1 are odd
       rintro (h | h) <;> omega
     · -- q=3: 6m±1 ≡ ±1 (mod 3)
       rintro (h | h) <;> omega
@@ -70,7 +70,7 @@ theorem primorial_multiple_clean (A k : ℕ) (_hk : 1 ≤ k) :
       exact Dvd.dvd.mul_left this 6
     have hq2 : 2 ≤ q := hq.two_le
     rintro (h | h)
-    · -- q ∣ 6m−1 и q ∣ 6m ⟹ q ∣ 1
+    · -- q ∣ 6m−1 and q ∣ 6m ⟹ q ∣ 1
       have : (q : ℤ) ∣ 1 := by
         have := Int.dvd_sub hqm h; simpa using this
       have := Int.le_of_dvd (by norm_num) this; omega
@@ -79,8 +79,8 @@ theorem primorial_multiple_clean (A k : ℕ) (_hk : 1 ≤ k) :
       have := Int.le_of_dvd (by norm_num) this; omega
 
 /--
-  **`carrier_nonempty_above` (Следствие 2.3.1).** Для любых `A,N`: существует clean-центр `m > N`.
-  Берём `m=(N+1)·P_A`. Плотность НЕ нужна — это конструкция. -/
+  **`carrier_nonempty_above` (Corollary 2.3.1).** For any `A,N`: there exists a clean center `m > N`.
+  Take `m=(N+1)·P_A`. Density is NOT needed — this is a construction. -/
 theorem carrier_nonempty_above (A N : ℕ) :
     ∃ m : ℕ, N < m ∧ CleanZ A (m : ℤ) := by
   refine ⟨(N + 1) * oldPrimorial A, ?_, ?_⟩
@@ -90,12 +90,12 @@ theorem carrier_nonempty_above (A N : ℕ) :
       _ ≤ (N + 1) * oldPrimorial A := by exact Nat.mul_le_mul_left _ hP
   · exact primorial_multiple_clean A (N + 1) (by omega)
 
-/-! ### Остаток ③ — sink ⇒ twin (чётность элементарна) -/
+/-! ### Residual ③ — sink ⇒ twin (parity is elementary) -/
 
 /--
-  **`clean_non_twin_has_active_edge` (Лемма 4.1.1), ядро.** Clean центр, который НЕ twin, имеет
-  составную сторону, у которой простой делитель `> A`. Это active edge. Формализуем ключ:
-  если сторона `side ≥ 2` НЕ простая и ни один `q ≤ A` её не делит, то её `minFac > A`. -/
+  **`clean_non_twin_has_active_edge` (Lemma 4.1.1), core.** A clean center that is NOT a twin has
+  a composite side whose prime divisor is `> A`. That is an active edge. We formalise the key:
+  if a side `side ≥ 2` is NOT prime and no `q ≤ A` divides it, then its `minFac > A`. -/
 theorem clean_side_composite_big_divisor {A side : ℕ}
     (hge : 2 ≤ side) (_hcomp : ¬ side.Prime)
     (hclean : ∀ q : ℕ, q.Prime → q ≤ A → ¬ q ∣ side) :
@@ -105,9 +105,9 @@ theorem clean_side_composite_big_divisor {A side : ℕ}
   exact hclean side.minFac (Nat.minFac_prime (by omega)) (by omega) (Nat.minFac_dvd side)
 
 /--
-  **Old-free число ниже `A²` простое (Лемма 6.1 источника / 6.1 движка).** Если `n ≥ 2`, `n < A·A`,
-  и ни один простой `q ≤ A` не делит `n`, то `n` простое. Иначе минимальный простой делитель `p>A`,
-  кофактор `n/p ≥ p > A`, и `n = p·(n/p) > A·A` — противоречие. -/
+  **An old-free number below `A²` is prime (Lemma 6.1 of the source / 6.1 of the engine).** If `n ≥ 2`, `n < A·A`,
+  and no prime `q ≤ A` divides `n`, then `n` is prime. Otherwise the minimal prime divisor `p>A`,
+  cofactor `n/p ≥ p > A`, and `n = p·(n/p) > A·A` — contradiction. -/
 theorem oldfree_below_sq_prime {A n : ℕ} (h2 : 2 ≤ n) (hlt : n < A * A)
     (hof : ∀ q : ℕ, q.Prime → q ≤ A → ¬ q ∣ n) : n.Prime := by
   by_contra hnp
@@ -115,7 +115,7 @@ theorem oldfree_below_sq_prime {A n : ℕ} (h2 : 2 ≤ n) (hlt : n < A * A)
   have hpd : n.minFac ∣ n := Nat.minFac_dvd n
   have hpA : A < n.minFac := by
     by_contra hle; exact hof n.minFac hp (by omega) hpd
-  -- кофактор n/minFac ≥ minFac (минимальность простого делителя у составного)
+  -- cofactor n/minFac ≥ minFac (minimality of the prime divisor for a composite)
   have hcof : n.minFac ≤ n / n.minFac := Nat.minFac_le_div (by omega) hnp
   have hfac : n.minFac * (n / n.minFac) = n := Nat.mul_div_cancel' hpd
   have hsq : n.minFac * n.minFac ≤ n := by
@@ -125,8 +125,8 @@ theorem oldfree_below_sq_prime {A n : ℕ} (h2 : 2 ≤ n) (hlt : n < A * A)
   nlinarith [hpA, hsq, hlt]
 
 /--
-  **`sink_is_twin` (Теорема 4.2.1).** Если обе стороны `6m±1 ≥ 2`, `< A²`, и clean (ни один `q≤A`
-  не делит ни одну сторону), то `m` — twin. (Чётность: old-free + `<A²` ⟹ простое.) -/
+  **`sink_is_twin` (Theorem 4.2.1).** If both sides `6m±1 ≥ 2`, `< A²`, and clean (no `q≤A`
+  divides either side), then `m` is a twin. (Parity: old-free + `<A²` ⟹ prime.) -/
 theorem sink_is_twin {A m : ℕ}
     (hlo : 2 ≤ 6 * m - 1) (hhi : 2 ≤ 6 * m + 1)
     (hlo2 : 6 * m - 1 < A * A) (hhi2 : 6 * m + 1 < A * A)
@@ -136,11 +136,11 @@ theorem sink_is_twin {A m : ℕ}
   · exact fun q hq hqA hd => hcl q hq hqA (Or.inl hd)
   · exact fun q hq hqA hd => hcl q hq hqA (Or.inr hd)
 
-/-! ### Привязка sink к центру выше N -/
+/-! ### Anchoring the sink to a center above N -/
 
 /--
-  **`clean_twin_above` (§5).** Если `6N+1 < A`, `m` clean и twin, то `m > N`. Простое `6m−1 > A`
-  (иначе старое простое делило бы свою сторону, нарушая clean), а `A > 6N+1` ⟹ `m > N`. -/
+  **`clean_twin_above` (§5).** If `6N+1 < A`, `m` is clean and twin, then `m > N`. The prime `6m−1 > A`
+  (otherwise an old prime would divide its side, violating clean), and `A > 6N+1` ⟹ `m > N`. -/
 theorem clean_twin_above {A N m : ℕ} (hAN : 6 * N + 1 < A) (hm : 1 ≤ m)
     (hcl : ∀ q : ℕ, q.Prime → q ≤ A → ¬ ((q : ℤ) ∣ (6 * (m:ℤ) - 1) ∨ (q : ℤ) ∣ (6 * (m:ℤ) + 1)))
     (htwin : TwinCenterZ m) : N < m := by
@@ -154,11 +154,11 @@ theorem clean_twin_above {A N m : ℕ} (hAN : 6 * N + 1 < A) (hm : 1 ≤ m)
     rw [hcast]
   omega
 
-/-! ### Остаток ① — active descent уменьшает высоту -/
+/-! ### Residual ① — active descent decreases height -/
 
 /--
-  **`active_descent_height` (§3).** Если `6m+σ = a(6n+ε)`, `a > A ≥ 5`, `σ,ε ∈ {±1}`, центры `≥ 1`,
-  то `n < m`. (Из `6n+ε = (6m+σ)/a ≤ (6m+1)/5` и `(6m+1)/5 < 6m−1` при `m≥1`.) -/
+  **`active_descent_height` (§3).** If `6m+σ = a(6n+ε)`, `a > A ≥ 5`, `σ,ε ∈ {±1}`, centers `≥ 1`,
+  then `n < m`. (From `6n+ε = (6m+σ)/a ≤ (6m+1)/5` and `(6m+1)/5 < 6m−1` for `m≥1`.) -/
 theorem active_descent_height {A m n a σ ε : ℤ}
     (hA : 5 ≤ A) (hm : 1 ≤ m) (hn : 1 ≤ n) (haA : A < a)
     (hσ : σ = 1 ∨ σ = -1) (hε : ε = 1 ∨ ε = -1)

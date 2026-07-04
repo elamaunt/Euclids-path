@@ -1,50 +1,50 @@
 /-
-  YangMillsEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ Янг–Миллса (зеркало
-  CollatzFirstCause и PNPFirstCause). Зелёная машина ветви:
-  Engine/YangMillsFront.lean; разбор фронта: prose/40_YangMills.md.
+  YangMillsEpistemic — the EPISTEMIC COMPLEMENT of Yang–Mills (mirror of
+  CollatzFirstCause and PNPFirstCause). The branch's green machine:
+  Engine/YangMillsFront.lean; the front is discussed in prose/40_YangMills.md.
 
-  ЧТО ЭТО. Абстрактная спектральная модель (`SpectralModel`) с вопросом о
-  масс-гэпе (`MassGap`). Опровержение гэпа НЕ пассивно: из него СТРОИТСЯ
-  объект-двигатель — halving-лестница (`gaplessLadder_of_not_massGap`,
-  точная характеризация `gapless_iff_nonempty_ladder`), и это подлинный
-  вечный двигатель на ℝ (`not_massGap_carries_real_engine`). На континууме
-  двигатель законен (`perpetualEngine_on_real`) — стены нет. Стена возникает,
-  когда per-model ЗАКОН КВАНТОВАНИЯ (`QuantizationLaw`) переводит энергию в
-  ℕ-ранг: лестница становится бесконечным ℕ-спуском и сгорает об
-  вполне-фундированность (`no_quantizedLadder`, EPMI) — та же стена, что у
-  Коллатца («непадающий хвост») и P/NP («оплата неограниченной поставки»).
+  WHAT THIS IS. An abstract spectral model (`SpectralModel`) with a question about
+  the mass gap (`MassGap`). Refuting the gap is NOT passive: from it an
+  engine object is BUILT — a halving ladder (`gaplessLadder_of_not_massGap`,
+  exact characterization `gapless_iff_nonempty_ladder`), and this is a genuine
+  perpetual engine on ℝ (`not_massGap_carries_real_engine`). On the continuum
+  the engine is legal (`perpetualEngine_on_real`) — there is no wall. The wall arises
+  when the per-model QUANTIZATION LAW (`QuantizationLaw`) maps energy into
+  an ℕ-rank: the ladder becomes an infinite ℕ-descent and burns against
+  well-foundedness (`no_quantizedLadder`, EPMI) — the same wall as in
+  Collatz ("the non-falling tail") and P/NP ("payment of an unbounded supply").
 
-  ЧЕСТНОСТЬ (обязательные оговорки).
-  1) Это модель-внутренняя эпистемика, НЕ решение проблемы Клэя и НЕ Гёдель
-     (никакой неполноты/неподвижной точки — только вполне-фундированность):
-     ни существования квантовой ЯМ-теории, ни её спектра здесь нет;
-     недостающее — data anchor (построенная спектральная модель настоящей
-     неабелевой КТП, которой в mathlib нет), а НЕ Prop, который можно
-     декретировать или доказать (аудит L9 `quantizationLaw_iff_massGap`).
-  2) Декретной ЯМ-границы в репозитории НЕТ — намеренно: трилемма §7 фронта
-     машинно отклонила все три формы поля (`ymLawUniversal_refuted` /
-     `ymLawExistential_green` — вакуумен / `ymManifestationLaw_refutes_boundary`).
-     По нумерации первопричины четвёртый слот занят collatzBoundary; ЯМ-слот
-     (пятый) пуст навсегда. Потому модуль ЦЕЛИКОМ зелёный: карантин
-     (CausalClosureAxiom) не импортируется, таинт репозитория не меняется.
-  3) ГЛАВНОЕ ОТЛИЧИЕ ОТ ОБОИХ ЭТАЛОНОВ: зелёный коллапс L9
-     (`quantizationLaw_iff_massGap`) вместе с `not_massGap_iff_nonempty_ladder`
-     семантически сворачивают связку ground + beyondOwnHorizon в
-     `MassGap S ∧ ¬ MassGap S`. У Коллатца/P-NP стороны НЕ были зелёно
-     эквивалентны цели и её отрицанию — у ЯМ эквивалентны. Оплата подлинная
-     (двигатель, не разворачивание отрицания), но семантическая
-     тавтологизация через L9 — фирменная особенность ЯМ, и она же — причина,
-     почему единственный выход конъюнкта (3) развилки — внешний data anchor,
-     а не декрет.
-  4) Количественный «герой» massGap_lower_bound (заявка: ограниченность ранга
-     B на энергиях ≤ E₀ давала бы Δ ≥ E₀/2^(B+1)) сюда НЕ добавлен: лемма
-     ЛОЖНА, скептик опроверг её контрпримером (Energy = {0, E₀/8, E₀}, B = 1,
-     всякий валидный Δ ≤ E₀/8 < E₀/4). Честная замена — CHAIN-BOUND (последняя
-     секция): всякая halving-цепочка в спектре имеет длину ≤ ранга старта, а
-     при ранге, ограниченном B на энергиях ≤ E₀, — длину ≤ B. Это прямое
-     следствие строгого спуска ранга; нижней оценки Δ отсюда НЕ следует —
-     для неё нужны уровни на КАЖДОМ промежуточном масштабе (halving-плотность),
-     которых ограниченный ранг не поставляет.
+  HONESTY (mandatory caveats).
+  1) This is model-internal epistemics, NOT a solution of the Clay problem and NOT Gödel
+     (no incompleteness/fixed point — only well-foundedness):
+     neither the existence of a quantum YM theory nor its spectrum is here;
+     what is missing is a data anchor (a built spectral model of a genuine
+     non-abelian QFT, which mathlib does not have), NOT a Prop that can be
+     decreed or proven (audit L9 `quantizationLaw_iff_massGap`).
+  2) There is NO decree YM boundary in the repository — intentionally: the trilemma of §7 of the front
+     machine-rejected all three forms of the law (`ymLawUniversal_refuted` /
+     `ymLawExistential_green` — vacuous / `ymManifestationLaw_refutes_boundary`).
+     By the first-cause numbering the fourth slot is taken by collatzBoundary; the YM slot
+     (the fifth) is empty forever. That is why the module is ENTIRELY green: the quarantine
+     (CausalClosureAxiom) is not imported, the repository taint does not change.
+  3) THE MAIN DIFFERENCE FROM BOTH REFERENCE POINTS: the green collapse L9
+     (`quantizationLaw_iff_massGap`) together with `not_massGap_iff_nonempty_ladder`
+     semantically fold the conjunction ground + beyondOwnHorizon into
+     `MassGap S ∧ ¬ MassGap S`. For Collatz/P-NP the sides were NOT green
+     equivalent to the goal and its negation — for YM they are equivalent. The payment is genuine
+     (an engine, not an unfolding of the negation), but the semantic
+     tautologization via L9 is the signature feature of YM, and it is also the reason
+     why the only exit of conjunct (3) of the fork is an external data anchor,
+     not a decree.
+  4) The quantitative "hero" massGap_lower_bound (claim: rank boundedness
+     by B at energies ≤ E₀ would give Δ ≥ E₀/2^(B+1)) is NOT added here: the lemma
+     is FALSE, the skeptic refuted it with a counterexample (Energy = {0, E₀/8, E₀}, B = 1,
+     every valid Δ ≤ E₀/8 < E₀/4). The honest replacement is CHAIN-BOUND (the last
+     section): every halving chain in the spectrum has length ≤ the rank of the start, and
+     with rank bounded by B at energies ≤ E₀ — length ≤ B. This is a direct
+     consequence of the strict rank descent; a lower bound on Δ does NOT follow from it —
+     for that one needs levels at EVERY intermediate scale (halving density),
+     which a bounded rank does not supply.
 -/
 
 import EuclidsPath.Engine.YangMillsFront
@@ -56,14 +56,14 @@ namespace EuclidsPath.YangMills.Epistemic
 
 open EuclidsPath.UniversalEngine
 
-/-! ## Носители: опровержение гэпа СТРОИТ двигатель (🟢, подлинные конструкции) -/
+/-! ## Carriers: refuting the gap BUILDS an engine (🟢, genuine constructions) -/
 
-/-- **Лестница — подлинный вечный двигатель на ℝ (без единой гипотезы сверх
-    самой лестницы).** Свидетель — сама `D.seq`: halving + положительность дают
-    строгое убывание. Антецедент ЗЕЛЁНО обитаем (`cookedLadder`), `False.elim`
-    не используется — это носитель в точном смысле `PerpetualEngine`. На ℝ
-    противоречия НЕТ (`perpetualEngine_on_real`): двигатель запрещает не
-    континуум, а квантование. -/
+/-- **The ladder is a genuine perpetual engine on ℝ (without a single hypothesis beyond
+    the ladder itself).** The witness is `D.seq` itself: halving + positivity give
+    strict descent. The antecedent is GREEN-inhabited (`cookedLadder`), `False.elim`
+    is not used — this is a carrier in the exact sense of `PerpetualEngine`. On ℝ
+    there is NO contradiction (`perpetualEngine_on_real`): the engine forbids not
+    the continuum, but quantization. -/
 theorem ladder_carries_real_engine {S : SpectralModel} (D : GaplessLadder S) :
     PerpetualEngine (· < · : ℝ → ℝ → Prop) :=
   ⟨D.seq, fun n => by
@@ -72,34 +72,34 @@ theorem ladder_carries_real_engine {S : SpectralModel} (D : GaplessLadder S) :
     show D.seq (n + 1) < D.seq n
     linarith⟩
 
-/-- **«Опровержение гэпа строит двигатель» (подлинный носитель):** ¬гэп →
-    лестница (`gaplessLadder_of_not_massGap`, выбор честно виден) → вечный
-    ℝ-двигатель. Зеркало экстракции нуля `offCriticalZero_of_not_RH`: у ЯМ
-    опровержение цели ПРЕДЪЯВЛЯЕТ объект, а не просто отрицает. -/
+/-- **"Refuting the gap builds an engine" (genuine carrier):** ¬gap →
+    ladder (`gaplessLadder_of_not_massGap`, the choice is honestly visible) → perpetual
+    ℝ-engine. Mirror of the zero extraction `offCriticalZero_of_not_RH`: for YM
+    refuting the goal PRESENTS an object, rather than merely negating. -/
 theorem not_massGap_carries_real_engine {S : SpectralModel}
     (h : ¬ MassGap S) : PerpetualEngine (· < · : ℝ → ℝ → Prop) :=
   ladder_carries_real_engine (gaplessLadder_of_not_massGap h)
 
-/-- **Точная характеризация носителя:** опровержение гэпа ⟺ существование
-    лестницы (композиция L1 `not_massGap_iff_gapless` и L4
-    `gapless_iff_nonempty_ladder`). Именно эта эквивалентность (вместе с L9)
-    оплачивает и вскрывает семантическую тавтологизацию связки ниже. -/
+/-- **Exact characterization of the carrier:** refuting the gap ⟺ existence of
+    a ladder (composition of L1 `not_massGap_iff_gapless` and L4
+    `gapless_iff_nonempty_ladder`). It is exactly this equivalence (together with L9)
+    that pays for and exposes the semantic tautologization of the conjunction below. -/
 theorem not_massGap_iff_nonempty_ladder (S : SpectralModel) :
     ¬ MassGap S ↔ Nonempty (GaplessLadder S) :=
   (not_massGap_iff_gapless S).trans (gapless_iff_nonempty_ladder S)
 
-/-! ## Закон квантования превращает ℝ-двигатель в запрещённый ℕ-двигатель (🟢) -/
+/-! ## The quantization law turns the ℝ-engine into a forbidden ℕ-engine (🟢) -/
 
-/-- **Носитель двигателя при законе (терм-подлинный, антецедент совместно
-    опровергнут).** Свидетель строится БЕЗ `False.elim`: `f t := rank(лестница t)`,
-    строгий спуск ранга — закон на halving-паре. ЧЕСТНОСТЬ (обязательная,
-    стандарт `internalisedPNPGround_builds_engine` из PNPFirstCause): пара
-    гипотез (закон + лестница) в репозитории СОВМЕСТНО опровергнута
-    (`no_quantizedLadder`), поэтому ЛОГИЧЕСКИ лемма — переупаковка убийцы;
-    «подлинность» — свойство ТЕРМА (свидетель rank∘ladder), а не логического
-    содержания. Это терм-подлинный аналог при опровергнутом антецеденте — НЕ
-    точный аналог `nonHalting_carries_perpetual_engine` Коллатца, где
-    антецедент открыт. -/
+/-- **Engine carrier under the law (term-genuine, antecedent jointly
+    refuted).** The witness is built WITHOUT `False.elim`: `f t := rank(ladder t)`,
+    strict rank descent is the law on a halving pair. HONESTY (mandatory,
+    the standard `internalisedPNPGround_builds_engine` from PNPFirstCause): the pair of
+    hypotheses (law + ladder) is JOINTLY refuted in the repository
+    (`no_quantizedLadder`), so LOGICALLY the lemma is a repackaging of the killer;
+    "genuineness" is a property of the TERM (the witness rank∘ladder), not of the logical
+    content. This is a term-genuine analogue under a refuted antecedent — NOT an
+    exact analogue of Collatz's `nonHalting_carries_perpetual_engine`, where the
+    antecedent is open. -/
 theorem quantizedLadder_carries_perpetual_engine {S : SpectralModel}
     (hQ : QuantizationLaw S) (D : GaplessLadder S) :
     PerpetualEngine (· < · : ℕ → ℕ → Prop) := by
@@ -108,90 +108,90 @@ theorem quantizedLadder_carries_perpetual_engine {S : SpectralModel}
     fun t => hrank ⟨D.seq t, D.mem t, D.pos t⟩
       ⟨D.seq (t + 1), D.mem (t + 1), D.pos (t + 1)⟩ (D.halving t)⟩
 
-/-- **Лестница + закон ⟹ противоречие — ВТОРОЙ маршрут (через универсальную
-    двигательную решётку):** носитель выше сгорает об
-    `no_perpetual_engine_on_nat`. Первый маршрут — `no_quantizedLadder`
-    (напрямую через EPMI `no_infinite_descent`); содержание то же, новое —
-    язык `PerpetualEngine`, общий с Коллатцем и P/NP. -/
+/-- **Ladder + law ⟹ contradiction — the SECOND route (through the universal
+    engine lattice):** the carrier above burns against
+    `no_perpetual_engine_on_nat`. The first route is `no_quantizedLadder`
+    (directly through EPMI `no_infinite_descent`); the content is the same, what is new is
+    the `PerpetualEngine` language, shared with Collatz and P/NP. -/
 theorem quantizedLadder_impossible_via_engine {S : SpectralModel}
     (hQ : QuantizationLaw S) (D : GaplessLadder S) : False :=
   no_perpetual_engine_on_nat (quantizedLadder_carries_perpetual_engine hQ D)
 
-/-! ## Модель: внутреннее решение = самообоснование за собственным горизонтом -/
+/-! ## Model: an internal decision = self-grounding beyond one's own horizon -/
 
-/-- **Внутреннее самообоснование решения ЯМ**: несёт per-model закон
-    квантования (`ground`; per-model — потому что универсальная форма машинно
-    опровергнута, `ymLawUniversal_refuted`) И опровержение гэпа
-    (`beyondOwnHorizon`) — «дотянуться взглядом» за горизонт собственного
-    закона. ОБЯЗАТЕЛЬНОЕ РАСКРЫТИЕ (отличие от обоих эталонов): через L9
-    `quantizationLaw_iff_massGap` и `not_massGap_iff_nonempty_ladder` связка
-    семантически ⟺ `MassGap S ∧ ¬ MassGap S` — у Коллатца/P-NP стороны не
-    были зелёно эквивалентны цели и её отрицанию, у ЯМ эквивалентны. Оплата
-    подлинная (двигатель, не разворачивание отрицания): противоречие
-    поставляет конструкция спуска (лестница из `beyondOwnHorizon` + ранговый
-    ℕ-спуск из `ground`), но семантическая тавтологизация через L9 —
-    фирменная особенность ЯМ, и она же — причина, почему единственный выход —
-    внешний data anchor, а не декрет. -/
+/-- **Internal self-grounding of the YM decision**: carries the per-model quantization
+    law (`ground`; per-model — because the universal form is machine-
+    refuted, `ymLawUniversal_refuted`) AND the refutation of the gap
+    (`beyondOwnHorizon`) — "to reach with one's gaze" past the horizon of one's own
+    law. MANDATORY DISCLOSURE (the difference from both reference points): through L9
+    `quantizationLaw_iff_massGap` and `not_massGap_iff_nonempty_ladder` the conjunction
+    is semantically ⟺ `MassGap S ∧ ¬ MassGap S` — for Collatz/P-NP the sides were not
+    green equivalent to the goal and its negation, for YM they are equivalent. The payment
+    is genuine (an engine, not an unfolding of the negation): the contradiction
+    is supplied by the descent construction (the ladder from `beyondOwnHorizon` + the rank
+    ℕ-descent from `ground`), but the semantic tautologization via L9 is
+    the signature feature of YM, and it is also the reason why the only exit is
+    an external data anchor, not a decree. -/
 structure InternalisedYMGround (S : SpectralModel) : Prop where
   ground : QuantizationLaw S
   beyondOwnHorizon : ¬ MassGap S
 
-/-- «Внутреннее знание причины ЯМ» = внутреннее самообоснование решения. -/
+/-- "Internal knowledge of the YM cause" = internal self-grounding of the decision. -/
 abbrev InternalKnowledgeOfYMCause (S : SpectralModel) : Prop :=
   InternalisedYMGround S
 
-/-! ## Ядро: самообоснование самоуничтожается = стена вечного двигателя (🟢) -/
+/-! ## Core: self-grounding self-destructs = the perpetual-engine wall (🟢) -/
 
-/-- Самообоснование самоуничтожается: `beyondOwnHorizon` строит лестницу
-    (подлинный носитель), `ground` квантует её в запрещённый ℕ-двигатель —
-    сгорает об `no_perpetual_engine_on_nat`. Оплата — двигательная конструкция,
-    та же стена, что `no_fullPayment_of_unboundedSupply` у P/NP. -/
+/-- Self-grounding self-destructs: `beyondOwnHorizon` builds the ladder
+    (genuine carrier), `ground` quantizes it into a forbidden ℕ-engine —
+    it burns against `no_perpetual_engine_on_nat`. The payment is an engine construction,
+    the same wall as `no_fullPayment_of_unboundedSupply` in P/NP. -/
 theorem no_internalisedYMGround {S : SpectralModel} :
     InternalisedYMGround S → False :=
   fun H => quantizedLadder_impossible_via_engine H.ground
     (gaplessLadder_of_not_massGap H.beyondOwnHorizon)
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable`,
-    `pnpCause_unknowable`, twin-`cause_unknowable`): внутреннее самообоснование
-    решения ЯМ невозможно ни в какой спектральной модели. НЕ утверждение о
-    настоящей ЯМ-теории (см. шапку): фрейм-слой абстрактен. -/
+/-- **"CANNOT BE KNOWN FROM INSIDE" — THEOREM** (mirror of `collatzCause_unknowable`,
+    `pnpCause_unknowable`, twin-`cause_unknowable`): internal self-grounding of the
+    YM decision is impossible in any spectral model. NOT a statement about
+    a genuine YM theory (see the header): the frame layer is abstract. -/
 theorem ymCause_unknowable {S : SpectralModel} :
     ¬ InternalKnowledgeOfYMCause S :=
   no_internalisedYMGround
 
-/-- **Ground нельзя подать универсально** (потому он per-model): универсальный
-    закон квантования машинно опровергнут — свидетель `cookedGapless` +
-    `cookedLadder` (дословно `ymLawUniversal_refuted`, зеркало
-    `ropeLaw_universal_refuted` Коллатца). Декретная дверь для ground закрыта
-    кованым опровержением, а не соглашением. -/
+/-- **Ground cannot be supplied universally** (that is why it is per-model): the universal
+    quantization law is machine-refuted — witness `cookedGapless` +
+    `cookedLadder` (verbatim `ymLawUniversal_refuted`, mirror of
+    Collatz's `ropeLaw_universal_refuted`). The decree door for ground is closed
+    by a forged refutation, not by agreement. -/
 theorem ymGround_universal_refuted :
     ¬ ∀ S : SpectralModel, QuantizationLaw S :=
   ymLawUniversal_refuted
 
-/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении, зеркало
-    `unknowable_or_collatz_fails`): либо причина непознаваема изнутри, либо
-    гэпа в модели нет. Левый дизъюнкт — теорема. -/
+/-- SUBSTANTIVE DICHOTOMY (without ex falso in the statement, mirror of
+    `unknowable_or_collatz_fails`): either the cause is unknowable from inside, or
+    there is no gap in the model. The left disjunct is a theorem. -/
 theorem unknowable_or_no_massGap (S : SpectralModel) :
     (¬ InternalKnowledgeOfYMCause S) ∨ ¬ MassGap S :=
   Or.inl ymCause_unknowable
 
-/-! ## Сводки: решение заперто за двигателем (🟢) -/
+/-! ## Summaries: the decision is locked behind the engine (🟢) -/
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — 3-развилка (зеркало
+/-- **"THE DECISION IS LOCKED BEHIND THE ENGINE" — 3-fork (mirror of
     `collatz_no_internal_decision_without_engine` /
     `pnp_no_internal_decision_without_engine`):**
-    (1) ОПРОВЕРГНУТЬ гэп при законе = предъявить ℕ-двигатель (лестница из
-        опровержения + ранговый спуск) — а он запрещён
-        (`no_perpetual_engine_on_nat`); без закона носитель живёт лишь на ℝ,
-        где двигатель легален;
-    (2) САМООБОСНОВАТЬ решение изнутри — самоуничтожается
+    (1) REFUTING the gap under the law = presenting an ℕ-engine (the ladder from
+        the refutation + rank descent) — but it is forbidden
+        (`no_perpetual_engine_on_nat`); without the law the carrier lives only on ℝ,
+        where the engine is legal;
+    (2) SELF-GROUNDING the decision from inside — self-destructs
         (`no_internalisedYMGround`);
-    (3) per-model закон РЕШАЕТ вопрос ⟺ он И ЕСТЬ вопрос:
-        `quantizationLaw_iff_massGap` зелёно и БЕЗ всякой границы — потому
-        декретная дверь невозможна честно, единственный вход конъюнкта —
-        внешний data anchor (реальный ЯМ-спектр вне mathlib).
-    НЕ утверждается ни гёделевская независимость, ни решение Клэя — только:
-    оба внутренних решения стоят вечного двигателя. -/
+    (3) the per-model law DECIDES the question ⟺ it IS the question:
+        `quantizationLaw_iff_massGap` is green and WITHOUT any boundary — that is why
+        the decree door is impossible honestly, the only entrance of the conjunct is
+        an external data anchor (the real YM spectrum outside mathlib).
+    Neither Gödelian independence nor a Clay solution is asserted — only:
+    both internal decisions cost a perpetual engine. -/
 theorem ym_no_internal_decision_without_engine (S : SpectralModel) :
     (QuantizationLaw S → ¬ MassGap S → PerpetualEngine (· < · : ℕ → ℕ → Prop)) ∧
     (InternalisedYMGround S → False) ∧
@@ -201,14 +201,14 @@ theorem ym_no_internal_decision_without_engine (S : SpectralModel) :
    no_internalisedYMGround,
    quantizationLaw_iff_massGap S⟩
 
-/-- Итоговый эпистемический статус ЯМ-горизонта (зеркало
-    `pnp_locked_behind_engine_status` — БЕЗ декрет-конъюнкта: ЯМ-слот декрета
-    пуст по трилемме; и зеркало `collatz_open_status` — с конъюнктом
-    опровергнутого универсального закона): универсальный ground ОПРОВЕРГНУТ /
-    внутреннее знание невозможно / per-model закон влечёт гэп (герой, условно)
-    / кованые свидетели обеих сторон живы / ℕ-двигатель запрещён. ЦЕЛИКОМ
-    зелёная; проблема Клэя остаётся открытой 🔴 — здесь только эпистемика её
-    горизонта. -/
+/-- The final epistemic status of the YM horizon (mirror of
+    `pnp_locked_behind_engine_status` — WITHOUT the decree conjunct: the YM decree slot
+    is empty by the trilemma; and mirror of `collatz_open_status` — with the conjunct of
+    the refuted universal law): the universal ground is REFUTED /
+    internal knowledge is impossible / the per-model law entails the gap (hero, conditionally)
+    / the forged witnesses of both sides are alive / the ℕ-engine is forbidden. ENTIRELY
+    green; the Clay problem remains open 🔴 — here only the epistemics of its
+    horizon. -/
 theorem ym_locked_behind_engine_status (S : SpectralModel) :
     (¬ ∀ S' : SpectralModel, QuantizationLaw S') ∧
     (¬ InternalKnowledgeOfYMCause S) ∧
@@ -223,34 +223,34 @@ theorem ym_locked_behind_engine_status (S : SpectralModel) :
    cookedGapped_massGap,
    no_perpetual_engine_on_nat⟩
 
-/-! ## Честная количественная граница: chain-bound вместо ложного massGap_lower_bound (🟢)
+/-! ## An honest quantitative bound: chain-bound instead of the false massGap_lower_bound (🟢)
 
-    Скептик опроверг заявку «ограниченность ранга ⟹ Δ ≥ E₀/2^(B+1)»
-    контрпримером Energy = {0, E₀/8, E₀} (rank(E₀) = 1, rank(E₀/8) = 0 —
-    закон соблюдён, ранг ограничен B = 1, но валидный Δ ≤ E₀/8 < E₀/4).
-    Ошибка заявки: halving-цепочка от E₀ вниз требует уровней на КАЖДОМ
-    промежуточном масштабе (это Gapless), а ограниченный ранг их не поставляет.
-    ЧЕСТНОЕ содержание строгого спуска ранга — граница ДЛИНЫ ЦЕПОЧКИ, и только
-    она: конечные halving-цепочки в квантованном спектре не длиннее ранга
-    старта. Про величину Δ здесь НЕ утверждается ничего. -/
+    The skeptic refuted the claim "rank boundedness ⟹ Δ ≥ E₀/2^(B+1)"
+    with the counterexample Energy = {0, E₀/8, E₀} (rank(E₀) = 1, rank(E₀/8) = 0 —
+    the law holds, the rank is bounded by B = 1, but a valid Δ ≤ E₀/8 < E₀/4).
+    The error in the claim: a halving chain from E₀ downward requires levels at EVERY
+    intermediate scale (this is Gapless), and a bounded rank does not supply them.
+    The HONEST content of the strict rank descent is a bound on CHAIN LENGTH, and only
+    it: finite halving chains in a quantized spectrum are no longer than the rank of the
+    start. Nothing is asserted here about the magnitude of Δ. -/
 
-/-- **Конечная halving-цепочка в спектре**: `L` шагов по положительным
-    состояниям, каждый шаг — как минимум деление энергии пополам
-    (`2·c(i+1) ≤ c(i)`; то же отношение, что в `GaplessLadder.halving` и в
-    антецеденте `QuantizationLaw`). Хвост `c` за пределами `L` свободен —
-    цепочкой являются только первые `L` шагов. -/
+/-- **A finite halving chain in the spectrum**: `L` steps over positive
+    states, each step at least a halving of the energy
+    (`2·c(i+1) ≤ c(i)`; the same relation as in `GaplessLadder.halving` and in
+    the antecedent of `QuantizationLaw`). The tail of `c` beyond `L` is free —
+    only the first `L` steps form the chain. -/
 def IsHalvingChain {S : SpectralModel} (L : ℕ) (c : ℕ → PositiveState S) : Prop :=
   ∀ i < L, 2 * ((c (i + 1) : ℝ)) ≤ ((c i : ℝ))
 
-/-- **CHAIN-BOUND (общая форма): длина ≤ ранг старта.** Всякая ранговая
-    функция со строгим спуском на halving-парах (ровно поле `QuantizationLaw`)
-    падает на каждом шаге цепочки минимум на 1, поэтому `L` шагов требуют
-    ранга старта ≥ `L`. Прямое следствие вполне-фундированности ℕ — та же
-    стена, что `no_quantizedLadder`, но в конечной, количественной форме.
-    Для канонического ранга гэпнутой модели (`quantizationLaw_of_massGap`,
-    rank = `Nat.log 2 ⌊E/Δ⌋₊`) это даёт «длина ≤ log₂ старта в единицах Δ» —
-    но каноничный ранг циркулярен по Δ, поэтому экспортируется абстрактная
-    форма. -/
+/-- **CHAIN-BOUND (general form): length ≤ rank of the start.** Every rank
+    function with strict descent on halving pairs (exactly the field `QuantizationLaw`)
+    drops by at least 1 at each step of the chain, so `L` steps require
+    a start rank ≥ `L`. A direct consequence of the well-foundedness of ℕ — the same
+    wall as `no_quantizedLadder`, but in a finite, quantitative form.
+    For the canonical rank of a gapped model (`quantizationLaw_of_massGap`,
+    rank = `Nat.log 2 ⌊E/Δ⌋₊`) this gives "length ≤ log₂ of the start in units of Δ" —
+    but the canonical rank is circular in Δ, so the abstract
+    form is exported. -/
 theorem halvingChain_length_le_rank {S : SpectralModel}
     {rank : PositiveState S → ℕ}
     (hrank : ∀ x y : PositiveState S, 2 * (y : ℝ) ≤ (x : ℝ) → rank y < rank x)
@@ -269,12 +269,12 @@ theorem halvingChain_length_le_rank {S : SpectralModel}
   have := key L le_rfl
   omega
 
-/-- **CHAIN-BOUND (форма CORR-замены): старт ≤ E₀ и ранг ≤ B на энергиях ≤ E₀
-    ⟹ длина ≤ B.** Ровно та честная замена ложного `massGap_lower_bound`,
-    которую потребовал вердикт скептика: «всякая halving-цепочка в спектре,
-    стартующая с энергии ≤ E₀, имеет длину ≤ B». НЕ нижняя оценка Δ (она
-    опровергнута — см. шапку секции): ограниченный ранг режет ДЛИНУ спуска,
-    а не глубину спектра. -/
+/-- **CHAIN-BOUND (CORR-replacement form): start ≤ E₀ and rank ≤ B at energies ≤ E₀
+    ⟹ length ≤ B.** Exactly the honest replacement of the false `massGap_lower_bound`
+    that the skeptic's verdict demanded: "every halving chain in the spectrum
+    starting at energy ≤ E₀ has length ≤ B". NOT a lower bound on Δ (it is
+    refuted — see the section header): a bounded rank cuts the LENGTH of the descent,
+    not the depth of the spectrum. -/
 theorem halvingChain_length_le_of_rank_bound {S : SpectralModel}
     {rank : PositiveState S → ℕ}
     (hrank : ∀ x y : PositiveState S, 2 * (y : ℝ) ≤ (x : ℝ) → rank y < rank x)
@@ -284,11 +284,11 @@ theorem halvingChain_length_le_of_rank_bound {S : SpectralModel}
     (h0 : ((c 0 : ℝ)) ≤ E₀) : L ≤ B :=
   le_trans (halvingChain_length_le_rank hrank hc) (hB (c 0) h0)
 
-/-- **Chain-bound в языке красного входа:** закон квантования (D5, per-model
-    🔴 вход) поставляет ранговую функцию, ограничивающую ДЛИНУ всякой конечной
-    halving-цепочки её значением на старте. Конечное зеркало
-    `no_quantizedLadder`: бесконечная лестница даёт цепочки всякой длины и
-    потому сгорает; конечная цепочка не сгорает, а получает честный потолок. -/
+/-- **Chain-bound in the language of the red input:** the quantization law (D5, per-model
+    🔴 input) supplies a rank function bounding the LENGTH of every finite
+    halving chain by its value at the start. A finite mirror of
+    `no_quantizedLadder`: an infinite ladder yields chains of every length and
+    therefore burns; a finite chain does not burn, but receives an honest ceiling. -/
 theorem quantizationLaw_chain_bound {S : SpectralModel}
     (hQ : QuantizationLaw S) :
     ∃ rank : PositiveState S → ℕ,
@@ -296,7 +296,7 @@ theorem quantizationLaw_chain_bound {S : SpectralModel}
   obtain ⟨rank, hrank⟩ := hQ
   exact ⟨rank, fun _ _ hc => halvingChain_length_le_rank hrank hc⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
+/-! ## Axiom audit: the whole module is green (the standard triple), the repo taint does NOT change -/
 #print axioms ladder_carries_real_engine
 #print axioms not_massGap_carries_real_engine
 #print axioms not_massGap_iff_nonempty_ladder

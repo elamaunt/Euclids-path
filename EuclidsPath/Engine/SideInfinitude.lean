@@ -1,30 +1,30 @@
 /-
-  SideInfinitude — стороны порознь бесконечны (Дирихле); согласование сторон —
-  вся открытая суть.
+  SideInfinitude — each side is individually infinite (Dirichlet); aligning both sides —
+  that is the entire open core.
 
-  ЗЕЛЁНЫЙ МОДУЛЬ: всё ниже доказано полностью (std аксиомы, без sorry).
-  Двигатель — теорема Дирихле о простых в арифметических прогрессиях из mathlib
-  (`Nat.forall_exists_prime_gt_and_modEq`, аналитика L-рядов): каждая из двух
-  сторон центра `m` — минус-сторона `6m − 1` (класс `5 mod 6`) и плюс-сторона
-  `6m + 1` (класс `1 mod 6`) — ПО ОТДЕЛЬНОСТИ пробегает бесконечно много простых.
+  GREEN MODULE: everything below is fully proved (std axioms, no sorry).
+  The engine is Dirichlet's theorem on primes in arithmetic progressions from mathlib
+  (`Nat.forall_exists_prime_gt_and_modEq`, analytic L-series): each of the two
+  sides of center `m` — the minus-side `6m − 1` (class `5 mod 6`) and the plus-side
+  `6m + 1` (class `1 mod 6`) — INDIVIDUALLY ranges over infinitely many primes.
 
-  ⚠️ ГЛАВНАЯ ЧЕСТНОСТЬ: одиночки зелёные, но СОГЛАСОВАНИЕ обеих сторон в ОДНОМ
-  центре `m` (оба `6m − 1` и `6m + 1` просты одновременно = близнецы) — это ВСЯ
-  открытая суть программы. Дирихле даёт две независимые бесконечные шеренги,
-  но ничего не говорит о том, что они бесконечно часто выстраиваются напротив
-  друг друга. Никакое спаривание здесь НЕ утверждается (маркер
-  NoPairingClaimed). Этот модуль — хребет честности, на который ссылаются все
-  парные фронты.
+  ⚠️ MAIN HONESTY: the singletons are green, but ALIGNING both sides in ONE
+  center `m` (both `6m − 1` and `6m + 1` simultaneously prime = twins) — that is THE ENTIRE
+  open core of the program. Dirichlet gives two independent infinite columns,
+  but says nothing about whether they line up opposite each other infinitely often.
+  No pairing is claimed here (marker
+  NoPairingClaimed). This module is the backbone of honesty that all
+  paired fronts reference.
 
-  ЧТО ДОКАЗАНО (mathlib Дирихле, std аксиомы, без sorry):
-    * minusSide_primes_unbounded / plusSide_primes_unbounded — над любым `n`
-      есть простое `p` с `p % 6 = 5` (соотв. `p % 6 = 1`);
-    * minusSide_center_unbounded / plusSide_center_unbounded — центровая форма:
-      над любым `n` есть центр `m` с простой минус-стороной `6m − 1`
-      (соотв. плюс-стороной `6m + 1`);
-    * minusSide_primes_infinite / plusSide_primes_infinite — те же факты
-      в форме `Set.Infinite`.
-  Спаривание сторон (близнецы) — НЕ здесь и не выводится ниоткуда здесь.
+  WHAT IS PROVED (mathlib Dirichlet, std axioms, no sorry):
+    * minusSide_primes_unbounded / plusSide_primes_unbounded — above any `n`
+      there exists a prime `p` with `p % 6 = 5` (resp. `p % 6 = 1`);
+    * minusSide_center_unbounded / plusSide_center_unbounded — center form:
+      above any `n` there exists a center `m` with prime minus-side `6m − 1`
+      (resp. plus-side `6m + 1`);
+    * minusSide_primes_infinite / plusSide_primes_infinite — the same facts
+      in the form `Set.Infinite`.
+  Pairing of sides (twins) — NOT here and not derived from anything here.
 -/
 import Mathlib
 import EuclidsPath.Step00_Overview
@@ -35,25 +35,25 @@ namespace EuclidsPath.SideInfinitude
 
 open EuclidsPath
 
-/-- **МИНУС-СТОРОНА НЕОГРАНИЧЕННА (доказано, Дирихле):** над любым `n` найдётся
-    простое `p ≡ 5 (mod 6)` — простое вида `6m − 1`. -/
+/-- **MINUS-SIDE UNBOUNDED (proved, Dirichlet):** above any `n` there exists
+    a prime `p ≡ 5 (mod 6)` — a prime of the form `6m − 1`. -/
 theorem minusSide_primes_unbounded (n : ℕ) :
     ∃ p, n < p ∧ p.Prime ∧ p % 6 = 5 := by
   obtain ⟨p, hgt, hp, hmod⟩ :=
     Nat.forall_exists_prime_gt_and_modEq n (q := 6) (a := 5) (by norm_num) (by decide)
   exact ⟨p, hgt, hp, by simpa [Nat.ModEq] using hmod⟩
 
-/-- **ПЛЮС-СТОРОНА НЕОГРАНИЧЕННА (доказано, Дирихле):** над любым `n` найдётся
-    простое `p ≡ 1 (mod 6)` — простое вида `6m + 1`. -/
+/-- **PLUS-SIDE UNBOUNDED (proved, Dirichlet):** above any `n` there exists
+    a prime `p ≡ 1 (mod 6)` — a prime of the form `6m + 1`. -/
 theorem plusSide_primes_unbounded (n : ℕ) :
     ∃ p, n < p ∧ p.Prime ∧ p % 6 = 1 := by
   obtain ⟨p, hgt, hp, hmod⟩ :=
     Nat.forall_exists_prime_gt_and_modEq n (q := 6) (a := 1) (by norm_num) (by decide)
   exact ⟨p, hgt, hp, by simpa [Nat.ModEq] using hmod⟩
 
-/-- **ЦЕНТРОВАЯ ФОРМА, МИНУС (доказано):** над любым `n` есть центр `m`,
-    у которого минус-сторона `6m − 1` проста. Про плюс-сторону ТОГО ЖЕ `m`
-    ничего не утверждается — в этом вся честность. -/
+/-- **CENTER FORM, MINUS (proved):** above any `n` there exists a center `m`
+    whose minus-side `6m − 1` is prime. Nothing is claimed about the plus-side of THAT SAME `m`
+    — that is the whole honesty. -/
 theorem minusSide_center_unbounded (n : ℕ) :
     ∃ m, n < m ∧ (6 * m - 1).Prime := by
   obtain ⟨p, hgt, hp, hmod⟩ := minusSide_primes_unbounded (6 * n + 5)
@@ -61,9 +61,9 @@ theorem minusSide_center_unbounded (n : ℕ) :
   have h : 6 * ((p + 1) / 6) - 1 = p := by omega
   rwa [h]
 
-/-- **ЦЕНТРОВАЯ ФОРМА, ПЛЮС (доказано):** над любым `n` есть центр `m`,
-    у которого плюс-сторона `6m + 1` проста. Про минус-сторону ТОГО ЖЕ `m`
-    ничего не утверждается — в этом вся честность. -/
+/-- **CENTER FORM, PLUS (proved):** above any `n` there exists a center `m`
+    whose plus-side `6m + 1` is prime. Nothing is claimed about the minus-side of THAT SAME `m`
+    — that is the whole honesty. -/
 theorem plusSide_center_unbounded (n : ℕ) :
     ∃ m, n < m ∧ (6 * m + 1).Prime := by
   obtain ⟨p, hgt, hp, hmod⟩ := plusSide_primes_unbounded (6 * n + 1)
@@ -71,8 +71,8 @@ theorem plusSide_center_unbounded (n : ℕ) :
   have h : 6 * (p / 6) + 1 = p := by omega
   rwa [h]
 
-/-- **БЕСКОНЕЧНОСТЬ МИНУС-СТОРОНЫ (доказано):** множество простых `p ≡ 5 (mod 6)`
-    бесконечно — форма `Set.Infinite` от неограниченности выше. -/
+/-- **MINUS-SIDE INFINITE (proved):** the set of primes `p ≡ 5 (mod 6)`
+    is infinite — `Set.Infinite` form derived from unboundedness above. -/
 theorem minusSide_primes_infinite :
     {p : ℕ | p.Prime ∧ p % 6 = 5}.Infinite := by
   apply Set.infinite_of_not_bddAbove
@@ -81,8 +81,8 @@ theorem minusSide_primes_infinite :
   have hmem : p ∈ {p : ℕ | p.Prime ∧ p % 6 = 5} := ⟨hp, hmod⟩
   exact absurd (hB hmem) (not_le.mpr hgt)
 
-/-- **БЕСКОНЕЧНОСТЬ ПЛЮС-СТОРОНЫ (доказано):** множество простых `p ≡ 1 (mod 6)`
-    бесконечно — форма `Set.Infinite` от неограниченности выше. -/
+/-- **PLUS-SIDE INFINITE (proved):** the set of primes `p ≡ 1 (mod 6)`
+    is infinite — `Set.Infinite` form derived from unboundedness above. -/
 theorem plusSide_primes_infinite :
     {p : ℕ | p.Prime ∧ p % 6 = 1}.Infinite := by
   apply Set.infinite_of_not_bddAbove
@@ -91,10 +91,10 @@ theorem plusSide_primes_infinite :
   have hmem : p ∈ {p : ℕ | p.Prime ∧ p % 6 = 1} := ⟨hp, hmod⟩
   exact absurd (hB hmem) (not_le.mpr hgt)
 
-/-- **ЧЕСТНОСТЬ (охват):** обе стороны порознь зелёные (Дирихле, аналитика
-    mathlib), но СОГЛАСОВАНИЕ обеих сторон в одном центре `m` — одновременная
-    простота `6m − 1` и `6m + 1` — это гипотеза близнецов, и здесь она НЕ
-    утверждается, НЕ доказана и ниоткуда здесь не выводится. -/
+/-- **HONESTY (scope):** both sides are individually green (Dirichlet, analytic
+    mathlib), but ALIGNING both sides in a single center `m` — simultaneous
+    primality of `6m − 1` and `6m + 1` — is the twin-prime conjecture, and it is NOT
+    claimed here, NOT proved, and not derived from anything here. -/
 abbrev NoPairingClaimed : Prop := True
 
 theorem noPairingClaimed : NoPairingClaimed := trivial

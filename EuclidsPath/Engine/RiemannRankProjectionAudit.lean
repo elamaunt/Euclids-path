@@ -1,26 +1,26 @@
 /-
-  RiemannRankProjectionAudit — ⚠️ ЭПИЗОД ВАКУУМНОСТИ №2 (риманова ветка):
-  ЦЕЛЬ МАРШРУТА №8 ВСКРЫТА КАК НЕПРИВЯЗАННАЯ. Проза: prose/24, prose/30.
+  RiemannRankProjectionAudit — ⚠️ VACUITY EPISODE №2 (Riemann branch):
+  GOAL OF ROUTE №8 EXPOSED AS UNANCHORED. Prose: prose/24, prose/30.
 
-  НАЙДЕНО адверсариальным probe-агентом, перепроверено вручную:
-    * TwinCarrierEnergyJump = Nonempty (RankEnergyJump ...) — БЕЗ привязки к
-      нарушению/носителю: для естественной системы LiouvilleRankSystem
-      (rank = Ω, sign = λ) он — БЕЗУСЛОВНАЯ теорема (состояния 1 и 2);
-    * ПОЛНЫЙ пакет LiouvilleToTwinLocalization обитаем с НУЛЕВЫМ аналитическим
-      входом (fullLocalization_noInput): partition «всё релевантно»,
-      IrrelevantCancellation тривиальна, paired := False;
-    * поле paired ИНЕРТНО (unpaired_gives_jump его не упоминает);
-      куски (B)/(C) градуального маршрута dischargeable даром или почти даром
-      (crossing_gives_carrier — честная бухгалтерия непустоты relevant);
-    * (A) window-бухгалтерия ЗАКРЫТА честно: конкретный ledger
+  FOUND by adversarial probe-agent, verified manually:
+    * TwinCarrierEnergyJump = Nonempty (RankEnergyJump ...) — WITHOUT anchoring to
+      a violation/carrier: for the natural system LiouvilleRankSystem
+      (rank = Ω, sign = λ) it is an UNCONDITIONAL theorem (states 1 and 2);
+    * FULL package LiouvilleToTwinLocalization is inhabited with ZERO analytic
+      input (fullLocalization_noInput): partition "everything is relevant",
+      IrrelevantCancellation is trivial, paired := False;
+    * the field paired is INERT (unpaired_gives_jump never mentions it);
+      pieces (B)/(C) of the gradual route are dischargeable for free or nearly free
+      (crossing_gives_carrier — honest ledger of relevant non-emptiness);
+    * (A) window bookkeeping is CLOSED honestly: concrete ledger
       mass = |LRelevant|, capacity = ⌈X^{1/2+ε}⌉; relevantViolation_gives_window.
 
-  ЧЕСТНЫЙ ИТОГ (wall_relevant / wall_global): единственная несущая стена
-  маршрута №8 — ровно ¬LiouvilleViolation, т.е. RH-силы bound на суммарную
-  функцию Лиувилля. Декомпозиция «cancellation + pairing» была ЛОЖНОЙ
-  декомпозицией: pairing-сторона веса не несла. Маршрут требует
-  ПЕРЕФОРМУЛИРОВКИ с целью, привязанной к нарушению. RH НЕ доказана,
-  входы НЕ закрыты — вскрыта пустота одной из обёрток.
+  HONEST CONCLUSION (wall_relevant / wall_global): the sole load-bearing wall
+  of route №8 is exactly ¬LiouvilleViolation, i.e. an RH-strength bound on the
+  Liouville sum function. The decomposition "cancellation + pairing" was a FORGED
+  decomposition: the pairing side carried no weight. The route requires
+  REFORMULATION with a goal anchored to the violation. RH is NOT proved,
+  inputs are NOT closed — the vacuity of one of the wrappers has been exposed.
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannRankProjection

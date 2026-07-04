@@ -1,60 +1,63 @@
 /-
-  LegendreDesertFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль ветви простых
-  пустынь (prime deserts) программы вечного двигателя. ДВА БЛОКА:
+  LegendreDesertFront — a GREEN (axiom-free) module of the prime-deserts branch
+  of the perpetual-engine programme. TWO BLOCKS:
 
-    БЛОК 1 (namespace EuclidsPath.PrimeDeserts) — БЕЗУСЛОВНОЕ зелёное
-    содержание Бертрана и объект-свидетель Лежандра. Уникальная зелёная
-    сила этого фронта: постулат Бертрана (mathlib, unconditional) даёт
-    ТЕОРЕМУ «пустыня не может удвоиться» (no_desert_doubles): между n и 2n+1
-    простое ЕСТЬ всегда (n ≠ 0). Это единственный манифестационный фронт
-    программы, у которого несущая арифметика зелёная целиком, а не гейчена
-    открытой задачей.
+    BLOCK 1 (namespace EuclidsPath.PrimeDeserts) — the UNCONDITIONAL green
+    content of Bertrand and the Legendre object-witness. The unique green
+    strength of this front: Bertrand's postulate (mathlib, unconditional) yields
+    the THEOREM "a desert cannot double" (no_desert_doubles): between n and 2n+1
+    a prime ALWAYS EXISTS (n ≠ 0). This is the only manifestation front of the
+    programme whose carrier arithmetic is green in its entirety, not gated by an
+    open problem.
 
-    БЛОК 2 (namespaces EuclidsPath / ConcreteStep00Graph /
-    GeneratedFlowFormulation) — манифестационный фронт объект-свидетеля
-    Лежандра, зеркало OddPerfectManifestationFront: отклонение — ОБЪЕКТ-ДАННЫЕ
-    `V : LegendreViolation` (subtype {n // LegendreViolationAt n}, конкретное
-    нарушение гипотезы Лежандра: простая пустыня между n² и (n+1)²). Закон
-    ОБЪЕКТ-КВАНТИФИЦИРОВАН (∀ V, Manifests V); якорь масштаба M0 := V.1²
-    привязан к самому нарушению; негейченной «взрывной» формы не существует.
+    BLOCK 2 (namespaces EuclidsPath / ConcreteStep00Graph /
+    GeneratedFlowFormulation) — the manifestation front of the Legendre
+    object-witness, a mirror of OddPerfectManifestationFront: the deviation is
+    OBJECT-DATA `V : LegendreViolation` (subtype {n // LegendreViolationAt n}, a
+    concrete violation of Legendre's conjecture: a prime desert between n² and
+    (n+1)²). The law is OBJECT-QUANTIFIED (∀ V, Manifests V); the scale anchor
+    M0 := V.1² is tied to the violation itself; no ungated "explosive" form
+    exists.
 
-  ПОТОЧЕЧНАЯ РАЗРЕШИМОСТЬ (сильнейшая форма непредъявимости):
-  LegendreViolationAt разрешим (DecidablePred через bounded-ball форму
-  Nat.decidableBallLT) — всякая фальшивка умирает decide'ом
-  (legendre_holds_upTo_10: ниже 11 нарушений нет, машинно), а предъявить
-  НАСТОЯЩЕГО свидетеля = ОПРОВЕРГНУТЬ гипотезу Лежандра, открытую с 1808 г.
-  Литературная граница (проверено далеко за 10^18) НЕ формализована — зелёно
-  здесь только ≥ 11 (legendreViolation_ge_11).
+  POINTWISE DECIDABILITY (the strongest form of unpresentability):
+  LegendreViolationAt is decidable (DecidablePred via the bounded-ball form
+  Nat.decidableBallLT) — every forgery dies to `decide`
+  (legendre_holds_upTo_10: below 11 there are no violations, machine-checked),
+  while presenting a REAL witness = REFUTING Legendre's conjecture, open since
+  1808. The literary bound (checked far past 10^18) is NOT formalized — green
+  here is only ≥ 11 (legendreViolation_ge_11).
 
-  ЧЕСТНОЕ РАСКРЫТИЕ (машинно, legendre_interval_shorter_than_bertrand):
-  интервал Лежандра КОРОЧЕ бертрановского — при n ≥ 3 имеем (n+1)² < 2n²,
-  тогда как Бертран покрывает лишь [m, 2m]. Потому Бертран НЕ решает Лежандра:
-  зелёное «пустыня не удваивается» бессильно на квадратичной щели, и
-  NoBertrandToLegendreImplicationClaimed = True явно фиксирует, что НИКАКОЙ
-  импликации Бертран ⟹ Лежандр здесь не заявлено. Позитивная сторона той же
-  честности (bertrand_localizes_desert, §3b): на ГИПОТЕТИЧЕСКОМ свидетеле
-  пустыни Бертран всё же работает — выталкивает следующее простое в слой
-  [(n+1)², 2n²+2]; это локализация последствий нарушения, не его исключение.
+  HONEST DISCLOSURE (machine-checked, legendre_interval_shorter_than_bertrand):
+  the Legendre interval is SHORTER than Bertrand's — for n ≥ 3 we have
+  (n+1)² < 2n², whereas Bertrand covers only [m, 2m]. Hence Bertrand does NOT
+  solve Legendre: the green "a desert does not double" is powerless on the
+  quadratic gap, and NoBertrandToLegendreImplicationClaimed = True explicitly
+  records that NO implication Bertrand ⟹ Legendre is claimed here. The positive
+  side of the same honesty (bertrand_localizes_desert, §3b): on a HYPOTHETICAL
+  desert witness Bertrand still works — it pushes the next prime into the layer
+  [(n+1)², 2n²+2]; this localizes the consequences of a violation, not its
+  exclusion.
 
-  ЗНАК ЭВРИСТИКИ — ЗА (нарушений Лежандра нет ожидаемо): квантор закона
-  пробегает ожидаемо ПУСТОЙ тип LegendreViolation — закон ожидаемо
-  ВАКУУМНО-ИСТИНЕН, точное зеркало RH и нечётных совершенных (Риман был
-  ставкой на ожидаемо-истинное; здесь та же ориентация). При границе закон
-  ⟺ отсутствие нарушений ⟺ LegendreConjecture (LG7).
+  HEURISTIC SIGN — FOR (no Legendre violations, as expected): the law's
+  quantifier ranges over the expectedly EMPTY type LegendreViolation — the law
+  is expectedly VACUOUSLY TRUE, an exact mirror of RH and odd perfects (Riemann
+  was a bet on the expectedly-true; the same orientation here). Under a boundary
+  the law ⟺ absence of violations ⟺ LegendreConjecture (LG7).
 
-  ПОЛЕ НЕ ДОБАВЛЕНО — НАМЕРЕННО (§17-вердикт карантина): серийное расширение
-  декрета обесценило бы карантин. Закон живёт здесь ОПРЕДЕЛЕНИЕМ (прецедент
-  §16 / Мерсенна); непротиворечивость карантина на него НЕ ставится.
+  FIELD NOT ADDED — INTENTIONALLY (§17 quarantine verdict): a serial expansion
+  of the decree would devalue the quarantine. The law lives here by DEFINITION
+  (the §16 / Mersenne precedent); the consistency of the quarantine is NOT
+  staked on it.
 
-  ОДОЛЖЕННЫЕ L1/L2 (раскрыто): объект поставки DeviationFlowSupply — ТОТ ЖЕ,
-  что twin-bound строит зелёно (L1 римановского фронта); Impossible-сторона
-  на разрешённых масштабах — зелёная теорема
-  no_deviationFlowSupply_at_resolved_scale (переиспользована), НЕ декрет.
+  BORROWED L1/L2 (disclosed): the supply object DeviationFlowSupply is THE SAME
+  one that twin-bound builds green (L1 of the Riemann front); the Impossible
+  side at resolved scales is the green theorem
+  no_deviationFlowSupply_at_resolved_scale (reused), NOT a decree.
 
-  ЗАПРЕТ ВАКУУМНОСТИ: никаких свободных Prop-полей, свободных гейтов и
-  переименованных выводов — каждая гипотеза именована арифметически;
-  вакуумная обратная сторона закона раскрыта аудитом LG5. Модуль карантин НЕ
-  импортирует; axiom/sorry/native_decide нет.
+  VACUITY BAN: no free Prop-fields, no free gates, and no renamed conclusions —
+  every hypothesis is named arithmetically; the vacuous reverse side of the law
+  is disclosed by the LG5 audit. The module does NOT import the quarantine;
+  there is no axiom/sorry/native_decide.
 -/
 import Mathlib
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -63,24 +66,24 @@ import EuclidsPath.Engine.RiemannManifestationFront
 set_option autoImplicit false
 
 /-#############################################################################
-  БЛОК 1 — namespace EuclidsPath.PrimeDeserts
+  BLOCK 1 — namespace EuclidsPath.PrimeDeserts
 
-  Простые пустыни, БЕЗУСЛОВНЫЙ Бертран, объект-свидетель Лежандра.
+  Prime deserts, UNCONDITIONAL Bertrand, the Legendre object-witness.
 #############################################################################-/
 
 namespace EuclidsPath
 namespace PrimeDeserts
 
-/-- **Простая пустыня между `a` и `b`:** ни одно `p` строго между `a` и `b`
-    не является простым. Открытый интервал — граничные точки не участвуют. -/
+/-- **Prime desert between `a` and `b`:** no `p` strictly between `a` and `b`
+    is prime. An open interval — the endpoints do not participate. -/
 def PrimeDesertBetween (a b : ℕ) : Prop :=
   ∀ p, a < p → p < b → ¬ p.Prime
 
-/-- Разрешимость пустыни через ограниченную (bounded-ball) переформулировку:
-    `∀ p, p < b → a < p → ¬ p.Prime` несёт зелёный `Nat.decidableBallLT`,
-    который РЕДУЦИРУЕТСЯ под `decide` (в отличие от наивного Finset-ball,
-    чей instance не синтезируется). Порядок гипотез переставлен ровно так,
-    чтобы верхняя граница `p < b` шла первой (форма `Nat.decidableBallLT`). -/
+/-- Decidability of the desert via the bounded-ball reformulation:
+    `∀ p, p < b → a < p → ¬ p.Prime` carries the green `Nat.decidableBallLT`,
+    which REDUCES under `decide` (unlike the naive Finset-ball, whose instance
+    is not synthesized). The order of hypotheses is permuted exactly so that
+    the upper bound `p < b` comes first (the `Nat.decidableBallLT` form). -/
 instance instDecidablePrimeDesertBetween (a b : ℕ) :
     Decidable (PrimeDesertBetween a b) :=
   decidable_of_iff (∀ p, p < b → a < p → ¬ p.Prime) <| by
@@ -91,53 +94,53 @@ instance instDecidablePrimeDesertBetween (a b : ℕ) :
       exact h p hlt hpb
 
 /-#############################################################################
-  §1. БЕЗУСЛОВНЫЙ Бертран: пустыня не может удвоиться
+  §1. UNCONDITIONAL Bertrand: a desert cannot double
 #############################################################################-/
 
-/-- **ЗЕЛЁНОЕ (безусловное) содержание Бертрана — ГЛАВНАЯ ТЕОРЕМА блока 1:**
-    простая пустыня НЕ МОЖЕТ покрыть удвоение — между `n` и `2n+1` (при
-    `n ≠ 0`) простое существует ВСЕГДА. Прямая перепаковка постулата Бертрана
-    (`Nat.exists_prime_lt_and_le_two_mul`, mathlib, unconditional). Никакой
-    открытой задачи: этот факт — ТЕОРЕМА, а не гейт. -/
+/-- **GREEN (unconditional) content of Bertrand — the MAIN THEOREM of block 1:**
+    a prime desert CANNOT cover a doubling — between `n` and `2n+1` (for
+    `n ≠ 0`) a prime ALWAYS exists. A direct repackaging of Bertrand's postulate
+    (`Nat.exists_prime_lt_and_le_two_mul`, mathlib, unconditional). No open
+    problem: this fact is a THEOREM, not a gate. -/
 theorem no_desert_doubles {n : ℕ} (hn : n ≠ 0) :
     ¬ PrimeDesertBetween n (2 * n + 1) := by
   intro hdes
   obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul n hn
   exact hdes p hlt (by omega) hp
 
-/-- Прямая позитивная перепаковка Бертрана: следующее простое после `n`
-    не превосходит `2n` (при `n ≠ 0`). Форма-компаньон no_desert_doubles. -/
+/-- A direct positive repackaging of Bertrand: the next prime after `n`
+    does not exceed `2n` (for `n ≠ 0`). A companion form of no_desert_doubles. -/
 theorem nextPrime_le_two_mul {n : ℕ} (hn : n ≠ 0) :
     ∃ p, p.Prime ∧ n < p ∧ p ≤ 2 * n := by
   obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul n hn
   exact ⟨p, hp, hlt, hle⟩
 
 /-#############################################################################
-  §2. Объект-свидетель Лежандра и поточечная разрешимость
+  §2. The Legendre object-witness and pointwise decidability
 #############################################################################-/
 
-/-- **Нарушение гипотезы Лежандра в точке `n`:** `1 ≤ n` и между `n²` и
-    `(n+1)²` лежит простая пустыня (ни одного простого). Предъявить такое
-    `n` = опровергнуть гипотезу Лежандра. -/
+/-- **Violation of Legendre's conjecture at the point `n`:** `1 ≤ n` and a
+    prime desert (no prime) lies between `n²` and `(n+1)²`. Presenting such an
+    `n` = refuting Legendre's conjecture. -/
 def LegendreViolationAt (n : ℕ) : Prop :=
   1 ≤ n ∧ PrimeDesertBetween (n ^ 2) ((n + 1) ^ 2)
 
-/-- Поточечная разрешимость нарушения — прямо из разрешимости пустыни. -/
+/-- Pointwise decidability of the violation — directly from decidability of the desert. -/
 instance instDecidablePredLegendreViolationAt :
     DecidablePred LegendreViolationAt := fun n =>
   inferInstanceAs (Decidable (1 ≤ n ∧ _))
 
-/-- Тип-свидетель нарушения (subtype — для объект-квантификации и
-    bundling-аудита блока 2). Ожидаемо ПУСТОЙ тип (знак эвристики — ЗА). -/
+/-- The violation witness type (subtype — for object-quantification and the
+    bundling audit of block 2). An expectedly EMPTY type (heuristic sign — FOR). -/
 abbrev LegendreViolation : Type := {n // LegendreViolationAt n}
 
-/-- **Гипотеза Лежандра (1808):** между любыми последовательными квадратами
-    (`n ≥ 1`) есть простое. Открыта по сей день. -/
+/-- **Legendre's conjecture (1808):** between any consecutive squares
+    (`n ≥ 1`) there is a prime. Open to this day. -/
 def LegendreConjecture : Prop :=
   ∀ n, 1 ≤ n → ∃ p, p.Prime ∧ n ^ 2 < p ∧ p < (n + 1) ^ 2
 
-/-- Гипотеза Лежандра ⟺ нарушений нет. Прямая плумбинг-эквивалентность
-    (push_neg над определением пустыни). -/
+/-- Legendre's conjecture ⟺ there are no violations. A direct plumbing
+    equivalence (push_neg over the definition of the desert). -/
 theorem legendreConjecture_iff_no_violation :
     LegendreConjecture ↔ ∀ n, ¬ LegendreViolationAt n := by
   constructor
@@ -150,36 +153,36 @@ theorem legendreConjecture_iff_no_violation :
     refine hNo n ⟨hn, fun p hlo hhi hp => ?_⟩
     exact hne ⟨p, hp, hlo, hhi⟩
 
-/-- **LG-machine (поточечная разрешимость в действии):** ниже 11 нарушений
-    Лежандра НЕТ — все кандидаты `1 ≤ n < 11` отсеяны машинной проверкой
-    (`decide`, БЕЗ native_decide). Фальшивка умирает поточечно. -/
+/-- **LG-machine (pointwise decidability in action):** below 11 there are NO
+    Legendre violations — all candidates `1 ≤ n < 11` are screened out by a
+    machine check (`decide`, WITHOUT native_decide). A forgery dies pointwise. -/
 theorem legendre_holds_upTo_10 :
     ∀ n, n < 11 → 1 ≤ n → ¬ LegendreViolationAt n := by decide
 
-/-- **LG8 (локализация домена свидетеля, зеркало M8/OP8):** всякий свидетель
-    нарушения Лежандра ≥ 11 — меньшие точки отсеяны машинно
-    (`legendre_holds_upTo_10`). Литературная граница НЕ формализована —
-    зелёно только это. -/
+/-- **LG8 (witness domain localization, mirror of M8/OP8):** every Legendre
+    violation witness is ≥ 11 — smaller points are screened out by machine
+    (`legendre_holds_upTo_10`). The literary bound is NOT formalized —
+    only this is green. -/
 theorem legendreViolation_ge_11 (V : LegendreViolation) : 11 ≤ V.1 := by
   by_contra h
   exact legendre_holds_upTo_10 V.1 (by omega) V.2.1 V.2
 
 /-#############################################################################
-  §3. ЧЕСТНОЕ РАСКРЫТИЕ: интервал Лежандра КОРОЧЕ бертрановского
+  §3. HONEST DISCLOSURE: the Legendre interval is SHORTER than Bertrand's
 #############################################################################-/
 
-/-- **ЧЕСТНОСТЬ (машинно проверено):** интервал Лежандра `(n², (n+1)²)`
-    КОРОЧЕ бертрановского удвоения при `n ≥ 3`: `(n+1)² < 2n²`. Именно потому
-    зелёное `no_desert_doubles` (пустыня не удваивается) НЕ покрывает
-    квадратичную щель — Бертран НЕ решает Лежандра. -/
+/-- **HONESTY (machine-checked):** the Legendre interval `(n², (n+1)²)` is
+    SHORTER than Bertrand's doubling for `n ≥ 3`: `(n+1)² < 2n²`. Precisely why
+    the green `no_desert_doubles` (a desert does not double) does NOT cover
+    the quadratic gap — Bertrand does NOT solve Legendre. -/
 theorem legendre_interval_shorter_than_bertrand {n : ℕ} (h : 3 ≤ n) :
     (n + 1) ^ 2 < 2 * n ^ 2 := by
   nlinarith
 
-/-- **ЯВНЫЙ ОТКАЗ ОТ ЗАВЫШЕННОЙ ЗАЯВКИ:** НИКАКАЯ импликация Бертран ⟹
-    Лежандр в этом модуле не заявлена и не доказана. Флаг = True (тривиально):
-    честность фронта — в том, что зелёная сила блока 1 (Бертран) остаётся
-    строго слабее открытого блока 2 (Лежандр), см.
+/-- **EXPLICIT REFUSAL OF AN OVERSTATED CLAIM:** NO implication Bertrand ⟹
+    Legendre is claimed or proven in this module. The flag = True (trivially):
+    the honesty of the front is that the green strength of block 1 (Bertrand)
+    remains strictly weaker than the open block 2 (Legendre), see
     legendre_interval_shorter_than_bertrand. -/
 abbrev NoBertrandToLegendreImplicationClaimed : Prop := True
 
@@ -187,31 +190,32 @@ theorem noBertrandToLegendreImplicationClaimed_holds :
     NoBertrandToLegendreImplicationClaimed := trivial
 
 /-#############################################################################
-  §3b. БЕРТРАН-ЛОКАЛИЗАЦИЯ ПУСТЫНИ: единственная безусловная стена фронта
-       впервые РАБОТАЕТ на гипотетическом свидетеле Лежандра
+  §3b. BERTRAND DESERT-LOCALIZATION: the front's only unconditional wall
+       WORKS, for the first time, on a hypothetical Legendre witness
 #############################################################################-/
 
-/-- Зелёная арифметика слоя: `(n+1)² ≤ 2n²+2` для ВСЕХ `n` (это в точности
-    `n² ≥ 2n−1`, т.е. `(n−1)² ≥ 0`). Слой `[(n+1)², 2n²+2]` теоремы
-    `bertrand_localizes_desert` невырожден без всяких предусловий — граница
-    аккуратна даже при `n = 0`. -/
+/-- Green arithmetic of the layer: `(n+1)² ≤ 2n²+2` for ALL `n` (this is exactly
+    `n² ≥ 2n−1`, i.e. `(n−1)² ≥ 0`). The layer `[(n+1)², 2n²+2]` of the theorem
+    `bertrand_localizes_desert` is nondegenerate with no preconditions — the
+    bound is accurate even at `n = 0`. -/
 theorem legendre_layer_nonempty (n : ℕ) : (n + 1) ^ 2 ≤ 2 * n ^ 2 + 2 := by
   cases n with
   | zero => decide
   | succ m => nlinarith [Nat.zero_le m]
 
-/-- **БЕРТРАН-ЛОКАЛИЗАЦИЯ ПУСТЫНИ (позитивная сторона честности §3):** если
-    между `n²` и `(n+1)²` лежит простая пустыня (гипотетическое нарушение
-    Лежандра), то Бертран ВЫТАЛКИВАЕТ следующее простое в узкий слой
-    `[(n+1)², 2n²+2]`. Доказательство: Бертран на `n²+1` (mathlib,
-    `Nat.exists_prime_lt_and_le_two_mul`; `n²+1 ≠ 0` всегда — предусловий нет)
-    даёт простое `p ∈ (n²+1, 2n²+2]`; пустыня — ОТКРЫТЫЙ интервал, потому
-    `p < (n+1)²` запрещено и `p ≥ (n+1)²`; слой невырожден зелёной арифметикой
-    (`legendre_layer_nonempty`). ЧЕСТНОСТЬ: это НЕ импликация Бертран ⟹ Лежандр
-    (флаг `NoBertrandToLegendreImplicationClaimed` в силе — Бертран пустыню НЕ
-    исключает) и НЕ решение задачи 1808 г.: теорема лишь точно квантифицирует,
-    КУДА нарушение обязано сместить следующее простое. Оплачено целиком
-    безусловным mathlib-Бертраном — открытых входов нет. -/
+/-- **BERTRAND DESERT-LOCALIZATION (the positive side of the §3 honesty):** if
+    a prime desert (a hypothetical Legendre violation) lies between `n²` and
+    `(n+1)²`, then Bertrand PUSHES the next prime into the narrow layer
+    `[(n+1)², 2n²+2]`. Proof: Bertrand on `n²+1` (mathlib,
+    `Nat.exists_prime_lt_and_le_two_mul`; `n²+1 ≠ 0` always — no preconditions)
+    yields a prime `p ∈ (n²+1, 2n²+2]`; the desert is an OPEN interval, so
+    `p < (n+1)²` is forbidden and `p ≥ (n+1)²`; the layer is nondegenerate by
+    green arithmetic (`legendre_layer_nonempty`). HONESTY: this is NOT an
+    implication Bertrand ⟹ Legendre (the flag
+    `NoBertrandToLegendreImplicationClaimed` stands — Bertrand does NOT exclude
+    the desert) and NOT a solution of the 1808 problem: the theorem only
+    precisely quantifies WHERE a violation is obliged to shift the next prime.
+    Paid in full by unconditional mathlib-Bertrand — no open inputs. -/
 theorem bertrand_localizes_desert (n : ℕ)
     (hdes : PrimeDesertBetween (n ^ 2) ((n + 1) ^ 2)) :
     ∃ p, p.Prime ∧ (n + 1) ^ 2 ≤ p ∧ p ≤ 2 * n ^ 2 + 2 := by
@@ -223,17 +227,17 @@ theorem bertrand_localizes_desert (n : ℕ)
   · calc p ≤ 2 * (n ^ 2 + 1) := hle
       _ = 2 * n ^ 2 + 2 := by ring
 
-/-- **Следствие для объект-свидетеля (мост к блоку 2):** всякое гипотетическое
-    нарушение Лежандра `V` выталкивает простое в слой `[(V.1+1)², 2·V.1²+2]` —
-    прямая инстанциация `bertrand_localizes_desert` данными свидетеля `V.2.2`.
-    Тип `LegendreViolation` ожидаемо пуст (знак эвристики — ЗА), потому это
-    свойство ГИПОТЕТИЧЕСКОГО свидетеля, а не предъявленного числа. -/
+/-- **Corollary for the object-witness (bridge to block 2):** every hypothetical
+    Legendre violation `V` pushes a prime into the layer `[(V.1+1)², 2·V.1²+2]` —
+    a direct instantiation of `bertrand_localizes_desert` with the witness data
+    `V.2.2`. The type `LegendreViolation` is expectedly empty (heuristic sign —
+    FOR), so this is a property of a HYPOTHETICAL witness, not a presented number. -/
 theorem legendreViolation_forces_prime_in_gap (V : LegendreViolation) :
     ∃ p, p.Prime ∧ (V.1 + 1) ^ 2 ≤ p ∧ p ≤ 2 * V.1 ^ 2 + 2 :=
   bertrand_localizes_desert V.1 V.2.2
 
--- Машинная видимость чистоты блока 1
--- (ожидаемо [propext, Classical.choice, Quot.sound]):
+-- Machine-visible purity of block 1
+-- (expectedly [propext, Classical.choice, Quot.sound]):
 #print axioms no_desert_doubles
 #print axioms legendre_holds_upTo_10
 #print axioms legendre_interval_shorter_than_bertrand
@@ -245,12 +249,12 @@ end PrimeDeserts
 end EuclidsPath
 
 /-#############################################################################
-  БЛОК 2 — namespaces EuclidsPath / ConcreteStep00Graph /
+  BLOCK 2 — namespaces EuclidsPath / ConcreteStep00Graph /
            GeneratedFlowFormulation
 
-  Манифестационный фронт объект-свидетеля Лежандра (зеркало
-  OddPerfectManifestationFront). Якорь масштаба M0 := V.1² привязан к самому
-  нарушению; закон объект-квантифицирован по типу свидетелей.
+  Manifestation front of the Legendre object-witness (mirror of
+  OddPerfectManifestationFront). The scale anchor M0 := V.1² is tied to the
+  violation itself; the law is object-quantified over the type of witnesses.
 #############################################################################-/
 
 namespace EuclidsPath
@@ -258,17 +262,17 @@ namespace ConcreteStep00Graph
 namespace GeneratedFlowFormulation
 
 /-#############################################################################
-  §4. Закон манифестации (объект-квантифицирован; поле НЕ декретировано)
+  §4. Manifestation law (object-quantified; field NOT decreed)
 #############################################################################-/
 
-/-- Конкретное нарушение Лежандра манифестирует арифметически: на каждом
-    леджер-масштабе не ниже квадрата точки нарушения `V.1²`, всюду где
-    проекция сводит книги (коллизии разрешаются), свидетель проявляется
-    неоплатимой бесконечной поставкой потоков. Якорь `V.1² ≤ M0` потребляется
-    ниже только через `le_refl` (паттерн Римана/ОП: масштаб = высота
-    отклонения; здесь высота отклонения — квадрат точки нарушения). Причинная
-    форма: «отклонение обязано проявиться там, где книги сведены» — НЕ
-    утверждение о (не)существовании нарушений Лежандра. -/
+/-- A concrete Legendre violation manifests arithmetically: on every
+    ledger scale not below the square of the violation point `V.1²`, everywhere
+    the projection reconciles the books (collisions are resolved), the witness
+    shows itself as an unpayable infinite supply of flows. The anchor `V.1² ≤ M0`
+    is consumed below only through `le_refl` (the Riemann/OP pattern: scale = height
+    of the deviation; here the deviation height is the square of the violation point).
+    Causal form: "a deviation must show itself where the books are reconciled" — NOT
+    a statement about the (non-)existence of Legendre violations. -/
 def LegendreDesertManifests (V : EuclidsPath.PrimeDeserts.LegendreViolation) :
     Prop :=
   ∀ (A M0 : ℕ), V.1 ^ 2 ≤ M0 →
@@ -276,22 +280,22 @@ def LegendreDesertManifests (V : EuclidsPath.PrimeDeserts.LegendreViolation) :
       SemanticExtendedFlowLedgerCollisionResolves proj →
         DeviationFlowSupply A M0
 
-/-- **ЗАКОН МАНИФЕСТАЦИИ ЛЕЖАНДРА** — объект-квантифицирован по типу
-    свидетелей (зеркало `RiemannManifestationLaw` и OddPerfect, а НЕ гейченной
-    формы Мерсенна): квантор пробегает ожидаемо ПУСТОЙ тип, закон ожидаемо
-    вакуумно-истинен — точное зеркало RH. ПОЛЕ НЕ ДЕКРЕТИРОВАНО (§17-вердикт:
-    серийность обесценила бы карантин). -/
+/-- **LEGENDRE MANIFESTATION LAW** — object-quantified over the type of
+    witnesses (mirror of `RiemannManifestationLaw` and OddPerfect, and NOT the gated
+    Mersenne form): the quantifier ranges over an expectedly EMPTY type, the law is
+    expectedly vacuously true — an exact mirror of RH. FIELD NOT DECREED (§17 verdict:
+    seriality would devalue the quarantine). -/
 def LegendreManifestationLaw : Prop :=
   ∀ V : EuclidsPath.PrimeDeserts.LegendreViolation, LegendreDesertManifests V
 
 /-#############################################################################
-  §5. ESSENCE и читаемая форма: предъявление свидетеля предъявляет двигатель
+  §5. ESSENCE and readable form: presenting the witness presents the engine
 #############################################################################-/
 
-/-- **LG3⁺ — ЧИТАЕМАЯ ФОРМА «предъявить нарушение = предъявить двигатель»:**
-    конкретное нарушение Лежандра + закон + сведённые книги на масштабе не
-    ниже `V.1²` МАНИФЕСТИРУЮТ вечный двигатель — как ОБЪЕКТ, до убийства
-    lexRank'ом. -/
+/-- **LG3⁺ — READABLE FORM "present a violation = present an engine":**
+    a concrete Legendre violation + the law + reconciled books on a scale not
+    below `V.1²` MANIFEST a perpetual engine — as an OBJECT, before it is killed
+    by lexRank'. -/
 theorem legendreViolation_carries_engine
     (hLaw : LegendreManifestationLaw)
     (V : EuclidsPath.PrimeDeserts.LegendreViolation)
@@ -306,12 +310,12 @@ theorem legendreViolation_carries_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- **LG3 — ESSENCE (зеркало OP3 и римановской L3):** двигателей нет +
-    принятая граница + закон манифестации ⟹ нарушений Лежандра НЕТ. Все три
-    гипотезы потребляются ПО-НАСТОЯЩЕМУ: гипотетический свидетель V даёт
-    масштаб M0 := V.1², граница — разрешение ровно на нём (le_refl); закон
-    поставляет семью 𝓕 (не ex falso); из коллизии строится
-    двигатель-СВИДЕТЕЛЬ; убивает его именно hNoEngine. -/
+/-- **LG3 — ESSENCE (mirror of OP3 and the Riemann L3):** no engines +
+    accepted boundary + manifestation law ⟹ there are NO Legendre violations. All three
+    hypotheses are consumed FOR REAL: a hypothetical witness V gives the
+    scale M0 := V.1², the boundary — resolution exactly on it (le_refl); the law
+    supplies the family 𝓕 (not ex falso); from the collision an
+    engine-WITNESS is built; it is precisely hNoEngine that kills it. -/
 theorem noLegendreViolation_of_manifestation_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -326,10 +330,10 @@ theorem noLegendreViolation_of_manifestation_and_boundary
     legendreViolation_carries_engine hLaw V (le_refl (V.1 ^ 2))
       (projOf (V.1 ^ 2)) hResolves⟩
 
-/-- **LG4 — достаточность как ТЕОРЕМА:** та же тройка ⟹ гипотеза Лежандра.
-    Отсутствие нарушений (через
-    `legendreConjecture_iff_no_violation`) — и есть гипотеза Лежандра;
-    ¬Nonempty распаковывается в поточечное отрицание. -/
+/-- **LG4 — sufficiency as a THEOREM:** the same triple ⟹ the Legendre conjecture.
+    The absence of violations (through
+    `legendreConjecture_iff_no_violation`) is exactly the Legendre conjecture;
+    ¬Nonempty unpacks into a pointwise negation. -/
 theorem legendreConjecture_of_manifestation_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -341,23 +345,23 @@ theorem legendreConjecture_of_manifestation_and_boundary
     hNoEngine hBoundary hLaw ⟨⟨n, hViol⟩⟩
 
 /-#############################################################################
-  §6. Аудиты честности (LG5–LG9)
+  §6. Honesty audits (LG5–LG9)
 #############################################################################-/
 
-/-- **LG5 (вакуумная обратная сторона, зеркало OP5/L5):** отсутствие
-    нарушений ⟹ закон — вакуумно: собственные данные свидетеля V.2
-    противоречат отсутствию напрямую (тип свидетелей пуст). Несущая сторона —
-    LG3, и ей нужна граница. -/
+/-- **LG5 (vacuous reverse side, mirror of OP5/L5):** the absence of
+    violations ⟹ the law — vacuously: the witness's own data V.2
+    contradict the absence directly (the type of witnesses is empty). The carrying side is
+    LG3, and it needs the boundary. -/
 theorem legendreManifestationLaw_of_no_violation
     (H : ∀ n, ¬ EuclidsPath.PrimeDeserts.LegendreViolationAt n) :
     LegendreManifestationLaw := fun V =>
   (H V.1 V.2).elim
 
-/-- **LG6 (точная зелёная характеризация, зеркало OP6/L6):** закон ⟺
-    «нарушение Лежандра заморозило бы всякий разрешающий леджер на масштабах
-    не ниже своего квадрата». Обратное направление — ex falso от ¬resolves
-    (раскрыто); содержательная сторона — прямая (закон + разрешение ⟹
-    поставка ⟹ противоречие с зелёной L2). -/
+/-- **LG6 (exact green characterization, mirror of OP6/L6):** the law ⟺
+    "a Legendre violation would freeze every resolving ledger at scales
+    not below its square". The reverse direction — ex falso from ¬resolves
+    (unfolded); the substantive side — the forward one (law + resolution ⟹
+    supply ⟹ contradiction with the green L2). -/
 theorem legendreManifestationLaw_iff_no_resolution_above_witness :
     LegendreManifestationLaw ↔
       ∀ (V : EuclidsPath.PrimeDeserts.LegendreViolation) (A M0 : ℕ),
@@ -371,11 +375,11 @@ theorem legendreManifestationLaw_iff_no_resolution_above_witness :
   · intro hFreeze V A M0 hle proj hres
     exact ((hFreeze V A M0 hle proj) hres).elim
 
-/-- **LG7 — ГЛАВНЫЙ АУДИТ ЦЕНЫ (зеркало OP7/M7/L7):** при границе закон ⟺
-    гипотеза Лежандра — поле было бы ровно силы задачи, открытой с 1808 г.
-    БЕЗ границы «закон ⟹ Лежандр» зелёно не собирается (LG3/LG4 требуют
-    границу). Знак эвристики направлен ЗА правую часть этого ⟺ (как у Римана
-    и OddPerfect) — и всё же поле не добавлено (§17). -/
+/-- **LG7 — MAIN PRICE AUDIT (mirror of OP7/M7/L7):** under the boundary, the law ⟺
+    the Legendre conjecture — the field would be exactly of the strength of the problem, open since 1808.
+    WITHOUT the boundary "law ⟹ Legendre" does not assemble green (LG3/LG4 require
+    the boundary). The heuristic sign points FOR the right-hand side of this ⟺ (as with Riemann
+    and OddPerfect) — and yet the field is not added (§17). -/
 theorem legendreManifestationLaw_iff_conjecture_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     LegendreManifestationLaw ↔ EuclidsPath.PrimeDeserts.LegendreConjecture := by
@@ -386,8 +390,8 @@ theorem legendreManifestationLaw_iff_conjecture_of_boundary
     exact legendreManifestationLaw_of_no_violation
       (EuclidsPath.PrimeDeserts.legendreConjecture_iff_no_violation.mp hLC)
 
-/-- Закон в Bridge-форме над типом свидетелей — здесь ПРЯМАЯ репаковка
-    (объект-квантификация и есть Bridge; ср. репаковку у OddPerfect). -/
+/-- The law in Bridge form over the type of witnesses — here a DIRECT repacking
+    (object-quantification is exactly the Bridge; cf. the repacking in OddPerfect). -/
 theorem legendreManifestationLaw_iff_bridge :
     LegendreManifestationLaw ↔
       EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
@@ -395,10 +399,10 @@ theorem legendreManifestationLaw_iff_bridge :
           LegendreDesertManifests V) :=
   ⟨fun hLaw V => hLaw V, fun hB V => hB V⟩
 
-/-- **LG9 (bundling-аудит, инстанциация осуждающей машины):** связка
-    Bridge∧Impossible ⟺ «нарушений Лежандра нет» — декретироваться могла бы
-    ТОЛЬКО Bridge-сторона; Impossible-сторона на разрешённых масштабах —
-    зелёная L2, никогда не декрет. -/
+/-- **LG9 (bundling audit, instantiation of the condemning machine):** the bundle
+    Bridge∧Impossible ⟺ "there are no Legendre violations" — decreeable could be
+    ONLY the Bridge side; the Impossible side on resolved scales is
+    the green L2, never a decree. -/
 theorem legendreManifestation_bundling_audit :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun V : EuclidsPath.PrimeDeserts.LegendreViolation =>
@@ -409,8 +413,8 @@ theorem legendreManifestation_bundling_audit :
       ¬ Nonempty EuclidsPath.PrimeDeserts.LegendreViolation :=
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_no_zero _
 
--- Машинная видимость чистоты блока 2 в build-логе
--- (ожидаемо [propext, Classical.choice, Quot.sound] — БЕЗ step00FirstCause):
+-- Machine-visible cleanliness of block 2 in the build log
+-- (expectedly [propext, Classical.choice, Quot.sound] — WITHOUT step00FirstCause):
 #print axioms noLegendreViolation_of_manifestation_and_boundary
 #print axioms legendreConjecture_of_manifestation_and_boundary
 #print axioms legendreViolation_carries_engine

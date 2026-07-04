@@ -1,17 +1,17 @@
 /-
-  «Двигатель не работает назад на двух точках»: точный факт об эксклюзивности.
-  Проза: prose/23_NoBackward.md.
+  "The engine does not work backward at two points": an exact fact about exclusivity.
+  Prose: prose/23_NoBackward.md.
 
-  Численная разведка (tools/RESULTS_rank2.md): матрица счётов `N_ij ≈ ранг-1` (независимость
-  `r₋ ⊥ r₊`), а four-corner = знак ранг-2 поправки, РОБАСТНО отрицательный на всех масштабах,
-  потому что `Cov(r₋,r₊) < 0` всюду. Источник этого знака — ТОЧНАЯ эксклюзивность: простой делит
-  не более одной стороны (`Carrier.no_large_shared_divisor`, `shared gcd ∣ 2`).
+  Numerical reconnaissance (tools/RESULTS_rank2.md): the score matrix `N_ij ≈ rank-1` (independence
+  `r₋ ⊥ r₊`), and four-corner = sign of the rank-2 correction, ROBUSTLY negative at all scales,
+  because `Cov(r₋,r₊) < 0` everywhere. The source of this sign is EXACT exclusivity: a prime divides
+  at most one side (`Carrier.no_large_shared_divisor`, `shared gcd ∣ 2`).
 
-  Здесь зафиксирован точный механизм: при эксклюзивности `X_p·Y_p = 0` диагональ (тот же простой на
-  обеих сторонах = «движение назад на одной точке») ИСЧЕЗАЕТ, и произведение `(Σ X)(Σ Y)` целиком
-  внедиагонально. Это и есть «двигатель не работает назад на двух точках»: нет self-перехода 2→2.
+  Here the exact mechanism is recorded: under exclusivity `X_p·Y_p = 0` the diagonal (same prime on
+  both sides = "moving backward at one point") VANISHES, and the product `(Σ X)(Σ Y)` is entirely
+  off-diagonal. This is precisely "the engine does not work backward at two points": no self-transition 2→2.
 
-  Всё — конечные суммы (Finset). Без анализа/распределения/сита.
+  Everything uses finite sums (Finset). No analysis / distribution / sieve.
 -/
 import Mathlib
 
@@ -19,18 +19,18 @@ set_option autoImplicit false
 
 namespace EuclidsPath
 
-/-- **Диагональ исчезает (эксклюзивность).** Если на каждом простом `X_p·Y_p = 0` (делит ≤ 1 стороны),
-    то сумма «self»-членов `Σ_p X_p·Y_p = 0` — нет движения назад на одной точке. -/
+/-- **The diagonal vanishes (exclusivity).** If for every prime `X_p·Y_p = 0` (divides ≤ 1 side),
+    then the sum of "self"-terms `Σ_p X_p·Y_p = 0` — no backward movement at one point. -/
 theorem exclusive_diag_zero {ι : Type*} (s : Finset ι) (X Y : ι → ℕ)
     (hexcl : ∀ i ∈ s, X i * Y i = 0) :
     ∑ i ∈ s, X i * Y i = 0 :=
   Finset.sum_eq_zero hexcl
 
 /--
-  **Двигатель не работает назад на двух точках.** При эксклюзивности `X_p·Y_p = 0` произведение
-  рангов `(Σ_p X_p)·(Σ_q Y_q)` целиком ВНЕДИАГОНАЛЬНО:
-  `(Σ X)·(Σ Y) = Σ_i Σ_{j≠i} X_i·Y_j`. Диагональный (self-) член отсутствует.
-  Это точный источник отрицательной ассоциации `(r₋,r₊)` (численно `Cov < 0` всюду).
+  **The engine does not work backward at two points.** Under exclusivity `X_p·Y_p = 0` the product
+  of ranks `(Σ_p X_p)·(Σ_q Y_q)` is entirely OFF-DIAGONAL:
+  `(Σ X)·(Σ Y) = Σ_i Σ_{j≠i} X_i·Y_j`. The diagonal (self-) term is absent.
+  This is the exact source of the negative association `(r₋,r₊)` (numerically `Cov < 0` everywhere).
 -/
 theorem exclusive_no_backward {ι : Type*} [DecidableEq ι] (s : Finset ι) (X Y : ι → ℕ)
     (hexcl : ∀ i ∈ s, X i * Y i = 0) :

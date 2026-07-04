@@ -1,27 +1,27 @@
 /-
-  RiemannTerminalRankFront — серия terminal/rank-flow/fuel (18 кирпичей):
+  RiemannTerminalRankFront — the terminal/rank-flow/fuel series (18 bricks):
   terminal matrix / typed-matrix / dichotomy collapse, execution pack v2,
   executable replay, closure certificate / executor v2, rank-flow water-kernel,
   forced cascade, filling, final closure kernel, fuel source / filled-to-target,
   zero-to-rank-flow realization, reduce-to-proven-theory, honest closure status.
 
-  ЧЕСТНОСТЬ (флаги сборочного аудита, машинно):
-    * Кирпич rank_projection_strict ИСКЛЮЧЁН — дословный дубликат уже
-      интегрированного Engine/RiemannRankProjection.lean.
-    * КАЖДЫЙ closure-сертификат серии несёт поле-обёртку
-      target_of_noZeros : (нулей нет) -> Target — RH-образный вывод является
-      ВХОДОМ; сама no-zeros-часть приходит из assumption-полей
+  HONESTY (build-audit flags, machine-level):
+    * Brick rank_projection_strict EXCLUDED — verbatim duplicate of the already
+      integrated Engine/RiemannRankProjection.lean.
+    * EVERY closure certificate in the series carries a wrapper field
+      target_of_noZeros : (no zeros) -> Target — the RH-style conclusion is an
+      INPUT; the no-zeros part itself comes from assumption fields
       (DeterminantGapKernel.contradiction, allBlocked_false, cover, same_mass):
-      требуемая локальная невозможность ПРЕДПОЛАГАЕТСЯ, не доказывается.
-    * Инертные гейты: NonEngineFirewall.holds_for_valid_anchor (безусловный),
-      AntiEngineFirewall (голый Prop), ActiveRank := True, аудиты вида
-      forall _, True, Prop-леджеры (Workload/TypedSlot/Gate/FinalSlot/
+      the required local impossibility is ASSUMED, not proved.
+    * Inert gates: NonEngineFirewall.holds_for_valid_anchor (unconditional),
+      AntiEngineFirewall (bare Prop), ActiveRank := True, audits of the form
+      forall _, True, Prop-ledgers (Workload/TypedSlot/Gate/FinalSlot/
       FilledFuelAudit).
-    * native_decide (13 мест) заменён на decide. RiemannHypothesis — только в
-      комментариях; безусловных сильных выводов нет.
-  Фиксы: de-Prop данных-структур, universe-аскрипции, Decidable-инстансы для
-  BalancedAt, явные implicit-аргументы, автопараметры, три починенные
-  And-проекции (proof-only), keyword-поле local переименовано.
+    * native_decide (13 sites) replaced by decide. RiemannHypothesis — only in
+      comments; no unconditional strong conclusions.
+  Fixes: de-Prop of data structures, universe ascriptions, Decidable instances for
+  BalancedAt, explicit implicit arguments, auto-parameters, three repaired
+  And-projections (proof-only), keyword field local renamed.
 -/
 import Mathlib
 import EuclidsPath.Engine.RiemannRankProjection

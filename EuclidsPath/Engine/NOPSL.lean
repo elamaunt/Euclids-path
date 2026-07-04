@@ -1,17 +1,17 @@
 /-
-  NOPSL — No Old-Peel Sink Lemma. Замыкание SNOL через old-peel регенерацию.
-  Источник: snol_old_peel_closure_ru_2026-06-30.md (§5–14). Проза: prose/20_NOPSL.md.
+  NOPSL — No Old-Peel Sink Lemma. Closure of SNOL via old-peel regeneration.
+  Source: snol_old_peel_closure_ru_2026-06-30.md (§5–14). Prose: prose/20_NOPSL.md.
 
-  Абстрактное ядро финального замыкания. Состояние old-peel ledger имеет высоту `h : σ → ℕ`.
-  Дихотомия каждого состояния (§10–11, four cases): либо оно — КОРРЕКТНЫЙ sink (twin / clean-возврат
-  с остановкой), либо у него есть преемник СТРОГО МЕНЬШЕЙ высоты (next old-peel / fan-in / known
-  defect — все они old-peel-регенерируют, `t < n`, см. `OldPeel.old_peel_height_drop`).
+  Abstract core of the final closure. A state of the old-peel ledger carries a height `h : σ → ℕ`.
+  Dichotomy of every state (§10–11, four cases): either it is a VALID sink (twin / clean-return
+  with halt), or it has a successor of STRICTLY SMALLER height (next old-peel / fan-in / known
+  defect — all of them old-peel-regenerate, `t < n`, see `OldPeel.old_peel_height_drop`).
 
-  NOPSL: carrier-scale SN-catch НЕ может быть genuine terminal sink. Формально: если поток не имеет
-  корректного sink (нет twin), то у каждого состояния есть нисходящий преемник ⟹ бесконечный строгий
-  спуск ⟹ противоречие с двигателем (EPMI, `no_infinite_engine_descent`).
+  NOPSL: a carrier-scale SN-catch CANNOT be a genuine terminal sink. Formally: if the flow has no
+  valid sink (no twin), then every state has a descending successor ⟹ infinite strict
+  descent ⟹ contradiction with the perpetual engine (EPMI, `no_infinite_engine_descent`).
 
-  Логика — та же, что у двигателя: строгое убывание высоты не может длиться вечно.
+  The logic is the same as for the perpetual engine: strict decrease of height cannot last forever.
 -/
 import Mathlib
 import EuclidsPath.Engine.EPMI
@@ -28,61 +28,61 @@ open EuclidsPath.Engine
 variable {σ : Type*}
 
 /--
-  **Дихотомия состояния (§10–11, four-case taxonomy).** `Sink` — корректная остановка потока
-  (twin sink или clean-возврат, который не продолжается вниз). `Step h s s'` — old-peel шаг со
-  строгим падением высоты (`h s' < h s`): покрывает next-peel / fan-in / known-defect.
+  **State dichotomy (§10–11, four-case taxonomy).** `Sink` — a valid halt of the flow
+  (twin sink or clean-return that does not continue downward). `Step h s s'` — an old-peel step with
+  strict height drop (`h s' < h s`): covers next-peel / fan-in / known-defect.
 -/
 structure OldPeelLedger (σ : Type*) where
-  /-- высота состояния (центр) -/
+  /-- height of the state (center) -/
   h : σ → ℕ
-  /-- корректный sink: twin или остановившийся clean-возврат -/
+  /-- valid sink: twin or a halted clean-return -/
   Sink : σ → Prop
-  /-- old-peel преемник со строгим падением высоты -/
+  /-- old-peel successor with strict height drop -/
   Step : σ → σ → Prop
-  /-- **закон old-peel:** каждый шаг строго уменьшает высоту (`OldPeel.old_peel_height_drop`) -/
+  /-- **old-peel law:** every step strictly decreases the height (`OldPeel.old_peel_height_drop`) -/
   step_drops : ∀ {s s'}, Step s s' → h s' < h s
-  /-- **регенерация (§10, NOPSL-ядро):** не-sink состояние ВСЕГДА имеет old-peel преемника
-      (clean-возврат/next-peel/fan-in/known-defect — но не «висячий» терминал) -/
+  /-- **regeneration (§10, NOPSL core):** a non-sink state ALWAYS has an old-peel successor
+      (clean-return/next-peel/fan-in/known-defect — but not a "dangling" terminal) -/
   regenerate : ∀ s, ¬ Sink s → ∃ s', Step s s'
 
 /--
-  **NOPSL (Теорема 11.1 / 13.1).** В old-peel ledger из любого состояния поток за конечное число
-  шагов достигает корректного sink: НЕ существует бесконечной траектории без sink. Доказательство —
-  чистая логика двигателя: иначе высота строго убывает вечно (`step_drops`), что невозможно в ℕ.
+  **NOPSL (Theorem 11.1 / 13.1).** In the old-peel ledger, from any state the flow reaches a valid
+  sink in finitely many steps: there is NO infinite trajectory without a sink. The proof is
+  pure perpetual-engine logic: otherwise height decreases strictly forever (`step_drops`), which is impossible in ℕ.
 -/
 theorem no_old_peel_sink (L : OldPeelLedger σ) (start : σ) :
     ∃ s, L.Sink s := by
   by_contra hno
-  -- нет ни одного sink ⟹ каждое состояние не-sink ⟹ имеет нисходящего преемника
+  -- no sink at all ⟹ every state is a non-sink ⟹ has a descending successor
   have hstep : ∀ s, ∃ s', L.Step s s' := fun s => L.regenerate s (fun hs => hno ⟨s, hs⟩)
-  -- строим бесконечную цепь по выбору преемника
+  -- build an infinite chain by choosing successors
   choose next hnext using hstep
   let z : ℕ → σ := fun k => Nat.rec start (fun _ s => next s) k
   have hz : ∀ k, L.Step (z k) (z (k + 1)) := fun k => hnext (z k)
-  -- высота строго убывает на каждом шаге ⟹ бесконечный спуск ⟹ False
+  -- height decreases strictly at every step ⟹ infinite descent ⟹ False
   have hdrop : ∀ k, L.h (z (k + 1)) < L.h (z k) := fun k => L.step_drops (hz k)
   exact OldPeel.old_peel_terminates (fun k => L.h (z k)) hdrop
 
 /--
-  **SNOL как следствие NOPSL (§13).** Если carrier-scale terminal shifted-neighbour obstruction
-  существовал бы, его состояния были бы НЕ-sink (нет twin) и НЕ имели бы регенерации — что
-  противоречит `regenerate`. Значит obstruction невозможен: поток достигает twin sink.
-  Формально: из любого старта существует sink (= twin или остановка), `no_old_peel_sink`.
+  **SNOL as a corollary of NOPSL (§13).** If a carrier-scale terminal shifted-neighbour obstruction
+  existed, its states would be NON-sinks (no twin) and would have NO regeneration — contradicting
+  `regenerate`. Hence the obstruction is impossible: the flow reaches a twin sink.
+  Formally: from any start there exists a sink (= twin or halt), `no_old_peel_sink`.
 -/
 theorem snol_of_nopsl (L : OldPeelLedger σ) (start : σ) : ∃ s, L.Sink s :=
   no_old_peel_sink L start
 
-/-! ### Мост к гипотезе: NOPSL ⟹ бесконечно много близнецов -/
+/-! ### Bridge to the conjecture: NOPSL ⟹ infinitely many twin primes -/
 
 open EuclidsPath in
 /--
-  **Финальное замыкание (Теорема 14.1).** Пусть на каждом масштабе `N` дан old-peel ledger со
-  стартом, у которого КАЖДЫЙ корректный sink — это twin-центр выше `N` (поток old-peel
-  останавливается только на близнеце). Тогда по NOPSL sink существует, значит на каждом `N` есть
-  twin-центр выше `N` ⟹ простых-близнецов бесконечно много (`infinite_of_unbounded_centers`).
+  **Final closure (Theorem 14.1).** Suppose that at every scale `N` an old-peel ledger is given with
+  a start such that EVERY valid sink is a twin-center above `N` (the old-peel flow halts only on a
+  twin). Then by NOPSL a sink exists, so at every `N` there is a twin-center above `N` ⟹ infinitely
+  many twin primes (`infinite_of_unbounded_centers`).
 
-  Это замыкает всю программу на двигатель: единственный вход — структура `OldPeelLedger`
-  (регенерация old-peel + строгое падение высоты), а НЕ распределение.
+  This closes the whole programme back to the perpetual engine: the sole input is the `OldPeelLedger`
+  structure (old-peel regeneration + strict height drop), and NOT distribution.
 -/
 theorem twin_primes_of_nopsl
     (L : ∀ N : ℕ, OldPeelLedger σ) (start : ∀ N : ℕ, σ)

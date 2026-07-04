@@ -1,46 +1,46 @@
 /-
-  MersenneManifestationFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль Мерсенн-ветви
-  программы вечного двигателя: «опровергнуть Мерсенн-близнецов = предъявить
-  вечный двигатель», проведённое манифестационной архитектурой Римана.
+  MersenneManifestationFront — GREEN (axiom-free) module of the Mersenne branch
+  of the perpetual engine programme: "refuting Mersenne twins = exhibiting
+  a perpetual engine", carried out via the Riemann manifestation architecture.
 
-  Отклонение здесь — НЕ объект-данные (как off-critical нуль), а Π-свидетель:
-  `MersenneTwinAbsenceAbove P` — отсутствие Мерсенн-близнецов выше порога P
-  (зеркало TwinBoundAbove). Закон манифестации ГЕЙЧЕН этим свидетелем:
-  негейченная форма (∀ P, Manifests P) взорвала бы принятую границу — как
-  манифестационные кандидаты ЯМ/НС (раскрыто ниже).
+  The deviation here is NOT an object-datum (like an off-critical zero) but a Π-witness:
+  `MersenneTwinAbsenceAbove P` — absence of Mersenne twins above threshold P
+  (mirror of TwinBoundAbove). The manifestation law is GATED by this witness:
+  the ungated form (∀ P, Manifests P) would blow up the accepted boundary — like
+  the manifestation candidates YM/NS (exposed below).
 
-  Архитектура (зеркало RiemannManifestationFront):
-    * плумбинг отрицаний: свидетель отсутствия ⟺ ¬неограниченность;
-    * арифметика базы-4 цепи центров (m→4m+1, репьюниты) — строго монотонна,
-      инъективна; И КЛЮЧЕВОЕ РАСКРЫТИЕ: цепь НЕ ПИЛИТСЯ
-      (`isEmpty_properCenterPeel_five_one`) — коэффициент 4 не прост и
-      ≢ ±1 (mod 6), уже первый шаг 5→1 пуст (стороны 29/31 просты, цели 5/7).
-      Потому КОВАНОГО свидетеля в этой ветви НЕ СУЩЕСТВУЕТ — в отличие от
-      ЯМ (cookedLadder) и НС (cookedProfileCascade), в точности как у Римана;
-    * закон манифестации `MersenneManifestationLaw` (якорь M0 := P,
-      потребляется через le_refl); Impossible-сторона — зелёная теорема
-      `no_deviationFlowSupply_at_resolved_scale` (переиспользована), НЕ декрет;
-    * ESSENCE M3: нет двигателей + принятая граница + закон ⟹
-      Мерсенн-близнецы неограничены (все три гипотезы подлинно потребляются);
-    * ЧИТАЕМАЯ ФОРМА M3⁺ `mersenneRefutation_carries_engine`: свидетель
-      отсутствия + закон + сведённые книги ⟹ двигатель-СВИДЕТЕЛЬ как объект.
+  Architecture (mirror of RiemannManifestationFront):
+    * negation plumbing: absence witness ⟺ ¬unboundedness;
+    * base-4 arithmetic of the center chain (m→4m+1, repunits) — strictly monotone,
+      injective; AND THE KEY DISCLOSURE: the chain IS NOT PEELED
+      (`isEmpty_properCenterPeel_five_one`) — coefficient 4 is not prime and
+      ≢ ±1 (mod 6), already the first step 5→1 is empty (sides 29/31 are prime, targets 5/7).
+      Therefore NO FORGED WITNESS exists in this branch — unlike
+      YM (cookedLadder) and NS (cookedProfileCascade), exactly as with Riemann;
+    * manifestation law `MersenneManifestationLaw` (anchor M0 := P,
+      consumed below only via le_refl); the Impossible side — the green theorem
+      `no_deviationFlowSupply_at_resolved_scale` (reused), NOT a decree;
+    * ESSENCE M3: no engines + accepted boundary + law ⟹
+      Mersenne twins are unbounded (all three hypotheses genuinely consumed);
+    * READABLE FORM M3⁺ `mersenneRefutation_carries_engine`: absence witness
+      + law + balanced ledger ⟹ engine-WITNESS as an object.
 
-  ТРИЛЕММА ЧЕТВЁРТОГО ПОЛЯ ПРОЙДЕНА (V1: не опровержим — любой свидетель
-  отсутствия ≥ 29 (M8) и предъявление ≥ решения открытой задачи о хвосте;
-  V2: не доказуем/не вакуумен — вакуумность ⟺ открытая неограниченность;
-  V3: границу не взрывает — коваться нечему). НО ПОЛЕ НЕ ДОБАВЛЕНО — НАМЕРЕННО:
-  ⚠️ ЗНАК ЭВРИСТИКИ ИНВЕРТИРОВАН. При границе закон ⟺
-  MersenneTwinCentersUnbounded (M7), а эвристика направлена ПРОТИВ
-  неограниченности (Σ по twin-парам Мерсенна сходится; известны лишь p = 3, 5;
-  при p ≡ 3 (mod 4) всегда 5 ∣ 2^p−3). Риман был ставкой на ожидаемо-истинное;
-  Мерсенн был бы первой границей, чья ожидаемая истинность отрицательна.
-  Решение зафиксировано: закон живёт здесь определением (как
-  RiemannManifestationLaw до §10), непротиворечивость карантина на него
-  НЕ ставится. См. §16-комментарий карантина и prose/43.
+  FOURTH-FIELD TRILEMMA PASSED (V1: not refutable — any absence witness
+  is ≥ 29 (M8) and its exhibition ≥ the solution of the open tail problem;
+  V2: not provable / not vacuous — vacuity ⟺ open unboundedness;
+  V3: does not blow up the boundary — nothing to forge). BUT THE FIELD IS NOT ADDED — DELIBERATELY:
+  ⚠️ HEURISTIC SIGN IS INVERTED. Under the boundary, law ⟺
+  MersenneTwinCentersUnbounded (M7), but the heuristic points AGAINST
+  unboundedness (Σ over Mersenne twin pairs converges; only p = 3, 5 are known;
+  for p ≡ 3 (mod 4) always 5 ∣ 2^p−3). Riemann was a bet on the expectedly-true;
+  Mersenne would be the first boundary whose expected truth is negative.
+  Decision recorded: the law lives here by definition (like
+  RiemannManifestationLaw before §10); quarantine consistency is NOT
+  staked on it. See the §16 quarantine comment and prose/43.
 
-  ЗАПРЕТ ВАКУУМНОСТИ №3: никаких свободных Prop-полей, свободных гейтов и
-  переименованных выводов — каждая гипотеза именована арифметически.
-  Модуль карантин НЕ импортирует; axiom/sorry нет.
+  VACUITY PROHIBITION №3: no free Prop-fields, free gates, or
+  renamed conclusions — every hypothesis is named arithmetically.
+  The module does NOT import quarantine; no axiom/sorry.
 -/
 import Mathlib
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -54,18 +54,18 @@ namespace ConcreteStep00Graph
 namespace GeneratedFlowFormulation
 
 /-#############################################################################
-  §1. Свидетель отклонения: отсутствие Мерсенн-близнецов выше порога
+  §1. Deviation witness: absence of Mersenne twins above threshold
 #############################################################################-/
 
-/-- **Отсутствие Мерсенн-близнецов выше `P`** (Π-свидетель, зеркало
-    `TwinBoundAbove`): каждый Мерсенн-близнец сидит по нижней стороне
-    `2^p − 3` не выше `P`. ⚠️ НЕ путать с
-    `Mersenne.PeelPaymentPressure.MersenneTwinAbsentAtOrAbove` — та форма
-    по ИНДЕКСУ k цепи и параметрична по PrimeLike. -/
+/-- **Absence of Mersenne twins above `P`** (Π-witness, mirror of
+    `TwinBoundAbove`): every Mersenne twin sits on the lower side
+    `2^p − 3` at most `P`. ⚠️ Do NOT confuse with
+    `Mersenne.PeelPaymentPressure.MersenneTwinAbsentAtOrAbove` — that form is
+    indexed by chain index k and is parametric over PrimeLike. -/
 def MersenneTwinAbsenceAbove (P : ℕ) : Prop :=
   ∀ p : ℕ, (2 ^ p - 3).Prime → (mersenne p).Prime → 2 ^ p - 3 ≤ P
 
-/-- Плумбинг: из ограниченности извлекается свидетель отсутствия. -/
+/-- Plumbing: an absence witness is extracted from boundedness. -/
 theorem exists_mersenneAbsence_of_not_unbounded
     (h : ¬ EuclidsPath.MersenneBranch.MersenneTwinCentersUnbounded) :
     ∃ P : ℕ, MersenneTwinAbsenceAbove P := by
@@ -76,7 +76,7 @@ theorem exists_mersenneAbsence_of_not_unbounded
     by_contra hgt
     exact hP p (by omega) h1 h2⟩
 
-/-- Плумбинг: неограниченность ⟺ свидетелей отсутствия нет. -/
+/-- Plumbing: unboundedness ⟺ no absence witnesses. -/
 theorem mersenneTwinCentersUnbounded_iff_no_absence :
     EuclidsPath.MersenneBranch.MersenneTwinCentersUnbounded ↔
       ∀ P : ℕ, ¬ MersenneTwinAbsenceAbove P := by
@@ -90,8 +90,8 @@ theorem mersenneTwinCentersUnbounded_iff_no_absence :
     obtain ⟨P, hAbs⟩ := exists_mersenneAbsence_of_not_unbounded h
     exact hNo P hAbs
 
-/-- **M8 (локализация домена свидетеля, зеркало L8):** всякая граница
-    отсутствия ≥ 29 — пара (29, 31) при p = 5 зелёно существует. -/
+/-- **M8 (witness domain localization, mirror of L8):** every absence bound
+    is ≥ 29 — the pair (29, 31) at p = 5 exists by green proof. -/
 theorem mersenneAbsenceBound_ge_29 {P : ℕ}
     (hAbs : MersenneTwinAbsenceAbove P) : 29 ≤ P := by
   have h := hAbs 5 (by norm_num) (by norm_num [mersenne])
@@ -99,10 +99,10 @@ theorem mersenneAbsenceBound_ge_29 {P : ℕ}
   exact h
 
 /-#############################################################################
-  §2. База-4 цепь центров: строго монотонна — и НЕ ПИЛИТСЯ (нет ковки)
+  §2. Base-4 center chain: strictly monotone — and NOT PEELED (no forging)
 #############################################################################-/
 
-/-- Цепь центров строго растёт на каждом шаге (m → 4m+1). -/
+/-- The center chain strictly increases at each step (m → 4m+1). -/
 theorem mersenneCenterChain_lt_succ (k : ℕ) :
     EuclidsPath.Mersenne.PeelPaymentPressure.mersenneCenter k <
       EuclidsPath.Mersenne.PeelPaymentPressure.mersenneCenter (k + 1) := by
@@ -118,7 +118,7 @@ theorem mersenneCenterChain_injective :
     Function.Injective EuclidsPath.Mersenne.PeelPaymentPressure.mersenneCenter :=
   mersenneCenterChain_strictMono.injective
 
-/-- Стыковка цепь ↔ ветвь: repunit-центр слоя = центр MersenneBranch при
+/-- Chain ↔ branch coupling: the repunit center of a layer equals the MersenneBranch center at
     p = 2k+1. -/
 theorem mersenneCenterChain_eq_branchCenter (k : ℕ) :
     EuclidsPath.Mersenne.PeelPaymentPressure.mersenneCenter k =
@@ -130,14 +130,14 @@ theorem mersenneCenterChain_eq_branchCenter (k : ℕ) :
   unfold mersenne at h2 h3
   omega
 
-/-- **КЛЮЧЕВОЕ РАСКРЫТИЕ (контраст с 5-адикой): база-4 цепь НЕ пилится.**
-    У 5-адической цепи `c → 5c+1` есть тождество `6(5x+1)−1 = 5(6x+1)` с
-    ПРОСТЫМ постоянным делителем 5 — потому она строит потоки при A ≤ 4.
-    У цепи `c → 4c+1` такого тождества нет (коэффициент 4 не прост и
-    ≢ ±1 mod 6), и уже ПЕРВЫЙ шаг 5 → 1 не несёт собственного пила НИ ПРИ
-    КАКОМ масштабе: стороны 29 и 31 просты, стороны цели — лишь 5 и 7.
-    Следствие: Мерсенн-цепь НЕ строит безусловной поставки потоков —
-    КОВАНОГО свидетеля (паттерн V3 ЯМ/НС) в этой ветви не существует. -/
+/-- **KEY DISCLOSURE (contrast with the 5-adic chain): the base-4 chain IS NOT PEELED.**
+    The 5-adic chain `c → 5c+1` admits the identity `6(5x+1)−1 = 5(6x+1)` with
+    the PRIME constant divisor 5 — so it builds supply at A ≤ 4.
+    The chain `c → 4c+1` has no such identity (coefficient 4 is not prime and
+    ≢ ±1 mod 6), and already the FIRST step 5 → 1 carries no proper peel AT ANY
+    scale: sides 29 and 31 are prime, sides of the target are merely 5 and 7.
+    Consequence: the Mersenne chain does NOT build unconditional flow supply —
+    NO FORGED WITNESS (the V3 pattern of YM/NS) exists in this branch. -/
 theorem isEmpty_properCenterPeel_five_one (A : ℕ) :
     IsEmpty (ProperCenterPeel A 5 1) := by
   constructor
@@ -145,37 +145,37 @@ theorem isEmpty_properCenterPeel_five_one (A : ℕ) :
   cases inS <;> cases outS <;> simp only [sideValue] at hfac <;> omega
 
 /-#############################################################################
-  §3. Закон манифестации (гейченный свидетелем; поле НЕ декретировано)
+  §3. Manifestation law (gated by the witness; field NOT decreed)
 #############################################################################-/
 
-/-- Отсутствие выше `P` манифестирует арифметически: на каждом
-    леджер-масштабе не ниже `P`, всюду где проекция сводит книги, отсутствие
-    проявляется неоплатимой бесконечной поставкой потоков. Якорь `P ≤ M0`
-    потребляется ниже только через `le_refl` (паттерн Римана). Причинная
-    форма: «опровержение обязано проявиться там, где книги сведены» — НЕ
-    утверждение о самих Мерсенн-близнецах. -/
+/-- Absence above `P` manifests arithmetically: at every ledger scale not below `P`,
+    wherever the projection balances the ledger, the absence manifests as
+    an unpayable infinite flow supply. The anchor `P ≤ M0`
+    is consumed below only via `le_refl` (the Riemann pattern). Causal
+    form: "a refutation must manifest wherever the ledger is balanced" — NOT
+    a statement about Mersenne twins themselves. -/
 def MersenneAbsenceManifests (P : ℕ) : Prop :=
   ∀ (A M0 : ℕ), P ≤ M0 →
     ∀ proj : SemanticExtendedFlowLedgerProjection A M0,
       SemanticExtendedFlowLedgerCollisionResolves proj →
         DeviationFlowSupply A M0
 
-/-- **ЗАКОН МАНИФЕСТАЦИИ МЕРСЕННА** — гейчен свидетелем отсутствия.
-    Негейченная форма `∀ P, MersenneAbsenceManifests P` при P := 0 вместе с
-    принятой границей дала бы поставку на разрешённом масштабе — противоречие
-    с зелёной L2 (точный механизм провала манифестационных кандидатов ЯМ/НС).
-    Гейт по зелёно-непредъявимому свидетелю — то, что отличает эту форму.
-    ПОЛЕ НЕ ДЕКРЕТИРОВАНО (знак эвристики — см. шапку). -/
+/-- **MERSENNE MANIFESTATION LAW** — gated by the absence witness.
+    The ungated form `∀ P, MersenneAbsenceManifests P` at P := 0 together with
+    the accepted boundary would yield supply at the resolved scale — a contradiction
+    with the green L2 (the exact mechanism by which YM/NS manifestation candidates fail).
+    The gate on the greenly-unpresentable witness is what distinguishes this form.
+    FIELD NOT DECREED (heuristic sign — see the header). -/
 def MersenneManifestationLaw : Prop :=
   ∀ P : ℕ, MersenneTwinAbsenceAbove P → MersenneAbsenceManifests P
 
 /-#############################################################################
-  §4. ESSENCE и читаемая форма: опровержение предъявляет двигатель
+  §4. ESSENCE and readable form: a refutation exhibits an engine
 #############################################################################-/
 
-/-- **M3⁺ — ЧИТАЕМАЯ ФОРМА «опровержение = двигатель»:** свидетель отсутствия
-    + закон + сведённые книги на масштабе не ниже P МАНИФЕСТИРУЮТ вечный
-    двигатель — как ОБЪЕКТ, до убийства lexRank'ом. -/
+/-- **M3⁺ — READABLE FORM "refutation = engine":** absence witness
+    + law + balanced ledger at scale not below P MANIFEST a perpetual
+    engine — as an OBJECT, before being killed by lexRank. -/
 theorem mersenneRefutation_carries_engine
     (hLaw : MersenneManifestationLaw)
     {P : ℕ} (hAbs : MersenneTwinAbsenceAbove P)
@@ -190,13 +190,13 @@ theorem mersenneRefutation_carries_engine
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hEngine
 
-/-- **M3 — ESSENCE (зеркало twins_infinite_of_noEngine_and_boundary и
-    римановской L3):** двигателей нет + принятая граница + закон манифестации
-    ⟹ Мерсенн-близнецы неограничены. Все три гипотезы потребляются
-    ПО-НАСТОЯЩЕМУ: из конечности извлекается свидетель отсутствия P; граница
-    даёт разрешение ровно на масштабе M0 := P; закон поставляет семью 𝓕
-    (не ex falso); из коллизии строится двигатель-СВИДЕТЕЛЬ; убивает его
-    именно hNoEngine. -/
+/-- **M3 — ESSENCE (mirror of twins_infinite_of_noEngine_and_boundary and
+    the Riemannian L3):** no engines + accepted boundary + manifestation law
+    ⟹ Mersenne twins are unbounded. All three hypotheses are consumed
+    GENUINELY: an absence witness P is extracted from finiteness; the boundary
+    gives resolution exactly at scale M0 := P; the law supplies a family 𝓕
+    (not ex falso); from the collision an engine-WITNESS is built; it is
+    precisely hNoEngine that kills it. -/
 theorem mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -210,8 +210,8 @@ theorem mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation
   exact hNoEngine ⟨A, P,
     mersenneRefutation_carries_engine hLaw hAbs (le_refl P) (projOf P) hResolves⟩
 
-/-- Зелёное доведение до цели программы: та же тройка ⟹ близнецы бесконечны
-    (через честный мост Мерсенн ⟹ близнецы). -/
+/-- Green reduction to the programme goal: the same triple ⟹ twins are infinite
+    (via the honest bridge Mersenne ⟹ twins). -/
 theorem twinLowersInfinite_of_noEngine_boundary_and_mersenneManifestation
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -222,21 +222,21 @@ theorem twinLowersInfinite_of_noEngine_boundary_and_mersenneManifestation
       hNoEngine hBoundary hLaw)
 
 /-#############################################################################
-  §5. Аудиты честности (M5–M9)
+  §5. Honesty audits (M5–M9)
 #############################################################################-/
 
-/-- **M5 (вакуумная обратная сторона, зеркало L5):** неограниченность ⟹ закон
-    вакуумно — гейт отсутствия пуст. Несущая сторона — M3, и ей нужна граница. -/
+/-- **M5 (vacuous reverse direction, mirror of L5):** unboundedness ⟹ law
+    vacuously — the absence gate is empty. The load-bearing direction is M3, and it needs the boundary. -/
 theorem mersenneManifestationLaw_of_unbounded
     (H : EuclidsPath.MersenneBranch.MersenneTwinCentersUnbounded) :
     MersenneManifestationLaw := fun P hAbs =>
   ((mersenneTwinCentersUnbounded_iff_no_absence.mp H) P hAbs).elim
 
-/-- **M6 (точная зелёная характеризация, зеркало L6):** закон ⟺ «отсутствие
-    выше P заморозило бы всякий разрешающий леджер на масштабах ≥ P».
-    Обратное направление — ex falso от ¬resolves (раскрыто). Гейт-гипотеза
-    потенциально пуста — потому характеризация НЕ коллапсирует в глобальную
-    заморозку (асимметрия с негейченными формами ЯМ/НС). -/
+/-- **M6 (exact green characterization, mirror of L6):** law ⟺ "absence
+    above P would freeze every resolving ledger at scales ≥ P".
+    The reverse direction is ex falso from ¬resolves (unfolded). The gate hypothesis
+    is potentially empty — so the characterization does NOT collapse into a global
+    freeze (asymmetry with the ungated YM/NS forms). -/
 theorem mersenneManifestationLaw_iff_no_resolution_above_absence :
     MersenneManifestationLaw ↔
       ∀ P : ℕ, MersenneTwinAbsenceAbove P →
@@ -250,11 +250,11 @@ theorem mersenneManifestationLaw_iff_no_resolution_above_absence :
   · intro hFreeze P hAbs A M0 hle proj hres
     exact ((hFreeze P hAbs A M0 hle proj) hres).elim
 
-/-- **M7 — ГЛАВНЫЙ АУДИТ ЦЕНЫ (зеркало L7):** при границе закон ⟺
-    неограниченность Мерсенн-близнецов — четвёртое поле было бы ровно
-    Мерсенн-близнецовой силы. БЕЗ границы «закон ⟹ неограниченность» зелёно
-    не собирается (M3 требует границу). ⚠️ ИМЕННО ЗДЕСЬ видно, почему поле
-    отложено: эвристика направлена ПРОТИВ правой части этого ⟺. -/
+/-- **M7 — MAIN PRICE AUDIT (mirror of L7):** under the boundary, law ⟺
+    unboundedness of Mersenne twins — the fourth field would be exactly
+    of Mersenne-twin strength. WITHOUT the boundary, "law ⟹ unboundedness" does not
+    assemble greenly (M3 requires the boundary). ⚠️ THIS IS EXACTLY WHERE one sees why the field
+    is deferred: the heuristic points AGAINST the right-hand side of this ⟺. -/
 theorem mersenneManifestationLaw_iff_unbounded_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     MersenneManifestationLaw ↔
@@ -263,7 +263,7 @@ theorem mersenneManifestationLaw_iff_unbounded_of_boundary
       no_someConcreteEuclideanEngine hBoundary,
    mersenneManifestationLaw_of_unbounded⟩
 
-/-- Тип-свидетель для bundling-аудита (subtype — front_pair работает с Type). -/
+/-- Witness type for the bundling audit (subtype — front_pair works with Type). -/
 abbrev MersenneAbsenceWitness : Type := {P : ℕ // MersenneTwinAbsenceAbove P}
 
 theorem nonempty_mersenneAbsenceWitness_iff :
@@ -276,17 +276,17 @@ theorem nonempty_mersenneAbsenceWitness_iff :
     obtain ⟨P, hAbs⟩ := exists_mersenneAbsence_of_not_unbounded h
     exact ⟨⟨P, hAbs⟩⟩
 
-/-- Закон в Bridge-форме над типом свидетелей. -/
+/-- Law in Bridge form over the witness type. -/
 theorem mersenneManifestationLaw_iff_bridge :
     MersenneManifestationLaw ↔
       EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun W : MersenneAbsenceWitness => MersenneAbsenceManifests W.1) :=
   ⟨fun hLaw W => hLaw W.1 W.2, fun hB P hAbs => hB ⟨P, hAbs⟩⟩
 
-/-- **M9 (bundling-аудит, инстанциация осуждающей машины):** связка
-    Bridge∧Impossible ⟺ «свидетелей отсутствия нет» — декретироваться могла
-    бы ТОЛЬКО Bridge-сторона; Impossible-сторона на разрешённых масштабах —
-    зелёная L2, никогда не декрет. -/
+/-- **M9 (bundling audit, instantiation of the condemning machine):** the bundle
+    Bridge∧Impossible ⟺ "no absence witnesses" — only the Bridge side could
+    ever be decreed; the Impossible side at resolved scales is
+    the green L2, never a decree. -/
 theorem mersenneManifestation_bundling_audit :
     (EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.Bridge
         (fun W : MersenneAbsenceWitness => MersenneAbsenceManifests W.1) ∧
@@ -295,8 +295,8 @@ theorem mersenneManifestation_bundling_audit :
       ¬ Nonempty MersenneAbsenceWitness :=
   EuclidsPath.Riemann.ArithmeticTwoTransport.OriginAnchorAudit.front_pair_iff_no_zero _
 
--- Машинная видимость чистоты в build-логе
--- (ожидаемо [propext, Classical.choice, Quot.sound] — БЕЗ step00FirstCause):
+-- Machine-visible purity in the build log
+-- (expected [propext, Classical.choice, Quot.sound] — WITHOUT step00FirstCause):
 #print axioms mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation
 #print axioms mersenneRefutation_carries_engine
 #print axioms mersenneManifestationLaw_iff_unbounded_of_boundary

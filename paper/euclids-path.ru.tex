@@ -21,7 +21,10 @@
 % title via \MakeUppercase (some T2A Cyrillic letters are not mapped) and uses small
 % caps elsewhere. Neutralise both in the Russian edition so headings read normally.
 \let\scshape\upshape
-\def\uppercasenonmath#1{#1}
+% amsart's \uppercasenonmath{\cs} uppercases \cs IN PLACE (no output); we neither want
+% Cyrillic uppercased (breaks under T2A) nor the argument typeset, so gobble it. Using
+% \def...{#1} here would TYPESET \shorttitle at \maketitle (a stray title line on page 1).
+\def\uppercasenonmath#1{}
 \def\MakeUppercase#1{#1}
 
 \title[Вечный двигатель Евклида]{Вечный двигатель Евклида:\\

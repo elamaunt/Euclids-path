@@ -1,0 +1,62 @@
+% ==========================================================================
+%  Shared preamble for both language editions of the Euclid's-path article.
+%  Language-neutral: packages, theorem environments, notation, status macros.
+%  (babel main language is set in each main file: *.en.tex / *.ru.tex.)
+% ==========================================================================
+
+\usepackage[T2A,T1]{fontenc}   % T2A also present so the Russian edition sets Cyrillic
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=1in]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+% make `_` print literally in text mode (Lean names like foo_bar need no escaping);
+% [strings] keeps `_` safe inside \label/\ref/\cite keys. Load last so it patches the rest.
+\usepackage[strings]{underscore}
+
+% ---- theorem-head names (English defaults; the Russian edition renews them) ----
+\providecommand{\nmTheorem}{Theorem}
+\providecommand{\nmLemma}{Lemma}
+\providecommand{\nmProposition}{Proposition}
+\providecommand{\nmCorollary}{Corollary}
+\providecommand{\nmDefinition}{Definition}
+\providecommand{\nmConjecture}{Conjecture}
+\providecommand{\nmRemark}{Remark}
+
+% ---- theorem environments: ONE shared counter, numbered by section ----
+\theoremstyle{plain}
+\newtheorem{theorem}{\nmTheorem}[section]
+\newtheorem{lemma}[theorem]{\nmLemma}
+\newtheorem{proposition}[theorem]{\nmProposition}
+\newtheorem{corollary}[theorem]{\nmCorollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{\nmDefinition}
+\newtheorem{conjecture}[theorem]{\nmConjecture}
+\theoremstyle{remark}
+\newtheorem*{remark}{\nmRemark}
+
+% ---- honesty status badges (colour + textual, pdflatex-safe) ----
+\newcommand{\statusdot}[1]{\textcolor{#1}{\ensuremath{\bullet}}}
+\newcommand{\green}{\statusdot{green!55!black}}   % machine-proved, standard axioms
+\newcommand{\yellow}{\statusdot{orange!85!black}} % AXIOM-TAINTED (conditional on the first cause)
+\newcommand{\red}{\statusdot{red!75!black}}       % open node / input
+\newcommand{\warn}{\statusdot{orange!60!black}}   % vacuity / caution
+
+% ---- notation ----
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\code}[1]{\texttt{#1}}                % Lean declaration name
+\newcommand{\Om}{\Omega}
+\DeclareMathOperator{\DescentStep}{DescentStep}
+\DeclareMathOperator{\Clean}{Clean}
+\DeclareMathOperator{\ActiveEdge}{ActiveEdge}
+\DeclareMathOperator{\BoundaryExit}{BoundaryExit}
+
+% the single quarantined axiom, referenced throughout
+\newcommand{\axiom}{\code{step00FirstCause}}

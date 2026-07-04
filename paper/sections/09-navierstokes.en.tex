@@ -1,0 +1,246 @@
+\section{Navier--Stokes: cascade, integral, and a dyadic model}\label{sec:ns}
+
+Navier--Stokes enters this article for one structural reason, and we state the disclaimer first
+and loudly: \emph{there is no connection to prime numbers here, and none is claimed}. The branch
+neither feeds the twins nor feeds off them. What it shares with them is a single motto --- the
+defect does not vanish, and if it does not close, it must be paid --- realised here in the most
+literal currency, the viscous dissipation of energy. On this genuine analytic object we exhibit
+how far the budget discipline honestly reaches, and where the millennium problem stands untouched.
+The equation is formalised in the strong form on $E_3 := \code{EuclideanSpace}\ \R\ (\code{Fin }3)$,
+with the differential operators (divergence, vector Laplacian, convective term) assembled from bare
+\code{fderiv}.
+
+\begin{definition}[\code{IsNSSolution}]\label{def:IsNSSolution}
+For a viscosity $\nu$, an external force $f$, a velocity field $u$ and a pressure $p$,
+\begin{equation}\label{eq:ns-solution}
+\code{IsNSSolution}\ \nu\ f\ u\ p \;:=\;
+\bigl[\partial_t u + (u\cdot\nabla)u = \nu\,\Delta u - \nabla p + f\bigr]
+\;\wedge\; \bigl[\operatorname{div} u = 0\bigr].
+\end{equation}
+\end{definition}
+
+\noindent These are the incompressible Navier--Stokes equations \cite{clay-ns,millennium} in the
+classical strong form. No weak solutions and no distributions: the strong form is chosen
+deliberately, so that the predicate can be read with the eyes. The first question to any such
+predicate is whether it is empty; the answer is by machine.
+
+\begin{theorem}[\code{zero\_is\_NSSolution}]\label{thm:zero_is_NSSolution}
+$\code{IsNSSolution}\ \nu\ 0\ 0\ 0$ for every $\nu \in \R$: the zero field with zero pressure and
+no force is a solution at any viscosity. \green{}
+\end{theorem}
+
+\emph{Proof idea.} Direct computation; every term of \cref{eq:ns-solution} vanishes. Modest, but
+this is precisely the inoculation against vacuity: the predicate is inhabited, the equation is real.
+
+The energetics is given by Bochner integrals over the volume: the kinetic energy
+$\code{kineticEnergy} = \tfrac12\int\|u\|^2$ and the dissipation rate
+$\code{dissipationRate} = \nu\int\sum_i\|\partial_i u\|^2$ (the enstrophy form). A trap hides here,
+and the repository exposes it by machine: the Bochner integral in \code{mathlib} is
+\emph{silently equal to zero} on a non-integrable function (\code{MeasureTheory.integral\_undef}).
+
+\begin{theorem}[\code{kineticEnergy\_of\_not\_integrable}]\label{thm:kineticEnergy_of_not_integrable}
+If $\|u\|^2$ is not integrable (the predicate \code{FiniteKineticEnergy} fails), then
+$\code{kineticEnergy}\ u = 0$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} A rewrite through \code{MeasureTheory.integral\_undef}. The equality
+$\code{kineticEnergy}\ u = 0$ may therefore mean not ``the energy is zero'' but ``the energy is
+infinite or undefined''; the ``zero energy'' of a non-integrable field is an artefact of the
+definition, not physics. The moral is that every energy statement is obliged to travel in a pair
+with a named integrability predicate --- here this is not a wish but a proven warning.
+
+\paragraph{From a monolith to a pointwise balance.}
+The analytic core of the branch is the energy inequality
+$E(u(t_2)) + \int_{t_1}^{t_2} D(u(s))\,ds \le E(u(t_1))$, named \code{TwoTimeEnergyInequality}. The
+work did not prove it; it \emph{narrowed} it to a single pointwise input \code{EnergyBalanceLaw},
+the \code{HasDerivAt} identity $dE/dt = -D(t)$ --- the classical energy balance of a smooth rapidly
+decaying solution, in which convection and pressure do no work thanks to $\operatorname{div} u = 0$.
+The glue from the narrow input is proved.
+
+\begin{theorem}[\code{twoTimeEnergyInequality\_of\_energyBalance}]\label{thm:twoTimeEnergyInequality_of_energyBalance}
+If the pointwise balance $\code{EnergyBalanceLaw}\ \nu\ u$ holds and $s \mapsto D(u(s))$ is
+interval-integrable on every $[t_1,t_2]$, then $\code{TwoTimeEnergyInequality}\ \nu\ u$ holds. \green{}
+\end{theorem}
+
+\emph{Proof idea.} The pointwise balance plus integrability yield the two-time inequality (in fact
+an equality) via the fundamental theorem of calculus
+(\code{intervalIntegral.integral\_eq\_sub\_of\_hasDerivAt}). The input has become strictly narrower:
+not an integral inequality over all pairs of times, but a single differential identity.
+
+\paragraph{The chain up to the cascade.}
+Let $\code{DissipativeStage}\ \nu\ u\ \delta\ t_1\ t_2$ mark a time interval on which at least
+$\delta$ of dissipation has accumulated. The budget machine forbids an infinite tower of such steps.
+
+\begin{theorem}[\code{ns\_no\_infinite\_dissipative\_cascade}]\label{thm:ns_no_infinite_dissipative_cascade}
+Let $\delta > 0$ and suppose $\code{TwoTimeEnergyInequality}\ \nu\ u$ holds. Then there is no
+sequence of times $(t_k)_{k\in\N}$ with $\code{DissipativeStage}\ \nu\ u\ \delta\ t_k\ t_{k+1}$ for
+all $k$. \green{} (conditional on the inequality input)
+\end{theorem}
+
+\emph{Proof idea.} The accumulated payment $\sum_k \delta$ would exceed the starting energy
+$E(u(t_0))$; a direct application of the quantised cascade lemma
+\code{no\_infinite\_uniform\_dissipative\_cascade}. This is exactly the certificate that regularity
+demands --- \emph{if} one is handed the premise. The word ``quantised'' carries all the weight, and
+the reason is recorded by machine.
+
+\begin{theorem}[\code{real\_positive\_work\_not\_wellfounded}]\label{thm:real_positive_work_not_wellfounded}
+There exists $a : \N \to \R$ with $a_{n+1} < a_n$, $a_n > 0$ and $a_n - a_{n+1} > 0$ for all $n$:
+an $\R$-sequence with strictly positive work at every step yet a finite total descent. \green{}
+\end{theorem}
+
+\emph{Proof idea.} The banal witness $a_n = 1/2^n$. For the $\N$-engine of the twins strict positive
+work forces well-foundedness for free; for $\R$ it does not. Hence the analogy with the twin engine
+is only structural: the finiteness of the cascade is bought by a uniform lower bound $\delta > 0$,
+not by positivity as such. Where to obtain $\delta$ for a real solution is analysis, not structure,
+and it stays open.
+
+\paragraph{The integral, taken.}
+The FTC glue lifts to an exact identity, and the solution itself is recovered by integration.
+
+\begin{theorem}[\code{energy\_identity\_of\_energyBalance}]\label{thm:energy_identity_of_energyBalance}
+Under $\code{EnergyBalanceLaw}\ \nu\ u$ and interval-integrability of the dissipation, for all
+$t_1,t_2$ one has
+\begin{equation}\label{eq:ns-energy-identity}
+E(u(t_2)) = E(u(t_1)) - \int_{t_1}^{t_2} D(u(s))\,ds,
+\end{equation}
+as an equality; the two-time inequality of
+\cref{thm:twoTimeEnergyInequality_of_energyBalance} is a coarsening of it. \green{}
+\end{theorem}
+
+A hypothetical finite-time singularity is a \code{SingularCascade}: infinitely many
+$\delta$-dissipative stages compressed towards a single finite moment $T$ --- the same perpetual
+engine as elsewhere. Its impossibility is green.
+
+\begin{theorem}[\code{noSingularCascade\_of\_energyBalance}]\label{thm:noSingularCascade_of_energyBalance}
+The pointwise energy balance $dE/dt = -D$ together with integrability implies that no rupture points
+of cascade type exist: $\code{NoSingularCascade}\ \nu\ u$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} A direct application of \cref{thm:ns_no_infinite_dissipative_cascade}: the budget
+forbids an infinite $\delta$-cascade, and one compressed to a finite time all the more. We stress
+the honest hedge: \code{NoSingularCascade} is \emph{not} $C^\infty$-regularity but the absence of an
+infinite uniformly quantised dissipative ladder --- a surrogate. That the qualifier ``uniformly''
+is load-bearing is shown by a forged non-uniform cascade
+(\code{cookedProfileCascade\_not\_uniform}, \green{}), whose drops slip under every $\delta$ and
+which the budget cannot take.
+
+\paragraph{Down to $\R^3$: the integral assembled on the box.}
+Above, the energy lived as an abstract profile handed over by hypothesis. On the class of
+box-supported solutions the balance is no longer postulated but \emph{derived}, engaging
+\code{mathlib}'s divergence theorem (in its box form
+\code{integral\_divergence\_of\_hasFDerivAt\_off\_countable}) and differentiation under the integral
+sign, through three integration-by-parts identities (pressure and convection die by
+divergence-freeness; viscosity yields minus the enstrophy).
+
+\begin{theorem}[\code{noSingularCascade\_of\_r3Assembly}]\label{thm:noSingularCascade_of_r3Assembly}
+For a box-supported $C^2$ solution with force $f = 0$, cascade smoothness $\code{NoSingularCascade}$
+is derived in green, without the first-cause decree \code{nsBoundary}. \green{}
+\end{theorem}
+
+\emph{Proof idea.} On the box, \code{energyBalance\_of\_boxSupported} derives $dE/dt = -D$ from the
+derivative under the integral and the three integration-by-parts identities, after which the budget
+machine of \cref{thm:noSingularCascade_of_energyBalance} takes over; \code{\#print axioms} shows the
+standard triple, no \code{sorry}, no new axiom. Beyond the box class the limiting passage
+box $\to \R^3$ for merely decaying (non-compactly-supported) fields is absent from \code{mathlib} ---
+an external gap --- and \code{EnergyBalanceLaw} remains an open \red{} input in general.
+
+\paragraph{The Clay reduction: one missing criterion.}
+The exact Clay statement (A) --- Schwartz data, divergence-freeness, the existence of a smooth
+global finite-energy solution --- is encoded and machine-reduced to a single open statement.
+
+\begin{theorem}[\code{clayA\_of\_regularityTransfer\_and\_vorticityControl}]\label{thm:clayA_of_regularityTransfer_and_vorticityControl}
+The known transfer theory --- Kato's local strong existence \cite{kato1984} together with the
+Beale--Kato--Majda continuation criterion \cite{bkm1984} --- and the single criterion
+\code{GlobalVorticityControl} imply Clay-(A). \green{}
+\end{theorem}
+
+\emph{Proof idea.} Pure modus ponens: a local smooth solution exists; the criterion keeps the
+vorticity bounded on each finite interval; \cite{bkm1984} extends the solution to all time. The
+theorem is green and \emph{not vacuous} --- the conclusion is inhabited (\code{globalSmoothSolution\_zero})
+and both inputs are genuinely consumed. The point is isolation: everything left for (A) is pulled
+into one named open core, \code{GlobalVorticityControl}, the supercriticality barrier that no one
+knows how to prove. The transfer theory itself (\code{RegularityTransfer}, \code{RegularityNecessity})
+is honestly named as a \red{} input --- real theorems of the literature \cite{kato1984,bkm1984} not
+yet formalised in \code{mathlib}. It is tempting to close (A) through the engine, as one can for
+Collatz; for Navier--Stokes that bridge provably tears, and the module records this by machine.
+
+\begin{theorem}[\code{greenBudget\_strictly\_weaker\_than\_vorticityControl}]\label{thm:greenBudget_strictly_weaker_than_vorticityControl}
+The green budget machine is strictly weaker than \code{GlobalVorticityControl}: it does not imply
+the criterion. \green{}
+\end{theorem}
+
+\emph{Proof idea.} The surrogate \code{NoSingularCascade} kills only the uniformly quantised
+cascade, while \code{cookedProfileCascade\_not\_uniform} exhibits a non-uniform cascade that slips
+away. A genuine blow-up is a continuum phenomenon; the discrete engine prohibition does not reach
+it. Honesty demands naming the open core analytically (the vorticity), not hiding it in a metaphor.
+This work therefore brings the Navier--Stokes solution \emph{not one step closer} mathematically:
+it gives the exact formulation, a verified reduction skeleton, the exact name of the single missing
+theorem, and the barrier that keeps it out of reach. Navier--Stokes is \emph{not} solved.
+
+\paragraph{A dyadic model: where the engine works, and where it blows up.}
+To test the engine reading against a rigorous discrete fluid, we formalise the Katz--Pavlovi\'c
+dyadic model \cite{katz-pavlovic2005}. (No fluid model had been formalised in any proof assistant
+before; the novelty is formalisational, not mathematical --- nothing here is solved.) Where the
+dissipation is uniform, the budget wins; where the cascade is genuine, the engine is
+\emph{realised}, and the naive ``no engine $\Rightarrow$ no singularity'' is refuted. The rigorous
+core is an ODE fact.
+
+\begin{theorem}[\code{superlinear\_blowup\_sq}]\label{thm:superlinear_blowup_sq}
+No global positive $C^1$ function can satisfy $y'(t) \ge C\,y(t)^2$ with $C > 0$: the assumption of
+a global solution yields \code{False}. \green{}
+\end{theorem}
+
+\begin{proof}
+Put $w(t) := 1/y(t) + C\,t$. Then $w'(t) = -y'/y^2 + C \le -C + C = 0$, so $w$ is non-increasing,
+whence $1/y = w - C\,t$ must go negative in finite time, contradicting $y > 0$. A super-linear
+cascade is a realised perpetual engine: it exists exactly until the moment of blow-up.
+\end{proof}
+
+\begin{theorem}[\code{dyadic\_blowup}]\label{thm:dyadic_blowup}
+The Katz--Pavlovi\'c model \code{DyadicSolution}, with equations
+$a_n' = \lambda^n a_{n-1}^2 - \lambda^{n+1} a_n a_{n+1} - d_n a_n$, is globally empty: blow-up is
+inevitable. \green{}
+\end{theorem}
+
+\emph{Proof idea.} The nonlinear transfer telescopes (energy is conserved by the coupling), and the
+blow-up follows from \cref{thm:superlinear_blowup_sq} applied to the leading mode. The super-linear
+drive $y' \ge C\,y^2$ is no longer postulated: for a whole class of solutions it is derived from the
+$\lambda^n$-couplings.
+
+\begin{theorem}[\code{frontDrive\_of\_invariant}]\label{thm:frontDrive_of_invariant}
+Suppose a Katz--Pavlovi\'c solution has one front shell pinched from below by its two neighbours ---
+the invariant \code{FrontDomination}: $\rho\, a_{J+1} \le a_J$, $a_{J+2} \le \kappa\, a_{J+1}$,
+$m \le a_{J+1}$. Then the drive $C\,y^2 \le y'$ is derived directly from the $\lambda^n$-couplings,
+with $C = \lambda^{J+1}\rho^2 - \lambda^{J+2}\kappa - d_{J+1}/m$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} The three estimates are substituted into the right-hand side of shell $J+1$: the
+inflow $\lambda^{J+1} a_J^2$ produces $y^2$, and the outflow and dissipation are subtracted under
+control. Non-vacuity is confirmed by the exact self-similar profile
+$a_n(t) = \lambda^{-n}/((\lambda^2-1)(T-t))$, which satisfies the invariant. One input remains open:
+the preservation of \code{FrontDomination} for \emph{infinitely} many modes over the whole lifespan
+--- the moving Katz--Pavlovi\'c front, a research frontier, not proved here.
+
+The origin of the cascade carries the only deliberate yellow layer of this branch. The bottom shell
+$n = 0$ has zero inflow: it can only give, never start itself, so its origin cannot be begotten from
+inside the couplings. The self-similar solution needs an external pumping term, and that supply is
+drawn from the first cause.
+
+\begin{theorem}[\code{dyadicBlowup\_is\_firstCauseManifestation}]\label{thm:dyadicBlowup_is_firstCauseManifestation}
+The supply at scale $n = 0$ is drawn from the boundary \code{nsBoundary} of the axiom \axiom{}: the
+dyadic blow-up joins the first-cause manifestations through its origin. \yellow{}~(\textsc{axiom-tainted})
+\end{theorem}
+
+\emph{Proof idea.} Two walls: a green wall of impossibility (the origin is uncausable from inside)
+plus a supply decreed from outside. The green derivation of the drive is self-contained and does not
+depend on this layer --- remove the first cause and the mathematics of the blow-up stays intact,
+only the answer to ``who lit the pump $n=0$'' disappears --- which is why the taint grows by exactly
+two declarations and not one more.
+
+\paragraph{Honest status.} The engine reading is neither vindicated nor discarded: it is
+\emph{mapped}. Where dissipation is uniform the budget forbids a perpetual cascade; where the
+cascade is genuine the engine is realised and the fluid blows up in the model. No new mathematics
+for the millennium problem is produced (this is the shadow of Tao's supercriticality barrier
+\cite{clay-ns}), only the world's first formalisation of a discrete fluid model of \emph{known}
+mathematics, an exact reduction skeleton, and a machine map of where the reading is valid and where
+it breaks. Navier--Stokes is \emph{not} solved.

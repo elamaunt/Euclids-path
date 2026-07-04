@@ -1,0 +1,83 @@
+\documentclass[11pt,a4paper]{article}
+\input{macros}
+\usepackage[english,russian]{babel}
+
+% Russian theorem-head names (renew the English defaults from macros.tex)
+\renewcommand{\nmTheorem}{Теорема}
+\renewcommand{\nmLemma}{Лемма}
+\renewcommand{\nmProposition}{Предложение}
+\renewcommand{\nmCorollary}{Следствие}
+\renewcommand{\nmDefinition}{Определение}
+\renewcommand{\nmConjecture}{Гипотеза}
+\renewcommand{\nmRemark}{Замечание}
+
+\title{Вечный двигатель Евклида:\\
+  машинно-проверенное прочтение великих гипотез\\
+  через единственную аксиому}
+\author{Д.~С.~Семёнов \and Л.~Р.~Галиева}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Мы формализуем в системе доказательств Lean~4 программу, выстроенную вокруг одного
+физического запрета: невозможности \emph{вечного двигателя} --- бесконечного спуска Ферма,
+переформулированного для центров евклидовых пар $6m\pm1$. Из этого единственного факта мы
+получаем машинно-проверенную редукцию гипотезы о простых-близнецах к \emph{одному} открытому
+узлу и прочитываем семейство вопросов уровня проблем тысячелетия --- гипотезу Римана,
+$\mathrm{P}$ против $\mathrm{NP}$, Янга--Миллса, Ходжа, Навье--Стокса,
+Бёрча--Свиннертон-Дайера, а также простые Мерсенна, задачу Коллатца и арифметический
+зоопарк --- как тени того же запрета на разных объектах. Узел нельзя закрыть изнутри,
+поскольку его самообоснование построило бы запрещённый двигатель; поэтому он принимается
+\emph{извне} единственной карантинной аксиомой --- \emph{первопричиной}. Наша главная теорема
+(«высшая энергетическая несовместимость») показывает, что бесконечность близнецов нельзя ни
+доказать, ни опровергнуть внутри системы без такого двигателя. Мы строго честны в том, что
+доказано, а что нет: всё построение опирается \emph{ровно на одну} нестандартную аксиому и
+содержит \emph{ровно один} \code{sorry} (саму гипотезу о близнецах); машинный верификатор
+помечает каждую заражённую аксиомой декларацию (сейчас их $47$) и перепроверяет эти два
+инварианта при каждом запуске. \textbf{Ни одна проблема тысячелетия не решена и не объявляется
+решённой.} Каждое формальное утверждение статьи несёт имя соответствующей машинно-проверенной
+декларации; полный исходный код Lean открыт, а идентичный контент доступен для чтения онлайн.
+\end{abstract}
+
+\begin{center}\small
+\fbox{\begin{minipage}{0.92\linewidth}\centering
+Машинно-проверенный исходник (Lean~4): \url{https://github.com/elamaunt/Euclids-path}\\
+Тот же контент как двуязычный (русский/английский) сайт:
+\url{https://elamaunt.github.io/Euclids-path/}\\[2pt]
+Каждая теорема ниже называет свою Lean-декларацию; запустите
+\code{lake env lean scripts/VerifyAll.lean}, чтобы перепроверить инварианты честности.
+\end{minipage}}
+\end{center}
+
+\medskip
+\noindent\textbf{Ключевые слова.} простые-близнецы; бесконечный спуск; формализация; Lean~4;
+первопричина; гипотеза Римана; $\mathrm{P}$ против $\mathrm{NP}$; Навье--Стокс; Коллатц.
+
+\smallskip
+\noindent\textbf{MSC 2020.} 11A41, 11N05, 68V20, 03F03, 11P32.
+
+\tableofcontents
+
+\input{sections/01-introduction.ru}
+\input{sections/02-engine.ru}
+\input{sections/03-carrier.ru}
+\input{sections/04-reduction.ru}
+\input{sections/05-firstcause.ru}
+\input{sections/06-riemann.ru}
+\input{sections/07-pnp.ru}
+\input{sections/08-yangmills-hodge.ru}
+\input{sections/09-navierstokes.ru}
+\input{sections/10-zoo.ru}
+\input{sections/11-geometry.ru}
+\input{sections/12-bsd-neighbours.ru}
+\input{sections/13-collatz.ru}
+\input{sections/14-coda.ru}
+\input{sections/15-status.ru}
+\input{sections/16-figures.ru}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

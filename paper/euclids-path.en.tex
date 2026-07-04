@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper]{article}
+\input{macros}
+\usepackage[english]{babel}
+
+\title{The Perpetual Engine of Euclid:\\
+  A Machine-Verified Reading of the Great Conjectures\\
+  through a Single Axiom}
+\author{D. S. Semenov \and L. R. Galieva}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We formalize, in the Lean~4 proof assistant, a programme organised around a single
+physical prohibition: the impossibility of a \emph{perpetual engine} --- Fermat's infinite
+descent, restated for the centres of the Euclidean pairs $6m\pm1$. From this one fact we
+obtain a machine-checked reduction of the twin-prime conjecture to a \emph{single} open node,
+and we read a family of Millennium-scale questions --- the Riemann hypothesis, $\mathrm{P}$
+versus $\mathrm{NP}$, Yang--Mills, Hodge, Navier--Stokes, Birch--Swinnerton-Dyer, together
+with Mersenne primes, the Collatz problem, and an arithmetic zoo --- as shadows of the same
+prohibition on different objects. The node cannot be closed from within, since its
+self-grounding would build the forbidden engine; it is therefore accepted \emph{from outside}
+by a single quarantined axiom, the \emph{first cause}. Our main theorem
+(``higher-energy incompatibility'') shows that the infinitude of the twins can be neither
+proved nor refuted inside the system without such an engine. We are scrupulous about what is
+and is not proved: the whole development rests on \emph{exactly one} non-standard axiom and
+contains \emph{exactly one} \code{sorry} (the twin-prime conjecture itself); a machine verifier
+marks every axiom-tainted declaration ($47$ at present) and re-checks these two invariants on
+every run. \textbf{No Millennium problem is solved or claimed to be solved.} Every formal
+statement in this article carries the name of the corresponding machine-verified declaration;
+the complete Lean source is public, and the identical content is browsable online.
+\end{abstract}
+
+\begin{center}\small
+\fbox{\begin{minipage}{0.92\linewidth}\centering
+Machine-verified source (Lean~4): \url{https://github.com/elamaunt/Euclids-path}\\
+The same content, as a bilingual (English/Russian) site:
+\url{https://elamaunt.github.io/Euclids-path/}\\[2pt]
+Every theorem below names its Lean declaration; run \code{lake env lean scripts/VerifyAll.lean}
+to re-check the honesty invariants.
+\end{minipage}}
+\end{center}
+
+\medskip
+\noindent\textbf{Keywords.} twin primes; infinite descent; formalization; Lean~4; first cause;
+Riemann hypothesis; $\mathrm{P}$ versus $\mathrm{NP}$; Navier--Stokes; Collatz.
+
+\smallskip
+\noindent\textbf{MSC 2020.} 11A41, 11N05, 68V20, 03F03, 11P32.
+
+\tableofcontents
+
+\input{sections/01-introduction.en}
+\input{sections/02-engine.en}
+\input{sections/03-carrier.en}
+\input{sections/04-reduction.en}
+\input{sections/05-firstcause.en}
+\input{sections/06-riemann.en}
+\input{sections/07-pnp.en}
+\input{sections/08-yangmills-hodge.en}
+\input{sections/09-navierstokes.en}
+\input{sections/10-zoo.en}
+\input{sections/11-geometry.en}
+\input{sections/12-bsd-neighbours.en}
+\input{sections/13-collatz.en}
+\input{sections/14-coda.en}
+\input{sections/15-status.en}
+\input{sections/16-figures.en}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

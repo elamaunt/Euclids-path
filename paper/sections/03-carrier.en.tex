@@ -1,0 +1,286 @@
+\section{The carrier of two and the conservation laws}\label{sec:carrier}
+
+Before descending along the chain of the engine, we must isolate what a Euclidean step
+\emph{preserves} and what \emph{separates} the two sides of a pair. This section records both:
+the number two is the shared divisor that holds the sides apart, and it is also the invariant that
+descent carries forward. Everything here is elementary --- divisibility and ring arithmetic on the
+bare Lean~4 kernel and \code{mathlib}~\cite{lean4,mathlib}, with no analysis, no distribution, no
+sieve --- and every statement below is \green{}~machine-proved under the standard axioms, save for
+the single open node at the end.
+
+Throughout we work with the \emph{centre} $m\ge 1$ of a Euclidean pair, whose \emph{sides} are the
+two candidates $6m-1$ and $6m+1$; every prime $p>3$ lies in a class $\pm1\pmod 6$, so a pair of
+difference $2$ above $3$ is centred at a multiple of six. The premise $1\le m$ also makes $6m-1$ the
+honest predecessor of $6m$ in $\N$ (truncated subtraction), so that $6m+1=(6m-1)+2$ is an equality
+of naturals.
+
+\subsection{The carrier of two}
+
+\begin{definition}[common divisor of the sides]\label{def:shared-divisor}
+A natural number $p$ is a \emph{common divisor of the sides} of the centre $m$ if
+$p\mid(6m-1)$ and $p\mid(6m+1)$ simultaneously.
+\end{definition}
+
+The sides stand exactly two apart, $(6m+1)-(6m-1)=2$, and this fixed difference governs all their
+joint divisibility.
+
+\begin{theorem}[\code{twin\_sides\_shared\_dvd\_two}]\label{thm:twin_sides_shared_dvd_two}
+\green{} Let $m\ge 1$ and let $p\mid(6m+1)$ and $p\mid(6m-1)$. Then $p\mid 2$.
+\end{theorem}
+
+\emph{Proof idea.} Rewrite the larger side through the smaller, $6m+1=(6m-1)+2$ (closed by
+\code{omega} over $\N$ under $m\ge1$). Then $p\mid\bigl((6m-1)+2\bigr)$, and since $p\mid(6m-1)$,
+the divisibility of a sum with one summand divided (\code{Nat.dvd\_add\_right}) forces $p\mid 2$.
+Only the \emph{difference} of the sides does any work: substantively this is the statement
+$\gcd(6m-1,\,6m+1)\mid 2$.
+
+Since two has only the divisors $1$ and $2$, no prime above two can occupy both sides at once.
+
+\begin{theorem}[\code{no\_large\_shared\_divisor}]\label{thm:no_large_shared_divisor}
+\green{} Let $m\ge 1$ and $p>2$. Then $p\mid(6m+1)$ and $p\mid(6m-1)$ cannot hold simultaneously.
+\end{theorem}
+
+\emph{Proof idea.} By \cref{thm:twin_sides_shared_dvd_two}, $p\mid 2$, whence $p\le 2$ by the
+divisor bound (\code{Nat.le\_of\_dvd}, positivity by \code{decide}); this contradicts $2<p$
+(\code{omega}). This is \emph{exclusivity}: a prime $p>2$ divides at most one side. Both theorems of
+\code{Engine/Carrier.lean} are proved in the bare Lean~4 kernel, without \code{mathlib}, on three
+primitives. Exclusivity is what lets us treat the six active factors in a rank-$(3,3)$ splitting as
+distinct, and it is the arithmetic source of the negative association in
+\cref{thm:exclusive_no_backward}. Two is the \emph{carrier}: it separates the sides above and is
+transported below --- a conserved quantity dual to the strictly decreasing height of
+\cref{sec:engine}.
+
+\subsection{The first law: conservation of two}
+
+Passing to \emph{multiplicative} coordinates --- decomposing the sides into products of active
+primes of the layer $(A,A^2]$ --- the separating two does not blur but re-emerges as the
+\emph{determinant} of the linear system linking the factors. A determinant cannot be nudged: it
+equals $2$ (or a fixed multiple) or there is no solution. We call the resulting family of identities
+the \emph{first law}; in every coordinate system it has the shape $XY-ZW=2K$, the base case $K=1$
+giving $XY-ZW=2$. The term ``law'' is used in the physical sense of a conserved charge, not a
+logical axiom.
+
+\begin{definition}[rank-$(3,3)$ centre]\label{def:rank33}
+A centre $m$ is \emph{rank-$(3,3)$} if there exist naturals $a\le b\le v$ and $q\le r\le s$ with
+\begin{equation}\label{eq:rank33}
+6m-1=abv,\qquad 6m+1=qrs.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[\code{det\_law\_rank33}]\label{thm:det_law_rank33}
+\green{} Let $1\le m$, $6m-1=abv$ and $6m+1=qrs$. Then $qrs=abv+2$.
+\end{theorem}
+
+\emph{Proof idea.} The difference $qrs-abv$ equals the difference of the sides
+$(6m+1)-(6m-1)=2$, but now expressed through the factors rather than through $m$; in Lean the system
+linearly entails $qrs=abv+2$ (\code{omega}, with $1\le m$ removing the ambiguity of truncated
+subtraction). This is the first rigidity: five of the six factors $a,b,v,q,r,s$ determine the
+sixth. We record the rigidity only --- we do \emph{not} count rank-$(3,3)$ centres, and never pass
+one off as the other.
+
+Folding one factor from each side into a product variable turns the two into a literal $2\times2$
+determinant.
+
+\begin{definition}[product coordinates]\label{def:product-coords}
+For a rank-$(3,3)$ centre set $C=av$ and $D=qs$, so the sides read $Cb=6m-1$ and $Dr=6m+1$ with
+$b,r$ the free factors.
+\end{definition}
+
+\begin{theorem}[\code{det\_law\_CD}]\label{thm:det_law_CD}
+\green{} Over $\Z$: if $Cb=6m-1$ and $Dr=6m+1$, then
+\begin{equation}\label{eq:detCD}
+Cb-Dr=-2.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Subtract the two hypotheses: $Cb-Dr=(6m-1)-(6m+1)=-2$ (\code{linear\_combination
+h1 - h2}). The sign $-2$ is the oriented determinant of the rows $(C,-D)$ against $(b,r)^\top$. When
+$\gcd(C,D)=1$, \cref{eq:detCD} reduces modulo $D$ to $b\equiv-2\,\overline{C}\pmod D$: the free
+factor $b$ lies in a \emph{single} residue class mod $D=qs$. This is the ``zero-one slot'' behind
+the counting bounds --- if $b$ is confined to an interval shorter than $D$, at most one $b$ is
+admissible in a fixed box $(a,v,q,s)$. We record the algebraic rigidity; passing from it to a count
+of centres is a separate, analytically heavy step.
+
+The first law is about conservation \emph{under motion}. Along a descent ray the two is transported
+from point to point in a controlled way.
+
+\begin{definition}[a ray and its step]\label{def:ray}
+A \emph{ray} is a family of points with common $v,s$, the $i$-th satisfying the rank-one equation
+$u_i v+2=r_i s$, with integer step $u_2-u_1=sK$.
+\end{definition}
+
+\begin{theorem}[\code{det\_collapse}]\label{thm:det_collapse}
+\green{} Let $u_1 v+2=r_1 s$, $u_2 v+2=r_2 s$, $u_2-u_1=sK$ and $s\ne 0$. Then
+\begin{equation}\label{eq:detcollapse}
+u_2 r_1-u_1 r_2=2K.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Multiply the target by $s$ and substitute both rank-one equations:
+$s(u_2 r_1-u_1 r_2)=u_2(u_1 v+2)-u_1(u_2 v+2)=2(u_2-u_1)=2sK$; the $v$-terms cancel --- this is where
+the two survives --- and \code{mul\_left\_cancel\char`_0\ hs} strips $s\ne 0$. The name is exact:
+$u_i,r_i$ may grow, but their cross determinant collapses to a function strictly linear in $K$ with
+coefficient $2$. Descent is the step $K=1$, carrying exactly one two.
+
+Descent is intrinsically \emph{quadratic}: Euclidean division compares a side with the square of the
+scale. The next identity is the diagonal kernel of self-similarity.
+
+\begin{definition}[Euclidean decomposition of a step]\label{def:euclid-decomp}
+Given $abv+2=qP$, decompose $P=v^2+\Delta$ and $ab=qv+\Xi$ relative to the scale $v$; the remainders
+$\Delta,\Xi$ are the \emph{Euclidean remainders} of the step.
+\end{definition}
+
+\begin{theorem}[\code{euclid\_descent\_identity}]\label{thm:euclid_descent_identity}
+\green{} Given $abv+2=qP$, $P=v^2+\Delta$ and $ab=qv+\Xi$, then
+\begin{equation}\label{eq:euclid-descent}
+q\,\Delta-v\,\Xi=2.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Expanding $qP=qv^2+q\Delta$ and $abv=qv^2+\Xi v$ cancels $qv^2$, leaving
+$\Xi v+2=q\Delta$ (\code{linear\_combination -h1 - q*h2 + v*h3}). This is the diagonal kernel of
+self-similar descent: after one Euclidean step the two is reproduced on the smaller pair
+$(\Delta,\Xi)$, so descent maps ``two on $(a,b,v,q)$'' into the identical smaller problem ``two on
+$(\Delta,\Xi)$''. In no form can the right-hand two vanish nontrivially --- that would contradict
+$\gcd\mid 2$ and force the sides to coincide; this impossibility is the algebraic forerunner of
+irreversibility.
+
+A degenerate but useful case: one atom $a$ appears twice and two points are linked through a common
+bridge $qs$. Here the two is carried as its rescaled shadow $12h=6\cdot 2h$, the six coming from the
+centre lattice step.
+
+\begin{definition}[the bridge equation and its shift]\label{def:bridge}
+A repeated atom $a$ links two points by $a B_1=qs\,Q_1-2$ and $a B_2=qs\,Q_2-2$, with shift
+$B_2-B_1=6\,(qs)\,h$.
+\end{definition}
+
+\begin{theorem}[\code{small\_det\_collapse}]\label{thm:small_det_collapse}
+\green{} Given $a\ne 0$, $qs\ne 0$ and the bridge equations above,
+\begin{equation}\label{eq:smalldet}
+B_2 Q_1-B_1 Q_2=12\,h.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Two cancellations. First $qs(Q_2-Q_1)=qs\cdot 6ah$ gives the conjugate shift
+$Q_2-Q_1=6ah$ (cancel $qs\ne 0$). Then $a(B_2 Q_1-B_1 Q_2)=Q_1(aB_2)-Q_2(aB_1)+2(Q_2-Q_1)=a\cdot12h$,
+and cancelling $a\ne 0$ gives \cref{eq:smalldet}. The two from the bridge and the six from the
+lattice multiply into $12$; the non-vanishing hypotheses are the substantive requirement that atom
+and bridge be \emph{active}. Gathering \cref{thm:det_law_rank33,thm:det_law_CD,thm:det_collapse,%
+thm:euclid_descent_identity,thm:small_det_collapse}, all five wear one skeleton $XY-ZW=2K$: the two
+is neither created nor destroyed by the engine, only carried. All are machine-proved without
+\code{sorry}; the first law contains \emph{no} counting or distributional claim whatsoever.
+
+\subsection{Descent and the boundary law}
+
+Suppose a centre $m$ lies in the pure core $\Om_A$ (both sides factor into primes $>A$) and one
+side is composite in the layer, carrying an active factor $a>A$:
+\begin{equation}\label{eq:descent-step}
+6m+\sigma=a\,(6n+\varepsilon),\qquad a>A,\ \varepsilon\in\{-1,+1\}.
+\end{equation}
+Removing $a$, the descended centre is that $n$ with remainder side $6n+\varepsilon$. Since $a>A$,
+the height drops strictly: $n<m/A$ --- pointwise divisibility arithmetic, not an average, and it is
+what makes descent terminate ($m/A^t<1$ eventually). Write $U:=6n+\varepsilon$.
+
+\begin{theorem}[\code{two\_carry\_opposite}]\label{thm:two_carry_opposite}
+\green{} If $U=6n+\varepsilon$, then
+\begin{equation}\label{eq:two-carry}
+6n-\varepsilon=U-2\varepsilon.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} $6n-\varepsilon=(6n+\varepsilon)-2\varepsilon=U-2\varepsilon$
+(\code{linear\_combination -hU}). The gap $2$ is invariant under descent: the active factor $a$ is
+removed from the product side, and the separating two migrates to the opposite side $U-2\varepsilon$.
+What holds the sides apart above ($\gcd\mid 2$) is exactly what is carried below.
+
+The product side $U=b\cdot v$ inherits factors $b,v>A$ from the pedigree of $6m+\sigma$, so no old
+small prime can spoil it.
+
+\begin{theorem}[\code{no\_small\_divisor}]\label{thm:no_small_divisor}
+\green{} Let $b,v$ be primes with $A<b$, $A<v$, and $p$ prime with $p\le A$. Then $p\nmid(b\cdot v)$.
+\end{theorem}
+
+\emph{Proof idea.} If $p\mid b\cdot v$ then by Euclid's lemma (\code{Nat.Prime.dvd\_mul}) $p\mid b$
+or $p\mid v$; a prime dividing a prime is equality (\code{Nat.prime\_dvd\_prime\_iff\_eq}), so $p=b$
+or $p=v$, contradicting $p\le A<b,v$ (\code{omega}). Responsibility is thereby separated: if purity
+fails through some $p\le A$, the culprit is only the opposite side.
+
+Calling an obstruction the event ``$p$ divides one of the sides'' (a boundary-exit from $\Om_A$),
+the disjunction collapses when $p\nmid U$.
+
+\begin{theorem}[\code{obstruction\_on\_opposite}]\label{thm:obstruction_on_opposite}
+\green{} Let $\mathit{sideProd}=U$, $\mathit{sideOpp}=U-2\varepsilon$ and $p\nmid U$. Then
+\begin{equation}\label{eq:obstruction}
+\bigl(p\mid\mathit{sideProd}\ \lor\ p\mid\mathit{sideOpp}\bigr)\iff p\mid\mathit{sideOpp}.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} If $p\mid\mathit{sideProd}=U$ this contradicts $p\nmid U$; the reverse
+implication is trivial. Combined with \cref{thm:no_small_divisor} (which delivers $p\nmid U$ for
+small $p\le A$) and \cref{thm:two_carry_opposite} (which identifies $\mathit{sideOpp}=U-2\varepsilon$
+as the carried two), this yields the \emph{boundary law}: the only divisibility that can knock the
+descended centre out of $\Om_A$ is $p\mid 6n-\varepsilon$. The whole combinatorics of the
+obstruction reduces to a single divisibility on the carried two. One tick of the engine is thus:
+the active factor departs, the height strictly falls ($n<m/A$), the two is carried
+(\cref{thm:two_carry_opposite}), and any exit is recognised by $p\mid 6n-\varepsilon$
+(\cref{thm:obstruction_on_opposite}). This closes the \emph{mechanics} of one tick; a finite tree of
+descents ending in boundary leaves remains combinatorially possible, and the global non-cover is a
+later, separate node.
+
+\subsection{No backward move on two points}
+
+Viewing the engine on \emph{both} sides at once, exclusivity
+(\cref{thm:no_large_shared_divisor}) forbids a backward move here too, purely arithmetically.
+
+\begin{definition}[indicators, ranks, exclusivity]\label{def:indicators}
+For a prime $p$ of index $i$ in a finite set $s$, let $X,Y:\iota\to\N$ be
+$X_p=\mathbf{1}[\,p\mid 6m-1\,]$ and $Y_p=\mathbf{1}[\,p\mid 6m+1\,]$, with ranks
+$r_-=\sum_{p\in s}X_p$ and $r_+=\sum_{p\in s}Y_p$. \emph{Exclusivity} (the hypothesis \code{hexcl})
+is $X_p\cdot Y_p=0$ for every $p\in s$.
+\end{definition}
+
+The statements below use only $X_p Y_p=0$ and so hold for any nonnegative weights with vanishing
+product; they are abstract algebra, not tied to the indicators.
+
+\begin{theorem}[\code{exclusive\_diag\_zero}]\label{thm:exclusive_diag_zero}
+\green{} For a finite $s$ and $X,Y:\iota\to\N$ with $X_p Y_p=0$ for all $p\in s$,
+\begin{equation}\label{eq:diag-zero}
+\sum_{p\in s}X_p\cdot Y_p=0.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} A sum of zeros (\code{Finset.sum\_eq\_zero hexcl}). The quantity is the
+\emph{diagonal}: it counts primes dividing both sides --- a self-transition ``into itself'' ---
+which exclusivity erases pointwise, $\mathrm{DIAG}=0$.
+
+\begin{theorem}[\code{exclusive\_no\_backward}]\label{thm:exclusive_no_backward}
+\green{} For a finite $s$ with $[\mathrm{DecidableEq}\ \iota]$ and $X,Y:\iota\to\N$ under exclusivity,
+\begin{equation}\label{eq:no-backward}
+\Bigl(\sum_{i\in s}X_i\Bigr)\cdot\Bigl(\sum_{j\in s}Y_j\Bigr)=\sum_{i\in s}\sum_{j\in s\setminus\{i\}}X_i\cdot Y_j.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Distribute the product (\code{Finset.sum\_mul}, \code{Finset.mul\_sum}) into
+$\sum_i\sum_j X_i Y_j$, extract the term $j=i$ (\code{Finset.add\_sum\_erase}), which is $X_i Y_i=0$
+by exclusivity, and \code{zero\_add} leaves the off-diagonal part. The product of ranks
+$r_-\cdot r_+$ is thus entirely off-diagonal: the self-transition $2\to2$ on both points is
+forbidden; only cross transitions $i\ne j$ survive. Decomposing the covariance
+$\mathrm{Cov}(r_-,r_+)=\mathrm{CROSS}-\mathrm{DIAG}$, exclusivity annihilates $\mathrm{DIAG}$
+pointwise and shifts the association toward the negative; numerically the rank-$2$ correction is
+negative at all tested scales. But \cref{thm:exclusive_no_backward} proves only the \emph{structure}
+--- it is \emph{not} yet $\mathrm{Cov}(r_-,r_+)<0$ for the real counts, which needs
+$\mathrm{DIAG}>\mathrm{CROSS}$. That inequality is an open node.
+
+\begin{conjecture}[negative association of ranks]\label{cnj:neg-assoc}
+\red{} The ranks $(r_-,r_+)$ are negatively associated at all scales:
+\begin{equation}\label{eq:neg-assoc}
+N_{00}N_{33}\le N_{03}N_{30},
+\end{equation}
+equivalently $\mathrm{DIAG}\ge\mathrm{CROSS}$.
+\end{conjecture}
+
+Exclusivity supplies the product-CRT structure $\prod_p(c_p+a_p x+b_p y)$ with no cross $xy$ term,
+for which negative association is elementary; what remains open is the model$\to$reality remainder,
+that the real $\mathrm{CROSS}$ not exceed $\mathrm{DIAG}$. Numerically this is a knife-edge
+($1-R_{\mathrm{fc}}\to 0$) near the parity wall, and no available technique yields a
+distribution-independent closure --- so the node is declared open, not closed.

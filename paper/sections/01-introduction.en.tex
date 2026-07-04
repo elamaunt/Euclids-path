@@ -1,0 +1,69 @@
+\section{Introduction}
+\label{sec:intro}
+
+This article describes a single, machine-verified idea and the discipline that keeps it honest.
+The idea is a physical prohibition: an engine that performs the nontrivial work of descent
+\emph{forever}, losing nothing, cannot exist. In the arithmetic of the natural numbers this is
+Fermat's method of infinite descent; we restate it for the centres $m$ of the Euclidean pairs
+$(6m-1,\,6m+1)$ and call the forbidden object \emph{Euclid's perpetual engine}. The prohibition
+itself --- there is no infinitely descending chain of clean Euclidean steps --- is proved on the
+bare Lean~4 kernel, without \code{mathlib} and without any axiom beyond the standard ones
+(\cref{sec:engine}).
+
+The thesis of the programme is that a surprising number of hard questions are shadows of this one
+prohibition cast on different objects. Where an object cannot host a perpetual engine, a
+structural ``no deviation'' theorem holds \emph{unconditionally}; what remains open is always the
+same kind of thing --- the tie between the abstract structure and a concrete analytic object that
+mathematics has not yet supplied. We carry this reading through the twin-prime conjecture (the
+spine of the article), the Riemann hypothesis, $\mathrm{P}$ versus $\mathrm{NP}$, Yang--Mills,
+Hodge, Navier--Stokes, Birch--Swinnerton-Dyer, and further through Mersenne primes, an arithmetic
+zoo of prime patterns, the geometry of the descent graph, and the Collatz problem.
+
+\paragraph{What is proved, and what is not.}
+We are emphatic on this point, because the subject invites overclaiming and we wish to invite
+none. The twin-prime conjecture is \emph{not} proved here. What is proved, and machine-checked
+without \code{sorry}, is a \emph{reduction}: the entire twin branch is brought down to one
+explicit open node --- a finite semantic key that must resolve certain genealogy collisions
+(\cref{sec:reduction}). That node cannot be closed from inside the system: closing it would amount
+to running the very engine whose impossibility is the foundation. We therefore accept it
+\emph{from outside}, as a single axiom we call the \emph{first cause} (\cref{sec:firstcause}),
+kept in one quarantined module. Our main theorem, \emph{higher-energy incompatibility}, then makes
+the situation precise: the infinitude of the twins can be neither proved nor refuted within the
+system without a perpetual engine, so a finite observer can at most \emph{accept} the first cause,
+never derive it.
+
+\paragraph{The honesty discipline.}
+Three colours run through the development and we name them plainly: \green{}~a statement is
+machine-proved under the standard axioms (this includes a \emph{green conditional theorem}, whose
+hypothesis is a named input rather than the axiom); \yellow{}~a statement is \emph{axiom-tainted},
+i.e.\ it depends on the first cause; \red{}~an object is genuinely open. A separate verifier walks
+over every declaration of the repository, collects the axioms each one depends on, and enforces
+two invariants that never change: the only non-standard axiom in the entire development is
+\axiom{}, and the only \code{sorry}-tainted statement is the twin-prime conjecture itself. At the
+time of writing the verifier reports exactly one non-standard axiom, exactly one \code{sorry}, and
+$47$ axiom-tainted declarations; a green module cannot be forged, and the axiom-tracker leaves a
+decree nowhere to hide behind a green label. Four times during the work an internal audit found an
+empty wrapper before it reached the showcase (we record these vacuities where they occurred);
+that they were caught by machine is the best reason to trust the parts that passed.
+
+\paragraph{Reproducibility.}
+Everything in this article is a reflection of Lean~4 source
+code~\cite{lean4,mathlib,euclidspath-repo}. Each formal statement below is tagged with the name of
+its machine-verified declaration, printed in \code{typewriter} font. The complete source is public
+at \url{https://github.com/elamaunt/Euclids-path}; the identical content is browsable as a
+bilingual site at \url{https://elamaunt.github.io/Euclids-path/}. Building with
+\code{lake build} checks the whole development, and \code{lake env lean scripts/VerifyAll.lean}
+re-establishes the two honesty invariants and fails loudly if either is violated.
+
+\paragraph{Plan.}
+\cref{sec:engine} proves the impossibility of the engine and its irreversibility.
+\cref{sec:carrier} records the carrier of two and the conservation laws that make the pairs
+``held apart''. \cref{sec:reduction} reduces the twin conjecture to a single node. \cref{sec:firstcause}
+introduces the first cause and proves the main theorem. \cref{sec:riemann,sec:pnp,sec:ymhodge,sec:ns}
+read the Riemann hypothesis, $\mathrm{P}$ versus $\mathrm{NP}$, Yang--Mills and Hodge, and
+Navier--Stokes through the engine. \cref{sec:zoo,sec:geometry,sec:bsd} treat the Mersenne branch
+and the arithmetic zoo, the geometry of the path, and Birch--Swinnerton-Dyer together with several
+open neighbours. \cref{sec:collatz} treats the Collatz problem, including a decree that was taken
+and then withdrawn when its law was machine-refuted. \cref{sec:coda} is a synthesis;
+\cref{sec:status} gives the honest global status and the verification procedure; \cref{sec:figures}
+specifies the generation algorithm of each figure.

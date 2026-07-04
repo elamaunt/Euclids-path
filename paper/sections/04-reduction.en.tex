@@ -1,0 +1,472 @@
+\section{Reduction of the twin conjecture to a single node}\label{sec:reduction}
+
+This section is the spine of the article. We compress the entire twin branch into one
+machine-verified chain and expose, at its far end, the single open node on which everything hangs
+--- and the single \code{sorry}-tainted declaration \code{twin\_prime\_conjecture} that records it.
+Throughout we insist on the discipline of the introduction: this is a \emph{reduction}, not a proof.
+Every transit step below is \green{} machine-checked and distribution-free; all the difficulty is
+quarantined in one \red{} statement, and we never pass the reduction off as a closure of the
+conjecture.
+
+\subsection{The bridge to infinity}
+
+We work with the centre form of a twin pair. Every twin pair beyond $(3,5)$ has the shape
+$(6m-1,6m+1)$, so the centre encoding loses nothing.
+
+\begin{definition}[\code{IsTwinCenter}, \code{TwinLowers}]\label{def:istwincenter}
+For $m\in\N$,
+\[
+  \mathrm{IsTwinCenter}(m)\;:\Longleftrightarrow\;(6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime},
+\]
+and $\mathrm{TwinLowers}=\{\,p\mid p\ \text{and}\ p+2\ \text{prime}\,\}$. The twin conjecture is
+exactly \code{TwinLowers.Infinite}.
+\end{definition}
+
+The bridge from block combinatorics to arithmetic is assembled from three elementary, non-circular
+links. The first is pure cardinality.
+
+\begin{theorem}[\code{survivor\_of\_not\_covered}]\label{thm:survivor_of_not_covered}
+For finite $\Omega,\mathrm{bad}\subseteq\N$,
+\begin{equation}\label{eq:survivor}
+  |\mathrm{bad}|<|\Omega|\;\Longrightarrow\;\exists\,m\in\Omega,\ m\notin\mathrm{bad}.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} The pigeonhole principle in its purest form: were $\Omega\subseteq\mathrm{bad}$,
+monotonicity of cardinality (\code{Finset.card\_le\_card}) would give $|\Omega|\le|\mathrm{bad}|$,
+against the premise. No analysis, no distribution of primes --- only \code{Finset} and the order on
+$\N$. \green{}
+
+The second link is the classical primality criterion, and its immediate corollary for a centre.
+
+\begin{theorem}[\code{prime\_of\_no\_small\_prime\_factor}]\label{thm:prime_of_no_small_prime_factor}
+Let $n\ge 2$ and suppose $\forall p\ \text{prime},\ p^2\le n\Rightarrow p\nmid n$. Then $n$ is prime.
+\end{theorem}
+
+\emph{Proof idea.} By contradiction through the least prime divisor $p=\mathrm{minFac}(n)$:
+minimality gives $p\le n/p$ (\code{Nat.minFac\_le\_div}), whence $p^2\le n$, contradicting the
+hypothesis. A composite number's least prime divisor never exceeds $\sqrt n$, so a sieve to the root
+settles primality. \green{}
+
+\begin{theorem}[\code{isTwinCenter\_of\_root\_sieve}]\label{thm:isTwinCenter_of_root_sieve}
+If $6m\pm1\ge 2$ and no prime up to the root of either side divides that side, then
+$\mathrm{IsTwinCenter}(m)$.
+\end{theorem}
+
+\emph{Proof idea.} Two applications of \cref{thm:prime_of_no_small_prime_factor}, one per side,
+packaged into the conjunction \code{IsTwinCenter}. The direction \emph{survivor $\Rightarrow$ twin}
+carries no hypothesis at all: it is elementary, and thus fixes an important boundary --- all the
+substantive difficulty lies not here but in \emph{producing} a survivor sieved to the root. \green{}
+
+The third link is order-theoretic.
+
+\begin{theorem}[\code{infinite\_of\_unbounded\_centers}]\label{thm:infinite_of_unbounded_centers}
+If for every $N$ there is a centre $m>N$ with $\mathrm{IsTwinCenter}(m)$, then
+\code{TwinLowers.Infinite}.
+\end{theorem}
+
+\emph{Proof idea.} By \code{Set.infinite\_of\_not\_bddAbove}: the witness $6m-1\in\mathrm{TwinLowers}$
+exceeds $N$ and its neighbour $6m+1$ is prime, so \code{TwinLowers} is unbounded above, hence
+infinite. Monotonicity of $6m-1$ in $m$ turns ``arbitrarily high centre'' into ``arbitrarily large
+lower twin''. \green{}
+
+\subsection{Isolating the block core}
+
+The three links glue into a local transport lemma and a global reduction. Fix, at scale $N$, a
+finite \emph{carrier} of candidate centres above $N$ and a finite \emph{bad} set of centres that are
+certainly not twin centres.
+
+\begin{theorem}[\code{twin\_center\_of\_block}]\label{thm:twin_center_of_block}
+Let $\mathit{carrier},\mathit{bad}\subseteq\N$ be finite with
+\begin{equation}\label{eq:block}
+  (\forall m\in\mathit{carrier},\ N<m),\quad |\mathit{bad}|<|\mathit{carrier}|,\quad
+  (\forall m\in\mathit{carrier},\ m\notin\mathit{bad}\Rightarrow\mathrm{IsTwinCenter}(m)).
+\end{equation}
+Then $\exists m,\ N<m\ \wedge\ \mathrm{IsTwinCenter}(m)$.
+\end{theorem}
+
+\emph{Proof idea.} \cref{thm:survivor_of_not_covered} extracts a survivor $m\in\mathit{carrier}$ with
+$m\notin\mathit{bad}$; the first conjunct places it above $N$, the third makes it a twin centre. Two
+lines of \code{Finset} combinatorics, no appeal to prime density. \green{}
+
+\begin{theorem}[\code{twin\_prime\_conjecture\_of\_blocks}]\label{thm:twin_prime_conjecture_of_blocks}
+If for every $N$ there exist finite $\mathit{carrier},\mathit{bad}$ satisfying \cref{eq:block}, then
+\code{TwinLowers.Infinite}.
+\end{theorem}
+
+\emph{Proof idea.} \cref{thm:infinite_of_unbounded_centers} reduces the goal to the unboundedness of
+twin centres; for each $N$ the block premise plus \cref{thm:twin_center_of_block} supplies a twin
+centre above $N$. \green{} The implication is non-circular: it nowhere uses the conjecture, nor hides
+it inside the premise. What remains open is exactly the premise --- a strict cardinality inequality
+plus a survival criterion, that is, a purely combinatorial problem about finite sets. Node~(3),
+survivor $\Rightarrow$ twin, is already closed by \cref{thm:isTwinCenter_of_root_sieve}; the
+\emph{counting core} (that the carrier outweighs the bad set) is what remains.
+
+\subsection{The first named node: the real four-corner}
+
+The counting core first crystallises as the strict \emph{real four-corner} on rank counts. Writing
+$R_{ij}$ for the rank sets, the hypothesis $H$ (\code{FourCornerInput}) asks, at every scale $N$:
+$0<|R_{00}|$, the strict four-corner $|R_{00}|\,|R_{33}|<|R_{03}|\,|R_{30}|$, the light side-corner
+$|R_{03}|\,|R_{30}|\le|R_{00}|^2$, together with $|\mathit{carrier}|=|R_{00}|$,
+$|\mathit{bad}|=|R_{33}|$ and the carrier/twin conditions of \cref{eq:block}. Via
+\code{N33\_lt\_N00\_of\_four\_corner} these yield $|R_{33}|<|R_{00}|$, i.e. exactly
+$|\mathit{bad}|<|\mathit{carrier}|$.
+
+\begin{theorem}[\code{twin\_primes\_of\_four\_corner}]\label{thm:twin_primes_of_four_corner}
+\green{} (a green conditional theorem: axiom-clean, conditional on the named input $H$)
+\begin{equation}\label{eq:fourcorner}
+  H\;\Longrightarrow\;\code{TwinLowers.Infinite}.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Unfold $H\,N$, derive $|\mathit{bad}|<|\mathit{carrier}|$ from the four-corner,
+and apply \cref{thm:twin_prime_conjecture_of_blocks}. There is no \code{sorry}: the conclusion follows
+from the explicit input $H$, and all nontrivial content is carried by $H$. Contraposition records the
+same fact by hand.
+
+\begin{theorem}[\code{twin\_finite\_contradiction}]\label{thm:twin_finite_contradiction}
+If $\neg\,\code{TwinLowers.Infinite}$ and \code{FourCornerInput} $H$, then \code{False}.
+\end{theorem}
+
+\emph{Proof idea.} Literally $\mathrm{hfin}\,(\code{twin\_primes\_of\_four\_corner}\,H)$: finiteness is
+a map from infinitude into the void, fed exactly the infinitude the four-corner manufactures.
+\green{} Logically contraposition adds nothing, but it makes tangible what breaks when the thesis is
+denied: a finite tail must be covered by bad centres with no survivor, which $H$ forbids.
+
+\begin{remark}
+Three independent routes --- a union bound over primes, EPMI infinite descent, and the four-corner
+--- were probed, and all reduce to the same object: the strict real four-corner plus a lower bound on
+the carrier. The margin $|R_{03}|\,|R_{30}|-|R_{00}|\,|R_{33}|$, normalised by scale, numerically
+creeps toward zero: the model four-corner (\code{model\_four\_corner}, proved unconditionally) does
+\emph{not} transfer to reality distribution-free. This is the parity problem, and it is quarantined
+entirely inside the \red{} input $H$.
+\end{remark}
+
+\subsection{The payment ledger and the defect law}
+
+Halting is not free: it has an algebraic price, provable with only \code{Nat}/\code{Int} and
+\code{Finset}. A free passage to an ordered prime $p$ requires tax-freedom at every smaller small
+prime, so the shift $a-\theta$ (with $\theta=\sigma\varepsilon$) must be divisible by the whole
+primorial $P$ of those primes.
+
+\begin{theorem}[\code{shifted\_primorial\_bound}]\label{thm:shifted_primorial_bound}
+If $P\mid a-\theta$ and $a\ne\theta$, then $P\le|a-\theta|$.
+\end{theorem}
+
+\emph{Proof idea.} From $a\ne\theta$ we have $a-\theta\ne0$, so $|a-\theta|>0$ and
+\code{Int.le\_of\_dvd} gives $P\le|a-\theta|$. \green{} This is the \emph{defect law}: once the
+primorial outgrows the active divisor, there is no nontrivial tax-free passage
+(\code{late\_boundary\_not\_free}). It maps the parity wall precisely but does not bypass it --- the
+total capacity loss $\prod_{q\le A}\tfrac{q-2}{q-1}\sim 1/\ln A$ (Mertens) is a wall that no
+distribution-free bookkeeping breaks. The single scalar input of this route is again the same
+parity/sieve-remainder obstruction.
+
+\subsection{SNOL: reduction to the rank-1 neighbour}
+
+Rather than defeat the counting budget, we reduce the whole programme to one algebraic node that is
+\emph{non-counting by construction}. Defects of a product-state are organised by rank, and rank
+descent reduces every defect to rank~$1$, where one side of the wedge is the active prime $a$ itself,
+so the opposite side is the shifted neighbour $a-2\varepsilon$. The rank-1 algebra
+(\code{rank1\_opposite}, \code{neighbour\_saturation}, \code{neighbour\_corridor\_bound}) is proved
+without a single distributional assumption. Feeding the same block bridge yields the conditional
+theorem.
+
+\begin{theorem}[\code{twin\_primes\_of\_SNOL}]\label{thm:twin_primes_of_SNOL}
+If \code{SNOLInput} holds --- at every scale $N$ a carrier above $N$ whose bad centres (carriers of the
+terminal shifted-neighbour obstruction $p\mid a-2\varepsilon$, $p\le A$) are strictly fewer, every
+survivor a twin --- then \code{TwinLowers.Infinite}.
+\end{theorem}
+
+\emph{Proof idea.} The direct bridge \cref{thm:twin_prime_conjecture_of_blocks} with the input
+supplied as SNOL rather than the four-corner; \code{finite\_contradicts\_SNOL} completes the
+contraposition. \green{} conditional on the \red{} node \code{SNOLInput}. The neighbour audit shows
+$62$--$78\%$ of active primes already have a small-prime-caught neighbour, and the fraction
+\emph{grows} with $A$: SNOL cannot be proved or refuted by counting/CRT capacity in either direction.
+It must therefore rest on the \emph{Euclidean pedigree} of $a$ --- that $a$ arrived from the descent
+of a wedge centre.
+
+\subsection{The catch is a step of descent: old-peel closes onto the engine}
+
+The terminal $p\mid a-2\varepsilon$ is \emph{not} a terminal. It is literally the divisibility of the
+opposite side of the wedge (\code{catch\_is\_opposite}), and it unfolds into an \emph{old-peel}: a
+decomposition $6n-\varepsilon=p\,(6t+\delta)$ producing a strictly smaller centre $t$, with a rigid
+sign law $\delta=-\pi\varepsilon$ (\code{old\_peel\_sign}).
+
+\begin{theorem}[\code{old\_peel\_height\_drop}]\label{thm:old_peel_height_drop}
+If $6n-\varepsilon=p\,(6t+\delta)$ with $p\ge5$, $\varepsilon,\delta\in\{\pm1\}$, $t\ge1$, $n\ge2$,
+then $t<n$.
+\end{theorem}
+
+\emph{Proof idea.} From $6t+\delta=(6n-\varepsilon)/p\le(6n+1)/5$ and $n\ge2$ we get $t<n$
+(\code{nlinarith}). \green{} Numerically the descent is sharper still --- $t<n/5$ on $3000/3000$ real
+rank-1 catches. Every catch is a step downward; the flow cannot ride down forever.
+
+\begin{theorem}[\code{no\_infinite\_old\_peel}]\label{thm:no_infinite_old_peel}
+For any $z:\N\to\N$ with \code{StrictAnti}\,$z$, \code{False}.
+\end{theorem}
+
+\emph{Proof idea.} This is \code{no\_infinite\_engine\_descent} applied to the old-peel height chain:
+an infinite strictly descending chain in $\N$ does not exist. \green{} The final SNOL node thus closes
+\emph{not onto a new distribution theorem but onto the already-proven engine}. What remains is the
+structural premise that a non-sink centre always regenerates a correct successor.
+
+\subsection{NOPSL: the flow reaches a twin}
+
+We abstract exactly the structure old-peel supplies.
+
+\begin{definition}[\code{OldPeelLedger}]\label{def:oldpeelledger}
+An old-peel ledger over states $\sigma$ is a tuple $(h,\mathrm{Sink},\mathrm{Step},\code{step\_drops},
+\code{regenerate})$ with $h:\sigma\to\N$, $\mathrm{Sink},\mathrm{Step}$ predicates, the old-peel law
+$\code{step\_drops}:\mathrm{Step}\,s\,s'\Rightarrow h(s')<h(s)$, and regeneration
+$\code{regenerate}:\neg\,\mathrm{Sink}(s)\Rightarrow\exists s',\ \mathrm{Step}\,s\,s'$.
+\end{definition}
+
+The structure knows nothing of primes or divisibility. All the arithmetic is spent on the two law
+fields; the reasoning that follows is pure ``height falls'' and ``the flow does not hang''.
+
+\begin{theorem}[\code{twin\_primes\_of\_nopsl}]\label{thm:twin_primes_of_nopsl}
+Given a family of ledgers $L(N)$ with starts and a centre map, and the condition
+$\code{sink\_is\_twin}:\ L(N).\mathrm{Sink}(s)\Rightarrow N<\mathrm{center}(N,s)\wedge
+\mathrm{IsTwinCenter}(\mathrm{center}(N,s))$, we have \code{TwinLowers.Infinite}.
+\end{theorem}
+
+\emph{Proof idea.} By \code{no\_old\_peel\_sink}: assuming no sink, \code{regenerate} plus choice builds
+an infinite trajectory whose heights strictly decrease (\code{step\_drops}), contradicting
+\cref{thm:no_infinite_old_peel}. A sink then exists at every scale; \code{sink\_is\_twin} makes it a
+twin centre above $N$, and \cref{thm:infinite_of_unbounded_centers} concludes. \green{} The full
+implication $\code{OldPeelLedger}\Rightarrow\code{TwinLowers.Infinite}$ is machine-checked on the pure
+logic of strict descent. Of the two law fields, \code{step\_drops} is proved arithmetic; the single
+remaining input is the structural field \code{regenerate} --- ``the flow has nowhere to go except
+downward or into a twin''.
+
+\subsection{Regeneration is elementary in three of four classes}
+
+The word ``regenerates'' hides an unconditional dichotomy of any centre $t$.
+
+\begin{theorem}[\code{regeneration\_dichotomy}]\label{thm:regeneration_dichotomy}
+For every centre $t$ and threshold $A$, exactly one holds:
+\[
+  \mathrm{Twin}(t)\ \lor\
+  \bigl(\neg\mathrm{OldFree}(A,t)\wedge\exists q\ \text{prime},\,5\le q\le A,\,q\mid 6t\pm1\bigr)\ \lor\
+  \bigl(\mathrm{OldFree}(A,t)\wedge(\neg(6t-1)\ \text{prime}\ \lor\ \neg(6t+1)\ \text{prime})\bigr).
+\]
+\end{theorem}
+
+\emph{Proof idea.} \code{by\_cases} on $\mathrm{OldFree}\,A\,t$: not-old-free yields an old-peel divisor
+(\code{not\_oldfree\_gives\_peel}); old-free splits by primality, and a composite old-free side carries
+a divisor $>A$ (\code{composite\_oldfree\_has\_big\_divisor}), an active-descent edge. \green{}
+Complete and unconditional. In classes (2),(3) an outgoing descent edge is exhibited; in (1) a
+legitimate twin sink. The nontrivial remainder is class (4), fan-in/Hall --- a statement about the
+\emph{set} of pedigrees, not derivable from $\mathrm{OldFree}$.
+
+The parity/density inputs that once looked distributional are discharged \emph{existentially}: a clean
+start above any $N$ is written by the formula $m=(N+1)P_A$ (\code{carrier\_nonempty\_above}), and a
+clean sink below $A^2$ is automatically a twin.
+
+\begin{theorem}[\code{sink\_is\_twin}]\label{thm:sink_is_twin}
+If both sides satisfy $2\le 6m\pm1<A^2$ and no prime $q\le A$ divides either side, then
+$\mathrm{TwinCenterZ}\,m$.
+\end{theorem}
+
+\emph{Proof idea.} A number without prime divisors $\le A$ and below $A^2$ cannot be composite (its
+least prime divisor would satisfy $p^2\le n<A^2$, so $p<A$). Two copies of
+\code{oldfree\_below\_sq\_prime}, one per side. \green{} Cleanliness excludes small divisors, the
+threshold $A^2$ excludes large ones; no room is left for a composite side, and no prime density is
+invoked.
+
+\subsection{The clean graph: closing the sink-is-clean gap}
+
+A descent from a clean start may reach a small unclean twin ($18\mapsto(107,109)$) to which the
+anchoring lemma does not apply. The repair is definitional: a sink is defined only inside the clean
+graph, and an edge to an unclean target is a \emph{boundary exit}, dispatched to the defect ledger.
+
+\begin{theorem}[\code{clean\_center\_outcome}]\label{thm:clean_center_outcome}
+For every clean centre $m$, exactly one holds:
+\[
+  \mathrm{TwinCenterZ}\,m\ \lor\ (\exists n,\ \mathrm{CleanActiveEdge}\,A\,m\,n)\ \lor\
+  (\exists n,\ \mathrm{BoundaryExit}\,A\,m\,n)\ \lor\ \mathrm{CleanSink}\,A\,m.
+\]
+\end{theorem}
+
+\emph{Proof idea.} Nested case analysis on twin-ness and on the existence of an active edge, closed by
+\code{active\_edge\_clean\_or\_boundary} (excluded middle on $\mathrm{Clean}\,A\,n$). \green{} The
+classification correctly excludes the unclean small twin from the sink case: $18$ settles in the
+boundary branch, not the sink. But the graph is far from closed --- $59\%$ of clean centres have all
+their active edges in the boundary. The whole remainder concentrates in one \red{} structural input:
+a boundary state must regenerate.
+
+\subsection{The global node and the pigeonhole skeleton}
+
+Pointwise boundary regeneration is \emph{false} ($18\mapsto(107,109)$ has no successor yet is no
+correct sink). What is provable pointwise is a dichotomy of outcome
+(\code{boundary\_exit\_decomposes}): an impure target either continues the old-peel descent or settles
+into a finite old absorber below the threshold $M_0$. The load then moves to the whole set of fresh
+starts. If there are no new twins above $M_0$, infinitely many clean starts must settle into finitely
+many old absorbers --- a fan-in the numbers record as up to $570\to1$.
+
+\begin{theorem}[\code{global\_absorber\_forces\_engine}]\label{thm:global_absorber_forces_engine}
+Let $S$ be infinite, $\mathrm{Codom}$ finite, and $\mathrm{key}:\alpha\to\mathrm{Codom}$ a start's
+passport. Given the pump
+\begin{equation}\label{eq:pump}
+  \forall\gamma_1\gamma_2,\ \gamma_1\ne\gamma_2\to\mathrm{key}\,\gamma_1=\mathrm{key}\,\gamma_2\to\code{Engine},
+\end{equation}
+then \code{Engine}.
+\end{theorem}
+
+\emph{Proof idea.} An honest pigeonhole: without an engine, \code{pump} is forbidden, so \code{key} is
+injective on $S$, so an infinite set maps injectively into a finite type
+(\code{Set.Finite.of\_finite\_image}) --- impossible. The collision $\gamma_1\ne\gamma_2$ with equal
+passport is the \green{} proven part; all the remaining load is in the \red{} hypothesis
+\cref{eq:pump}, the Hall node ``two distinct genealogies with one passport $\Rightarrow$ engine''.
+Assembled with the proven impossibility of the engine, \code{no\_global\_absorption\_under\_epmi} then
+forces a new twin above $M_0$ --- conditional on the node.
+
+\begin{remark}
+Between chapters the boundary node was attacked from many angles --- weighted debt energy, inverse-limit
+towers, jump/cut barriers, paid dynamics, a closed-universe hygiene, and a $\mathrm{P}$-versus-$\mathrm{NP}$
+reading. Every wrapper was machine-audited; each either turned circular (the reduction became
+equivalent to the goal), vacuous (its premise unreachable), or misoriented (all arithmetic dynamics run
+downward while the promotion runs up). No wrapper lowered the content below the node, and two internal
+audits caught genuine vacuity episodes before they reached the showcase. The red line held: the only
+non-standard axiom is \axiom{}, and the only \code{sorry} is \code{twin\_prime\_conjecture}.
+\end{remark}
+
+\subsection{Rigid closure: descent without a cycle}
+
+The old argument ``no sinks $\Rightarrow$ directed cycle $\Rightarrow$ engine $\Rightarrow\bot$'' is
+logically redundant. Over a \code{HeightGraph} (a height, a twin predicate, a step with
+$\code{step\_drops}:\mathrm{Step}\,s\,t\Rightarrow h(t)<h(s)$), strict fall of the height rules out an
+infinite chain directly.
+
+\begin{theorem}[\code{reaches\_twin}]\label{thm:reaches_twin}
+If $G$ regenerates (every non-twin state has a descending successor), then
+$\forall s,\ \exists t,\ \mathrm{Twin}\,t$.
+\end{theorem}
+
+\emph{Proof idea.} Strong induction on the height of the start: a non-twin state steps down to a
+strictly smaller height, and one cannot descend forever in $\N$. \green{} The cycle branch and its
+rigid signature vanish as separate inputs; \code{no\_cycle} keeps the impossibility of a cycle only as
+a repackaging of well-foundedness. It remains to build the abstract edge by arithmetic.
+
+\begin{theorem}[\code{cofactor\_is\_center}]\label{thm:cofactor_is_center}
+For $t\ge1$, $\eta\in\{\pm1\}$, a prime $q\ge5$ coprime to $6$ with $q\mid 6t+\eta$, there exist
+$t',\eta'$ with $\eta'\in\{\pm1\}$, $6t'+\eta'=(6t+\eta)/q$ and $0\le t'<t$.
+\end{theorem}
+
+\emph{Proof idea.} The cofactor $c=(6t+\eta)/q$ is forced coprime to $6$ (both $6t+\eta$ and $q$ are,
+so $c\bmod6\in\{1,5\}$), positive, and $<t$ since $5c\le 6t+1$. \green{} Checked at $100\%$ on
+$307010$ cases. Divisibility thus converts automatically into a valid smaller centre --- the edge is
+\emph{built}, not postulated. The single remaining input is the completeness of the dichotomy on the
+carrier scale (\code{regenerates\_needs\_target\_center}): that fan-in/Hall introduces no
+unclassifiable terminal.
+
+\subsection{The product-core machine: rank descent \texorpdfstring{$4\to1$}{4->1}}
+
+The separating scale $6X_A+1<P_A$ (the primorial outruns the carrier bound, attainable with
+exponential margin already at $A\approx50$) makes the coarse passport $a\bmod P_A$ injective on the
+legal layer. Carried into rank induction, this closes \code{no\_productHall} on a tail-free
+\code{RankNode} $r$ --- a sign plus $\mathrm{factors}:\mathrm{Fin}\,r\to\N$ --- where extensionality is
+a genuine theorem (\code{no\_mismatch\_core\_eq}), not a hypothesis.
+
+\begin{theorem}[\code{no\_productHall}]\label{thm:no_productHall}
+If at role $k$ both factors are $<P_A$ and congruent mod $P_A$, yet distinct, then \code{False}.
+\end{theorem}
+
+\emph{Proof idea.} For $a<P_A$ we have $\code{ZMod.val}(a\bmod P_A)=a$, so equal residues force equal
+factors, against the mismatch. \green{} Removing the tail from the induction object removes the
+$570\to1$ fan-in, and with it all three audit defects (extensionality, the residual bound
+\code{ambientLegal\_delete}, finiteness of the signature at fixed $A$) at once.
+
+\begin{theorem}[\code{core\_step\_proved}]\label{thm:core_step_proved}
+Under the separating scale, $\forall r,\ 2\le r\Rightarrow\code{CoreCollision}\,X_A\,P_A\,r\Rightarrow
+\code{CoreCollision}\,X_A\,P_A\,(r-1)$.
+\end{theorem}
+
+\emph{Proof idea.} From equal signatures and distinct nodes there is a mismatched role $k$; delete it.
+Either the residuals differ (a lower-rank collision) or they agree, concentrating the mismatch at $k$
+--- a ProductHall, impossible by \cref{thm:no_productHall}. \green{} The base rank~$1$ is closed by the
+same separating-scale arithmetic (\code{rank\_one\_coreCollision\_absurd}), with no external SNOL.
+Strong induction over the rank then gives collision $\Rightarrow$ \code{Engine}, and a pigeonhole on
+the finite signature (\code{coreCollision\_of\_infinite}) manufactures the collision from an infinite
+injective family of starts.
+
+\begin{theorem}[\code{product\_core\_engine\_of\_carrier}]\label{thm:product_core_engine_of_carrier}
+Under the separating scale, $1\le r\le4$, and an infinite $S$ of ambient-legal \code{RankNode}s with
+$\mathrm{node}$ injective on $S$, we obtain \code{Engine}.
+\end{theorem}
+
+\emph{Proof idea.} Assemble the extensionality, the bound, finiteness, the descent
+(\cref{thm:core_step_proved}), the arithmetic base and the pigeonhole
+(\code{coreCollision\_of\_infinite}). \green{} A \emph{conditional} theorem: everything between the
+carrier hypothesis and the \code{Engine} is machine-checked. The hole is compressed into one input,
+\code{CarrierData} --- an infinite injective family of ambient-legal starts of fixed rank.
+
+\subsection{Factorisation and the last link}
+
+The carrier hypothesis is supplied, node by node, by pure factorisation arithmetic.
+
+\begin{theorem}[\code{mkNode\_of\_composite}]\label{thm:mkNode_of_composite}
+Let $1\le A$, $1<N$, $N$ composite, $N\le 6X_A+1$, $6X_A+1<A^5$, and every prime divisor of $N$ greater
+than $A$. Then for any sign there is a rank $r$ with $2\le r\le4$ and $X:\code{RankNode}\,r$ with
+$\code{AmbientLegal}\,X_A\,X.\mathrm{factors}$ and $\prod(\mathrm{ofFn}\,X.\mathrm{factors})=N$.
+\end{theorem}
+
+\emph{Proof idea.} Take $L=\code{primeFactorsList}\,N$: compositeness gives $|L|\ge2$
+(\code{composite\_rank\_ge\_two}); cleanliness makes every factor $>A$; and $(A+1)^{|L|}\le\prod L=N\le
+6X_A+1<A^5<(A+1)^5$ forces $|L|\le4$ (\code{factor\_rank\_le\_four}). The witness $N_0=N$ certifies
+\code{AmbientLegal}. \green{} The magic number $4$ is an arithmetic consequence of the sieve scale, not
+a convention. Joining this node factory to the proven infinitude of the carrier:
+
+\begin{theorem}[\code{cleanCenters\_infinite}]\label{thm:cleanCenters_infinite}
+For every $A$, the set $\mathrm{CleanCenters}(A)=\{m\mid\mathrm{CleanZ}\,A\,m\}$ is infinite.
+\end{theorem}
+
+\emph{Proof idea.} By \code{Set.infinite\_of\_not\_bddAbove}: for any $N$, \code{carrier\_nonempty\_above}
+produces a clean $m>N$ (a multiple of the old primorial). \green{} No density is needed.
+
+\begin{theorem}[\code{engine\_of\_carrier\_and\_factorize}]\label{thm:engine_of_carrier_and_factorize}
+Under the separating scale, an infinite carrier $C$, and a rank map \code{rankOf} and node map
+\code{mkNode} injective and \code{AmbientLegal} on each rank, \code{Engine} holds.
+\end{theorem}
+
+\emph{Proof idea.} The composition of \code{factorizationData\_of\_carrier} (an infinite fibre of one
+rank, chosen by the infinite pigeonhole \code{exists\_infinite\_fiber}) with
+\cref{thm:product_core_engine_of_carrier}. \green{} The infinitude of the carrier, the fibre choice,
+and the whole pump machine are proved in full. The single input is the factorisation maps.
+
+\subsection{The single open node}
+
+Here we must be exact, or a reduction gets passed off as a proof. Legality $\code{AmbientLegal}\,X_A$
+requires the factors to divide a common top side $N_0\le6X_A+1$, i.e. $m\lesssim X_A$: a \emph{finite}
+horizontal window. But \cref{thm:cleanCenters_infinite} gives infinitude \emph{vertically},
+$m\to\infty$, inevitably above $X_A$, where the certificate --- and with it the rank bound $\le4$ ---
+fails. The two proven ends do not splice at a fixed scale. What is required is a mechanism supplying
+infinitely many legal nodes at a \emph{growing} scale, with $A$ and $X_A$ growing together with $m$.
+
+\begin{conjecture}[\code{GlobalOldAbsorption}, the single open node]\label{conj:globaloldabsorption}
+\red{} There exists an infinite family of clean centres $m$, coherently as $m\to\infty$, each with a
+composite side admitting a legal factorisation of fixed rank $1\le r\le4$ into primes $>A(m)$ under a
+scale $A(m),X_A(m)$ preserving the separating scale $6X_A(m)+1<P_{A(m)}$, with distinct centres
+yielding distinct nodes.
+\end{conjecture}
+
+This is the last Step00 obligation. It is \emph{irreducible} --- in strength equal to the twin
+conjecture itself --- and it cannot be closed from inside the system: closing it is exactly running the
+engine whose impossibility is the foundation. The barrier is structural (the horizontal window cuts off
+any fixed scale), not an artifact of one route: counting, EPMI descent, and the four-corner all
+converge here, and every wrapper attempt was machine-audited back to it. Accordingly the machine
+records exactly one \code{sorry}-tainted declaration, \code{twin\_prime\_conjecture}, closing through
+\cref{thm:engine_of_carrier_and_factorize} onto this node.
+
+\begin{remark}
+We restate the honest verdict. The chain
+\[
+  \code{survivor\_of\_not\_covered}\to\code{twin\_prime\_conjecture\_of\_blocks}\to
+  \code{twin\_primes\_of\_nopsl}\to\code{product\_core\_engine\_of\_carrier}\to
+  \code{engine\_of\_carrier\_and\_factorize}
+\]
+is \green{} machine-checked and distribution-free from end to end. The twin conjecture is
+\emph{not} proved. What is proved is the \emph{reduction} of it to the single node
+\cref{conj:globaloldabsorption}, marked \red{}, which \cref{sec:firstcause} accepts as the first
+cause \axiom{} from outside the system.
+\end{remark}

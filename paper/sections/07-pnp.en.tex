@@ -1,0 +1,166 @@
+\section{P versus NP: rank certificate payment}\label{sec:pnp}
+
+For the twins (\cref{sec:reduction,sec:firstcause}) and for the Riemann hypothesis
+(\cref{sec:riemann}) the green machine carried us to a node that we then accepted by decree ---
+the first cause \axiom{}. Here, uniquely among the branches, the machine behaves differently:
+the reading of $\mathrm{P}$ versus $\mathrm{NP}$~\cite{clay-pnp} in the language of rank is a
+\emph{green theorem}, and no decree is needed at all.
+
+The reading is physical. An $\mathrm{NP}$ problem is the \emph{full payment} of all rank
+certificates: to solve the search is to account for every witness individually. $\mathrm{P}$ is a
+\emph{fast traversal} of the rank: the motion of an engine that flies past the rank without
+visiting all its states. The inequality between them is that a fast traversal physically cannot
+pay for an unbounded family of certificates --- pure pigeonhole. All of this is machine-checked
+without any axiom. We emphasise at once what is \emph{not} claimed: this is not classical
+$\mathrm{P}\neq\mathrm{NP}$. The abstract layer of complexity classes is plastic (it can be tailored
+to coincide or to separate for free), so nothing about the genuine classical classes follows from
+it, and we make no such claim.
+
+\subsection*{The two sides in the language of rank}
+
+\begin{definition}[\code{RankFastTraversal} / \code{FullRankCertificatePayment}]\label{def:pnp-sides}
+The \emph{P side} is \code{RankFastTraversal}: in a ranked graph every legal path \code{PathN} of
+length $n$ from $x$ satisfies $n \le \operatorname{lexRank}(x)$. The \emph{NP side} is
+\code{FullRankCertificatePayment}: the existence of an injective finite-key compression of the
+\emph{entire} family of genealogies, each certificate accounted for individually. An
+\code{UnboundedCertificateSupply} is a family whose index set is infinite.
+\end{definition}
+
+The P side is a gift of the construction, not a hypothesis.
+
+\begin{theorem}[\code{rankFastTraversal_holds}]\label{thm:rankFastTraversal_holds}
+\green{}\ Every ranked graph traverses the rank fast: for any ranked graph $G$, every legal path
+\code{PathN} of length $n$ from $x$ satisfies $n \le \operatorname{lexRank}(x)$.
+\end{theorem}
+
+\emph{Proof idea.} A direct consequence of the fact that the length of a legal path does not
+exceed the starting rank (\code{len_le_lexRank}, \cref{sec:engine}); verification is linear in the
+rank. Verifying a single certificate is likewise always cheap (\code{verificationEasy_always},
+\green{}); what is expensive is accounting for all of them at once.
+
+\subsection*{The heart of the inequality: pigeonhole}
+
+\begin{theorem}[\code{no_fullPayment_of_unboundedSupply}]\label{thm:no_fullPayment_of_unboundedSupply}
+\green{}\ A fast finite-key engine cannot fully pay for an unbounded family of certificates: if a
+genealogy family $F$ satisfies \code{UnboundedCertificateSupply} (its index set is infinite), then
+\code{FullRankCertificatePayment} for $F$ fails --- no injective finite-key compression of $F$
+exists.
+\end{theorem}
+
+\emph{Proof idea.} Pure pigeonhole. A finite key compressing an infinite supply is forced to
+collide two distinct witnesses into one; otherwise it would distinguish infinitely many objects
+with finitely many labels. A collision is double bookkeeping, an impossible payment. It is cheap to
+traverse the rank and expensive to touch every state, and the second is incompatible with the
+first under an infinite supply. This is the green theorem that makes everything work, and it owes
+nothing to \axiom{}.
+
+It remains to exhibit a scale where the supply is genuinely infinite --- and there is one, without
+any hypothesis about the twins.
+
+\begin{theorem}[\code{concreteSupply_unbounded_smallScale}]\label{thm:concreteSupply_unbounded_smallScale}
+\green{}\ For $A \le 4$ the concrete family of certificates is infinite: the index type of
+\code{concreteFamily}\,$A\,1$ is infinite, witnessed by the injection of the pentadic chain
+\code{fiveAdicChainFlow} --- the same chain that refuted the branch $A \le 4$ in the reduction.
+\end{theorem}
+
+\begin{corollary}[\code{concrete_noFullPayment_smallScale}]\label{thm:concrete_noFullPayment_smallScale}
+\green{}\ For $A \le 4$ full payment of the concrete family is impossible:
+\code{FullRankCertificatePayment}\,(\code{concreteFamily}\,$A\,1$) fails.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:no_fullPayment_of_unboundedSupply} to the infinite supply of
+\cref{thm:concreteSupply_unbounded_smallScale}.
+\end{proof}
+
+\subsection*{``NP $=$ full payment'' as a theorem}
+
+To make the title a theorem rather than an image, we tie ``full payment'' to local P-success --- at
+every scale.
+
+\begin{theorem}[\code{concrete_localPSuccess_iff_fullPayment}]\label{thm:concrete_localPSuccess_iff_fullPayment}
+\green{}\ Local P-success is equivalent to full payment of certificates: for all $A, M_0$,
+\[
+   \code{LocalPSuccess}\,(\code{concreteProblem}\,A\,M_0)
+   \iff
+   \code{FullRankCertificatePayment}\,(\code{concreteFamily}\,A\,M_0).
+\]
+\end{theorem}
+
+\emph{Proof idea.} Both alternatives for resolving a collision --- a legal cycle and an impossible
+payment --- have already been burnt green (\code{no_extendedFlowResolutionAlternative}): the
+resolver cannot cheat, and the only way to resolve collisions is to account for each one honestly.
+The full inequality now assembles into a single green statement.
+
+\begin{theorem}[\code{pnp_rank_separation_smallScale}]\label{thm:pnp_rank_separation_smallScale}
+\green{}\ For $A \le 4$ five statements hold simultaneously:
+\code{RankFastTraversal}\,(\code{concreteGraph}\,$A\,1$) (the engine traverses the rank fast);
+\code{VerificationEasy} for every certificate (checking is easy);
+\code{UnboundedCertificateSupply}\,(\code{concreteFamily}\,$A\,1$) (the supply is unbounded);
+$\lnot\,\code{FullRankCertificatePayment}\,(\code{concreteFamily}\,A\,1)$ (full payment is
+impossible); and \code{LocalSearchIncompressible}\,(\code{concreteProblem}\,$A\,1$) (local search
+is incompressible).
+\end{theorem}
+
+The five facets --- fast traversal, easy verification, infinite supply, impossibility of full
+payment, incompressibility --- converge in one green statement. This is ``$\mathrm{P}\neq\mathrm{NP}$''
+\emph{in the rank model}, proved without axioms.
+
+\paragraph{The split across scales.}
+This does not contradict the twins decree, which on its own scale precisely \emph{resolves}
+collisions. Local P-success and incompressibility are strict negations, but they live on different
+scales: the decree works for $A \ge 5$, where on its own scale the first cause fully pays the
+certificates (\code{decreedScale_fullPayment}, \yellow{}), while incompressibility lives at
+$A \le 4$, where the supply is infinite and payment impossible --- unconditionally green, owing
+nothing to \axiom{}. Note the asymmetry with Riemann: there the boundary was \emph{needed} for the
+carrying lemma; here the separation does not need it. We leave the asymmetry visible rather than
+insert an unused hypothesis for symmetry's sake.
+
+\subsection*{Why there is no third boundary of the decree}
+
+For the twins and Riemann the decree was an honest second boundary. It is natural to ask for a
+third, a $\mathrm{P}/\mathrm{NP}$ boundary; the answer is no, and this is proved machine-wise. All
+three conceivable forms of such a field are green verdicts: the universal form (in every good-faith
+frame a P-solver extracts a resolver) is \emph{refutable} (\code{pnpLawUniversal_refuted}); the
+decider form (reconstructing a resolver from a bare decider) is likewise \emph{refutable}
+(\code{pnpLawDeciderGated_refuted}), since a bare \code{PDecider} exists classically for any
+language and the resolver extracted from it crashes against incompressibility at $A \le 4$; and the
+existential form is \emph{already proved} (\code{pnpLawExistential_green}), so decreeing it would be
+empty. The cost mirror collapses on its own.
+
+\begin{proposition}[\code{pnpLaw_asserts_separation}]\label{thm:pnpLaw_asserts_separation}
+\green{}\ The $\mathrm{P}/\mathrm{NP}$ law is equivalent to the separation \emph{without any
+boundary}, and both sides are already theorems; hence no honest third field of the decree exists.
+\end{proposition}
+
+\emph{Proof idea.} The abstract layer of complexity classes is plastic: it can be tailored so the
+classes coincide for free (\code{allPFrame}) and so they separate for free (\code{constantsFrame}).
+Along the way an adversarial audit uncovered a fourth episode of vacuity: a bare \code{PDecider}
+carries no complexity content, so over the incompressible node the decider-gated fronts
+\code{FaithfulSelfReductionFront} and \code{CurrentExtractionFront} are classically empty and their
+separation conclusions are \warn{}~vacuous. Only the decider channel is affected; the \code{InP}
+bridge \code{Step00ToClassicalBridge} remains an honest conditional form. The genuinely missing
+object is not a proposition over abstract frames but a data-anchored real machine model --- the same
+lesson taught by the spectral audit of Riemann.
+
+\subsection*{The epistemic complement}
+
+There is an epistemic twin of this prohibition, mirroring the unknowability results for Collatz and
+Yang--Mills (\cref{sec:collatz}).
+
+\begin{theorem}[\code{pnpCause_unknowable}]\label{thm:pnpCause_unknowable}
+\green{}\ An internal, finite-fuel resolution of $\mathrm{P}/\mathrm{NP}$ would be a perpetual
+engine: it is unreachable from inside the system, beyond the same horizon as the cause of Collatz.
+\end{theorem}
+
+\emph{Proof idea.} Green, without a decree; the axiom-taint does not grow. ``It cannot be known
+from inside'' is here a theorem, not a slogan: from within a finite-fuel model the resolution
+cannot be self-grounded, since the attempt would cost exactly a perpetual engine
+(\cref{sec:engine}).
+
+\paragraph{Honest status.}
+Among the branches, this is the single case where the inequality is a green theorem \emph{without}
+any decree: in the rank model the fast engine provably does not pay for the unbounded supply. The
+thermodynamic intuition --- full accounting costs more than fast motion --- is proved in the rank
+world; its transfer to the world of Turing machines remains the missing data anchor. Classical
+$\mathrm{P}\neq\mathrm{NP}$~\cite{clay-pnp} is neither proved nor claimed.

@@ -1,0 +1,215 @@
+\section{Birch–Swinnerton-Dyer and neighbours beyond the horizon}\label{sec:bsd}
+
+The eighth millennium problem, the Birch–Swinnerton-Dyer conjecture~\cite{clay-bsd}, enters the
+family differently from the previous seven. There the engine \emph{stands guard}: a deviation from
+the norm is a disguised perpetual engine, and the prohibition kills it. For BSD the engine does not
+stand guard --- it \emph{works as the method}. The algebraic rank of an elliptic curve is proved
+finite precisely by Fermat's infinite descent, the very descent that underlies the whole programme.
+Here it is not a prohibition but a tool. The Lean source is \code{Engine/BSDFront.lean}; the core is
+grounded on genuine \code{mathlib} objects (\code{WeierstrassCurve.Affine.Point},
+\code{WeierstrassCurve.LSeries}, the class \code{Northcott}, \code{AddCommGroup.fg\_of\_descent}).
+This is \emph{not} a proof of BSD.
+
+\subsection{Descent is the engine}
+
+The Mordell–Weil theorem says the group of rational points $E(\mathbb{Q})$ is finitely generated,
+$E(\mathbb{Q})\cong\mathbb{Z}^r\oplus T$. One proves it by descent: the Néron–Tate canonical height
+is a positive-definite quadratic form, and by the Northcott property there are only finitely many
+points of bounded height, so the height descent must break off. This is exactly our prohibition: an
+infinite strictly descending chain of heights is a perpetual engine, and there is none.
+
+\begin{theorem}[\code{bsd\_descent\_has\_no\_engine}]\label{thm:bsd_descent_has_no_engine}
+\green{} On the real point group $W.\code{toAffine.Point}$ of an elliptic curve the height descent
+has no perpetual engine: for every height descent model $M$ there is no
+$\code{PerpetualEngine}\,M.\code{descentStep}$, that is, no infinite chain of points strictly
+decreasing under a height function $h\colon W.\code{toAffine.Point}\to\mathbb{N}$ can exist.
+\end{theorem}
+
+\emph{Proof idea.} A height is an $\mathbb{N}$-rank, and rank imports the engine prohibition from
+the universal form via \code{UniversalEngine.no\_perpetual\_engine\_of\_natRank}
+(\cref{sec:engine}). The carrier is the genuine \code{WeierstrassCurve.Affine.Point} with its group
+law, and the mechanism is that of \code{Northcott} and \code{AddCommGroup.fg\_of\_descent}: the
+well-foundedness of height cuts the descent short. The model is inhabited (not vacuous), with a
+concrete witness over $\mathbb{Q}$.
+
+We are honest about the licence. The Néron–Tate canonical height is not yet in \code{mathlib} (only
+the Weil height and an approximate parallelogram law), so our height is \emph{named}. But the
+carrier and the group law are real, and the descent prohibition is derived rigorously: the shadow
+lies on a genuine curve, not a mock-up.
+
+\subsection{Parity: the same rank-parity node}
+
+The parity conjecture asserts $(-1)^{\operatorname{rank}}=w(E)$, where $w(E)$ is the root number,
+the sign of the functional equation. And $(-1)^{\operatorname{rank}}$ is exactly the rank-parity
+invariant behind Riemann: the Liouville function $\lambda(n)=(-1)^{\Omega(n)}$.
+
+\begin{theorem}[\code{bsd\_parity\_is\_rankParity}]\label{thm:bsd_parity_is_rankParity}
+\green{} The parity of the rank coincides with Liouville's: for all $r,n\in\mathbb{N}$ with
+$n\neq 0$ and $\Omega(n)=r$ one has $(-1)^r=\lambda(n)$ in $\mathbb{Z}$.
+\end{theorem}
+
+\emph{Proof idea.} A direct bridge to \code{RiemannLiouville.liouville\_eq\_neg\_one\_pow\_rank}
+(\cref{sec:riemann}) --- the same sign rule, the same flip when a prime factor is removed. BSD
+parity is not a new beast but our node, fitted onto the rank of an elliptic curve.
+
+Should we decree this parity a first cause, as we did Riemann's law? We checked, and the answer is
+\emph{no}. The genuine root number $w(E)$ is a deep analytic invariant \code{mathlib} lacks. Over
+the available stub (\code{RootNumber}\,$w:=w=\pm1$, a free value) the law $(-1)^r=w$ is satisfied by
+a choice of $w$ (\code{bsd\_parityLaw\_satisfiable}) and the universal form is refutable
+(\code{bsd\_parityLaw\_not\_universal}). A parity decree would therefore be \emph{vacuous}, as for
+P/NP, Yang–Mills and Hodge. We do not touch the axiom and leave parity honestly open: the tie to
+the node is conceptual, not a decree.
+
+\subsection{The analytic bridge: honestly open}
+
+The heart of BSD is the equality of the algebraic and analytic ranks,
+$\operatorname{rank}E(\mathbb{Q})=\operatorname{ord}_{s=1}L(E,s)$. \code{mathlib} already defines the
+curve's $L$-function (\code{WeierstrassCurve.LSeries}, via the Euler product), and we refer to it
+honestly. But its analytic properties --- continuation to $s=1$, the order of the zero, the
+functional equation --- are proved nowhere.
+
+\begin{definition}[\code{WeakBSD}]\label{def:WeakBSD}
+\red{} The open input: for an elliptic curve $W/K$ and naturals $\text{algRank},\text{aRank}$ the
+predicate $\operatorname{WeakBSD}(W,\text{algRank},\text{aRank})$ is
+$\operatorname{AnalyticRank}(W,\text{aRank})\wedge\text{algRank}=\text{aRank}$. We do not prove it:
+it is a named input, not a theorem.
+\end{definition}
+
+Humanity has covered only the edges: for analytic rank $\le 1$ (Gross–Zagier and Kolyvagin, via
+Heegner points and Euler systems) BSD is proved and Sha is finite; on average over $66\%$ of
+curves (Bhargava–Skinner–Zhang). For rank $\ge 2$ everything is open. Our engine does not close the
+analytics: its role is the descent, not the bridge.
+
+BSD has no epistemic axis of its own, and this is fixed machine-wise
+(\code{Engine/BSDEpistemic.lean}): the proposed ground/beyondOwnHorizon pair degenerates, its second
+leg being the free field of height decrease, so the bundle coincides with the already-proved descent
+prohibition (\code{bsdGround\_coincides\_with\_engine}). The \code{AnalyticRank} gate is freely
+satisfiable (\code{analyticRank\_gate\_satisfiable}) and \code{WeakBSD} reduces to the bare
+$\text{algRank}=\text{aRank}$ (\code{weakBSD\_reduces\_to\_bare\_equality}) --- exactly where the
+honest \red{} openness remains. A contentful replacement (\code{Engine/BSDAnalyticAnchor.lean})
+makes the analytic rank a genuine notion, $\code{analyticRankOf}\,L:=\code{analyticOrderAt}\,
+L.\code{Lambda}\,1$, but only \emph{when the datum is supplied}: the red input
+\code{ContinuedLFunction} carries a $\Lambda$ agreeing with \code{WeierstrassCurve.LSeries} on the
+domain of absolute summability (\code{agreement}) and analytic at $s=1$ (\code{analyticAtOne}) ---
+the very continuation \code{mathlib} lacks (even with the Hasse bound, $1<3/2$ lies outside the
+half-plane of convergence). On these data the contentful gate \code{WeakBSDContentful} pins the rank
+(\code{contentfulGate\_pins\_rank}), at a cost of data rather than a decree.
+
+Formalizations of BSD, Mordell–Weil, the canonical height, or the analytics of elliptic-curve
+$L$-functions exist nowhere by our survey. Even a structural engine/rank-parity reading grounded on
+real \code{mathlib} objects is the first of its kind --- but it is \emph{not} a solution: green are
+only the descent and the parity node, the analytic bridge is honestly \red{}, and no decree was
+added.
+
+\subsection{Five open neighbours}
+
+The engine prohibition --- descent, height, rank parity --- lives on in neighbouring open problems.
+We cast a shadow of five with one device: \emph{a real \code{mathlib} anchor plus an honest gate}.
+The anchor is a proved theorem (a polynomial analogue, a finiteness, a structure) that is itself the
+reading through the engine; the gate is the open conjecture, named and not proved. Lean sources:
+\code{Engine/ChowlaFront.lean}, \code{AbcFront.lean}, \code{BealFront.lean}, \code{LehmerFront.lean},
+\code{LandauFront.lean}. None is solved; the novelty is formalizational.
+
+\paragraph{Chowla and Sarnak.}
+The Liouville function $\lambda(n)=(-1)^{\Omega(n)}$ is our rank-parity invariant. Chowla's
+conjecture says the parity of $\Omega$ does not correlate across shifts,
+$\sum_{n\le x}\lambda(n)\lambda(n+h)=o(x)$ --- the same prohibition on parity collapsing into one
+class that guards both twins and Riemann.
+
+\begin{theorem}[\code{chowlaCorrelation\_zero\_eq\_card}]\label{thm:chowlaCorrelation_zero_eq_card}
+\green{} The diagonal $h=0$ yields perfect self-correlation:
+$\sum_{n\le x}\lambda(n)^2=x$.
+\end{theorem}
+
+\emph{Proof idea.} $\lambda(n)^2=1$ for $n\ge 1$ (values $\pm1$), so the diagonal degenerates into a
+count. This contrasts sharply with what Chowla forbids at $h>0$, where the sum must cancel; the sign
+flip under multiplication by a prime (\code{chowla\_parity\_flip}, reusing \code{RiemannLiouville})
+is the same descent move. The gates \code{ChowlaConjecture} and \code{SarnakConjecture} (\red{}) ---
+the $o(x)$ correlations and Möbius orthogonality --- stay open (Tao proved only the logarithmically
+averaged and odd cases). We cover only the collapse mode, and the summary is named
+\code{chowla\_locked\_behind\_flip\_wall}, without the word ``engine''; this is neither a solution of
+Chowla nor Gödel.
+
+\paragraph{abc.}
+The abc conjecture: for coprime $a+b=c$ one has $c<K_\varepsilon\cdot\operatorname{rad}(abc)^{1+\varepsilon}$.
+The polynomial analogue --- the Mason–Stothers theorem~\cite{mason1984,stothers1981} --- is proved
+and in \code{mathlib}.
+
+\begin{theorem}[\code{polynomial\_abc\_shadow}]\label{thm:polynomial_abc_shadow}
+\green{} For coprime polynomials $a+b+c=0$ over a field the degree is bounded by the radical of the
+product (or else all derivatives vanish). This is \code{mathlib}'s \code{Polynomial.abc}.
+\end{theorem}
+
+\emph{Proof idea.} A ready-made \code{mathlib} theorem (the Wronskian plus coprimality). The degree
+bound through the radical is the engine reading: the quality of a triple cannot run to infinity, it
+is finite. The integral radical (\code{Int.radical}, \code{Nat.radical}) is real, not a stub. The
+gate \code{AbcConjecture} (\red{}) stays open --- Mochizuki's IUT claim has not been accepted. Our
+epistemics touch only the naive form $\varepsilon=0$, refuted by a single witness
+(\code{abc\_exponent\_one\_counterexample}: $1+8=9$, $\operatorname{rad}(72)=6<9$) with unbounded
+quality supply (\code{unboundedQualitySupplyExponentOne}); the genuine gate $\varepsilon>0$ is
+untouched, and all openness lives in the $\varepsilon$ slack.
+
+\paragraph{Beal and Fermat–Catalan.}
+Fermat's infinite descent is literally our engine, and its polynomial form is proved.
+
+\begin{theorem}[\code{polynomial\_fermat\_catalan\_shadow}]\label{thm:polynomial_fermat_catalan_shadow}
+\green{} When $1/p+1/q+1/r<1$, the equation $u\,a^p+v\,b^q+w\,c^r=0$ for coprime polynomials forces
+$a,b,c$ to be constants. This is \code{mathlib}'s \code{Polynomial.flt\_catalan}.
+\end{theorem}
+
+\emph{Proof idea.} A ready-made \code{mathlib} theorem whose proof is infinite descent on the
+characteristic. Nearby stand \code{fermatLastTheoremFour}/\code{Three} (\code{flt\_four\_is\_descent}),
+proved by the same descent; we exhibit them and derive engine-free descent through
+\code{EPMI}/\code{UniversalEngine}. The gates \code{BealConjecture} and
+\code{FermatCatalanConjecture} (\red{}) --- integral Beal and full Fermat–Catalan --- stay open
+(Darmon–Granville proved finiteness only for fixed exponents, via Faltings). The diagonal classes
+are closed by descent (\code{beal\_no\_solution\_exponent\_three},
+\code{beal\_no\_solution\_exponent\_four}), and coprimality is load-bearing
+(\code{beal\_common\_factor\_witness}: $2^3+2^3=2^4$).
+
+\paragraph{Lehmer.}
+The Mahler measure is a height, and the same Northcott that computed the rank in BSD works here.
+
+\begin{theorem}[\code{mahler\_northcott\_shadow}]\label{thm:mahler_northcott_shadow}
+\green{} There are only finitely many polynomials of bounded degree and bounded Mahler measure. This
+is \code{mathlib}'s \code{finite\_mahlerMeasure\_le}.
+\end{theorem}
+
+\emph{Proof idea.} This is Northcott: the height is well-founded, there is no infinite height
+descent --- the core behind BSD and the universal engine. The lower boundary is Kronecker
+(\code{kronecker\_boundary}): the Mahler measure equals $1$ iff the roots are roots of unity. The
+gate \code{LehmerConjecture} (\red{}) --- a uniform gap $c>1$ above one in the non-cyclotomic case
+--- stays open (the smallest known value is Lehmer's number $\approx 1.17628$). Lehmer at bounded
+degree is already green (\code{lehmer\_at\_bounded\_degree}): for each degree there is a $c>1$ with
+no measures in $(1,c)$; but $c=c(n)$ depends on the degree, and a single $c$ for all degrees
+(\code{UniformLehmerGap}, \red{}) is exactly the conjecture
+(\code{uniformLehmerGap\_iff\_all\_degrees}).
+
+\paragraph{Landau: primes $n^2+1$.}
+Dirichlet (in \code{mathlib}) gives primes in arithmetic progressions, on which the sides $6m\pm1$
+stand. But $n^2+1$ is not a progression, and its infinitude remains a gate.
+
+\begin{theorem}[\code{landauPrimes\_infinite\_of\_unbounded}]\label{thm:landauPrimes_infinite_of_unbounded}
+\green{} If the primes $n^2+1$ are unbounded, then their set is infinite. Moreover
+(\code{oddLandauPrime\_even\_k}) for odd $k$ the number $k^2+1$ is even, so a prime $k^2+1>2$ forces
+even $k$.
+\end{theorem}
+
+\emph{Proof idea.} A pure structural repackaging (as in the Polignac branch): unboundedness implies
+infinitude, with no new content --- the substance sits in the gate. The gate \code{Landau4thUnbounded}
+(\red{}) --- the infinitude of primes $n^2+1$ (Hardy–Littlewood) --- stays open (Iwaniec: infinitely
+many $n^2+1$ with at most two prime factors). The gate is localized on the even channel
+(\code{landauPrime\_even\_of\_two\_lt}) and the Landau primes lie in the real Dirichlet class
+$1\bmod 4$, infinite by \code{mathlib} (\code{landau\_lives\_in\_dirichlet\_class}); what is open is
+the selection within the rank and file. Here, unlike Beal, we did build an engine fact
+(\code{landauRefutation\_carries\_engine}), though the underlying law \code{LandauManifestationLaw}
+is not decreed, and \code{landauCause\_unknowable} is neither a solution of the fourth problem nor
+Gödel.
+
+\subsection{The common moral}
+
+Five shadows, one device: wherever people have a proved anchor (the polynomial abc and
+Fermat–Catalan, Northcott and Kronecker, Dirichlet, the Liouville structure) we exhibit it in green
+as a reading through the engine; wherever an open conjecture stands we name it as an honest gate and
+do not pretend to have closed it. None of the five is solved, no first-cause decrees were added, and
+one and the same prohibition is recognized beyond the horizon of the eight masks as well.

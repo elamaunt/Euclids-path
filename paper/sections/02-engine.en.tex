@@ -1,0 +1,230 @@
+\section{Euclid's engine: the impossibility of perpetual descent}\label{sec:engine}
+
+The programme reduces the twin-prime conjecture to the behaviour of one dynamical object --- a
+chain of self-similar Euclidean equations we call \emph{Euclid's engine} --- and rests the whole
+edifice on a single fact: the engine cannot run forever. Suppose there were only finitely many
+twin primes. Then, from some scale onward, every pair $(6m-1,\,6m+1)$ has a composite side whose
+factorisation exposes an active divisor; removing it yields a structurally identical Euclidean
+equation with a strictly smaller centre. Iterating, one obtains an infinite chain of clean
+descents that never leaves the clean core --- an eternally running engine performing the
+nontrivial work of descent, losing nothing. We prove that no such engine exists. This is Fermat's
+infinite descent, restated for the centres of Euclidean pairs; the state is described by a single
+natural number --- its \emph{height} --- and one successful step decreases the height strictly and
+\emph{multiplicatively}, after which only the arithmetic of $\N$ does the work. Everything below is
+machine-checked on the bare Lean~4 kernel, without \code{mathlib}
+(\code{EuclidsPath/Engine/EPMI.lean}, \code{EuclidsPath/Engine/Irreversibility.lean},
+\code{EuclidsPath/Engine/UniversalEngine.lean})~\cite{lean4,euclidspath-repo}.
+
+\subsection{The descent step and its strictness}
+
+We strip away the arithmetic filling and keep only what the impossibility proof needs. The state
+carries one numerical characteristic, the height $h\in\N$, substantively the centre $m$ of the
+pair $(6m-1,\,6m+1)$.
+
+\begin{definition}[\code{DescentStep}]\label{thm:DescentStep}
+Let $A\in\N$ be a fixed scale threshold (a lower bound on the active factors). One successful clean
+descent from height $h$ to height $h'$ is the relation
+\begin{equation}\label{eq:descentstep}
+  \mathrm{DescentStep}\,A\,h\,h' \;:=\; A\cdot h' < h.
+\end{equation}
+\end{definition}
+
+The step fixes not merely a decrease but a \emph{multiplicative} one: the new height is smaller by
+a factor of $A$ (up to strictness). It is the factor $A$, not the difference, that sets the speed
+of descent and makes termination inevitable.
+
+\begin{lemma}[\code{descent_strict}]\label{thm:descent_strict}
+\green{}\; If $1\le A$ and $\mathrm{DescentStep}\,A\,h\,h'$, then $h'<h$.
+\end{lemma}
+
+\emph{Proof idea.} From $1\le A$ we get $h'\le A\cdot h'$ (multiplying by a positive factor does
+not decrease), and $A\cdot h'<h$ by \cref{eq:descentstep}; transitivity gives $h'<h$. The lemma
+separates the \emph{direction} of the descent (the height falls) from its \emph{speed} (it falls by
+a factor of $A$).
+
+\subsection{The impossibility of infinite descent}
+
+\begin{theorem}[\code{no_infinite_descent}]\label{thm:no_infinite_descent}
+\green{}\; Let $1\le A$. There is no sequence of heights $H:\N\to\N$ for which every step is a
+successful $A$-descent, i.e.
+\begin{equation}\label{eq:perpetualheights}
+  \forall\, t,\quad \mathrm{DescentStep}\,A\,(H\,t)\,(H\,(t+1)).
+\end{equation}
+From the existence of such a sequence, \code{False} is derived.
+\end{theorem}
+
+\begin{proof}
+Consider the quantity $H\,t+t$. At each step the height falls by at least $1$ (\cref{thm:descent_strict}),
+while the counter $t$ grows by $1$; hence $H\,t+t$ does not increase, and by induction
+$\forall\,t,\ H\,t+t\le H\,0$. Substituting $t=H\,0+1$ gives
+$H\,(H\,0+1)+(H\,0+1)\le H\,0$, whose left side already exceeds $H\,0$ --- a contradiction. In Lean
+the induction is closed by \code{omega}; \code{\#print axioms} confirms the theorem depends on no
+axioms whatsoever and is free of \code{sorry}.
+\end{proof}
+
+The multiplicative decrease $H_t<H_0/A^{t}$ drives the height below $1$ in finitely many steps, and
+a positive integer cannot be less than $1$: the natural numbers have a bottom, and a discrete
+descent must reach it. The contradiction needs only $A=1$ (the well-orderedness of $\N$); the
+factor $A\ge 1$ supplies the quantitative speed. This is stronger than the physical second law:
+because the height is an integer with a strict bottom, the descent does not merely die down
+asymptotically --- it halts in at most $H\,0$ steps (\cref{thm:turned_engine_halts}).
+
+\subsection{The structural form: state and boundary-exit}
+
+To connect the abstract theorem to the substantive picture we introduce an explicit state and a
+step operator that distinguishes the two outcomes of removing an active factor.
+
+\begin{definition}[\code{State}]\label{thm:State}
+The engine state is the structure with a single field, $\mathrm{height}:\N$; substantively this is
+the centre $m$ of the current Euclidean pair. A step over a state $s$ is an inductive type with two
+constructors,
+\begin{equation}\label{eq:step}
+  \mathrm{Step}\,A\,s \;=\;
+  \begin{cases}
+    \texttt{clean}\ s'\ (A\cdot s'.\mathrm{height} < s.\mathrm{height}), & \text{successful descent into a clean state,}\\[2pt]
+    \texttt{boundary}, & \text{the absorbing exit } \bot,
+  \end{cases}
+\end{equation}
+where the \texttt{clean} branch carries a witness of the multiplicative decrease, and
+\texttt{boundary} records exit from the clean core onto the boundary, from which there is no
+return.
+\end{definition}
+
+\begin{theorem}[\code{no_perpetual_engine}]\label{thm:no_perpetual_engine}
+\green{}\; Let $1\le A$. There is no trajectory $\mathrm{run}:\N\to\mathrm{State}$ in which every
+step is a successful clean descent, i.e.
+$A\cdot(\mathrm{run}\,(t+1)).\mathrm{height} < (\mathrm{run}\,t).\mathrm{height}$ for all $t$.
+\end{theorem}
+
+\emph{Proof idea.} Reduce to the abstract form: take the heights $t\mapsto(\mathrm{run}\,t).\mathrm{height}$
+and apply \cref{thm:no_infinite_descent}. This is precisely ``there is no perpetual engine of
+Euclid''.
+
+\begin{theorem}[\code{boundary_dichotomy}]\label{thm:boundary_dichotomy}
+\green{}\; For any step $st:\mathrm{Step}\,A\,s$, exactly one of two things holds:
+\begin{equation}\label{eq:dichotomy}
+  \bigl(\exists\, s'\,h,\ st = \texttt{clean}\ s'\ h\bigr)\ \lor\ \bigl(st = \texttt{boundary}\bigr).
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Case analysis over the constructors of \cref{eq:step}. This is the type-level
+fixation of the boundary-exit law: a descended centre either stays clean (height strictly fell by a
+factor of $A$) or exits onto the absorbing boundary $\bot$, from which no clean continuation of the
+same branch exists. The boundary absorbs: $\bot\not\to S$.
+
+\subsection{Irreversibility and the arrow of time}
+
+\cref{thm:no_infinite_descent} answers ``does the engine always halt?''. The companion module
+\code{Irreversibility.lean} closes ``can it turn back?'', supplying a discrete analogue of the
+second law of thermodynamics. All of it is machine-proven on the standard axioms alone, with no
+appeal to the distribution of primes.
+
+\begin{theorem}[\code{engine_never_returns}]\label{thm:engine_never_returns}
+\green{}\; Let $1\le A$ and let $H:\N\to\N$ satisfy \cref{eq:perpetualheights}. Then $H$ is
+strictly antitone:
+\begin{equation}\label{eq:strictanti}
+  \mathrm{StrictAnti}\,H \;:\Longleftrightarrow\; \bigl(\forall\, s\,t,\; s<t \Rightarrow H\,t<H\,s\bigr).
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} The local strict decrease $H(n+1)<H(n)$ from \cref{thm:descent_strict} is lifted
+to global antitonicity by \code{strictAnti_nat_of_succ_lt}: on $\N$, decrease at every unit step is
+equivalent to decrease over any interval. The height is the coordinate of thermodynamic time, and
+\cref{eq:strictanti} is the formal arrow of time --- the engine, once descending, cannot restore a
+previous state. This describes any chain of successful descents \emph{should one be given}; whether
+such a chain can be infinite is settled negatively by \cref{thm:no_infinite_descent}.
+
+\begin{theorem}[\code{fuel_ascent_strictMono}]\label{thm:fuel_ascent_strictMono}
+\green{}\; The map $n\mapsto n+1$ is strictly monotone: $\mathrm{StrictMono}\,(\lambda n.\,n+1)$.
+\end{theorem}
+
+\emph{Proof idea.} Trivially $n<n+1$. The triviality of form hides the substance: the successor
+chain $0,1,2,\dots$ is an infinite strictly increasing trajectory. Adding $+1$ is ``fuel'': larger
+centres never run out. Setting this beside \cref{thm:no_infinite_descent} exhibits the asymmetry of
+the thermodynamic axis --- infinitely up, finitely down. That asymmetry is the arrow.
+
+\begin{theorem}[\code{turned_engine_halts}]\label{thm:turned_engine_halts}
+\green{}\; Let $H:\N\to\N$ and suppose the engine has made $k$ strict steps downward, i.e.
+$H(t+1)<H(t)$ for all $t<k$. Then
+\begin{equation}\label{eq:haltbound}
+  k \;\le\; H(0).
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} By induction the invariant $H(t)+t\le H(0)$ holds for all $t\le k$; substituting
+$t=k$ and dropping $H(k)\ge 0$ gives \cref{eq:haltbound}. This is the same ``height plus time does
+not grow'' balance as in \cref{thm:no_infinite_descent}, read as a finite bound rather than a route
+to contradiction: any turn downward is a finite path of length at most the initial height.
+
+\subsection{The universal form: engine versus well-foundedness}
+
+The impossibility above is a shadow of a single order-theoretic fact, formalised in
+\code{UniversalEngine.lean} over an arbitrary relation. This is the reading the whole article
+carries: where a carrier is well-founded, the engine is forbidden \emph{unconditionally}; where it
+is not, the engine operates.
+
+\begin{definition}[\code{PerpetualEngine}]\label{thm:PerpetualEngine}
+For a relation $r$ on a type $\alpha$, a perpetual engine is an infinite strictly $r$-descending
+chain:
+\begin{equation}\label{eq:perpetualengine}
+  \mathrm{PerpetualEngine}\,r \;:=\; \exists\, f:\N\to\alpha,\ \forall\, n,\ r\,(f(n+1))\,(f\,n).
+\end{equation}
+\end{definition}
+
+\begin{theorem}[\code{perpetualEngine_iff_not_wellFounded}]\label{thm:perpetualEngine_iff_not_wellFounded}
+\green{}\; For any $r$ on $\alpha$,
+\begin{equation}\label{eq:dividingline}
+  \mathrm{PerpetualEngine}\,r \;\Longleftrightarrow\; \neg\,\mathrm{WellFounded}\,r.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} Unfolding $\mathrm{WellFounded}$ via its descending-chain characterisation, an
+engine \cref{eq:perpetualengine} is literally a descending chain, whose non-existence is
+well-foundedness. This is the exact dividing line: the engine and well-foundedness are complementary.
+
+\begin{theorem}[\code{no_perpetual_engine_of_wellFounded}]\label{thm:no_perpetual_engine_of_wellFounded}
+\green{}\; If $\mathrm{WellFounded}\,r$, then $\neg\,\mathrm{PerpetualEngine}\,r$.
+\end{theorem}
+
+\emph{Proof idea.} Immediate from \cref{thm:perpetualEngine_iff_not_wellFounded}. The impossibility
+is intrinsic, almost definitional: the engine's own defining chain is exactly what
+well-foundedness forbids. \cref{thm:no_infinite_descent} is the instance $r={<}$ on $\N$
+(\code{no_perpetual_engine_on_nat}), with height as rank.
+
+\begin{theorem}[\code{no_perpetual_engine_of_rank}]\label{thm:no_perpetual_engine_of_rank}
+\green{}\; Let $\rho:\alpha\to\beta$ with $(\beta,s)$ well-founded, and suppose every $r$-step
+strictly decreases the rank: $\forall\, x\,y,\ r\,x\,y \Rightarrow s\,(\rho\,x)\,(\rho\,y)$. Then
+$\neg\,\mathrm{PerpetualEngine}\,r$.
+\end{theorem}
+
+\emph{Proof idea.} An engine $f$ for $r$ would transport along $\rho$ to a descending chain
+$\rho\circ f$ in the well-founded $(\beta,s)$, contradicting
+\cref{thm:no_perpetual_engine_of_wellFounded}. The $\N$-rank specialisation
+(\code{no_perpetual_engine_of_natRank}) is the unification: every descent front of the programme is
+a corollary of this one theorem, obtained by exhibiting a rank that strictly decreases along steps.
+
+\begin{theorem}[\code{perpetualEngine_on_real}]\label{thm:perpetualEngine_on_real}
+\green{}\; On the continuum the engine operates:
+$\mathrm{PerpetualEngine}\,(<)$ on $\R$.
+\end{theorem}
+
+\emph{Proof idea.} The witness $(1/2)^n$ is an infinite strictly $(<)$-descending chain in $\R$;
+hence, by \cref{thm:perpetualEngine_iff_not_wellFounded}, the strict order on $\R$ is not
+well-founded. This marks the honest controller boundary: on discrete carriers the engine is
+forbidden and descent halts, while on the reals perpetual descent is realised. The prohibition
+lives in discreteness, not in analysis.
+
+\medskip
+
+We have introduced the central object and proved, machine-checked and axiom-free, that it cannot
+run forever (\cref{thm:no_infinite_descent,thm:no_perpetual_engine}), does not turn back
+(\cref{thm:engine_never_returns}), and, once descending, halts in finitely many steps
+(\cref{thm:turned_engine_halts}); the dichotomy (\cref{thm:boundary_dichotomy}) leaves the absorbing
+boundary as the only alternative to continuing. We draw the boundary of what is proved honestly:
+this is the impossibility of an infinite \emph{local} clean descent along a single branch. The
+global non-covering result does \emph{not} follow automatically --- one can imagine a finite tree of
+bounded depth, each branch honestly terminating in an absorbing boundary-leaf, that nevertheless
+covers all centres. The closure plan lifts the prohibition from a branch to the whole tree, recast
+as a multi-rank non-cover with a rank reduction to the rank-$1$ neighbour obstruction; that single
+open node is taken apart in \cref{sec:reduction}. The engine, for its part, supplies the local law
+of finiteness on which the reduction stands.

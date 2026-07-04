@@ -1,0 +1,329 @@
+\section{The Riemann hypothesis through the engine}\label{sec:riemann}
+
+The Riemann hypothesis (RH) lives in a different world from the twins --- complex analysis, the
+zeta function, the nontrivial zeros in the critical strip~\cite{clay-rh} --- yet the same engine
+reaches it, and by the same argument by contradiction. We are emphatic that RH is \red{} open: the
+theorems below are honest reductions and a decree, never a proof. Two independent routes carry the
+engine to the zeros --- a contraposition through an analytic bridge, and a translation into the
+Liouville sign --- and both run into one wall. A third route derives RH from the first cause,
+\yellow{} axiom-tainted, with its price disclosed by machine. Throughout, the goal is the official
+\code{RiemannHypothesis} of \code{mathlib} (a quantifier over all nontrivial zeros of
+\code{riemannZeta}), not a home-made predicate.
+
+\subsection*{Contraposition: not-RH begets an engine}
+
+The logical form is exactly that of the twin branch: for $P := \mathrm{RH}$,
+\begin{equation}\label{eq:riemann-contraposition}
+  \bigl(\neg P \Rightarrow \text{Engine}\bigr)\ \wedge\ \neg\,\text{Engine}\ \Longrightarrow\ P .
+\end{equation}
+Substantively we build $\neg\mathrm{RH} \Rightarrow \exists$ a zero $\rho$ with
+$\mathrm{Re}\,\rho \ne \tfrac12 \Rightarrow$ perpetual engine $\Rightarrow \bot$, where the last
+step is the machine-checked \code{no\_infinite\_descent} and the middle step is the branch's only
+open node. We stress that RH does \emph{not} follow from the infinitude of the twins: these are
+independent statements, and we never record \code{twin} $\Rightarrow$ \code{RH}. The branch reuses
+the proven mechanism and the contraposition scheme, nothing more.
+
+\begin{definition}[\code{NontrivialZeroM}]\label{def:NontrivialZeroM}
+A nontrivial zero is
+$\mathrm{NontrivialZeroM}(\rho) :\Longleftrightarrow \zeta(\rho)=0 \wedge (\neg\exists n,\ \rho = -2(n{+}1)) \wedge \rho \ne 1$,
+exactly the premise of \code{mathlib}-RH gathered into one object.
+\end{definition}
+
+To feed the engine we must localise such a zero into the strip $0<\mathrm{Re}\,\rho<1$. The top
+$\mathrm{Re}\,\rho<1$ is closed by \code{mathlib} analysis (\code{no\_zero\_of\_one\_le\_re} from
+\code{riemannZeta\_ne\_zero\_of\_one\_le\_re}), a PNT-level result proven there and not by us; the
+bottom $\mathrm{Re}\,\rho>0$ once required the input \code{TrivialBelowZeroClassification}, later
+discharged (\cref{thm:trivialBelowZeroClassification}). Together, \code{nontrivialZero\_in\_strip}
+places a nontrivial zero strictly inside the strip.
+
+All substantive difficulty is gathered into one proposition, the \emph{engine bridge}. It is not an
+axiom: it is an explicit premise of a conditional theorem, kept honestly open.
+
+\begin{definition}[\code{EngineBridge}]\label{def:EngineBridge}
+\begin{equation}\label{eq:EngineBridge}
+  \mathrm{EngineBridge} :\Longleftrightarrow \forall\,\rho,\
+  \zeta(\rho)=0 \wedge 0<\mathrm{Re}\,\rho \wedge \mathrm{Re}\,\rho<1 \wedge \mathrm{Re}\,\rho \ne \tfrac12
+  \Longrightarrow \exists\,A\ge 1,\ \exists\,H:\N\to\N,\ \forall t,\ \DescentStep A\,(H\,t)\,(H(t{+}1)).
+\end{equation}
+\end{definition}
+
+The witness $H$ with $\DescentStep A\,(H\,t)\,(H(t{+}1))$ for all $t$ is exactly an infinite clean
+chain of strictly decreasing height --- a perpetual engine. Substantively, balance at $\tfrac12$ is
+the point where gain and loss of mass along the descent compensate; a zero off $\tfrac12$ removes
+the compensation and yields a free directed pumping, the engine forbidden by
+\code{no\_infinite\_descent}. We do not mask that \code{EngineBridge} is unproven and, in any
+foreseeable form, comparable in difficulty to RH itself. The branch is honest only because all of
+its unprovenness is localised in this one premise.
+
+\begin{theorem}[\code{riemannHypothesis\_of\_engine\_bridge}]\label{thm:riemannHypothesis_of_engine_bridge}
+If \code{TrivialBelowZeroClassification} and \code{EngineBridge}, then \code{mathlib}-\/$\mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\begin{proof}[Proof idea]
+Take an arbitrary zero $\rho$ nontrivial and $\ne 1$; localise it into the strip via
+\code{nontrivialZero\_in\_strip}. Suppose $\mathrm{Re}\,\rho \ne \tfrac12$. The bridge yields
+$A\ge1$ and a chain $H$ --- a perpetual engine --- contradicting \code{no\_infinite\_descent}.
+Hence $\mathrm{Re}\,\rho = \tfrac12$. All analysis sits in the premise; the tail
+(engine $\Rightarrow \bot$) is a machine-checked fact shared with the twins. RH is obtained
+\emph{conditionally} on the bridge, and not one iota more.
+\end{proof}
+
+\begin{theorem}[\code{not\_RH\_gives\_engine}]\label{thm:not_RH_gives_engine}
+If \code{EngineBridge} and $\neg\mathrm{RH}$, then there exist $A\ge 1$ and $H:\N\to\N$ with
+$\DescentStep A\,(H\,t)\,(H(t{+}1))$ for all $t$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} Unfold $\neg\mathrm{RH}$ via \code{not\_forall}, extract a witness zero off
+$\tfrac12$, feed it to the bridge. The contradiction with \code{no\_infinite\_descent} is literally
+the one that closes the twins --- a shared finale.
+
+\subsection*{The two-transport route: one shared node}
+
+We place the branch next to the twins structurally, showing that its open node is the same carrier
+of two already proven in the core, not new analysis.
+
+\begin{definition}[\code{TwoTransportLaw}]\label{def:TwoTransportLaw}
+$\mathrm{TwoTransportLaw} :\Longleftrightarrow \forall\,m\ge1,a,b,v,q,r,s,\
+6m-1 = a b v \wedge 6m+1 = q r s \Longrightarrow q r s = a b v + 2$ --- the identity ``the right
+companion exceeds the left by two'' at the level of factorisations.
+\end{definition}
+
+\begin{theorem}[\code{twoTransportLaw\_holds}]\label{thm:twoTransportLaw_holds}
+$\mathrm{TwoTransportLaw}$ holds. \green{}
+\end{theorem}
+
+\emph{Proof idea.} It is not an axiom or a hypothesis but a witnessed proposition: the concrete
+identity \code{det\_law\_rank33} from the core supplies the witness.
+
+\begin{definition}[\code{TwoTransportBridge}]\label{def:TwoTransportBridge}
+$\mathrm{TwoTransportBridge} :\Longleftrightarrow \bigl(\mathrm{TwoTransportLaw} \Rightarrow \mathrm{EngineBridge}\bigr)$.
+This is an \emph{implication}, not an equivalence of hypotheses: we do not identify RH with the
+twins, only ask whether the bridge RH needs follows from the already-proven core.
+\end{definition}
+
+\begin{theorem}[\code{riemannHypothesis\_of\_two\_transport}]\label{thm:riemannHypothesis_of_two_transport}
+If \code{TrivialBelowZeroClassification} and \code{TwoTransportBridge}, then
+\code{mathlib}-\/$\mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} Plug the proven \code{twoTransportLaw\_holds}
+(\cref{thm:twoTransportLaw_holds}) into the link to obtain \code{EngineBridge}, then apply
+\cref{thm:riemannHypothesis_of_engine_bridge}. This names precisely the price of the branches'
+simultaneity: what stays open is exactly \code{TwoTransportBridge} --- one implication
+``carrier of two $\Rightarrow$ bridge'' --- and no separate zeta analysis.
+
+\subsection*{The Liouville route: $\lambda = (-1)^{\mathrm{rank}}$}
+
+Instead of building our own bridge to the zeros, we take a ready-made arithmetic equivalent of RH
+and decompose \emph{it}. The Liouville function $\lambda(n) = (-1)^{\Om(n)}$
+(\code{ArithmeticFunction.liouville}, with $\Om(n) = $ \code{cardFactors}\,$n$) has summatory
+function $L(x) = \sum_{n=1}^{x}\lambda(n)$, the accumulated imbalance between integers with an even
+and an odd number of prime factors.
+
+\begin{definition}[\code{LiouvilleBound}]\label{def:LiouvilleBound}
+$\mathrm{LiouvilleBound} :\Longleftrightarrow \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\ |L(x)| \le C\,x^{1/2+\varepsilon}$
+--- the sum of $\pm1$ grows like a random walk, no faster than $\sqrt{x}$ up to $x^{\varepsilon}$.
+\end{definition}
+
+The supporting fact is a classical theorem of analytic number theory that \code{mathlib} does not
+yet have; we introduce it as an explicit input-bridge rather than postulating RH.
+
+\begin{definition}[\code{LiouvilleRHBridge}]\label{def:LiouvilleRHBridge}
+$\mathrm{LiouvilleRHBridge} :\Longleftrightarrow \bigl(\mathrm{LiouvilleBound} \iff \mathrm{RiemannHypothesis}\bigr)$
+--- the classical equivalence of the $O(x^{1/2+\varepsilon})$ bound with the absence of zeros right
+of the critical line. \red{}
+\end{definition}
+
+\begin{theorem}[\code{riemann\_of\_liouville\_bound}]\label{thm:riemann_of_liouville_bound}
+$\mathrm{LiouvilleRHBridge} \wedge \mathrm{LiouvilleBound} \Rightarrow \mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} The one-line \code{bridge.mp hbound}: all analysis is isolated in the bridge, and
+the only substantive goal is the arithmetic \code{LiouvilleBound}.
+
+The reason this fits our apparatus is a coincidence of objects: the number of prime factors is
+exactly our rank, and stripping a factor flips the sign.
+
+\begin{theorem}[\code{liouville\_eq\_neg\_one\_pow\_rank}]\label{thm:liouville_eq_neg_one_pow_rank}
+For $n\ne0$,
+\begin{equation}\label{eq:liouville-rank}
+  \lambda(n) = (-1)^{\code{cardFactors}\,n} = (-1)^{\mathrm{rank}} .
+\end{equation}
+Proven with no inputs of ours, from \code{liouville\_apply}. \green{}
+\end{theorem}
+
+\begin{theorem}[\code{liouville\_flip\_of\_mul\_prime}]\label{thm:liouville_flip_of_mul_prime}
+For a prime $p$ and $m\ne0$, $\lambda(p\cdot m) = -\lambda(m)$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} $\Om(p\cdot m) = \Om(m)+1$ (via \code{cardFactors\_mul} and
+\code{cardFactors\_apply\_prime}), whence the sign flips. Thus $L(x) = \sum_{n\le x}(-1)^{\mathrm{rank}(n)}$
+is the rank-parity imbalance on $[1,x]$, and \code{deleteFactor} --- the rank-descent step of the
+twin branch --- is exactly the operator flipping the Liouville sign. The two apparatuses,
+invented for different problems, are one operator on one carrier.
+
+We do not prove \code{LiouvilleBound}. Its difficulty is the classical \emph{parity wall}: control
+of the parity of $\Om$, inaccessible to sieve methods and in substance equivalent to RH itself. Our
+descent supplies \emph{vertical} information (one flip per stripped factor), while
+\code{LiouvilleBound} demands a \emph{horizontal} statistical balance over all $n\le x$; the passage
+between the two is the open node. (The stronger P\'olya claim $L(x)\le0$ is refuted, so the target
+is the bound, not a fixed sign.)
+
+\begin{conjecture}[rank balance]\label{conj:rank-balance}
+The descent sign dynamics (\cref{thm:liouville_flip_of_mul_prime}) together with
+\code{no\_infinite\_descent} entails a statistical balance of rank parities, i.e.\
+\code{LiouvilleBound}. Equivalently, the asymmetry $\mathrm{Re}\,\rho \ne \tfrac12$ of a nontrivial
+zero forces the violation of two-transport balance that begets an engine
+($\mathrm{TwoTransportLaw} \Rightarrow \mathrm{EngineBridge}$). \red{}
+\end{conjecture}
+
+Both routes run into one wall, ``asymmetry $\Rightarrow$ engine'', dressed differently. In the
+common language of rank parity $\mathrm{rank}(n) = \code{cardFactors}\,n$ the twin wall (balance of
+side ranks, $N_{00}$ not emptying relative to $N_{33}$) and the Riemann wall (balance of the parity
+of a single $n$) are one node --- the marginal a shadow of the joint. This unity is a conjecture
+about the \emph{nature} of the difficulty, not a logical derivation of one hypothesis from the
+other.
+
+\subsection*{Closing an input honestly: the trivial zeros}
+
+One former analytic input is now a theorem, and the load did not move --- it vanished.
+
+\begin{theorem}[\code{trivialBelowZeroClassification}]\label{thm:trivialBelowZeroClassification}
+Every zero of $\zeta$ with $\mathrm{Re}\,s\le0$ is trivial:
+\begin{equation}\label{eq:trivial-zeros}
+  \forall s\in\mathbb{C},\quad \zeta(s)=0 \wedge \mathrm{Re}\,s\le0 \Rightarrow \exists n\in\N,\ s = -2(n{+}1) .
+\end{equation}
+\green{}
+\end{theorem}
+
+\emph{Proof idea.} The route is entirely \code{mathlib}: $s=0$ is excluded
+($\code{riemannZeta\_zero}=-\tfrac12$); for $s\ne0$ the functional equation
+\code{riemannZeta\_one\_sub} at $w=1-s$ (with $\mathrm{Re}\,w\ge1$) makes the nontrivial factors
+nonzero, so the cosine vanishes: $\cos(\pi(1-s)/2)=0 \Rightarrow s=-2k$, $k\ge1$. Consequently
+\code{nontrivialZero\_in\_strip} becomes unconditional and RH is conditional \emph{only} on the
+bridge.
+
+Two audit findings keep the rest honest. First, several ``impossible-engine'' reformulations are
+provably circular: because the factory is unconditionally impossible, a coherent two-transport
+bridge is equivalent to RH \emph{verbatim}.
+
+\begin{theorem}[\code{coherentTwoTransportBridge\_iff\_RH}]\label{thm:coherentTwoTransportBridge_iff_RH}
+$\mathrm{CoherentTwoTransportBridge} \iff \mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} A coherent law would build a factory, and the factory is unconditionally empty
+(\code{no\_coherent\_twoTransportLaw}); the decomposition is a map of obligations, its audit gates
+inert markers. Such routes are exact reformulations of RH, not reductions of difficulty. Second, an
+adversarial probe cracked open a rank-jump ``wrapper'' that held for free (a \warn{} vacuity): the
+honest remainder \code{wall\_relevant}/\code{wall\_global} shows that, for any jump-free system,
+pairing is exactly $\neg\mathrm{LiouvilleViolation}$ --- again RH strength, not a reduction. Catching
+these by machine is why the parts that passed can be trusted.
+
+\subsection*{The manifestation front: a green chain, RH from the decree}
+
+The last route mirrors the twin architecture. A zero off the critical line is an \emph{unpaid
+deviation}; RH becomes ``deviations do not exist''. In \code{mathlib} type \code{OffCriticalZero}
+carries $\zeta(s)=0$, nontriviality, $s\ne1$, and $\mathrm{Re}\,s\ne\tfrac12$; each zero gets a
+scale \code{zeroHeight}\,$Z = \lfloor|\mathrm{Im}\,s|\rfloor$.
+
+\begin{definition}[\code{DeviationFlowSupply}]\label{def:DeviationFlowSupply}
+An unpaid supply at ledger scale $(A,M_0)$ is an infinite admissible family of extended generated
+flows:
+\begin{equation}\label{eq:deviation-supply}
+  \mathrm{DeviationFlowSupply}(A,M_0) := \exists\,\mathcal{F}\subseteq\mathrm{ExtProperFlow}(A,M_0),\ \mathrm{InfiniteFamily}(A,M_0,\mathcal{F}) .
+\end{equation}
+This is the \emph{same} object the twin boundary conjecture builds; it is delivered by the genuine
+rank machine, not an empty abstraction.
+\end{definition}
+
+The \emph{manifestation law} \code{RiemannManifestationLaw} decrees that a deviation gives itself
+away by such a supply wherever the books reconcile: for every deviation $Z$ and scale
+$M_0\ge\code{zeroHeight}\,Z$, every resolving projection carries a
+\code{DeviationFlowSupply}. Crucially, the law asserts a \emph{positive event} (zero $\to$
+manifestation), not ``there are no zeros'': its strength depends on decreeing a cause, not a
+conclusion. The ``cannot'' side is a green theorem.
+
+\begin{theorem}[\code{no\_deviationFlowSupply\_at\_resolved\_scale}]\label{thm:no_deviationFlowSupply_at_resolved_scale}
+For any projection at scale $(A,M_0)$ resolving collisions,
+$\mathrm{Resolves}(\mathrm{proj}) \Rightarrow \neg\,\mathrm{DeviationFlowSupply}(A,M_0)$. \green{}
+\end{theorem}
+
+\emph{Proof idea.} A resolving projection yields a stable energy-free universe; an infinite family
+of flows collides under the finite key (pigeonhole), the collision assembles a witness engine, and
+engines do not exist (\code{no\_someConcreteEuclideanEngine}) --- the same three moves that killed
+the finiteness of the twins. We prove the ``cannot'' side; only ``is obliged to manifest'' is
+decreed.
+
+\begin{theorem}[\code{riemannHypothesis\_of\_manifestation\_and\_boundary}]\label{thm:riemannHypothesis_of_manifestation_and_boundary}
+The absence of engines, the accepted twin boundary $\mathrm{TheStrictLastStep00Obligation}$, and
+$\mathrm{RiemannManifestationLaw}$ together imply $\mathrm{RiemannHypothesis}$ (the precise
+\code{mathlib} sense). \green{}
+\end{theorem}
+
+\emph{Proof idea.} Via \code{noOffCriticalZero\_of\_manifestation\_and\_boundary}: the boundary
+yields a resolving projection at the zero's height, the law turns the zero into an infinite supply,
+the supply assembles a witness engine, and it is killed by ``engines do not exist''; then RH is
+extracted from ``no deviations'' using \cref{thm:trivialBelowZeroClassification}. All three premises
+do real work, not through explosion. This entire chain is \green{}: it lives in a module that does
+not import the quarantine.
+
+The axiom enters at exactly one step, when the manifestation law is placed into the first cause as
+its second boundary \code{riemannBoundary} (alongside the twin \code{causalBoundary}) --- but the
+axiom is still one, \axiom{}.
+
+\begin{theorem}[\code{riemannHypothesis\_from\_firstCause}]\label{thm:riemannHypothesis_from_firstCause}
+From the single extended decree, $\mathrm{RiemannHypothesis}$ follows. \yellow{}
+\end{theorem}
+
+\emph{Proof idea.} Apply \cref{thm:riemannHypothesis_of_manifestation_and_boundary} to
+\code{no\_someConcreteEuclideanEngine}, the first-cause projection \code{step00CausalClosure}, and
+the field \code{riemannManifestationLaw}. The machine axiom list reads
+$[\code{propext}, \code{Classical.choice}, \code{Quot.sound}, \axiom{}]$: the last word betrays the
+taint. This is \emph{not} a proof of RH --- it is a reduction closed by decree, exactly as with the
+twins.
+
+The obvious suspicion --- that we merely renamed RH inside the law --- is answered by machine, and
+the answer is subtle.
+
+\begin{theorem}[\code{riemannManifestation\_asserts\_RH}]\label{thm:riemannManifestation_asserts_RH}
+Under the accepted twin boundary, the manifestation law is equivalent to RH:
+$\mathrm{RiemannManifestationLaw} \iff \mathrm{RiemannHypothesis}$. \yellow{}
+\end{theorem}
+
+\emph{Proof idea.} The decree is no weaker than the conclusion, and we prove this rather than hide
+it. But it is not a tautology: unlike the condemned bridge \code{OffCriticalRiemannEngineBridge},
+for which \code{offCriticalBridge\_iff\_RH} holds \emph{alone, greenly, with no hypotheses} (a
+verbatim renaming of the goal), the implication ``law $\Rightarrow$ RH'' does not assemble at all
+without the boundary. What we decree is a causal condition on top of a boundary already accepted for
+the twins, not a renamed goal --- one architecture applied twice.
+
+Finally, the decree admits no internal grounding. The bundle
+\code{InternalisedRiemannGround} carries the law itself and a witness that it came from beyond one's
+own horizon; such a bundle self-destructs.
+
+\begin{theorem}[\code{no\_internalisedRiemannGround}]\label{thm:no_internalisedRiemannGround}
+Internal self-grounding of the manifestation law is impossible:
+$\mathrm{InternalisedRiemannGround} \Rightarrow \mathrm{False}$; hence
+$\neg\,\mathrm{InternalKnowledgeOfRiemannCause}$ (\code{riemannCause\_unknowable}). \green{}
+\end{theorem}
+
+\emph{Proof idea.} The bundle is formal --- \code{beyondOwnHorizon} is simply $\neg\code{ground}$, a
+tautological $P\wedge\neg P$, and we do not hide this. What pays for the form is a genuine
+construction: the only internal trace of a deviation is a perpetual engine
+(\code{deviation\_carries\_engine\_at\_resolved\_scale}), gated by the resolving scale --- itself the
+open twin node. This is not G\"odel and not a solution of RH: only the pigeonhole wall, model-internal.
+The engine that would decide for us is forbidden by the same machine with which we prove everything;
+the external door of the decree remains the only one.
+
+\medskip
+
+\noindent\emph{Honest status.} RH is \red{} open. Proven \green{} are the conditional theorems
+(\cref{thm:riemannHypothesis_of_engine_bridge,thm:riemannHypothesis_of_two_transport,thm:riemann_of_liouville_bound}),
+the rank/sign identities
+(\cref{thm:liouville_eq_neg_one_pow_rank,thm:liouville_flip_of_mul_prime}), the closed input
+\cref{thm:trivialBelowZeroClassification}, the circularity and manifestation theorems, and the
+epistemic wall. \red{} inputs: \code{EngineBridge} (equivalently \code{TwoTransportBridge}),
+\code{LiouvilleBound}, \code{LiouvilleRHBridge}, and a load-bearing spectral anchor (the
+Hilbert--P\'olya operator itself, absent from \code{mathlib}). \yellow{} is only the route through
+the first cause, whose price is disclosed by \cref{thm:riemannManifestation_asserts_RH}. Nowhere
+does a reduction substitute for a proof~\cite{clay-rh}.

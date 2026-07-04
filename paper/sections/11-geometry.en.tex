@@ -1,0 +1,251 @@
+\section{The geometry of the path}\label{sec:geometry}
+
+Throughout the article the descent graph of \code{Step00} --- states (centres, defects,
+absorbers) and edges (clean, boundary, peel, absorb) --- has served as a \emph{machine}. Here we
+read the same construction as a \emph{place} and put to it the three questions with which geometry
+began: does time flow and is it irreversible; what is the shape of the space, and can it be
+\emph{computed} rather than postulated; do straight lines meet. Each answer turns out to be a
+theorem read off the edges of the graph, and the last one inverts Euclid himself. All results are
+green except for a two-declaration coda; the entire green half is bundled by the capstone
+\code{geometry\_of\_euclids\_path}, which carries no user axioms.
+
+\subsection{The arrow of time}
+
+Proper time is played by \code{lexRank}, the lexicographic rank of a state --- not chosen but
+computed, and strictly decreasing along every edge.
+
+\begin{theorem}[\code{timeArrow\_step}]\label{thm:timeArrow_step}
+\green{} Every real step strictly decreases the rank: $\mathrm{RealStep}\ A\ M_0\ U\ V$ implies
+$\code{lexRank}\,V < \code{lexRank}\,U$.
+\end{theorem}
+
+\emph{Proof idea.} A re-export of the carrying theorem of the concrete graph: each of the four step
+constructors --- clean, boundary, peel, absorb --- drops the rank. From this local fact the whole
+kinematics unfolds: the rank strictly decreases along any non-empty path (\code{timeArrow\_path}),
+no state is reachable from itself (\code{no\_return}), and no infinite run exists at all
+(\code{no\_eternal\_run}, a direct consequence of the root EPMI \code{no\_infinite\_descent},
+\cref{sec:engine}).
+
+\begin{theorem}[\code{every\_journey\_halts}]\label{thm:every_journey_halts}
+\green{} Every journey halts no later than the initial rank: $k$ real steps are possible only when
+$k \le \code{lexRank}\,(\mathrm{run}\,0)$.
+\end{theorem}
+
+\emph{Proof idea.} The qualified ``second law'', carried through
+\code{Engine.turned\_engine\_halts}: a strictly decreasing sequence of naturals cannot take more
+steps than its initial value. The arrow of time is thus a theorem about a finite graph, with an
+exact numerical bound.
+
+\subsection{Curvature, computed}
+
+We have no metric, only edges; but a directed graph carries a combinatorial curvature that can be
+computed.
+
+\begin{definition}[\code{curvature}]\label{def:curvature}
+The curvature of a vertex is the integer
+\begin{equation}\label{eq:curvature}
+\kappa(v) = 1 - \operatorname{outdeg}(v),
+\end{equation}
+where $\operatorname{outdeg}$ is the number of geodesic segments leaving $v$ downward.
+\end{definition}
+
+This is \emph{combinatorial} curvature --- the deficit or excess of outgoing geodesic flow, an
+analogue of Euler's formula --- not Riemannian, sectional, or Ricci--Ollivier: there is no metric,
+no tensor, no smooth structure, and ``curvature'' is legitimate only in the sense of discrete graph
+theory. Within that sense it is honest: the out-set of each vertex is exhibited as a \code{Finset}
+and proven to coincide with \code{RealStep} (\code{mem\_outTargets}), so $\operatorname{outdeg}$
+counts real edges. That the curvature must look forward is itself a theorem.
+
+\begin{theorem}[\code{inDegree\_infinite\_at\_origin}]\label{thm:inDegree_infinite_at_origin}
+\green{} An infinite family of edges flows into the origin \code{absorber 0}: every defect
+$\mathrm{defect}\ 0\ q\ \mathrm{minus}$, over all $q$, flows into the grave of zero.
+\end{theorem}
+
+\emph{Proof idea.} An absorb-edge into \code{absorber 0} requires only $0 \le M_0$, and there are
+infinitely many such defects. Hence the in-degree of the origin is infinite, the symmetric ``total
+degree'' does not exist as a \code{Finset}, and undirected curvature is uncomputable in principle;
+the directed $\kappa = 1 - \operatorname{outdeg}$ is the only computable version.
+
+At scale $(A, M_0) = (5, 4)$, every value checked by the kernel via \code{decide}, the spectrum is a
+portrait of the world. Absorbers carry $\kappa = +1$ (\code{curvature\_absorber}): poles where the
+flow dies out and geodesics focus. Single-exit defects are flat corridors $\kappa = 0$
+(\code{curvature\_defect\_0\_2}, \code{curvature\_defect\_6\_5}). The defect $(4,5,+)$, with both a
+peel and an absorb, branches at $\kappa = -1$ (\code{curvature\_defect\_4\_5}). Clean centres are
+ever more hyperbolic funnels: $\kappa = -3, -4, -8$ at centres $2, 3, 7$ (\code{curvature\_center\_2},
+\code{curvature\_center\_3}, \code{curvature\_center\_7}). The genealogy is hyperbolic; the bottom is
+spherical. A discrete Gauss--Bonnet draws the picture together.
+
+\begin{theorem}[\code{gaussBonnet\_cone3}]\label{thm:gaussBonnet_cone3}
+\green{} On the forward-closed light cone under centre $3$ the total curvature equals the Euler
+characteristic:
+\begin{equation}\label{eq:gaussBonnet}
+\chi(\mathrm{cone3}) = \textstyle\sum \kappa = -5.
+\end{equation}
+\end{theorem}
+
+\emph{Proof idea.} The combinatorial identity $\sum\kappa = |W| - \sum\operatorname{outdeg}$
+(\code{gaussBonnet\_sum}) on the forward-closed window \code{cone3} (closedness checked by the
+kernel, \code{cone3\_forwardClosed}) yields $-5$: the two poles and centre $0$, at $\kappa = +1$
+each, do not outweigh the funnel branchings $-3$ and $-4$. The cone as a whole is hyperbolic despite
+its spherical bottom. The normalisation \cref{eq:curvature} is a choice and the link to genuine
+Gauss--Bonnet is an analogy, not a theorem of differential geometry; but within it the characteristic
+is computed exactly, by the kernel, without assumption.
+
+\subsection{A flat world is a perpetual engine}
+
+Could the space have been flat everywhere, $\kappa \equiv 0$? It could not, and the reason is the
+programme's central prohibition.
+
+\begin{theorem}[\code{nonpositive\_curvature\_forces\_engine}]\label{thm:nonpositive_curvature_forces_engine}
+\green{} If the curvature were nowhere positive ($\forall v,\ \kappa(v) \le 0$), a step would lead out
+of every vertex, iterating the choice would build an infinite run --- the forbidden perpetual engine.
+Such a world does not exist.
+\end{theorem}
+
+\emph{Proof idea.} $\kappa(v) \le 0$ means $\operatorname{outdeg}(v) \ge 1$: every vertex has a
+continuation (\code{hasStep\_of\_curvature\_nonpos}). If this holds everywhere, choice glues those
+continuations into an infinite geodesic --- exactly Euclid's perpetual engine, killed by
+\code{no\_eternal\_run}.
+
+\begin{theorem}[\code{space\_positively\_curved\_somewhere}]\label{thm:space_positively_curved_somewhere}
+\green{} The space of Euclid's path is positively curved somewhere: $\exists v,\ 0 < \kappa(v)$.
+\end{theorem}
+
+Curvature is forced, not decorative: a positively curved point (a pole, a bottom, an absorber) is
+obliged to exist, or the descent would have no floor and run forever. A closed geodesic --- a legal
+non-empty cycle --- would likewise be an engine witness (\code{closedGeodesic\_is\_engineWitness}),
+already killed by the acyclicity of \code{lexRank} (\code{no\_closedGeodesic}); flatness and
+closedness are two faces of one forbidden machine.
+
+\subsection{The irony of the postulates}
+
+Define a \emph{straight line} as Euclid did: a maximal descent path, extended as long as there is
+anywhere to step.
+
+\begin{theorem}[\code{every\_line\_ends}]\label{thm:every_line_ends}
+\green{} Every straight line runs into a terminal: from any state, in finitely many steps one reaches
+a vertex with no exit.
+\end{theorem}
+
+\emph{Proof idea.} Strong induction on proper time $\code{lexRank}\,v$: if $v$ is terminal the path
+is empty; otherwise the first step strictly drops the rank (the arrow of time,
+\cref{thm:timeArrow_step}) and the tail is finite by hypothesis.
+
+\begin{theorem}[\code{no\_infinite\_line}]\label{thm:no_infinite_line}
+\green{} There are no infinite straight lines at all: no line can be extended without bound.
+\end{theorem}
+
+Here is the irony of the programme. ``A straight line can be extended without bound'' is Euclid's
+\emph{second} postulate~\cite{euclid-elements}, humbler and older than the famous fifth. On Euclid's
+path it is precisely this one that falls (\code{euclid\_postulate\_two\_fails}): the path named after
+him violates his own axiom --- not the fifth about parallels, but the deeper second about the very
+extendability of a line. There are no parallels either (\code{no\_parallel\_lines}), but for a
+degenerate reason: parallels are two infinite lines, and not even one exists. One must be scrupulous:
+this is a degenerate geometry, not an elliptic one. The naive ``all lines meet'' is false.
+
+\begin{theorem}[\code{bottom\_not\_unique}, \code{two\_disjoint\_lines}]\label{thm:two_disjoint_lines}
+\green{} The bottom is not unique --- \code{absorber 0} and \code{absorber 1} are both legal and
+terminal; and there exist two entirely disjoint finite lines (at $(5,4)$: the route
+$\mathrm{center}\,7 \to \mathrm{defect}\,4\,5\,\mathrm{plus} \to \mathrm{absorber}\,4$ and the route
+$\mathrm{center}\,3 \to \mathrm{defect}\,0\,2\,\mathrm{minus} \to \mathrm{absorber}\,0$), all nine
+states of which are pairwise distinct.
+\end{theorem}
+
+So ``all lines converge at a single point'', taken head-on, is untrue: there are two distinct meeting
+points and pairs of lines that meet nowhere. Reading the fall of the second postulate as
+``ellipticity'' is legitimate only through this honest boundary.
+
+\subsection{Meeting through the grave of zero}
+
+There is nonetheless an honest, qualified form of meeting, passing through the single special point of
+the graph.
+
+\begin{theorem}[\code{zeroPoint\_absorbs\_all\_divisors}]\label{thm:zeroPoint_absorbs_all_divisors}
+\green{} The point $0$ absorbs all divisors: $\mathrm{sideValue}\ \mathrm{minus}\ 0 = 6\cdot 0 - 1 = 0$
+in $\mathbb{N}$, and everything divides zero; hence every $q$ divides the side of zero.
+\end{theorem}
+
+This is at once an artefact and a marker. An artefact, because truncated subtraction in $\mathbb{N}$
+gives $6\cdot 0 - 1 = 0$, whereas in $\mathbb{Z}$ it would be $-1$; we do not claim arithmetic
+``knows'' the identity outside the $\mathbb{N}$-model. A marker, because $0$ is the only point whose
+sides absorb all divisors at once, the $\mathbb{N}$-trace of the event $0 \to 1$ from the first
+cause --- the beginning of the arrow of time.
+
+\begin{theorem}[\code{line\_to\_origin}]\label{thm:line_to_origin}
+\green{} From any clean centre $m \ge 1$ (given $2 \le A$) there is a path of length $2$ into the
+grave of zero: a boundary step into the defect $(0,2,-)$ --- legal since $2 \mid 0$ --- then an absorb
+into \code{absorber 0}.
+\end{theorem}
+
+\begin{theorem}[\code{web\_above\_every\_horizon}]\label{thm:web_above_every_horizon}
+\green{} For $2 \le A$ and any $N$ there exists a clean centre $m > N$ whose path leads into the grave
+of zero.
+\end{theorem}
+
+\emph{Proof idea.} No density is needed: the primorial carrier \code{Residuals.carrier\_nonempty\_above}
+exhibits a clean centre above any bound (\cref{sec:carrier}), and \code{clean\_of\_cleanZ} transfers
+its cleanness from $\mathbb{Z}$ to $\mathbb{N}$.
+
+\begin{theorem}[\code{lines\_meet\_at\_origin}]\label{thm:lines_meet_at_origin}
+\green{} Any two clean starts (given $2 \le A$) share a common terminal --- the grave of zero,
+\code{absorber 0}.
+\end{theorem}
+
+Not ``a unique meeting point'' and not ``any two paths intersect'', but: any pair of clean lines has a
+common bottom at which both arrive. All downward roads pass through zero. The fifth postulate is
+refuted in its honest form: straight lines do meet, at the grave of zero.
+
+\subsection{The meeting exists, but cannot be known from inside}
+
+What remains is the epistemic summary, and here stand the only tainted lines in the section.
+Everything above is green; the coda carries exactly two declarations tainted not through a new axiom
+but through the already accepted causal boundary of the twins
+(\code{twinLowersInfinite\_from\_step00CausalClosure}), translated into the language of vertices.
+
+\begin{theorem}[\code{twin\_vertices\_beyond\_every\_horizon}]\label{thm:twin_vertices_beyond_every_horizon}
+\yellow{} Above every horizon there is a twin vertex: for any $N$ there exists a twin centre $m > N$
+both of whose sides $6m \pm 1$ are prime. Conditional on \axiom{}.
+\end{theorem}
+
+\emph{Proof idea.} The bridge \code{twinCenter\_of\_twinLower} (itself green, axiom-free) shows, by a
+case split on the residue modulo $6$, that the lower member of any twin pair $p > 3$ is $6m - 1$ for a
+twin centre $m$; the infinitude of the twin lowers is exactly the accepted boundary. No new decree
+content: the same first cause that holds the infinitude of the twins is here merely fitted onto the
+vertices.
+
+\begin{theorem}[\code{lines\_meet\_but\_unknowable\_from\_inside}]\label{thm:lines_meet_but_unknowable_from_inside}
+\yellow{} In four facts: (1) the fact of the meeting is green; (2) twin vertices exist above every
+horizon (this line carries the taint); (3) there is no internal ground for the fact of the meeting;
+(4) were there one, it would be a forbidden Euclid engine.
+\end{theorem}
+
+\emph{Proof idea.} The meeting fact \code{IntersectionFact} is proven green
+(\code{intersectionFact\_green}: the common terminal is the grave of zero). But deriving it as an
+internal first cause of the \code{Step00} world --- \code{InternalisedIntersectionGround} --- is by
+architecture a boundary-crossing self-proof, the forbidden engine. It does not exist
+(\code{no\_internalisedIntersectionGround}, green), and to know it from inside would be to build an
+engine (\code{knowing\_meeting\_costs\_engine}). Moreover this internal ground is tautological ---
+equivalent to $P \wedge \neg P$ (\code{internalisedIntersectionGround\_iff}) --- so all substantive
+content lives in the green fact. The lines meet, but this cannot be known from inside: the geometric
+fact is green; its internal grounding costs a perpetual engine.
+
+\begin{remark}
+Six boundaries must not be inflated. (i) $\kappa$ is combinatorial, not Riemannian. (ii) Gauss--Bonnet
+is an analogy under the normalisation \cref{eq:curvature}, not a theorem of differential geometry.
+(iii) The grave of zero lives on the $\mathbb{N}$-truncation: $6\cdot 0 - 1 = 0$ in $\mathbb{N}$ but
+$-1$ in $\mathbb{Z}$. (iv) Naive ellipticity is false; only the qualified \cref{thm:lines_meet_at_origin}
+holds. (v) The carrying theorem for the absence of parallels is the fall of the \emph{second}
+postulate (\cref{thm:no_infinite_line}), not the fifth; the geometry is degenerate, not elliptic.
+(vi) The coda is exactly two tainted declarations, through the existing twins boundary, with no new
+axiom. The capstone \code{geometry\_of\_euclids\_path} gathers the whole green half in one theorem
+with no user axioms.
+\end{remark}
+
+The three ancient questions have received answers, and all three are theorems. Time flows and is
+irreversible; space is curved and its curvature is computed by the kernel, with a positive bottom and
+a hyperbolic genealogy drawn together by Gauss--Bonnet; straight lines are finite --- Euclid's second
+postulate falls --- and all clean lines meet at the grave of zero, though this cannot be known from
+inside. The resulting shape is wound inward: a hyperbolic genealogy above, a focusing spherical bottom
+below, with $\chi(\mathrm{cone3}) = -5$ pulling toward a funnel. This places Euclid's path beside
+causal set theory, where spacetime is a locally finite partially ordered set --- our well-ordered line
+with its strict arrow being exactly such an object.

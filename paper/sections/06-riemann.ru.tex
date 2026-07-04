@@ -1,0 +1,324 @@
+\section{Гипотеза Римана через двигатель}\label{sec:riemann}
+
+Гипотеза Римана (RH) живёт в ином мире, нежели близнецы, --- комплексный анализ, дзета-функция,
+нетривиальные нули в критической полосе~\cite{clay-rh}, --- и тем не менее тот же двигатель
+дотягивается до неё, и тем же приёмом от противного. Мы подчёркиваем: RH \red{} открыта; теоремы
+ниже суть честные редукции и декрет, но никогда не доказательство. Два независимых маршрута несут
+двигатель к нулям --- контрапозиция через аналитический мост и перевод в знак Лиувилля, --- и оба
+упираются в одну стену. Третий маршрут выводит RH из первопричины, \yellow{} с аксиомным
+таинтом и с машинно раскрытой ценой. Всюду цель --- официальная \code{RiemannHypothesis} из
+\code{mathlib} (квантор по всем нетривиальным нулям \code{riemannZeta}), а не самодельный предикат.
+
+\subsection*{Контрапозиция: не-RH рождает двигатель}
+
+Логическая форма ровно та же, что у близнецов: для $P := \mathrm{RH}$
+\begin{equation}\label{eq:riemann-contraposition}
+  \bigl(\neg P \Rightarrow \text{Engine}\bigr)\ \wedge\ \neg\,\text{Engine}\ \Longrightarrow\ P .
+\end{equation}
+Содержательно мы строим $\neg\mathrm{RH} \Rightarrow \exists$ нуль $\rho$ с
+$\mathrm{Re}\,\rho \ne \tfrac12 \Rightarrow$ вечный двигатель $\Rightarrow \bot$, где последний шаг ---
+машинно проверенный \code{no\_infinite\_descent}, а средний --- единственный открытый узел ветви.
+Подчеркнём: RH \emph{не} следует из бесконечности близнецов; это независимые утверждения, и мы
+никогда не записываем \code{twin} $\Rightarrow$ \code{RH}. Ветвь переиспользует доказанный механизм и
+схему контрапозиции, не более.
+
+\begin{definition}[\code{NontrivialZeroM}]\label{def:NontrivialZeroM}
+Нетривиальный нуль:
+$\mathrm{NontrivialZeroM}(\rho) :\Longleftrightarrow \zeta(\rho)=0 \wedge (\neg\exists n,\ \rho = -2(n{+}1)) \wedge \rho \ne 1$,
+--- ровно посылка \code{mathlib}-RH, собранная в один объект.
+\end{definition}
+
+Чтобы применить двигатель, нужно загнать такой нуль в полосу $0<\mathrm{Re}\,\rho<1$. Верх
+$\mathrm{Re}\,\rho<1$ замыкается \code{mathlib}-аналитикой (\code{no\_zero\_of\_one\_le\_re} из
+\code{riemannZeta\_ne\_zero\_of\_one\_le\_re}), это результат PNT-уровня, доказанный там, а не нами;
+низ $\mathrm{Re}\,\rho>0$ прежде требовал входа \code{TrivialBelowZeroClassification}, позже
+снятого (\cref{thm:trivialBelowZeroClassification}). Вместе \code{nontrivialZero\_in\_strip} помещает
+нетривиальный нуль строго внутрь полосы.
+
+Вся содержательная трудность собрана в одну пропозицию --- \emph{мост двигателя}. Это не аксиома: это
+явная посылка условной теоремы, честно оставленная открытой.
+
+\begin{definition}[\code{EngineBridge}]\label{def:EngineBridge}
+\begin{equation}\label{eq:EngineBridge}
+  \mathrm{EngineBridge} :\Longleftrightarrow \forall\,\rho,\
+  \zeta(\rho)=0 \wedge 0<\mathrm{Re}\,\rho \wedge \mathrm{Re}\,\rho<1 \wedge \mathrm{Re}\,\rho \ne \tfrac12
+  \Longrightarrow \exists\,A\ge 1,\ \exists\,H:\N\to\N,\ \forall t,\ \DescentStep A\,(H\,t)\,(H(t{+}1)).
+\end{equation}
+\end{definition}
+
+Свидетель $H$ с $\DescentStep A\,(H\,t)\,(H(t{+}1))$ при всех $t$ --- это ровно бесконечная clean-цепь
+строго убывающей высоты, вечный двигатель. Содержательно: сбалансированность на $\tfrac12$ ---
+точка, где прирост и убыль массы вдоль descent компенсируются; нуль вне $\tfrac12$ снимает
+компенсацию и даёт бесплатное направленное перекачивание, двигатель, запрещённый
+\code{no\_infinite\_descent}. Мы не маскируем, что \code{EngineBridge} не доказан и в обозримой форме
+по сложности сопоставим с самой RH. Ветвь честна лишь потому, что вся её недоказанность локализована
+в этой одной посылке.
+
+\begin{theorem}[\code{riemannHypothesis\_of\_engine\_bridge}]\label{thm:riemannHypothesis_of_engine_bridge}
+Если \code{TrivialBelowZeroClassification} и \code{EngineBridge}, то \code{mathlib}-\/$\mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\begin{proof}[Идея доказательства]
+Берём произвольный нуль $\rho$, нетривиальный и $\ne 1$; локализуем в полосу через
+\code{nontrivialZero\_in\_strip}. Пусть $\mathrm{Re}\,\rho \ne \tfrac12$. Мост даёт $A\ge1$ и цепь
+$H$ --- вечный двигатель --- в противоречии с \code{no\_infinite\_descent}. Значит
+$\mathrm{Re}\,\rho = \tfrac12$. Вся аналитика сидит в посылке; хвост (двигатель $\Rightarrow \bot$)
+--- машинно проверенный факт, общий с близнецами. RH получена \emph{условно} на мосте, и ни на йоту
+больше.
+\end{proof}
+
+\begin{theorem}[\code{not\_RH\_gives\_engine}]\label{thm:not_RH_gives_engine}
+Если \code{EngineBridge} и $\neg\mathrm{RH}$, то существуют $A\ge 1$ и $H:\N\to\N$ с
+$\DescentStep A\,(H\,t)\,(H(t{+}1))$ при всех $t$. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Разворачиваем $\neg\mathrm{RH}$ через \code{not\_forall}, извлекаем
+свидетеля-нуль вне $\tfrac12$, подаём его в мост. Противоречие с \code{no\_infinite\_descent} ---
+буквально то, что замыкает близнецов, --- общий финал.
+
+\subsection*{Маршрут переноса двойки: один общий узел}
+
+Мы ставим ветвь рядом с близнецами структурно, показывая, что её открытый узел --- тот же перенос
+двойки, уже доказанный в ядре, а не новая аналитика.
+
+\begin{definition}[\code{TwoTransportLaw}]\label{def:TwoTransportLaw}
+$\mathrm{TwoTransportLaw} :\Longleftrightarrow \forall\,m\ge1,a,b,v,q,r,s,\
+6m-1 = a b v \wedge 6m+1 = q r s \Longrightarrow q r s = a b v + 2$ --- тождество «правый спутник
+превышает левый на два» на уровне факторизаций.
+\end{definition}
+
+\begin{theorem}[\code{twoTransportLaw\_holds}]\label{thm:twoTransportLaw_holds}
+$\mathrm{TwoTransportLaw}$ выполнен. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Это не аксиома и не гипотеза, а засвидетельствованная пропозиция:
+конкретное тождество \code{det\_law\_rank33} из ядра поставляет свидетеля.
+
+\begin{definition}[\code{TwoTransportBridge}]\label{def:TwoTransportBridge}
+$\mathrm{TwoTransportBridge} :\Longleftrightarrow \bigl(\mathrm{TwoTransportLaw} \Rightarrow \mathrm{EngineBridge}\bigr)$.
+Это \emph{импликация}, а не эквивалентность гипотез: мы не отождествляем RH с близнецами, а лишь
+спрашиваем, следует ли нужный RH мост из уже доказанного ядра.
+\end{definition}
+
+\begin{theorem}[\code{riemannHypothesis\_of\_two\_transport}]\label{thm:riemannHypothesis_of_two_transport}
+Если \code{TrivialBelowZeroClassification} и \code{TwoTransportBridge}, то
+\code{mathlib}-\/$\mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Подставляем доказанный \code{twoTransportLaw\_holds}
+(\cref{thm:twoTransportLaw_holds}) в связку, получаем \code{EngineBridge}, применяем
+\cref{thm:riemannHypothesis_of_engine_bridge}. Это называет ровно цену «одновременности» ветвей:
+открытым остаётся именно \code{TwoTransportBridge} --- одна импликация «перенос двойки $\Rightarrow$
+мост» --- и никакой отдельной дзета-аналитики.
+
+\subsection*{Маршрут Лиувилля: $\lambda = (-1)^{\mathrm{rank}}$}
+
+Вместо того чтобы строить свой мост к нулям, мы берём готовый арифметический эквивалент RH и
+разбираем \emph{его}. Функция Лиувилля $\lambda(n) = (-1)^{\Om(n)}$
+(\code{ArithmeticFunction.liouville}, где $\Om(n) = $ \code{cardFactors}\,$n$) имеет сумматорную
+функцию $L(x) = \sum_{n=1}^{x}\lambda(n)$ --- накопленный дисбаланс между числами с чётным и нечётным
+числом простых делителей.
+
+\begin{definition}[\code{LiouvilleBound}]\label{def:LiouvilleBound}
+$\mathrm{LiouvilleBound} :\Longleftrightarrow \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\ |L(x)| \le C\,x^{1/2+\varepsilon}$
+--- сумма из $\pm1$ растёт как случайное блуждание, не быстрее $\sqrt{x}$ с точностью до $x^{\varepsilon}$.
+\end{definition}
+
+Опорный факт --- классическая теорема аналитической теории чисел, которой в \code{mathlib} пока нет;
+мы вводим её явным входом-мостом, а не постулируем RH.
+
+\begin{definition}[\code{LiouvilleRHBridge}]\label{def:LiouvilleRHBridge}
+$\mathrm{LiouvilleRHBridge} :\Longleftrightarrow \bigl(\mathrm{LiouvilleBound} \iff \mathrm{RiemannHypothesis}\bigr)$
+--- классическая эквивалентность оценки $O(x^{1/2+\varepsilon})$ с отсутствием нулей правее критической
+линии. \red{}
+\end{definition}
+
+\begin{theorem}[\code{riemann\_of\_liouville\_bound}]\label{thm:riemann_of_liouville_bound}
+$\mathrm{LiouvilleRHBridge} \wedge \mathrm{LiouvilleBound} \Rightarrow \mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Однострочный \code{bridge.mp hbound}: вся аналитика изолирована в мосте,
+и единственная содержательная цель --- арифметический \code{LiouvilleBound}.
+
+Причина, по которой это ложится на наш аппарат, --- совпадение объектов: число простых делителей есть
+ровно наш ранг, а снятие делителя переворачивает знак.
+
+\begin{theorem}[\code{liouville\_eq\_neg\_one\_pow\_rank}]\label{thm:liouville_eq_neg_one_pow_rank}
+При $n\ne0$
+\begin{equation}\label{eq:liouville-rank}
+  \lambda(n) = (-1)^{\code{cardFactors}\,n} = (-1)^{\mathrm{rank}} .
+\end{equation}
+Доказано без наших входов, из \code{liouville\_apply}. \green{}
+\end{theorem}
+
+\begin{theorem}[\code{liouville\_flip\_of\_mul\_prime}]\label{thm:liouville_flip_of_mul_prime}
+Для простого $p$ и $m\ne0$: $\lambda(p\cdot m) = -\lambda(m)$. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} $\Om(p\cdot m) = \Om(m)+1$ (через \code{cardFactors\_mul} и
+\code{cardFactors\_apply\_prime}), откуда знак переворачивается. Значит
+$L(x) = \sum_{n\le x}(-1)^{\mathrm{rank}(n)}$ есть дисбаланс чётности ранга на $[1,x]$, а
+\code{deleteFactor} --- шаг rank-descent близнецовой ветви --- есть ровно оператор, переворачивающий
+знак Лиувилля. Два аппарата, придуманные для разных задач, --- один оператор на одном носителе.
+
+\code{LiouvilleBound} мы не доказываем. Его трудность --- классическая \emph{стена чётности}: контроль
+чётности $\Om$, недоступный решётным методам и по существу эквивалентный самой RH. Наш descent даёт
+\emph{вертикальную} информацию (один переворот на снятый делитель), а \code{LiouvilleBound} требует
+\emph{горизонтального} статистического баланса по всем $n\le x$; переход между ними --- открытый узел.
+(Более сильное утверждение Пойа $L(x)\le0$ опровергнуто, поэтому цель --- оценка, а не фиксированный
+знак.)
+
+\begin{conjecture}[баланс ранга]\label{conj:rank-balance}
+Знаковая динамика descent (\cref{thm:liouville_flip_of_mul_prime}) вместе с
+\code{no\_infinite\_descent} влечёт статистический баланс чётностей ранга, то есть
+\code{LiouvilleBound}. Равносильно: асимметрия $\mathrm{Re}\,\rho \ne \tfrac12$ нетривиального нуля
+вынуждает нарушение баланса переноса двойки, рождающее двигатель
+($\mathrm{TwoTransportLaw} \Rightarrow \mathrm{EngineBridge}$). \red{}
+\end{conjecture}
+
+Оба маршрута упираются в одну стену, «асимметрия $\Rightarrow$ двигатель», лишь по-разному одетую. На
+общем языке чётности ранга $\mathrm{rank}(n) = \code{cardFactors}\,n$ близнецовая стена (баланс рангов
+сторон, $N_{00}$ не опустошается относительно $N_{33}$) и римановская стена (баланс чётности одного
+$n$) суть один узел --- маргинал есть тень совместного. Это единство --- гипотеза о \emph{природе}
+трудности, а не логический вывод одной гипотезы из другой.
+
+\subsection*{Честно закрытый вход: тривиальные нули}
+
+Один прежний аналитический вход стал теоремой, и нагрузка не переместилась --- она исчезла.
+
+\begin{theorem}[\code{trivialBelowZeroClassification}]\label{thm:trivialBelowZeroClassification}
+Всякий нуль $\zeta$ с $\mathrm{Re}\,s\le0$ тривиален:
+\begin{equation}\label{eq:trivial-zeros}
+  \forall s\in\mathbb{C},\quad \zeta(s)=0 \wedge \mathrm{Re}\,s\le0 \Rightarrow \exists n\in\N,\ s = -2(n{+}1) .
+\end{equation}
+\green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Маршрут целиком из \code{mathlib}: $s=0$ исключён
+($\code{riemannZeta\_zero}=-\tfrac12$); при $s\ne0$ функциональное уравнение
+\code{riemannZeta\_one\_sub} в точке $w=1-s$ (где $\mathrm{Re}\,w\ge1$) делает нетривиальные
+множители ненулевыми, так что исчезает косинус: $\cos(\pi(1-s)/2)=0 \Rightarrow s=-2k$, $k\ge1$.
+Следовательно \code{nontrivialZero\_in\_strip} становится безусловной, а RH условна \emph{только} на
+мосте.
+
+Две находки аудита держат остальное честным. Первая: несколько переформулировок «двигатель
+невозможен» доказуемо циклические --- поскольку фабрика безусловно невозможна, когерентный мост
+переноса двойки эквивалентен RH \emph{дословно}.
+
+\begin{theorem}[\code{coherentTwoTransportBridge\_iff\_RH}]\label{thm:coherentTwoTransportBridge_iff_RH}
+$\mathrm{CoherentTwoTransportBridge} \iff \mathrm{RiemannHypothesis}$. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Когерентный закон построил бы фабрику, а фабрика безусловно пуста
+(\code{no\_coherent\_twoTransportLaw}); разложение --- карта обязательств, его аудит-гейты инертные
+маркеры. Такие маршруты --- точные переформулировки RH, а не редукции трудности. Вторая: враждебная
+проба вскрыла обёртку rank-jump, выполнявшуюся даром (\warn{} вакуумность): честный остаток
+\code{wall\_relevant}/\code{wall\_global} показывает, что для любой системы без скачка спаривание есть
+ровно $\neg\mathrm{LiouvilleViolation}$ --- снова сила RH, не редукция. Что эти случаи пойманы
+машиной --- причина доверять тому, что прошло.
+
+\subsection*{Фронт манифестации: зелёная цепь, RH из декрета}
+
+Последний маршрут зеркалит близнецовую архитектуру. Нуль вне критической линии --- \emph{неоплаченное
+отклонение}; RH становится «отклонений не существует». В \code{mathlib} тип \code{OffCriticalZero}
+несёт $\zeta(s)=0$, нетривиальность, $s\ne1$ и $\mathrm{Re}\,s\ne\tfrac12$; каждому нулю приписан
+масштаб \code{zeroHeight}\,$Z = \lfloor|\mathrm{Im}\,s|\rfloor$.
+
+\begin{definition}[\code{DeviationFlowSupply}]\label{def:DeviationFlowSupply}
+Неоплаченная поставка на леджер-масштабе $(A,M_0)$ --- бесконечное допустимое семейство расширенных
+порождённых потоков:
+\begin{equation}\label{eq:deviation-supply}
+  \mathrm{DeviationFlowSupply}(A,M_0) := \exists\,\mathcal{F}\subseteq\mathrm{ExtProperFlow}(A,M_0),\ \mathrm{InfiniteFamily}(A,M_0,\mathcal{F}) .
+\end{equation}
+Это \emph{тот же} объект, что строит гипотеза о последней границе близнецов; он поставляется настоящей
+ранговой машиной, а не пустая абстракция.
+\end{definition}
+
+\emph{Закон манифестации} \code{RiemannManifestationLaw} декретирует, что отклонение выдаёт себя такой
+поставкой всюду, где книги сводятся: для каждого отклонения $Z$ и масштаба
+$M_0\ge\code{zeroHeight}\,Z$ всякая разрешающая проекция несёт \code{DeviationFlowSupply}. Важно: закон
+утверждает \emph{положительное событие} (нуль $\to$ манифестация), а не «нулей нет»: его сила зависит
+от того, что декретируется причина, а не заключение. Сторону «нельзя» мы доказываем зелёной теоремой.
+
+\begin{theorem}[\code{no\_deviationFlowSupply\_at\_resolved\_scale}]\label{thm:no_deviationFlowSupply_at_resolved_scale}
+Для любой проекции на масштабе $(A,M_0)$, разрешающей коллизии,
+$\mathrm{Resolves}(\mathrm{proj}) \Rightarrow \neg\,\mathrm{DeviationFlowSupply}(A,M_0)$. \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Разрешающая проекция даёт устойчивый безэнергийный универсум; бесконечное
+семейство потоков коллизирует под конечным ключом (принцип ящиков), коллизия собирает
+свидетель-двигатель, а двигателей не существует (\code{no\_someConcreteEuclideanEngine}) --- те же три
+хода, что убили конечность близнецов. Мы доказываем сторону «нельзя»; декретируется лишь «обязано
+проявиться».
+
+\begin{theorem}[\code{riemannHypothesis\_of\_manifestation\_and\_boundary}]\label{thm:riemannHypothesis_of_manifestation_and_boundary}
+Отсутствие двигателей, принятая близнецовая граница $\mathrm{TheStrictLastStep00Obligation}$ и
+$\mathrm{RiemannManifestationLaw}$ вместе влекут $\mathrm{RiemannHypothesis}$ (в точном смысле
+\code{mathlib}). \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Через \code{noOffCriticalZero\_of\_manifestation\_and\_boundary}: граница
+даёт разрешающую проекцию на высоте нуля, закон превращает нуль в бесконечную поставку, поставка
+собирает свидетель-двигатель, и он убит «двигателей не существует»; затем RH извлекается из
+«отклонений нет» с помощью \cref{thm:trivialBelowZeroClassification}. Все три посылки работают
+по-настоящему, не через взрыв. Вся эта цепь --- \green{}: она живёт в модуле, не импортирующем
+карантин.
+
+Аксиома появляется ровно на одном шаге, когда закон манифестации кладётся в первопричину как её
+вторая граница \code{riemannBoundary} (рядом с близнецовой \code{causalBoundary}) --- но аксиома
+по-прежнему одна, \axiom{}.
+
+\begin{theorem}[\code{riemannHypothesis\_from\_firstCause}]\label{thm:riemannHypothesis_from_firstCause}
+Из единого расширенного декрета следует $\mathrm{RiemannHypothesis}$. \yellow{}
+\end{theorem}
+
+\emph{Идея доказательства.} Применяем \cref{thm:riemannHypothesis_of_manifestation_and_boundary} к
+\code{no\_someConcreteEuclideanEngine}, проекции первопричины \code{step00CausalClosure} и полю
+\code{riemannManifestationLaw}. Машинный список аксиом:
+$[\code{propext}, \code{Classical.choice}, \code{Quot.sound}, \axiom{}]$ --- последнее слово выдаёт
+таинт. Это \emph{не} доказательство RH --- это редукция, замкнутая декретом, ровно как у близнецов.
+
+Очевидное подозрение --- что мы просто переименовали RH внутри закона --- отвечается машинно, и ответ
+тонок.
+
+\begin{theorem}[\code{riemannManifestation\_asserts\_RH}]\label{thm:riemannManifestation_asserts_RH}
+При принятой близнецовой границе закон манифестации эквивалентен RH:
+$\mathrm{RiemannManifestationLaw} \iff \mathrm{RiemannHypothesis}$. \yellow{}
+\end{theorem}
+
+\emph{Идея доказательства.} Декрет не слабее заключения, и мы это доказываем, а не прячем. Но это не
+тавтология: в отличие от осуждённого моста \code{OffCriticalRiemannEngineBridge}, для которого
+\code{offCriticalBridge\_iff\_RH} выполняется \emph{в одиночку, зелено, без всяких гипотез} (дословное
+переименование цели), импликация «закон $\Rightarrow$ RH» вообще не собирается без границы.
+Декретируем мы причинное условие поверх границы, уже принятой ради близнецов, а не переименованную
+цель --- одна архитектура, применённая дважды.
+
+Наконец, декрет не допускает внутреннего обоснования. Связка \code{InternalisedRiemannGround} несёт
+сам закон и свидетеля того, что он получен из-за собственного горизонта; такая связка
+самоуничтожается.
+
+\begin{theorem}[\code{no\_internalisedRiemannGround}]\label{thm:no_internalisedRiemannGround}
+Внутреннее самообоснование закона манифестации невозможно:
+$\mathrm{InternalisedRiemannGround} \Rightarrow \mathrm{False}$; отсюда
+$\neg\,\mathrm{InternalKnowledgeOfRiemannCause}$ (\code{riemannCause\_unknowable}). \green{}
+\end{theorem}
+
+\emph{Идея доказательства.} Связка формальна --- \code{beyondOwnHorizon} есть просто $\neg\code{ground}$,
+тавтологическая пара вида $P\wedge\neg P$, и мы этого не прячем. За форму платит настоящая
+конструкция: единственный внутренний след отклонения --- вечный двигатель
+(\code{deviation\_carries\_engine\_at\_resolved\_scale}), затворённый разрешающим масштабом --- самим
+открытым близнецовым узлом. Это не Гёдель и не решение RH: только стена ящиков, модельно-внутренняя.
+Двигатель, который решил бы за нас, запрещён той же машиной, которой мы всё доказываем; внешняя дверь
+декрета остаётся единственной.
+
+\medskip
+
+\noindent\emph{Честный статус.} RH \red{} открыта. Доказаны \green{}: условные теоремы
+(\cref{thm:riemannHypothesis_of_engine_bridge,thm:riemannHypothesis_of_two_transport,thm:riemann_of_liouville_bound}),
+тождества ранг/знак
+(\cref{thm:liouville_eq_neg_one_pow_rank,thm:liouville_flip_of_mul_prime}), закрытый вход
+\cref{thm:trivialBelowZeroClassification}, теоремы циклизации и манифестации и эпистемическая стена.
+\red{} входы: \code{EngineBridge} (равносильно \code{TwoTransportBridge}), \code{LiouvilleBound},
+\code{LiouvilleRHBridge} и несущий спектральный якорь (сам оператор Гильберта--Пойа, отсутствующий в
+\code{mathlib}). \yellow{} --- лишь маршрут через первопричину, чья цена раскрыта
+\cref{thm:riemannManifestation_asserts_RH}. Нигде редукция не подменяет доказательство~\cite{clay-rh}.

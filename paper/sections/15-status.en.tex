@@ -1,0 +1,84 @@
+\section{Honest status and verification}\label{sec:status}
+
+This article is a reflection of a Lean~4 development, and its honesty is not a matter of
+authorial promise but of a mechanical audit that runs on every build. We gather here the global
+status in one place: what stands machine-proved under the standard axioms, what is conditional on
+the single first cause, what is genuinely open, and how a reader can re-establish all of this from
+the source~\cite{lean4,mathlib,euclidspath-repo}.
+
+\paragraph{One axiom, one \code{sorry}.}
+The entire development rests on exactly one non-standard axiom, \axiom{}, the \emph{first cause}
+of \cref{sec:firstcause}, kept in a single quarantined module. Beyond it the only axioms in use are
+Lean's own \code{propext}, \code{Classical.choice} and \code{Quot.sound}. There is likewise exactly
+one \code{sorry} in the whole corpus, and it is the target itself:
+\code{twin\_prime\_conjecture}. Nothing else is left unfinished; every other statement is either
+\green{}~machine-proved under the standard axioms (including the green conditional theorems, whose
+hypotheses are named inputs rather than the axiom) or \yellow{}~axiom-tainted, i.e.\ dependent on
+the first cause, or \red{}~an openly declared open input. A green module cannot be forged, and a
+\code{sorry} cannot be hidden behind a green label.
+
+\paragraph{The taint census.}
+At the time of writing the verifier reports \yellow{}~exactly $47$ axiom-tainted declarations, and
+it recounts every one at each build. They fall into three groups. Forty-three live in the
+quarantine: the axiom \axiom{} and its theorem retinue in \code{Engine/CausalClosureAxiom.lean}
+($42$ declarations), together with the twin corollary \code{higherEnergyIncompatibility\_twins}. Two
+more are the geometry declarations of \cref{sec:geometry} that inherit the taint through the twin
+boundary --- the meeting of straight lines that cannot be known from inside
+(\code{lines\_meet\_but\_unknowable\_from\_inside}) and the twin doubles beyond every horizon
+(\code{twin\_vertices\_beyond\_every\_horizon}). The last two are the dyadic origin layer, which
+enters through the Navier--Stokes boundary rather than the twin one: the uncausable pump of the
+bottom shell and its reading \code{dyadicBlowup\_is\_firstCauseManifestation}. The taint count is
+printed but not pinned; it grows honestly as content is added, and only the two invariants below
+must hold forever.
+
+\paragraph{The verifier and its two eternal invariants.}
+The script \code{scripts/VerifyAll.lean} enumerates every non-internal \code{EuclidsPath}
+theorem and definition in the built environment, collects with \code{collectAxioms} the axioms each
+one transitively depends on, and separates the standard three from everything else. It then
+\emph{self-asserts} two invariants and fails the run with a non-zero exit code if either is
+violated:
+\begin{equation}\label{eq:invariants}
+  \text{(1) the only non-standard axiom is }\axiom{};
+  \qquad
+  \text{(2) the only \code{sorry}-tainted declaration is }\code{twin\_prime\_conjecture}.
+\end{equation}
+Both invariants are structural, not numeric: they say \emph{which} axiom and \emph{which}
+\code{sorry} may exist, never how many tainted declarations there are. If a stray non-standard
+axiom or a second unfinished proof ever slipped into the tree, the verifier would refuse to
+elaborate. This is what lets us make the claims of this article without asking for trust.
+
+\paragraph{The four adversarial vacuities.}
+An empty theorem --- one whose hypotheses can never be met, so its conclusion says nothing --- is
+the characteristic failure of formalised showcase work, and four times an internal audit caught one
+before it reached the showcase. We record them rather than bury them. \emph{(i)} On the twin
+branch, the degenerate peel $p = p\cdot 1$ made the open node refutable; the patch \code{properDiv}
+with \code{targetPos} restored the twin hypothesis as load-bearing, so satisfiability at scale
+$A\ge 5$ is genuinely open. \emph{(ii)} On the Riemann branch, the rank-jump route had an
+unanchored goal: the package \code{LiouvilleToTwinLocalization} was inhabited with zero input
+(\code{fullLocalization\_noInput}), and the honest wall was exactly $\neg\,\text{LiouvilleViolation}$
+(\code{wall\_global}), of Riemann-hypothesis strength. \emph{(iii)} On the Mersenne branch, the late
+\code{noEngine} packages were uninhabited, so their conclusions were vacuous and could not be
+instantiated. \emph{(iv)} On the P-versus-NP branch, the decider-gated extraction fronts are
+classically empty (\code{PDecider} is free), so their separation conclusions are vacuous; the
+classical separation \code{classicalSeparation\_of\_localIncompressible} remains conditional on a
+gated bridge and is \emph{not} a proof of $\mathrm{P}\ne\mathrm{NP}$. That these were caught by
+machine, not by hand, is the strongest reason to trust the parts that passed.
+
+\paragraph{No Millennium problem is solved.}
+We state this without hedging. Not one of the Clay problems~\cite{millennium} is solved here, and
+none is claimed to be. \code{twin\_prime\_conjecture} remains a \code{sorry}; the Riemann
+hypothesis~\cite{clay-rh}, $\mathrm{P}$ versus $\mathrm{NP}$~\cite{clay-pnp},
+Yang--Mills~\cite{clay-ym}, Navier--Stokes~\cite{clay-ns}, Hodge~\cite{clay-hodge} and
+Birch--Swinnerton-Dyer~\cite{clay-bsd} are each read through the engine to a \emph{structural}
+green half and an \emph{analytic} half that is either accepted by the single first cause (\yellow{})
+or left as a named open input (\red{}). The reductions are genuine and machine-checked; a reduction
+is not a proof.
+
+\paragraph{Reproducibility.}
+Everything above can be re-derived from the public source. From the repository root,
+\code{lake exe cache get} fetches the \code{mathlib} build cache, \code{lake build} checks the whole
+development, and \code{lake env lean scripts/VerifyAll.lean} re-establishes the two invariants of
+\cref{eq:invariants} and fails loudly if either is broken. The complete source is public at
+\url{https://github.com/elamaunt/Euclids-path}, and the identical content is browsable as a
+bilingual site at \url{https://elamaunt.github.io/Euclids-path/}; the two carry the same text, in
+English and Russian, down to the last theorem.

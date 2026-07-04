@@ -176,19 +176,53 @@ def BealConjecture : Prop :=
     A ^ x + B ^ y = C ^ z →
     Nat.Coprime A B → Nat.Coprime B C → Nat.Coprime A C → False
 
-/-- 🔴 **Гипотеза Ферма–Каталана (ОТКРЫТА в полном виде).** Множество троек
-    взаимно простых положительных `(a, b, c)` со степенями `(x, y, z)`,
-    удовлетворяющих `a^x + b^y = c^z` при `1/x + 1/y + 1/z < 1` (целочисленно
-    `y*z + z*x + x*y < x*y*z`), КОНЕЧНО. Дармон–Гранвилль доказали конечность лишь
-    при ФИКСИРОВАННОЙ тройке показателей (через Фалтингса); равномерная конечность
-    по всем показателям открыта. НЕ доказана; честно НАЗВАНА. -/
+/-- 🔴 **Гипотеза Ферма–Каталана (ОТКРЫТА, каноническая форма).** Множество
+    ТРОЕК СТЕПЕНЕЙ `(a^x, b^y, c^z)` — именно значений, не кортежей параметров —
+    взаимно простых положительных `a, b, c` с показателями при
+    `1/x + 1/y + 1/z < 1` (целочисленно `y*z + z*x + x*y < x*y*z`) и
+    `a^x + b^y = c^z`, КОНЕЧНО. Известно ровно 10 решений (наименьшее —
+    `1 + 2^3 = 3^2`); Дармон–Гранвилль доказали конечность лишь при
+    ФИКСИРОВАННОЙ тройке показателей (через Фалтингса); равномерная конечность
+    открыта. НЕ доказана; честно НАЗВАНА. (Почему значения, а не кортежи —
+    см. `fermatCatalan_tupleForm_refuted` ниже.) -/
 def FermatCatalanConjecture : Prop :=
+  {t : ℕ × ℕ × ℕ |
+      ∃ a b c x y z : ℕ, t = (a ^ x, b ^ y, c ^ z) ∧
+        0 < a ∧ 0 < b ∧ 0 < c ∧ 0 < x ∧ 0 < y ∧ 0 < z ∧
+        y * z + z * x + x * y < x * y * z ∧
+        Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c ∧
+        a ^ x + b ^ y = c ^ z}.Finite
+
+/-- Прежняя (наивная) запись гейта: конечность множества 6-КОРТЕЖЕЙ
+    `(a, b, c, x, y, z)`. Оставлена под отдельным именем как урок формализации —
+    она ЛОЖНА (см. `fermatCatalan_tupleForm_refuted`). -/
+def FermatCatalanTupleForm : Prop :=
   {t : ℕ × ℕ × ℕ × ℕ × ℕ × ℕ |
       ∃ a b c x y z : ℕ, t = (a, b, c, x, y, z) ∧
         0 < a ∧ 0 < b ∧ 0 < c ∧ 0 < x ∧ 0 < y ∧ 0 < z ∧
         y * z + z * x + x * y < x * y * z ∧
         Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c ∧
         a ^ x + b ^ y = c ^ z}.Finite
+
+/-- 🟢 **УРОК ФОРМАЛИЗАЦИИ: кортежная форма гейта ЛОЖНА.** Семейство
+    `1^(m+7) + 2^3 = 3^2` (взаимная простота очевидна, условие показателей
+    выполнено при всех m) даёт бесконечно много РАЗНЫХ 6-кортежей — при том,
+    что тройка значений одна: `(1, 8, 9)`. Гейт обязан считать значения. -/
+theorem fermatCatalan_tupleForm_refuted : ¬ FermatCatalanTupleForm := by
+  intro hfin
+  refine Set.infinite_of_injective_forall_mem
+    (f := fun m : ℕ => ((1 : ℕ), (2 : ℕ), (3 : ℕ), m + 7, (3 : ℕ), (2 : ℕ)))
+    ?_ ?_ hfin
+  · intro m₁ m₂ h
+    have h4 := congrArg (fun t : ℕ × ℕ × ℕ × ℕ × ℕ × ℕ => t.2.2.2.1) h
+    simp only [] at h4
+    omega
+  · intro m
+    exact ⟨1, 2, 3, m + 7, 3, 2, rfl,
+      one_pos, by omega, by omega, by omega, by omega, by omega,
+      by omega,
+      Nat.coprime_one_left 2, by decide, Nat.coprime_one_left 3,
+      by simp⟩
 
 /-- **🟢 ЧЕСТНОСТЬ ОХВАТА:** мы НЕ утверждаем и НЕ доказываем `BealConjecture` или
     `FermatCatalanConjecture` — это `def`-гейты. Доказаны только полиномиальная тень
@@ -231,6 +265,7 @@ theorem notAProofOfBeal : NotAProofOfBeal := trivial
 -/
 
 #print axioms polynomial_fermat_catalan_shadow
+#print axioms fermatCatalan_tupleForm_refuted
 #print axioms polynomial_fermat_catalan_shadow_cubic
 #print axioms flt_four_is_descent
 #print axioms flt_three_is_descent

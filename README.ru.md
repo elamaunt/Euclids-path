@@ -1,5 +1,7 @@
 # Euclids-path
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21198731.svg)](https://doi.org/10.5281/zenodo.21198731)
+
 > 🇬🇧 **English:** [`README.md`](README.md) · 🇷🇺 Вы читаете русскую версию.
 
 Консолидация доказательной программы гипотезы **простых-близнецов**, выстроенной вокруг

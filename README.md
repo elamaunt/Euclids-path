@@ -1,5 +1,7 @@
 # Euclids-path
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21198731.svg)](https://doi.org/10.5281/zenodo.21198731)
+
 > 🇷🇺 **Русская версия:** [`README.ru.md`](README.ru.md) · 🇬🇧 You are reading the English version.
 > On the [documentation site](prose/00_Overview.en.md) a language switcher is available; on GitHub
 > the prose links below point straight to the English `*.en.md` chapters.

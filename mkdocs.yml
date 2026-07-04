@@ -87,6 +87,75 @@ plugins:
           name: English
           build: true
           site_name: Euclid's Path
+          nav_translations:
+            Главная: Home
+            Пролог и карта: Prologue and map
+            Словарь программы: Programme glossary
+            I. Двигатель и его законы: I. The engine and its laws
+            01. Двигатель Евклида (EPMI): 01. Euclid's engine (EPMI)
+            02. Носитель двойки: 02. The carrier of two
+            03. Первый закон — сохранение двойки: 03. First law — conservation of the two
+            04. Спуск и граничный закон: 04. Descent and the boundary law
+            05. Необратимость и стрела времени: 05. Irreversibility and the arrow of time
+            06. Нет хода назад: 06. No way back
+            07. Cubic squeeze: 07. Cubic squeeze
+            08. Ограниченный аддитивный цикл: 08. The bounded additive cycle
+            09. Factor-repeat rigidity: 09. Factor-repeat rigidity
+            II. Редукция к близнецам: II. Reduction to twins
+            10. Survivor значит twin: 10. Survivor means twin
+            11. Близнецы из блочного ядра: 11. Twins from the block core
+            III. Линии-атаки и чётность: III. Attack lines and parity
+            12. Four-corner: 12. Four-corner
+            13. Фрактальный слой: 13. The fractal layer
+            14. Модель против реальности: 14. Model versus reality
+            15. Цепь к близнецам: 15. The chain to twins
+            16. Finite и H дают False: 16. Finite and H yield False
+            17. Закон оплаты и дефект: 17. The payment law and the defect
+            IV. Финальная редукция twin-линии: IV. The final reduction of the twin line
+            18. SNOL — редукция к rank-1: 18. SNOL — reduction to rank-1
+            19. Old-peel: 19. Old-peel
+            20. NOPSL: 20. NOPSL
+            21. Дихотомия регенерации: 21. The regeneration dichotomy
+            22. Снятие плотности и чётности: 22. Lifting density and parity
+            23. Clean-boundary split: 23. The clean-boundary split
+            24. Декомпозиция boundary и узел: 24. The boundary decomposition and the node
+            25. Rigid closure: 25. Rigid closure
+            V. Product-core rank descent: V. Product-core rank descent
+            26. Separating scale: 26. The separating scale
+            27. Product-core: 27. Product-core
+            28. Факторизация — RankNode: 28. Factorization — RankNode
+            29. Последнее звено: 29. The last link
+            VI. Риман и rank-parity: VI. Riemann and rank-parity
+            30. Риман — контрапозиция: 30. Riemann — the contraposition
+            31. Риман через Лиувилля: 31. Riemann via Liouville
+            32. Единый rank-parity узел: 32. The single rank-parity node
+            VII. Первопричина и фронты: VII. The first cause and the fronts
+            33. Первопричина и главная теорема: 33. The first cause and the main theorem
+            34. Ветка Мерсенна: 34. The Mersenne branch
+            35. P/NP — локальный узел: 35. P/NP — the local node
+            36. Навье–Стокс — уравнение: 36. Navier–Stokes — the equation
+            37. Римановы фронты: 37. The Riemann fronts
+            38. Риман через первопричину: 38. Riemann via the first cause
+            39. P/NP — полная оплата: 39. P/NP — full payment
+            40. Янг–Миллс: 40. Yang–Mills
+            41. Навье–Стокс — гладкость: 41. Navier–Stokes — smoothness
+            42. Ходж: 42. Hodge
+            43. Мерсенн через манифестацию: 43. Mersenne via manifestation
+            44. Стороны и Полиньяк: 44. Sides and Polignac
+            45. Софи Жермен: 45. Sophie Germain
+            46. Гольдбах и Лежандр: 46. Goldbach and Legendre
+            47. Совершенные числа: 47. Perfect numbers
+            48. Числа Ферма: 48. Fermat numbers
+            VIII. Геометрия и кода: VIII. Geometry and coda
+            49. Геометрия пути: 49. The geometry of the path
+            50. Кода: 50. Coda
+            Приложения: Appendices
+            51. Численная опора: 51. Numerical support
+            52. Дискретная модель жидкости: 52. The discrete fluid model
+            53. Бёрч–Свиннертон-Дайер: 53. Birch–Swinnerton-Dyer
+            54. Соседи за горизонтом: 54. Neighbours beyond the horizon
+            55. Коллатц: 55. Collatz
+            56. Первопричина Коллатца: 56. The Collatz first cause
 
 nav:
   - Главная: index.md

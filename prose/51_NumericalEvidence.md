@@ -93,7 +93,7 @@ $$1 - R_{\mathrm{fc}} \;\sim\; 12.12 \cdot A^{-1.161}.$$
 
 ## 4. Clean-граф и глобальный absorber (fan-in)
 
-Харнессы `clean_graph_harness.py`, `global_absorber_harness.py`:
+Числа clean-графа и глобального absorber'а (`tools/RESULTS_clean_graph.md`, `tools/RESULTS_global_absorber.md`):
 
 - **Разрыв «sink-is-clean».** `178/300 = 59.3 %` clean-центров имеют все активные рёбра в
   boundary. Это ровно тот факт, что clean-граф не самодостаточен и требует boundary-регенерации
@@ -122,7 +122,7 @@ $$1 - R_{\mathrm{fc}} \;\sim\; 12.12 \cdot A^{-1.161}.$$
 
 ## 6. Separating scale достижим с экспоненциальным запасом
 
-Харнесс `separating_scale_harness.py`: условие `P_A > 6X_A + 1` (при `X_A ≈ A^{4.5}`) выполняется
+Числовой прогон (`tools/RESULTS_separating_scale.md`): условие `P_A > 6X_A + 1` (при `X_A ≈ A^{4.5}`) выполняется
 уже при малых `A` и дальше только усиливается, так как `log P_A ~ A/ln 10` (Чебышёв) обгоняет
 `4.5·log₁₀ A`:
 

@@ -32,10 +32,8 @@ keywords:
   - Riemann hypothesis
   - Navier-Stokes
   - Collatz
-# After archiving a tagged release on Zenodo (Zenodo ↔ GitHub integration),
-# add the minted DOI here so the artifact becomes permanently citable, e.g.:
-# doi: "10.5281/zenodo.XXXXXXXX"
-# identifiers:
-#   - type: doi
-#     value: "10.5281/zenodo.XXXXXXXX"
-#     description: "Concept DOI (all versions)"
+doi: "10.5281/zenodo.21198731"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21198731"
+    description: "Zenodo archive of this release"

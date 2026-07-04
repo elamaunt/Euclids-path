@@ -1,15 +1,17 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,a4paper]{amsart}
 \input{macros}
 \usepackage[english]{babel}
 
-\title{The Perpetual Engine of Euclid:\\
-  A Machine-Verified Reading of the Great Conjectures\\
-  through a Single Axiom}
-\author{D. S. Semenov \and L. R. Galieva}
+\title[The Perpetual Engine of Euclid]{The Perpetual Engine of Euclid:\\
+  A Machine-Verified Reading of the Great Conjectures through a Single Axiom}
+\author{D.~S.~Semenov}
+\author{L.~R.~Galieva}
 \date{2026}
+\keywords{twin primes; infinite descent; formalization; Lean~4; first cause;
+  Riemann hypothesis; $\mathrm{P}$ versus $\mathrm{NP}$; Navier--Stokes; Collatz}
+\subjclass[2020]{11A41; 11N05; 68V20; 03F03; 11P32}
 
 \begin{document}
-\maketitle
 
 \begin{abstract}
 We formalize, in the Lean~4 proof assistant, a programme organised around a single
@@ -32,6 +34,8 @@ statement in this article carries the name of the corresponding machine-verified
 the complete Lean source is public, and the identical content is browsable online.
 \end{abstract}
 
+\maketitle
+
 \begin{center}\small
 \fbox{\begin{minipage}{0.92\linewidth}\centering
 Machine-verified source (Lean~4): \url{https://github.com/elamaunt/Euclids-path}\\
@@ -41,13 +45,6 @@ Every theorem below names its Lean declaration; run \code{lake env lean scripts/
 to re-check the honesty invariants.
 \end{minipage}}
 \end{center}
-
-\medskip
-\noindent\textbf{Keywords.} twin primes; infinite descent; formalization; Lean~4; first cause;
-Riemann hypothesis; $\mathrm{P}$ versus $\mathrm{NP}$; Navier--Stokes; Collatz.
-
-\smallskip
-\noindent\textbf{MSC 2020.} 11A41, 11N05, 68V20, 03F03, 11P32.
 
 \tableofcontents
 
@@ -69,7 +66,7 @@ Riemann hypothesis; $\mathrm{P}$ versus $\mathrm{NP}$; Navier--Stokes; Collatz.
 \input{sections/16-figures.en}
 \input{sections/17-acknowledgements.en}
 
-\bibliographystyle{plain}
+\bibliographystyle{amsplain}
 \bibliography{refs}
 
 \end{document}

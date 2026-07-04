@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Euclids-path: a machine-verified formalization of the perpetual-engine programme (Lean 4)"
+abstract: >-
+  A Lean 4 formalization organised around a single physical prohibition — the
+  impossibility of a perpetual engine (Fermat's infinite descent for the centres
+  of the Euclidean pairs 6m±1) — reducing the twin-prime conjecture to a single
+  open node accepted from outside by one quarantined axiom (the "first cause"),
+  and reading the great conjectures as shadows of the same prohibition. Honesty is
+  machine-checked: exactly one non-standard axiom, exactly one `sorry`, an
+  axiom-taint count re-verified on every run. No Millennium problem is claimed solved.
+type: software
+authors:
+  - family-names: Semenov
+    given-names: "D. S."
+  - family-names: Galieva
+    given-names: "L. R."
+repository-code: "https://github.com/elamaunt/Euclids-path"
+url: "https://elamaunt.github.io/Euclids-path/"
+license: Apache-2.0
+date-released: "2026-07-04"
+keywords:
+  - twin primes
+  - infinite descent
+  - formalization
+  - Lean 4
+  - first cause
+  - Riemann hypothesis
+  - Navier-Stokes
+  - Collatz
+# After archiving a tagged release on Zenodo (Zenodo ↔ GitHub integration),
+# add the minted DOI here so the artifact becomes permanently citable, e.g.:
+# doi: "10.5281/zenodo.XXXXXXXX"
+# identifiers:
+#   - type: doi
+#     value: "10.5281/zenodo.XXXXXXXX"
+#     description: "Concept DOI (all versions)"

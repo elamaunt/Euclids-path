@@ -32,13 +32,13 @@ A small unclean twin such as $18$ is then honestly classified as boundary, not a
 
 Fix a sieving threshold $A$ and work with centres $m \in \mathbb{N}$ (sides $6m-1$, $6m+1$). The basic property is inherited from [22](22_Residuals.md), but here we take its natural-number form.
 
-**Definition 23.1 (clean centre).** A centre $m$ is called *clean* with respect to $A$ if no prime $q \le A$ divides either side:
+**Definition 23.1** (clean centre). A centre $m$ is called *clean* with respect to $A$ if no prime $q \le A$ divides either side:
 $$
 \mathrm{Clean}\,A\,m \;:\equiv\; \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).
 $$
 In Lean this is `Clean` (the ℕ-version; its ℤ-twin is `CleanZ` from `Residuals`, and we shall exhibit the bridge between them below).
 
-**Definition 23.2 (active edge).** An edge $m \to n$ is *active* if $n$ is a smaller target centre of the descent:
+**Definition 23.2** (active edge). An edge $m \to n$ is *active* if $n$ is a smaller target centre of the descent:
 $$
 \mathrm{ActiveEdge}\,A\,m\,n \;:\equiv\; \top \ \land\ n < m .
 $$
@@ -46,9 +46,9 @@ In `ActiveEdge` the carrier is abstract: the concrete mechanism (a composite sid
 
 The distinction within active edges is the subject of this chapter:
 
-**Definition 23.3 (clean edge).** $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — both endpoints clean.
+**Definition 23.3** (clean edge). $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — both endpoints clean.
 
-**Definition 23.4 (boundary exit).** $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — the source is clean, the target is *not*.
+**Definition 23.4** (boundary exit). $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — the source is clean, the target is *not*.
 
 A boundary exit is an edge leaving the clean graph. It is *not* a sink: it is an entry into the defect ledger, where old-peel and regeneration take over. This is exactly where the transition $18 \to \dots$ from the gap above is sent.
 
@@ -73,7 +73,7 @@ It is this dichotomy that lets us rigorously separate the "interior work" of the
 
 Now for the correct notion of a halt.
 
-**Definition 23.6 (clean sink).** $m$ is a *clean sink* if $m$ is clean and has no active edge at all:
+**Definition 23.6** (clean sink). $m$ is a *clean sink* if $m$ is clean and has no active edge at all:
 $$
 \mathrm{CleanSink}\,A\,m \;:\equiv\; \mathrm{Clean}\,A\,m \ \land\ \neg\,\exists n,\ \mathrm{ActiveEdge}\,A\,m\,n .
 $$

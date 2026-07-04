@@ -24,7 +24,7 @@ $$
 
 where `X_A` is the upper bound on the centre `m` on the layer under consideration. Alongside this we have the primorial `P_A = \prod_{p \le A} p`, which defines the coarse passport of the active factor as the residue `a \bmod P_A`.
 
-> **Definition 26.1 (separating scale).** We say the scale is *separating* (a separating scale) if the primorial outruns the carrier bound:
+> **Definition 26.1** (separating scale). We say the scale is *separating* (a separating scale) if the primorial outruns the carrier bound:
 > $$
 > 6X_A + 1 < P_A . \tag{26.1}
 > $$
@@ -36,7 +36,7 @@ The intuition: the passport `a \bmod P_A` is coarse as a map on all natural numb
 
 The first brick is an elementary lemma on the uniqueness of a residue below the modulus.
 
-> **Lemma 26.2 (`eq_of_modEq_of_lt`).** Let `a₁ < P`, `a₂ < P` and `a₁ ≡ a₂ [MOD P]`. Then `a₁ = a₂`.
+> **Lemma 26.2** (`eq_of_modEq_of_lt`). Let `a₁ < P`, `a₂ < P` and `a₁ ≡ a₂ [MOD P]`. Then `a₁ = a₂`.
 
 In Lean form:
 
@@ -53,7 +53,7 @@ Substantively: the difference `a₁ - a₂` is a multiple of `P`, yet in absolut
 
 The second brick ties the separating scale to the position of the factor relative to the modulus.
 
-> **Lemma 26.3 (`legal_lift_lt_primorial`).** Let `a ∣ N` with `0 < a`, let the carrier be bounded by `N ≤ 6·X_A + 1`, `0 < N`, and let the separating scale `6·X_A + 1 < P_A` hold. Then `a < P_A`.
+> **Lemma 26.3** (`legal_lift_lt_primorial`). Let `a ∣ N` with `0 < a`, let the carrier be bounded by `N ≤ 6·X_A + 1`, `0 < N`, and let the separating scale `6·X_A + 1 < P_A` hold. Then `a < P_A`.
 
 In Lean form:
 
@@ -73,7 +73,7 @@ Note exactly where each hypothesis is used: divisibility gives `a ≤ N`, the le
 
 The abstract collision we want to exclude is conveniently packaged as a structure: two *distinct* legal factors over a common base, congruent modulo the passport, and both bounded by the carrier.
 
-> **Definition 26.4 (`LegalProductHall X_A P_A`).** The data:
+> **Definition 26.4** (`LegalProductHall X_A P_A`). The data:
 > - `a₁, a₂ : ℕ` — two active factors, `hne : a₁ ≠ a₂`;
 > - `hcong : a₁ ≡ a₂ [MOD P_A]` — coincidence of the coarse passports;
 > - carriers `N₁, N₂` with `hdvd₁ : a₁ ∣ N₁`, `hdvd₂ : a₂ ∣ N₂`;
@@ -84,7 +84,7 @@ This is exactly the object whose existence was required in chapter 25 for the br
 
 ## The main theorem: ProductHall is impossible
 
-> **Theorem 26.5 (`no_productHall`).** Under the separating scale `6·X_A + 1 < P_A` the configuration `LegalProductHall X_A P_A` is impossible: `False` is derivable from it.
+> **Theorem 26.5** (`no_productHall`). Under the separating scale `6·X_A + 1 < P_A` the configuration `LegalProductHall X_A P_A` is impossible: `False` is derivable from it.
 
 In Lean form:
 
@@ -103,7 +103,7 @@ What is proven: under the separating scale, two legal factors congruent modulo `
 
 As a corollary, a passport collision on the legal layer yields anything at all by the principle "from falsehood, everything" (ex falso, see the [glossary](GLOSSARY.md)):
 
-> **Corollary 26.6 (`productHall_bridge`).** For any statement `Engine`, under the separating scale `LegalProductHall X_A P_A` implies `Engine` (via `False.elim`).
+> **Corollary 26.6** (`productHall_bridge`). For any statement `Engine`, under the separating scale `LegalProductHall X_A P_A` implies `Engine` (via `False.elim`).
 
 This is not a substantive conclusion about the engine but an honest record: since the configuration is empty, any bridge across it is trivial. We note it so as not to pass a reduction off as a proof: `productHall_bridge` is useful only as a logical stub over an already-established emptiness.
 
@@ -132,7 +132,7 @@ By `A = 200` the gap is seventy orders of magnitude (81 against 11).
 
 Closing `ProductHall` does not close the whole programme — it *narrows* it. The energy-defect trichotomy had the form `LowerRankCollision ∨ ProductHall`; having removed the right branch, we collapse it to a single one:
 
-> **Lemma 26.7 (`trichotomy_collapses`).** `(L ∨ PH) ∧ ¬PH ⟹ L`.
+> **Lemma 26.7** (`trichotomy_collapses`). `(L ∨ PH) ∧ ¬PH ⟹ L`.
 
 This is pure logic (`Or.resolve_right`), and it is honestly framed as a reduction, not a result: the predicate `energy_defect_trichotomy` itself, which produces the disjunction `L ∨ PH`, remains an open node. In the same spirit we record the skeleton of the rank descent:
 

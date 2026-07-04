@@ -126,7 +126,7 @@ is identified with the rank-$(0,0)$ set, the bad set with the rank-$(3,3)$ set, 
 counts give the strict four-corner (plus the light side-corner), the whole carrier lies above
 $N$, and every surviving carrier centre is a twin.
 
-**Theorem 15.7** (`twin_primes_of_four_corner`)**.** 🟡 (conditional)
+**Theorem 15.7** (`twin_primes_of_four_corner`)**.** 🟢 (a green conditional theorem: axiom-clean, conditional on the named input $H$)
 $$
 H \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite}. \tag{15.3}
 $$

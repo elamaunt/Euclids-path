@@ -34,20 +34,20 @@ For Riemann the deviation was an object-as-data — a concrete zero off the line
 is built differently: it is *finiteness*, the claim that above some threshold there are no more twins among
 the Mersenne numbers. The witness here is not a point but a bound:
 
-**Definition 43.1 (`MersenneTwinAbsenceAbove P`).** *Absence of Mersenne twins above `P`: every
+**Definition 43.1** (`MersenneTwinAbsenceAbove P`). *Absence of Mersenne twins above `P`: every
 pair `(2^p − 3, 2^p − 1)` of primes sits with its lower side no higher than `P`. Formally:*
 $$\mathrm{MersenneTwinAbsenceAbove}(P)\ :\equiv\ \forall p\in\mathbb{N},\ (2^p-3)\text{ prime}\ \wedge\ (2^p-1)\text{ prime}\ \Rightarrow\ 2^p-3\le P. \tag{43.1}$$
 
 This is a Π-statement — the mirror of the twin boundary `TwinBoundAbove`, and the plumbing ties it to the branch's
 goal exactly: unboundedness of Mersenne twins is equivalent to the absence of such witnesses.
 
-**Theorem 43.2 (`mersenneTwinCentersUnbounded_iff_no_absence`, 🟢).** *The centres of the Mersenne
+**Theorem 43.2** (`mersenneTwinCentersUnbounded_iff_no_absence`, 🟢). *The centres of the Mersenne
 numbers are unbounded if and only if no absence witness exists at any `P`:*
 $$\mathrm{MersenneTwinCentersUnbounded}\ \iff\ \forall P\in\mathbb{N},\ \neg\,\mathrm{MersenneTwinAbsenceAbove}(P). \tag{43.2}$$
 
 About the witness's domain we also know a lower bound:
 
-**Theorem 43.3 (`mersenneAbsenceBound_ge_29`, 🟢).** *Every absence bound is at least 29:*
+**Theorem 43.3** (`mersenneAbsenceBound_ge_29`, 🟢). *Every absence bound is at least 29:*
 $$\mathrm{MersenneTwinAbsenceAbove}(P)\ \Rightarrow\ 29\le P. \tag{43.3}$$
 
 **Why this is true.** The pair `(29, 31)` at `p = 5` greenly exists — both numbers are prime, and no
@@ -67,13 +67,13 @@ The centres of Mersenne numbers form an explicit chain — the base-4 repunits `
 a twin of the pentadic chain `c → 5c + 1`, which in [24](24_BoundaryDecomp.md) forged an infinite family of genealogies and
 refuted the node's minor branch.
 
-**Theorem 43.4 (`mersenneCenterChain_strictMono`, 🟢).** *The centre function `mersenneCenter`
+**Theorem 43.4** (`mersenneCenterChain_strictMono`, 🟢). *The centre function `mersenneCenter`
 is strictly monotone (hence injective):*
 $$\forall k\in\mathbb{N},\ \mathrm{mersenneCenter}(k)<\mathrm{mersenneCenter}(k+1). \tag{43.4}$$
 
 But the resemblance is deceptive, and the difference is arithmetic:
 
-**Theorem 43.5 (`isEmpty_properCenterPeel_five_one`, 🟢 — even without Classical.choice).** *The first step
+**Theorem 43.5** (`isEmpty_properCenterPeel_five_one`, 🟢 — even without Classical.choice). *The first step
 of the base-4 chain, `5 → 1`, carries no proper peel at any scale:*
 $$\forall A\in\mathbb{N},\ \mathrm{ProperCenterPeel}(A,5,1)\ \text{is empty}. \tag{43.5}$$
 
@@ -89,7 +89,7 @@ the precise opposite of Yang–Mills and Navier–Stokes. The door for an honest
 
 ## The manifestation law — gated by a witness
 
-**Definition 43.6 (`MersenneManifestationLaw`).** *For every threshold `P` with an absence witness:
+**Definition 43.6** (`MersenneManifestationLaw`). *For every threshold `P` with an absence witness:
 at every ledger scale no lower than `P`, wherever the projection reconciles the books, the absence manifests
 as an unpayable infinite supply of flows (`DeviationFlowSupply` — the same object as Riemann's):*
 $$\mathrm{MersenneManifestationLaw}\ :\equiv\ \forall P,\ \mathrm{MersenneTwinAbsenceAbove}(P)\Rightarrow\ \forall A, M_0,\ P\le M_0\Rightarrow\ \forall\,\mathrm{proj},\ \mathrm{Resolves}(\mathrm{proj})\Rightarrow\ \mathrm{DeviationFlowSupply}(A,M_0). \tag{43.6}$$
@@ -104,7 +104,7 @@ a greenly-unpresentable witness is what separates the honest form from the explo
 
 Now the main theorems — both green, both with genuine consumption of hypotheses.
 
-**Theorem 43.7 (`mersenneRefutation_carries_engine`, 🟢 — readable form).** *An absence witness +
+**Theorem 43.7** (`mersenneRefutation_carries_engine`, 🟢 — readable form). *An absence witness +
 the manifestation law + reconciled books at a scale no lower than `P` present a perpetual engine — as
 an object,* `ConcreteEuclideanEngineWitness`, *prior to any killing:*
 $$\mathrm{MersenneManifestationLaw}\ \wedge\ \mathrm{MersenneTwinAbsenceAbove}(P)\ \wedge\ P\le M_0\ \wedge\ \mathrm{Resolves}(\mathrm{proj})\ \Rightarrow\ \mathrm{ConcreteEuclideanEngineWitness}(A,M_0). \tag{43.7}$$
@@ -114,7 +114,7 @@ turns the absence into an infinite family of flows; the finite key is forced to 
 (pigeonhole); from the collision an engine-witness is assembled. To refute Mersenne twins where
 the books are reconciled is, literally, to build a perpetual engine.
 
-**Theorem 43.8 (`mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation`, 🟢 — essence).**
+**Theorem 43.8** (`mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation`, 🟢 — essence).
 *No engines + the accepted boundary + the manifestation law ⟹ Mersenne twins are unbounded:*
 $$\neg\,\mathrm{SomeConcreteEuclideanEngine}\ \wedge\ \mathrm{TheStrictLastStep00Obligation}\ \wedge\ \mathrm{MersenneManifestationLaw}\ \Rightarrow\ \mathrm{MersenneTwinCentersUnbounded}. \tag{43.8}$$
 
@@ -123,7 +123,7 @@ a witness `P` is extracted; the boundary grants resolution exactly at scale `P`;
 not ex falso, but as data; and the engine so built is killed precisely by the hypothesis "there are no engines". Through
 the honest bridge of [34](34_MersenneBranch.md) the same triple is carried all the way to the twins:
 
-**Theorem 43.9 (`twinLowersInfinite_of_noEngine_boundary_and_mersenneManifestation`, 🟢).** *The same
+**Theorem 43.9** (`twinLowersInfinite_of_noEngine_boundary_and_mersenneManifestation`, 🟢). *The same
 triple of hypotheses forces the lower sides of the twins to be infinite:*
 $$\neg\,\mathrm{SomeConcreteEuclideanEngine}\ \wedge\ \mathrm{TheStrictLastStep00Obligation}\ \wedge\ \mathrm{MersenneManifestationLaw}\ \Rightarrow\ \mathrm{TwinLowers.Infinite}. \tag{43.9}$$
 
@@ -133,7 +133,7 @@ The trilemma is passed: the witness is unpresentable, the law is not greenly dec
 By the machine criterion — the very one that admitted the Riemann boundary and rejected the candidates of Yang–Mills,
 Navier–Stokes, P/NP and Hodge — the fourth field `mersenneBoundary` is **admissible**. And here is its price:
 
-**Theorem 43.10 (`mersenneManifestationLaw_iff_unbounded_of_boundary`, 🟢 — the chief audit M7).** *Under
+**Theorem 43.10** (`mersenneManifestationLaw_iff_unbounded_of_boundary`, 🟢 — the chief audit M7). *Under
 the accepted boundary, the manifestation law is equivalent to the unboundedness of Mersenne twins:*
 $$\mathrm{TheStrictLastStep00Obligation}\ \Rightarrow\ \bigl(\mathrm{MersenneManifestationLaw}\ \iff\ \mathrm{MersenneTwinCentersUnbounded}\bigr). \tag{43.10}$$
 

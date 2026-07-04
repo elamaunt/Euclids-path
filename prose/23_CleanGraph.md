@@ -26,13 +26,13 @@ $$
 
 Зафиксируем порог просеивания $A$ и работаем с центрами $m \in \mathbb{N}$ (сторона $6m-1$, $6m+1$). Основное свойство наследуется из [22](22_Residuals.md), но здесь мы берём его натуральную форму.
 
-**Определение 23.1 (clean-центр).** Центр $m$ называется *clean* относительно $A$, если ни один простой $q \le A$ не делит ни одну из сторон:
+**Определение 23.1** (clean-центр). Центр $m$ называется *clean* относительно $A$, если ни один простой $q \le A$ не делит ни одну из сторон:
 $$
 \mathrm{Clean}\,A\,m \;:\equiv\; \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).
 $$
 В Lean это `Clean` (ℕ-версия; её ℤ-двойник — `CleanZ` из `Residuals`, мост между ними мы предъявим ниже).
 
-**Определение 23.2 (active-ребро).** Ребро $m \to n$ *активно*, если $n$ — меньший центр-цель спуска:
+**Определение 23.2** (active-ребро). Ребро $m \to n$ *активно*, если $n$ — меньший центр-цель спуска:
 $$
 \mathrm{ActiveEdge}\,A\,m\,n \;:\equiv\; \top \ \land\ n < m .
 $$
@@ -40,9 +40,9 @@ $$
 
 Различие внутри active-рёбер и есть предмет главы:
 
-**Определение 23.3 (clean-ребро).** $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — оба конца clean.
+**Определение 23.3** (clean-ребро). $\mathrm{CleanActiveEdge}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{Clean}\,A\,n \land \mathrm{ActiveEdge}\,A\,m\,n$ — оба конца clean.
 
-**Определение 23.4 (boundary-exit).** $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — исток clean, цель *не* clean.
+**Определение 23.4** (boundary-exit). $\mathrm{BoundaryExit}\,A\,m\,n :\equiv \mathrm{Clean}\,A\,m \land \mathrm{ActiveEdge}\,A\,m\,n \land \neg\,\mathrm{Clean}\,A\,n$ — исток clean, цель *не* clean.
 
 Boundary-exit — это ребро, покидающее clean-граф. Оно *не* sink: это вход в defect-ledger, где им занимаются old-peel и регенерация. Именно сюда уходит переход $18 \to \dots$ из разрыва выше.
 
@@ -63,7 +63,7 @@ $$
 
 Теперь — корректное понятие остановки.
 
-**Определение 23.6 (clean-sink).** $m$ — *clean-sink*, если $m$ clean и у него вообще нет active-ребра:
+**Определение 23.6** (clean-sink). $m$ — *clean-sink*, если $m$ clean и у него вообще нет active-ребра:
 $$
 \mathrm{CleanSink}\,A\,m \;:\equiv\; \mathrm{Clean}\,A\,m \ \land\ \neg\,\exists n,\ \mathrm{ActiveEdge}\,A\,m\,n .
 $$

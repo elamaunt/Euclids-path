@@ -36,7 +36,7 @@ $$
 
 It is natural to conjecture that precisely this fixed difference governs all joint divisibility of the sides. Let us formalise this.
 
-**Definition 2.1 (common divisor of the sides).** A prime (or, in the general formulation, any natural number) $p$ is called a *common divisor of the sides* of the centre $m$ if simultaneously
+**Definition 2.1** (common divisor of the sides). A prime (or, in the general formulation, any natural number) $p$ is called a *common divisor of the sides* of the centre $m$ if simultaneously
 $$
 p \mid (6m-1) \qquad \text{and} \qquad p \mid (6m+1).
 $$

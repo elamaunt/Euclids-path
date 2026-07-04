@@ -32,20 +32,20 @@
 устроено иначе: это *конечность*, утверждение о том, что выше некоторого порога близнецов среди
 чисел Мерсенна больше нет. Свидетель здесь — не точка, а граница:
 
-**Определение 43.1 (`MersenneTwinAbsenceAbove P`).** *Отсутствие Мерсенн-близнецов выше `P`: каждая
+**Определение 43.1** (`MersenneTwinAbsenceAbove P`). *Отсутствие Мерсенн-близнецов выше `P`: каждая
 пара `(2^p − 3, 2^p − 1)` из простых сидит нижней стороной не выше `P`. Формально:*
 $$\mathrm{MersenneTwinAbsenceAbove}(P)\ :\equiv\ \forall p\in\mathbb{N},\ (2^p-3)\text{ простое}\ \wedge\ (2^p-1)\text{ простое}\ \Rightarrow\ 2^p-3\le P. \tag{43.1}$$
 
 Это Π-утверждение — зеркало близнецовой границы `TwinBoundAbove`, и плумбинг связывает его с целью
 ветки точно: неограниченность Мерсенн-близнецов эквивалентна отсутствию таких свидетелей.
 
-**Теорема 43.2 (`mersenneTwinCentersUnbounded_iff_no_absence`, 🟢).** *Центры чисел Мерсенна
+**Теорема 43.2** (`mersenneTwinCentersUnbounded_iff_no_absence`, 🟢). *Центры чисел Мерсенна
 неограничены тогда и только тогда, когда ни при каком `P` не существует свидетеля отсутствия:*
 $$\mathrm{MersenneTwinCentersUnbounded}\ \iff\ \forall P\in\mathbb{N},\ \neg\,\mathrm{MersenneTwinAbsenceAbove}(P). \tag{43.2}$$
 
 Про домен свидетеля мы знаем и нижнюю грань:
 
-**Теорема 43.3 (`mersenneAbsenceBound_ge_29`, 🟢).** *Всякая граница отсутствия не меньше 29:*
+**Теорема 43.3** (`mersenneAbsenceBound_ge_29`, 🟢). *Всякая граница отсутствия не меньше 29:*
 $$\mathrm{MersenneTwinAbsenceAbove}(P)\ \Rightarrow\ 29\le P. \tag{43.3}$$
 
 **Почему это верно.** Пара `(29, 31)` при `p = 5` зелёно существует — оба числа просты, и никакой
@@ -65,13 +65,13 @@ $$\mathrm{MersenneTwinAbsenceAbove}(P)\ \Rightarrow\ 29\le P. \tag{43.3}$$
 близнец пятиадической цепи `c → 5c + 1`, которая в [24](24_BoundaryDecomp.md) выковала бесконечную семью генеалогий и
 опровергла малую ветвь узла.
 
-**Теорема 43.4 (`mersenneCenterChain_strictMono`, 🟢).** *Функция центра `mersenneCenter`
+**Теорема 43.4** (`mersenneCenterChain_strictMono`, 🟢). *Функция центра `mersenneCenter`
 строго монотонна (в частности, инъективна):*
 $$\forall k\in\mathbb{N},\ \mathrm{mersenneCenter}(k)<\mathrm{mersenneCenter}(k+1). \tag{43.4}$$
 
 Но сходство обманчиво, и разница — арифметическая:
 
-**Теорема 43.5 (`isEmpty_properCenterPeel_five_one`, 🟢 — даже без Classical.choice).** *Первый шаг
+**Теорема 43.5** (`isEmpty_properCenterPeel_five_one`, 🟢 — даже без Classical.choice). *Первый шаг
 базы-4 цепи, `5 → 1`, не несёт собственного пила ни при каком масштабе:*
 $$\forall A\in\mathbb{N},\ \mathrm{ProperCenterPeel}(A,5,1)\ \text{пуст}. \tag{43.5}$$
 
@@ -87,7 +87,7 @@ $$\forall A\in\mathbb{N},\ \mathrm{ProperCenterPeel}(A,5,1)\ \text{пуст}. \t
 
 ## Закон манифестации — гейченный свидетелем
 
-**Определение 43.6 (`MersenneManifestationLaw`).** *Для каждого порога `P` со свидетелем отсутствия:
+**Определение 43.6** (`MersenneManifestationLaw`). *Для каждого порога `P` со свидетелем отсутствия:
 на каждом леджер-масштабе не ниже `P`, всюду где проекция сводит книги, отсутствие проявляется
 неоплатимой бесконечной поставкой потоков (`DeviationFlowSupply` — тот же объект, что у Римана):*
 $$\mathrm{MersenneManifestationLaw}\ :\equiv\ \forall P,\ \mathrm{MersenneTwinAbsenceAbove}(P)\Rightarrow\ \forall A, M_0,\ P\le M_0\Rightarrow\ \forall\,\mathrm{proj},\ \mathrm{Resolves}(\mathrm{proj})\Rightarrow\ \mathrm{DeviationFlowSupply}(A,M_0). \tag{43.6}$$
@@ -102,7 +102,7 @@ $$\mathrm{MersenneManifestationLaw}\ :\equiv\ \forall P,\ \mathrm{MersenneTwinAb
 
 Теперь главные теоремы — обе зелёные, обе с подлинным потреблением гипотез.
 
-**Теорема 43.7 (`mersenneRefutation_carries_engine`, 🟢 — читаемая форма).** *Свидетель отсутствия +
+**Теорема 43.7** (`mersenneRefutation_carries_engine`, 🟢 — читаемая форма). *Свидетель отсутствия +
 закон манифестации + сведённые книги на масштабе не ниже `P` предъявляют вечный двигатель — как
 объект,* `ConcreteEuclideanEngineWitness`, *до всякого убийства:*
 $$\mathrm{MersenneManifestationLaw}\ \wedge\ \mathrm{MersenneTwinAbsenceAbove}(P)\ \wedge\ P\le M_0\ \wedge\ \mathrm{Resolves}(\mathrm{proj})\ \Rightarrow\ \mathrm{ConcreteEuclideanEngineWitness}(A,M_0). \tag{43.7}$$
@@ -112,7 +112,7 @@ $$\mathrm{MersenneManifestationLaw}\ \wedge\ \mathrm{MersenneTwinAbsenceAbove}(P
 (пигеонхол); из коллизии собирается двигатель-свидетель. Опровергнуть Мерсенн-близнецов там, где
 книги сведены, — буквально построить вечный двигатель.
 
-**Теорема 43.8 (`mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation`, 🟢 — essence).**
+**Теорема 43.8** (`mersenneTwinsUnbounded_of_noEngine_and_boundary_and_manifestation`, 🟢 — essence).
 *Нет двигателей + принятая граница + закон манифестации ⟹ Мерсенн-близнецы неограничены:*
 $$\neg\,\mathrm{SomeConcreteEuclideanEngine}\ \wedge\ \mathrm{TheStrictLastStep00Obligation}\ \wedge\ \mathrm{MersenneManifestationLaw}\ \Rightarrow\ \mathrm{MersenneTwinCentersUnbounded}. \tag{43.8}$$
 
@@ -121,7 +121,7 @@ $$\neg\,\mathrm{SomeConcreteEuclideanEngine}\ \wedge\ \mathrm{TheStrictLastStep0
 не ex falso, а как данные; и убивает построенный двигатель именно гипотеза «двигателей нет». Через
 честный мост [34](34_MersenneBranch.md) эта же тройка доводится и до близнецов:
 
-**Теорема 43.9 (`twinLowersInfinite_of_noEngine_boundary_and_mersenneManifestation`, 🟢).** *Та же
+**Теорема 43.9** (`twinLowersInfinite_of_noEngine_boundary_and_mersenneManifestation`, 🟢). *Та же
 тройка гипотез влечёт бесконечность нижних сторон близнецов:*
 $$\neg\,\mathrm{SomeConcreteEuclideanEngine}\ \wedge\ \mathrm{TheStrictLastStep00Obligation}\ \wedge\ \mathrm{MersenneManifestationLaw}\ \Rightarrow\ \mathrm{TwinLowers.Infinite}. \tag{43.9}$$
 
@@ -131,7 +131,7 @@ $$\neg\,\mathrm{SomeConcreteEuclideanEngine}\ \wedge\ \mathrm{TheStrictLastStep0
 По машинному критерию — тому самому, что впустил риманову границу и отверг кандидатов Янг–Миллса,
 Навье–Стокса, P/NP и Ходжа, — четвёртое поле `mersenneBoundary` **допустимо**. И вот его цена:
 
-**Теорема 43.10 (`mersenneManifestationLaw_iff_unbounded_of_boundary`, 🟢 — главный аудит M7).** *При
+**Теорема 43.10** (`mersenneManifestationLaw_iff_unbounded_of_boundary`, 🟢 — главный аудит M7). *При
 принятой границе закон манифестации эквивалентен неограниченности Мерсенн-близнецов:*
 $$\mathrm{TheStrictLastStep00Obligation}\ \Rightarrow\ \bigl(\mathrm{MersenneManifestationLaw}\ \iff\ \mathrm{MersenneTwinCentersUnbounded}\bigr). \tag{43.10}$$
 

@@ -1,41 +1,41 @@
 /-
-  NavierStokesFront — ЗЕЛЁНЫЙ (аксиомо-свободный) модуль ветви гладкости
-  Навье–Стокса в программе вечного двигателя: «движение двигателя внутри ранга
-  гладко всюду — точка разрыва создала бы вечный двигатель; решение выводится
-  ВЗЯТИЕМ ИНТЕГРАЛА».
+  NavierStokesFront — GREEN (axiom-free) module of the Navier–Stokes smoothness
+  branch in the perpetual-engine programme: "the engine's motion inside a rank
+  is smooth everywhere — a point of discontinuity would create a perpetual
+  engine; the solution is derived BY TAKING THE INTEGRAL".
 
-  Архитектура:
-    * двигатель: `SingularCascade` — бесконечно много δ-диссипативных стадий,
-      сжатых до конечного времени T (гипотетическая сингулярность как
-      бесконечная квантованная лестница); зелёный убийца — существующая
-      бюджетная машина (`ns_no_infinite_dissipative_cascade`);
-    * суррогат гладкости `NoSingularCascade` — ГЕРОЙ
-      `noSingularCascade_of_energyBalance`: энергобаланс + интегрируемость ⟹
-      суррогат (зелёная условная цепь, NS-паттерн);
-    * «ИНТЕГРАЛ ВЗЯТ» дважды: энергетическое ТОЖДЕСТВО равенством
-      (`energy_identity_of_energyBalance`, FTC-2 — старое неравенство §5
-      оказывается огрублением выведенного интегрированием равенства) и
-      интегральная форма решения (`isNSSolution_integral_form`, E3-значный
+  Architecture:
+    * engine: `SingularCascade` — infinitely many δ-dissipative stages,
+      compressed into a finite time T (a hypothetical singularity as an
+      infinite quantized ladder); the green killer is the existing
+      budget machine (`ns_no_infinite_dissipative_cascade`);
+    * smoothness surrogate `NoSingularCascade` — HERO
+      `noSingularCascade_of_energyBalance`: energy balance + integrability ⟹
+      surrogate (green conditional chain, NS pattern);
+    * "THE INTEGRAL IS TAKEN" twice: the energy IDENTITY as an equality
+      (`energy_identity_of_energyBalance`, FTC-2 — the old §5 inequality
+      turns out to be a coarsening of the equality derived by integration) and
+      the integral form of the solution (`isNSSolution_integral_form`, E3-valued
       FTC: u t x = u 0 x + ∫₀ᵗ (νΔu − ∇p + f − (u·∇)u)).
 
-  ЧЕСТНАЯ ГРАНИЦА (громко): `NoSingularCascade` — суррогат в каскадном языке,
-  НЕ C^∞-регулярность; НЕ доказаны существование Лерэ, единственность,
-  регулярность; `EnergyBalanceLaw` остаётся именованным 🔴-входом; проблема
-  тысячелетия НЕ решается и НЕ объявляется. Кованые свидетели живут на уровне
-  полей/потоков/ПРОФИЛЕЙ энергии — ни один не является нетривиальным
-  IsNSSolution (раскрыто).
+  HONEST BOUNDARY (loudly): `NoSingularCascade` is a surrogate in the cascade
+  language, NOT C^∞ regularity; Leray existence, uniqueness, and regularity are
+  NOT proven; `EnergyBalanceLaw` remains a named 🔴 input; the millennium
+  problem is NOT solved and NOT declared. The forged witnesses live at the level
+  of fields/flows/energy PROFILES — none is a nontrivial
+  IsNSSolution (disclosed).
 
-  ТРИЛЕММА пятой границы декрета — все вердикты машинны (§7):
-    V1 универсальная форма ОПРОВЕРЖИМА (cookedFlow — размешиваемый поток
-       набирает энергию: баланс проваливается через HasDerivAt.unique);
-    V2 экзистенциальная форма УЖЕ ДОКАЗАНА (нулевое решение) — декрет вакуумен;
-    V3 манифестационная (риманово зеркало) форма НЕСОВМЕСТИМА с принятой
-       границей: кованый профильный каскад (tₙ = 1 − 2⁻ⁿ) зелёно ПРЕДЪЯВИМ,
-       в отличие от off-critical нуля.
-  ℝ-предупреждение (урок cookedLadder ЯМ): равномерный профильный каскад убит
-  бюджетом (L10), но кованый НЕравномерный существует даже при неотрицательном
-  ограниченном профиле (L11) — суррогат говорит именно о РАВНОМЕРНОМ
-  квантовании. Модуль карантин НЕ импортирует; axiom/sorry нет.
+  TRILEMMA of the decree's fifth boundary — all verdicts are machine (§7):
+    V1 the universal form is REFUTABLE (cookedFlow — a stirred flow
+       gains energy: the balance fails through HasDerivAt.unique);
+    V2 the existential form is ALREADY PROVEN (the zero solution) — the decree is vacuous;
+    V3 the manifestation (Riemann-mirror) form is INCOMPATIBLE with the accepted
+       boundary: the forged profile cascade (tₙ = 1 − 2⁻ⁿ) is greenly PRESENTABLE,
+       unlike an off-critical zero.
+  ℝ-warning (the cookedLadder lesson of YM): the uniform profile cascade is killed
+  by the budget (L10), but a forged NON-uniform one exists even under a nonnegative
+  bounded profile (L11) — the surrogate speaks precisely about UNIFORM
+  quantization. The module does NOT import the quarantine; no axiom/sorry.
 -/
 import Mathlib
 import EuclidsPath.Engine.NavierStokes
@@ -54,40 +54,40 @@ open EuclidsPath.ConcreteStep00Graph
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 
 /-#############################################################################
-  §1. Двигатель: сингулярный каскад и его зелёные убийцы
+  §1. Engine: the singular cascade and its green killers
 #############################################################################-/
 
-/-- **D1. СИНГУЛЯРНЫЙ КАСКАД = ВЕЧНЫЙ ДВИГАТЕЛЬ:** бесконечная
-    последовательность моментов до времени `T`, каждый шаг которой —
-    δ-диссипирующий этап (`DissipativeStage`): бесконечно много квантованных
-    диссипаций, сжатых до гипотетического сингулярного времени. Поле `before`
-    несёт семантику «до сингулярности»; РАСКРЫТО: убийца L1 его не
-    потребляет — бюджет запрещает бесконечный δ-каскад ВООБЩЕ, сжатый тем
-    более (инертность раскрыта, зеркало vacuum_mem у ЯМ). -/
+/-- **D1. SINGULAR CASCADE = PERPETUAL ENGINE:** an infinite
+    sequence of moments before time `T`, each step of which is a
+    δ-dissipating stage (`DissipativeStage`): infinitely many quantized
+    dissipations, compressed into a hypothetical singular time. The field `before`
+    carries the "before the singularity" semantics; DISCLOSED: killer L1 does not
+    consume it — the budget forbids an infinite δ-cascade AT ALL, and a compressed
+    one all the more (inertness disclosed, the vacuum_mem mirror of YM). -/
 structure SingularCascade (ν : ℝ) (u : ℝ → E3 → E3) (δ T : ℝ) where
   times : ℕ → ℝ
   before : ∀ n, times n < T
   stage : ∀ n, DissipativeStage ν u δ (times n) (times (n + 1))
 
-/-- **L1 — ЗЕЛЁНЫЙ УБИЙЦА (прямое применение существующей машины):**
-    при энергетическом неравенстве сингулярных каскадов нет. -/
+/-- **L1 — GREEN KILLER (direct application of the existing machine):**
+    under the energy inequality there are no singular cascades. -/
 theorem no_singularCascade_of_energyInequality
     (ν : ℝ) (u : ℝ → E3 → E3) (δ T : ℝ) (hδ : 0 < δ)
     (hE : TwoTimeEnergyInequality ν u) :
     IsEmpty (SingularCascade ν u δ T) :=
   ⟨fun C => ns_no_infinite_dissipative_cascade ν u δ hδ hE ⟨C.times, C.stage⟩⟩
 
-/-- **D2. Честный суррогат гладкости** в языке каскада: ни при каком
-    квантовании δ > 0 и ни к какому конечному времени T сингулярный каскад
-    не сжимается. РАСКРЫТО ГРОМКО: это НЕ C^∞-регулярность и НЕ утверждение
-    Клэя — только «нет бесконечной равномерно-квантованной диссипативной
-    лестницы до конечного времени». -/
+/-- **D2. Honest smoothness surrogate** in the cascade language: under no
+    quantization δ > 0 and to no finite time T does the singular cascade
+    compress. DISCLOSED LOUDLY: this is NOT C^∞ regularity and NOT the Clay
+    statement — only "there is no infinite uniformly-quantized dissipative
+    ladder up to a finite time". -/
 def NoSingularCascade (ν : ℝ) (u : ℝ → E3 → E3) : Prop :=
   ∀ δ T : ℝ, 0 < δ → IsEmpty (SingularCascade ν u δ T)
 
-/-- **L2 — ГЕРОЙ (полная цепь от узкого входа, NS-паттерн):**
-    точечный энергобаланс `dE/dt = −D` + интегрируемость ⟹ суррогат
-    гладкости: точек разрыва каскадного типа НЕТ. -/
+/-- **L2 — HERO (full chain from a narrow input, NS pattern):**
+    the pointwise energy balance `dE/dt = −D` + integrability ⟹ smoothness
+    surrogate: there are NO discontinuity points of the cascade type. -/
 theorem noSingularCascade_of_energyBalance
     (ν : ℝ) (u : ℝ → E3 → E3)
     (hBal : EnergyBalanceLaw ν u)
@@ -98,12 +98,12 @@ theorem noSingularCascade_of_energyBalance
     (twoTimeEnergyInequality_of_energyBalance ν u hBal hInt)
 
 /-#############################################################################
-  §2. «Взять интеграл» I: энергетическое ТОЖДЕСТВО (FTC-равенство)
+  §2. "Take the integral" I: the energy IDENTITY (FTC equality)
 #############################################################################-/
 
-/-- **L3 — ЭНЕРГЕТИЧЕСКОЕ ТОЖДЕСТВО (интеграл ВЗЯТ; равенство, не
-    неравенство):** `E(t₂) = E(t₁) − ∫_{t₁}^{t₂} D` — FTC-2 от энергобаланса.
-    Ориентация времени свободна (интервальный интеграл). -/
+/-- **L3 — ENERGY IDENTITY (the integral is TAKEN; an equality, not an
+    inequality):** `E(t₂) = E(t₁) − ∫_{t₁}^{t₂} D` — FTC-2 from the energy balance.
+    Time orientation is free (interval integral). -/
 theorem energy_identity_of_energyBalance
     (ν : ℝ) (u : ℝ → E3 → E3)
     (hBal : EnergyBalanceLaw ν u)
@@ -120,9 +120,9 @@ theorem energy_identity_of_energyBalance
   rw [intervalIntegral.integral_neg] at hftc
   linarith
 
-/-- **L4 — Icc-форма тождества** (тот же вид, что `TwoTimeEnergyInequality`,
-    но РАВЕНСТВОМ): старое неравенство §5 — огрубление выведенного
-    интегрированием тождества. -/
+/-- **L4 — Icc form of the identity** (the same shape as `TwoTimeEnergyInequality`,
+    but as an EQUALITY): the old §5 inequality is a coarsening of the identity
+    derived by integration. -/
 theorem energy_identity_Icc_of_energyBalance
     (ν : ℝ) (u : ℝ → E3 → E3)
     (hBal : EnergyBalanceLaw ν u)
@@ -141,13 +141,13 @@ theorem energy_identity_Icc_of_energyBalance
   linarith
 
 /-#############################################################################
-  §3. «Взять интеграл» II: интегральная (mild) форма решения
+  §3. "Take the integral" II: the integral (mild) form of the solution
 #############################################################################-/
 
-/-- **L5 — АБСТРАКТНАЯ ИНТЕГРАЛЬНАЯ РЕКОНСТРУКЦИЯ (E3-значный FTC):**
-    траектория восстанавливается интегрированием своей производной:
-    `F t = F 0 + ∫₀ᵗ f`. Интеграл Бохнера банахово-значный; `E3` полно —
-    mathlib-FTC применим дословно. -/
+/-- **L5 — ABSTRACT INTEGRAL RECONSTRUCTION (E3-valued FTC):**
+    the trajectory is recovered by integrating its derivative:
+    `F t = F 0 + ∫₀ᵗ f`. The Bochner integral is Banach-valued; `E3` is complete —
+    the mathlib FTC applies verbatim. -/
 theorem trajectory_eq_integral_of_hasDerivAt
     (F f : ℝ → E3)
     (hF : ∀ t : ℝ, HasDerivAt F (f t) t)
@@ -159,14 +159,14 @@ theorem trajectory_eq_integral_of_hasDerivAt
   rw [h]
   abel
 
-/-- Правая часть НС, разрешённая относительно ∂ₜu (точная форма, выпадающая
-    из `momentum` через `eq_sub_of_add_eq`). -/
+/-- The right-hand side of NS, solved for ∂ₜu (the exact form falling out
+    of `momentum` via `eq_sub_of_add_eq`). -/
 def nsTimeDerivative (ν : ℝ) (f : ℝ → E3 → E3) (u : ℝ → E3 → E3)
     (p : ℝ → E3 → ℝ) (t : ℝ) (x : E3) : E3 :=
   ν • vectorLaplacian (u t) x - gradient (p t) x + f t x - convectiveTerm (u t) x
 
-/-- **L6:** решение НС + дифференцируемость по времени ⟹ производная
-    траектории каждой точки — правая часть уравнения. -/
+/-- **L6:** NS solution + differentiability in time ⟹ the derivative of
+    each point's trajectory is the right-hand side of the equation. -/
 theorem hasDerivAt_of_isNSSolution
     {ν : ℝ} {f : ℝ → E3 → E3} {u : ℝ → E3 → E3} {p : ℝ → E3 → ℝ}
     (sol : IsNSSolution ν f u p)
@@ -177,12 +177,12 @@ theorem hasDerivAt_of_isNSSolution
   rw [eq_sub_of_add_eq (sol.momentum t x)] at h
   exact h
 
-/-- **L7 — «ВЫВЕСТИ РЕШЕНИЕ» (интегральная/mild-форма, честно условная):**
-    классическое решение с дифференцируемой и интегрируемой временной
-    динамикой ВОССТАНАВЛИВАЕТСЯ интегрированием уравнения:
+/-- **L7 — "DERIVE THE SOLUTION" (integral/mild form, honestly conditional):**
+    a classical solution with differentiable and integrable time
+    dynamics is RECOVERED by integrating the equation:
     `u t x = u 0 x + ∫₀ᵗ (νΔu − ∇p + f − (u·∇)u)`.
-    РАСКРЫТО: это НЕ существование решения (условно на sol/hdiff/hInt) —
-    но связь «дифференциальная форма ⟹ интегральная форма» machine-checked. -/
+    DISCLOSED: this is NOT existence of a solution (conditional on sol/hdiff/hInt) —
+    but the link "differential form ⟹ integral form" is machine-checked. -/
 theorem isNSSolution_integral_form
     {ν : ℝ} {f : ℝ → E3 → E3} {u : ℝ → E3 → E3} {p : ℝ → E3 → ℝ}
     (sol : IsNSSolution ν f u p)
@@ -195,12 +195,12 @@ theorem isNSSolution_integral_form
     (fun s => nsTimeDerivative ν f u p s x)
     (fun s => hasDerivAt_of_isNSSolution sol hdiff s x) (hInt x) t
 
-/-- Правая часть на нулевом решении — ноль (топливо невакуумности L7). -/
+/-- The right-hand side on the zero solution is zero (fuel for the non-vacuity of L7). -/
 theorem nsTimeDerivative_zero (ν : ℝ) (t : ℝ) (x : E3) :
     nsTimeDerivative ν (fun _ _ => 0) (fun _ _ => 0) (fun _ _ => 0) t x = 0 := by
   simp [nsTimeDerivative, vectorLaplacian, convectiveTerm]
 
-/-- Невакуумность L7: на нулевом решении все три гипотезы обитаемы. -/
+/-- Non-vacuity of L7: on the zero solution all three hypotheses are inhabited. -/
 theorem zero_integral_form_inhabited (ν : ℝ) (t : ℝ) (x : E3) :
     (fun _ _ => (0:E3)) t x
       = (fun _ _ => (0:E3)) 0 x + ∫ s in (0:ℝ)..t,
@@ -213,11 +213,11 @@ theorem zero_integral_form_inhabited (ν : ℝ) (t : ℝ) (x : E3) :
     t x
 
 /-#############################################################################
-  §4. Нулевое решение: баланс + суррогат (топливо V2)
+  §4. The zero solution: balance + surrogate (fuel for V2)
 #############################################################################-/
 
-/-- **L8: энергобаланс нулевого решения — ДОКАЗАН** (`E ≡ 0`, `D ≡ 0`,
-    `hasDerivAt_const`). Экзистенциальная форма пятого поля отсюда вакуумна. -/
+/-- **L8: the energy balance of the zero solution — PROVEN** (`E ≡ 0`, `D ≡ 0`,
+    `hasDerivAt_const`). The existential form of the fifth field is hence vacuous. -/
 theorem zero_energyBalance (ν : ℝ) : EnergyBalanceLaw ν (fun _ _ => 0) := by
   intro t
   simpa [dissipationRate_zero_field] using
@@ -231,13 +231,13 @@ theorem zero_noSingularCascade (ν : ℝ) :
       exact (continuous_const : Continuous fun _ : ℝ => (0:ℝ)).intervalIntegrable t₁ t₂)
 
 /-#############################################################################
-  §5. Кованый несбалансированный поток — свидетель V1
-      (индикатор шара: тихий ноль Бохнера честно обойдён)
+  §5. Forged unbalanced flow — witness V1
+      (ball indicator: the silent Bochner zero honestly bypassed)
 #############################################################################-/
 
-/-- Кованое поле: единичный вектор внутри единичного шара, ноль вне.
-    Интегрируемо ЧЕСТНО (не тихий ноль — константные поля для ковки
-    непригодны, их энергия молча коллапсирует в 0). -/
+/-- Forged field: a unit vector inside the unit ball, zero outside.
+    Integrable HONESTLY (not a silent zero — constant fields are unfit for
+    forging, their energy silently collapses to 0). -/
 def cookedField : E3 → E3 :=
   Set.indicator (Metric.ball (0 : E3) 1) (fun _ => e3 0)
 
@@ -268,8 +268,8 @@ theorem cookedField_energy_pos : 0 < kineticEnergy cookedField := by
   have := ENNReal.toReal_pos h0 htop
   linarith
 
-/-- Кованый «размешиваемый» поток: `u t x = t • cookedField x` — энергия
-    РАСТЁТ (внешнее размешивание), баланс обязан провалиться. -/
+/-- Forged "stirred" flow: `u t x = t • cookedField x` — the energy
+    GROWS (external stirring), the balance must fail. -/
 def cookedFlow : ℝ → E3 → E3 := fun t x => t • cookedField x
 
 theorem cookedFlow_energy (t : ℝ) :
@@ -282,9 +282,9 @@ theorem cookedFlow_energy (t : ℝ) :
   rw [MeasureTheory.integral_const_mul]
   ring
 
-/-- **L9 — КОВАНЫЙ ПРОВАЛ БАЛАНСА (без вычисления D!):** `E(t) = c·t²` с
-    `c > 0`; в `t = 1` производная `2c > 0`, а баланс требовал бы `−D ≤ 0` —
-    единственность производной (`HasDerivAt.unique`) сжигает. -/
+/-- **L9 — FORGED BALANCE FAILURE (without computing D!):** `E(t) = c·t²` with
+    `c > 0`; at `t = 1` the derivative `2c > 0`, whereas the balance would require `−D ≤ 0` —
+    uniqueness of the derivative (`HasDerivAt.unique`) burns it. -/
 theorem cookedFlow_not_energyBalance : ¬ EnergyBalanceLaw 1 cookedFlow := by
   intro hBal
   have h1 := hBal 1
@@ -302,7 +302,7 @@ theorem cookedFlow_not_energyBalance : ¬ EnergyBalanceLaw 1 cookedFlow := by
   have hc := cookedField_energy_pos
   linarith
 
-/-- **L9b:** тот же свидетель опровергает и монолитную ∀-форму НЕРАВЕНСТВА. -/
+/-- **L9b:** the same witness also refutes the monolithic ∀-form of the INEQUALITY. -/
 theorem cookedFlow_not_twoTimeEnergyInequality :
     ¬ TwoTimeEnergyInequality 1 cookedFlow := by
   intro h
@@ -318,22 +318,22 @@ theorem cookedFlow_not_twoTimeEnergyInequality :
   linarith
 
 /-#############################################################################
-  §6. Уровень профилей: ℝ-предупреждение (равномерный каскад убит,
-      кованый неравномерный существует)
+  §6. Profile level: ℝ-warning (the uniform cascade is killed,
+      a forged non-uniform one exists)
 #############################################################################-/
 
-/-- **D3. Профильный каскад (абстрактный; НИКАКОГО НС-содержания — кованые
-    свидетели живут на уровне профилей энергии, не решений; раскрыто):**
-    бесконечно много этапов с положительным падением профиля, все до `T`. -/
+/-- **D3. Profile cascade (abstract; NO NS content — the forged
+    witnesses live at the level of energy profiles, not solutions; disclosed):**
+    infinitely many stages with a positive profile drop, all before `T`. -/
 structure ProfileCascade (E : ℝ → ℝ) (T : ℝ) where
   times : ℕ → ℝ
   mono : ∀ n, times n ≤ times (n + 1)
   before : ∀ n, times n < T
   drop_pos : ∀ n, 0 < E (times n) - E (times (n + 1))
 
-/-- **L10 — РАВНОМЕРНЫЙ профильный каскад при неотрицательном профиле УБИТ**
-    (бюджет, generic-машина каскада; зеркало `no_uniformlyDissipative_ladder`
-    у ЯМ). -/
+/-- **L10 — the UNIFORM profile cascade under a nonnegative profile is KILLED**
+    (budget, the generic cascade machine; the `no_uniformlyDissipative_ladder`
+    mirror of YM). -/
 theorem no_uniform_profileCascade_of_nonneg
     (E : ℝ → ℝ) (T δ : ℝ) (hδ : 0 < δ) (hE : ∀ t, 0 ≤ E t)
     (C : ProfileCascade E T)
@@ -346,7 +346,7 @@ theorem no_uniform_profileCascade_of_nonneg
     (fun n => hE (C.times n))
     ⟨fun k => k, fun _ => rfl⟩
 
-/-- Кованый НЕОТРИЦАТЕЛЬНЫЙ профиль `max (1−t) 0`. -/
+/-- Forged NONNEGATIVE profile `max (1−t) 0`. -/
 def cookedProfile : ℝ → ℝ := fun t => max (1 - t) 0
 
 theorem cookedProfile_at_stage (n : ℕ) :
@@ -355,8 +355,8 @@ theorem cookedProfile_at_stage (n : ℕ) :
   have h : (1 : ℝ) - (1 - (1 / 2) ^ n) = (1 / 2) ^ n := by ring
   rw [h, max_eq_left (by positivity)]
 
-/-- Кованый каскад на `tₙ = 1 − 2⁻ⁿ`: падения `2⁻⁽ⁿ⁺¹⁾ > 0` — бесконечный
-    каскад, сжатый до `T = 1`, при неотрицательном ограниченном профиле. -/
+/-- Forged cascade on `tₙ = 1 − 2⁻ⁿ`: drops `2⁻⁽ⁿ⁺¹⁾ > 0` — an infinite
+    cascade compressed into `T = 1`, under a nonnegative bounded profile. -/
 def cookedProfileCascade : ProfileCascade cookedProfile 1 where
   times := fun n => 1 - (1 / 2 : ℝ) ^ n
   mono := fun n => by
@@ -375,11 +375,11 @@ def cookedProfileCascade : ProfileCascade cookedProfile 1 where
 @[simp] theorem cookedProfileCascade_times (n : ℕ) :
     cookedProfileCascade.times n = 1 - (1 / 2 : ℝ) ^ n := rfl
 
-/-- **L11 — ℝ-ПРЕДУПРЕЖДЕНИЕ (урок cookedLadder ЯМ, машинно):** кованый
-    каскад НЕ равномерен — его падения `2⁻⁽ⁿ⁺¹⁾` ускользают под всякий δ.
-    Потому бюджет (L10) его НЕ убивает: `NoSingularCascade` — суррогат про
-    РАВНОМЕРНОЕ квантование; неравномерные каскады профилей существуют даже
-    при неотрицательном ограниченном профиле. Суррогат ≠ C^∞ — раскрыто. -/
+/-- **L11 — ℝ-WARNING (the cookedLadder lesson of YM, machine):** the forged
+    cascade is NOT uniform — its drops `2⁻⁽ⁿ⁺¹⁾` slip under every δ.
+    Hence the budget (L10) does NOT kill it: `NoSingularCascade` is a surrogate about
+    UNIFORM quantization; non-uniform profile cascades exist even
+    under a nonnegative bounded profile. The surrogate ≠ C^∞ — disclosed. -/
 theorem cookedProfileCascade_not_uniform (δ : ℝ) (hδ : 0 < δ) :
     ¬ ∀ n, δ ≤ cookedProfile (cookedProfileCascade.times n)
               - cookedProfile (cookedProfileCascade.times (n + 1)) := by
@@ -397,26 +397,26 @@ theorem cookedProfileCascade_not_uniform (δ : ℝ) (hδ : 0 < δ) :
   linarith
 
 /-#############################################################################
-  §7. ТРИЛЕММА пятой границы декрета — все вердикты машинны
+  §7. TRILEMMA of the decree's fifth boundary — all verdicts are machine
 #############################################################################-/
 
-/-- **D4a. КАНДИДАТ 1 (универсальная форма пятого поля):** всякий поток
-    подчиняется энергобалансу. -/
+/-- **D4a. CANDIDATE 1 (universal form of the fifth field):** every flow
+    obeys the energy balance. -/
 def NsBalanceLawUniversal : Prop :=
   ∀ (ν : ℝ) (u : ℝ → E3 → E3), EnergyBalanceLaw ν u
 
-/-- **D4b. КАНДИДАТ 2 (экзистенциальная форма):** НЕКОТОРОЕ решение НС
-    сбалансировано и свободно от сингулярных каскадов. -/
+/-- **D4b. CANDIDATE 2 (existential form):** SOME NS solution
+    is balanced and free of singular cascades. -/
 def NsBalanceLawExistential : Prop :=
   ∃ (ν : ℝ) (u : ℝ → E3 → E3),
     (∃ (f : ℝ → E3 → E3) (p : ℝ → E3 → ℝ), IsNSSolution ν f u p) ∧
     EnergyBalanceLaw ν u ∧ NoSingularCascade ν u
 
-/-- **D4c. КАНДИДАТ 3 (манифестационная форма, риманово зеркало):** каскад
-    манифестирует неоплатимой поставкой потоков на всех разрешённых
-    леджер-масштабах (тот же объект `DeviationFlowSupply`, что у
-    riemannBoundary и ЯМ-лестницы). Семейство СВОБОДНО от C — D-инертность
-    вскрыта аудитами §8. -/
+/-- **D4c. CANDIDATE 3 (manifestation form, Riemann mirror):** the cascade
+    manifests through an unpayable supply of flows at all admissible
+    ledger scales (the same object `DeviationFlowSupply` as in
+    riemannBoundary and the YM ladder). The family is FREE of C — D-inertness
+    exposed by the audits of §8. -/
 def CascadeManifests {E : ℝ → ℝ} {T : ℝ} (_C : ProfileCascade E T) : Prop :=
   ∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
     SemanticExtendedFlowLedgerCollisionResolves proj →
@@ -425,21 +425,21 @@ def CascadeManifests {E : ℝ → ℝ} {T : ℝ} (_C : ProfileCascade E T) : Pro
 def NsManifestationLaw : Prop :=
   ∀ (E : ℝ → ℝ) (T : ℝ) (C : ProfileCascade E T), CascadeManifests C
 
-/-- **V1: КАНДИДАТ 1 ЗЕЛЁНО-ОПРОВЕРЖИМ** — декрет был бы противоречив.
-    Свидетель: cookedFlow (размешиваемый поток набирает энергию). -/
+/-- **V1: CANDIDATE 1 GREEN-REFUTABLE** — the decree would be contradictory.
+    Witness: cookedFlow (a stirred flow gains energy). -/
 theorem nsLawUniversal_refuted : ¬ NsBalanceLawUniversal :=
   fun h => cookedFlow_not_energyBalance (h 1 cookedFlow)
 
-/-- **V2: КАНДИДАТ 2 ЗЕЛЁНО-ДОКАЗУЕМ** — декрет был бы вакуумен.
-    Свидетель: нулевое решение. -/
+/-- **V2: CANDIDATE 2 GREEN-PROVABLE** — the decree would be vacuous.
+    Witness: the zero solution. -/
 theorem nsLawExistential_green : NsBalanceLawExistential :=
   ⟨1, fun _ _ => 0,
    ⟨fun _ _ => 0, fun _ _ => 0, zero_is_NSSolution 1⟩,
    zero_energyBalance 1, zero_noSingularCascade 1⟩
 
-/-- **V3: КАНДИДАТ 3 НЕСОВМЕСТИМ С ПРИНЯТОЙ ГРАНИЦЕЙ** (зелёная условная
-    форма, зеркало ЯМ-V3): кованый профильный каскад — в отличие от
-    off-critical нуля — зелёно ПРЕДЪЯВИМ; закон + граница ⟹ False. -/
+/-- **V3: CANDIDATE 3 INCOMPATIBLE WITH THE ACCEPTED BOUNDARY** (green conditional
+    form, mirror of YM-V3): the forged profile cascade — unlike an
+    off-critical zero — is greenly PRESENTABLE; law + boundary ⟹ False. -/
 theorem nsManifestationLaw_refutes_boundary
     (hLaw : NsManifestationLaw) : ¬ TheStrictLastStep00Obligation := by
   rintro ⟨A, projOf, hres⟩
@@ -452,8 +452,8 @@ theorem not_nsManifestationLaw_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) : ¬ NsManifestationLaw :=
   fun hLaw => nsManifestationLaw_refutes_boundary hLaw hBoundary
 
-/-- **V3-характеризация (безусловная — квантор зелёно обитаем):** закон ⟺
-    глобальная заморозка всех леджеров. -/
+/-- **V3-characterization (unconditional — the quantifier is greenly inhabited):** law ⟺
+    global freeze of all ledgers. -/
 theorem nsManifestationLaw_iff_no_resolution :
     NsManifestationLaw ↔
       ∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
@@ -466,7 +466,7 @@ theorem nsManifestationLaw_iff_no_resolution :
     exact ((hFreeze A M0 proj) hres).elim
 
 /-#############################################################################
-  §8. Origin-anchor аудиты (инстанциация осуждающей машины)
+  §8. Origin-anchor audits (instantiation of the condemning machine)
 #############################################################################-/
 
 theorem ns_bundling_audit (E : ℝ → ℝ) (T : ℝ) :
@@ -499,10 +499,10 @@ theorem nsLaw_cannot_separate (E : ℝ → ℝ) (T : ℝ) :
     (nsLaw_freeCollapse E T)
 
 /-#############################################################################
-  §9. ДОБИТИЕ: junk-исчисление индикаторного поля (общее для двух ковок)
+  §9. FINISHING BLOW: junk-calculus of the indicator field (common to two forgings)
 #############################################################################-/
 
-/-- Хелпер: 1 − 1/(n+1) → 1. -/
+/-- Helper: 1 − 1/(n+1) → 1. -/
 theorem tendsto_one_sub_one_div :
     Filter.Tendsto (fun n : ℕ => (1 - 1/(n+1) : ℝ)) Filter.atTop (nhds 1) := by
   have hc : Filter.Tendsto (fun _ : ℕ => (1:ℝ)) Filter.atTop (nhds 1) :=
@@ -511,7 +511,7 @@ theorem tendsto_one_sub_one_div :
   rw [sub_zero] at h1
   exact h1
 
-/-- Хелпер: радиальная последовательность (1 − 1/(n+1))•x → x. -/
+/-- Helper: the radial sequence (1 − 1/(n+1))•x → x. -/
 theorem tendsto_radial (x : E3) :
     Filter.Tendsto (fun n : ℕ => (1 - 1/(n+1) : ℝ) • x)
       Filter.atTop (nhds x) := by
@@ -519,7 +519,7 @@ theorem tendsto_radial (x : E3) :
       Filter.atTop (nhds ((1:ℝ) • x)) := tendsto_one_sub_one_div.smul_const x
   rwa [one_smul] at h2
 
-/-- Хелпер: радиальная последовательность точки сферы лежит в шаре. -/
+/-- Helper: the radial sequence of a sphere point lies in the ball. -/
 theorem radial_mem_ball {x : E3} (hx : ‖x‖ = 1) (n : ℕ) :
     ((1 - 1/(n+1) : ℝ) • x) ∈ Metric.ball (0 : E3) 1 := by
   rw [Metric.mem_ball, dist_zero_right, norm_smul, hx, mul_one, Real.norm_eq_abs]
@@ -533,7 +533,7 @@ theorem radial_mem_ball {x : E3} (hx : ‖x‖ = 1) (n : ℕ) :
   rw [abs_of_nonneg (by linarith)]
   linarith
 
-/-- Разрыв `c • cookedField` на сфере: предел изнутри `c • e3 0 ≠ 0` = значение. -/
+/-- Discontinuity of `c • cookedField` on the sphere: the limit from inside `c • e3 0 ≠ 0` = the value. -/
 theorem smul_cookedField_not_continuousAt_sphere
     {c : ℝ} (hc : c ≠ 0) {x : E3} (hx : ‖x‖ = 1) :
     ¬ ContinuousAt (fun y => c • cookedField y) x := by
@@ -560,9 +560,9 @@ theorem smul_cookedField_not_continuousAt_sphere
   · exact hc h
   · exact absurd h (by simp [e3])
 
-/-- **Junk-исчисление:** fderiv поля `c • cookedField` — ноль ВСЮДУ: внутри и
-    вне шара честно (локальная константа), на сфере — junk-ноль mathlib
-    (тотальный fderiv недифференцируемой функции). -/
+/-- **Junk-calculus:** the fderiv of the field `c • cookedField` is zero EVERYWHERE: inside and
+    outside the ball honestly (local constant), on the sphere — a junk-zero of mathlib
+    (the total fderiv of a non-differentiable function). -/
 theorem smul_cookedField_fderiv (c : ℝ) (x : E3) :
     fderiv ℝ (fun y => c • cookedField y) x = 0 := by
   rcases lt_trichotomy ‖x‖ 1 with hlt | heq | hgt
@@ -598,7 +598,7 @@ theorem smul_cookedField_fderiv (c : ℝ) (x : E3) :
     rw [h.fderiv_eq]
     exact fderiv_const_apply _
 
-/-- Все три пространственных оператора уравнения — нули на `c • cookedField`. -/
+/-- All three spatial operators of the equation are zero on `c • cookedField`. -/
 theorem smul_cookedField_NSdiv (c : ℝ) (x : E3) :
     NSdiv (fun y => c • cookedField y) x = 0 := by
   simp [NSdiv, smul_cookedField_fderiv]
@@ -616,7 +616,7 @@ theorem smul_cookedField_convective (c : ℝ) (x : E3) :
     convectiveTerm (fun y => c • cookedField y) x = 0 := by
   simp [convectiveTerm, smul_cookedField_fderiv]
 
-/-- Общая smul-энергия (обобщение `cookedFlow_energy`, тот же скелет). -/
+/-- General smul-energy (a generalization of `cookedFlow_energy`, the same skeleton). -/
 theorem kineticEnergy_smul (c : ℝ) (w : E3 → E3) :
     kineticEnergy (fun x => c • w x) = c ^ 2 * kineticEnergy w := by
   unfold kineticEnergy
@@ -627,14 +627,14 @@ theorem kineticEnergy_smul (c : ℝ) (w : E3 → E3) :
   ring
 
 /-#############################################################################
-  §10. ДВЕ КОВКИ: вырождение с кованой силой, junk-время (Дирихле),
-       кованое давление (ГЛАВНАЯ находка добития)
+  §10. TWO FORGINGS: degeneration under a forged force, junk-time (Dirichlet),
+       forged pressure (the MAIN finding of the finishing blow)
 #############################################################################-/
 
-/-- **ОПАСНОСТЬ 1 (раскрытие, машинно): с универсально квантифицированной
-    силой предикат решения ВЫРОЖДАЕТСЯ** — любое поле с junk-нулевой
-    дивергенцией «решает» НС под кованую силу (тотальные mathlib-операторы
-    впитывают всё). Потому f = 0 в гейте ОБЯЗАТЕЛЕН. -/
+/-- **DANGER 1 (disclosure, machine): with a universally quantified
+    force the solution predicate DEGENERATES** — any field with junk-zero
+    divergence "solves" NS under a forged force (the total mathlib operators
+    absorb everything). Hence f = 0 in the gate is MANDATORY. -/
 theorem isNSSolution_of_cooked_force (ν : ℝ) (u : ℝ → E3 → E3)
     (hdiv : ∀ t x, NSdiv (u t) x = 0) :
     IsNSSolution ν
@@ -643,7 +643,7 @@ theorem isNSSolution_of_cooked_force (ν : ℝ) (u : ℝ → E3 → E3)
       u (fun _ _ => 0) :=
   ⟨fun t x => by simp, hdiv⟩
 
-/-- Функция Дирихле: индикатор рациональных. Нигде не непрерывна. -/
+/-- The Dirichlet function: indicator of the rationals. Nowhere continuous. -/
 noncomputable def dirichlet : ℝ → ℝ :=
   Set.indicator (Set.range ((↑) : ℚ → ℝ)) fun _ => 1
 
@@ -676,13 +676,13 @@ theorem dirichlet_nowhere_continuousAt (t : ℝ) : ¬ ContinuousAt dirichlet t :
     exact tendsto_nhds_unique hcomp tendsto_const_nhds
   exact one_ne_zero (h1 ▸ h0)
 
-/-- Кованый junk-time поток: Дирихле-мерцание индикаторного поля. -/
+/-- Forged junk-time flow: Dirichlet flicker of the indicator field. -/
 noncomputable def dirichletFlow : ℝ → E3 → E3 :=
   fun t x => dirichlet t • cookedField x
 
-/-- Траектория `dirichlet • e3 0` недифференцируема ни в одной точке времени:
-    проекция на 0-ю координату восстанавливает Дирихле, а дифференцируемость
-    дала бы непрерывность. -/
+/-- The trajectory `dirichlet • e3 0` is non-differentiable at every point of time:
+    the projection onto the 0-th coordinate recovers Dirichlet, and differentiability
+    would yield continuity. -/
 theorem dirichlet_smul_not_differentiableAt (t : ℝ) :
     ¬ DifferentiableAt ℝ (fun s => dirichlet s • e3 0) t := by
   intro hd
@@ -696,9 +696,9 @@ theorem dirichlet_smul_not_differentiableAt (t : ℝ) :
       simp [e3, smul_eq_mul]] at hp
   exact dirichlet_nowhere_continuousAt t hp.continuousAt
 
-/-- **КОВКА-A (junk-время): dirichletFlow — БЕССИЛОВОЕ решение НС при p = 0.**
-    Импульс: junk-deriv по времени (недифференцируемость Дирихле), junk-нули
-    по пространству; несжимаемость — junk. -/
+/-- **FORGING-A (junk-time): dirichletFlow — a FORCE-FREE NS solution with p = 0.**
+    Momentum: junk-deriv in time (non-differentiability of Dirichlet), junk-zeros
+    in space; incompressibility — junk. -/
 theorem dirichletFlow_isNSSolution (ν : ℝ) :
     IsNSSolution ν (fun _ _ => 0) dirichletFlow (fun _ _ => 0) := by
   constructor
@@ -728,8 +728,8 @@ theorem dirichletFlow_isNSSolution (ν : ℝ) :
   · intro t x
     exact smul_cookedField_NSdiv _ x
 
-/-- **КОВКА-A ломает баланс при любой ν:** энергия = c₀·dirichlet — нигде не
-    непрерывна, а HasDerivAt дал бы непрерывность. -/
+/-- **FORGING-A breaks the balance for any ν:** the energy = c₀·dirichlet — nowhere
+    continuous, whereas HasDerivAt would yield continuity. -/
 theorem dirichletFlow_not_energyBalance (ν : ℝ) :
     ¬ EnergyBalanceLaw ν dirichletFlow := by
   intro hBal
@@ -750,8 +750,8 @@ theorem dirichletFlow_not_energyBalance (ν : ℝ) :
     rwa [h3] at h2'
   exact dirichlet_nowhere_continuousAt 0 hdc
 
-/-- Кованое давление: `2 − y₀` внутри шара (честный градиент `−e3 0`),
-    ноль снаружи, скачок ≥ 1 на всей сфере (junk-градиент 0). -/
+/-- Forged pressure: `2 − y₀` inside the ball (honest gradient `−e3 0`),
+    zero outside, jump ≥ 1 on the whole sphere (junk-gradient 0). -/
 noncomputable def cookedPressure : E3 → ℝ :=
   Set.indicator (Metric.ball (0 : E3) 1) fun y => 2 - y 0
 
@@ -786,7 +786,7 @@ theorem cookedPressure_gradient_notMem {x : E3}
     by_contra h
     exact hx (by rw [Metric.mem_ball, dist_zero_right]; linarith)
   rcases eq_or_lt_of_le hge with heq | hgt
-  · -- сфера: разрыв (изнутри 2 − x₀ ≥ 1, значение 0) ⟹ junk-градиент
+  · -- sphere: discontinuity (from inside 2 − x₀ ≥ 1, value 0) ⟹ junk-gradient
     apply gradient_eq_zero_of_not_differentiableAt
     intro hd
     have hcont := hd.continuousAt
@@ -840,9 +840,9 @@ theorem cookedPressure_gradient_notMem {x : E3}
     rw [hev.gradient_eq]
     simp [gradient_const]
 
-/-- **КОВКА-B (кованое давление — ГЛАВНАЯ находка добития): cookedFlow —
-    БЕССИЛОВОЕ решение НС, полностью дифференцируемое по времени.**
-    Раскрытие: гейта f = 0 + время НЕ хватает — junk сидит в ∇p на сфере. -/
+/-- **FORGING-B (forged pressure — the MAIN finding of the finishing blow): cookedFlow —
+    a FORCE-FREE NS solution, fully differentiable in time.**
+    Disclosure: the f = 0 + time gate is NOT enough — the junk sits in ∇p on the sphere. -/
 theorem cookedFlow_isNSSolution_unforced (ν : ℝ) :
     IsNSSolution ν (fun _ _ => 0) cookedFlow (fun _ => cookedPressure) := by
   constructor
@@ -880,34 +880,34 @@ theorem cookedFlow_isNSSolution_unforced (ν : ℝ) :
   · intro t x
     exact smul_cookedField_NSdiv _ x
 
-/-- cookedFlow полностью дифференцируем по времени (гейт времени проходит!). -/
+/-- cookedFlow is fully differentiable in time (the time gate passes!). -/
 theorem cookedFlow_time_differentiable (t : ℝ) (x : E3) :
     DifferentiableAt ℝ (fun s => cookedFlow s x) t :=
   ((hasDerivAt_id t).smul_const (cookedField x)).differentiableAt
 
 /-#############################################################################
-  §11. Гейт-трилемма добития: финальный закон и его вердикты
+  §11. Gate-trilemma of the finishing blow: the final law and its verdicts
 #############################################################################-/
 
-/-- D7a. Кандидат «только f = 0». -/
+/-- D7a. Candidate "only f = 0". -/
 def NsUnforcedBalanceLaw : Prop :=
   ∀ (ν : ℝ) (u : ℝ → E3 → E3) (p : ℝ → E3 → ℝ),
     0 ≤ ν → IsNSSolution ν (fun _ _ => 0) u p → EnergyBalanceLaw ν u
 
-/-- D7b. Кандидат «f = 0 + дифференцируемость по времени». -/
+/-- D7b. Candidate "f = 0 + differentiability in time". -/
 def NsTimeGatedBalanceLaw : Prop :=
   ∀ (ν : ℝ) (u : ℝ → E3 → E3) (p : ℝ → E3 → ℝ),
     0 ≤ ν → IsNSSolution ν (fun _ _ => 0) u p →
     (∀ t x, DifferentiableAt ℝ (fun s => u s x) t) → EnergyBalanceLaw ν u
 
-/-- **D8. ФИНАЛЬНЫЙ ГЕЙТ-ЗАКОН (кандидат третьей границы декрета):** всякое
-    БЕССИЛОВОЕ решение НС с честной дифференцируемостью траекторий по времени
-    И поля по пространству подчиняется точечному энергобалансу, и его
-    диссипация интервально-интегрируема. Оба гейта ОБЯЗАТЕЛЬНЫ — ослабленные
-    варианты опровергнуты машинно (V1-a, V1-b ниже). Интегрируемость включена
-    в декрет (без неё жёлтый вывод не дошёл бы до суррогата гладкости);
-    остаточный кова-риск этого конъюнкта мал и раскрыт. ν = 0 (Эйлер)
-    покрыт декретом — раскрыто. -/
+/-- **D8. FINAL GATE-LAW (candidate for the decree's third boundary):** every
+    FORCE-FREE NS solution with honest differentiability of trajectories in time
+    AND of the field in space obeys the pointwise energy balance, and its
+    dissipation is interval-integrable. Both gates are MANDATORY — the weakened
+    variants are refuted machine-wise (V1-a, V1-b below). Integrability is included
+    in the decree (without it the yellow derivation would not reach the smoothness surrogate);
+    the residual forging-risk of this conjunct is small and disclosed. ν = 0 (Euler)
+    is covered by the decree — disclosed. -/
 def NsSolutionBalanceLaw : Prop :=
   ∀ (ν : ℝ) (u : ℝ → E3 → E3) (p : ℝ → E3 → ℝ),
     0 ≤ ν →
@@ -917,13 +917,13 @@ def NsSolutionBalanceLaw : Prop :=
     EnergyBalanceLaw ν u ∧
     (∀ t₁ t₂ : ℝ, IntervalIntegrable (fun s => dissipationRate ν (u s)) volume t₁ t₂)
 
-/-- **V1-a: f=0-гейт ОПРОВЕРЖИМ каналом junk-времени** (Дирихле; p ≡ 0). -/
+/-- **V1-a: the f=0-gate is REFUTABLE via the junk-time channel** (Dirichlet; p ≡ 0). -/
 theorem nsUnforcedBalanceLaw_refuted_by_junk_time : ¬ NsUnforcedBalanceLaw :=
   fun h => dirichletFlow_not_energyBalance 1
     (h 1 dirichletFlow (fun _ _ => 0) zero_le_one (dirichletFlow_isNSSolution 1))
 
-/-- **V1-b: f=0 + ВРЕМЯ-гейт ТОЖЕ ОПРОВЕРЖИМ — каналом кованого давления**
-    (главная находка добития: junk сидит в ∇p, не в ∂ₜ). -/
+/-- **V1-b: the f=0 + TIME-gate is ALSO REFUTABLE — via the forged-pressure channel**
+    (the main finding of the finishing blow: the junk sits in ∇p, not in ∂ₜ). -/
 theorem nsTimeGatedBalanceLaw_refuted : ¬ NsTimeGatedBalanceLaw :=
   fun h => cookedFlow_not_energyBalance
     (h 1 cookedFlow (fun _ => cookedPressure) zero_le_one
@@ -932,8 +932,8 @@ theorem nsTimeGatedBalanceLaw_refuted : ¬ NsTimeGatedBalanceLaw :=
 theorem nsUnforcedBalanceLaw_refuted : ¬ NsUnforcedBalanceLaw :=
   fun h => nsTimeGatedBalanceLaw_refuted fun ν u p hν sol _ => h ν u p hν sol
 
-/-- Гейты РАЗДЕЛЯЮТ ковки (машинная честность финального гейта):
-    cookedField недифференцируем по пространству на сфере. -/
+/-- The gates SEPARATE the forgings (machine honesty of the final gate):
+    cookedField is non-differentiable in space on the sphere. -/
 theorem cookedField_not_space_differentiable :
     ¬ DifferentiableAt ℝ cookedField (e3 0) := by
   intro hd
@@ -942,14 +942,14 @@ theorem cookedField_not_space_differentiable :
   exact smul_cookedField_not_continuousAt_sphere one_ne_zero
     (by simp [e3]) (h1 ▸ hd.continuousAt)
 
-/-- Ковка-B проваливает пространственный гейт. -/
+/-- Forging-B fails the spatial gate. -/
 theorem cookedFlow_fails_space_gate :
     ¬ ∀ t x, DifferentiableAt ℝ (cookedFlow t) x := by
   intro h
   have h1 : cookedFlow 1 = cookedField := funext fun y => one_smul ℝ _
   exact cookedField_not_space_differentiable (h1 ▸ h 1 (e3 0))
 
-/-- Ковка-A проваливает временной гейт. -/
+/-- Forging-A fails the time gate. -/
 theorem dirichletFlow_fails_time_gate :
     ¬ ∀ t x, DifferentiableAt ℝ (fun s => dirichletFlow s x) t := by
   intro h
@@ -962,10 +962,10 @@ theorem dirichletFlow_fails_time_gate :
       rw [Set.indicator_of_mem h0]] at hd
   exact dirichlet_smul_not_differentiableAt 0 hd
 
-/-- **V2-топливо: гейт-класс ОБИТАЕМ** — нулевое решение проходит оба гейта
-    и выполняет заключение: финальный закон не вакуумен, но и не выводится
-    (для его вывода нужна теорема о дивергенции на ℝ³ — отсутствует, см.
-    шапку Engine/NavierStokes.lean). -/
+/-- **V2-fuel: the gate class is INHABITED** — the zero solution passes both gates
+    and satisfies the conclusion: the final law is not vacuous, but is also not derived
+    (its derivation needs the divergence theorem on ℝ³ — absent, see
+    the header of Engine/NavierStokes.lean). -/
 theorem zero_passes_gates_and_conclusion (ν : ℝ) :
     IsNSSolution ν (fun _ _ => 0) (fun _ _ => 0) (fun _ _ => 0) ∧
     (∀ (t : ℝ) (x : E3),
@@ -983,8 +983,8 @@ theorem zero_passes_gates_and_conclusion (ν : ℝ) :
     simp only [dissipationRate_zero_field]
     exact (continuous_const : Continuous fun _ : ℝ => (0:ℝ)).intervalIntegrable t₁ t₂
 
-/-- **ЖЁЛТОЕ ТОПЛИВО (зелёная лемма):** гейт-закон ⟹ суррогат гладкости
-    КАЖДОГО гейт-решения. -/
+/-- **YELLOW FUEL (green lemma):** the gate-law ⟹ smoothness surrogate of
+    EVERY gate-solution. -/
 theorem noSingularCascade_of_nsSolutionBalanceLaw
     (hLaw : NsSolutionBalanceLaw) (ν : ℝ) (u : ℝ → E3 → E3) (p : ℝ → E3 → ℝ)
     (hν : 0 ≤ ν) (sol : IsNSSolution ν (fun _ _ => 0) u p)
@@ -994,7 +994,7 @@ theorem noSingularCascade_of_nsSolutionBalanceLaw
   noSingularCascade_of_energyBalance ν u
     (hLaw ν u p hν sol hdt hdx).1 (hLaw ν u p hν sol hdt hdx).2
 
-/-- Тождество энергии каждого гейт-решения из закона (FTC). -/
+/-- Energy identity of every gate-solution from the law (FTC). -/
 theorem energyIdentity_of_nsSolutionBalanceLaw
     (hLaw : NsSolutionBalanceLaw) (ν : ℝ) (u : ℝ → E3 → E3) (p : ℝ → E3 → ℝ)
     (hν : 0 ≤ ν) (sol : IsNSSolution ν (fun _ _ => 0) u p)
@@ -1005,10 +1005,10 @@ theorem energyIdentity_of_nsSolutionBalanceLaw
   energy_identity_of_energyBalance ν u
     (hLaw ν u p hν sol hdt hdx).1 (hLaw ν u p hν sol hdt hdx).2 t₁ t₂
 
-/-- **ПЕРЕПЛАТА РАСКРЫТА (зелёно, честная цена):** суррогату хватило бы даже
-    НЕРАВЕНСТВА (не тождества) — никакого «закон ⟺ цель» здесь НЕТ (в отличие
-    от riemannManifestation_asserts_RH): обратная импликация неизвестна,
-    декрет, возможно, платит больше, чем стоит цель. -/
+/-- **OVERPAYMENT DISCLOSED (green, honest price):** the surrogate would have
+    sufficed even with an INEQUALITY (not the identity) — there is NO "law ⟺ goal" here (unlike
+    riemannManifestation_asserts_RH): the reverse implication is unknown,
+    the decree may pay more than the goal is worth. -/
 theorem noSingularCascade_of_twoTimeInequality
     (ν : ℝ) (u : ℝ → E3 → E3) (hE : TwoTimeEnergyInequality ν u) :
     NoSingularCascade ν u :=
@@ -1019,8 +1019,8 @@ end EuclidsPath
 
 end
 
--- Машинная видимость чистоты в build-логе
--- (ожидаемо [propext, Classical.choice, Quot.sound]):
+-- Machine visibility of purity in the build log
+-- (expected [propext, Classical.choice, Quot.sound]):
 #print axioms EuclidsPath.NavierStokesFront.energy_identity_of_energyBalance
 #print axioms EuclidsPath.NavierStokesFront.isNSSolution_integral_form
 #print axioms EuclidsPath.NavierStokesFront.noSingularCascade_of_energyBalance

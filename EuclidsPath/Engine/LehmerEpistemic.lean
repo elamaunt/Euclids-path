@@ -1,40 +1,41 @@
 /-
-  LehmerEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ гипотезы Лемера (мера Малера).
-  Зеркало PNPFirstCause (НЕ Коллатц-варианта: декрета у Лемера нет и не было —
-  Лемер не входит в четыре границы step00FirstCause, файл целиком зелёный).
-  Зелёный фронт: Engine/LehmerFront.lean (Норткотт, Кронекер, двигатель).
+  LehmerEpistemic — EPISTEMIC COMPLEMENT of the Lehmer conjecture (Mahler measure).
+  Mirror of PNPFirstCause (NOT the Collatz variant: Lehmer has no decree and never had one —
+  Lehmer does not enter the four boundaries of `step00FirstCause`; the file is entirely green).
+  Green front: Engine/LehmerFront.lean (Northcott, Kronecker, perpetual engine).
 
-  ЧТО ЭТО. «Решить Лемера изнутри конечного горизонта» = удержать НЕОГРАНИЧЕННОЕ
-  семейство многочленов под ОДНИМ конечным Норткотт-горизонтом `mahlerBox n B`
-  (степень ≤ n, мера Малера ≤ B): поле `resolves` — инъективная оплата семейства
-  конечным горизонтом, поле `beyondOwnHorizon` — подлинная бесконечность семейства.
-  Противоречие оплачено ДВУМЯ настоящими теоремами: конечность горизонта — РЕАЛЬНЫЙ
-  Норткотт (`mahler_northcott_shadow` = `Polynomial.finite_mahlerMeasure_le`,
-  настоящая теория чисел, не сконструированный граф), а пижонхол — реальный
-  `Set.infinite_of_injective_forall_mem` (нет инъекции бесконечного в конечное —
-  та же стена вполне-фундированности, что `no_perpetual_engine_on_nat`).
+  WHAT THIS IS. "Solving Lehmer from inside a finite horizon" = keeping an UNBOUNDED
+  family of polynomials under ONE finite Northcott horizon `mahlerBox n B`
+  (degree ≤ n, Mahler measure ≤ B): field `resolves` — injective supply payment by the
+  finite horizon, field `beyondOwnHorizon` — genuine infiniteness of the family.
+  The contradiction is paid by TWO real theorems: finiteness of the horizon — REAL
+  Northcott (`mahler_northcott_shadow` = `Polynomial.finite_mahlerMeasure_le`,
+  genuine number theory, not a constructed graph), and the pigeonhole — the real
+  `Set.infinite_of_injective_forall_mem` (no injection of an infinite set into a finite one —
+  the same well-foundedness wall as `no_perpetual_engine_on_nat`).
 
-  ЧЕСТНОСТЬ (CORR учтён). (1) Связка ГОЛЕЕ, чем у P/NP: там между полями стоит
-  реальное понятие оплаты (`FullRankCertificatePayment`), здесь между полями ровно
-  ОДИН шаг — пижонхол сворачивает их в «Infinite против Finite». Зато содержательнее
-  Коллатца (там буквально `fun H => H.beyondOwnHorizon H.ground`): противоречие
-  здесь несут ВНЕШНИЕ зелёные теоремы (Норткотт + пижонхол), а не сами поля.
-  Груз содержательности несут безусловный `lehmer_supply_below_horizon_impossible`
-  (сторона конечности РАЗРЯЖЕНА Норткоттом, не принята гипотезой) и
-  conjecture-связанный `lehmer_refutation_escapes_every_horizon` (опровержение
-  Лемера вынуждено пробегать ВСЕ степенные горизонты) — без них голый wrapper был
-  бы тавтологией. (2) Это модель-внутренняя эпистемика, НЕ решение гипотезы Лемера:
-  про открытый равномерный зазор c > 1 (`LehmerConjecture`, число Лемера ≈ 1.17628)
-  здесь НЕ утверждается НИЧЕГО — красный гейт остаётся красным. (3) Это НЕ Гёдель:
-  никакой независимости не заявляется — только пижонхол-самоуничтожение внутреннего
-  самообоснования. (4) Бонус-содержание: `lehmer_at_bounded_degree` — честный
-  ЧАСТНЫЙ СЛУЧАЙ гипотезы: на каждом конечном степенном горизонте зазор СУЩЕСТВУЕТ;
-  вся открытость Лемера — побег степени за всякий горизонт.
+  HONESTY (CORR accounted for). (1) The binding is BARER than for P/NP: there the fields
+  are separated by a real payment notion (`FullRankCertificatePayment`), here between the
+  fields there is exactly ONE step — pigeonhole collapses them into "Infinite vs Finite".
+  Yet more substantial than Collatz (which literally reads `fun H => H.beyondOwnHorizon H.ground`):
+  the contradiction here is carried by EXTERNAL green theorems (Northcott + pigeonhole),
+  not by the fields themselves.
+  The weight of substance is borne by the unconditional `lehmer_supply_below_horizon_impossible`
+  (the finiteness side is DISCHARGED by real Northcott, not assumed by the conjecture) and
+  the conjecture-linked `lehmer_refutation_escapes_every_horizon` (a refutation of
+  Lehmer is forced to traverse ALL degree horizons) — without them the bare wrapper would
+  be a tautology. (2) This is model-internal epistemics, NOT a solution to the Lehmer conjecture:
+  nothing is asserted about the open uniform gap c > 1 (`LehmerConjecture`, Lehmer number ≈ 1.17628)
+  — the red gate stays red. (3) This is NOT Gödel:
+  no independence is claimed — only pigeonhole self-destruction of the internal
+  self-justification. (4) Bonus content: `lehmer_at_bounded_degree` — an honest
+  SPECIAL CASE of the conjecture: on every finite degree horizon the gap EXISTS;
+  all openness of Lehmer is the escape of degree beyond every horizon.
 
-  Никакого sorry, никакой новой аксиомы, никакого native_decide, карантин НЕ
-  импортируется. Таинт репозитория (47) этим файлом НЕ меняется.
+  No sorry, no new axiom, no native_decide, quarantine is NOT
+  imported. The repository taint (47) is NOT changed by this file.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
+  Compilation: cd /f/Primes/Euclids-path &&
     "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/LehmerEpistemic.lean
 -/
 
@@ -48,45 +49,45 @@ open Polynomial
 open EuclidsPath.LehmerFront
 open EuclidsPath.UniversalEngine
 
-/-! ## Горизонт: Норткотт-коробка (🟢) -/
+/-! ## Horizon: Northcott box (🟢) -/
 
-/-- **Норткотт-коробка**: целочисленные многочлены степени ≤ `n` с мерой Малера ≤ `B` —
-    конечнотопливный горизонт внутреннего решателя Лемера. -/
+/-- **Northcott box**: integer polynomials of degree ≤ `n` with Mahler measure ≤ `B` —
+    the finite-fuel horizon of Lehmer's internal solver. -/
 def mahlerBox (n : ℕ) (B : NNReal) : Set ℤ[X] :=
   {p : ℤ[X] | p.natDegree ≤ n ∧ (p.map (Int.castRingHom ℂ)).mahlerMeasure ≤ B}
 
-/-- 🟢 Коробка КОНЕЧНА — это реальный Норткотт (`mahler_northcott_shadow` =
-    `Polynomial.finite_mahlerMeasure_le`), настоящая теория чисел, не конструкция. -/
+/-- 🟢 The box is FINITE — this is the real Northcott (`mahler_northcott_shadow` =
+    `Polynomial.finite_mahlerMeasure_le`), genuine number theory, not a construction. -/
 theorem mahlerBox_finite (n : ℕ) (B : NNReal) : (mahlerBox n B).Finite :=
   mahler_northcott_shadow n B
 
-/-! ## Пижонхол-стена: неограниченная поставка под горизонт не влезает (🟢) -/
+/-! ## Pigeonhole wall: unbounded supply does not fit below the horizon (🟢) -/
 
-/-- 🟢 **ПИЖОНХОЛ-СТЕНА (безусловная, грузонесущая).** Нет инъекции `ℕ` в Норткотт-коробку:
-    неограниченную поставку многочленов НЕЛЬЗЯ удержать под одним конечным горизонтом.
-    Здесь сторона конечности РАЗРЯЖЕНА реальным Норткоттом (не принята гипотезой), а
-    противоречие поставляет реальный пижонхол `Set.infinite_of_injective_forall_mem` —
-    аналог `no_fullPayment_of_unboundedSupply` у P/NP. -/
+/-- 🟢 **PIGEONHOLE WALL (unconditional, load-bearing).** There is no injection of `ℕ` into the Northcott box:
+    an unbounded supply of polynomials CANNOT be kept below a single finite horizon.
+    Here the finiteness side is DISCHARGED by real Northcott (not assumed by the conjecture), and
+    the contradiction is supplied by the real pigeonhole `Set.infinite_of_injective_forall_mem` —
+    the analogue of `no_fullPayment_of_unboundedSupply` for P/NP. -/
 theorem lehmer_supply_below_horizon_impossible (n : ℕ) (B : NNReal) :
     ¬ ∃ f : ℕ → ℤ[X], Function.Injective f ∧ ∀ k, f k ∈ mahlerBox n B := by
   rintro ⟨f, hinj, hmem⟩
   exact (mahlerBox_finite n B).not_infinite
     (Set.infinite_of_injective_forall_mem hinj hmem)
 
-/-! ## Частный случай гипотезы: зазор на каждом конечном горизонте (🟢) -/
+/-! ## Special case of the conjecture: gap on every finite horizon (🟢) -/
 
-/-- 🟢 **ЛЕМЕР НА ОГРАНИЧЕННОЙ СТЕПЕНИ (честный частный случай гипотезы).** На каждом
-    степенном горизонте `n` зазор СУЩЕСТВУЕТ: есть `c > 1` такое, что всякий монический
-    целочисленный многочлен степени ≤ `n` с мерой Малера ≠ 1 имеет меру ≥ `c`.
-    Схема: Норткотт-каталог при крышке 2 конечен; минимум мер по каталогу строго
-    больше 1 (пол `mahler_lower_bound` + ≠ 1); вне каталога мера > 2. Машинно видно:
-    вся открытость Лемера — побег степени за ВСЯКИЙ конечный горизонт. -/
+/-- 🟢 **LEHMER AT BOUNDED DEGREE (honest special case of the conjecture).** On every
+    degree horizon `n` the gap EXISTS: there is `c > 1` such that every monic
+    integer polynomial of degree ≤ `n` with Mahler measure ≠ 1 has measure ≥ `c`.
+    Scheme: the Northcott catalogue with cap 2 is finite; the minimum of measures over the catalogue is strictly
+    greater than 1 (floor `mahler_lower_bound` + ≠ 1); outside the catalogue the measure > 2. Formally visible:
+    all openness of Lehmer is the escape of degree beyond EVERY finite horizon. -/
 theorem lehmer_at_bounded_degree (n : ℕ) :
     ∃ c : ℝ, 1 < c ∧ ∀ p : ℤ[X], p.Monic → p.natDegree ≤ n →
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ≠ 1 →
       c ≤ (p.map (Int.castRingHom ℂ)).mahlerMeasure := by
   classical
-  -- конечный Норткотт-каталог кандидатов под крышкой 2
+  -- finite Northcott catalogue of candidates below cap 2
   have hfin : Set.Finite {p : ℤ[X] | p.Monic ∧ p.natDegree ≤ n ∧
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ≤ 2 ∧
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ≠ 1} := by
@@ -96,7 +97,7 @@ theorem lehmer_at_bounded_degree (n : ℕ) :
   by_cases hne : Set.Nonempty {p : ℤ[X] | p.Monic ∧ p.natDegree ≤ n ∧
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ≤ 2 ∧
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ≠ 1}
-  · -- каталог непуст: минимум мер по конечному каталогу даёт зазор
+  · -- catalogue non-empty: minimum of measures over the finite catalogue yields the gap
     obtain ⟨p₀, hp₀S, hp₀min⟩ := Set.exists_min_image _
       (fun p : ℤ[X] => (p.map (Int.castRingHom ℂ)).mahlerMeasure) hfin hne
     obtain ⟨hp₀monic, -, -, hp₀ne⟩ := hp₀S
@@ -108,17 +109,17 @@ theorem lehmer_at_bounded_degree (n : ℕ) :
     by_cases hle2 : (p.map (Int.castRingHom ℂ)).mahlerMeasure ≤ 2
     · exact le_trans (min_le_left _ _) (hp₀min p ⟨hmonic, hdeg, hle2, hne1⟩)
     · exact le_trans (min_le_right _ _) (not_le.mp hle2).le
-  · -- каталог пуст: всякий кандидат имеет меру > 2, зазор c := 2
+  · -- catalogue empty: every candidate has measure > 2, gap c := 2
     refine ⟨2, one_lt_two, ?_⟩
     intro p hmonic hdeg hne1
     by_contra hlt
     exact hne ⟨p, hmonic, hdeg, (not_le.mp hlt).le, hne1⟩
 
-/-- 🟢 **ОПРОВЕРЖЕНИЕ ПРОБЕГАЕТ ВСЯКИЙ ГОРИЗОНТ** (conjecture-связанный носитель;
-    аналог `nonHalting_carries_perpetual_engine` у Коллатца). Если Лемер ложен, то
-    для всякого `n` и всякого `ε > 0` найдётся монический многочлен степени > `n`
-    с мерой Малера в `(1, 1+ε)`: опровергающие свидетели ВЫНУЖДЕНЫ бежать за каждый
-    конечный степенной горизонт — под горизонтом зазор существует
+/-- 🟢 **REFUTATION TRAVERSES EVERY HORIZON** (conjecture-linked carrier;
+    analogue of `nonHalting_carries_perpetual_engine` for Collatz). If Lehmer is false, then
+    for every `n` and every `ε > 0` there exists a monic polynomial of degree > `n`
+    with Mahler measure in `(1, 1+ε)`: refuting witnesses are FORCED to escape every
+    finite degree horizon — below the horizon the gap exists
     (`lehmer_at_bounded_degree`). -/
 theorem lehmer_refutation_escapes_every_horizon (hL : ¬ LehmerConjecture) :
     ∀ n : ℕ, ∀ ε : ℝ, 0 < ε → ∃ p : ℤ[X], p.Monic ∧ n < p.natDegree ∧
@@ -138,36 +139,36 @@ theorem lehmer_refutation_escapes_every_horizon (hL : ¬ LehmerConjecture) :
   exact absurd (hgap p hmonic hdeg hne1)
     (not_le.mpr (lt_of_lt_of_le hlt (min_le_left _ _)))
 
-/-! ## Модель: внутреннее решение = самообоснование за собственным горизонтом -/
+/-! ## Model: internal solution = self-justification beyond its own horizon -/
 
-/-- **Внутреннее самообоснование решения Лемера на конечном горизонте.** Решатель
-    одновременно (a) ОПЛАЧИВАЕТ инъективно конечным Норткотт-горизонтом всё семейство
-    (`resolves`) и (b) это семейство ПОДЛИННО БЕСКОНЕЧНО (`beyondOwnHorizon`).
+/-- **Internal self-justification of the Lehmer solution at a finite horizon.** The solver
+    simultaneously (a) PAYS injectively the entire family with the finite Northcott horizon
+    (`resolves`) and (b) that family is GENUINELY INFINITE (`beyondOwnHorizon`).
 
-    ЧЕСТНАЯ ОГОВОРКА (CORR): связка ГОЛЕЕ, чем у P/NP — между полями ровно ОДИН шаг
-    (пижонхол сворачивает их в «Infinite против Finite»); у P/NP между полями стоит
-    реальное понятие оплаты. Содержательность оплачена не независимостью сторон, а
-    ЦЕНОЙ противоречия: его несут внешние зелёные теоремы — реальный Норткотт
-    (`mahler_northcott_shadow`) и реальный пижонхол
-    (`Set.infinite_of_injective_forall_mem`), а не сами поля друг о друга (как у
-    Коллатца). -/
+    HONEST CAVEAT (CORR): the binding is BARER than for P/NP — between the fields there is exactly ONE step
+    (pigeonhole collapses them into "Infinite vs Finite"); for P/NP between the fields stands
+    a real payment notion. Substantiality is paid not by the independence of the sides, but by
+    the COST of the contradiction: it is borne by external green theorems — the real Northcott
+    (`mahler_northcott_shadow`) and the real pigeonhole
+    (`Set.infinite_of_injective_forall_mem`), not by the fields themselves against each other (as in
+    Collatz). -/
 structure InternalisedLehmerGround (ι : Type) (n : ℕ) (B : NNReal) : Prop where
   resolves : ∃ f : ι → ℤ[X], Function.Injective f ∧ ∀ k, f k ∈ mahlerBox n B
   beyondOwnHorizon : Infinite ι
 
-/-- «Внутреннее знание причины Лемера» = внутреннее самообоснование решения. -/
+/-- "Internal knowledge of the Lehmer cause" = internal self-justification of the solution. -/
 abbrev InternalKnowledgeOfLehmerCause (ι : Type) (n : ℕ) (B : NNReal) : Prop :=
   InternalisedLehmerGround ι n B
 
-/-- Конкретная честная инстанция: поставка индексирована `ℕ`. -/
+/-- Concrete honest instance: supply indexed by `ℕ`. -/
 abbrev InternalLehmerDecision (n : ℕ) (B : NNReal) : Prop :=
   InternalisedLehmerGround ℕ n B
 
-/-! ## Ядро: самообоснование самоуничтожается = стена вечного двигателя (🟢) -/
+/-! ## Core: self-justification self-destructs = perpetual engine wall (🟢) -/
 
-/-- 🟢 Самообоснование самоуничтожается: бесконечное семейство не впихнуть инъективно
-    в конечную Норткотт-коробку. Противоречие поставляют Норткотт + пижонхол
-    (зеркало `no_internalisedPNPGround`, где его поставлял
+/-- 🟢 Self-justification self-destructs: an infinite family cannot be injected
+    into a finite Northcott box. The contradiction is supplied by Northcott + pigeonhole
+    (mirror of `no_internalisedPNPGround`, where it was supplied by
     `no_fullPayment_of_unboundedSupply`). -/
 theorem no_internalisedLehmerGround {ι : Type} {n : ℕ} {B : NNReal} :
     InternalisedLehmerGround ι n B → False := by
@@ -175,49 +176,49 @@ theorem no_internalisedLehmerGround {ι : Type} {n : ℕ} {B : NNReal} :
   exact (mahlerBox_finite n B).not_infinite
     (@Set.infinite_of_injective_forall_mem ι _ hinf _ f hinj hmem)
 
-/-- 🟢 **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `pnpCause_unknowable` /
-    `collatzCause_unknowable`): внутреннее конечногоризонтное решение Лемера
-    невозможно. НЕ утверждение о самой гипотезе: зазор `c > 1` остаётся открытым. -/
+/-- 🟢 **"UNKNOWABLE FROM INSIDE" — THEOREM** (mirror of `pnpCause_unknowable` /
+    `collatzCause_unknowable`): an internal finite-horizon solution to Lehmer
+    is impossible. NOT a statement about the conjecture itself: the gap `c > 1` remains open. -/
 theorem lehmerCause_unknowable {ι : Type} {n : ℕ} {B : NNReal} :
     ¬ InternalKnowledgeOfLehmerCause ι n B :=
   no_internalisedLehmerGround
 
-/-- 🟢 **ТО ЖЕ ПРОТИВОРЕЧИЕ ВЕЧНОГО ДВИГАТЕЛЯ:** невозможность внутреннего решения
-    Лемера И невозможность вечного двигателя на ℕ — ОДНА стена вполне-фундированности
-    (инъекция бесконечного в конечное = ℕ-спуск без дна). -/
+/-- 🟢 **THE SAME PERPETUAL ENGINE CONTRADICTION:** impossibility of an internal solution to
+    Lehmer AND impossibility of a perpetual engine on ℕ — ONE well-foundedness wall
+    (injection of the infinite into the finite = ℕ-descent without a floor). -/
 theorem internalLehmerDecision_carries_perpetual_engine {ι : Type} {n : ℕ} {B : NNReal} :
     (InternalisedLehmerGround ι n B → False) ∧
       ¬ PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
   ⟨no_internalisedLehmerGround, no_perpetual_engine_on_nat⟩
 
-/-- Ex-falso companion («несёт двигатель»): из самообоснования (уже ложного) выводится
-    и сам вечный двигатель на ℕ. ЧЕСТНОСТЬ: маршрут ex falso; несущая часть — сама
-    невозможность (`no_internalisedLehmerGround`). -/
+/-- Ex-falso companion ("carries the engine"): from the self-justification (already false) one derives
+    the perpetual engine on ℕ as well. HONESTY: route is ex falso; the load-bearing part is
+    the impossibility itself (`no_internalisedLehmerGround`). -/
 theorem internalisedLehmerGround_builds_engine {ι : Type} {n : ℕ} {B : NNReal} :
     InternalisedLehmerGround ι n B → PerpetualEngine (· < · : ℕ → ℕ → Prop) :=
   fun H => (no_internalisedLehmerGround H).elim
 
-/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении): либо причина непознаваема
-    изнутри, либо неограниченная поставка влезает под горизонт. Левый дизъюнкт —
-    теорема. -/
+/-- SUBSTANTIAL DICHOTOMY (no ex falso in the statement): either the cause is unknowable
+    from inside, or the unbounded supply fits below the horizon. The left disjunct is
+    a theorem. -/
 theorem unknowable_or_lehmer_horizonPayable (n : ℕ) (B : NNReal) :
     (¬ InternalKnowledgeOfLehmerCause ℕ n B) ∨
       ∃ f : ℕ → ℤ[X], Function.Injective f ∧ ∀ k, f k ∈ mahlerBox n B :=
   Or.inl lehmerCause_unknowable
 
-/-! ## Сводки: решение заперто за двигателем; проверка, а не вывод (🟢) -/
+/-! ## Summary: solution is locked behind the engine; verification, not derivation (🟢) -/
 
-/-- 🟢 **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» (зеркало
+/-- 🟢 **"SOLUTION LOCKED BEHIND THE ENGINE" (mirror of
     `pnp_no_internal_decision_without_engine`):**
-    (1) ОПРОВЕРГНУТЬ под конечным горизонтом = инъекция бесконечного в конечное =
-        стена двигателя (`lehmer_supply_below_horizon_impossible`);
-    (2) САМООБОСНОВАТЬ решение изнутри — самоуничтожается
+    (1) REFUTING below a finite horizon = injection of the infinite into the finite =
+        engine wall (`lehmer_supply_below_horizon_impossible`);
+    (2) SELF-JUSTIFYING the solution from inside — self-destructs
         (`no_internalisedLehmerGround`);
-    (3) единственный без-двигательный путь — внешняя ПРОВЕРКА: на каждом горизонте
-        зазор находится перебором конечного Норткотт-каталога
-        (`lehmer_at_bounded_degree`); открыт лишь побег за ВСЕ горизонты
-        (красный `LehmerConjecture`).
-    НЕ утверждается гёделевская независимость и НЕ решается сама гипотеза. -/
+    (3) the only engine-free path is external VERIFICATION: on every horizon the
+        gap is found by enumerating the finite Northcott catalogue
+        (`lehmer_at_bounded_degree`); only the escape beyond ALL horizons
+        remains open (red `LehmerConjecture`).
+    Gödelian independence is NOT asserted and the conjecture itself is NOT solved. -/
 theorem lehmer_no_internal_decision_without_engine (n : ℕ) (B : NNReal) :
     (¬ ∃ f : ℕ → ℤ[X], Function.Injective f ∧ ∀ k, f k ∈ mahlerBox n B) ∧
     (InternalisedLehmerGround ℕ n B → False) ∧
@@ -228,11 +229,11 @@ theorem lehmer_no_internal_decision_without_engine (n : ℕ) (B : NNReal) :
    no_internalisedLehmerGround,
    lehmer_at_bounded_degree n⟩
 
-/-- 🟢 Итоговый эпистемический статус Лемера (зеркало `pnp_locked_behind_engine_status`,
-    БЕЗ декрет-конъюнкта — у Лемера границы step00FirstCause нет):
-    горизонт конечен (Норткотт, теорема) / двигателя на высотной модели нет (теорема) /
-    решить изнутри нельзя (теорема) / опровержение гипотезы пробегало бы все горизонты
-    (условная теорема; сам `LehmerConjecture` остаётся открытым красным гейтом). -/
+/-- 🟢 Final epistemic status of Lehmer (mirror of `pnp_locked_behind_engine_status`,
+    WITHOUT the decree conjunct — Lehmer has no `step00FirstCause` boundary):
+    horizon is finite (Northcott, theorem) / no perpetual engine on the height model (theorem) /
+    solving from inside is impossible (theorem) / a refutation of the conjecture would traverse all horizons
+    (conditional theorem; `LehmerConjecture` itself remains the open red gate). -/
 theorem lehmer_locked_behind_engine_status (n : ℕ) (B : NNReal) :
     (mahlerBox n B).Finite ∧
     (¬ PerpetualEngine mahlerHeightModel_inhabited.descentStep) ∧
@@ -246,7 +247,7 @@ theorem lehmer_locked_behind_engine_status (n : ℕ) (B : NNReal) :
    lehmerCause_unknowable,
    fun hL => lehmer_refutation_escapes_every_horizon hL⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
+/-! ## Axiom audit: the whole module is green (standard triple), repository taint does NOT change -/
 #print axioms mahlerBox_finite
 #print axioms lehmer_supply_below_horizon_impossible
 #print axioms lehmer_at_bounded_degree

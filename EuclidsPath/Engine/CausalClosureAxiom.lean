@@ -1,91 +1,91 @@
 /-
-  CausalClosureAxiom — КАРАНТИННЫЙ модуль: ЕДИНСТВЕННЫЙ `axiom` всего репозитория.
-  Проза: prose/24_BoundaryDecomp.md (раздел «Causal-closure как внешняя аксиома»).
+  CausalClosureAxiom — the QUARANTINE module: the ONE `axiom` of the whole repository.
+  Prose: prose/24_BoundaryDecomp.md (section "Causal-closure as an external axiom").
 
-  ⚠️⚠️⚠️ ВНИМАНИЕ. Этот модуль СОЗНАТЕЛЬНО объявляет аксиому
+  ⚠️⚠️⚠️ ATTENTION. This module DELIBERATELY declares the axiom
     `step00CausalClosure : TheStrictLastStep00Obligation`
-  — это ОТКРЫТЫЙ ФИНАЛЬНЫЙ УЗЕЛ, принятый декретом, а НЕ доказанный факт.
-  Всё, что от неё зависит (включая `twinLowersInfinite_from_step00CausalClosure :
-  TwinLowers.Infinite`), — УСЛОВНО НА АКСИОМЕ и НЕ является доказательством
-  гипотезы близнецов. `Step00.twin_prime_conjecture` остаётся `sorry` и НЕ
-  замыкается через этот модуль.
+  — this is an OPEN FINAL NODE, accepted by decree, NOT a proven fact.
+  Everything depending on it (including `twinLowersInfinite_from_step00CausalClosure :
+  TwinLowers.Infinite`) is CONDITIONAL ON THE AXIOM and is NOT a proof of
+  the twin prime conjecture. `Step00.twin_prime_conjecture` remains `sorry` and is NOT
+  closed through this module.
 
-  Карантин машинно отслеживается: узловой верификатор репортит каждую
-  декларацию, заражённую нестандартной аксиомой (`AXIOM-TAINTED`). Ожидаемое
-  состояние: заражены РОВНО декларации этого модуля — и никакие другие.
+  The quarantine is machine-tracked: the node verifier reports every
+  declaration tainted by a nonstandard axiom (`AXIOM-TAINTED`). Expected
+  state: EXACTLY the declarations of this module are tainted — and no others.
 
-  Смысл кирпича (честный): зафиксировать последний Step00-принцип как ЯВНУЮ
-  внешнюю аксиому, а не как скрытую теорему; и показать (уже доказано в
-  ConcreteStep00Graph), что его внутреннее самозаверение строит запрещённый
-  двигатель. Машинная честность: аксиома ⟺ старый узел
-  (`strictLastStep00Obligation_iff_lastStep00Obligation`), и она УЖЕ утверждает
-  близнецов на каждом масштабе (`causalClosureAxiom_asserts_twins_at_every_scale`)
-  — принять её = принять близнецов, декрет не слабее вывода.
+  Meaning of the brick (honest): to fix the last Step00 principle as an EXPLICIT
+  external axiom, not as a hidden theorem; and to show (already proven in
+  ConcreteStep00Graph) that its internal self-certification builds a forbidden
+  engine. Machine honesty: the axiom ⟺ the old node
+  (`strictLastStep00Obligation_iff_lastStep00Obligation`), and it ALREADY asserts
+  twins at every scale (`causalClosureAxiom_asserts_twins_at_every_scale`)
+  — to accept it = to accept twins, the decree is no weaker than the conclusion.
 
-  РАСШИРЕНИЕ ДЕКРЕТА (§10, по решению автора): к twin-узлу (`causalBoundary`)
-  добавляется ВТОРАЯ причинная граница — римановский закон
-  манифестации (`riemannBoundary` : каждый off-critical нуль манифестирует
-  неоплатимой поставкой потоков на разрешённых масштабах; зелёная машина —
-  Engine/RiemannManifestationFront). Аксиома по-прежнему ОДНА. Машинная
-  честность расширения: при границе закон манифестации ⟺ RH
-  (`riemannManifestation_asserts_RH`) — принять расширенную первопричину =
-  принять RH; `riemannHypothesis_from_firstCause` — НЕ доказательство RH,
-  а редукция, закрытая декретом. Растяжки §10: опровержение RH или закона —
-  False ровно здесь.
+  EXTENSION OF THE DECREE (§10, by the author's decision): to the twin node (`causalBoundary`)
+  a SECOND causal boundary is added — the Riemann manifestation
+  law (`riemannBoundary` : every off-critical zero manifests
+  by an unpayable supply of flows at the permitted scales; the green machine —
+  Engine/RiemannManifestationFront). The axiom is still ONE. Machine
+  honesty of the extension: under the boundary the manifestation law ⟺ RH
+  (`riemannManifestation_asserts_RH`) — to accept the extended first cause =
+  to accept RH; `riemannHypothesis_from_firstCause` is NOT a proof of RH,
+  but a reduction, closed by the decree. Tripwires of §10: a refutation of RH or of the law —
+  False exactly here.
 
-  P/NP-ЯЗЫК ДЕКРЕТА (§11): ТРЕТЬЕЙ границы НЕТ — намеренно. Сепарация в
-  авторском прочтении («ранго-быстрый проезд не может оплатить все
-  сертификаты») — ЗЕЛЁНАЯ теорема при A ≤ 4 (Engine/PNPRankPaymentFront,
-  pnp_rank_separation_smallScale); трилемма кандидатов третьего поля доказана
-  машинно (универсальная форма опровержима — декрет был бы противоречив;
-  decider-gated опровержима; экзистенциальная уже зелёно доказана — декрет
-  был бы вакуумен). Существующая граница УЖЕ говорит на языке P/NP: на
-  декретном масштабе A ≥ 5 она даёт LocalPSuccess/полную оплату/ограниченную
-  поставку (§11) — чистый раскол по масштабам с зелёной сепарацией на A ≤ 4.
+  P/NP LANGUAGE OF THE DECREE (§11): there is NO THIRD boundary — intentionally. The separation in
+  the author's reading ("a rank-fast pass-through cannot pay for all
+  certificates") is a GREEN theorem for A ≤ 4 (Engine/PNPRankPaymentFront,
+  pnp_rank_separation_smallScale); the trilemma of the third-field candidates is proven
+  machine-wise (the universal form is refutable — the decree would be inconsistent;
+  the decider-gated one is refutable; the existential one is already green-proven — the decree
+  would be vacuous). The existing boundary ALREADY speaks the P/NP language: at
+  the decree scale A ≥ 5 it gives LocalPSuccess/full payment/bounded
+  supply (§11) — a clean split by scales with a green separation at A ≤ 4.
 
-  ЯНГ–МИЛЛС-ЯЗЫК ДЕКРЕТА (§12): ЧЕТВЁРТОЙ границы НЕТ — намеренно. Трилемма
-  (Engine/YangMillsFront §7): универсальный кандидат опровержим
-  (cooked-лестница + EPMI), экзистенциальный вакуумен, манифестационный
-  НЕСОВМЕСТИМ с принятой границей (лестница, в отличие от off-critical нуля,
-  зелёно предъявима — ymManifestationLaw_refutes_boundary); per-model
-  «закон квантования ⟺ масс-гэп» зелёно и БЕЗ границы
-  (quantizationLaw_iff_massGap) — декретировать закон = декретировать цель.
-  Сам вывод «квантованность ⟹ гэп» — зелёная условная цепь
-  (massGap_of_quantizationLaw); §12 фиксирует лишь то, что декрет утверждает
-  САМ: на его масштабе A ≥ 5 поставки отклонений нет — его мир гэпнут в
-  языке поставок. Клэй НЕ решается и НЕ объявляется.
+  YANG–MILLS LANGUAGE OF THE DECREE (§12): there is NO FOURTH boundary — intentionally. The trilemma
+  (Engine/YangMillsFront §7): the universal candidate is refutable
+  (cooked ladder + EPMI), the existential is vacuous, the manifestation one is
+  INCOMPATIBLE with the accepted boundary (the ladder, unlike an off-critical zero,
+  is green-presentable — ymManifestationLaw_refutes_boundary); the per-model
+  "quantization law ⟺ mass gap" is green and WITHOUT a boundary
+  (quantizationLaw_iff_massGap) — to decree the law = to decree the goal.
+  The conclusion "quantization ⟹ gap" itself is a green conditional chain
+  (massGap_of_quantizationLaw); §12 fixes only what the decree asserts
+  ITSELF: at its scale A ≥ 5 there is no supply of deviations — its world is gapped in
+  the language of supplies. Clay is NOT solved and NOT declared.
 
-  НАВЬЕ–СТОКС-ЯЗЫК ДЕКРЕТА (§13): ПЯТОЙ границы НЕТ — намеренно. Трилемма
-  (Engine/NavierStokesFront §7): универсальный кандидат опровержим (cookedFlow —
-  размешиваемый поток набирает энергию), экзистенциальный уже зелёно доказан
-  (нулевое решение), манифестационный НЕСОВМЕСТИМ с принятой границей
-  (cookedProfileCascade зелёно предъявим). Убийца равномерного сингулярного
-  каскада при балансе (noSingularCascade_of_energyBalance) — зелёная ТЕОРЕМА
-  фронта, не декрет; «гэпнутость в поставках» уже §12 — дубликат не вводится.
-  §13 несёт единственную честную растяжку. Клэй НЕ решается и НЕ объявляется.
-  ДОБИТИЕ (§15): вердикт «пятой границы НЕТ» относился к БЕЗГЕЙТНЫМ и
-  манифестационным кандидатам — он в силе. НОВАЯ, ТРЕТЬЯ граница декрета
-  (`nsBoundary`) — ДРУГОЙ кандидат: гейт-закон энергобаланса
-  (NsSolutionBalanceLaw: бессиловые решения, честно дифференцируемые по
-  времени И пространству). Он пережил РАСШИРЕННУЮ трилемму: безгейтная и
-  время-гейтная формы опровергнуты машинно (Дирихле-ковка; ковка кованого
-  давления — junk в ∇p), финальная форма не кована никаким известным
-  способом (опровержение ≥ решения открытой steady-NS Liouville-проблемы)
-  и не доказуема (нет теоремы о дивергенции на ℝ³). Честная цена: закон
-  СИЛЬНЕЕ нужного суррогату (⟺-зеркала НЕТ — декрет, возможно,
-  переплачивает; паттерн Коллатца).
+  NAVIER–STOKES LANGUAGE OF THE DECREE (§13): there is NO FIFTH boundary — intentionally. The trilemma
+  (Engine/NavierStokesFront §7): the universal candidate is refutable (cookedFlow —
+  a stirred flow gains energy), the existential is already green-proven
+  (the zero solution), the manifestation one is INCOMPATIBLE with the accepted boundary
+  (cookedProfileCascade is green-presentable). The killer of the uniform singular
+  cascade under balance (noSingularCascade_of_energyBalance) is a green THEOREM
+  of the front, not a decree; "gappedness in supplies" is already §12 — no duplicate is introduced.
+  §13 carries a single honest tripwire. Clay is NOT solved and NOT declared.
+  FINISHING BLOW (§15): the verdict "there is NO fifth boundary" applied to the GATELESS and
+  manifestation candidates — it stands. A NEW, THIRD boundary of the decree
+  (`nsBoundary`) is a DIFFERENT candidate: the gate-law of energy balance
+  (NsSolutionBalanceLaw: forceless solutions, honestly differentiable in
+  time AND space). It survived the EXTENDED trilemma: the gateless and
+  time-gated forms are refuted machine-wise (Dirichlet forging; forging of the forged
+  pressure — junk in ∇p), the final form is not forged by any known
+  means (a refutation ≥ solving the open steady-NS Liouville problem)
+  and is not provable (there is no divergence theorem on ℝ³). Honest price: the law
+  is STRONGER than the surrogate needs (there is NO ⟺-mirror — the decree may
+  overpay; the Collatz pattern).
 
-  ХОДЖ-ЯЗЫК ДЕКРЕТА (§14): ШЕСТОЙ границы НЕТ — намеренно. Трилемма
-  (Engine/HodgeFront §6): универсальный кандидат опровержим (cookedUnpaid —
-  шаг спуска с высоты 1 упирается в якорь квантования), экзистенциальный уже
-  зелёно доказан (cookedPaid), chain-манифестационная форма ВЫРОЖДЕНА в
-  зелёную теорему (цепей нет ни в одной модели — двигатель мёртв безусловно,
-  isEmpty_unpaidDescentChain), манифестационная форма над одиночным
-  неоплаченным классом НЕСОВМЕСТИМА с принятой границей (cookedUnpaidClass
-  зелёно предъявим). Коллапс per-model закона (descentLaw_iff_hodgeProperty)
-  зелёный и безграничный — декретировать закон = декретировать цель.
-  §14 несёт единственную честную растяжку. В mathlib теории Ходжа НЕТ;
-  Клэй НЕ решается и НЕ объявляется.
+  HODGE LANGUAGE OF THE DECREE (§14): there is NO SIXTH boundary — intentionally. The trilemma
+  (Engine/HodgeFront §6): the universal candidate is refutable (cookedUnpaid —
+  a descent step from height 1 runs into the quantization anchor), the existential is already
+  green-proven (cookedPaid), the chain-manifestation form is DEGENERATE into
+  a green theorem (there are no chains in any model — the engine is dead unconditionally,
+  isEmpty_unpaidDescentChain), the manifestation form over a single
+  unpaid class is INCOMPATIBLE with the accepted boundary (cookedUnpaidClass
+  is green-presentable). The collapse of the per-model law (descentLaw_iff_hodgeProperty)
+  is green and boundaryless — to decree the law = to decree the goal.
+  §14 carries a single honest tripwire. Hodge theory is NOT in mathlib;
+  Clay is NOT solved and NOT declared.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
 import EuclidsPath.Engine.RiemannManifestationFront
@@ -120,34 +120,34 @@ abbrev Step00CausalClosureAxiom : Prop :=
   TheStrictLastStep00Obligation
 
 /--
-**СТРУКТУРА ПЕРВОПРИЧИНЫ** — намеренно принимаемое внешнее начало Step00-мира.
+**STRUCTURE OF THE FIRST CAUSE** — the intentionally accepted external origin of the Step00 world.
 
-Пять полей — точная структура события `0 → 1` и его причинные границы:
-* `origin` — маркер сингулярности `0` (до-кадровое состояние; несёт `True`:
-  до первого кадра внутреннего языка нет, утверждать нечего);
-* `firstFrame` — маркер первого причинного кадра `1` (с него доступен язык
-  состояний/шагов/леджеров; тоже `True` — маркер, не утверждение);
-* `causalBoundary` — причинная граница БЛИЗНЕЦОВ: strict-обязательство Step00;
-* `riemannBoundary` — причинная граница РИМАНА (расширение декрета, §10):
-  закон манифестации — каждое off-critical отклонение нуля обязано проявиться
-  неоплатимой поставкой потоков там, где леджер сводит книги
-  (`RiemannManifestationLaw`, зелёная машина — RiemannManifestationFront);
-* `nsBoundary` — причинная граница НАВЬЕ–СТОКСА (§15): гейт-закон энергобаланса
-  бессиловых решений (`NsSolutionBalanceLaw`, зелёная машина — NavierStokesFront).
+Five fields — the exact structure of the event `0 → 1` and its causal boundaries:
+* `origin` — the marker of the singularity `0` (the pre-frame state; carries `True`:
+  before the first frame there is no internal language, nothing to assert);
+* `firstFrame` — the marker of the first causal frame `1` (from it the language of
+  states/steps/ledgers is available; also `True` — a marker, not an assertion);
+* `causalBoundary` — the causal boundary of TWINS: the strict Step00 obligation;
+* `riemannBoundary` — the causal boundary of RIEMANN (extension of the decree, §10):
+  the manifestation law — every off-critical deviation of a zero must show itself
+  by an unpayable supply of flows where the ledger reconciles the books
+  (`RiemannManifestationLaw`, green machine — RiemannManifestationFront);
+* `nsBoundary` — the causal boundary of NAVIER–STOKES (§15): the gate-law of energy balance
+  of forceless solutions (`NsSolutionBalanceLaw`, green machine — NavierStokesFront).
 
-ИСТОРИЯ ЧЕТВЁРТОЙ ГРАНИЦЫ (§18 — ВЗЯТА И СНЯТА). Граница Коллатца
-(`collatzBoundary : ∀ n ≥ 1, RopeCountingLaw n`) была принята четвёртым полем,
-а затем ОПРОВЕРГНУТА машинно: `ropeLaw_universal_refuted`
-(Engine/CollatzTugOfWar) — свидетель n = 27, у которого ни одно окно от старта
-не даёт перевеса каната. Растяжка `collatzQuarantine_inconsistent_if_law_refuted`
-сработала ровно как задумано: декрет, «возможно, переплачивавший», переплатил
-до лжи, и поле удалено — иначе аксиома была бы противоречива. Пост-мортем и
-уцелевшая зелёная механика — Engine/CollatzFirstCause. Это работающий пример
-дисциплины честности: границы падают от кованых опровержений.
+HISTORY OF THE FOURTH BOUNDARY (§18 — TAKEN AND REMOVED). The Collatz boundary
+(`collatzBoundary : ∀ n ≥ 1, RopeCountingLaw n`) was accepted as a fourth field,
+and then REFUTED machine-wise: `ropeLaw_universal_refuted`
+(Engine/CollatzTugOfWar) — the witness n = 27, for which no window from the start
+gives the rope a lead. The tripwire `collatzQuarantine_inconsistent_if_law_refuted`
+fired exactly as intended: the decree, "possibly overpaying", overpaid
+into falsehood, and the field was removed — otherwise the axiom would be inconsistent. The post-mortem and
+the surviving green mechanics — Engine/CollatzFirstCause. This is a working example
+of the honesty discipline: boundaries fall to forged refutations.
 
-Интернализация первопричины невозможна (доказано ранее: внутренняя
-первопричина = запрещённый двигатель, `no_internalisedHorizonBoundary`) —
-потому она принимается ИЗВНЕ, аксиомой, намеренно.
+Internalization of the first cause is impossible (proven earlier: an internal
+first cause = a forbidden engine, `no_internalisedHorizonBoundary`) —
+therefore it is accepted from OUTSIDE, by an axiom, intentionally.
 -/
 structure Step00FirstCause : Prop where
   origin : True
@@ -157,10 +157,10 @@ structure Step00FirstCause : Prop where
   nsBoundary : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw
 
 /--
-**ЕДИНСТВЕННАЯ АКСИОМА РЕПОЗИТОРИЯ — ПЕРВОПРИЧИНА (намеренно, структурой).**
+**THE ONE AXIOM OF THE REPOSITORY — THE FIRST CAUSE (intentionally, by structure).**
 
-Reading: внешнее начало `0 → 1` принято как корень архитектуры; из него
-теоремой следует causal closure, а из той — весь условный слой.
+Reading: the external origin `0 → 1` is accepted as the root of the architecture; from it
+causal closure follows by a theorem, and from that — the whole conditional layer.
 
 ⚠️ Everything depending on this axiom is CONDITIONAL and machine-flagged by
 the node verifier as AXIOM-TAINTED (axiom name: `step00FirstCause`).
@@ -168,20 +168,20 @@ the node verifier as AXIOM-TAINTED (axiom name: `step00FirstCause`).
 axiom step00FirstCause : Step00FirstCause
 
 /--
-Прежняя causal-closure «аксиома» — теперь ТЕОРЕМА из первопричины: имя и все
-использования ниже по течению не меняются, но корень архитектуры — намеренно
-структурированная первопричина. ⚠️ AXIOM-TAINTED (через step00FirstCause).
+The former causal-closure "axiom" is now a THEOREM from the first cause: the name and all
+downstream uses do not change, but the root of the architecture is an intentionally
+structured first cause. ⚠️ AXIOM-TAINTED (via step00FirstCause).
 -/
 theorem step00CausalClosure : Step00CausalClosureAxiom :=
   step00FirstCause.causalBoundary
 
-/-- **ЧЕСТНОСТЬ (машинно): структура первопричины ⟺ конъюнкция её границ.**
-    Маркеры origin/firstFrame — `True`, вся сила — в ТРЁХ границах: twin-узле,
-    римановском законе манифестации и НС-гейт-энергобалансе (четвёртая,
-    коллатцевская, снята после машинного опровержения — см. историю §18 выше).
-    Намеренное включение первопричины меняет ПРОИСХОЖДЕНИЕ (корень архитектуры
-    и имя аксиомы в таинте), но не математическую силу декрета — она ровно
-    сумма принятых границ. -/
+/-- **HONESTY (machine-wise): the structure of the first cause ⟺ the conjunction of its boundaries.**
+    The markers origin/firstFrame are `True`, all the strength is in the THREE boundaries: the twin node,
+    the Riemann manifestation law and the NS gate-energy-balance (the fourth,
+    the Collatz one, was removed after a machine refutation — see the history of §18 above).
+    The intentional inclusion of the first cause changes the ORIGIN (the root of the architecture
+    and the name of the axiom in the taint), but not the mathematical strength of the decree — it is exactly
+    the sum of the accepted boundaries. -/
 theorem step00FirstCause_iff_causalClosure :
     Step00FirstCause ↔ (Step00CausalClosureAxiom ∧ RiemannManifestationLaw ∧
       EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw) :=
@@ -264,7 +264,7 @@ abbrev Step00CausalClosureExternalOnly : Prop :=
 
 /--
 The external-only status of the causal-closure axiom.  ⚠️ AXIOM-TAINTED
-(первый конъюнкт — сама аксиома).
+(the first conjunct is the axiom itself).
 -/
 theorem step00CausalClosure_externalOnly :
     Step00CausalClosureExternalOnly := by
@@ -342,13 +342,13 @@ theorem thisIsAnExternalStep00AxiomNotAGlobalIndependenceTheorem :
   trivial
 
 /-#############################################################################
-  §7. Машинная честность аксиомы
+  §7. Machine honesty of the axiom
 #############################################################################-/
 
-/-- **ЧЕСТНОСТЬ (машинно): аксиома УЖЕ утверждает близнецов на каждом масштабе.**
-    Из аксиомы на каждом `M0` извлекается twin выше `M0` (через
-    `twin_above_of_strictResolves`): декрет не слабее вывода — принять аксиому
-    = принять близнецов по-масштабно. Аксиома ⟺ старый узел
+/-- **HONESTY (machine-wise): the axiom ALREADY asserts twins at every scale.**
+    From the axiom, at every `M0`, a twin above `M0` is extracted (via
+    `twin_above_of_strictResolves`): the decree is no weaker than the conclusion — to accept the axiom
+    = to accept twins scale-by-scale. The axiom ⟺ the old node
     (`strictLastStep00Obligation_iff_lastStep00Obligation`). ⚠️ AXIOM-TAINTED. -/
 theorem causalClosureAxiom_asserts_twins_at_every_scale :
     ∀ M0 : ℕ, ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m := by
@@ -359,10 +359,10 @@ theorem causalClosureAxiom_asserts_twins_at_every_scale :
 
 
 /-#############################################################################
-  ФИНАЛЬНЫЙ СТАТУС: АКСИОМНЫЙ vs БЕЗАКСИОМНЫЙ РЕЖИМ (кирпич:
-  final_axiom_vs_theorem_status). Размещён в КАРАНТИНЕ, т.к. §2 использует
-  аксиому (соответствующие декларации AXIOM-TAINTED у верификатора);
-  аксиомо-свободные части (§1, §3, §4) остаются чистыми.
+  FINAL STATUS: AXIOMATIC vs AXIOM-FREE REGIME (brick:
+  final_axiom_vs_theorem_status). Placed in the QUARANTINE, since §2 uses
+  the axiom (the corresponding declarations are AXIOM-TAINTED at the verifier);
+  the axiom-free parts (§1, §3, §4) remain clean.
 #############################################################################-/
 
 /-#############################################################################
@@ -568,18 +568,18 @@ audited Step00 architecture:
 abbrev ThisFileIsFinalStatusNotNewMathematics : Prop :=
   True
 
-/-! Машинная честность status-формы -/
+/-! Machine honesty of the status-form -/
 
-/-- Безаксиомный остаток ⟺ старый узел: заявление кирпича «никакая обёртка не
-    опускает открытое содержание ниже этого предложения» машинно подтверждено
-    всей семьёй эквивалентностей (energy/nested/seam/gauge/no-energy/
+/-- The axiom-free remainder ⟺ the old node: the brick's claim that "no wrapper
+    lowers the open content below this proposition" is machine-confirmed
+    by the whole family of equivalences (energy/nested/seam/gauge/no-energy/
     compression/atomic/stable/strict ⟺ TheLastStep00Obligation). -/
 theorem nonAxiomaticRemainingObligation_iff_lastStep00Obligation :
     Step00NonAxiomaticRemainingObligation ↔ TheLastStep00Obligation :=
   strictLastStep00Obligation_iff_lastStep00Obligation
 
-/-- Сужение распространяется на безаксиомный остаток: его масштаб живёт
-    только в `A ≥ 5` (ветвь `A ≤ 4` машинно опровергнута). -/
+/-- The narrowing extends to the axiom-free remainder: its scale lives
+    only in `A ≥ 5` (the `A ≤ 4` branch is machine-refuted). -/
 theorem nonAxiomaticRemainingObligation_forces_scale_ge_five
     (H : Step00NonAxiomaticRemainingObligation) :
     ∃ A : ℕ, 5 ≤ A ∧
@@ -591,15 +591,15 @@ theorem nonAxiomaticRemainingObligation_forces_scale_ge_five
 
 
 /-#############################################################################
-  ФИНАЛЬНЫЙ МЕТА-КИРПИЧ: ПОБЕГ ИЛИ ВОЗВРАТ (кирпич: final_meta_escape_or_return).
-  Размещён здесь из-за ссылок на имена модуля (Step00CausalClosureAxiom,
-  twinLowersInfinite_of_axiomaticClosure), но АКСИОМУ НЕ ИСПОЛЬЗУЕТ — все
-  декларации ниже axiom-clean (верификатор подтверждает: AXIOM-TAINTED не
-  прибавилось). Дихотомия: внешнее доказательство либо транслируется назад в
-  Step00 (⟹ двигатель ⟹ пусто), либо подлинно сбегает из архитектуры.
-  Фиксы: ¬Step00MediatedStatement (data-структура) → `→ False`.
-  Машинная честность: возврат ⟺ пустота, «побег» ⟺ существование —
-  дихотомия тавтологична (Nonempty/IsEmpty), несущая часть — axiomGivesTwins.
+  FINAL META-BRICK: ESCAPE OR RETURN (brick: final_meta_escape_or_return).
+  Placed here because of references to the module's names (Step00CausalClosureAxiom,
+  twinLowersInfinite_of_axiomaticClosure), but it DOES NOT USE THE AXIOM — all
+  declarations below are axiom-clean (the verifier confirms: AXIOM-TAINTED did not
+  increase). The dichotomy: an external proof either translates back into
+  Step00 (⟹ engine ⟹ empty), or genuinely escapes the architecture.
+  Fixes: ¬Step00MediatedStatement (data structure) → `→ False`.
+  Machine honesty: return ⟺ emptiness, "escape" ⟺ existence —
+  the dichotomy is tautological (Nonempty/IsEmpty), the load-bearing part is axiomGivesTwins.
 #############################################################################-/
 
 /-#############################################################################
@@ -972,10 +972,10 @@ theorem thisIsTheLastMetaBrickNotAnAbsoluteIndependenceTheorem :
     ThisIsTheLastMetaBrickNotAnAbsoluteIndependenceTheorem := by
   trivial
 
-/-! Машинная честность meta-формы -/
+/-! Machine honesty of the meta-form -/
 
-/-- Возврат в Step00 ⟺ пустота внешних доказательств (одностороннее
-    «мост = пустота»). -/
+/-- Return into Step00 ⟺ emptiness of external proofs (one-directional
+    "bridge = emptiness"). -/
 theorem proofReturns_iff_noProofs
     {T : ExternalProofTheory} {φ : T.Sentence} :
     ProofReturnsToStep00Architecture T φ ↔ IsEmpty (T.proves φ) := by
@@ -984,7 +984,7 @@ theorem proofReturns_iff_noProofs
   · intro hEmpty
     exact ⟨⟨fun p => (hEmpty.false p).elim⟩⟩
 
-/-- Возврат опровержений ⟺ пустота внешних опровержений. -/
+/-- Return of refutations ⟺ emptiness of external refutations. -/
 theorem refutationReturns_iff_noRefutations
     {T : ExternalProofTheory} {φ : T.Sentence} :
     RefutationReturnsToStep00Architecture T φ ↔ IsEmpty (T.refutes φ) := by
@@ -993,17 +993,17 @@ theorem refutationReturns_iff_noRefutations
   · intro hEmpty
     exact ⟨⟨fun r => (hEmpty.false r).elim⟩⟩
 
-/-- ЧЕСТНОСТЬ: «побег» ⟺ существование доказательства. Дихотомия
-    escape-or-return — переименование Nonempty/IsEmpty: «настоящее
-    доказательство обязано сбежать» тавтологично («непустой тип не пуст»).
-    Несущая часть кирпича — только axiomGivesTwins (условная, уже известная). -/
+/-- HONESTY: "escape" ⟺ existence of a proof. The escape-or-return
+    dichotomy is a renaming of Nonempty/IsEmpty: "a real
+    proof must escape" is tautological ("a nonempty type is not empty").
+    The load-bearing part of the brick is only axiomGivesTwins (conditional, already known). -/
 theorem proofEscapes_iff_proofExists
     {T : ExternalProofTheory} {φ : T.Sentence} :
     ProofEscapesStep00Architecture T φ ↔ Nonempty (T.proves φ) := by
   rw [ProofEscapesStep00Architecture, proofReturns_iff_noProofs,
     not_isEmpty_iff]
 
-/-- «Побег» опровержения ⟺ существование опровержения. -/
+/-- "Escape" of a refutation ⟺ existence of a refutation. -/
 theorem refutationEscapes_iff_refutationExists
     {T : ExternalProofTheory} {φ : T.Sentence} :
     RefutationEscapesStep00Architecture T φ ↔ Nonempty (T.refutes φ) := by
@@ -1013,16 +1013,16 @@ theorem refutationEscapes_iff_refutationExists
 
 
 /-#############################################################################
-  WELL-FOUNDED ПРИЧИННЫЙ ФРАКТАЛ (кирпич: well_founded_causal_fractal).
-  Точный смысл слогана «вселенная фрактальна»: причинно-информационное
-  самоподобие на мета-границе (в каждом мета-узле повторяется дихотомия
-  побег/возврат) + внутренняя well-foundedness (∞-ветвь со строгим
-  ℕ-спуском ранга невозможна). НЕ геометрический фрактал и не космология
-  (scope guard кирпича). Аксиому НЕ использует — все декларации axiom-clean.
-  Фиксы: RankedMetaFractalBranch несёт данные → `→ False`.
-  Машинная честность: 6-ветвевой исход коллапсирует в 3-дизъюнкцию
-  (узел ∨ есть доказательство ∨ есть опровержение); поля самоподобия —
-  Nonempty/IsEmpty-тавтологии meta-уровня.
+  WELL-FOUNDED CAUSAL FRACTAL (brick: well_founded_causal_fractal).
+  The exact meaning of the slogan "the universe is fractal": causal-informational
+  self-similarity at the meta-boundary (in every meta-node the escape/return
+  dichotomy repeats) + internal well-foundedness (an ∞-branch with a strict
+  ℕ-descent of rank is impossible). NOT a geometric fractal and not cosmology
+  (scope guard of the brick). It does NOT use the axiom — all declarations are axiom-clean.
+  Fixes: RankedMetaFractalBranch carries data → `→ False`.
+  Machine honesty: the 6-branch outcome collapses into a 3-disjunction
+  (node ∨ a proof exists ∨ a refutation exists); the self-similarity fields are
+  Nonempty/IsEmpty tautologies at the meta-level.
 #############################################################################-/
 
 open EuclidsPath.BoundaryDefectPayment
@@ -1372,12 +1372,12 @@ theorem thisIsACausalInformationalFractalNotAGeometricFractal :
     ThisIsACausalInformationalFractalNotAGeometricFractal := by
   trivial
 
-/-! Машинная честность fractal-формы -/
+/-! Machine honesty of the fractal-form -/
 
-/-- ИСХОД КОЛЛАПСИРУЕТ в честную 3-дизъюнкцию: seam/payment/engine сожжены,
-    «побеги» ⟺ существование сертификатов, граница ⟺ сама аксиома-узел.
-    Шестиветвевой фрактальный исход = (узел ∨ есть доказательство ∨ есть
-    опровержение) — вся структура сведена к подлинным содержаниям. -/
+/-- THE OUTCOME COLLAPSES into an honest 3-disjunction: seam/payment/engine are burnt,
+    "escapes" ⟺ existence of certificates, the boundary ⟺ the axiom-node itself.
+    The six-branch fractal outcome = (node ∨ a proof exists ∨ a
+    refutation exists) — the whole structure is reduced to genuine contents. -/
 theorem metaFractalOutcome_iff (N : MetaFractalNode) :
     MetaFractalOutcome N ↔
       (Step00CausalClosureAxiom ∨
@@ -1402,15 +1402,15 @@ theorem metaFractalOutcome_iff (N : MetaFractalNode) :
 
 
 /-#############################################################################
-  STRICT-ПАКЕТ АКСИОМЫ (кирпич: strict_causal_closure_axiom_package).
-  Максимально явная data-форма аксиомы: (A, projOf, resolves) — и запись
-  того, что именно из неё следует. Кирпич честно отделяет её от «какой-то
-  внешней причины» (§5): нужна ТОЧНАЯ Step00-каузальность, не произвольная.
-  Новой аксиомы НЕТ; §3 переиспользует step00CausalClosure (эти декларации
-  AXIOM-TAINTED). Фиксы: Π→proj; ofStep00CausalClosure — Prop→Type
-  элиминация через .choose (noncomputable). Машинная честность: пакет ⟺
-  старый узел; пакет — twin-детектор; У ЛЮБОГО ПАКЕТА A ≥ 5 (сужение бьёт
-  прямо по полю данных).
+  THE STRICT PACKAGE OF THE AXIOM (brick: strict_causal_closure_axiom_package).
+  The maximally explicit data-form of the axiom: (A, projOf, resolves) — and a record
+  of exactly what follows from it. The brick honestly separates it from "some
+  external cause" (§5): EXACT Step00 causality is needed, not an arbitrary one.
+  There is NO new axiom; §3 reuses step00CausalClosure (these declarations are
+  AXIOM-TAINTED). Fixes: Π→proj; ofStep00CausalClosure — a Prop→Type
+  elimination via .choose (noncomputable). Machine honesty: the package ⟺
+  the old node; the package is a twin detector; EVERY PACKAGE HAS A ≥ 5 (the narrowing hits
+  directly the data field).
 #############################################################################-/
 
 /-#############################################################################
@@ -1628,22 +1628,22 @@ theorem strictCausalClosureAxiom_final_slogan :
     no_internalSelfDerivation_step00CausalClosure
   ⟩
 
-/-! Машинная честность package-формы -/
+/-! Machine honesty of the package-form -/
 
-/-- Пакет ⟺ старый узел (через семью эквивалентностей). -/
+/-- The package ⟺ the old node (via the family of equivalences). -/
 theorem strictPackageExists_iff_lastStep00Obligation :
     StrictStep00CausalClosurePackageExists ↔ TheLastStep00Obligation :=
   strictStep00CausalClosurePackageExists_iff_axiom.trans
     strictLastStep00Obligation_iff_lastStep00Obligation
 
-/-- Пакет на каждом масштабе предъявляет twin (детектор). -/
+/-- The package presents a twin at every scale (detector). -/
 theorem twin_above_of_strictPackage
     (C : StrictStep00CausalClosurePackage) (M0 : ℕ) :
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_strictResolves (C.projOf M0) (C.resolves M0)
 
-/-- СУЖЕНИЕ БЬЁТ ПО ПОЛЮ: у ЛЮБОГО strict-пакета масштаб A ≥ 5
-    (ветвь A ≤ 4 машинно опровергнута 5-адической цепью). -/
+/-- THE NARROWING HITS THE FIELD: EVERY strict package has scale A ≥ 5
+    (the A ≤ 4 branch is machine-refuted by a 5-adic chain). -/
 theorem strictPackage_scale_ge_five
     (C : StrictStep00CausalClosurePackage) : 5 ≤ C.A := by
   by_contra hA
@@ -1653,14 +1653,14 @@ theorem strictPackage_scale_ge_five
 
 
 /-#############################################################################
-  ГОРИЗОНТ СОБЫТИЙ + СИНГУЛЯРНОСТЬ НАЧАЛА (кирпичи: step00_event_horizon +
-  step00_origin_singularity). Граница Step00-интерпретируемости: внутри —
-  возврат в интерфейс (⟹ двигатель ⟹ пусто), за горизонтом — подлинно
-  новая не-Step00 информация; «0 → 1» — внешнее граничное событие, не
-  RealStep; интернализация границы = запрещённый self-cause. Accepted-ветки
-  используют аксиому (AXIOM-TAINTED). Машинная честность: горизонт =
-  переименование пустоты/непустоты сертификатов; альтернатива коллапсирует
-  в 3-дизъюнкцию; «событие 0→1» ⟺ сама аксиома (маркеры — True).
+  EVENT HORIZON + SINGULARITY OF THE ORIGIN (bricks: step00_event_horizon +
+  step00_origin_singularity). The boundary of Step00 interpretability: inside —
+  return into the interface (⟹ engine ⟹ empty), beyond the horizon — genuinely
+  new non-Step00 information; "0 → 1" is an external boundary event, not a
+  RealStep; internalization of the boundary = a forbidden self-cause. The Accepted branches
+  use the axiom (AXIOM-TAINTED). Machine honesty: the horizon =
+  a renaming of emptiness/nonemptiness of certificates; the alternative collapses
+  into a 3-disjunction; the "event 0→1" ⟺ the axiom itself (the markers are True).
 #############################################################################-/
 
 /-#############################################################################
@@ -2184,22 +2184,22 @@ theorem originInterpretationIsArchitectureRelative :
     OriginInterpretationIsArchitectureRelative := by
   trivial
 
-/-! Машинная честность horizon/origin-форм -/
+/-! Machine honesty of the horizon/origin-forms -/
 
-/-- «Внутри горизонта» ⟺ пустота доказательств (переименование). -/
+/-- "Inside the horizon" ⟺ emptiness of proofs (renaming). -/
 theorem insideProofHorizon_iff_noProofs
     {T : ExternalProofTheory} {φ : T.Sentence} :
     InsideStep00ProofHorizon T φ ↔ IsEmpty (T.proves φ) :=
   proofReturns_iff_noProofs
 
-/-- «За горизонтом» ⟺ существование доказательства (переименование). -/
+/-- "Beyond the horizon" ⟺ existence of a proof (renaming). -/
 theorem beyondProofHorizon_iff_proofExists
     {T : ExternalProofTheory} {φ : T.Sentence} :
     BeyondStep00ProofHorizon T φ ↔ Nonempty (T.proves φ) :=
   proofEscapes_iff_proofExists
 
-/-- Горизонт-альтернатива КОЛЛАПСИРУЕТ в 3-дизъюнкцию (двигатель сожжён):
-    аксиома ∨ есть доказательство ∨ есть опровержение. -/
+/-- The horizon-alternative COLLAPSES into a 3-disjunction (the engine is burnt):
+    the axiom ∨ a proof exists ∨ a refutation exists. -/
 theorem eventHorizonAlternative_iff
     {T : ExternalProofTheory} {φ : T.Sentence} :
     Step00EventHorizonAlternative T φ ↔
@@ -2220,8 +2220,8 @@ theorem eventHorizonAlternative_iff
     · exact Step00EventHorizonAlternative.refutationBeyond
         (refutationEscapes_iff_refutationExists.mpr hr)
 
-/-- «Событие 0 → 1» ⟺ сама аксиома: маркеры origin/firstFrame — True,
-    содержание граничного события — ровно causal-closure. -/
+/-- "The event 0 → 1" ⟺ the axiom itself: the markers origin/firstFrame are True,
+    the content of the boundary event is exactly causal-closure. -/
 theorem step00OriginBoundaryEvent_iff :
     Step00OriginBoundaryEvent ↔ Step00CausalClosureAxiom :=
   ⟨fun H => H.causalBoundary, fun h => ⟨trivial, trivial, h⟩⟩
@@ -2229,52 +2229,52 @@ theorem step00OriginBoundaryEvent_iff :
 
 
 /-#############################################################################
-  §8. ЭПИСТЕМИКА ПЕРВОПРИЧИНЫ: есть — узнать нельзя — знание финитизирует
-  (по замыслу автора; вся секция, кроме двух помеченных теорем, АКСИОМО-СВОБОДНА)
+  §8. EPISTEMICS OF THE FIRST CAUSE: it exists — cannot be known — knowledge finitizes
+  (by the author's design; the whole section, except two flagged theorems, is AXIOM-FREE)
 #############################################################################-/
 
-/-- «Внутреннее знание причины» = внутреннее выведение границы (self-proof). -/
+/-- "Internal knowledge of the cause" = internal derivation of the boundary (self-proof). -/
 abbrev InternalKnowledgeOfCause : Prop := InternalisedStep00HorizonBoundary
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ» — ТЕОРЕМА (аксиомо-свободна):** внутреннее знание
-    первопричины строило бы вечный двигатель — а их нет (lexRank). -/
+/-- **"CANNOT BE KNOWN" — A THEOREM (axiom-free):** internal knowledge
+    of the first cause would build a perpetual engine — and there are none (lexRank). -/
 theorem cause_unknowable : ¬ InternalKnowledgeOfCause :=
   no_internalisedHorizonBoundary
 
-/-- Знание причины строит вечный двигатель (аксиомо-свободно). -/
+/-- Knowledge of the cause builds a perpetual engine (axiom-free). -/
 theorem knowledge_builds_perpetualEngine :
     InternalKnowledgeOfCause → SomeConcreteEuclideanEngine :=
   internalisedHorizonBoundary_builds_engine
 
-/-- **ЦЕЛЕВАЯ ТЕОРЕМА (замысел автора):** знание причины финитизирует близнецов.
-    ⚠️ ЧЕСТНОСТЬ: доказательство идёт ЧЕРЕЗ невозможный двигатель (ex falso) —
-    см. обязательный companion ниже. -/
+/-- **TARGET THEOREM (the author's design):** knowledge of the cause finitizes twins.
+    ⚠️ HONESTY: the proof goes THROUGH the impossible engine (ex falso) —
+    see the mandatory companion below. -/
 theorem knowledge_finitizes_twins :
     InternalKnowledgeOfCause → ¬ EuclidsPath.TwinLowers.Infinite :=
   fun hK _ => no_someConcreteEuclideanEngine (knowledge_builds_perpetualEngine hK)
 
-/-- COMPANION (машинная честность): из знания следует и бесконечность —
-    знание взрывает всё; несущая часть конструкции — сама непознаваемость. -/
+/-- COMPANION (machine honesty): from knowledge, infinity also follows —
+    knowledge explodes everything; the load-bearing part of the construction is the unknowability itself. -/
 theorem knowledge_proves_anything :
     InternalKnowledgeOfCause → EuclidsPath.TwinLowers.Infinite :=
   fun hK => (no_someConcreteEuclideanEngine (knowledge_builds_perpetualEngine hK)).elim
 
-/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении): либо причина
-    непознаваема, либо близнецы конечны. Левый дизъюнкт — теорема. -/
+/-- SUBSTANTIVE DICHOTOMY (without ex falso in the statement): either the cause
+    is unknowable, or twins are finite. The left disjunct is a theorem. -/
 theorem unknowable_or_twins_finite :
     ¬ InternalKnowledgeOfCause ∨ ¬ EuclidsPath.TwinLowers.Infinite :=
   Or.inl cause_unknowable
 
-/-- «Двигателей нет ⟹ узнать нельзя» — подлинная контрапозиция (не взрыв). -/
+/-- "No engines ⟹ cannot be known" — a genuine contraposition (not an explosion). -/
 theorem unknowable_of_noEngine
     (hNoEngine : ¬ SomeConcreteEuclideanEngine) : ¬ InternalKnowledgeOfCause :=
   fun hK => hNoEngine (knowledge_builds_perpetualEngine hK)
 
-/-- **СУТЬ, машинно (аксиомо-свободно): «близнецы бесконечны, потому что узнать
-    нельзя».** Отсутствие двигателей (= непознаваемость) + принятая причинная
-    граница ⟹ близнецы бесконечны. Гипотеза hNoEngine ПОТРЕБЛЯЕТСЯ
-    по-настоящему: из twin-bound строится ∞-семья, из неё — коллизия, из
-    коллизии — двигатель-СВИДЕТЕЛЬ, и убивает его именно hNoEngine. -/
+/-- **THE ESSENCE, machine-wise (axiom-free): "twins are infinite, because they cannot
+    be known".** The absence of engines (= unknowability) + the accepted causal
+    boundary ⟹ twins are infinite. The hypothesis hNoEngine is CONSUMED
+    genuinely: from the twin-bound an ∞-family is built, from it — a collision, from
+    the collision — an engine-WITNESS, and it is exactly hNoEngine that kills it. -/
 theorem twins_infinite_of_noEngine_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : Step00CausalClosureAxiom) :
@@ -2290,18 +2290,18 @@ theorem twins_infinite_of_noEngine_and_boundary
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hNoEngine ⟨A, M0, hEngine⟩
 
-/-- «В этом суть»: lexRank поставляет отсутствие двигателей как теорему —
-    непознаваемость и близнецы суть ДВА СЛЕДСТВИЯ ОДНОЙ ПРИЧИНЫ, и вывод
-    близнецов видимо проходит через непознаваемость. ⚠️ AXIOM-TAINTED
-    (через принятую границу; несущая лемма — аксиомо-свободная выше). -/
+/-- "This is the essence": lexRank supplies the absence of engines as a theorem —
+    unknowability and twins are TWO CONSEQUENCES OF ONE CAUSE, and the derivation
+    of twins visibly passes through unknowability. ⚠️ AXIOM-TAINTED
+    (via the accepted boundary; the load-bearing lemma is axiom-free above). -/
 theorem twins_because_unknowable : EuclidsPath.TwinLowers.Infinite :=
   twins_infinite_of_noEngine_and_boundary
     no_someConcreteEuclideanEngine step00CausalClosure
 
-/-- Итоговый эпистемический статус первопричины: ЕСТЬ (аксиома, принята),
-    ЗНАТЬ нельзя (теорема), ПРИНЯТИЕ даёт близнецов (условно),
-    ЗНАНИЕ финитизировало бы их (через коллапс двигателя).
-    ⚠️ AXIOM-TAINTED (первый и третий конъюнкты — декрет). -/
+/-- The final epistemic status of the first cause: it EXISTS (axiom, accepted),
+    it CANNOT be known (theorem), ACCEPTANCE gives twins (conditionally),
+    KNOWLEDGE would finitize them (via the collapse of the engine).
+    ⚠️ AXIOM-TAINTED (the first and third conjuncts are the decree). -/
 theorem epistemicFirstCauseStatus :
     Step00FirstCause ∧
     (¬ InternalKnowledgeOfCause) ∧
@@ -2311,99 +2311,99 @@ theorem epistemicFirstCauseStatus :
    twinLowersInfinite_from_step00CausalClosure, knowledge_finitizes_twins⟩
 
 /-#############################################################################
-  §9. Растяжки непротиворечивости: точка взрыва машинно видима
+  §9. Consistency tripwires: the explosion point is machine-visible
 #############################################################################-/
 
-/-- **РАСТЯЖКА:** если узел когда-либо будет опровергнут (атаку `A ≤ 4`
-    продлят на все `A`), карантин противоречив — False выводимо ИМЕННО здесь.
-    Непротиворечивость `T + step00FirstCause` ⟺ неопровержимость узла в базе.
-    ⚠️ AXIOM-TAINTED (намеренно: это и есть детектор взрыва). -/
+/-- **TRIPWIRE:** if the node is ever refuted (the `A ≤ 4` attack is
+    extended to all `A`), the quarantine is inconsistent — False is derivable EXACTLY here.
+    The consistency of `T + step00FirstCause` ⟺ the irrefutability of the node in the base.
+    ⚠️ AXIOM-TAINTED (intentionally: this is the explosion detector). -/
 theorem quarantine_inconsistent_if_node_refuted
     (h : ¬ TheStrictLastStep00Obligation) : False :=
   h step00CausalClosure
 
-/-- Та же растяжка через старый узел (замыкает семью форм). ⚠️ AXIOM-TAINTED. -/
+/-- The same tripwire via the old node (closes the family of forms). ⚠️ AXIOM-TAINTED. -/
 theorem quarantine_inconsistent_if_lastObligation_refuted
     (h : ¬ TheLastStep00Obligation) : False :=
   h (strictLastStep00Obligation_iff_lastStep00Obligation.mp step00CausalClosure)
 
 /-#############################################################################
-  §10. РИМАН ЧЕРЕЗ ПЕРВОПРИЧИНУ: вторая граница декрета
-  (та же машина, что близнецы: отклонение → манифестация → коллизия →
-  двигатель → lexRank; зелёная цепь — Engine/RiemannManifestationFront)
+  §10. RIEMANN THROUGH THE FIRST CAUSE: the second boundary of the decree
+  (the same machine as twins: deviation → manifestation → collision →
+  engine → lexRank; the green chain — Engine/RiemannManifestationFront)
 #############################################################################-/
 
-/-- Римановский закон манифестации, спроецированный из первопричины:
-    каждое off-critical отклонение обязано проявиться неоплатимой поставкой
-    потоков там, где леджер сводит книги. ⚠️ AXIOM-TAINTED (это и есть
-    принятая вторая граница декрета). -/
+/-- The Riemann manifestation law, projected from the first cause:
+    every off-critical deviation must show itself by an unpayable supply of
+    flows where the ledger reconciles the books. ⚠️ AXIOM-TAINTED (this is
+    the accepted second boundary of the decree). -/
 theorem riemannManifestationLaw : RiemannManifestationLaw :=
   step00FirstCause.riemannBoundary
 
-/-- **RH ИЗ ЕДИНОГО РАСШИРЕННОГО ДЕКРЕТА.** ⚠️ AXIOM-TAINTED: это НЕ
-    доказательство гипотезы Римана — это редукция, закрытая расширенной
-    первопричиной. Цепь честно ранговая (та же, что у близнецов): нуль вне
-    критической прямой — неоплаченное отклонение; принятая граница близнецов
-    сводит книги на масштабе высоты нуля; закон манифестации заставляет
-    отклонение проявиться бесконечной поставкой потоков; коллизия
-    конечноключевой проекции строит запрещённый двигатель; lexRank его
-    убивает — нуля нет. Классификация тривиальных нулей — доказанная теорема
+/-- **RH FROM THE SINGLE EXTENDED DECREE.** ⚠️ AXIOM-TAINTED: this is NOT
+    a proof of the Riemann hypothesis — it is a reduction, closed by the extended
+    first cause. The chain is honestly rank-based (the same as for twins): a zero off
+    the critical line — an unpaid deviation; the accepted twin boundary
+    reconciles the books at the scale of the zero's height; the manifestation law forces
+    the deviation to show itself by an infinite supply of flows; the collision
+    of the finite-key projection builds a forbidden engine; lexRank
+    kills it — there is no zero. The classification of trivial zeros is a proven theorem
     (`trivialBelowZeroClassification`). -/
 theorem riemannHypothesis_from_firstCause : RiemannHypothesis :=
   riemannHypothesis_of_manifestation_and_boundary
     no_someConcreteEuclideanEngine step00CausalClosure riemannManifestationLaw
 
-/-- **ЧЕСТНОСТЬ (машинно, зеркало
-    `causalClosureAxiom_asserts_twins_at_every_scale`):** при принятой twin-
-    границе римановская граница ⟺ RH — вторая граница декрета ровно RH-силы:
-    принять расширенную первопричину = принять RH. Декрет не слабее вывода.
-    ⚠️ AXIOM-TAINTED (через twin-границу). -/
+/-- **HONESTY (machine-wise, mirror of
+    `causalClosureAxiom_asserts_twins_at_every_scale`):** under the accepted twin
+    boundary the Riemann boundary ⟺ RH — the second boundary of the decree is exactly of RH strength:
+    to accept the extended first cause = to accept RH. The decree is no weaker than the conclusion.
+    ⚠️ AXIOM-TAINTED (via the twin boundary). -/
 theorem riemannManifestation_asserts_RH :
     RiemannManifestationLaw ↔ RiemannHypothesis :=
   manifestationLaw_iff_RH_of_boundary step00CausalClosure
 
-/-- **РАСТЯЖКА (Риман):** если off-critical нуль когда-либо будет предъявлен,
-    карантин противоречив — False выводимо ИМЕННО здесь. ⚠️ AXIOM-TAINTED
-    (намеренно: детектор взрыва). -/
+/-- **TRIPWIRE (Riemann):** if an off-critical zero is ever presented,
+    the quarantine is inconsistent — False is derivable EXACTLY here. ⚠️ AXIOM-TAINTED
+    (intentionally: the explosion detector). -/
 theorem quarantine_inconsistent_if_offCriticalZero_exhibited
     (Z : RiemannOffCriticalZero) : False :=
   noOffCriticalZero_of_manifestation_and_boundary
     no_someConcreteEuclideanEngine step00CausalClosure riemannManifestationLaw
     ⟨Z⟩
 
-/-- **РАСТЯЖКА (Риман):** если ¬RH когда-либо будет доказана, карантин
-    противоречив. Непротиворечивость `T + step00FirstCause` теперь требует
-    ещё и неопровержимости RH в базе. ⚠️ AXIOM-TAINTED. -/
+/-- **TRIPWIRE (Riemann):** if ¬RH is ever proven, the quarantine is
+    inconsistent. The consistency of `T + step00FirstCause` now requires
+    also the irrefutability of RH in the base. ⚠️ AXIOM-TAINTED. -/
 theorem quarantine_inconsistent_if_RH_refuted
     (h : ¬ RiemannHypothesis) : False := by
   obtain ⟨Z⟩ :=
     EuclidsPath.RiemannImpossibleEngineOff.offCriticalZero_of_not_RH h
   exact quarantine_inconsistent_if_offCriticalZero_exhibited Z
 
-/-- **РАСТЯЖКА (Риман):** опровержение самого закона манифестации — False
-    ровно здесь. ⚠️ AXIOM-TAINTED. -/
+/-- **TRIPWIRE (Riemann):** a refutation of the manifestation law itself — False
+    exactly here. ⚠️ AXIOM-TAINTED. -/
 theorem quarantine_inconsistent_if_manifestation_refuted
     (h : ¬ RiemannManifestationLaw) : False :=
   h riemannManifestationLaw
 
--- Машинная видимость нового таинта прямо в build-логе: у RH-редукции в списке
--- аксиом ОБЯЗАН стоять step00FirstCause (и только он сверх стандартных).
+-- Machine visibility of the new taint directly in the build log: the RH reduction's
+-- axiom list MUST contain step00FirstCause (and only it, beyond the standard ones).
 #print axioms riemannHypothesis_from_firstCause
 
 /-#############################################################################
-  §11. P/NP-ЯЗЫК ДЕКРЕТА: раскол по масштабам (третьей границы НЕТ — намеренно)
+  §11. P/NP LANGUAGE OF THE DECREE: split by scales (there is NO third boundary — intentionally)
 
-  Сепарация в авторском прочтении — ЗЕЛЁНАЯ теорема на A ≤ 4
-  (`pnp_rank_separation_smallScale`, Engine/PNPRankPaymentFront) и декрету
-  НЕ принадлежит. Ниже — только то, что декрет УЖЕ утверждает на СВОЁМ
-  масштабе A ≥ 5 через существующую twin-границу, плюс растяжка.
-  Трилемма (там же, зелёно): универсальный/decider-gated кандидаты третьего
-  поля опровержимы, экзистенциальный уже доказан — честного третьего поля
-  не существует.
+  The separation in the author's reading is a GREEN theorem for A ≤ 4
+  (`pnp_rank_separation_smallScale`, Engine/PNPRankPaymentFront) and does
+  NOT belong to the decree. Below is only what the decree ALREADY asserts at ITS
+  scale A ≥ 5 via the existing twin boundary, plus a tripwire.
+  The trilemma (same place, green): the universal/decider-gated candidates of the third
+  field are refutable, the existential is already proven — an honest third field
+  does not exist.
 #############################################################################-/
 
-/-- ⚠️ AXIOM-TAINTED: декрет УЖЕ даёт локальный P-успех на своём масштабе
-    (обязательно A ≥ 5) на каждом M0 — там конечный ключ разрешает коллизии. -/
+/-- ⚠️ AXIOM-TAINTED: the decree ALREADY gives local P-success at its scale
+    (necessarily A ≥ 5) at every M0 — there the finite key resolves collisions. -/
 theorem decreedScale_localPSuccess :
     ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
       EuclidsPath.LocalPNP.LocalPSuccess
@@ -2411,8 +2411,8 @@ theorem decreedScale_localPSuccess :
   EuclidsPath.PNPRankPayment.boundary_forces_localPSuccess_at_decreed_scale
     step00CausalClosure
 
-/-- ⚠️ AXIOM-TAINTED: на декретном масштабе первопричина ПЛАТИТ ВСЕ
-    сертификаты ранга (полная оплата в авторском смысле). -/
+/-- ⚠️ AXIOM-TAINTED: at the decree scale the first cause PAYS ALL
+    rank certificates (full payment in the author's sense). -/
 theorem decreedScale_fullPayment :
     ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
       EuclidsPath.PNPRankPayment.FullRankCertificatePayment
@@ -2420,8 +2420,8 @@ theorem decreedScale_fullPayment :
   EuclidsPath.PNPRankPayment.boundary_forces_fullPayment_at_decreed_scale
     step00CausalClosure
 
-/-- ⚠️ AXIOM-TAINTED: на декретном масштабе поставка сертификатов ОГРАНИЧЕНА —
-    книги сводятся, потому что поставка конечноключево учётна. -/
+/-- ⚠️ AXIOM-TAINTED: at the decree scale the supply of certificates is BOUNDED —
+    the books reconcile, because the supply is finite-key accountable. -/
 theorem decreedScale_supply_bounded :
     ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ,
       ¬ EuclidsPath.PNPRankPayment.UnboundedCertificateSupply
@@ -2429,120 +2429,120 @@ theorem decreedScale_supply_bounded :
   EuclidsPath.PNPRankPayment.boundary_bounds_supply_at_decreed_scale
     step00CausalClosure
 
-/-- **РАСТЯЖКА (P/NP):** если малую несжимаемость когда-либо распространят
-    на ВСЕ масштабы, карантин противоречив — False выводимо ИМЕННО здесь.
-    ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+/-- **TRIPWIRE (P/NP):** if the small incompressibility is ever extended
+    to ALL scales, the quarantine is inconsistent — False is derivable EXACTLY here.
+    ⚠️ AXIOM-TAINTED (intentionally: the explosion detector). -/
 theorem quarantine_inconsistent_if_incompressible_at_all_scales
     (h : ∀ A M0 : ℕ, EuclidsPath.LocalPNP.LocalSearchIncompressible
       (EuclidsPath.LocalPNP.Concrete.concreteProblem A M0)) : False := by
   obtain ⟨A, _, hLP⟩ := decreedScale_localPSuccess
   exact h A 0 (hLP 0)
 
--- Машинная видимость: P/NP-язык декрета заражён ровно step00FirstCause.
+-- Machine visibility: the P/NP language of the decree is tainted by exactly step00FirstCause.
 #print axioms decreedScale_localPSuccess
 
 /-#############################################################################
-  §12. ЯНГ–МИЛЛС-ЯЗЫК ДЕКРЕТА: гэп его собственного мира
-  (четвёртой границы НЕТ — намеренно; трилемма: Engine/YangMillsFront §7;
-  per-model закон ⟺ гэп зелёно — декретировать было бы = декретировать цель;
-  мир декрета интринзично квантован (lexRank : ℕ) — ниже только то, что
-  декрет утверждает САМ.)
+  §12. YANG–MILLS LANGUAGE OF THE DECREE: the gap of its own world
+  (there is NO fourth boundary — intentionally; the trilemma: Engine/YangMillsFront §7;
+  the per-model law ⟺ gap is green — to decree it would be = to decree the goal;
+  the world of the decree is intrinsically quantized (lexRank : ℕ) — below is only what
+  the decree asserts ITSELF.)
 #############################################################################-/
 
-/-- ⚠️ AXIOM-TAINTED: на декретном масштабе (обязательно A ≥ 5) поставка
-    отклонений ОТСУТСТВУЕТ на каждом M0 — в мире первопричины нет бесконечной
-    башни сколь-угодно-дешёвых возбуждений: декрет гэпнут в языке поставок. -/
+/-- ⚠️ AXIOM-TAINTED: at the decree scale (necessarily A ≥ 5) the supply of
+    deviations is ABSENT at every M0 — in the world of the first cause there is no infinite
+    tower of arbitrarily-cheap excitations: the decree is gapped in the language of supplies. -/
 theorem decreedScale_no_deviationSupply :
     ∃ A : ℕ, 5 ≤ A ∧ ∀ M0 : ℕ, ¬ DeviationFlowSupply A M0 :=
   EuclidsPath.YangMills.boundary_refuses_deviationSupply_at_decreed_scale
     step00CausalClosure
 
-/-- **РАСТЯЖКА (Янг–Миллс):** если поставку отклонений когда-либо предъявят
-    на ВСЕХ масштабах (включая декретный A ≥ 5), карантин противоречив —
-    False выводимо ИМЕННО здесь. Безопасность растяжки: зелёный мир знает
-    поставку только при A ≤ 4 (`smallScale_deviationSupply`); кованые
-    спектральные модели Янга–Миллса живут в спектральном мире и этого
-    утверждения не касаются. ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+/-- **TRIPWIRE (Yang–Mills):** if a supply of deviations is ever presented
+    at ALL scales (including the decree scale A ≥ 5), the quarantine is inconsistent —
+    False is derivable EXACTLY here. Safety of the tripwire: the green world knows
+    the supply only at A ≤ 4 (`smallScale_deviationSupply`); the forged
+    spectral Yang–Mills models live in the spectral world and do not touch this
+    statement. ⚠️ AXIOM-TAINTED (intentionally: the explosion detector). -/
 theorem quarantine_inconsistent_if_supply_at_every_scale
     (h : ∀ A M0 : ℕ, DeviationFlowSupply A M0) : False := by
   obtain ⟨A, _, hNo⟩ := decreedScale_no_deviationSupply
   exact hNo 0 (h A 0)
 
--- Машинная видимость: ЯМ-язык декрета заражён ровно step00FirstCause.
+-- Machine visibility: the YM language of the decree is tainted by exactly step00FirstCause.
 #print axioms decreedScale_no_deviationSupply
 
 /-#############################################################################
-  §13. НАВЬЕ–СТОКС-ЯЗЫК ДЕКРЕТА: пятой границы НЕТ — намеренно
-  (трилемма: Engine/NavierStokesFront §7 — универсал опровержим (cookedFlow),
-  экзистенциал уже зелёно доказан (нулевое решение), манифестационный
-  несовместим с принятой границей (cookedProfileCascade зелёно предъявим).
-  «Гэпнутость» мира декрета в языке поставок — уже §12
-  (decreedScale_no_deviationSupply), НС-дубликат НЕ добавляется. Зелёный
-  убийца равномерного сингулярного каскада при балансе
-  (noSingularCascade_of_energyBalance) — ТЕОРЕМА фронта, НЕ декрет: таинт
-  не подделывается. Клэй НЕ решается и НЕ объявляется.)
+  §13. NAVIER–STOKES LANGUAGE OF THE DECREE: there is NO FIFTH boundary — intentionally
+  (the trilemma: Engine/NavierStokesFront §7 — the universal is refutable (cookedFlow),
+  the existential is already green-proven (the zero solution), the manifestation one
+  is incompatible with the accepted boundary (cookedProfileCascade is green-presentable).
+  The "gappedness" of the decree's world in the language of supplies — this is already §12
+  (decreedScale_no_deviationSupply), no NS duplicate is added. The green
+  killer of the uniform singular cascade under balance
+  (noSingularCascade_of_energyBalance) — a THEOREM of the front, NOT a decree: the taint
+  is not forged. Clay is NOT solved and NOT declared.)
 #############################################################################-/
 
-/-- **РАСТЯЖКА (Навье–Стокс):** если манифестационную форму пятого поля
-    когда-либо примут или докажут, карантин противоречив — False выводимо
-    ИМЕННО здесь (кованый профильный каскад предъявим зелёно; принятая
-    граница сжигает поставку на своём масштабе). Безопасность: закон не
-    зелёно-доказуем — он ⟺ глобальной заморозке всех леджеров
-    (nsManifestationLaw_iff_no_resolution), а малые масштабы A ≤ 4 масштабы
-    A ≥ 5 не решают. ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+/-- **TRIPWIRE (Navier–Stokes):** if the manifestation form of the fifth field
+    is ever accepted or proven, the quarantine is inconsistent — False is derivable
+    EXACTLY here (the forged profile cascade is green-presentable; the accepted
+    boundary burns the supply at its scale). Safety: the law is not
+    green-provable — it is ⟺ the global freezing of all ledgers
+    (nsManifestationLaw_iff_no_resolution), and the small scales A ≤ 4 do not
+    decide the scales A ≥ 5. ⚠️ AXIOM-TAINTED (intentionally: the explosion detector). -/
 theorem quarantine_inconsistent_if_nsManifestationLaw_decreed
     (h : EuclidsPath.NavierStokesFront.NsManifestationLaw) : False :=
   EuclidsPath.NavierStokesFront.nsManifestationLaw_refutes_boundary h
     step00CausalClosure
 
--- Машинная видимость: НС-растяжка заражена ровно step00FirstCause.
+-- Machine visibility: the NS tripwire is tainted by exactly step00FirstCause.
 #print axioms quarantine_inconsistent_if_nsManifestationLaw_decreed
 
 /-#############################################################################
-  §14. ХОДЖ-ЯЗЫК ДЕКРЕТА: шестой границы НЕТ — намеренно
-  (трилемма: Engine/HodgeFront §6 — универсал опровержим (cookedUnpaid),
-  экзистенциал уже зелёно доказан (cookedPaid), chain-форма вырождена в
-  зелёную V2 (isEmpty_unpaidDescentChain — двигатель мёртв безусловно),
-  манифестационная форма над предъявимым классом несовместима с принятой
-  границей. Коллапс descentLaw_iff_hodgeProperty зелёный и безграничный —
-  декретировать закон = декретировать цель. «Гэпнутость» мира декрета в
-  языке поставок — уже §12, дубликат НЕ вводится. Клэй НЕ решается и НЕ
-  объявляется; алгебраической геометрии в mathlib нет — модель абстрактна.)
+  §14. HODGE LANGUAGE OF THE DECREE: there is NO SIXTH boundary — intentionally
+  (the trilemma: Engine/HodgeFront §6 — the universal is refutable (cookedUnpaid),
+  the existential is already green-proven (cookedPaid), the chain form is degenerate to
+  the green V2 (isEmpty_unpaidDescentChain — the engine is dead unconditionally),
+  the manifestation form over the presentable class is incompatible with the accepted
+  boundary. The collapse descentLaw_iff_hodgeProperty is green and boundaryless —
+  to decree the law = to decree the goal. The "gappedness" of the decree's world in
+  the language of supplies — this is already §12, no duplicate is introduced. Clay is NOT solved and NOT
+  declared; there is no algebraic geometry in mathlib — the model is abstract.)
 #############################################################################-/
 
-/-- **РАСТЯЖКА (Ходж):** если манифестационную форму шестого поля когда-либо
-    примут или докажут, карантин противоречив — False выводимо ИМЕННО здесь
-    (кованый неоплаченный класс предъявим зелёно; принятая граница сжигает
-    поставку на своём масштабе). Безопасность растяжки: закон не
-    зелёно-доказуем — он ⟺ глобальной заморозке ВСЕХ леджеров
-    (hodgeManifestationLaw_iff_no_resolution), а зелёный мир знает заморозку
-    только при A ≤ 4 (no_projection_resolves_at_smallScale); масштабы A ≥ 5
-    подлинно открыты. ⚠️ AXIOM-TAINTED (намеренно: детектор взрыва). -/
+/-- **TRIPWIRE (Hodge):** if the manifestation form of the sixth field is ever
+    accepted or proven, the quarantine is inconsistent — False is derivable EXACTLY here
+    (the forged unpaid class is green-presentable; the accepted boundary burns
+    the supply at its scale). Safety of the tripwire: the law is not
+    green-provable — it is ⟺ the global freezing of ALL ledgers
+    (hodgeManifestationLaw_iff_no_resolution), and the green world knows freezing
+    only at A ≤ 4 (no_projection_resolves_at_smallScale); the scales A ≥ 5
+    are genuinely open. ⚠️ AXIOM-TAINTED (intentionally: the explosion detector). -/
 theorem quarantine_inconsistent_if_hodgeManifestationLaw_decreed
     (h : EuclidsPath.Hodge.HodgeManifestationLaw) : False :=
   EuclidsPath.Hodge.hodgeManifestationLaw_refutes_boundary h
     step00CausalClosure
 
--- Машинная видимость: Ходж-растяжка заражена ровно step00FirstCause.
+-- Machine visibility: the Hodge tripwire is tainted by exactly step00FirstCause.
 #print axioms quarantine_inconsistent_if_hodgeManifestationLaw_decreed
 
 /-#############################################################################
-  §15. ТРЕТЬЯ ГРАНИЦА ДЕКРЕТА: гейт-закон энергобаланса НС (добитие)
-  (вердикт §13 «пятой границы НЕТ» остаётся в силе для безгейтных и
-  манифестационных форм; nsBoundary — выживший гейт-кандидат: расширенная
-  трилемма в Engine/NavierStokesFront §§9–11 — Дирихле-ковка убивает f=0,
-  ковка кованого давления убивает f=0+время; финальный гейт (время И
-  пространство) не кован — его опровержение ≥ решения открытой steady-NS
-  Liouville-проблемы. ЧЕСТНАЯ ЦЕНА раскрыта: «закон ⟺ цель»-зеркала НЕТ,
-  декрет, возможно, переплачивает. Клэй НЕ решается и НЕ объявляется.)
+  §15. THIRD BOUNDARY OF THE DECREE: the gate-law of NS energy balance (finishing blow)
+  (the verdict of §13 "there is NO fifth boundary" stands for the gateless and
+  manifestation forms; nsBoundary — the surviving gate-candidate: the extended
+  trilemma in Engine/NavierStokesFront §§9–11 — the Dirichlet forging kills f=0,
+  the forging of forged pressure kills f=0+time; the final gate (time AND
+  space) is not forged — its refutation ≥ solving the open steady-NS
+  Liouville problem. The HONEST PRICE is disclosed: there is NO "law ⟺ goal" mirror,
+  the decree may overpay. Clay is NOT solved and NOT declared.)
 #############################################################################-/
 
-/-- Проекция ТРЕТЬЕЙ границы декрета. ⚠️ AXIOM-TAINTED. -/
+/-- Projection of the THIRD boundary of the decree. ⚠️ AXIOM-TAINTED. -/
 theorem nsSolutionBalanceLaw : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw :=
   step00FirstCause.nsBoundary
 
-/-- ⚠️ AXIOM-TAINTED: каскадная гладкость (суррогат, НЕ C^∞ — раскрыто)
-    КАЖДОГО гейт-решения — из декрета. НЕ решение Клэя. -/
+/-- ⚠️ AXIOM-TAINTED: the cascade smoothness (a surrogate, NOT C^∞ — disclosed)
+    of EVERY gate-solution — from the decree. NOT a solution of Clay. -/
 theorem noSingularCascade_from_firstCause
     (ν : ℝ) (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
     (p : ℝ → EuclidsPath.NavierStokes.E3 → ℝ) (hν : 0 ≤ ν)
@@ -2553,8 +2553,8 @@ theorem noSingularCascade_from_firstCause
   EuclidsPath.NavierStokesFront.noSingularCascade_of_nsSolutionBalanceLaw
     nsSolutionBalanceLaw ν u p hν sol hdt hdx
 
-/-- ⚠️ AXIOM-TAINTED: тождество энергии гейт-решений из декрета (интеграл
-    взят декретом). -/
+/-- ⚠️ AXIOM-TAINTED: the energy identity of gate-solutions from the decree (the integral
+    is taken by decree). -/
 theorem energyIdentity_from_firstCause
     (ν : ℝ) (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
     (p : ℝ → EuclidsPath.NavierStokes.E3 → ℝ) (hν : 0 ≤ ν)
@@ -2567,13 +2567,13 @@ theorem energyIdentity_from_firstCause
   EuclidsPath.NavierStokesFront.energyIdentity_of_nsSolutionBalanceLaw
     nsSolutionBalanceLaw ν u p hν sol hdt hdx t₁ t₂
 
-/-- **РАСТЯЖКА (НС-гейт):** предъявление гейт-нарушения (бессиловое решение,
-    честно дифференцируемое по t и x, с проваленным балансом ИЛИ
-    неинтегрируемой диссипацией) — False ровно здесь. Безопасность: такое
-    предъявление ≥ решения открытой steady-NS Liouville-проблемы; обе
-    известные ковки гейтами убиты машинно (dirichletFlow_fails_time_gate,
-    cookedFlow_fails_space_gate). ⚠️ AXIOM-TAINTED (намеренно: детектор
-    взрыва). -/
+/-- **TRIPWIRE (NS gate):** exhibiting a gate-violation (a forceless solution,
+    honestly differentiable in t and x, with a failed balance OR
+    a non-integrable dissipation) — False exactly here. Safety: such an
+    exhibition ≥ solving the open steady-NS Liouville problem; both
+    known forgings are killed by the gates machine-wise (dirichletFlow_fails_time_gate,
+    cookedFlow_fails_space_gate). ⚠️ AXIOM-TAINTED (intentionally: the explosion
+    detector). -/
 theorem quarantine_inconsistent_if_nsGatedViolation_exhibited
     (ν : ℝ) (u : ℝ → EuclidsPath.NavierStokes.E3 → EuclidsPath.NavierStokes.E3)
     (p : ℝ → EuclidsPath.NavierStokes.E3 → ℝ) (hν : 0 ≤ ν)
@@ -2586,95 +2586,95 @@ theorem quarantine_inconsistent_if_nsGatedViolation_exhibited
         MeasureTheory.volume t₁ t₂)) : False :=
   hviol (nsSolutionBalanceLaw ν u p hν sol hdt hdx)
 
--- Машинная видимость: третья граница заражена ровно step00FirstCause.
+-- Machine visibility: the third boundary is tainted by exactly step00FirstCause.
 #print axioms noSingularCascade_from_firstCause
 
 /-#############################################################################
-  §16. МЕРСЕНН: ЧЕТВЁРТОЙ ГРАНИЦЫ НЕТ — НАМЕРЕННО, ПО ЗНАКУ ЭВРИСТИКИ
-  (только комментарий; деклараций нет — таинт не меняется)
+  §16. MERSENNE: there is NO FOURTH boundary — INTENTIONALLY, BY THE SIGN OF THE HEURISTIC
+  (comment only; there are no declarations — the taint does not change)
 
-  Зелёная машина — Engine/MersenneManifestationFront: свидетель отсутствия
-  MersenneTwinAbsenceAbove (Π-форма, любой свидетель ≥ 29), гейченный закон
-  манифестации, essence M3 (нет двигателей + граница + закон ⟹ Мерсенн-
-  близнецы неограничены), читаемая форма M3⁺ («опровержение предъявляет
-  двигатель»), аудиты M5–M9. ТРИЛЕММА ПРОЙДЕНА: свидетель зелёно
-  непредъявим (предъявление ≥ решения открытой задачи о хвосте
-  Мерсенн-близнецов), закон не зелёно-разрешим, кованого свидетеля не
-  существует (isEmpty_properCenterPeel_five_one — цепь 4c+1 не пилится).
-  По машинному критерию поле mersenneBoundary ДОПУСТИМО.
+  The green machine — Engine/MersenneManifestationFront: the absence witness
+  MersenneTwinAbsenceAbove (Π-form, any witness ≥ 29), the gated manifestation
+  law, essence M3 (no engines + boundary + law ⟹ Mersenne
+  twins are unbounded), the readable form M3⁺ ("a refutation exhibits an
+  engine"), audits M5–M9. THE TRILEMMA IS PASSED: the witness is green-
+  unpresentable (presentation ≥ solving the open problem about the tail of
+  Mersenne twins), the law is not green-decidable, a forged witness does
+  not exist (isEmpty_properCenterPeel_five_one — the chain 4c+1 does not peel).
+  By the machine criterion the field mersenneBoundary is ADMISSIBLE.
 
-  НО ОТЛОЖЕНО: ⚠️ первая граница-кандидат с ИНВЕРТИРОВАННЫМ знаком
-  эвристики. При границе закон ⟺ MersenneTwinCentersUnbounded (M7), а
-  эвристика направлена ПРОТИВ неограниченности (сходимость Σ по twin-парам
-  Мерсенна; известны лишь p = 3, 5; при p ≡ 3 mod 4 всегда 5 ∣ 2^p − 3).
-  Риман был ставкой на ожидаемо-истинное (RH); Мерсенн был бы ставкой
-  против ожиданий — непротиворечивость карантина на неё не ставится.
-  Вся строгая цепь при этом зелёная и живёт во фронте (граница — гипотезой).
+  BUT DEFERRED: ⚠️ the first boundary-candidate with an INVERTED sign of the
+  heuristic. Under the boundary the law ⟺ MersenneTwinCentersUnbounded (M7), and
+  the heuristic points AGAINST unboundedness (the convergence of Σ over the twin-pairs
+  of Mersenne; only p = 3, 5 are known; for p ≡ 3 mod 4 always 5 ∣ 2^p − 3).
+  Riemann was a bet on the expectedly-true (RH); Mersenne would be a bet
+  against expectations — the consistency of the quarantine is not staked on it.
+  The whole strict chain is nonetheless green and lives in the front (the boundary — as a hypothesis).
 #############################################################################-/
 
 /-#############################################################################
-  §17. АРИФМЕТИЧЕСКИЙ ЗООПАРК: ШЕСТЬ ФРОНТОВ — ГРАНИЦ НЕТ, НАМЕРЕННО
-  (только комментарий; деклараций нет — таинт карантина не меняется)
+  §17. THE ARITHMETIC ZOO: SIX FRONTS — there are NO BOUNDARIES, INTENTIONALLY
+  (comment only; there are no declarations — the quarantine's taint does not change)
 
-  Зелёные машины: Engine/PolignacManifestationFront (кузены p+4 и секси p+6),
-  Engine/SophieGermainManifestationFront (SG-пары p, 2p+1 + рестрикт 3 mod 4),
+  The green machines: Engine/PolignacManifestationFront (cousins p+4 and sexy p+6),
+  Engine/SophieGermainManifestationFront (SG-pairs p, 2p+1 + the 3 mod 4 restriction),
   Engine/GoldbachManifestationFront, Engine/LegendreDesertFront,
   Engine/OddPerfectManifestationFront, Engine/FermatManifestationFront —
-  каждая с Π- или объект-свидетелем, гейченным (или объект-квантифицированным)
-  законом, essence-теоремой «нет двигателей + граница + закон ⟹ цель» и
-  аудитами цены (X7: при границе закон ⟺ цель).
+  each with a Π- or object-witness, a gated (or object-quantified)
+  law, an essence-theorem "no engines + boundary + law ⟹ goal" and
+  price audits (X7: under the boundary the law ⟺ the goal).
 
-  ТРИЛЕММЫ ПРОЙДЕНЫ ВЕЗДЕ. И всё же ПОЛЯ НЕ ДОБАВЛЕНЫ:
+  THE TRILEMMAS ARE PASSED EVERYWHERE. And yet the FIELDS ARE NOT ADDED:
 
-  * Кузены/секси, Софи Жермен, Гольдбах, Лежандр, нечётные совершенные:
-    знак эвристики ПОЛОЖИТЕЛЬНЫЙ (Харди–Литтлвуд; консенсус) — как у Римана.
-    Но СЕРИЙНОЕ расширение декрета обесценило бы карантин: аксиома, растущая
-    полем на каждую пройденную трилемму, перестаёт быть исключением и
-    становится приёмом. Законы живут определениями в зелёных фронтах
-    (прецедент §16); непротиворечивость карантина на них не ставится.
-  * Ферма: знак ИНВЕРТИРОВАН СИЛЬНЕЕ Мерсенна (известны лишь F₀–F₄, F₅–F₃₂
-    составные) — вердикт §16 дословно.
-  * У Гольдбаха, Лежандра и совершенных свидетель ПОТОЧЕЧНО РАЗРЕШИМ
-    (Decidable; фальшивку убивает decide) — сильнейшая форма
-    непредъявимости серии: предъявить настоящего = решить открытую задачу.
-  * Кованых свидетелей нет нигде: isEmpty_properCenterPeel_two_one (цепь 2c),
-    isEmpty_properCenterPeel_three_one (цепь 6c²−4c+1); у кузенов/секси/
-    Гольдбаха/Лежандра/совершенных выделенной цепи нет вовсе — пилиться нечему.
+  * Cousins/sexy, Sophie Germain, Goldbach, Legendre, odd perfect:
+    the sign of the heuristic is POSITIVE (Hardy–Littlewood; consensus) — as with Riemann.
+    But a SERIAL extension of the decree would devalue the quarantine: an axiom growing
+    a field for every passed trilemma stops being an exception and
+    becomes a trick. The laws live as definitions in the green fronts
+    (the precedent of §16); the consistency of the quarantine is not staked on them.
+  * Fermat: the sign is INVERTED STRONGER than Mersenne (only F₀–F₄ are known, F₅–F₃₂
+    composite) — the verdict of §16 verbatim.
+  * For Goldbach, Legendre and the perfect ones the witness is POINTWISE DECIDABLE
+    (Decidable; a forgery is killed by decide) — the strongest form
+    of series unpresentability: to present a genuine one = to solve an open problem.
+  * There are no forged witnesses anywhere: isEmpty_properCenterPeel_two_one (chain 2c),
+    isEmpty_properCenterPeel_three_one (chain 6c²−4c+1); for cousins/sexy/
+    Goldbach/Legendre/the perfect ones there is no distinguished chain at all — there is nothing to peel.
 
-  Жемчужина серии — ЗЕЛЁНАЯ и живёт в ветке (SophieGermainBranch):
-  SG-простые при p ≡ 3 (mod 4) делят и компрометируют mersenne p — формальный
-  фрагмент той самой эвристики, по знаку которой §16 отложил mersenneBoundary.
-  См. prose/44–48.
+  The pearl of the series — GREEN and living in the branch (SophieGermainBranch):
+  SG-primes for p ≡ 3 (mod 4) divide and compromise mersenne p — a formal
+  fragment of that very heuristic by whose sign §16 deferred mersenneBoundary.
+  See prose/44–48.
 #############################################################################-/
 
 /-#############################################################################
-  §18. КОЛЛАТЦ: ЧЕТВЁРТАЯ ГРАНИЦА — ВЗЯТА И СНЯТА (пост-мортем декрета)
+  §18. COLLATZ: THE FOURTH BOUNDARY — TAKEN AND REMOVED (a post-mortem of the decree)
 
-  ИСТОРИЯ. Граница была ПРИНЯТА четвёртым полем
-  (`collatzBoundary : ∀ n ≥ 1, RopeCountingLaw n`) по знаку эвристики
-  (средний дрейф ×0.864 < 1, halvings/triplings = 2.016 > log₂3) — и трилемма
-  на момент принятия выглядела пройденной: кованое опровержение не было
-  известно. ЧЕСТНАЯ ЦЕНА раскрывалась сразу: «декрет, возможно, ПЕРЕПЛАЧИВАЕТ»
-  (доказана лишь стрелка закон ⟹ гипотеза; обратная неизвестна).
+  HISTORY. The boundary was ACCEPTED as a fourth field
+  (`collatzBoundary : ∀ n ≥ 1, RopeCountingLaw n`) by the sign of the heuristic
+  (mean drift ×0.864 < 1, halvings/triplings = 2.016 > log₂3) — and the trilemma
+  looked passed at the moment of acceptance: a forged refutation was not
+  known. The HONEST PRICE was disclosed immediately: "the decree may OVERPAY"
+  (only the arrow law ⟹ conjecture is proven; the converse is unknown).
 
-  ОПРОВЕРЖЕНИЕ (машинное). Переплатил до лжи: prefix-форма закона ЛОЖНА —
-  `not_ropeCountingLaw_27` и `ropeLaw_universal_refuted`
-  (Engine/CollatzTugOfWar, ядро [propext, Quot.sound]): у карабкающейся
-  траектории n = 27 к единице ведёт 41 ход двигателя против 29 рывков каната,
-  и ни одно окно от старта не даёт перевеса; хвост в цикле 1→2→1 дефицит не
-  отыгрывает. Эвристика мерила СУММАРНЫЙ баланс — закон же требовал перевеса
-  в окне ОТ КАЖДОЙ позиции, что карабкающиеся орбиты нарушают.
+  REFUTATION (machine). It overpaid into falsehood: the prefix-form of the law is FALSE —
+  `not_ropeCountingLaw_27` and `ropeLaw_universal_refuted`
+  (Engine/CollatzTugOfWar, kernel [propext, Quot.sound]): for the climbing
+  trajectory n = 27 there are 41 engine moves versus 29 rope tugs leading to one,
+  and no window from the start gives an advantage; the tail in the cycle 1→2→1 does not
+  win back the deficit. The heuristic measured the TOTAL balance — but the law required an advantage
+  in the window FROM EVERY position, which the climbing orbits violate.
 
-  СЛЕДСТВИЕ. Растяжка `collatzQuarantine_inconsistent_if_law_refuted`
-  сработала ровно как задумано: поле УДАЛЕНО из `Step00FirstCause` (иначе
-  аксиома была бы противоречива). Теперь трилемма Коллатца закрыта КОВАНЫМ
-  опровержением — как у Янг–Миллса: декретный путь невозможен машинно.
-  Коллатц возвращается в статус зелёного фронта с открытой гипотезой:
-  бюджет окна, ГЕРОЙ reaches_one_of_countingLaw (условный, per-n),
-  «опровержение = вечный двигатель» nonHalting_carries_perpetual_engine —
-  всё зелёное живо. Пост-мортем — Engine/CollatzFirstCause. Это работающий
-  пример дисциплины: границы падают от кованых опровержений, и репозиторий
-  фиксирует падение теоремой, а не забвением.
+  CONSEQUENCE. The tripwire `collatzQuarantine_inconsistent_if_law_refuted`
+  fired exactly as intended: the field is REMOVED from `Step00FirstCause` (otherwise
+  the axiom would be inconsistent). Now the Collatz trilemma is closed by a FORGED
+  refutation — as with Yang–Mills: the decree path is impossible machine-wise.
+  Collatz returns to the status of a green front with an open conjecture:
+  the window budget, the HERO reaches_one_of_countingLaw (conditional, per-n),
+  "a refutation = a perpetual engine" nonHalting_carries_perpetual_engine —
+  everything green is alive. The post-mortem — Engine/CollatzFirstCause. This is a working
+  example of the discipline: boundaries fall to forged refutations, and the repository
+  records the fall by a theorem, not by oblivion.
 #############################################################################-/
 
 end GeneratedFlowFormulation

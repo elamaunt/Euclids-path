@@ -1,20 +1,20 @@
 /-
-  SNOL: Shifted-Neighbour Obstruction Lemma — финальная редукция.
-  Источник: euclidean_crt_payment_ledger_full_ru_2026-06-30.md (§18–22).
-  Проза: prose/27_SNOL.md.
+  SNOL: Shifted-Neighbour Obstruction Lemma — the final reduction.
+  Source: euclidean_crt_payment_ledger_full_ru_2026-06-30.md (§18–22).
+  Prose: prose/27_SNOL.md.
 
-  Новая, более сильная редукция (rank descent → rank-1 → SNOL) сводит ВСЁ к ОДНОМУ узлу:
+  The new, stronger reduction (rank descent → rank-1 → SNOL) collapses EVERYTHING to ONE node:
     «finite twins ⟹ carrier-scale terminal shifted-neighbour obstruction (`p ∣ a−2ε`, `p ≤ A`)».
 
-  ВАЖНО (численно подтверждено, аудит §22): SNOL НЕ следует из CRT-ёмкости — у ~62–78% простых
-  `a>A` сосед `a±2` уже пойман малым простым `≤A`. Поэтому SNOL ОБЯЗАНА опираться на Euclidean-
-  родословную активного `a` (descent ancestry), а НЕ на распределение. Это точка, где маршрут НЕ
-  переходит красную линию: он её ЗАПРЕЩАЕТ (счёт бессилен) и требует структуру родословной.
+  IMPORTANT (numerically confirmed, audit §22): SNOL does NOT follow from CRT capacity — for ~62–78% of primes
+  `a>A` the neighbour `a±2` is already caught by a small prime `≤A`. Therefore SNOL MUST rely on the Euclidean
+  ancestry of the active `a` (descent ancestry), and NOT on distribution. This is the point where the route does NOT
+  cross the red line: it FORBIDS it (counting is powerless) and demands the ancestry structure.
 
-  Здесь — доказуемая алгебра rank-1 (§19) + neighbour saturation (§20), и финальная УСЛОВНАЯ
-  теорема (`finite ⟹ SNOL-violation`), с SNOL как явным входом (как `H` у four-corner).
+  Here — provable rank-1 algebra (§19) + neighbour saturation (§20), and the final CONDITIONAL
+  theorem (`finite ⟹ SNOL-violation`), with SNOL as an explicit named input (like `H` in four-corner).
 
-  Алгебра элементарна. SNOL — единственный открытый узел.
+  The algebra is elementary. SNOL is the sole open node.
 -/
 import Mathlib
 import EuclidsPath.Engine.ToTwins
@@ -25,19 +25,19 @@ namespace EuclidsPath.SNOL
 
 open EuclidsPath
 
-/-! ### §19–20. Доказуемая алгебра rank-1: перенос двойки и neighbour-коридор -/
+/-! ### §19–20. Provable rank-1 algebra: the two-shift and the neighbour corridor -/
 
 /--
-  **Rank-1 opposite side (§19).** Если `6n + ε = a` (одна сторона — само активное простое `a`),
-  то противоположная сторона ровно `6n − ε = a − 2ε`. Чистая алгебра переноса двойки.
+  **Rank-1 opposite side (§19).** If `6n + ε = a` (one side is the active prime `a` itself),
+  then the opposite side is exactly `6n − ε = a − 2ε`. Pure two-shift algebra.
 -/
 theorem rank1_opposite {n a ε : ℤ} (h : 6 * n + ε = a) : 6 * n - ε = a - 2 * ε := by
   omega
 
 /--
-  **Neighbour saturation (§20).** Если активное простое лежит в neighbour-коридоре по примориалу
-  `Q`: `a ≡ 2ε (mod q)` для всех `q ∈ Q` (попарно взаимно простых), то `P_Q ∣ a − 2ε`, т.е.
-  `a = k·P_Q + 2ε`. Это евклидов twin-neighbour сдвиг `kP ± 2`. Чистая алгебра.
+  **Neighbour saturation (§20).** If the active prime lies in the neighbour corridor modulo the primorial
+  `Q`: `a ≡ 2ε (mod q)` for all `q ∈ Q` (pairwise coprime), then `P_Q ∣ a − 2ε`, i.e.
+  `a = k·P_Q + 2ε`. This is the Euclidean twin-neighbour shift `kP ± 2`. Pure algebra.
 -/
 theorem neighbour_saturation {Q : Finset ℕ} {a ε : ℤ}
     (hcop : (Q : Set ℕ).Pairwise Nat.Coprime)
@@ -47,9 +47,9 @@ theorem neighbour_saturation {Q : Finset ℕ} {a ε : ℤ}
     (fun {_i} hi {_j} hj hij => (hcop hi hj hij).isCoprime.intCast) hsat
 
 /--
-  **Neighbour-коридор недостижим для малого `a` (порог, §20/§17).** Если примориал `P` соседского
-  коридора превосходит `|a − 2ε|`, то `a = 2ε`: нетривиальное активное простое не может насыщать
-  весь коридор. (Тот же закон дефекта, но для соседского сдвига `2ε` вместо `θ`.)
+  **Neighbour corridor unreachable for small `a` (threshold, §20/§17).** If the primorial `P` of the neighbour
+  corridor exceeds `|a − 2ε|`, then `a = 2ε`: a non-trivial active prime cannot saturate
+  the entire corridor. (Same deficit law, but for the neighbour shift `2ε` instead of `θ`.)
 -/
 theorem neighbour_corridor_bound {P a ε : ℤ}
     (hdvd : P ∣ a - 2 * ε) (hZ : |a - 2 * ε| < P) : a = 2 * ε := by
@@ -58,13 +58,13 @@ theorem neighbour_corridor_bound {P a ε : ℤ}
   · have := Int.le_of_dvd (abs_pos.mpr h0) ((dvd_abs P (a - 2 * ε)).mpr hdvd)
     omega
 
-/-! ### §21. Финальная условная теорема: SNOL ⟹ бесконечно много близнецов -/
+/-! ### §21. Final conditional theorem: SNOL ⟹ infinitely many twin primes -/
 
 /--
-  **SNOL-вход.** Ровно тот же типизированный четырёхугольный/блочный вход, что замыкает гипотезу:
-  на каждом масштабе `N` есть carrier выше `N`, в котором «плохое» (terminal shifted-neighbour
-  obstruction) строго меньше carrier, и каждый выживший — twin-центр. SNOL утверждает, что
-  terminal shifted-neighbour current НЕ carrier-scale — т.е. этот блочный вход выполнен.
+  **SNOL named input.** Exactly the same typed block/quadrilateral named input that closes the conjecture:
+  at every scale `N` there exists a carrier above `N` in which the «bad» set (terminal shifted-neighbour
+  obstruction) is strictly smaller than the carrier, and every survivor is a twin-center. SNOL asserts that
+  the terminal shifted-neighbour current is NOT carrier-scale — i.e. this block named input is satisfied.
 -/
 abbrev SNOLInput : Prop :=
   ∀ N : ℕ, ∃ carrier bad : Finset ℕ,
@@ -72,16 +72,16 @@ abbrev SNOLInput : Prop :=
       (∀ m ∈ carrier, m ∉ bad → IsTwinCenter m)
 
 /--
-  **Финальная редукция (Теорема 21.1).** SNOL (terminal shifted-neighbour obstruction не может
-  быть carrier-scale, в блочной форме) ⟹ простых-близнецов бесконечно много. Машинно: это прямой
-  мост `twin_prime_conjecture_of_blocks`. Открыт ровно SNOL.
+  **Final reduction (Theorem 21.1).** SNOL (terminal shifted-neighbour obstruction cannot
+  be carrier-scale, in block form) ⟹ infinitely many twin primes. Machine-verified: this is the direct
+  bridge `twin_prime_conjecture_of_blocks`. The sole open node is exactly SNOL.
 -/
 theorem twin_primes_of_SNOL (H : SNOLInput) : TwinLowers.Infinite :=
   twin_prime_conjecture_of_blocks H
 
 /--
-  **Контрапозиция: «близнецов конечно» противоречит SNOL.** Если `TwinLowers` конечно и выполнен
-  SNOL-вход, то `False`. Единственный открытый узел всей программы — SNOL.
+  **Contrapositive: «finitely many twins» contradicts SNOL.** If `TwinLowers` is finite and the
+  SNOL named input holds, then `False`. The sole open node of the entire program is SNOL.
 -/
 theorem finite_contradicts_SNOL (hfin : ¬ TwinLowers.Infinite) (H : SNOLInput) : False :=
   hfin (twin_primes_of_SNOL H)

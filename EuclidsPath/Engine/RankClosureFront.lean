@@ -1,19 +1,19 @@
 /-
-  RankClosureFront — rank-closure серия (6 кирпичей): boundary global
+  RankClosureFront — rank-closure series (6 bricks): boundary global
   certificate, tower complete verification, prefix closure completion,
   inequality closure, class separation closure, local class equality
   contradiction.
 
-  ЧЕСТНОСТЬ (флаги сборочного аудита): все False-выводы гипотезо-зависимы
+  HONESTY (assembly-audit flags): all False-conclusions are hypothesis-dependent
   (LocalOnlyBoundaryCrossingClaim / RankCollapseEngine / UniversalRankCompression
-  — явно противоречивые пакеты на входе). rankLocalClasses_do_not_coincide —
-  только при поданном RankSeparationWitness, который нигде не построен:
-  «P-neq-NP-образное» разделение целиком условно. Инертные гейты:
-  local_checkable (exists p : Prop, p — истинно через True), FullRankAudit-поля,
-  VerificationEasy self-supplied. Renamed-conclusion входы:
+  — explicitly contradictory input packages). rankLocalClasses_do_not_coincide —
+  only when RankSeparationWitness is supplied, which is never constructed:
+  the «P-neq-NP-style» separation is entirely conditional. Inert gates:
+  local_checkable (exists p : Prop, p — provable via True), FullRankAudit fields,
+  VerificationEasy self-supplied. Renamed-conclusion named inputs:
   RankSeparationWitness / Step00TwinRankWitnessPackage = «inNP + unbounded» —
-  вывод, поданный на вход; FirstMissingBoundary/PrefixObstructed кодируют
-  своё же заключение.
+  a conclusion supplied as input; FirstMissingBoundary/PrefixObstructed encode
+  their own conclusion.
 -/
 import Mathlib
 

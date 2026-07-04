@@ -1,13 +1,13 @@
 /-
-  ConcreteStep00Graph — КОНКРЕТНЫЙ граф Step00 для ветки 6m±1 (не абстрактный σ) + лексикографическая высота.
-  Источник: EuclidsPath_concrete_step00_graph_patch + EuclidsPath_step00_lex_height_patch.
-  Проза: prose/24_BoundaryDecomp.md (раздел «Конкретный граф 6m±1 и lex-высота»).
+  ConcreteStep00Graph — the CONCRETE Step00 graph for the 6m±1 branch (not the abstract σ) + lexicographic height.
+  Source: EuclidsPath_concrete_step00_graph_patch + EuclidsPath_step00_lex_height_patch.
+  Prose: prose/24_BoundaryDecomp.md (section "The concrete 6m±1 graph and lex-height").
 
-  Строит реальный граф: State (center/defect/absorber), индуктивный RealStep (clean/boundary/peel/absorb)
-  с арифметикой PeelCert (6n±1 = q·(6t±1)), Legal через Clean/делимость. НЕ вакуумен.
-  ГЛАВНОЕ: `lexRank = 3·center + phase` (center=2,defect=1,absorber=0) СТРОГО ПАДАЕТ на КАЖДОМ ребре,
-  включая absorb (где центр сохраняется — phase 1→0). Высота μ здесь ДОКАЗАНА, а не вход.
-  Остаток bounded-пакета: ledger-проекция + ∞-семья дефектов + collision-resolve. НЕ закрывает Step00.
+  Builds a real graph: State (center/defect/absorber), inductive RealStep (clean/boundary/peel/absorb)
+  with PeelCert arithmetic (6n±1 = q·(6t±1)), Legal via Clean/divisibility. NOT vacuous.
+  THE KEY POINT: `lexRank = 3·center + phase` (center=2,defect=1,absorber=0) STRICTLY DROPS on EVERY edge,
+  including absorb (where the center is preserved — phase 1→0). The height μ is PROVEN here, not an input.
+  Remainder of the bounded package: ledger-projection + ∞-family of defects + collision-resolve. Does NOT close Step00.
 -/
 import EuclidsPath.Engine.CleanGraph
 import EuclidsPath.Engine.BoundaryDefectPayment
@@ -619,12 +619,12 @@ fresh defect family and a concrete bounded ledger-collision resolution law.
 abbrev TheBoundedConcreteGraphObligation (A M0 B : ℕ) : Prop :=
   ∃ P : BoundedConcreteStep00CollapsePackage A M0 B, True
 
-/-! ### §6–8. Безусловная (глобальная) ацикличность из lexRank
+/-! ### §6–8. Unconditional (global) acyclicity from lexRank
 
-Убывающий ℕ-ранг `lexRank` САМ запрещает циклы (well-founded), без границы `B` и без co-height.
-Источник: EuclidsPath_step00_lexRank_acyclic_patch. Anti-cycle сторона снята ГЛОБАЛЬНО. -/
+The decreasing ℕ-rank `lexRank` BY ITSELF forbids cycles (well-founded), without the boundary `B` and without co-height.
+Source: EuclidsPath_step00_lexRank_acyclic_patch. The anti-cycle side is discharged GLOBALLY. -/
 
-/-- Ранг, строго убывающий вдоль ребра, слабо убывает вдоль любого пути. -/
+/-- A rank strictly decreasing along an edge weakly decreases along any path. -/
 theorem pathN_rank_le_of_step_decrease
     {α : Type*} {R : α → α → Prop} {rank : α → ℕ}
     (hstep : ∀ {U V : α}, R U V → rank V < rank U) :
@@ -638,7 +638,7 @@ theorem pathN_rank_le_of_step_decrease
       rcases h with ⟨Z, hXZ, hZY⟩
       exact Nat.le_trans (ih hZY) (Nat.le_of_lt (hstep hXZ))
 
-/-- Строго убывающий ранг строго убывает вдоль НЕПУСТОГО пути. -/
+/-- A strictly decreasing rank strictly decreases along a NONEMPTY path. -/
 theorem pathN_rank_strict_of_pos_of_step_decrease
     {α : Type*} {R : α → α → Prop} {rank : α → ℕ}
     (hstep : ∀ {U V : α}, R U V → rank V < rank U) :
@@ -653,7 +653,7 @@ theorem pathN_rank_strict_of_pos_of_step_decrease
       exact lt_of_le_of_lt (pathN_rank_le_of_step_decrease (R := R) (rank := rank) hstep hZY)
         (hstep hXZ)
 
-/-- Строгий ℕ-спуск вдоль ребра запрещает непустой self-путь (прямой well-founded, без co-height). -/
+/-- A strict ℕ-descent along an edge forbids a nonempty self-path (direct well-founded, without co-height). -/
 theorem no_nonemptyPath_of_step_decrease
     {α : Type*} {R : α → α → Prop} {rank : α → ℕ}
     (hstep : ∀ {U V : α}, R U V → rank V < rank U) (W : α) :
@@ -662,19 +662,19 @@ theorem no_nonemptyPath_of_step_decrease
   exact Nat.lt_irrefl (rank W)
     (pathN_rank_strict_of_pos_of_step_decrease (R := R) (rank := rank) hstep hpos hPathN)
 
-/-- **Конкретный граф Step00 ацикличен ГЛОБАЛЬНО** (безусловно, из `lexRank`). -/
+/-- **The concrete Step00 graph is acyclic GLOBALLY** (unconditionally, from `lexRank`). -/
 theorem no_concrete_nonemptyPath_by_lexRank {A M0 : ℕ} (W : State) :
     ¬ NonemptyPath (RealStep A M0) W W :=
   no_nonemptyPath_of_step_decrease (R := RealStep A M0) (rank := lexRank)
     (fun hStep => lexRank_strict_decrease_on_RealStep hStep) W
 
-/-- Нет legal-цикла в конкретном графе (форма для ledger-collision). -/
+/-- No legal cycle in the concrete graph (form for ledger-collision). -/
 theorem no_concrete_legalCycle_by_lexRank {A M0 : ℕ} :
     ¬ LegalCycle (RealStep A M0) (Legal A M0) := by
   rintro ⟨W, _hLegal, hPath⟩
   exact no_concrete_nonemptyPath_by_lexRank (A := A) (M0 := M0) W hPath
 
-/-- ∞ свежих дефектов + collision-resolve ⟹ `False` НАПРЯМУЮ из `lexRank` (без границы `B`). -/
+/-- ∞ fresh defects + collision-resolve ⟹ `False` DIRECTLY from `lexRank` (without the boundary `B`). -/
 theorem infinite_fresh_defects_impossible_by_lexRank
     {A M0 : ℕ} {S : Set State}
     (proj : LedgerProjection A M0)
@@ -683,26 +683,26 @@ theorem infinite_fresh_defects_impossible_by_lexRank
   no_concrete_legalCycle_by_lexRank (A := A) (M0 := M0)
     (infinite_fresh_defects_force_concrete_cycle (A := A) (M0 := M0) (S := S) proj hS hResolve)
 
-/-- Unbounded-пакет: без поля высоты и без `B` (anti-cycle = `lexRank`). -/
+/-- Unbounded package: without the height field and without `B` (anti-cycle = `lexRank`). -/
 structure UnboundedConcreteStep00CollapsePackage (A M0 : ℕ) where
   proj : LedgerProjection A M0
   S : Set State
   infiniteFreshDefects : InfiniteFreshDefectFamily A M0 S
   collisionResolves : ConcreteLedgerCollisionResolves A M0 proj
 
-/-- Любой unbounded-пакет схлопывается по `lexRank`. -/
+/-- Any unbounded package collapses by `lexRank`. -/
 theorem unboundedConcreteStep00CollapsePackage_false {A M0 : ℕ}
     (P : UnboundedConcreteStep00CollapsePackage A M0) : False :=
   infinite_fresh_defects_impossible_by_lexRank P.proj P.infiniteFreshDefects P.collisionResolves
 
-/-- Остаток после глобальной ацикличности: ТРИ позитивных входа (proj, ∞-семья, resolve). -/
+/-- Remainder after global acyclicity: THREE positive inputs (proj, ∞-family, resolve). -/
 abbrev TheUnboundedConcreteGraphObligation (A M0 : ℕ) : Prop :=
   ∃ P : UnboundedConcreteStep00CollapsePackage A M0, True
 
 
-/-! ### §9. ПРАВИЛЬНЫЙ неограниченный ledger-граф (не вакуумный: State ∞, Key конечен).
-Источник: EuclidsPath_proper_unbounded_ledger_graph_patch. Заменяет вакуумный finite-strict:
-пиджонхол на бесконечном подмножестве НЕОГРАНИЧЕННОГО State → конечный ledger-ключ. -/
+/-! ### §9. The PROPER unbounded ledger graph (not vacuous: State ∞, Key finite).
+Source: EuclidsPath_proper_unbounded_ledger_graph_patch. Replaces the vacuous finite-strict:
+pigeonhole on an infinite subset of the UNBOUNDED State → finite ledger-key. -/
 
 namespace ProperUnboundedLedgerGraph
 
@@ -945,9 +945,9 @@ abbrev TheProperUnboundedLedgerGraphObligation (A M0 : ℕ) : Prop :=
   ∃ P : ProperUnboundedLedgerCollapsePackage A M0, True
 
 
-/-! ### §10. Строгий аудит проекции Π (анти-читинг: запрет identity-ключа и скрытого центра).
-Источник: EuclidsPath_semantic_ledger_strict_audit_patch. Не доказывает soundness Π —
-машинно запрещает жульнические проекции; вся арифметика изолирована в SemanticLedgerCollisionResolves. -/
+/-! ### §10. Strict audit of the projection Π (anti-cheating: ban on identity-key and hidden center).
+Source: EuclidsPath_semantic_ledger_strict_audit_patch. Does not prove soundness of Π —
+it machine-forbids cheating projections; all arithmetic is isolated in SemanticLedgerCollisionResolves. -/
 
 namespace StrictLedgerAudit
 
@@ -1215,9 +1215,9 @@ end ProperUnboundedLedgerGraph
 
 
 
-/-! ### §11. Generated-flow формулировка источника (кратность сохранена).
-Источник: EuclidsPath_generated_flow_strict_formulation_patch. Пиджонхол на ГЕНЕАЛОГИЯХ
-(поток = старт+непустой путь+ledger-терминал), не на состояниях — fan-in не стирается. -/
+/-! ### §11. Generated-flow formulation of the source (multiplicity preserved).
+Source: EuclidsPath_generated_flow_strict_formulation_patch. Pigeonhole on GENEALOGIES
+(flow = start + nonempty path + ledger-terminal), not on states — fan-in is not erased. -/
 
 namespace GeneratedFlowFormulation
 open EuclidsPath.Residuals
@@ -1580,9 +1580,9 @@ theorem terminalFanIn_witnesses_state_projection_loss
   h
 
 
-/-! ### Построение источника: generated-flow factory из чистого не-twin старта (7 кирпичей).
-InfiniteCleanStarts закрыт КОНСТРУКТИВНЫМ primorial; well-founded flow-builder; cofactor-нормализатор
-через реальную 6m±1 арифметику. Близнецы сведены к ОДНОМУ входу SemanticExtendedFlowLedgerCollisionResolves. -/
+/-! ### Building the source: generated-flow factory from a clean non-twin start (7 bricks).
+InfiniteCleanStarts closed by a CONSTRUCTIVE primorial; well-founded flow-builder; cofactor-normalizer
+via real 6m±1 arithmetic. Twins reduced to a SINGLE input SemanticExtendedFlowLedgerCollisionResolves. -/
 open EuclidsPath.RigidClose
 open Classical
 
@@ -1719,8 +1719,8 @@ structure ProperCenterPeel (A m n : ℕ) where
   bigBeyondScale : A < bigDivisor
   factor : sideValue inSide m = bigDivisor * sideValue outSide n
   smaller : n < m
-  /-- АУДИТ-ЗАПЛАТА (дегенеративный peel): цель `n ≥ 1`. Без этого простая сторона `p = p·1`
-      (`1 = 6·0+1`) давала peel в центр 0 БЕЗ twin-гипотезы — вакуум-эксплойт аудита. -/
+  /-- AUDIT-PATCH (degenerate peel): target `n ≥ 1`. Without this the prime side `p = p·1`
+      (`1 = 6·0+1`) gave a peel into center 0 WITHOUT the twin hypothesis — a vacuity exploit of the audit. -/
   targetPos : 1 ≤ n
 
 /--
@@ -2336,7 +2336,7 @@ noncomputable def properBoundaryPeel_of_not_clean_target {A m n : ℕ}
   classical
   unfold Clean at hNotClean
   push_neg at hNotClean
-  -- извлечь свидетеля (q, делимость) из Prop-∃ в Type через .choose
+  -- extract the witness (q, divisibility) from Prop-∃ into Type via .choose
   let q : ℕ := hNotClean.choose
   have hq : q.Prime ∧ q ≤ A ∧ (q ∣ (6 * n - 1) ∨ q ∣ (6 * n + 1)) := hNotClean.choose_spec
   obtain ⟨hqPrime, hqA, hbad⟩ := hq
@@ -2655,8 +2655,8 @@ structure RawBigSideDivisor (A m : ℕ) where
   bigPrime : bigDivisor.Prime
   bigBeyondScale : A < bigDivisor
   bigDivides : bigDivisor ∣ sideValue inSide m
-  /-- АУДИТ-ЗАПЛАТА (дегенеративный peel): делитель СОБСТВЕННЫЙ — иначе простая сторона делит
-      сама себя и кофактор 1 = 6·0+1 даёт peel в центр 0 БЕЗ twin-гипотезы (вакуум-эксплойт). -/
+  /-- AUDIT-PATCH (degenerate peel): the divisor is PROPER — otherwise the prime side divides
+      itself and the cofactor 1 = 6·0+1 gives a peel into center 0 WITHOUT the twin hypothesis (vacuity exploit). -/
   properDiv : bigDivisor < sideValue inSide m
 
 /-- Cleanliness of a centre forbids every small prime on the minus side. -/
@@ -2678,7 +2678,7 @@ A clean non-twin centre has a composite side, hence a large prime divisor on
 one side.
 
 This is a real proved arithmetic step: no graph edge or projection is used.
-(Prop-форма существования; данные извлекаются `.some` ниже.)
+(Prop-form of existence; the data is extracted with `.some` below.)
 -/
 theorem exists_rawBigSideDivisor_of_clean_nonTwin {A m : ℕ}
     (hm : 1 ≤ m)
@@ -2692,7 +2692,7 @@ theorem exists_rawBigSideDivisor_of_clean_nonTwin {A m : ℕ}
     simpa [TwinCenterZ] using hNoTwin
   rcases EuclidsPath.MkNode.composite_side_of_not_twin hlo hhi hNoTwin' with hminus | hplus
   · rcases hminus with ⟨hside, hcomp⟩
-    -- b := minFac стороны; КОМПОЗИТНОСТЬ теперь НЕСУЩАЯ: она даёт b < side (собственность).
+    -- b := minFac of the side; COMPOSITENESS is now LOAD-BEARING: it gives b < side (properness).
     set S := 6 * m - 1 with hS
     have hSne1 : S ≠ 1 := by omega
     have hbPrime : S.minFac.Prime := Nat.minFac_prime hSne1
@@ -2729,7 +2729,7 @@ theorem exists_rawBigSideDivisor_of_clean_nonTwin {A m : ℕ}
              bigDivides := by simpa [sideValue, hS] using hbDiv
              properDiv := by simpa [sideValue, hS] using hbLt }⟩
 
-/-- Сырой большой делитель как данные (через `Classical.choice` из существования). -/
+/-- The raw big divisor as data (via `Classical.choice` from existence). -/
 noncomputable def rawBigSideDivisor_of_clean_nonTwin {A m : ℕ}
     (hm : 1 ≤ m)
     (hClean : Clean A m)
@@ -2752,7 +2752,7 @@ structure ProperCofactorTarget {A m : ℕ} (R : RawBigSideDivisor A m) where
   outSide : Side
   factor : sideValue R.inSide m = R.bigDivisor * sideValue outSide target
   smaller : target < m
-  /-- АУДИТ-ЗАПЛАТА: цель — настоящий центр (`≥ 1`), НЕ дегенеративный 0. -/
+  /-- AUDIT-PATCH: the target is a genuine center (`≥ 1`), NOT the degenerate 0. -/
   targetPos : 1 ≤ target
 
 /--
@@ -2999,7 +2999,7 @@ theorem exists_properCofactorTarget_of_raw {A m : ℕ}
     rw [hcenter, hquot_c]
     exact hcPos
   rcases int_center_to_nat_side hη' ht0 hcofacPos with ⟨target, outSide, hout, htargetCast⟩
-  -- АУДИТ-ЗАПЛАТА: кофактор c ≥ 2 (из properDiv), значит target ≥ 1 (иначе sideValue ∈ {0,1}).
+  -- AUDIT-PATCH: cofactor c ≥ 2 (from properDiv), hence target ≥ 1 (otherwise sideValue ∈ {0,1}).
   have hside5 : 5 ≤ sideValue R.inSide m := by
     cases hIn : R.inSide <;> simp [sideValue] <;> omega
   have hc2 : 2 ≤ c := by
@@ -3270,15 +3270,15 @@ theorem twinLowersInfinite_of_lastStep00Obligation
 
 
 
-/-! ### Обострение финальной редукции: сертификат = twin-детектор; кофинальное ослабление
+/-! ### Sharpening the final reduction: the certificate = twin-detector; cofinal weakening
 
-`no_extendedFlowResolutionAlternative` (цикл и оплата оба невозможны) превращает `Resolves proj` в
-«same-key коллизий НЕТ» = инъективность ключа на admissible-потоках. А раз при twin-bound ∞-семья
-ДОКАЗАНА, инъективный конечный ключ невозможен ⟹ `Resolves` при twin-bound всегда ложен. Переворот:
-`Resolves` на M0 ⟹ twin выше M0. Вход — twin-детектор, НЕ нейтральное условие. -/
+`no_extendedFlowResolutionAlternative` (cycle and payment both impossible) turns `Resolves proj` into
+"there are NO same-key collisions" = injectivity of the key on admissible flows. And since under a twin-bound the ∞-family
+is PROVEN, a finite injective key is impossible ⟹ `Resolves` under a twin-bound is always false. Reversal:
+`Resolves` on M0 ⟹ a twin above M0. The input is a twin-detector, NOT a neutral condition. -/
 
-/-- **`resolves_iff_key_injective` — ДОКАЗАНА (характеризация).** `Resolves proj` ⟺ ключ инъективен
-    на admissible extended-потоках (обе резолюционные альтернативы невозможны). -/
+/-- **`resolves_iff_key_injective` — PROVEN (characterization).** `Resolves proj` ⟺ the key is injective
+    on admissible extended flows (both resolution alternatives are impossible). -/
 theorem resolves_iff_key_injective {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     SemanticExtendedFlowLedgerCollisionResolves proj ↔
@@ -3291,9 +3291,9 @@ theorem resolves_iff_key_injective {A M0 : ℕ}
   · intro hInj F₁ F₂ hne h1 h2 hkey
     exact absurd hkey (hInj F₁ F₂ hne h1 h2)
 
-/-- **`twin_above_of_resolves` — ДОКАЗАНА (сертификат = twin-детектор).** `Resolves` на масштабе `M0`
-    ПРЕДЪЯВЛЯЕТ twin выше `M0`: иначе twin-bound + Resolves противоречивы
-    (`twinBound_impossible_with_semanticExtendedResolution`). Значит вход не слабее цели на M0. -/
+/-- **`twin_above_of_resolves` — PROVEN (certificate = twin-detector).** `Resolves` at scale `M0`
+    PRESENTS a twin above `M0`: otherwise twin-bound + Resolves are contradictory
+    (`twinBound_impossible_with_semanticExtendedResolution`). Hence the input is not weaker than the goal at M0. -/
 theorem twin_above_of_resolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (hRes : SemanticExtendedFlowLedgerCollisionResolves proj) :
@@ -3303,9 +3303,9 @@ theorem twin_above_of_resolves {A M0 : ℕ}
   have hBound : TwinBoundAbove M0 := fun m hm => hno m hm
   exact twinBound_impossible_with_semanticExtendedResolution hBound proj hRes
 
-/-- **`twinLowersInfinite_of_cofinal_resolves` — ДОКАЗАНА (ослабление TheLastStep00Obligation).**
-    Достаточно `Resolves` на КОФИНАЛЬНО многих `M0` (не на всех): каждый такой `M0` даёт twin выше,
-    twin-центры неограничены ⟹ `TwinLowers.Infinite`. -/
+/-- **`twinLowersInfinite_of_cofinal_resolves` — PROVEN (weakening of TheLastStep00Obligation).**
+    `Resolves` on COFINALLY many `M0` (not on all) suffices: each such `M0` gives a twin above,
+    twin-centers are unbounded ⟹ `TwinLowers.Infinite`. -/
 theorem twinLowersInfinite_of_cofinal_resolves {A : ℕ}
     (hCof : ∀ N : ℕ, ∃ M0, N ≤ M0 ∧
       ∃ proj : SemanticExtendedFlowLedgerProjection A M0,
@@ -3319,14 +3319,14 @@ theorem twinLowersInfinite_of_cofinal_resolves {A : ℕ}
   simpa [EuclidsPath.Residuals.TwinCenterZ, EuclidsPath.IsTwinCenter] using hTwin
 
 
-/-! ### STRICT-слой: return-path сертификат + финальный строгий аудит редукции.
-Недостающий промежуточный слой (semantic_extended_collision_expanded) ПОСТРОЕН: pathN_trans,
-return-сертификат ⟹ цикл (конкатенация forward+return), обе ветви опровергнуты, strict⟹old,
-TheStrictLastStep00Obligation. Затем — тело final_strict_reduction_audit кирпича. -/
+/-! ### STRICT layer: return-path certificate + final strict reduction audit.
+The missing intermediate layer (semantic_extended_collision_expanded) is BUILT: pathN_trans,
+return-certificate ⟹ cycle (concatenation of forward+return), both branches refuted, strict⟹old,
+TheStrictLastStep00Obligation. Then — the body of the final_strict_reduction_audit brick. -/
 
 open EuclidsPath.LabelledFanIn EuclidsPath.BoundaryLedgerCollision EuclidsPath.BoundaryDefectPayment
 
--- КОНКАТЕНАЦИЯ ПУТЕЙ (недостающая механика)
+-- PATH CONCATENATION (the missing mechanics)
 theorem pathN_trans {α : Type*} {R : α → α → Prop} :
     ∀ {n m : ℕ} {X Y Z : α}, PathN R n X Y → PathN R m Y Z → PathN R (n + m) X Z
   | 0, m, X, Y, Z, h1, h2 => by
@@ -3339,13 +3339,13 @@ theorem pathN_trans {α : Type*} {R : α → α → Prop} :
       rw [Nat.succ_add]
       exact ⟨W, hXW, hrec⟩
 
--- RETURN-СЕРТИФИКАТ: одна из генеалогий возвращается из терминала в СВОЙ старт
+-- RETURN-CERTIFICATE: one of the genealogies returns from the terminal to ITS OWN start
 def ExtendedFlowReturnCertificate {A M0 : ℕ}
     (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
   NonemptyPath (RealStep A M0) F₁.terminal (State.center F₁.start) ∨
   NonemptyPath (RealStep A M0) F₂.terminal (State.center F₂.start)
 
--- return-сертификат ⟹ legal-цикл (конкатенация forward-генеалогии с return-путём)
+-- return-certificate ⟹ legal cycle (concatenation of the forward genealogy with the return path)
 theorem extendedFlowReturnCertificate_forces_legalCycle {A M0 : ℕ}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0}
     (h : ExtendedFlowReturnCertificate F₁ F₂) :
@@ -3359,12 +3359,12 @@ theorem extendedFlowReturnCertificate_forces_legalCycle {A M0 : ℕ}
     | (refine ⟨State.center F₂.start, F₂.startClean, F₂.steps + k, by have := F₂.nonempty; omega, ?_⟩
        exact pathN_trans (properPath_to_realPath F₂.properPath) hpath) }
 
--- РАСШИРЕННАЯ АЛЬТЕРНАТИВА (ниже уровнем, чем LegalCycle ∨ Payment)
+-- EXPANDED ALTERNATIVE (lower level than LegalCycle ∨ Payment)
 def ExpandedExtendedFlowResolutionAlternative {A M0 : ℕ}
     (F₁ F₂ : ExtendedProperGeneratedFlow A M0) : Prop :=
   ExtendedFlowReturnCertificate F₁ F₂ ∨ BoundaryDefectPayment.ImpossiblePayment
 
--- обе ветви УЖЕ опровергнуты (цикл — lexRank; оплата — primorial)
+-- both branches are ALREADY refuted (cycle — lexRank; payment — primorial)
 theorem no_expandedExtendedFlowResolutionAlternative {A M0 : ℕ}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
     ¬ ExpandedExtendedFlowResolutionAlternative F₁ F₂ := by
@@ -3373,7 +3373,7 @@ theorem no_expandedExtendedFlowResolutionAlternative {A M0 : ℕ}
       (extendedFlowReturnCertificate_forces_legalCycle hret)
   · exact BoundaryDefectPayment.impossiblePayment_false hpay
 
--- STRICT-РЕЗОЛВЕР (финальная строгая форма входа)
+-- STRICT-RESOLVER (the final strict form of the input)
 def StrictSemanticExtendedFlowLedgerCollisionResolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
   ∀ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
@@ -3381,7 +3381,7 @@ def StrictSemanticExtendedFlowLedgerCollisionResolves {A M0 : ℕ}
     proj.keyFlow F₁ = proj.keyFlow F₂ →
     ExpandedExtendedFlowResolutionAlternative F₁ F₂
 
--- strict ⟹ старый резолвер
+-- strict ⟹ the old resolver
 theorem strictSemanticExtended_resolves_old {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (h : StrictSemanticExtendedFlowLedgerCollisionResolves proj) :
@@ -3410,7 +3410,7 @@ theorem twinLowersInfinite_of_strictLastStep00Obligation
 
 
 
-/-! ### final strict reduction audit (кирпич) -/
+/-! ### final strict reduction audit (brick) -/
 
 
 /-#############################################################################
@@ -3566,9 +3566,9 @@ theorem unresolvedFinalCollision_of_sameKey {A M0 : ℕ}
 
 
 
-/-- **`twin_above_of_strictResolves` — ДОКАЗАНА (честность strict-формы).** Strict-резолвер на масштабе
-    `M0` ТОЖЕ предъявляет twin выше `M0` (через `strict ⟹ old` и `twin_above_of_resolves`). Финальный
-    вход в строгой форме — по-прежнему twin-детектор, не нейтральное условие. -/
+/-- **`twin_above_of_strictResolves` — PROVEN (honesty of the strict form).** The strict resolver at scale
+    `M0` ALSO presents a twin above `M0` (via `strict ⟹ old` and `twin_above_of_resolves`). The final
+    input in strict form is still a twin-detector, not a neutral condition. -/
 theorem twin_above_of_strictResolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (h : StrictSemanticExtendedFlowLedgerCollisionResolves proj) :
@@ -3576,11 +3576,11 @@ theorem twin_above_of_strictResolves {A M0 : ℕ}
   twin_above_of_resolves proj (strictSemanticExtended_resolves_old h)
 
 
-/-- **`search_incompressible_under_twinBound` — ДОКАЗАНА («локальное P≠NP» как теорема).** При
-    twin-bound НИКАКОЙ конечный сертификат (проекция) не инъективен на admissible-генеалогиях:
-    обратный поиск ПРОВЕРЕННО не сжимается. В P/NP-словаре §12: асимметрия «проверка легка
-    (`pathN_len_le_lexRank`) / поиск не сжимается» — под гипотезой конечности близнецов это ТЕОРЕМА,
-    а сжимаемость на любом масштабе предъявляет twin (`twin_above_of_resolves`). НЕ доказывает P≠NP. -/
+/-- **`search_incompressible_under_twinBound` — PROVEN ("local P≠NP" as a theorem).** Under a
+    twin-bound NO finite certificate (projection) is injective on admissible genealogies:
+    the reverse search PROVABLY does not compress. In the P/NP vocabulary of §12: the asymmetry "verification is easy
+    (`pathN_len_le_lexRank`) / search does not compress" — under the hypothesis of finiteness of twins this is a THEOREM,
+    and compressibility at any scale presents a twin (`twin_above_of_resolves`). Does NOT prove P≠NP. -/
 theorem search_incompressible_under_twinBound {A M0 : ℕ}
     (hTwinBound : TwinBoundAbove M0)
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
@@ -3594,11 +3594,11 @@ theorem search_incompressible_under_twinBound {A M0 : ℕ}
   exact twinBound_impossible_with_semanticExtendedResolution hTwinBound proj hRes
 
 /-#############################################################################
-  ЭНЕРГЕТИЧЕСКИЙ LEDGER (кирпич: energy_ledger_exhaustion).
-  Конечный энерго-токен поверх семантической проекции: «не вернулся — плати
-  свежей энергией»; конечность `(ключ, токен)` ⟹ double spend ⟹ уже сожжённая
-  альтернатива (цикл/оплата). Ниже — кирпич + машинная честность (детектор и
-  факторизация через старый узел).
+  ENERGY LEDGER (brick: energy_ledger_exhaustion).
+  A finite energy-token on top of the semantic projection: "did not return — pay
+  with fresh energy"; finiteness of `(key, token)` ⟹ double spend ⟹ an already burnt
+  alternative (cycle/payment). Below — the brick + machine honesty (detector and
+  factorization through the old node).
 #############################################################################-/
 
 /--
@@ -3775,11 +3775,11 @@ def RemainingFiniteEnergyCertificate {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) : Prop :=
   Nonempty (ExtendedFlowEnergyLedger proj)
 
-/-! #### Машинная честность энергетической формы (пост-аудит, обязательна) -/
+/-! #### Machine honesty of the energy form (post-audit, mandatory) -/
 
-/-- **`twin_above_of_energyLedger` — ДОКАЗАНА (честность energy-формы).** Energy-ledger на
-    масштабе `M0` ТОЖЕ предъявляет twin выше `M0`: он не слабее цели по-масштабно. Как и
-    прежние резолверы, энергетический сертификат — twin-ДЕТЕКТОР, не нейтральное условие. -/
+/-- **`twin_above_of_energyLedger` — PROVEN (honesty of the energy form).** The energy-ledger at
+    scale `M0` ALSO presents a twin above `M0`: it is not weaker than the goal scale-wise. Like
+    the previous resolvers, the energy certificate is a twin-DETECTOR, not a neutral condition. -/
 theorem twin_above_of_energyLedger {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (E : ExtendedFlowEnergyLedger proj) :
@@ -3788,8 +3788,8 @@ theorem twin_above_of_energyLedger {A M0 : ℕ}
   push_neg at hno
   exact twinBound_impossible_with_energyLedger (fun m hm => hno m hm) proj E
 
-/-- Комбинированная проекция: energy-ledger — это в точности УТОЧНЕНИЕ КЛЮЧА старой
-    семантической проекции до `Key × Energy` (конечность сохраняется). -/
+/-- Combined projection: the energy-ledger is exactly a REFINEMENT OF THE KEY of the old
+    semantic projection to `Key × Energy` (finiteness is preserved). -/
 def combinedEnergyProjection {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (E : ExtendedFlowEnergyLedger proj) :
@@ -3801,10 +3801,10 @@ def combinedEnergyProjection {A M0 : ℕ}
     exact inferInstance
   keyFlow := energyCollisionKey E
 
-/-- **`combinedEnergyProjection_resolves` — ДОКАЗАНА (факторизация).** Комбинированная
-    проекция резолвит коллизии в старом смысле: energy-форма НЕ новый узел, а старый узел
-    с уточнённым ключом. Содержательно `no_double_spend_resolves` (при уже сожжённой
-    альтернативе) = инъективность комбинированного ключа на admissible-генеалогиях. -/
+/-- **`combinedEnergyProjection_resolves` — PROVEN (factorization).** The combined
+    projection resolves collisions in the old sense: the energy form is NOT a new node, but the old node
+    with a refined key. Substantively `no_double_spend_resolves` (under an already burnt
+    alternative) = injectivity of the combined key on admissible genealogies. -/
 theorem combinedEnergyProjection_resolves {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (E : ExtendedFlowEnergyLedger proj) :
@@ -3815,10 +3815,10 @@ theorem combinedEnergyProjection_resolves {A M0 : ℕ}
       (congrArg Prod.fst hkey) (congrArg Prod.snd hkey))
     no_expandedExtendedFlowResolutionAlternative
 
-/-- **`lastStep00Obligation_of_energy` — ДОКАЗАНА (энергетическая форма ⟹ старый узел).**
-    Энергетическое обязательство машинно факторизуется через `TheLastStep00Obligation`:
-    это переформулировка финального узла, не обход. Открытость узла НЕ уменьшилась —
-    вся арифметика теперь живёт в построении energy-ledger'а. -/
+/-- **`lastStep00Obligation_of_energy` — PROVEN (energy form ⟹ old node).**
+    The energy obligation machine-factorizes through `TheLastStep00Obligation`:
+    it is a reformulation of the final node, not a bypass. The openness of the node has NOT decreased —
+    all arithmetic now lives in the construction of the energy-ledger. -/
 theorem lastStep00Obligation_of_energy
     (H : EnergyLastStep00Obligation) : TheLastStep00Obligation := by
   rcases H with ⟨A, projOf, EOf, _⟩
@@ -3826,16 +3826,16 @@ theorem lastStep00Obligation_of_energy
     fun M0 => combinedEnergyProjection_resolves (EOf M0)⟩
 
 /-#############################################################################
-  ВЛОЖЕННЫЕ ВСЕЛЕННЫЕ (кирпич: nested_universes_engine).
-  Диагностическая развёртка узла: одностороннее вложение (терминал внешней
-  генеалогии входит в старт внутренней) — СТРОГИЙ СПУСК lexRank, не цикл;
-  взаимное вложение — legal-цикл (сожжён lexRank); бесконечная цепочка
-  вложений невозможна (rank-спуск в ℕ). Ниже — кирпич + машинная честность:
-  nested-резолвер ⟺ старый резолвер (обе альтернативы сожжены), nested-узел
-  ⟺ старый узел, и nested-резолвер — тоже twin-детектор.
+  NESTED UNIVERSES (brick: nested_universes_engine).
+  A diagnostic unfolding of the node: one-sided nesting (the terminal of the outer
+  genealogy enters the start of the inner one) — a STRICT DESCENT of lexRank, not a cycle;
+  mutual nesting — a legal cycle (burnt by lexRank); an infinite chain
+  of nestings is impossible (rank-descent in ℕ). Below — the brick + machine honesty:
+  nested-resolver ⟺ old resolver (both alternatives burnt), nested-node
+  ⟺ old node, and the nested-resolver is also a twin-detector.
 #############################################################################-/
 
-/-- Возврат генеалогии из терминала в СВОЙ старт (эталон для self-nesting). -/
+/-- Return of a genealogy from the terminal to ITS OWN start (reference for self-nesting). -/
 def ExtendedFlowReturnsToStart {A M0 : ℕ}
     (F : ExtendedProperGeneratedFlow A M0) : Prop :=
   NonemptyPath (RealStep A M0) F.terminal (State.center F.start)
@@ -4128,7 +4128,7 @@ abbrev RemainingNestedUniverseEngineCertificate
   NestedSemanticExtendedFlowLedgerCollisionResolves proj
 
 
-/-! Машинная честность nested-формы -/
+/-! Machine honesty of the nested form -/
 
 theorem returnCertificate_iff_either_returns {A M0 : ℕ}
     (F₁ F₂ : ExtendedProperGeneratedFlow A M0) :
@@ -4161,13 +4161,13 @@ theorem twin_above_of_nestedResolves {A M0 : ℕ}
   twin_above_of_resolves proj (nestedSemanticExtended_resolves_old h)
 
 /-#############################################################################
-  СИНГУЛЯРНОСТИ НА ШВЕ ЛЕДЖЕРА (кирпич: ledger_seam_singularity).
-  Классификация same-key коллизии: возврат / вложение (в одну из сторон) /
-  оплата / СИНГУЛЯРНОСТЬ (шов склеил истории, которые граф склеить не умеет).
-  Dangling-вложение — спуск вместо двигателя. Аудит-редукция кирпича:
-  NoSingularity + NoDangling ⟹ nested-резолвер. Ниже — кирпич + машинная
-  честность: обе половины аудита взаимно аннигилируют в «коллизий нет вовсе»
-  (= инъективность), seam-узел ⟺ старый узел, и это опять twin-детектор.
+  SINGULARITIES ON THE LEDGER SEAM (brick: ledger_seam_singularity).
+  Classification of a same-key collision: return / nesting (into one of the sides) /
+  payment / SINGULARITY (the seam glued histories that the graph cannot glue).
+  A dangling nesting — a descent instead of an engine. Audit-reduction of the brick:
+  NoSingularity + NoDangling ⟹ nested-resolver. Below — the brick + machine
+  honesty: both halves of the audit mutually annihilate into "there are no collisions at all"
+  (= injectivity), the seam-node ⟺ old node, and this is again a twin-detector.
 #############################################################################-/
 
 /-#############################################################################
@@ -4475,16 +4475,16 @@ def ProjectionCreatesDanglingNesting {A M0 : ℕ}
   ∃ F₁ F₂ : ExtendedProperGeneratedFlow A M0,
     DanglingOneWayNesting proj F₁ F₂
 
-/-! Машинная честность seam-формы -/
+/-! Machine honesty of the seam form -/
 
-/-- Возвратный сертификат опровергнут безусловно (он строит legal-цикл). -/
+/-- The return certificate is refuted unconditionally (it builds a legal cycle). -/
 theorem no_extendedFlowReturnCertificate {A M0 : ℕ}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
     ¬ ExtendedFlowReturnCertificate F₁ F₂ := fun h =>
   no_concrete_legalCycle_by_lexRank (A := A) (M0 := M0)
     (extendedFlowReturnCertificate_forces_legalCycle h)
 
-/-- Сингулярность = коллизия без вложений (остальные запреты выполнены даром). -/
+/-- Singularity = a collision without nestings (the remaining bans are satisfied for free). -/
 theorem ledgerSeamSingularity_iff {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
@@ -4498,7 +4498,7 @@ theorem ledgerSeamSingularity_iff {A M0 : ℕ}
     exact ⟨hColl, no_extendedFlowReturnCertificate, hN12, hN21,
       BoundaryDefectPayment.impossiblePayment_false⟩
 
-/-- Dangling = коллизия с хотя бы одним вложением (остальные запреты — даром). -/
+/-- Dangling = a collision with at least one nesting (the remaining bans — for free). -/
 theorem danglingOneWayNesting_iff {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
@@ -4512,7 +4512,7 @@ theorem danglingOneWayNesting_iff {A M0 : ℕ}
     exact ⟨hColl, no_extendedFlowReturnCertificate,
       no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false, hOne⟩
 
-/-- NoSingularity ⟺ «каждая same-key коллизия несёт вложение». -/
+/-- NoSingularity ⟺ "every same-key collision carries a nesting". -/
 theorem noLedgerSeamSingularity_iff {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0} :
     NoLedgerSeamSingularity proj ↔
@@ -4530,7 +4530,7 @@ theorem noLedgerSeamSingularity_iff {A M0 : ℕ}
     · exact hN12 h
     · exact hN21 h
 
-/-- NoDangling ⟺ «никакая same-key коллизия не несёт вложения». -/
+/-- NoDangling ⟺ "no same-key collision carries a nesting". -/
 theorem noDanglingOneWayNesting_iff {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0} :
     NoDanglingOneWayNesting proj ↔
@@ -4544,7 +4544,7 @@ theorem noDanglingOneWayNesting_iff {A M0 : ℕ}
     rcases danglingOneWayNesting_iff.mp hD with ⟨hColl, hOne⟩
     exact hAll F₁ F₂ hColl hOne
 
-/-- ВЗАИМНАЯ АННИГИЛЯЦИЯ: два аудит-условия вместе ⟹ same-key коллизий НЕТ ВОВСЕ. -/
+/-- MUTUAL ANNIHILATION: the two audit conditions together ⟹ there are NO same-key collisions AT ALL. -/
 theorem seamAudit_forces_no_collision {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (hNoSing : NoLedgerSeamSingularity proj)
@@ -4555,7 +4555,7 @@ theorem seamAudit_forces_no_collision {A M0 : ℕ}
   have hOne := (noLedgerSeamSingularity_iff (proj := proj)).mp hNoSing F₁ F₂ hColl
   exact (noDanglingOneWayNesting_iff (proj := proj)).mp hNoDangling F₁ F₂ hColl hOne
 
-/-- Seam-аудит ⟺ старый резолвер: пара условий — снова инъективность ключа. -/
+/-- Seam-audit ⟺ old resolver: the pair of conditions is again injectivity of the key. -/
 theorem seamAudit_iff_resolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     (NoLedgerSeamSingularity proj ∧ NoDanglingOneWayNesting proj) ↔
@@ -4574,7 +4574,7 @@ theorem seamAudit_iff_resolves {A M0 : ℕ}
     · intro F₁ F₂ hD
       exact hNoColl F₁ F₂ hD.1
 
-/-- Seam-обязательство ⟺ старый узел (переформулировка, не обход). -/
+/-- Seam-obligation ⟺ old node (a reformulation, not a bypass). -/
 theorem seamAuditLastStep00Obligation_iff_lastStep00Obligation :
     TheSeamAuditLastStep00Obligation ↔ TheLastStep00Obligation := by
   constructor
@@ -4583,7 +4583,7 @@ theorem seamAuditLastStep00Obligation_iff_lastStep00Obligation :
   · rintro ⟨A, projOf, h⟩
     exact ⟨A, projOf, fun M0 => (seamAudit_iff_resolves (projOf M0)).mpr (h M0)⟩
 
-/-- Seam-аудит на масштабе M0 — тоже twin-детектор. -/
+/-- Seam-audit at scale M0 — also a twin-detector. -/
 theorem twin_above_of_seamAudit {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (hNoSing : NoLedgerSeamSingularity proj)
@@ -4593,13 +4593,13 @@ theorem twin_above_of_seamAudit {A M0 : ℕ}
     (noSingularity_noDangling_resolves_old hNoSing hNoDangling)
 
 /-#############################################################################
-  ВЕРНАЯ ПРОЕКЦИЯ / БЕЗ ПОТЕРИ ПРИЧИННОЙ ИНФОРМАЦИИ (кирпич:
+  FAITHFUL PROJECTION / NO LOSS OF CAUSAL INFORMATION (brick:
   faithful_projection_no_information_loss).
-  «Ключ может забывать только gauge-информацию»: склейка двух различных
-  admissible-генеалогий обязана иметь причинное объяснение (возврат /
-  вложение / оплата). Потеря информации ⟺ сингулярность шва (доказано
-  кирпичом). Ниже — кирпич + машинная честность: пара (gauge-верность,
-  no-dangling) ⟺ старый резолвер, obligation ⟺ старый узел, twin-детектор.
+  "The key may forget only gauge-information": the gluing of two distinct
+  admissible genealogies must have a causal explanation (return /
+  nesting / payment). Loss of information ⟺ a seam singularity (proven
+  by the brick). Below — the brick + machine honesty: the pair (gauge-faithfulness,
+  no-dangling) ⟺ old resolver, obligation ⟺ old node, twin-detector.
 #############################################################################-/
 
 /-#############################################################################
@@ -4947,9 +4947,9 @@ theorem allowedForgetting_resolves_nested {A M0 : ℕ}
   keyEqualityGauge_noDangling_resolves_nested
     (proj := proj) h.1 h.2
 
-/-! Машинная честность faithful-gauge-формы -/
+/-! Machine honesty of the faithful-gauge form -/
 
-/-- Пара (gauge-верность, no-dangling) ⟺ старый резолвер (через seam-аудит). -/
+/-- The pair (gauge-faithfulness, no-dangling) ⟺ old resolver (via seam-audit). -/
 theorem gaugePair_iff_resolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     (KeyEqualityForgetsOnlyGaugeInformation proj ∧ NoDanglingOneWayNesting proj) ↔
@@ -4957,7 +4957,7 @@ theorem gaugePair_iff_resolves {A M0 : ℕ}
   rw [keyEqualityGauge_iff_noLedgerSeamSingularity]
   exact seamAudit_iff_resolves proj
 
-/-- Faithful-gauge-обязательство ⟺ старый узел (переформулировка, не обход). -/
+/-- Faithful-gauge-obligation ⟺ old node (a reformulation, not a bypass). -/
 theorem faithfulGaugeLastStep00Obligation_iff_lastStep00Obligation :
     TheFaithfulGaugeLastStep00Obligation ↔ TheLastStep00Obligation := by
   constructor
@@ -4971,19 +4971,19 @@ theorem faithfulGaugeLastStep00Obligation_iff_lastStep00Obligation :
         noDangling := ((gaugePair_iff_resolves (projOf M0)).mpr (h M0)).2 },
       trivial⟩
 
-/-- Faithful-gauge-пакет на масштабе M0 — тоже twin-детектор. -/
+/-- Faithful-gauge-package at scale M0 — also a twin-detector. -/
 theorem twin_above_of_faithfulGaugePackage {A M0 : ℕ}
     (P : FaithfulGaugeProjectionPackage A M0) :
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_resolves P.proj (faithfulGaugePackage_resolves_old P)
 
 /-#############################################################################
-  ВСЕЛЕННАЯ БЕЗ ЭНЕРГИИ (кирпич: no_energy_stable_universe).
-  «Нет платёжного канала» = same-key коллизия может опираться лишь на
-  геометрию (возврат/вложение) или маркер сингулярности. Кирпич честно
-  избегает вакуумного Energy := Empty. Ниже — кирпич + машинная честность:
-  под двумя seam-запретами support-условие вакуумно, тройка ⟺ пара аудита
-  ⟺ старый резолвер; obligation ⟺ старый узел; twin-детектор.
+  UNIVERSE WITHOUT ENERGY (brick: no_energy_stable_universe).
+  "No payment channel" = a same-key collision can rely only on
+  geometry (return/nesting) or a singularity marker. The brick honestly
+  avoids the vacuous Energy := Empty. Below — the brick + machine honesty:
+  under the two seam-bans the support-condition is vacuous, the triple ⟺ the audit pair
+  ⟺ old resolver; obligation ⟺ old node; twin-detector.
 #############################################################################-/
 
 /-#############################################################################
@@ -5223,9 +5223,9 @@ abbrev NoEnergyReadingGuide {A M0 : ℕ}
   NoLedgerSeamSingularity proj ∧
   NoDanglingOneWayNesting proj
 
-/-! Машинная честность no-energy-формы -/
+/-! Machine honesty of the no-energy form -/
 
-/-- Под двумя seam-запретами support-условие ВАКУУМНО: тройка ⟺ пара аудита. -/
+/-- Under the two seam-bans the support-condition is VACUOUS: the triple ⟺ the audit pair. -/
 theorem noEnergyStableUniverse_iff_seamAudit {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0} :
     NoEnergyStableUniverse proj ↔
@@ -5239,14 +5239,14 @@ theorem noEnergyStableUniverse_iff_seamAudit {A M0 : ℕ}
     exact (seamAudit_forces_no_collision hNoSing hNoDangling F₁ F₂
       ⟨hne, h1, h2, hkey⟩).elim
 
-/-- No-energy stable universe ⟺ старый резолвер. -/
+/-- No-energy stable universe ⟺ old resolver. -/
 theorem noEnergyStableUniverse_iff_resolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     NoEnergyStableUniverse proj ↔
       SemanticExtendedFlowLedgerCollisionResolves proj :=
   noEnergyStableUniverse_iff_seamAudit.trans (seamAudit_iff_resolves proj)
 
-/-- No-energy-обязательство ⟺ старый узел (переформулировка, не обход). -/
+/-- No-energy-obligation ⟺ old node (a reformulation, not a bypass). -/
 theorem noEnergyStableUniverseLastStep00Obligation_iff_lastStep00Obligation :
     TheNoEnergyStableUniverseLastStep00Obligation ↔ TheLastStep00Obligation := by
   constructor
@@ -5257,7 +5257,7 @@ theorem noEnergyStableUniverseLastStep00Obligation_iff_lastStep00Obligation :
     exact ⟨A, projOf, fun M0 =>
       (noEnergyStableUniverse_iff_resolves (projOf M0)).mpr (h M0)⟩
 
-/-- No-energy stable universe на масштабе M0 — тоже twin-детектор. -/
+/-- No-energy stable universe at scale M0 — also a twin-detector. -/
 theorem twin_above_of_noEnergyStableUniverse {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (H : NoEnergyStableUniverse proj) :
@@ -5265,14 +5265,14 @@ theorem twin_above_of_noEnergyStableUniverse {A M0 : ℕ}
   twin_above_of_resolves proj (noEnergyStableUniverse_resolves_old H)
 
 /-#############################################################################
-  НЕТ БЕСКОНЕЧНОЙ КОМПРЕССИИ ИНФОРМАЦИИ (кирпич:
+  NO INFINITE COMPRESSION OF INFORMATION (brick:
   no_infinite_information_compression).
-  «Gauge забывать можно, причинность сжимать вечно — нельзя»: строгая
-  компрессия = коллизия + одностороннее вложение (спуск lexRank, не финал);
-  ∞-цепь компрессий невозможна (через nested-цепи). Фикс кирпича: в
-  реверсных случаях ¬Return переворачивается через Or.symm. Ниже — кирпич +
-  машинная честность: NoCompression ⟺ NoDangling, пара аудита ⟺ старый
-  резолвер, obligation ⟺ старый узел, twin-детектор.
+  "Gauge may be forgotten, causality may not be compressed forever": strict
+  compression = collision + one-sided nesting (lexRank descent, not a final);
+  an ∞-chain of compressions is impossible (via nested-chains). Fix of the brick: in
+  the reverse cases ¬Return is flipped via Or.symm. Below — the brick +
+  machine honesty: NoCompression ⟺ NoDangling, the audit pair ⟺ old
+  resolver, obligation ⟺ old node, twin-detector.
 #############################################################################-/
 
 /-#############################################################################
@@ -5531,9 +5531,9 @@ abbrev RemainingNoInfiniteCompressionCertificate {A M0 : ℕ}
   NoLedgerSeamSingularity proj ∧
   NoStrictInformationCompression proj
 
-/-! Машинная честность compression-формы -/
+/-! Machine honesty of the compression form -/
 
-/-- Компрессия = коллизия + вложение (остальные запреты выполнены даром). -/
+/-- Compression = collision + nesting (the remaining bans are satisfied for free). -/
 theorem strictInformationCompression_iff {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
@@ -5546,7 +5546,7 @@ theorem strictInformationCompression_iff {A M0 : ℕ}
     exact ⟨hColl, hNest, no_extendedFlowReturnCertificate,
       no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false⟩
 
-/-- Запрет компрессии ⟺ запрет dangling-вложений (в обе стороны). -/
+/-- The ban on compression ⟺ the ban on dangling nestings (both directions). -/
 theorem noStrictCompression_iff_noDangling {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0} :
     NoStrictInformationCompression proj ↔ NoDanglingOneWayNesting proj := by
@@ -5556,7 +5556,7 @@ theorem noStrictCompression_iff_noDangling {A M0 : ℕ}
     rcases strictInformationCompression_iff.mp hComp with ⟨hColl, hNest⟩
     exact (noDanglingOneWayNesting_iff.mp hNoDangling) F₁ F₂ hColl (Or.inl hNest)
 
-/-- Compression-аудит ⟺ старый резолвер. -/
+/-- Compression-audit ⟺ old resolver. -/
 theorem compressionAudit_iff_resolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     (NoLedgerSeamSingularity proj ∧ NoStrictInformationCompression proj) ↔
@@ -5564,7 +5564,7 @@ theorem compressionAudit_iff_resolves {A M0 : ℕ}
   rw [noStrictCompression_iff_noDangling]
   exact seamAudit_iff_resolves proj
 
-/-- Compression-обязательство ⟺ старый узел (переформулировка, не обход). -/
+/-- Compression-obligation ⟺ old node (a reformulation, not a bypass). -/
 theorem informationCompressionLastStep00Obligation_iff_lastStep00Obligation :
     InformationCompressionLastStep00Obligation ↔ TheLastStep00Obligation := by
   constructor
@@ -5575,7 +5575,7 @@ theorem informationCompressionLastStep00Obligation_iff_lastStep00Obligation :
     exact ⟨A, projOf, fun M0 =>
       (compressionAudit_iff_resolves (projOf M0)).mpr (h M0)⟩
 
-/-- Compression-аудит на масштабе M0 — тоже twin-детектор. -/
+/-- Compression-audit at scale M0 — also a twin-detector. -/
 theorem twin_above_of_compressionAudit {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (hNoSing : NoLedgerSeamSingularity proj)
@@ -5585,15 +5585,15 @@ theorem twin_above_of_compressionAudit {A M0 : ℕ}
     (noSingularity_noStrictCompression_resolves_old hNoSing hNoCompression)
 
 /-#############################################################################
-  ИНФОРМАЦИОННЫЕ АТОМЫ / ИЗВЛЕЧЕНИЕ И СМЕШИВАНИЕ БЕЗ ДВИГАТЕЛЯ (кирпичи:
+  INFORMATION ATOMS / EXTRACTION AND MIXING WITHOUT AN ENGINE (bricks:
   information_atom_extraction + no_free_information_mixing).
-  Атом = генеалогия без строгой компрессии; безатомная вселенная порождает
-  ∞-цепь компрессий (Classical.choose-орбита) — невозможно, значит в каждой
-  обитаемой вселенной ЕСТЬ атом (безусловный результат). Извлечение/
-  смешивание информации без возврата/двигателя/оплаты — сингулярность или
-  компрессия; под парой аудита невозможно. Ниже — кирпичи + машинная
-  честность: extraction/mixing-без-двигателя ⟺ просто коллизия (запреты
-  выполнены даром), atomic-obligation ⟺ старый узел, twin-детекторы.
+  An atom = a genealogy without strict compression; an atomless universe generates
+  an ∞-chain of compressions (Classical.choose-orbit) — impossible, so in every
+  inhabited universe there IS an atom (an unconditional result). Extraction/
+  mixing of information without return/engine/payment — a singularity or a
+  compression; impossible under the audit pair. Below — the bricks + machine
+  honesty: extraction/mixing-without-an-engine ⟺ just a collision (the bans
+  satisfied for free), atomic-obligation ⟺ old node, twin-detectors.
 #############################################################################-/
 
 /-#############################################################################
@@ -6110,9 +6110,9 @@ abbrev RemainingNoFreeMixingCertificate {A M0 : ℕ}
   NoLedgerSeamSingularity proj ∧
   NoStrictInformationCompression proj
 
-/-! Машинная честность atom/extraction/mixing-форм -/
+/-! Machine honesty of the atom/extraction/mixing forms -/
 
-/-- Extraction-без-двигателя = просто коллизия (три запрета выполнены даром). -/
+/-- Extraction-without-an-engine = just a collision (the three bans satisfied for free). -/
 theorem informationExtractionWithoutEngine_iff_collision {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
@@ -6124,7 +6124,7 @@ theorem informationExtractionWithoutEngine_iff_collision {A M0 : ℕ}
     exact ⟨hColl, no_extendedFlowReturnCertificate,
       no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false⟩
 
-/-- Mixing-без-двигателя = просто mixing-коллизия. -/
+/-- Mixing-without-an-engine = just a mixing-collision. -/
 theorem informationMixingWithoutEngine_iff_mixingCollision {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     {F₁ F₂ : ExtendedProperGeneratedFlow A M0} :
@@ -6136,7 +6136,7 @@ theorem informationMixingWithoutEngine_iff_mixingCollision {A M0 : ℕ}
     exact ⟨hMix, no_extendedFlowReturnCertificate,
       no_mutuallyNestedUniverses, BoundaryDefectPayment.impossiblePayment_false⟩
 
-/-- Atomic-обязательство ⟺ старый узел (переформулировка, не обход). -/
+/-- Atomic-obligation ⟺ old node (a reformulation, not a bypass). -/
 theorem atomicInformationLastStep00Obligation_iff_lastStep00Obligation :
     AtomicInformationLastStep00Obligation ↔ TheLastStep00Obligation := by
   constructor
@@ -6153,13 +6153,13 @@ theorem atomicInformationLastStep00Obligation_iff_lastStep00Obligation :
           ((compressionAudit_iff_resolves (projOf M0)).mpr (h M0)).2 },
       trivial⟩
 
-/-- Atomic-пакет на масштабе M0 — тоже twin-детектор. -/
+/-- Atomic-package at scale M0 — also a twin-detector. -/
 theorem twin_above_of_atomicInformationAudit {A M0 : ℕ}
     (P : AtomicInformationAuditPackage A M0) :
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_resolves P.proj (atomicInformationAudit_resolves_old P)
 
-/-- No-free-mixing-пакет на масштабе M0 — тоже twin-детектор. -/
+/-- No-free-mixing-package at scale M0 — also a twin-detector. -/
 theorem twin_above_of_noFreeMixingAudit {A M0 : ℕ}
     (P : NoFreeInformationMixingAuditPackage A M0) :
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
@@ -6168,13 +6168,13 @@ theorem twin_above_of_noFreeMixingAudit {A M0 : ℕ}
       (noFreeInformationMixingAudit_resolves_nested P))
 
 /-#############################################################################
-  СТАБИЛЬНАЯ NO-ENGINE ТЕОРИЯ (кирпич: stable_no_engine_theory).
-  Мета-аудит объектного уровня: конечно-twin вселенная, стабильная и без
-  энергии/швов/компрессии/смешивания, невозможна — попытка её закрыть
-  СТРОИТ явный двигатель (legal-цикл), который запрещён lexRank. Фиксы:
-  ConcreteEuclideanEngineWitness : Prop; экзистенциал теории через Nonempty.
-  Ниже — кирпич + машинная честность: существование теории ⟺ старый узел
-  (диагностические поля восстановимы из резолвера); по-масштабный детектор.
+  STABLE NO-ENGINE THEORY (brick: stable_no_engine_theory).
+  Object-level meta-audit: a finite-twin universe, stable and without
+  energy/seams/compression/mixing, is impossible — an attempt to close it
+  BUILDS an explicit engine (legal cycle), which is forbidden by lexRank. Fixes:
+  ConcreteEuclideanEngineWitness : Prop; the existential of the theory via Nonempty.
+  Below — the brick + machine honesty: existence of the theory ⟺ old node
+  (the diagnostic fields are recoverable from the resolver); a per-scale detector.
 #############################################################################-/
 
 /-#############################################################################
@@ -6434,10 +6434,10 @@ theorem stableFiniteTwinTheoryIsImpossible :
   exact infiniteFlows_impossible_in_stableNoEnergy
     (proj := proj) hStable hFlows
 
-/-! Машинная честность stable-no-engine-формы -/
+/-! Machine honesty of the stable-no-engine form -/
 
-/-- «Стабильная no-engine теория существует» ⟺ старый узел (полная эквивалентность:
-    диагностические поля noStrictCompression/noMixing восстановимы из резолвера). -/
+/-- "A stable no-engine theory exists" ⟺ old node (full equivalence:
+    the diagnostic fields noStrictCompression/noMixing are recoverable from the resolver). -/
 theorem stableNoEngineTheoryExists_iff_lastStep00Obligation :
     StableNoEngineStep00TheoryExists ↔ TheLastStep00Obligation := by
   constructor
@@ -6454,21 +6454,21 @@ theorem stableNoEngineTheoryExists_iff_lastStep00Obligation :
     exact no_extendedFlowResolutionAlternative A M0
       (h M0 F₁ F₂ hne hAdm₁ hAdm₂ hkey)
 
-/-- Стабильная теория на каждом масштабе M0 предъявляет twin выше M0 (детектор). -/
+/-- The stable theory at each scale M0 presents a twin above M0 (detector). -/
 theorem twin_above_of_stableNoEngineTheory {A : ℕ}
     (T : StableNoEngineStep00Theory A) (M0 : ℕ) :
     ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
   twin_above_of_noEnergyStableUniverse (T.projOf M0) (T.stableNoEnergy M0)
 
 /-#############################################################################
-  ДВОЙСТВЕННЫЙ АУДИТ: НЕТ ОПРОВЕРЖЕНИЯ БЕЗ ДВИГАТЕЛЯ (кирпич:
+  DUAL AUDIT: NO REFUTATION WITHOUT AN ENGINE (brick:
   dual_no_refutation_without_engine).
-  Двойственный слоган: локальная попытка ОПРОВЕРГНУТЬ стабильную no-engine
-  теорию same-key коллизией сама строит запрещённый двигатель. НЕ метаматика
-  (не независимость) — объектный факт архитектуры. Фиксы: data-структуры
-  attempt → импоссибилити в форме `→ False`. Ниже — кирпич + машинная
-  честность: attempt пуст НАПРЯМУЮ через seam-честность (stable пакует
-  «коллизий нет» вместе с коллизией) — двойственность = surfaced ex-falso.
+  The dual slogan: a local attempt to REFUTE a stable no-engine
+  theory by a same-key collision itself builds a forbidden engine. NOT metamathematics
+  (not independence) — an object-level fact of the architecture. Fixes: data-structures
+  attempt → impossibility in the form `→ False`. Below — the brick + machine
+  honesty: attempt is empty DIRECTLY via seam-honesty (stable packs
+  "there are no collisions" together with a collision) — the duality = surfaced ex-falso.
 #############################################################################-/
 
 /-#############################################################################
@@ -6687,18 +6687,18 @@ theorem noProofOrRefutationWithoutForbiddenEngine :
          refutingStableTheoryWithoutEngineIsImpossible,
          infiniteLoadRefutationWithoutEngineIsImpossible⟩
 
-/-! Машинная честность dual-формы -/
+/-! Machine honesty of the dual form -/
 
-/-- ПРЯМАЯ пустота попытки: attempt пакует «коллизий нет» (stable ⟹ резолвер)
-    вместе с коллизией — противоречие без обхода через двигатель. Двойственный
-    слоган = явно поднятый ex-falso; оба маршрута — один и тот же факт. -/
+/-- DIRECT emptiness of the attempt: attempt packs "there are no collisions" (stable ⟹ resolver)
+    together with a collision — a contradiction without a bypass through an engine. The dual
+    slogan = an explicitly surfaced ex-falso; both routes are the same fact. -/
 theorem localStableRefutationAttempt_empty {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (R : LocalStableRefutationAttempt proj) : False :=
   seamAudit_forces_no_collision R.stable.2.1 R.stable.2.2 R.F₁ R.F₂
     ⟨R.distinct, R.left_admissible, R.right_admissible, R.same_key⟩
 
-/-- Прямая пустота infinite-load попытки (через резолвер, без двигателя). -/
+/-- Direct emptiness of the infinite-load attempt (via the resolver, without an engine). -/
 theorem infiniteLoadStableRefutationAttempt_empty {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (R : InfiniteLoadStableRefutationAttempt proj) : False :=
@@ -6707,15 +6707,15 @@ theorem infiniteLoadStableRefutationAttempt_empty {A M0 : ℕ}
     ((noEnergyStableUniverse_iff_resolves proj).mp R.stable)
 
 /-#############################################################################
-  НЕТ ВНУТРЕННЕГО РЕШЕНИЯ БЕЗ ДВИГАТЕЛЯ (кирпич:
+  NO INTERNAL DECISION WITHOUT AN ENGINE (brick:
   no_internal_decision_without_engine_theorem).
-  Пакет вывода аудита: внутри архитектуры стабильную конечно-twin ветвь
-  нельзя ни доказать, ни опровергнуть разрешёнными локальными механизмами,
-  не построив двигатель (все двигатели сожжены lexRank). Кирпич сам честно
-  маркирует: это НЕ метаматематическая независимость (§4). Фиксы:
-  SomeConcreteEuclideanEngine → ∃-Prop (данные A,M0 под ¬); proof-attempt
-  импоссибилити → `→ False`. Ниже — кирпич + машинная честность: «доказать»
-  и «опровергнуть» несут ОДИНАКОВЫЕ поля; все ветви пусты напрямую.
+  The audit conclusion package: inside the architecture a stable finite-twin branch
+  can be neither proven nor refuted by the permitted local mechanisms
+  without building an engine (all engines are burnt by lexRank). The brick itself honestly
+  marks: this is NOT metamathematical independence (§4). Fixes:
+  SomeConcreteEuclideanEngine → ∃-Prop (data A,M0 under ¬); proof-attempt
+  impossibility → `→ False`. Below — the brick + machine honesty: "prove"
+  and "refute" carry the SAME fields; all branches are empty directly.
 #############################################################################-/
 
 /-#############################################################################
@@ -6885,19 +6885,19 @@ theorem thisIsObjectLevelNotMetamathematicalIndependence :
     ThisIsObjectLevelNotMetamathematicalIndependence := by
   trivial
 
-/-! Машинная честность no-decision-формы -/
+/-! Machine honesty of the no-decision form -/
 
-/-- «Proof attempt» несёт БУКВАЛЬНО те же поля, что infinite-load «refutation
-    attempt» (stable + 𝓕 + infiniteFlows): дихотомия «доказать/опровергнуть»
-    здесь номинальна — оба пусты напрямую через seam-честность. -/
+/-- "Proof attempt" carries LITERALLY the same fields as the infinite-load "refutation
+    attempt" (stable + 𝓕 + infiniteFlows): the dichotomy "prove/refute"
+    is nominal here — both are empty directly via seam-honesty. -/
 theorem internalStableProofAttempt_empty {A M0 : ℕ}
     {proj : SemanticExtendedFlowLedgerProjection A M0}
     (P : InternalStableProofAttempt proj) : False :=
   infiniteLoadStableRefutationAttempt_empty
     ⟨P.stable, P.𝓕, P.infiniteFlows⟩
 
-/-- Прямая пустота решающей попытки (без обхода через двигатель): все три
-    ветви пусты через seam-честность — no-decision = surfaced ex-falso. -/
+/-- Direct emptiness of the decision attempt (without a bypass through an engine): all three
+    branches are empty via seam-honesty — no-decision = surfaced ex-falso. -/
 theorem internalStableDecisionAttempt_empty_directly :
     InternalStableDecisionAttempt → False := by
   intro D
@@ -6907,14 +6907,14 @@ theorem internalStableDecisionAttempt_empty_directly :
   | refuteInfinite R => exact infiniteLoadStableRefutationAttempt_empty R
 
 /-#############################################################################
-  АРХИТЕКТУРНО-ОТНОСИТЕЛЬНАЯ НЕЗАВИСИМОСТЬ (кирпич:
+  ARCHITECTURE-RELATIVE INDEPENDENCE (brick:
   architecture_relative_independence).
-  Сильнейшая честная форма: если proof/refutation-сертификаты внешней
-  системы факторизуются через аудированные Step00-попытки, то у системы нет
-  ни тех, ни других (оба строят запрещённый двигатель). Кирпич сам честно
-  ограничивает охват (§3-§4: НЕ Гёдель-независимость для ZFC/PA/Lean).
-  Ниже — кирпич + машинная честность: транслятор в пустой тип попыток
-  существует ⟺ домен пуст — сила утверждения целиком в предпосылке моста.
+  The strongest honest form: if the proof/refutation certificates of an external
+  system factorize through audited Step00-attempts, then the system has
+  neither (both build a forbidden engine). The brick itself honestly
+  limits the scope (§3-§4: NOT Gödel independence for ZFC/PA/Lean).
+  Below — the brick + machine honesty: a translator into the empty type of attempts
+  exists ⟺ the domain is empty — the strength of the claim is entirely in the premise of the bridge.
 #############################################################################-/
 
 /-#############################################################################
@@ -7097,12 +7097,13 @@ theorem thisIsOnlyArchitectureRelativeIndependence :
     ThisIsOnlyArchitectureRelativeIndependence := by
   trivial
 
-/-! Машинная честность relative-independence-формы -/
+/-! Machine honesty of the relative-independence form -/
 
-/-- ЧЕСТНОСТЬ: медиируемость = пустота. Транслятор в (пустой) тип решающих
-    попыток существует ⟺ домен пуст. Гипотеза «сертификаты факторизуются через
-    Step00» уже СОДЕРЖИТ вывод «сертификатов нет»: мост и есть пустота.
-    Относительная независимость корректна, но её сила — целиком в предпосылке. -/
+/-- HONESTY: mediatability = emptiness. A translator into the (empty) type of
+    deciding attempts exists ⟺ the domain is empty. The hypothesis "certificates
+    factor through Step00" already CONTAINS the conclusion "there are no
+    certificates": the bridge is precisely emptiness. Relative independence is
+    correct, but its strength lies entirely in the premise. -/
 theorem translation_to_decisionAttempt_iff_empty (P : Type) :
     Nonempty (P → InternalStableDecisionAttempt) ↔ IsEmpty P := by
   constructor
@@ -7112,15 +7113,15 @@ theorem translation_to_decisionAttempt_iff_empty (P : Type) :
     exact ⟨fun p => (hEmpty.false p).elim⟩
 
 /-#############################################################################
-  ВНЕШНИЙ ПРИНЦИП ВСЕЛЕННОЙ / САМОЗАВЕРЯЮЩИЙСЯ ДВИГАТЕЛЬ (кирпич:
+  EXTERNAL UNIVERSE PRINCIPLE / SELF-CERTIFYING ENGINE (brick:
   external_universe_self_engine_contradiction).
-  Три «внешних принципа» (strict / no-energy / finite-energy обязательства)
-  как входы дают близнецов; их интернализация как Step00-попытки строит
-  запрещённый двигатель — «двигатель доказывает себя» = противоречие.
-  Фиксы: обе self-proof структуры объявлены : Prop. Ниже — кирпич +
-  машинная честность: BoundaryCrossingSelfProof P ⟺ P ∧ ¬P (тавтологический
-  запрет для ЛЮБОГО P); external-only ⟺ сам P; плюс недостающее звено —
-  strict-обязательство ⟺ старый узел.
+  Three "external principles" (strict / no-energy / finite-energy obligations)
+  as inputs yield twins; their internalization as Step00 attempts builds a
+  forbidden engine — "the engine proves itself" = contradiction.
+  Fixes: both self-proof structures declared : Prop. Below — the brick +
+  machine honesty: BoundaryCrossingSelfProof P ⟺ P ∧ ¬P (tautological
+  prohibition for ANY P); external-only ⟺ P itself; plus the missing link —
+  strict obligation ⟺ the old node.
 #############################################################################-/
 
 /-#############################################################################
@@ -7387,12 +7388,12 @@ theorem thisIsExternalPrincipleNotAbsoluteIndependence :
     ThisIsExternalPrincipleNotAbsoluteIndependence := by
   trivial
 
-/-! Машинная честность external-universe-формы -/
+/-! Machine honesty of the external-universe form -/
 
-/-- ЧЕСТНОСТЬ: self-proof ⟺ `P ∧ ¬P`. Интернализация в пустой тип попыток —
-    это в точности отрицание, потому «внутренняя самозаверяемость запрещена»
-    для ЛЮБОГО утверждения — и для истинных тоже. Несущая часть слоганов —
-    только импликации generates_twins (уже известные). -/
+/-- HONESTY: self-proof ⟺ `P ∧ ¬P`. Internalization into the empty type of
+    attempts is exactly negation, hence "internal self-certification is
+    forbidden" for ANY statement — including true ones. The load-bearing part of
+    the slogans is only the generates_twins implications (already known). -/
 theorem boundaryCrossingSelfProof_iff_and_not {P : Prop} :
     BoundaryCrossingSelfProof P ↔ (P ∧ ¬ P) := by
   constructor
@@ -7402,7 +7403,7 @@ theorem boundaryCrossingSelfProof_iff_and_not {P : Prop} :
   · intro h
     exact (h.2 h.1).elim
 
-/-- «External-only» не добавляет к P ничего: второй конъюнкт бесплатен. -/
+/-- "External-only" adds nothing to P: the second conjunct is free. -/
 theorem externalOnlyUniversePrinciple_iff {P : Prop} :
     ExternalOnlyUniversePrinciple P ↔ P := by
   constructor
@@ -7410,7 +7411,7 @@ theorem externalOnlyUniversePrinciple_iff {P : Prop} :
   · intro hp
     exact ⟨hp, no_boundaryCrossingSelfProof⟩
 
-/-- Недостающее звено семейства форм: strict-резолвер ⟺ старый резолвер. -/
+/-- The missing link of the family of forms: strict resolver ⟺ old resolver. -/
 theorem strictResolves_iff_resolves {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     StrictSemanticExtendedFlowLedgerCollisionResolves proj ↔
@@ -7421,7 +7422,7 @@ theorem strictResolves_iff_resolves {A M0 : ℕ}
     exact ((no_extendedFlowResolutionAlternative A M0)
       (hOld F₁ F₂ hne h1 h2 hkey)).elim
 
-/-- Strict-обязательство ⟺ старый узел (замыкает семейство эквивалентностей). -/
+/-- Strict obligation ⟺ the old node (closes the family of equivalences). -/
 theorem strictLastStep00Obligation_iff_lastStep00Obligation :
     TheStrictLastStep00Obligation ↔ TheLastStep00Obligation := by
   constructor
@@ -7431,20 +7432,20 @@ theorem strictLastStep00Obligation_iff_lastStep00Obligation :
     exact ⟨A, projOf, fun M0 => (strictResolves_iff_resolves (projOf M0)).mpr (h M0)⟩
 
 /-#############################################################################
-  МАШИННОЕ СУЖЕНИЕ УЗЛА: ВЕТВЬ A ≤ 4 ОПРОВЕРГНУТА (адверсариальный аудит,
-  probe-агент; проверено и интегрировано).
-  5-адическая цепь c(k+1) = 5·c(k) + 1 (тождество 6·(5x+1)−1 = 5·(6x+1),
-  bigDivisor 5 > A) даёт БЕСКОНЕЧНУЮ admissible-семью БЕЗ twin-гипотез при
-  A ≤ 4, M0 = 1: чистота бесплатна (2 и 3 не делят 6m±1), все пост-аудитные
-  заплаты выполнены честно. Пиджонхол ⟹ никакая конечноключевая проекция не
-  резолвит ⟹ ветвь A ≤ 4 узла мертва; ∃A живёт только в A ≥ 5. Для A ≥ 5
-  тот же приём требует чистых стартов с контролем peel-целей — арифметика
-  дирихле-класса, отсутствующая в репо (и, вероятно, за красной линией):
-  выполнимость узла при A ≥ 5 остаётся подлинно открытой.
+  MACHINE NARROWING OF THE NODE: THE A ≤ 4 BRANCH IS REFUTED (adversarial audit,
+  probe agent; checked and integrated).
+  The 5-adic chain c(k+1) = 5·c(k) + 1 (identity 6·(5x+1)−1 = 5·(6x+1),
+  bigDivisor 5 > A) yields an INFINITE admissible family WITHOUT twin hypotheses
+  for A ≤ 4, M0 = 1: purity is free (2 and 3 do not divide 6m±1), all
+  post-audit patches are done honestly. Pigeonhole ⟹ no finite-key projection
+  resolves ⟹ the A ≤ 4 branch of the node is dead; ∃A lives only in A ≥ 5. For
+  A ≥ 5 the same trick requires clean starts with control of the peel targets —
+  Dirichlet-class arithmetic, absent from the repo (and probably behind the red
+  line): satisfiability of the node for A ≥ 5 remains genuinely open.
 #############################################################################-/
 
-/-- Для `A ≤ 4` каждый центр `m ≥ 1` чист: кандидаты — только 2 и 3,
-    ни один не делит `6m ± 1`. -/
+/-- For `A ≤ 4` every center `m ≥ 1` is clean: the candidates are only 2 and 3,
+    neither of which divides `6m ± 1`. -/
 theorem clean_of_scale_le_four {A : ℕ} (hA : A ≤ 4) {m : ℕ} (hm : 1 ≤ m) :
     Clean A m := by
   intro q hq hqA hbad
@@ -7455,7 +7456,7 @@ theorem clean_of_scale_le_four {A : ℕ} (hA : A ≤ 4) {m : ℕ} (hm : 1 ≤ m)
   · rcases hbad with h | h <;> omega
   · exact absurd hq (by norm_num)
 
-/-- 5-адическая цепь спуска 1, 6, 31, 156, …: `c(k+1) = 5·c(k) + 1`. -/
+/-- The 5-adic descent chain 1, 6, 31, 156, …: `c(k+1) = 5·c(k) + 1`. -/
 def fiveAdicChain : ℕ → ℕ
   | 0 => 1
   | k + 1 => 5 * fiveAdicChain k + 1
@@ -7470,9 +7471,9 @@ theorem fiveAdicChain_strictMono : StrictMono fiveAdicChain :=
     show fiveAdicChain k < 5 * fiveAdicChain k + 1
     omega)
 
-/-- Собственный peel `center c(k+1) → center c(k)`: тождество
-    `6·(5x+1) − 1 = 5·(6x+1)`, bigDivisor 5 (простой, > A при A ≤ 4);
-    ВСЕ пост-аудитные заплаты (smaller, targetPos) выполнены честно. -/
+/-- Proper peel `center c(k+1) → center c(k)`: identity
+    `6·(5x+1) − 1 = 5·(6x+1)`, bigDivisor 5 (prime, > A when A ≤ 4);
+    ALL post-audit patches (smaller, targetPos) are done honestly. -/
 def fiveAdicChainPeel {A : ℕ} (hA : A ≤ 4) (k : ℕ) :
     ProperCenterPeel A (fiveAdicChain (k + 1)) (fiveAdicChain k) :=
   { inSide := Side.minus
@@ -7489,7 +7490,7 @@ def fiveAdicChainPeel {A : ℕ} (hA : A ≤ 4) (k : ℕ) :
       omega
     targetPos := fiveAdicChain_pos k }
 
-/-- Полный собственный путь от `center c(k)` вниз до `center 1`. -/
+/-- The full proper path from `center c(k)` down to `center 1`. -/
 theorem fiveAdicChainPath {A : ℕ} (hA : A ≤ 4) :
     ∀ k, PathN (ProperRealStep A 1) k
       (State.center (fiveAdicChain k)) (State.center 1) := by
@@ -7502,7 +7503,7 @@ theorem fiveAdicChainPath {A : ℕ} (hA : A ≤ 4) :
           (clean_of_scale_le_four hA (fiveAdicChain_pos n)) (fiveAdicChainPeel hA n),
         ih⟩
 
-/-- Admissible-генеалогия для каждого k — БЕЗ КАКОЙ-ЛИБО twin-гипотезы. -/
+/-- Admissible genealogy for each k — WITHOUT ANY twin hypothesis. -/
 def fiveAdicChainFlow {A : ℕ} (hA : A ≤ 4) (k : ℕ) :
     ExtendedProperGeneratedFlow A 1 :=
   { start := fiveAdicChain (k + 1)
@@ -7527,8 +7528,8 @@ theorem fiveAdicChainFlow_injective {A : ℕ} (hA : A ≤ 4) :
   have := fiveAdicChain_strictMono.injective hstart
   omega
 
-/-- **ДВЕ различные admissible-генеалогии БЕЗУСЛОВНО** (A ≤ 4, M0 = 1):
-    ни TwinBoundAbove, ни ¬TwinCenterZ нигде не используются. -/
+/-- **TWO distinct admissible genealogies UNCONDITIONALLY** (A ≤ 4, M0 = 1):
+    neither TwinBoundAbove nor ¬TwinCenterZ is used anywhere. -/
 theorem two_admissible_flows_unconditional {A : ℕ} (hA : A ≤ 4) :
     ∃ F₁ F₂ : ExtendedProperGeneratedFlow A 1,
       F₁ ≠ F₂ ∧ ExtendedFlowAdmissible F₁ ∧ ExtendedFlowAdmissible F₂ := by
@@ -7537,8 +7538,8 @@ theorem two_admissible_flows_unconditional {A : ℕ} (hA : A ≤ 4) :
   intro h
   exact absurd (fiveAdicChainFlow_injective hA h) (by omega)
 
-/-- Семья бесконечна ⟹ НИКАКАЯ конечноключевая проекция не резолвит на
-    (A ≤ 4, M0 = 1): пиджонхол даёт same-key пару, альтернатива сожжена. -/
+/-- The family is infinite ⟹ NO finite-key projection resolves on
+    (A ≤ 4, M0 = 1): pigeonhole yields a same-key pair, the alternative is burnt. -/
 theorem no_projection_resolves_at_smallScale {A : ℕ} (hA : A ≤ 4)
     (proj : SemanticExtendedFlowLedgerProjection A 1) :
     ¬ SemanticExtendedFlowLedgerCollisionResolves proj := by
@@ -7552,15 +7553,15 @@ theorem no_projection_resolves_at_smallScale {A : ℕ} (hA : A ≤ 4)
   exact no_extendedFlowResolutionAlternative A 1
     (hRes _ _ hFne (extendedFlow_admissible _) (extendedFlow_admissible _) hkey)
 
-/-- **ВЕТВЬ A ≤ 4 УЗЛА МАШИННО ОПРОВЕРГНУТА**: никакая семья проекций над
-    таким A не резолвит на всех M0 (падает уже на M0 = 1). -/
+/-- **THE A ≤ 4 BRANCH OF THE NODE IS MACHINE-REFUTED**: no family of projections
+    over such an A resolves on all M0 (it already fails at M0 = 1). -/
 theorem smallScale_branch_of_lastStep00Obligation_refuted {A : ℕ} (hA : A ≤ 4) :
     ¬ ∃ projOf : ∀ M0 : ℕ, SemanticExtendedFlowLedgerProjection A M0,
         ∀ M0 : ℕ, SemanticExtendedFlowLedgerCollisionResolves (projOf M0) := by
   rintro ⟨projOf, hRes⟩
   exact no_projection_resolves_at_smallScale hA (projOf 1) (hRes 1)
 
-/-- **СУЖЕНИЕ УЗЛА**: `∃A` в TheLastStep00Obligation живёт только в `A ≥ 5`. -/
+/-- **NARROWING OF THE NODE**: `∃A` in TheLastStep00Obligation lives only in `A ≥ 5`. -/
 theorem lastStep00Obligation_forces_scale_ge_five
     (H : TheLastStep00Obligation) :
     ∃ A : ℕ, 5 ≤ A ∧
@@ -7573,25 +7574,25 @@ theorem lastStep00Obligation_forces_scale_ge_five
       (smallScale_branch_of_lastStep00Obligation_refuted (by omega))
 
 /-#############################################################################
-  ВНУТРЕННЯЯ ПРИЧИНА НОВОЙ ВСЕЛЕННОЙ (кирпич: internal_cause_of_new_universe;
-  зависимый слой RealisedNegationOfCausalClosure РЕКОНСТРУИРОВАН — кирпич
-  causal_closure_negation_self_destruct отсутствует в поставке).
-  Внешняя причина (вход/аксиома) порождает вселенную; полная внутренняя
-  причина = boundary-crossing self-proof = запрещённый двигатель; реализованное
-  отрицание причины самоуничтожается. Ниже — слой + кирпич + машинная
-  честность: внутренняя причина ⟺ P ∧ ¬P (тавтологично для любого P);
-  трихотомия режимов КОЛЛАПСИРУЕТ в «режим ⟺ внешний вход P».
+  INTERNAL CAUSE OF A NEW UNIVERSE (brick: internal_cause_of_new_universe;
+  the dependent layer RealisedNegationOfCausalClosure is RECONSTRUCTED — the
+  brick causal_closure_negation_self_destruct is absent from the supply).
+  An external cause (input/axiom) generates a universe; a full internal cause
+  = boundary-crossing self-proof = forbidden engine; the realised negation of
+  the cause self-destructs. Below — the layer + brick + machine honesty:
+  internal cause ⟺ P ∧ ¬P (tautological for any P); the trichotomy of modes
+  COLLAPSES into "mode ⟺ external input P".
 #############################################################################-/
 
-/-- Реализованное отрицание causal-closure: конкретное ВНУТРЕННЕЕ препятствие —
-    стабильный ledger + реальная same-key коллизия против него (а не голое
-    внешнее логическое ¬P). Слой РЕКОНСТРУИРОВАН по спецификации
-    отсутствующего кирпича causal_closure_negation_self_destruct. -/
+/-- Realised negation of causal-closure: a concrete INTERNAL obstruction —
+    a stable ledger + a real same-key collision against it (not a bare external
+    logical ¬P). The layer is RECONSTRUCTED per the specification of the
+    missing brick causal_closure_negation_self_destruct. -/
 def RealisedNegationOfCausalClosure : Prop :=
   ∃ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
     Nonempty (LocalStableRefutationAttempt proj)
 
-/-- Реализованное отрицание самоуничтожается: попытка пуста (lexRank/seam). -/
+/-- The realised negation self-destructs: the attempt is empty (lexRank/seam). -/
 theorem no_realisedNegationOfCausalClosure :
     ¬ RealisedNegationOfCausalClosure := by
   rintro ⟨A, M0, proj, ⟨R⟩⟩
@@ -7917,17 +7918,17 @@ theorem thisDoesNotForbidExternalCausesOrExternalByContra :
     ThisDoesNotForbidExternalCausesOrExternalByContra := by
   trivial
 
-/-! Машинная честность cause-формы -/
+/-! Machine honesty of the cause form -/
 
-/-- Внутренняя причина ⟺ `P ∧ ¬P` (тот же тавтологический факт, что и для
-    self-proof): «полной внутренней причины нет» верно для ЛЮБОГО P. -/
+/-- Internal cause ⟺ `P ∧ ¬P` (the same tautological fact as for
+    self-proof): "there is no full internal cause" holds for ANY P. -/
 theorem internalUniverseCause_iff_and_not {P : Prop} :
     InternalUniverseCause P ↔ (P ∧ ¬ P) :=
   boundaryCrossingSelfProof_iff_and_not
 
-/-- ТРИХОТОМИЯ КОЛЛАПСИРУЕТ: раз internal- и negated-ветви пусты, режим
-    причины ⟺ просто внешний вход P. «Выживает только внешняя причина» —
-    буквально: других обитаемых ветвей нет. -/
+/-- THE TRICHOTOMY COLLAPSES: since the internal and negated branches are empty,
+    the cause mode ⟺ just the external input P. "Only the external cause
+    survives" — literally: there are no other inhabited branches. -/
 theorem universeCauseMode_iff {P : Prop} :
     UniverseCauseMode P ↔ P := by
   constructor
@@ -7939,14 +7940,15 @@ theorem universeCauseMode_iff {P : Prop} :
   · exact UniverseCauseMode.external
 
 /-#############################################################################
-  КОНЕЧНЫЕ БАШНИ ПРИЧИН ПО ИНДУКЦИИ (кирпич: finite_causal_tower_induction).
-  Конечная башня «кто-то создал вселенную» классифицируется индукцией в
-  4 исхода: внешняя граница / шов / оплата / двигатель; без всех четырёх
-  башня невозможна; ∞-башня со строгим ℕ-спуском ранга невозможна.
-  Фиксы: InfiniteRankedCausalTower несёт данные → невозможность `→ False`;
-  CausalTowerAuditSummary объявлена : Prop (theorem-совместимость).
-  Ниже — кирпич + машинная честность: исход ⟺ P и башня ⟺ P (обитаема
-  только boundary-ветвь — «добавление творцов не снимает границу» буквально).
+  FINITE CAUSAL TOWERS BY INDUCTION (brick: finite_causal_tower_induction).
+  The finite tower "someone created the universe" is classified by induction into
+  4 outcomes: external boundary / seam / payment / engine; without all four
+  the tower is impossible; an ∞-tower with strict ℕ-descent of rank is impossible.
+  Fixes: InfiniteRankedCausalTower carries data → impossibility `→ False`;
+  CausalTowerAuditSummary declared : Prop (theorem-compatibility).
+  Below — the brick + machine honesty: outcome ⟺ P and tower ⟺ P (only the
+  boundary branch is inhabited — "adding creators does not remove the boundary"
+  literally).
 #############################################################################-/
 
 /-#############################################################################
@@ -8186,9 +8188,9 @@ theorem noEnergyStep00_causalTowerAuditSummary :
     CausalTowerAuditSummary NoEnergyUniverseGeneratingPrinciple :=
   causalTowerAuditSummary NoEnergyUniverseGeneratingPrinciple
 
-/-! Машинная честность tower-формы -/
+/-! Machine honesty of the tower form -/
 
-/-- Исход башни ⟺ P: seam/payment/engine сожжены, обитаема лишь external. -/
+/-- Tower outcome ⟺ P: seam/payment/engine are burnt, only external is inhabited. -/
 theorem causalTowerOutcome_iff {P : Prop} : CausalTowerOutcome P ↔ P := by
   constructor
   · intro O
@@ -8199,9 +8201,9 @@ theorem causalTowerOutcome_iff {P : Prop} : CausalTowerOutcome P ↔ P := by
     | engine h => exact (no_someConcreteEuclideanEngine h).elim
   · exact CausalTowerOutcome.external
 
-/-- БАШНЯ КОЛЛАПСИРУЕТ: конечная башня любой глубины ⟺ просто P. «Добавление
-    творцов не снимает граничную проблему» — буквально: единственная обитаемая
-    цепочка конструкторов упирается в boundary (внешний вход P). -/
+/-- THE TOWER COLLAPSES: a finite tower of any depth ⟺ just P. "Adding
+    creators does not remove the boundary problem" — literally: the single
+    inhabited chain of constructors runs into the boundary (external input P). -/
 theorem finiteCausalTowerAttempt_iff {P : Prop} {n : ℕ} :
     FiniteCausalTowerAttempt P n ↔ P := by
   constructor
@@ -8211,13 +8213,13 @@ theorem finiteCausalTowerAttempt_iff {P : Prop} {n : ℕ} :
     exact FiniteCausalTowerAttempt.boundary hp
 
 /-#############################################################################
-  ВНУТРЕННЯЯ ПЕРВОПРИЧИНА = ДВИГАТЕЛЬ (кирпич: internal_first_cause_is_engine).
-  Финальное различение: внешняя первопричина — граница/аксиома; внутренняя
-  (принадлежащая той же замкнутой системе) — self-cause = запрещённый
-  двигатель; «создатель внутри той же системы» невозможен. Кирпич сам честно
-  ограничивает охват (§5: внешние аксиомы НЕ объявляются двигателями).
-  Ниже — кирпич + машинная честность: внутренняя первопричина ⟺ P ∧ ¬P;
-  режим первопричины коллапсирует (FirstCauseMode P ⟺ P).
+  INTERNAL FIRST CAUSE = ENGINE (brick: internal_first_cause_is_engine).
+  The final distinction: an external first cause is a boundary/axiom; an internal
+  one (belonging to the same closed system) is a self-cause = forbidden
+  engine; "a creator inside the same system" is impossible. The brick itself
+  honestly limits its scope (§5: external axioms are NOT declared engines).
+  Below — the brick + machine honesty: internal first cause ⟺ P ∧ ¬P;
+  the first-cause mode collapses (FirstCauseMode P ⟺ P).
 #############################################################################-/
 
 /-#############################################################################
@@ -8469,15 +8471,15 @@ theorem thisDoesNotTurnExternalAxiomsIntoEngines :
     ThisDoesNotTurnExternalAxiomsIntoEngines := by
   trivial
 
-/-! Машинная честность first-cause-формы -/
+/-! Machine honesty of the first-cause form -/
 
-/-- Внутренняя первопричина ⟺ `P ∧ ¬P` (унаследованная тавтологичность). -/
+/-- Internal first cause ⟺ `P ∧ ¬P` (inherited tautology). -/
 theorem internalFirstCause_iff_and_not {P : Prop} :
     InternalFirstCause P ↔ (P ∧ ¬ P) :=
   internalUniverseCause_iff_and_not
 
-/-- Режим первопричины КОЛЛАПСИРУЕТ: `FirstCauseMode P ⟺ P` — обитаема только
-    внешняя ветвь; «первопричина обязана быть внешней» — буквально. -/
+/-- The first-cause mode COLLAPSES: `FirstCauseMode P ⟺ P` — only the external
+    branch is inhabited; "a first cause must be external" — literally. -/
 theorem firstCauseMode_iff {P : Prop} : FirstCauseMode P ↔ P := by
   constructor
   · intro M
@@ -8490,9 +8492,9 @@ theorem firstCauseMode_iff {P : Prop} : FirstCauseMode P ↔ P := by
 end GeneratedFlowFormulation
 
 
-/-! ### §12. Структурная аналогия P/NP (НЕ доказательство P≠NP и НЕ близнецов).
-FORWARD (P): длина пути ≤ lexRank старта (доказано). REVERSE (NP): конечный ключ не восстанавливает
-генеалогию (доказано). УЗЕЛ PolyCertificateSuffices = SemanticFlowLedgerCollisionResolves — вход. -/
+/-! ### §12. Structural analogy P/NP (NOT a proof of P≠NP and NOT of twins).
+FORWARD (P): path length ≤ lexRank of the start (proven). REVERSE (NP): a finite key does not recover
+the genealogy (proven). NODE PolyCertificateSuffices = SemanticFlowLedgerCollisionResolves — input. -/
 
 namespace PvsNPAnalogy
 open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph
@@ -8506,12 +8508,13 @@ open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph
 open EuclidsPath.ConcreteStep00Graph.ProperUnboundedLedgerGraph.StrictLedgerAudit
 open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 
-/-! ### §1. FORWARD = P: длина пути ограничена lexRank старта (полиномиальная проверка) -/
+/-! ### §1. FORWARD = P: path length is bounded by lexRank of the start (polynomial verification) -/
 
 /--
-**`pathN_len_le_lexRank` — ДОКАЗАНА.** Любой forward-путь длины `n` из `X` имеет `n ≤ lexRank X`.
-Т.е. прямой ход двигателя «дёшев»: число шагов ограничено координатой старта (линейно по `lexRank`),
-и проверка легальности пути — пошаговая. Это P-сторона аналогии. Следствие `lexRank`-спуска. -/
+**`pathN_len_le_lexRank` — PROVEN.** Any forward path of length `n` from `X` has `n ≤ lexRank X`.
+I.e. the forward run of the engine is "cheap": the number of steps is bounded by the start coordinate
+(linearly in `lexRank`), and checking path legality is step-by-step. This is the P-side of the analogy.
+A consequence of `lexRank` descent. -/
 theorem pathN_len_le_lexRank {A M0 : ℕ} :
     ∀ n X Y, PathN (RealStep A M0) n X Y → n ≤ lexRank X := by
   intro n
@@ -8524,70 +8527,74 @@ theorem pathN_len_le_lexRank {A M0 : ℕ} :
       have h2 : k ≤ lexRank Z := ih Z Y hZY
       omega
 
-/-- Генеалогия имеет полиномиально-ограниченную длину: `steps ≤ lexRank (center start)`. -/
+/-- The genealogy has polynomially-bounded length: `steps ≤ lexRank (center start)`. -/
 theorem generatedFlow_steps_le_lexRank {A M0 : ℕ} (F : GeneratedFlow A M0) :
     F.steps ≤ lexRank (State.center F.start) :=
   pathN_len_le_lexRank F.steps (State.center F.start) F.terminal F.path
 
-/-- **`VerificationEasy` — форма P.** «Проверить генеалогию `F` дёшево»: длина ограничена `lexRank`
-    старта (свидетель проверяется за число шагов ≤ координаты). Это ДОКАЗУЕМОЕ свойство графа. -/
+/-- **`VerificationEasy` — the P form.** "Checking genealogy `F` is cheap": the length is bounded by
+    `lexRank` of the start (the witness is checked in a number of steps ≤ the coordinate). This is a
+    PROVABLE property of the graph. -/
 def VerificationEasy {A M0 : ℕ} (F : GeneratedFlow A M0) : Prop :=
   F.steps ≤ lexRank (State.center F.start)
 
 theorem verificationEasy_always {A M0 : ℕ} (F : GeneratedFlow A M0) : VerificationEasy F :=
   generatedFlow_steps_le_lexRank F
 
-/-! ### §2. REVERSE = NP: конечный сертификат НЕ восстанавливает генеалогию (поиск не сжимается) -/
+/-! ### §2. REVERSE = NP: a finite certificate does NOT recover the genealogy (search is not compressible) -/
 
 /--
-**`SearchNotCompressible` — форма NP.** На бесконечной семье состояний конечный ключ проекции НЕ
-определяет состояние (⟹ тем более не восстанавливает полную генеалогию). Т.е. «сжать обратный поиск
-в полиномиальный сертификат» невозможно на уровне состояний. Прямое следствие §10-аудита. -/
+**`SearchNotCompressible` — the NP form.** On an infinite family of states a finite projection key does
+NOT determine the state (⟹ all the more it does not recover the full genealogy). I.e. "compressing the
+reverse search into a polynomial certificate" is impossible at the level of states. A direct consequence
+of the §10 audit. -/
 def SearchNotCompressible {A M0 : ℕ}
     (proj : SemanticLedgerProjection A M0) (S : Set State) : Prop :=
   ¬ KeyDeterminesStateOn proj S
 
-/-- **`search_not_compressible_of_infinite` — ДОКАЗАНА.** Для любой конечной проекции на бесконечной
-    семье поиск не сжимается: ключ теряет информацию. Это NP-сторона: сертификат не эквивалентен
-    полному обратному пути. -/
+/-- **`search_not_compressible_of_infinite` — PROVEN.** For any finite projection on an infinite
+    family the search is not compressible: the key loses information. This is the NP-side: the
+    certificate is not equivalent to the full reverse path. -/
 theorem search_not_compressible_of_infinite {A M0 : ℕ}
     (proj : SemanticLedgerProjection A M0) {S : Set State} (hInf : S.Infinite) :
     SearchNotCompressible proj S :=
   finite_key_cannot_determine_state_on_infinite proj hInf
 
-/-! ### §3. АНАЛОГИЯ КАК ТЕОРЕМА: verify и search структурно различны (не лозунг)
+/-! ### §3. THE ANALOGY AS A THEOREM: verify and search are structurally distinct (not a slogan)
 
-FORWARD ограничен lexRank (доказано), REVERSE не сжимается в конечный ключ (доказано). Значит
-«проверка» и «поиск» здесь разделены МАШИННО: verify всегда лёгок, а сжатие поиска — невозможно. -/
+FORWARD is bounded by lexRank (proven), REVERSE does not compress into a finite key (proven). Hence
+"verification" and "search" are here separated MACHINE-WISE: verify is always easy, while compressing
+the search is impossible. -/
 
 /--
-**`verify_easy_but_search_not_compressible` — ДОКАЗАНА (аналогия как факт).** Одновременно:
-(1) КАЖДАЯ генеалогия проверяется дёшево (`VerificationEasy`, ограничение `lexRank`); и
-(2) на бесконечной семье поиск НЕ сжимается в конечный ключ (`SearchNotCompressible`).
-Это машинная форма асимметрии «проверка легка / поиск не сжимается» — структурная тень P vs NP,
-БЕЗ утверждения P≠NP. -/
+**`verify_easy_but_search_not_compressible` — PROVEN (the analogy as a fact).** Simultaneously:
+(1) EVERY genealogy is checked cheaply (`VerificationEasy`, the `lexRank` bound); and
+(2) on an infinite family the search does NOT compress into a finite key (`SearchNotCompressible`).
+This is the machine form of the asymmetry "verification is easy / search is not compressible" — a
+structural shadow of P vs NP, WITHOUT asserting P≠NP. -/
 theorem verify_easy_but_search_not_compressible {A M0 : ℕ}
     (proj : SemanticLedgerProjection A M0) {S : Set State} (hInf : S.Infinite) :
     (∀ F : GeneratedFlow A M0, VerificationEasy F) ∧ SearchNotCompressible proj S :=
   ⟨verificationEasy_always, search_not_compressible_of_infinite proj hInf⟩
 
-/-! ### §4. УЗЕЛ: «полиномиальный сертификат достаточен» = SemanticFlowLedgerCollisionResolves
+/-! ### §4. THE NODE: "a polynomial certificate suffices" = SemanticFlowLedgerCollisionResolves
 
-Оставшийся вход в одежде P/NP: «конечный (полиномиальный) сертификат обратного пути РЕШАЕТ, что
-коллизия двух генеалогий = настоящий цикл». Это РОВНО SemanticFlowLedgerCollisionResolves. НЕ доказан —
-и §2 показывает почему: сертификат теряет информацию, поэтому «сертификата достаточно» — доп. арифметика. -/
+The remaining input dressed in P/NP clothing: "a finite (polynomial) certificate of the reverse path
+DECIDES that a collision of two genealogies = a real cycle". This is EXACTLY
+SemanticFlowLedgerCollisionResolves. NOT proven — and §2 shows why: the certificate loses information,
+so "the certificate suffices" is extra arithmetic. -/
 
-/-- **`PolyCertificateSuffices` (вход).** Псевдоним для `SemanticFlowLedgerCollisionResolves` в
-    P/NP-терминах: конечный сертификат коллизии генеалогий достаточен, чтобы вывести резолюцию
-    (цикл ∨ невозможная оплата). НЕ доказан. -/
+/-- **`PolyCertificateSuffices` (input).** An alias for `SemanticFlowLedgerCollisionResolves` in
+    P/NP terms: a finite certificate of a genealogy collision suffices to derive the resolution
+    (cycle ∨ impossible payment). NOT proven. -/
 def PolyCertificateSuffices {A M0 : ℕ} (proj : SemanticFlowLedgerProjection A M0) : Prop :=
   SemanticFlowLedgerCollisionResolves proj
 
 /--
-**`branch_closes_if_polyCertificateSuffices` — ДОКАЗАНА (условно на узле).** ЕСЛИ полиномиальный
-сертификат достаточен (`PolyCertificateSuffices`) И есть бесконечная семья генеалогий, ТО ветка
-схлопывается (`False`) — зеркало `generatedFlowStep00Package_false`. Узел НЕ предъявлен: это тот же
-несводимый вход близнецов, лишь названный по-P/NP. -/
+**`branch_closes_if_polyCertificateSuffices` — PROVEN (conditional on the node).** IF a polynomial
+certificate suffices (`PolyCertificateSuffices`) AND there is an infinite family of genealogies, THEN
+the branch collapses (`False`) — a mirror of `generatedFlowStep00Package_false`. The node is NOT
+presented: it is the same irreducible twins input, merely named in P/NP terms. -/
 theorem branch_closes_if_polyCertificateSuffices {A M0 : ℕ}
     (proj : SemanticFlowLedgerProjection A M0)
     {𝓕 : Set (GeneratedFlow A M0)}
@@ -8596,17 +8603,17 @@ theorem branch_closes_if_polyCertificateSuffices {A M0 : ℕ}
     False :=
   infinite_generated_flows_impossible_with_resolution proj h𝓕 hCert
 
-/-! ### §12bis. Финальная редукция близнецов = P/NP-узел (машинная связка)
+/-! ### §12bis. The final twins reduction = the P/NP node (machine link)
 
-Цепочка из 7 factory-кирпичей свела ВСЮ близнецовую ветку к `TheLastStep00Obligation`
-(`∃ A projOf, ∀ M0, SemanticExtendedFlowLedgerCollisionResolves (projOf M0)`). Это ровно
-«полиномиальный сертификат обратного пути достаточен» — форма P/NP-узла. Фиксируем машинно, что
-единственный оставшийся вход близнецов ИМЕЕТ форму «сертификат достаточен ⟹ бесконечность близнецов». -/
+A chain of 7 factory bricks reduced the ENTIRE twins branch to `TheLastStep00Obligation`
+(`∃ A projOf, ∀ M0, SemanticExtendedFlowLedgerCollisionResolves (projOf M0)`). This is exactly
+"a polynomial certificate of the reverse path suffices" — the form of the P/NP node. We fix machine-wise
+that the single remaining twins input HAS the form "the certificate suffices ⟹ infinitude of twins". -/
 
-/-- **`twin_reduction_is_pnp_node` — ДОКАЗАНА (машинная связка).** `TheLastStep00Obligation` (сертификат
-    разрешения коллизий генеалогий достаточен) ⟹ `TwinLowers.Infinite`. Это переформулировка уже
-    доказанной `twinLowersInfinite_of_lastStep00Obligation`: единственный вход близнецов — P/NP-узел
-    «достаточен ли полиномиальный сертификат обратного пути». НЕ доказывает близнецов. -/
+/-- **`twin_reduction_is_pnp_node` — PROVEN (machine link).** `TheLastStep00Obligation` (a certificate
+    for resolving genealogy collisions suffices) ⟹ `TwinLowers.Infinite`. This is a reformulation of the
+    already-proven `twinLowersInfinite_of_lastStep00Obligation`: the single twins input is the P/NP node
+    "does a polynomial certificate of the reverse path suffice". Does NOT prove twins. -/
 theorem twin_reduction_is_pnp_node
     (H : TheLastStep00Obligation) : EuclidsPath.TwinLowers.Infinite :=
   twinLowersInfinite_of_lastStep00Obligation H
@@ -8614,13 +8621,13 @@ theorem twin_reduction_is_pnp_node
 end PvsNPAnalogy
 
 /-#############################################################################
-  ЦЕЛОЧИСЛЕННЫЙ ЗНАКОВЫЙ ФАЙРВОЛ (кирпич: integer_signed_firewall).
-  ℤ-центры не дают нового двигателя: знак — gauge (зеркало сторон при z↦−z),
-  всякий знаковый шаг — pullback беззнакового, gauge-флип +k→−k не шаг
-  (lexRank), нулевой центр — не носитель (6·0±1 = ∓1... ±1). Ниже — кирпич +
-  машинная честность: файрвол ДЕФИНИЦИОНАЛЕН (SignedRealStep ⟺ проекция —
-  дизайн-выбор, не теорема о независимой знаковой динамике), проекция
-  сюръективна (полное gauge-расслоение), конкретное убийство +k→−k.
+  INTEGER SIGNED FIREWALL (brick: integer_signed_firewall).
+  ℤ-centers yield no new engine: the sign is a gauge (mirror of sides under z↦−z),
+  every signed step is a pullback of an unsigned one, the gauge-flip +k→−k is not
+  a step (lexRank), the zero center is not a carrier (6·0±1 = ∓1... ±1). Below —
+  the brick + machine honesty: the firewall is DEFINITIONAL (SignedRealStep ⟺
+  projection is a design choice, not a theorem about independent signed dynamics),
+  the projection is surjective (full gauge fibration), the concrete killing of +k→−k.
 #############################################################################-/
 
 open EuclidsPath.LabelledFanIn
@@ -8891,11 +8898,11 @@ theorem integerSignedFirewall_slogan (A M0 : ℕ) :
       (A := A) (M0 := M0) hGauge
   · exact zero_center_not_signedTwinCarrier
 
-/-! Машинная честность signed-формы -/
+/-! Machine honesty of the signed form -/
 
-/-- ЧЕСТНОСТЬ: файрвол ДЕФИНИЦИОНАЛЕН. SignedRealStep — pullback по построению,
-    потому «знаки не добавляют динамики» — дизайн-выбор, зафиксированный точным
-    iff, а не теорема о независимо заданной знаковой динамике. -/
+/-- HONESTY: the firewall is DEFINITIONAL. SignedRealStep is a pullback by
+    construction, hence "signs add no dynamics" is a design choice fixed by an
+    exact iff, not a theorem about independently given signed dynamics. -/
 theorem signedRealStep_iff_projected {A M0 : ℕ} {U V : SignedState} :
     SignedRealStep A M0 U V ↔
       RealStep A M0 (projectSignedState U) (projectSignedState V) := by
@@ -8903,8 +8910,8 @@ theorem signedRealStep_iff_projected {A M0 : ℕ} {U V : SignedState} :
   · exact signedStep_projects_to_unsignedStep
   · exact SignedRealStep.ofProjected
 
-/-- Проекция сюръективна: знаковый слой — полное gauge-расслоение над
-    беззнаковым графом (слои = выборы знака), ничего не теряется. -/
+/-- The projection is surjective: the signed layer is a full gauge fibration over
+    the unsigned graph (fibers = sign choices), nothing is lost. -/
 theorem projectSignedState_surjective :
     Function.Surjective projectSignedState := by
   intro W
@@ -8915,8 +8922,8 @@ theorem projectSignedState_surjective :
       simp [projectSignedState]
   | absorber n => exact ⟨SignedState.absorber (n : ℤ), by simp [projectSignedState]⟩
 
-/-- Конкретное убийство фейк-двигателя: шаг `+k → −k` невозможен
-    (обе проекции — center |k|). -/
+/-- The concrete killing of a fake engine: the step `+k → −k` is impossible
+    (both projections are center |k|). -/
 theorem no_center_sign_flip_step {A M0 : ℕ} (z : ℤ) :
     ¬ SignedRealStep A M0 (SignedState.center z) (SignedState.center (-z)) :=
   same_projection_signed_step_impossible

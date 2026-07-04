@@ -1,36 +1,37 @@
 /-
-  OddPerfectEulerForm — ФЛАГМАН ЯРУСА: теорема Эйлера о нечётных совершенных числах.
-  Раздел отчёта: «Совершенные числа (нечётный свидетель)».
-  Соседние ступени: Engine/PerfectNumberBranch.lean (тип свидетеля, oddPerfect_ge_101),
-  Engine/OddPerfectThreePrimes.lean (≥ 3 простых делителей, оценка изобилия).
+  OddPerfectEulerForm — TIER FLAGSHIP: Euler's theorem on odd perfect numbers.
+  Report section: "Perfect numbers (odd witness)".
+  Neighbouring steps: Engine/PerfectNumberBranch.lean (witness type, oddPerfect_ge_101),
+  Engine/OddPerfectThreePrimes.lean (≥ 3 prime divisors, abundance estimate).
 
-  ЗЕЛЁНЫЙ МОДУЛЬ (всё доказано, без sorry/axiom/native_decide, карантин НЕ импортируется):
-    * exists_unique_odd_exponent — РОВНО ОДИН простой делитель нечётного совершенного
-      числа имеет нечётный показатель (ступень 1);
-    * special_prime_one_mod_four — этот особый простой q ≡ 1 (mod 4) (ступень 2);
-    * exponent_one_mod_four — его показатель α ≡ 1 (mod 4) (ступень 3);
-    * odd_perfect_euler_form — ПОЛНАЯ ФОРМА ЭЙЛЕРА: нечётное совершенное
-      n = q^α · m² с q простым, q ≡ α ≡ 1 (mod 4), q ∤ m (ступень 4);
-    * oddPerfect_euler_form — та же форма в языке свидетеля OddPerfectNumber.
+  GREEN MODULE (everything proved, no sorry/axiom/native_decide, quarantine NOT imported):
+    * exists_unique_odd_exponent — EXACTLY ONE prime divisor of an odd perfect
+      number has an odd exponent (step 1);
+    * special_prime_one_mod_four — that special prime q ≡ 1 (mod 4) (step 2);
+    * exponent_one_mod_four — its exponent α ≡ 1 (mod 4) (step 3);
+    * odd_perfect_euler_form — FULL EULER FORM: an odd perfect number
+      n = q^α · m² with q prime, q ≡ α ≡ 1 (mod 4), q ∤ m (step 4);
+    * oddPerfect_euler_form — the same form in the language of the witness OddPerfectNumber.
 
-  МАТЕМАТИКА (Эйлер, классика XVIII века). σ(n) = 2n, и при нечётном n двойка входит
-  в 2n ровно в первой степени. σ мультипликативна: σ(n) = ∏_p σ(p^{a_p}) по
-  факторизации. Для нечётного p сумма σ(p^a) = 1 + p + … + p^a состоит из a+1
-  нечётных слагаемых, потому чётна ⟺ a нечётен. Значит нечётный показатель ровно
-  у ОДНОГО простого q (нуль дал бы нечётное σ(n), два дали бы 4 ∣ σ(n) = 2n —
-  обе ветви ломают нечётность n). Остальные показатели чётны — их часть собирается
-  в полный квадрат m². Для самого q: σ(q^α) ∣ 2n влечёт σ(q^α) ≡ 2 (mod 4); если бы
-  q ≡ 3 (mod 4), пары q^{2i} + q^{2i+1} давали бы 1 + 3 ≡ 0 (mod 4) — вся сумма
-  делилась бы на 4 (беззнаковая форма: ∑_{i<2t} q^i = (1+q)·∑_{j<t} (q²)^j и
-  4 ∣ 1+q); значит q ≡ 1 (mod 4), и тогда σ(q^α) ≡ α + 1 (mod 4) даёт α ≡ 1 (mod 4).
+  MATHEMATICS (Euler, classical 18th century). σ(n) = 2n, and for odd n the factor
+  of two enters 2n to exactly the first power. σ is multiplicative: σ(n) = ∏_p σ(p^{a_p})
+  over the factorization. For odd p the sum σ(p^a) = 1 + p + … + p^a consists of a+1
+  odd summands, hence is even ⟺ a is odd. Therefore the odd exponent belongs to exactly
+  ONE prime q (zero would make σ(n) odd, two would give 4 ∣ σ(n) = 2n —
+  both branches break the oddness of n). The remaining exponents are even — their part
+  assembles into a perfect square m². For q itself: σ(q^α) ∣ 2n implies σ(q^α) ≡ 2 (mod 4);
+  if q ≡ 3 (mod 4), the pairs q^{2i} + q^{2i+1} would give 1 + 3 ≡ 0 (mod 4) — the whole
+  sum would be divisible by 4 (unsigned form: ∑_{i<2t} q^i = (1+q)·∑_{j<t} (q²)^j and
+  4 ∣ 1+q); therefore q ≡ 1 (mod 4), and then σ(q^α) ≡ α + 1 (mod 4) gives α ≡ 1 (mod 4).
 
-  ЧЕСТНОСТЬ: это НЕ решение проблемы нечётного совершенного числа (открыта с
-  античности) и НЕ Гёдель — здесь не утверждается ни существование, ни
-  несуществование свидетеля. Это доказанная КЛАССИКА об обусловленной форме
-  гипотетического свидетеля: всякий он обязан быть q^α·m². Якорей-фронтов в модуле
-  нет: все теоремы — безусловная арифметика, оплаченная mathlib-мультипликативностью
+  HONESTY: this is NOT a solution to the odd perfect number problem (open since
+  antiquity) and NOT Gödel — neither the existence nor the
+  non-existence of a witness is asserted here. This is proved CLASSICAL mathematics about
+  the conditional form of a hypothetical witness: every such witness must be q^α·m².
+  There are no data anchors / fronts in this module: all theorems are unconditional
+  arithmetic, paid for by mathlib multiplicativity of
   σ₁ (sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul,
-  sigma_one_apply_prime_pow) и mod-2/mod-4 счётом. Таинт 47 не меняется.
+  sigma_one_apply_prime_pow) and mod-2/mod-4 counting. Taint 47 does not change.
 -/
 import Mathlib
 import EuclidsPath.Engine.OddPerfectThreePrimes
@@ -39,10 +40,10 @@ set_option autoImplicit false
 
 namespace EuclidsPath.PerfectNumberBranch
 
-/-! ### Кирпичи: геометрические суммы по модулям 2 и 4 -/
+/-! ### Building blocks: geometric sums modulo 2 and 4 -/
 
-/-- Сумма степеней нечётного `p` по модулю 2 — это число слагаемых по модулю 2:
-    каждое `p^i` нечётно. -/
+/-- The sum of powers of odd `p` modulo 2 equals the number of summands modulo 2:
+    each `p^i` is odd. -/
 private theorem sum_pow_mod_two {p : ℕ} (hp : p % 2 = 1) (k : ℕ) :
     (∑ i ∈ Finset.range k, p ^ i) % 2 = k % 2 := by
   have h1 : (∑ i ∈ Finset.range k, p ^ i % 2) = ∑ _i ∈ Finset.range k, 1 :=
@@ -50,8 +51,8 @@ private theorem sum_pow_mod_two {p : ℕ} (hp : p % 2 = 1) (k : ℕ) :
   rw [Finset.sum_nat_mod, h1]
   simp
 
-/-- Сумма степеней `p ≡ 1 (mod 4)` по модулю 4 — это число слагаемых по модулю 4:
-    каждое `p^i ≡ 1 (mod 4)`. -/
+/-- The sum of powers of `p ≡ 1 (mod 4)` modulo 4 equals the number of summands modulo 4:
+    each `p^i ≡ 1 (mod 4)`. -/
 private theorem sum_pow_mod_four {p : ℕ} (hp : p % 4 = 1) (k : ℕ) :
     (∑ i ∈ Finset.range k, p ^ i) % 4 = k % 4 := by
   have h1 : (∑ i ∈ Finset.range k, p ^ i % 4) = ∑ _i ∈ Finset.range k, 1 :=
@@ -59,8 +60,8 @@ private theorem sum_pow_mod_four {p : ℕ} (hp : p % 4 = 1) (k : ℕ) :
   rw [Finset.sum_nat_mod, h1]
   simp
 
-/-- Спаривание геометрической суммы чётной длины: `∑_{i<2m} p^i = (1+p)·∑_{j<m} (p²)^j`.
-    Именно эта беззнаковая факторизация несёт «пары q^{2i}+q^{2i+1}» из маршрута Эйлера. -/
+/-- Pairing of a geometric sum of even length: `∑_{i<2m} p^i = (1+p)·∑_{j<m} (p²)^j`.
+    This unsigned factorization is exactly what carries the "pairs q^{2i}+q^{2i+1}" from Euler's route. -/
 private theorem sum_pow_two_mul (p m : ℕ) :
     ∑ i ∈ Finset.range (2 * m), p ^ i
       = (1 + p) * ∑ j ∈ Finset.range m, (p ^ 2) ^ j := by
@@ -71,21 +72,21 @@ private theorem sum_pow_two_mul (p m : ℕ) :
     rw [h2, Finset.sum_range_succ, Finset.sum_range_succ, ih, Finset.sum_range_succ]
     ring
 
-/-! ### σ-фактор простого делителя в факторизационном разложении -/
+/-! ### σ-factor of a prime divisor in the factorization decomposition -/
 
-/-- σ₁-фактор простого `p` в разложении `σ₁(n) = ∏_p σ₁(p^{a_p})`:
-    сумма `1 + p + … + p^{a_p}` по показателю факторизации. -/
+/-- The σ₁-factor of prime `p` in the decomposition `σ₁(n) = ∏_p σ₁(p^{a_p})`:
+    the sum `1 + p + … + p^{a_p}` over the factorization exponent. -/
 private def sigmaFactor (n p : ℕ) : ℕ :=
   ∑ i ∈ Finset.range (n.factorization p + 1), p ^ i
 
-/-- Чётность σ-фактора нечётного простого управляется показателем:
+/-- The parity of the σ-factor of an odd prime is governed by the exponent:
     `σ₁(p^a) ≡ a + 1 (mod 2)`. -/
 private theorem sigmaFactor_mod_two {n p : ℕ} (hp : p % 2 = 1) :
     sigmaFactor n p % 2 = (n.factorization p + 1) % 2 :=
   sum_pow_mod_two hp _
 
-/-- Мультипликативное разложение совершенности: `∏_p σ₁(p^{a_p}) = 2n`
-    (факторизационная форма `σ₁(n) = 2n`). -/
+/-- Multiplicative decomposition of perfection: `∏_p σ₁(p^{a_p}) = 2n`
+    (factorization form of `σ₁(n) = 2n`). -/
 private theorem perfect_prod_sigmaFactor {n : ℕ} (hn : n ≠ 0) (hperf : Nat.Perfect n) :
     ∏ p ∈ n.primeFactors, sigmaFactor n p = 2 * n := by
   have hσ : ArithmeticFunction.sigma 1 n = 2 * n := by
@@ -99,7 +100,7 @@ private theorem perfect_prod_sigmaFactor {n : ℕ} (hn : n ≠ 0) (hperf : Nat.P
   rw [← hσ, hfac]
   rfl
 
-/-- Всякий простой делитель нечётного числа нечётен. -/
+/-- Every prime divisor of an odd number is odd. -/
 private theorem primeFactor_mod_two {n : ℕ} (hodd : Odd n) {p : ℕ}
     (hp : p ∈ n.primeFactors) : p % 2 = 1 := by
   obtain ⟨hpp, hdvd, -⟩ := Nat.mem_primeFactors.mp hp
@@ -110,8 +111,8 @@ private theorem primeFactor_mod_two {n : ℕ} (hodd : Odd n) {p : ℕ}
     omega
   exact Nat.odd_iff.mp (hpp.odd_of_ne_two hne2)
 
-/-- Два простых делителя нечётного совершенного числа с нечётными показателями
-    совпадают: иначе оба σ-фактора чётны и `4 ∣ 2n` — против нечётности `n`. -/
+/-- Two prime divisors of an odd perfect number with odd exponents are equal:
+    otherwise both σ-factors are even and `4 ∣ 2n` — contradicting the oddness of `n`. -/
 private theorem not_two_odd_exponents {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n)
     {q r : ℕ} (hq : q ∈ n.primeFactors) (hr : r ∈ n.primeFactors)
     (hqodd : Odd (n.factorization q)) (hrodd : Odd (n.factorization r)) : q = r := by
@@ -137,14 +138,14 @@ private theorem not_two_odd_exponents {n : ℕ} (hodd : Odd n) (hperf : Nat.Perf
   obtain ⟨t, ht⟩ := h4
   omega
 
-/-! ### СТУПЕНЬ 1: ровно один простой с нечётным показателем -/
+/-! ### STEP 1: exactly one prime with odd exponent -/
 
-/-- **Ступень 1 (доказано): у нечётного совершенного числа РОВНО ОДИН простой
-    делитель с нечётным показателем.** Существование: будь все показатели чётны,
-    все σ-факторы были бы нечётны и `σ(n) = 2n` было бы нечётным. Единственность:
-    два чётных σ-фактора дали бы `4 ∣ 2n` — против нечётности `n`
-    (`not_two_odd_exponents`). НЕ решение открытой проблемы: форма гипотетического
-    свидетеля. -/
+/-- **Step 1 (proved): an odd perfect number has EXACTLY ONE prime divisor
+    with an odd exponent.** Existence: if all exponents were even,
+    all σ-factors would be odd and `σ(n) = 2n` would be odd. Uniqueness:
+    two even σ-factors would give `4 ∣ 2n` — contradicting the oddness of `n`
+    (`not_two_odd_exponents`). NOT a solution to the open problem: the form of a hypothetical
+    witness. -/
 theorem exists_unique_odd_exponent {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n) :
     ∃! q, q ∈ n.primeFactors ∧ Odd (n.factorization q) := by
   have hn0 : n ≠ 0 := hperf.2.ne'
@@ -169,11 +170,11 @@ theorem exists_unique_odd_exponent {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect
   exact ⟨q, ⟨hq, hqodd⟩, fun r hrpair =>
     not_two_odd_exponents hodd hperf hrpair.1 hq hrpair.2 hqodd⟩
 
-/-! ### СТУПЕНЬ 2: особый простой q ≡ 1 (mod 4) -/
+/-! ### STEP 2: the special prime q ≡ 1 (mod 4) -/
 
-/-- Ключевой mod-4 кирпич: σ-фактор особого простого сравним с 2 по модулю 4.
-    Он чётен (нечётный показатель), а `4 ∣ σ(q^α)` дало бы `4 ∣ 2n` — против
-    нечётности `n`; из `σ(q^α) ∣ 2n` остаётся ровно остаток 2. -/
+/-- Key mod-4 building block: the σ-factor of the special prime is congruent to 2 modulo 4.
+    It is even (odd exponent), while `4 ∣ σ(q^α)` would give `4 ∣ 2n` — contradicting
+    the oddness of `n`; from `σ(q^α) ∣ 2n` exactly remainder 2 remains. -/
 private theorem sigmaFactor_special_mod_four {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n)
     {q : ℕ} (hq : q ∈ n.primeFactors) (hqodd : Odd (n.factorization q)) :
     sigmaFactor n q % 4 = 2 := by
@@ -193,9 +194,9 @@ private theorem sigmaFactor_special_mod_four {n : ℕ} (hodd : Odd n) (hperf : N
   obtain ⟨t, ht⟩ := h4
   omega
 
-/-- **Ступень 2 (доказано): особый простой Эйлера сравним с 1 по модулю 4.**
-    Будь `q ≡ 3 (mod 4)`, пары `q^{2i} + q^{2i+1} ≡ 1 + 3 ≡ 0 (mod 4)` дали бы
-    `4 ∣ σ(q^α)` (беззнаковое спаривание `sum_pow_two_mul` + `4 ∣ 1+q`) — против
+/-- **Step 2 (proved): Euler's special prime is congruent to 1 modulo 4.**
+    If `q ≡ 3 (mod 4)`, the pairs `q^{2i} + q^{2i+1} ≡ 1 + 3 ≡ 0 (mod 4)` would give
+    `4 ∣ σ(q^α)` (unsigned pairing `sum_pow_two_mul` + `4 ∣ 1+q`) — contradicting
     `σ(q^α) ≡ 2 (mod 4)`. -/
 theorem special_prime_one_mod_four {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n)
     {q : ℕ} (hq : q ∈ n.primeFactors) (hqodd : Odd (n.factorization q)) :
@@ -216,11 +217,11 @@ theorem special_prime_one_mod_four {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect
     exact dvd_mul_of_dvd_left (by omega : (4 : ℕ) ∣ 1 + q) _
   omega
 
-/-! ### СТУПЕНЬ 3: показатель α ≡ 1 (mod 4) -/
+/-! ### STEP 3: the exponent α ≡ 1 (mod 4) -/
 
-/-- **Ступень 3 (доказано): показатель особого простого сравним с 1 по модулю 4.**
-    При `q ≡ 1 (mod 4)` сумма `σ(q^α)` из `α + 1` единиц по модулю 4 даёт
-    `α + 1 ≡ 2 (mod 4)`, т.е. `α ≡ 1 (mod 4)`. -/
+/-- **Step 3 (proved): the exponent of the special prime is congruent to 1 modulo 4.**
+    With `q ≡ 1 (mod 4)` the sum `σ(q^α)` of `α + 1` units modulo 4 gives
+    `α + 1 ≡ 2 (mod 4)`, i.e. `α ≡ 1 (mod 4)`. -/
 theorem exponent_one_mod_four {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n)
     {q : ℕ} (hq : q ∈ n.primeFactors) (hqodd : Odd (n.factorization q)) :
     n.factorization q % 4 = 1 := by
@@ -230,16 +231,16 @@ theorem exponent_one_mod_four {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n)
     sum_pow_mod_four hq4 _
   omega
 
-/-! ### СТУПЕНЬ 4: полная форма Эйлера n = q^α · m² -/
+/-! ### STEP 4: full Euler form n = q^α · m² -/
 
-/-- **ТЕОРЕМА ЭЙЛЕРА (доказано, полная форма): всякое нечётное совершенное число
-    имеет вид `n = q^α · m²`, где `q` простое, `q ≡ 1 (mod 4)`, `α ≡ 1 (mod 4)`
-    и `q ∤ m`.** Сборка ступеней: единственный нечётный показатель
-    (`exists_unique_odd_exponent`) выделяет `q`; его вычеты — ступени 2–3;
-    остальные показатели чётны, их произведение `∏ p^{a_p} = (∏ p^{a_p/2})²`
-    упаковывается в `m²`; `q ∤ m`, потому что каждый сомножитель `m` — степень
-    простого, отличного от `q`. НЕ решение открытой проблемы: обусловленная форма
-    гипотетического свидетеля, известная с XVIII века. -/
+/-- **EULER'S THEOREM (proved, full form): every odd perfect number
+    has the form `n = q^α · m²`, where `q` is prime, `q ≡ 1 (mod 4)`, `α ≡ 1 (mod 4)`
+    and `q ∤ m`.** Assembly of steps: the unique odd exponent
+    (`exists_unique_odd_exponent`) singles out `q`; its residues are steps 2–3;
+    the remaining exponents are even, their product `∏ p^{a_p} = (∏ p^{a_p/2})²`
+    packs into `m²`; `q ∤ m` because every factor of `m` is a power of
+    a prime different from `q`. NOT a solution to the open problem: the conditional form
+    of a hypothetical witness, known since the 18th century. -/
 theorem odd_perfect_euler_form {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n) :
     ∃ q α m : ℕ, q.Prime ∧ q % 4 = 1 ∧ α % 4 = 1 ∧ n = q ^ α * m ^ 2 ∧ ¬ q ∣ m := by
   have hn0 : n ≠ 0 := hperf.2.ne'
@@ -249,7 +250,7 @@ theorem odd_perfect_euler_form {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n) 
     ∏ p ∈ n.primeFactors.erase q, p ^ (n.factorization p / 2),
     hqp, special_prime_one_mod_four hodd hperf hq hqodd,
     exponent_one_mod_four hodd hperf hq hqodd, ?_, ?_⟩
-  · -- упаковка квадрата: все показатели вне q чётны
+  · -- packing into a square: all exponents outside q are even
     have hself : ∏ p ∈ n.primeFactors, p ^ n.factorization p = n :=
       Nat.prod_factorization_pow_eq_self hn0
     have hsplit :
@@ -270,7 +271,7 @@ theorem odd_perfect_euler_form {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n) 
       omega
     rw [← hsq]
     exact hsplit.symm
-  · -- q не делит m: каждый сомножитель m — степень простого p ≠ q
+  · -- q does not divide m: every factor of m is a power of a prime p ≠ q
     intro hdvd
     obtain ⟨p, hp, hpdvd⟩ := (hqp.prime.dvd_finsetProd_iff _).mp hdvd
     obtain ⟨hpne, hpmem⟩ := Finset.mem_erase.mp hp
@@ -279,12 +280,12 @@ theorem odd_perfect_euler_form {n : ℕ} (hodd : Odd n) (hperf : Nat.Perfect n) 
       (Nat.prime_dvd_prime_iff_eq hqp hpp).mp (hqp.dvd_of_dvd_pow hpdvd)
     exact hpne heq.symm
 
-/-! ### Форма Эйлера в языке свидетеля OddPerfectNumber -/
+/-! ### Euler form in the language of the witness OddPerfectNumber -/
 
-/-- **Форма Эйлера для гипотетического свидетеля (доказано):** всякий
-    `W : OddPerfectNumber` обязан иметь вид `q^α · m²` с `q ≡ α ≡ 1 (mod 4)`
-    и `q ∤ m` — рядом с `oddPerfect_ge_101` и `oddPerfect_min_three_prime_factors`
-    это третье зелёное сужение домена свидетеля. -/
+/-- **Euler form for the hypothetical witness (proved):** every
+    `W : OddPerfectNumber` must have the form `q^α · m²` with `q ≡ α ≡ 1 (mod 4)`
+    and `q ∤ m` — together with `oddPerfect_ge_101` and `oddPerfect_min_three_prime_factors`
+    this is the third green narrowing of the witness domain. -/
 theorem oddPerfect_euler_form (W : OddPerfectNumber) :
     ∃ q α m : ℕ, q.Prime ∧ q % 4 = 1 ∧ α % 4 = 1 ∧ W.1 = q ^ α * m ^ 2 ∧ ¬ q ∣ m :=
   odd_perfect_euler_form W.2.1 W.2.2

@@ -1,10 +1,10 @@
 /-
-  RiemannImpossibleEngine — ИСПРАВЛЕННОЕ ядро (Parts I–VII).
-  Три починки против оригинального кирпича:
-    (1) push_neg даёт ∀n, s≠… — мостик к полю ¬∃ (как в RiemannEngine.lean);
-    (2) nextU: .choose вместо rcases (Prop→Type элиминация запрещена в noncomputable def);
-    (3) ПЕРЕИСПОЛЬЗУЕМ реповый ClosedUniverse.ClosedPaidDynamics / no_infinite_closed_paid_run
-        вместо дублирования (кирпич определял свою копию).
+  RiemannImpossibleEngine — FIXED core (Parts I–VII).
+  Three fixes over the original brick:
+    (1) push_neg yields ∀n, s≠… — a bridge to the ¬∃ field (as in RiemannEngine.lean);
+    (2) nextU: .choose instead of rcases (Prop→Type elimination is forbidden in noncomputable def);
+    (3) REUSE the repo's ClosedUniverse.ClosedPaidDynamics / no_infinite_closed_paid_run
+        instead of duplicating (the brick was defining its own copy).
 -/
 import EuclidsPath.Engine.ClosedUniverse
 import Mathlib.NumberTheory.LSeries.Nonvanishing
@@ -72,7 +72,7 @@ theorem criticalStripOffLineZero_of_not_RH
   rcases offCriticalZero_of_not_RH hNotRH with ⟨Z⟩
   exact ⟨criticalStripOffLineZero_of_offCriticalZero hBelow Z⟩
 
-/-! ## Eternal Riemann engine (переиспользует реповый ClosedPaidDynamics) -/
+/-! ## Eternal Riemann engine (reuses the repo's ClosedPaidDynamics) -/
 
 structure EternalRiemannEngine (Z : CriticalStripOffLineZero) where
   State : Type
@@ -82,7 +82,7 @@ structure EternalRiemannEngine (Z : CriticalStripOffLineZero) where
   start_in_universe : dyn.Universe (path 0)
   step : ∀ k, Step (path k) (path (k + 1))
 
-/-- **`no_eternalRiemannEngine` — ДОКАЗАНА безусловно** через реповый `no_infinite_closed_paid_run`. -/
+/-- **`no_eternalRiemannEngine` — PROVED unconditionally** via the repo's `no_infinite_closed_paid_run`. -/
 theorem no_eternalRiemannEngine (Z : CriticalStripOffLineZero) :
     ¬ Nonempty (EternalRiemannEngine Z) := by
   rintro ⟨E⟩
@@ -98,7 +98,7 @@ structure RiemannEngineFactory (Z : CriticalStripOffLineZero) where
   seed_in_universe : dyn.Universe seed
   next : ∀ x, dyn.Universe x → ∃ y, Step x y
 
-/-- Успешный шаг на legal-подтипе (ИСПРАВЛЕНО: `.choose`, не `rcases`). -/
+/-- Successful step on the legal subtype (FIXED: `.choose`, not `rcases`). -/
 noncomputable def RiemannEngineFactory.nextU {Z : CriticalStripOffLineZero}
     (F : RiemannEngineFactory Z) (x : {s : F.State // F.dyn.Universe s}) :
     {y : {s : F.State // F.dyn.Universe s} // F.Step x.1 y.1} :=
@@ -122,8 +122,8 @@ noncomputable def eternalEngine_of_factory {Z : CriticalStripOffLineZero}
   start_in_universe := (F.pathU 0).2,
   step := F.pathU_step }
 
-/-- **`no_riemannEngineFactory` — ДОКАЗАНА безусловно.** Off-critical zero в полосе НЕ может породить
-    factory невозможного closed-paid двигателя. -/
+/-- **`no_riemannEngineFactory` — PROVED unconditionally.** An off-critical zero in the strip CANNOT spawn
+    a factory of the impossible closed-paid perpetual engine. -/
 theorem no_riemannEngineFactory (Z : CriticalStripOffLineZero) :
     ¬ Nonempty (RiemannEngineFactory Z) := by
   rintro ⟨F⟩
@@ -131,13 +131,13 @@ theorem no_riemannEngineFactory (Z : CriticalStripOffLineZero) :
 
 /-! ## The Riemann bridge -/
 
-/-- **Мост (вход):** каждый off-critical zero в полосе порождает factory. НЕ доказан. -/
+/-- **Bridge (named input):** every off-critical zero in the strip spawns a factory. NOT proved. -/
 def CriticalStripRiemannEngineBridge : Prop :=
   ∀ Z : CriticalStripOffLineZero, Nonempty (RiemannEngineFactory Z)
 
-/-- **`RH_of_criticalStripRiemannEngineBridge` — ДОКАЗАНА (главная теорема, условная RH).**
-    Классификация + мост ⟹ mathlib-RH. Без отдельного `¬Engine` входа: `no_riemannEngineFactory`
-    безусловна. -/
+/-- **`RH_of_criticalStripRiemannEngineBridge` — PROVED (main theorem, conditional RH).**
+    Classification + bridge ⟹ mathlib-RH. No separate `¬Engine` named input needed: `no_riemannEngineFactory`
+    is unconditional. -/
 theorem RH_of_criticalStripRiemannEngineBridge
     (hBelow : TrivialBelowZeroClassification) (bridge : CriticalStripRiemannEngineBridge) :
     RiemannHypothesis := by
@@ -146,14 +146,15 @@ theorem RH_of_criticalStripRiemannEngineBridge
   exact no_riemannEngineFactory Z (bridge Z)
 
 
-/-! ## ЧЕСТНОСТЬ: strip-bridge эквивалентен «нет off-line нулей в полосе»
+/-! ## HONESTY: strip-bridge is equivalent to "no off-line zeros in the strip"
 
-Раз `no_riemannEngineFactory` безусловна, вход `CriticalStripRiemannEngineBridge` выполним лишь
-вакуумно — когда strip-нулей вне прямой нет вовсе. С классификацией `TrivialBelowZeroClassification`
-это даёт RH; без неё — «RH в полосе». Вход = цель (в полосе), не редукция. -/
+Since `no_riemannEngineFactory` is unconditional, the named input `CriticalStripRiemannEngineBridge` is
+satisfiable only vacuously — when there are no strip zeros off the line at all. Together with
+`TrivialBelowZeroClassification` this yields RH; without it — "RH in the strip". The named input equals the goal
+(in the strip), not a reduction. -/
 
-/-- **`criticalStripBridge_iff_no_stripZero` — ДОКАЗАНА (честность).** Strip-мост ⟺ отсутствие
-    off-line нулей в критической полосе. -/
+/-- **`criticalStripBridge_iff_no_stripZero` — PROVED (honesty).** Strip-bridge ⟺ absence
+    of off-line zeros in the critical strip. -/
 theorem criticalStripBridge_iff_no_stripZero :
     CriticalStripRiemannEngineBridge ↔ ¬ Nonempty CriticalStripOffLineZero := by
   constructor

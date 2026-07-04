@@ -1,34 +1,34 @@
 /-
-  MersenneForwardFront — форвард-серия Мерсенна (34 кирпича одной сборкой):
-  peel-lift сертификаты/операторы/законы расширения, точная successor-арифметика,
-  sparse-маршруты и index-jump lift, debt-firewalls (bounded/high/tail),
+  MersenneForwardFront — Mersenne forward series (34 bricks in one assembly):
+  peel-lift certificates/operators/extension laws, exact successor arithmetic,
+  sparse routes and index-jump lift, debt-firewalls (bounded/high/tail),
   same-key pigeonhole, resolver-payment firewall/decomposition, admissible
-  filter + circularity audit, side-payment сертификат, semantic target realizer,
+  filter + circularity audit, side-payment certificate, semantic target realizer,
   cofinal filter selector, nonabsorption, four-defect closure, oversaturation
   engine bridge, no-escape / full-closure / endgame, current final front audit,
-  one-file max forward, мост к twin-Step00.
+  one-file max forward, bridge to twin-Step00.
 
-  ВНИМАНИЕ — ВАКУУМНОСТЬ ПОЗДНИХ КИРПИЧЕЙ (флаги сборочного аудита):
-    * ПАКЕТЫ-ГИПОТЕЗЫ НЕОБИТАЕМЫ у: LegacyStep00NoEscapeLayer (four_defect),
+  WARNING — VACUITY OF LATE BRICKS (assembly audit flags):
+    * HYPOTHESIS PACKAGES ARE UNINHABITED in: LegacyStep00NoEscapeLayer (four_defect),
       TwinStep00NoEscapeLayer / AcceptedTwinStep00NoGoPackage (twin_step00_bridge),
-      NoForbiddenPrimePaymentEngine-семейство (oversaturation / no_escape /
-      full_closure_endgame): их noEngine требует Engine -> False, но токены
-      несут СВОБОДНОЕ поле witness : Prop — «двигатель» тривиально строится
-      (witness := True), слой противоречив, и headline-теоремы
-      (produces_infinite_mersenne_twins и родственные) ВАКУУМНЫ. Маршруты в
-      этой форме неинстанциируемы; нужна привязка token-witness к реальной
-      Step00-структуре.
-    * TwinStep00CausalClosureNode — свободный гейт (Prop + proof).
-    * Renamed-conclusion входы: PrimePaymentSound / lower+upper_sound —
-      целевой вывод, переупакованный «законом»; CofinalAdmissibleGenealogyHits /
-      cofinal_filter напрямую поставляют кофинальные admissible-индексы.
-    * Свободные гейты честности (один кирпич сам инстанциирует такой гейт
+      NoForbiddenPrimePaymentEngine family (oversaturation / no_escape /
+      full_closure_endgame): their noEngine requires Engine -> False, but tokens
+      carry a FREE field witness : Prop — the "engine" is trivially constructed
+      (witness := True), the layer is contradictory, and the headline theorems
+      (produces_infinite_mersenne_twins and relatives) ARE VACUOUS. Routes in
+      this form are non-instantiable; a binding of token-witness to a real
+      Step00 structure is needed.
+    * TwinStep00CausalClosureNode — free gate (Prop + proof).
+    * Renamed-conclusion inputs: PrimePaymentSound / lower+upper_sound —
+      the target conclusion repackaged as a "law"; CofinalAdmissibleGenealogyHits /
+      cofinal_filter directly supply cofinal admissible indices.
+    * Free honesty gates (one brick instantiates such a gate with
       True): not_using_ordinary_twin_absence, cofinal_tail_scope,
       not_using_mersenne_twin_infinitude, not_using_classical_PNP,
       lower/upper_not_circular.
-    * tokenOfFinalDefect переписан (оригинал нетипизируем) — не проходит через
-      четыре типизированных адаптера (twinTokenOfAbsence проходит).
-  Безусловных сильных выводов нет; sorry/axiom нет.
+    * tokenOfFinalDefect rewritten (original is ill-typed) — does not pass through
+      four typed adapters (twinTokenOfAbsence passes).
+  No unconditional strong conclusions; no sorry/axiom.
 -/
 import Mathlib
 import EuclidsPath.Engine.MersennePeelPressure

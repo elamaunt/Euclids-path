@@ -1,20 +1,20 @@
 /-
-  Алгебра оплаты (boundary-energy ledger). Источник: twin_prime_boundary_energy_ledger_ru_20260630.md.
-  Проза: prose/26_PaymentLedger.md.
+  Payment algebra (boundary-energy ledger). Source: twin_prime_boundary_energy_ledger_ru_20260630.md.
+  Prose: prose/26_PaymentLedger.md.
 
-  «Когда двигатель останавливается — он платит, и оплата подчинена строгому порядку.»
-  Здесь зафиксировано ДОКАЗУЕМОЕ алгебраическое ядро закона оплаты (без распределения):
+  "When the engine stops — it pays, and payment obeys a strict order."
+  Here the PROVABLE algebraic core of the payment law is recorded (without distribution):
 
-    * channel law: clean-источник в одном residue mod p ⟹ ровно `p−2` совместимых каналов;
-    * tax law: запрет `a ≢ θ (mod q)` ⟹ фактор ёмкости `(q−3)/(q−2)`;
-    * **shifted-primorial obstruction (ЗАКОН ДЕФЕКТА):** бесплатный проход к ordered prime `p`
-      требует `P_{<p} ∣ a−θ`, откуда `P_{<p} ≤ a` — а если примориал перерос `a`, проход НЕВОЗМОЖЕН.
+    * channel law: a clean source in one residue mod p ⟹ exactly `p−2` compatible channels;
+    * tax law: the ban `a ≢ θ (mod q)` ⟹ capacity factor `(q−3)/(q−2)`;
+    * **shifted-primorial obstruction (DEFICIT LAW):** a free passage to ordered prime `p`
+      requires `P_{<p} ∣ a−θ`, hence `P_{<p} ≤ a` — and if the primorial has outgrown `a`, passage is IMPOSSIBLE.
 
-  Честная граница (числа, tools/RESULTS_payment_budget.md): суммарная потеря ёмкости по малым
-  простым ~ `1/ln A` (Мертенс) — поэтому количественный shifted-charge budget (§20.2) НЕ закрывается
-  distribution-free и остаётся явным открытым входом. Здесь — ровно доказуемая алгебра.
+  Honest boundary (numbers, tools/RESULTS_payment_budget.md): the total capacity loss over small
+  primes ~ `1/ln A` (Mertens) — therefore the quantitative shifted-charge budget (§20.2) does NOT close
+  distribution-free and remains an explicit open input. Here — exactly the provable algebra.
 
-  Всё элементарно (Nat/Int + Finset). Без анализа/распределения/сита.
+  Everything is elementary (Nat/Int + Finset). No analysis / distribution / sieve.
 -/
 import Mathlib
 
@@ -22,12 +22,12 @@ set_option autoImplicit false
 
 namespace EuclidsPath.Payment
 
-/-! ### Channel law: ровно `p − 2` clean-совместимых каналов -/
+/-! ### Channel law: exactly `p − 2` clean-compatible channels -/
 
 /--
-  **Channel residue law (§12.1).** Если `p > 3`, `p ∣ 6n − ε` (boundary на противоположной стороне)
-  и `6m + σ = a (6n + ε)`, то источник `m` лежит в фиксированном классе вычетов:
-  `6m ≡ 2aε − σ (mod p)`. Чистая CRT-алгебра.
+  **Channel residue law (§12.1).** If `p > 3`, `p ∣ 6n − ε` (boundary on the opposite side)
+  and `6m + σ = a (6n + ε)`, then source `m` lies in a fixed residue class:
+  `6m ≡ 2aε − σ (mod p)`. Pure CRT algebra.
 -/
 theorem channel_residue {p : ℕ} {m n a : ℤ} {σ ε : ℤ}
     (hlift : 6 * m + σ = a * (6 * n + ε))
@@ -41,38 +41,38 @@ theorem channel_residue {p : ℕ} {m n a : ℤ} {σ ε : ℤ}
     rw [← hlift]; ring
   rw [h2]; exact h1
 
-/-! ### Tax / θ-дихотомия -/
+/-! ### Tax / θ-dichotomy -/
 
 /--
-  **Tax dichotomy (§15.1).** Положим `θ = σε`. Дополнительный запрет на стороне `6m − σ` по
-  малому `q` (`q ∣ a(6n+ε) − 2σ`) исчезает ровно когда `a ≡ θ (mod q)` — тогда он совпадает с уже
-  запрещённым классом. То есть «нет налога ⟺ `q ∣ a − θ`».
+  **Tax dichotomy (§15.1).** Let `θ = σε`. The additional ban on the `6m − σ` side by
+  small `q` (`q ∣ a(6n+ε) − 2σ`) vanishes exactly when `a ≡ θ (mod q)` — then it coincides with the
+  already-forbidden class. That is, "no tax ⟺ `q ∣ a − θ`".
 -/
 theorem no_tax_iff_shifted {q : ℕ} {a θ : ℤ} :
     (q : ℤ) ∣ a - θ ↔ a ≡ θ [ZMOD (q : ℤ)] := by
   rw [Int.modEq_iff_dvd]   -- a ≡ θ [ZMOD q] ↔ q ∣ θ - a
   exact (dvd_sub_comm)
 
-/-! ### Shifted-primorial obstruction — ЗАКОН ДЕФЕКТА -/
+/-! ### Shifted-primorial obstruction — DEFICIT LAW -/
 
 /--
-  **Безналоговые простые делят сдвиг (Лемма 16.1).** Если по простому `q` налога нет
-  (`q ∣ a − θ`) для каждого `q` из множества `G`, и эти `q` попарно различны (через примориал
-  `P = ∏ q`), то `P ∣ a − θ`. (Здесь `P` — произведение по `G`; делимости складываются как lcm.)
+  **Tax-free primes divide the shift (Lemma 16.1).** If for prime `q` there is no tax
+  (`q ∣ a − θ`) for each `q` in the set `G`, and these `q` are pairwise coprime (via primorial
+  `P = ∏ q`), then `P ∣ a − θ`. (Here `P` is the product over `G`; divisibilities combine as lcm.)
 -/
 theorem primorial_dvd_shift {G : Finset ℕ} {a θ : ℤ}
     (hcop : (G : Set ℕ).Pairwise (Nat.Coprime))
     (htax : ∀ q ∈ G, (q : ℤ) ∣ a - θ) :
     (G.prod (fun q => (q : ℤ))) ∣ a - θ := by
-  -- произведение попарно взаимно простых делителей делит общий аргумент
+  -- a product of pairwise coprime divisors divides the common argument
   exact Finset.prod_dvd_of_coprime (by
     intro i hi j hj hij
     exact (hcop hi hj hij).isCoprime.intCast) htax
 
 /--
-  **Shifted-primorial obstruction (Теорема 16.2 / закон дефекта).** Если примориал малых простых
-  `P` делит `a − θ` и `a ≠ θ`, то `P ≤ |a − θ|`. Контрапозиция (порог `Y_A`, §17):
-  если `P > |a − θ|`, то `a = θ` — бесплатный проход к `p` НЕВОЗМОЖЕН для нетривиального `a`.
+  **Shifted-primorial obstruction (Theorem 16.2 / deficit law).** If the primorial of small primes
+  `P` divides `a − θ` and `a ≠ θ`, then `P ≤ |a − θ|`. Contraposition (threshold `Y_A`, §17):
+  if `P > |a − θ|`, then `a = θ` — a free passage to `p` is IMPOSSIBLE for non-trivial `a`.
 -/
 theorem shifted_primorial_bound {P a θ : ℤ}
     (hdvd : P ∣ a - θ) (hne : a ≠ θ) : P ≤ |a - θ| := by
@@ -80,9 +80,9 @@ theorem shifted_primorial_bound {P a θ : ℤ}
   exact Int.le_of_dvd (abs_pos.mpr hnz) ((dvd_abs P (a - θ)).mpr hdvd)
 
 /--
-  **Порог `Y_A`: поздняя граница не бесплатна.** Если примориал `P` превосходит верхнюю границу
-  `Z` активного делителя (`|a − θ| ≤ Z < P`), то `P ∣ a − θ` вынуждает `a = θ`: безналоговый
-  проход к ordered prime `p ≥ Y_A` невозможен (нет нетривиального `a ≤ Z`, делящегося `P`).
+  **Threshold `Y_A`: a late boundary is not free.** If the primorial `P` exceeds the upper bound
+  `Z` of the active divisor (`|a − θ| ≤ Z < P`), then `P ∣ a − θ` forces `a = θ`: a tax-free
+  passage to ordered prime `p ≥ Y_A` is impossible (there is no non-trivial `a ≤ Z` divisible by `P`).
 -/
 theorem late_boundary_not_free {P a θ Z : ℤ}
     (hdvd : P ∣ a - θ) (hZ : |a - θ| ≤ Z) (hlate : Z < P) : a = θ := by

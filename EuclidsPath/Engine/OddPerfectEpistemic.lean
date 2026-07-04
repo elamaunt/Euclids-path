@@ -1,42 +1,42 @@
 /-
-  OddPerfectEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ нечётных совершенных чисел
-  (зеркало CollatzFirstCause / PNPFirstCause). Зелёная машина фронта:
-  Engine/OddPerfectManifestationFront.lean; ветвь: Engine/PerfectNumberBranch.lean.
+  OddPerfectEpistemic — EPISTEMIC COMPLEMENT of odd perfect numbers
+  (mirror of CollatzFirstCause / PNPFirstCause). Green engine of the front:
+  Engine/OddPerfectManifestationFront.lean; branch: Engine/PerfectNumberBranch.lean.
 
-  ЧТО ЭТО. «Решить изнутри» вопрос о нечётном совершенном числе = предъявить
-  свидетеля ВНУТРИ собственного проверенного горизонта (`ground`: ∃ W, W.1 < 101),
-  неся при этом машинную развёртку этого самого горизонта (`beyondOwnHorizon`:
-  все нечётные ЧИСЛА ниже 101 отсеяны kernel-вычислением). Ноги НЕ являются
-  логическими дополнениями друг друга: `ground` говорит о СВИДЕТЕЛЯХ
-  (subtype `OddPerfectNumber`), `beyondOwnHorizon` — сырой decide-факт о числах;
-  противоречие требует реальной медиации (распаковка subtype + `Nat.odd_iff`),
-  и kernel-оплата входит в само опровержение.
+  WHAT THIS IS. To "solve from within" the question of an odd perfect number = to present
+  a witness INSIDE one's own verified horizon (`ground`: ∃ W, W.1 < 101),
+  while carrying the machine unfolding of that very horizon (`beyondOwnHorizon`:
+  all odd NUMBERS below 101 are ruled out by kernel computation). The legs are NOT
+  logical complements of each other: `ground` speaks of WITNESSES
+  (subtype `OddPerfectNumber`), `beyondOwnHorizon` is a raw decide-fact about numbers;
+  the contradiction requires genuine mediation (unpacking the subtype + `Nat.odd_iff`),
+  and the kernel payment is part of the refutation itself.
 
-  ЧЕМ ОПЛАЧЕНА СОДЕРЖАТЕЛЬНОСТЬ (честно, по пунктам). (1) Вторая нога ЗЕЛЁНО
-  ОБИТАЕМА: `oddPerfect_horizon_swept` — kernel-развёртка горизонта, ровно
-  внутренность доказательства `oddPerfect_ge_101` (поточечная разрешимость
-  `DecidablePred Nat.Perfect` в действии). Это лучше Коллатца (там
-  `InternalisedCollatzGround` — голая пара закон/не-закон, оплаченная декретом
-  `collatzBoundary`; здесь декрета нет — §17-вердикт — и он не нужен), но
-  СЛАБЕЕ пижонхола P/NP: у `no_fullPayment_of_unboundedSupply` противоречие
-  несёт отдельная зелёная теорема о бесконечном против конечного, здесь —
-  конечное kernel-вычисление. Закон-форма ground := закон / ¬закон здесь
-  ВЫРОЖДАЕТСЯ в тавтологию (отождествляющего декрета нет) — она сознательно
-  НЕ взята. (2) Двигательная сторона (`oddPerfectWitness_carries_engine`)
-  УСЛОВНА на закон манифестации (`hLaw : OddPerfectManifestationLaw` — живёт
-  определением, поле НЕ декретировано) и на сведённые книги: безусловного
-  аналога `nonHalting_carries_perpetual_engine` у этого фронта НЕТ и быть не
-  может без решения самой задачи — гипотезы всюду оставлены явными.
+  WHAT PAYS FOR THE SUBSTANCE (honestly, point by point). (1) The second leg is GREENLY
+  INHABITED: `oddPerfect_horizon_swept` — the kernel unfolding of the horizon, exactly
+  the interior of the proof of `oddPerfect_ge_101` (pointwise decidability of
+  `DecidablePred Nat.Perfect` in action). This is better than Collatz (where
+  `InternalisedCollatzGround` is a bare law/not-law pair, paid for by the decree
+  `collatzBoundary`; here there is no decree — §17-verdict — and none is needed), but
+  WEAKER than the pigeonhole of P/NP: for `no_fullPayment_of_unboundedSupply` the
+  contradiction is carried by a separate green theorem about the infinite vs the finite,
+  here it is a finite kernel computation. The law-form ground := law / ¬law here
+  DEGENERATES into a tautology (there is no identifying decree) — it is deliberately
+  NOT taken. (2) The engine side (`oddPerfectWitness_carries_engine`) is
+  CONDITIONAL on the manifestation law (`hLaw : OddPerfectManifestationLaw` — lives
+  by definition, the field is NOT decreed) and on the balanced ledger: an unconditional
+  analogue of `nonHalting_carries_perpetual_engine` for this front DOES NOT EXIST and
+  cannot exist without solving the problem itself — hypotheses are left explicit throughout.
 
-  ЧЕСТНОСТЬ. Это модель-внутренняя эпистемика, НЕ решение старейшей открытой
-  задачи математики и НЕ Гёдель (никакой независимости и неподвижной точки —
-  только вычислительный отсев и стена вечного двигателя). Пуант, уникальный
-  для этого фронта: «внешняя проверка» — буквально `DecidablePred Nat.Perfect`,
-  сильнейшая форма среди всех фронтов (всякая фальшивка умирает decide'ом,
-  ср. `not_perfect_945`); предъявить НАСТОЯЩЕГО свидетеля при законе и книгах =
-  предъявить двигатель — потому свидетель зелёно непредъявим
-  (`oddPerfectWitness_green_unpresentable`). Модуль ЦЕЛИКОМ ЗЕЛЁНЫЙ:
-  карантин НЕ импортируется, axiom/sorry/native_decide нет, таинт 47 не меняется.
+  HONESTY. This is model-internal epistemics, NOT a solution to the oldest open
+  problem in mathematics and NOT Gödel (no independence and no fixed point —
+  only computational filtering and the wall of the perpetual engine). The unique point
+  of this front: "external verification" is literally `DecidablePred Nat.Perfect`,
+  the strongest form among all fronts (every forgery dies by decide,
+  cf. `not_perfect_945`); to present a GENUINE witness under the law and the ledger =
+  to present a perpetual engine — therefore the witness is greenly unpresentable
+  (`oddPerfectWitness_green_unpresentable`). The module is ENTIRELY GREEN:
+  quarantine is NOT imported, no axiom/sorry/native_decide, taint 47 does not change.
 -/
 
 import EuclidsPath.Engine.OddPerfectManifestationFront
@@ -47,91 +47,91 @@ namespace EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation.Epistemic
 
 open EuclidsPath.PerfectNumberBranch
 
-/-! ## Развёртка горизонта: зелёная обитаемость второй ноги (🟢) -/
+/-! ## Horizon unfolding: green inhabitedness of the second leg (🟢) -/
 
-/-- **Развёртка собственного проверенного горизонта (зелёная, kernel-вычисление):**
-    все нечётные числа ниже 101 машинно отсеяны поточечной проверкой
-    совершенности — ровно внутренность доказательства `oddPerfect_ge_101`
-    (`PerfectNumberBranch`), вынесенная в именованный факт о ЧИСЛАХ (не о
-    свидетелях). Именно этой обитаемостью — как `concreteSupply_unbounded_smallScale`
-    у P/NP — оплачена содержательность связки ниже; у Коллатца аналога нет. -/
+/-- **Unfolding of one's own verified horizon (green, kernel computation):**
+    all odd numbers below 101 are machine-ruled-out by pointwise perfectness checking —
+    exactly the interior of the proof of `oddPerfect_ge_101`
+    (`PerfectNumberBranch`), extracted as a named fact about NUMBERS (not about
+    witnesses). It is precisely this inhabitedness — like `concreteSupply_unbounded_smallScale`
+    in P/NP — that pays for the substance of the conjunction below; Collatz has no analogue. -/
 theorem oddPerfect_horizon_swept :
     ∀ M : ℕ, M < 101 → M % 2 = 1 → ¬ Nat.Perfect M := by decide
 
-/-! ## Модель: внутреннее решение = свидетель внутри собственного горизонта -/
+/-! ## Model: internal solution = witness inside one's own horizon -/
 
-/-- **Внутреннее самообоснование решения о нечётном совершенном.** Несёт
-    (a) свидетеля ВНУТРИ собственного проверенного горизонта (`ground`) и
-    (b) машинную развёртку этого горизонта (`beyondOwnHorizon`) — сырой
-    decide-факт о числах, зелёно обитаемый (`oddPerfect_horizon_swept`).
-    Ноги НЕ дополнения друг друга (CORR-фикс скептика: наивная пара
-    ∃ W, W.1 < 101 / ∀ W, 101 ≤ W.1 сворачивалась бы в кванторную тавтологию
-    `Nat.not_le`): противоречие ниже добывается медиацией — распаковкой
-    subtype-свидетеля и переводом `Odd` в `% 2 = 1`. Это «дотянуться взглядом»
-    за собственный проверенный горизонт, неся его развёртку в руках. -/
+/-- **Internal self-justification of the decision about an odd perfect number.** Carries
+    (a) a witness INSIDE one's own verified horizon (`ground`) and
+    (b) the machine unfolding of that horizon (`beyondOwnHorizon`) — a raw
+    decide-fact about numbers, greenly inhabited (`oddPerfect_horizon_swept`).
+    The legs are NOT complements of each other (CORR-fix by the skeptic: the naive pair
+    ∃ W, W.1 < 101 / ∀ W, 101 ≤ W.1 would collapse into the quantifier tautology
+    `Nat.not_le`): the contradiction below is obtained by mediation — unpacking the
+    subtype witness and translating `Odd` into `% 2 = 1`. This is "reaching with one's
+    gaze" beyond one's own verified horizon while carrying its unfolding in hand. -/
 structure InternalisedOddPerfectGround : Prop where
   ground : ∃ W : OddPerfectNumber, W.1 < 101
   beyondOwnHorizon : ∀ M : ℕ, M < 101 → M % 2 = 1 → ¬ Nat.Perfect M
 
-/-- «Внутреннее знание причины» = внутреннее самообоснование решения
-    (зеркало `InternalKnowledgeOfCollatzCause` / `InternalKnowledgeOfPNPCause`). -/
+/-- "Internal knowledge of the cause" = internal self-justification of the decision
+    (mirror of `InternalKnowledgeOfCollatzCause` / `InternalKnowledgeOfPNPCause`). -/
 abbrev InternalKnowledgeOfOddPerfectCause : Prop := InternalisedOddPerfectGround
 
-/-! ## Ядро: самообоснование самоуничтожается (🟢) -/
+/-! ## Core: self-justification self-destructs (🟢) -/
 
-/-- Самообоснование самоуничтожается: свидетель из `ground` распаковывается
-    в число `N < 101` с `Odd N` и `Nat.Perfect N`, а `beyondOwnHorizon` — его
-    же развёртка горизонта — это число убивает. Медиация настоящая (subtype +
-    `Nat.odd_iff`), не подстановка `H.beyondOwnHorizon H.ground`. ЗЕЛЁНАЯ. -/
+/-- Self-justification self-destructs: the witness from `ground` is unpacked
+    into a number `N < 101` with `Odd N` and `Nat.Perfect N`, and `beyondOwnHorizon` —
+    the horizon unfolding for the same number — kills it. The mediation is genuine (subtype +
+    `Nat.odd_iff`), not a substitution of `H.beyondOwnHorizon H.ground`. GREEN. -/
 theorem no_internalisedOddPerfectGround : InternalisedOddPerfectGround → False := by
   rintro ⟨⟨⟨N, hodd, hperf⟩, hlt⟩, hsweep⟩
   exact hsweep N hlt (Nat.odd_iff.mp hodd) hperf
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable` /
-    `pnpCause_unknowable`, twin-`cause_unknowable`): внутреннее знание причины
-    для нечётных совершенных невозможно. НЕ утверждение о (не)существовании
-    нечётного совершенного числа — только о невозможности самообоснования
-    внутри собственного проверенного горизонта. ЗЕЛЁНАЯ. -/
+/-- **"CANNOT BE KNOWN FROM WITHIN" — THEOREM** (mirror of `collatzCause_unknowable` /
+    `pnpCause_unknowable`, twin-`cause_unknowable`): internal knowledge of the cause
+    for odd perfect numbers is impossible. NOT a claim about the (non-)existence
+    of an odd perfect number — only about the impossibility of self-justification
+    within one's own verified horizon. GREEN. -/
 theorem oddPerfectCause_unknowable : ¬ InternalKnowledgeOfOddPerfectCause :=
   no_internalisedOddPerfectGround
 
-/-- **Свидетель ниже горизонта невозможен безусловно (🟢):** здесь sweep
-    платит напрямую — `oddPerfect_ge_101` есть in-repo теорема, и никакой
-    нечётный совершенный свидетель не помещается ниже 101. Дополнение
-    CORR-3 скептика: та же стена, что в `no_internalisedOddPerfectGround`,
-    но без структуры самообоснования. -/
+/-- **A witness below the horizon is unconditionally impossible (🟢):** here the sweep
+    pays directly — `oddPerfect_ge_101` is an in-repo theorem, and no
+    odd perfect witness fits below 101. Supplement
+    CORR-3 of the skeptic: the same wall as in `no_internalisedOddPerfectGround`,
+    but without the self-justification structure. -/
 theorem no_oddPerfectWitness_below_horizon :
     ¬ ∃ W : OddPerfectNumber, W.1 < 101 :=
   fun ⟨W, h⟩ => absurd (oddPerfect_ge_101 W) (Nat.not_le.mpr h)
 
-/-- СОДЕРЖАТЕЛЬНАЯ ДИХОТОМИЯ (без ex falso в утверждении): либо причина
-    непознаваема изнутри, либо свидетель есть ниже проверенного горизонта.
-    Левый дизъюнкт — теорема; правый безусловно убит
-    `no_oddPerfectWitness_below_horizon` — оба факта зелёные. -/
+/-- SUBSTANTIVE DICHOTOMY (no ex falso in the statement): either the cause
+    is unknowable from within, or there is a witness below the verified horizon.
+    The left disjunct is a theorem; the right is unconditionally killed by
+    `no_oddPerfectWitness_below_horizon` — both facts are green. -/
 theorem unknowable_or_oddPerfect_below_horizon :
     (¬ InternalKnowledgeOfOddPerfectCause) ∨
       ∃ W : OddPerfectNumber, W.1 < 101 :=
   Or.inl oddPerfectCause_unknowable
 
-/-- Ex-falso companion («несёт двигатель», зеркало
-    `internalisedPNPGround_builds_engine`): из самообоснования (уже ложного)
-    выводится и сам двигатель. ЧЕСТНОСТЬ: маршрут ex falso; несущая часть —
-    сама невозможность (`no_internalisedOddPerfectGround`); подлинная
-    двигательная конструкция — условная `oddPerfectWitness_carries_engine`. -/
+/-- Ex-falso companion ("carries the engine", mirror of
+    `internalisedPNPGround_builds_engine`): from the self-justification (already false)
+    the engine itself is also derived. HONESTY: ex falso route; the load-bearing part is
+    the impossibility itself (`no_internalisedOddPerfectGround`); the genuine
+    engine construction is the conditional `oddPerfectWitness_carries_engine`. -/
 theorem internalisedOddPerfectGround_builds_engine :
     InternalisedOddPerfectGround → SomeConcreteEuclideanEngine :=
   fun H => (no_internalisedOddPerfectGround H).elim
 
-/-! ## Свидетель зелёно непредъявим: предъявить = предъявить двигатель -/
+/-! ## Witness is greenly unpresentable: to present = to present the engine -/
 
-/-- **«ПРЕДЪЯВИТЬ СВИДЕТЕЛЯ = ПРЕДЪЯВИТЬ ДВИГАТЕЛЬ — ПОТОМУ НЕПРЕДЪЯВИМ»
-    (условная зелёная сводка):** при законе манифестации и принятой границе
-    тип нечётных совершенных свидетелей пуст — потому что любой предъявленный
-    свидетель предъявил бы вечный двигатель (`oddPerfectWitness_carries_engine`),
-    а двигателей зелёно нет (`no_someConcreteEuclideanEngine`).
-    ЧЕСТНОСТЬ: обе гипотезы ЯВНЫЕ — закон живёт определением (поле НЕ
-    декретировано, §17-вердикт), граница подаётся снаружи; безусловной формы
-    у этого фронта нет и быть не может без решения самой задачи. -/
+/-- **"TO PRESENT A WITNESS = TO PRESENT THE ENGINE — THEREFORE UNPRESENTABLE"
+    (conditional green summary):** under the manifestation law and the accepted boundary
+    the type of odd perfect witnesses is empty — because any presented
+    witness would present a perpetual engine (`oddPerfectWitness_carries_engine`),
+    and engines are greenly absent (`no_someConcreteEuclideanEngine`).
+    HONESTY: both hypotheses are EXPLICIT — the law lives by definition (the field is NOT
+    decreed, §17-verdict), the boundary is supplied from outside; an unconditional form
+    does not exist for this front and cannot exist without solving the problem itself. -/
 theorem oddPerfectWitness_green_unpresentable
     (hBoundary : TheStrictLastStep00Obligation)
     (hLaw : OddPerfectManifestationLaw) :
@@ -140,20 +140,20 @@ theorem oddPerfectWitness_green_unpresentable
     (noOddPerfect_of_manifestation_and_boundary
       no_someConcreteEuclideanEngine hBoundary hLaw)
 
-/-! ## Сводки: решение заперто за двигателем; проверка, а не вывод (🟢) -/
+/-! ## Summaries: solution locked behind the engine; verification, not derivation (🟢) -/
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» (зелёная 3-развилка; зеркало
+/-- **"SOLUTION LOCKED BEHIND THE ENGINE" (green 3-way fork; mirror of
     `collatz_no_internal_decision_without_engine` / `pnp_no_internal_decision_without_engine`):**
-    (1) ПРЕДЪЯВИТЬ свидетеля при законе и сведённых книгах = предъявить
-        двигатель как объект (`oddPerfectWitness_carries_engine`; условность
-        закона раскрыта — гипотеза явная);
-    (2) САМООБОСНОВАТЬ решение изнутри — самоуничтожается
+    (1) TO PRESENT a witness under the law and the balanced ledger = to present
+        the engine as an object (`oddPerfectWitness_carries_engine`; the conditionality
+        of the law is disclosed — hypothesis is explicit);
+    (2) TO SELF-JUSTIFY the decision from within — self-destructs
         (`no_internalisedOddPerfectGround`);
-    (3) без-двигательный путь — ВНЕШНЯЯ граница: закон + граница + зелёное
-        отсутствие двигателей дают `NoOddPerfect`
+    (3) the engine-free path — EXTERNAL boundary: law + boundary + green
+        absence of engines yield `NoOddPerfect`
         (`noOddPerfect_of_manifestation_and_boundary`).
-    НЕ утверждается гёделевская независимость и НЕ решается сама задача —
-    только: оба внутренних решения стоят вечного двигателя. -/
+    Gödelian independence is NOT asserted and the problem itself is NOT solved —
+    only: both internal solutions cost a perpetual engine. -/
 theorem oddPerfect_no_internal_decision_without_engine :
     (∀ (A M0 : ℕ), OddPerfectManifestationLaw →
         ∀ W : OddPerfectNumber, W.1 ≤ M0 →
@@ -169,17 +169,17 @@ theorem oddPerfect_no_internal_decision_without_engine :
      noOddPerfect_of_manifestation_and_boundary
        no_someConcreteEuclideanEngine hBoundary hLaw⟩
 
-/-- **«ПРОВЕРКА, А НЕ ВЫВОД» (зеркало `collatz_verification_not_derivation` /
-    `pnp_verification_not_derivation`) — с уникальным пуантом фронта:**
-    (1) внутреннее знание причины невозможно (`oddPerfectCause_unknowable`);
-    (2) свидетель ниже проверенного горизонта невозможен безусловно —
-        sweep платит напрямую;
-    (3) «внешняя проверка» здесь — БУКВАЛЬНО поточечная разрешимость:
-        каждый кандидат решается вычислением (третий конъюнкт доказан из
-        instance `DecidablePred Nat.Perfect`, БЕЗ `Classical.em`) — решение
-        находимо ровно настолько далеко, насколько досчитывает ядро.
-    ЧЕСТНОСТЬ: конъюнкт (3) классически тривиален; его машинное содержание —
-    маршрут доказательства через разрешающий instance, а не сила утверждения. -/
+/-- **"VERIFICATION, NOT DERIVATION" (mirror of `collatz_verification_not_derivation` /
+    `pnp_verification_not_derivation`) — with the unique point of this front:**
+    (1) internal knowledge of the cause is impossible (`oddPerfectCause_unknowable`);
+    (2) a witness below the verified horizon is unconditionally impossible —
+        the sweep pays directly;
+    (3) "external verification" here is LITERALLY pointwise decidability:
+        every candidate is decided by computation (the third conjunct is proved from
+        the instance `DecidablePred Nat.Perfect`, WITHOUT `Classical.em`) — the solution
+        is findable exactly as far as the kernel can compute.
+    HONESTY: conjunct (3) is classically trivial; its machine content is
+    the proof route through the deciding instance, not the strength of the statement. -/
 theorem oddPerfect_verification_not_derivation :
     (¬ InternalKnowledgeOfOddPerfectCause) ∧
     (¬ ∃ W : OddPerfectNumber, W.1 < 101) ∧
@@ -188,13 +188,13 @@ theorem oddPerfect_verification_not_derivation :
    no_oddPerfectWitness_below_horizon,
    fun M => if h : Nat.Perfect M then Or.inl h else Or.inr h⟩
 
-/-- Итоговый эпистемический статус нечётного фронта (зеркало
-    `pnp_locked_behind_engine_status`, НЕ `collatz_locked_behind_engine_status`:
-    декрет-конъюнкта НЕТ — поле сознательно не добавлено, §17-вердикт):
-    свидетель ≥ 101 (теорема, kernel-sweep) / внутреннее знание невозможно
-    (теорема) / закон + граница ⟹ NoOddPerfect (условно — гипотезы явные) /
-    свидетель + закон + книги ⟹ двигатель (условно — гипотезы явные).
-    ЗЕЛЁНАЯ целиком; открытую задачу НЕ решает. -/
+/-- Final epistemic status of the odd front (mirror of
+    `pnp_locked_behind_engine_status`, NOT `collatz_locked_behind_engine_status`:
+    there is NO decree conjunct — the field is deliberately not added, §17-verdict):
+    witness ≥ 101 (theorem, kernel-sweep) / internal knowledge impossible
+    (theorem) / law + boundary ⟹ NoOddPerfect (conditional — hypotheses explicit) /
+    witness + law + ledger ⟹ engine (conditional — hypotheses explicit).
+    ENTIRELY GREEN; does NOT solve the open problem. -/
 theorem oddPerfect_locked_behind_engine_status :
     (∀ W : OddPerfectNumber, 101 ≤ W.1) ∧
     (¬ InternalKnowledgeOfOddPerfectCause) ∧
@@ -212,8 +212,8 @@ theorem oddPerfect_locked_behind_engine_status :
    fun _A _M0 hLaw W hM proj hres =>
      oddPerfectWitness_carries_engine hLaw W hM proj hres⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (не более стандартной тройки),
-    таинт репо НЕ меняется -/
+/-! ## Axiom audit: the entire module is green (no more than the standard triple),
+    repo taint does NOT change -/
 #print axioms oddPerfect_horizon_swept
 #print axioms no_internalisedOddPerfectGround
 #print axioms oddPerfectCause_unknowable

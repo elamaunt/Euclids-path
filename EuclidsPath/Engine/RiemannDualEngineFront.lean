@@ -1,37 +1,37 @@
 /-
-  RiemannDualEngineFront — дуальный маршрут Римана (3 кирпича одной сборкой):
+  RiemannDualEngineFront — the dual Riemann route (3 bricks in one assembly):
 
-  1. PaymentSynchronization — синхронизация оплат фантомного (спектрального) и
-     подлинного (ранго-потокового) двигателей над общим счётом: односторонняя
-     оплата строит запрещённый вечный двигатель, потому при `NoPerpetual`
-     оплаты эквивалентны; zero-indexed пакеты и closure-пакеты до Target.
-  2. MeetingRankChange — локальный закон «двигатели встречаются ⟺ общий шов
-     меняет ранг»; firewalls против тихой смены ранга без встречи и встречи
-     без смены ранга; синхронизация оплат с ранговыми швами.
-  3. TwinMeetingZeroBridge — счётный мост близнецы ↔ встречи ↔ нетривиальные
-     нули: перенос бесконечности ТОЛЬКО по data-инъективным мостам
-     (encode/decode, левая обратная) — анти-вакуумность против свободного
-     origin-события встроена в определение.
+  1. PaymentSynchronization — synchronization of payments of the phantom (spectral) and
+     genuine (rank-flow) engines over a shared ledger: one-sided
+     payment builds a forbidden perpetual engine, so under `NoPerpetual`
+     payments are equivalent; zero-indexed packages and closure packages up to Target.
+  2. MeetingRankChange — local law "engines meet ⟺ shared seam
+     changes rank"; firewalls against silent rank change without meeting and meeting
+     without rank change; payment synchronization with rank seams.
+  3. TwinMeetingZeroBridge — counting bridge twins ↔ meetings ↔ nontrivial
+     zeros: infinitude transfer ONLY via data-injective bridges
+     (encode/decode, left inverse) — anti-vacuity against a free
+     origin event is built into the definition.
 
-  ЧЕСТНОСТЬ (флаги сборочного аудита, машинно):
-    * Все содержательные выводы серии УСЛОВНЫ на неинстанцированных пакетах:
-      `SharedPaymentLedger` несёт `NoPerpetual`/`BuildsPerpetual*` ПОЛЯМИ
-      (интерфейс-слоты, не наши теоремы `no_someConcreteEuclideanEngine`);
-      closure-пакеты несут `noSynchronizedPaymentAtZero` и `*PaysAtZero`
-      ВХОДАМИ; `MeetingRankChangeLaw` несёт ОБА направления закона полями.
-      Безусловных сильных выводов нет.
-    * Мост №3 считает НЕТРИВИАЛЬНЫЕ нули (`NontrivialZero` — абстрактный тип),
-      НЕ off-critical: заполнение моста НЕ несло бы RH-информации — их
-      бесконечность классически известна и с RH совместима в обе стороны.
-      Обязательство `FinalTwinMeetingZeroCountingObligation` не инстанцировано.
-    * Починки классов дефектов кирпичей: `!=` на произвольном типе без BEq →
-      `≠` (SharedRankChangesAcross, SameSeamRankChange); проекции ДАННЫХ из
-      Prop-структур (PhantomOnlyPayment и т.п.) → rintro-разбор; `Target`
-      переведён из `Type u` в `Prop` (иначе RiemannHypothesis не подставить и
-      возникала Prop→Type элиминация в `rcases Nonempty`); файловый
-      doc-комментарий перед import заменён обычным блочным.
-      Сами доказательства кирпичей сохранены.
-  sorry/axiom нет.
+  HONESTY (assembly-audit flags, machine-checked):
+    * All substantive conclusions of the series are CONDITIONAL on uninstantiated packages:
+      `SharedPaymentLedger` carries `NoPerpetual`/`BuildsPerpetual*` as FIELDS
+      (interface slots, not our theorems `no_someConcreteEuclideanEngine`);
+      closure packages carry `noSynchronizedPaymentAtZero` and `*PaysAtZero`
+      as INPUTS; `MeetingRankChangeLaw` carries BOTH directions of the law as fields.
+      There are no unconditional strong conclusions.
+    * Bridge #3 counts NONTRIVIAL zeros (`NontrivialZero` — an abstract type),
+      NOT off-critical: filling the bridge would NOT carry RH information — their
+      infinitude is classically known and compatible with RH in both directions.
+      The obligation `FinalTwinMeetingZeroCountingObligation` is not instantiated.
+    * Defect-class fixes for the bricks: `!=` on an arbitrary type without BEq →
+      `≠` (SharedRankChangesAcross, SameSeamRankChange); DATA projections from
+      Prop-structures (PhantomOnlyPayment etc.) → rintro decomposition; `Target`
+      moved from `Type u` to `Prop` (otherwise RiemannHypothesis cannot be substituted and
+      Prop→Type elimination arose in `rcases Nonempty`); the file-level
+      doc-comment before import replaced by an ordinary block comment.
+      The brick proofs themselves are preserved.
+  No sorry/axiom.
 -/
 import Mathlib
 
@@ -39,7 +39,7 @@ set_option autoImplicit false
 
 namespace EuclidsPath
 
-/-! # Кирпич 1: синхронизация оплат дуальных двигателей -/
+/-! # Brick 1: payment synchronization of the dual engines -/
 
 namespace RiemannDualEngine
 namespace PaymentSynchronization
@@ -67,8 +67,8 @@ one side is meant to be payment of the same external charge.
 
 `Perpetual` is the forbidden discrepancy engine produced by one-sided payment.
 
-ЧЕСТНОСТЬ: `BuildsPerpetual*` и `NoPerpetual` — интерфейс-СЛОТЫ (поля),
-а не теоремы репозитория; вся серия условна на их инстанциации.
+HONESTY: `BuildsPerpetual*` and `NoPerpetual` are interface SLOTS (fields),
+not theorems of the repository; the entire series is conditional on their instantiation.
 -/
 structure SharedPaymentLedger
     (Phantom Genuine Charge Perpetual : Type u) : Type (u+1) where
@@ -145,7 +145,7 @@ end SharedPaymentLedger
 
 /--
 A concrete dual payment state at a single shared charge.
-(Фикс: Prop-структура с полями-данными недопустима в Lean 4 — ∃-форма.)
+(Fix: a Prop-structure with data fields is not allowed in Lean 4 — ∃-form.)
 -/
 def DualPaymentState
     (Phantom Genuine Charge : Type u)
@@ -157,7 +157,7 @@ def DualPaymentState
 
 /--
 The bad state: the phantom side pays a shared charge but the genuine side does not.
-(∃-форма, см. выше.)
+(∃-form, see above.)
 -/
 def PhantomOnlyPayment
     (Phantom Genuine Charge : Type u)
@@ -169,7 +169,7 @@ def PhantomOnlyPayment
 
 /--
 The symmetric bad state: genuine pays but phantom does not.
-(∃-форма, см. выше.)
+(∃-form, see above.)
 -/
 def GenuineOnlyPayment
     (Phantom Genuine Charge : Type u)
@@ -185,14 +185,14 @@ variable {Phantom Genuine Charge Perpetual : Type u}
 variable (L : SharedPaymentLedger Phantom Genuine Charge Perpetual)
 
 /-- A phantom-only state cannot exist.
-    (Фикс: rintro-разбор вместо проекций данных из Prop-структуры.) -/
+    (Fix: rintro decomposition instead of data projections from a Prop-structure.) -/
 theorem no_phantomOnly :
     PhantomOnlyPayment Phantom Genuine Charge L.Aligned L.PhantomPays L.GenuinePays → False := by
   rintro ⟨p, g, c, hAlign, hPaid, hUnpaid⟩
   exact L.no_phantom_only_payment hAlign hPaid hUnpaid
 
 /-- A genuine-only state cannot exist.
-    (Фикс: rintro-разбор вместо проекций данных из Prop-структуры.) -/
+    (Fix: rintro decomposition instead of data projections from a Prop-structure.) -/
 theorem no_genuineOnly :
     GenuineOnlyPayment Phantom Genuine Charge L.Aligned L.PhantomPays L.GenuinePays → False := by
   rintro ⟨p, g, c, hAlign, hPaid, hUnpaid⟩
@@ -287,8 +287,8 @@ The route is:
   * therefore there are no zeros;
   * therefore the target follows.
 
-ЧЕСТНОСТЬ: `phantomPaysAtZero` и `noSynchronizedPaymentAtZero` — ВХОДЫ
-(поля пакета), не теоремы; `Target : Prop` (фикс: было `Type u`).
+HONESTY: `phantomPaysAtZero` and `noSynchronizedPaymentAtZero` are INPUTS
+(package fields), not theorems; `Target : Prop` (fix: was `Type u`).
 -/
 structure DualPaymentClosurePackage
     (Zero Phantom Genuine Charge Perpetual : Type u) (Target : Prop) where
@@ -305,7 +305,7 @@ namespace DualPaymentClosurePackage
 variable {Zero Phantom Genuine Charge Perpetual : Type u} {Target : Prop}
 
 /-- Every zero would create a synchronized payment state, impossible by hypothesis.
-    (Фикс: `P` — явный параметр; variable только в теле в Lean 4 не включается.) -/
+    (Fix: `P` is an explicit parameter; a variable in the body only is not picked up in Lean 4.) -/
 theorem no_zero
     (P : DualPaymentClosurePackage Zero Phantom Genuine Charge Perpetual Target)
     (z : Zero) : False := by
@@ -343,7 +343,7 @@ namespace DualPaymentClosurePackageFromGenuine
 variable {Zero Phantom Genuine Charge Perpetual : Type u} {Target : Prop}
 
 /-- Every zero would create a synchronized payment state, impossible by hypothesis.
-    (Фикс: `P` — явный параметр.) -/
+    (Fix: `P` is an explicit parameter.) -/
 theorem no_zero
     (P : DualPaymentClosurePackageFromGenuine Zero Phantom Genuine Charge Perpetual Target)
     (z : Zero) : False := by
@@ -404,7 +404,7 @@ theorem paymentSynchronization_slogan
 end PaymentSynchronization
 end RiemannDualEngine
 
-/-! # Кирпич 2: встречи двигателей ⟺ смена ранга на шве -/
+/-! # Brick 2: engine meetings ⟺ rank change at the seam -/
 
 namespace RiemannDualEngineMeetingRankChange
 
@@ -433,7 +433,7 @@ def EnginesMeetAt {Time Charge : Type}
 
 /-- A shared charge changes rank across a local transition from `t` to `u`.
 This is deliberately stated on the common observable; it is not tied to either
-engine alone.  (Фикс: `!=` без BEq-инстанса → `≠`.) -/
+engine alone.  (Fix: `!=` without a BEq instance → `≠`.) -/
 def SharedRankChangesAcross {Time Charge Rank : Type}
     (T : DualEngineTrace Time Charge)
     (R : RankInterface Charge Rank)
@@ -442,7 +442,7 @@ def SharedRankChangesAcross {Time Charge Rank : Type}
   R.rankOf (T.genuine t) ≠ R.rankOf (T.genuine u)
 
 /-- A stricter same-seam rank change: both engines see the same rank transition
-on the same shared account.  (Фикс: `!=` → `≠`.) -/
+on the same shared account.  (Fix: `!=` → `≠`.) -/
 structure SameSeamRankChange {Time Charge Rank : Type}
     (T : DualEngineTrace Time Charge)
     (R : RankInterface Charge Rank)
@@ -465,7 +465,7 @@ structure RankSeamMeeting {Time Charge Rank : Type}
 /-- The exact law needed for the dual-engine proof: meeting and rank-change are
 not two independent events.  They are the same interface event.
 
-ЧЕСТНОСТЬ: ОБА направления закона — поля (входы), не теоремы. -/
+HONESTY: BOTH directions of the law are fields (inputs), not theorems. -/
 structure MeetingRankChangeLaw {Time Charge Rank : Type}
     (T : DualEngineTrace Time Charge)
     (R : RankInterface Charge Rank) where
@@ -607,7 +607,7 @@ structure PaymentAtRankSeam {Time Charge Rank Payment : Type}
   seam : RankSeamMeeting T R t u
 
 /-- A synchronized payment/rank law: payments are neither earlier nor later than
-rank-seam meetings.  ЧЕСТНОСТЬ: оба направления — поля (входы). -/
+rank-seam meetings.  HONESTY: both directions are fields (inputs). -/
 structure PaymentRankSynchronization {Time Charge Rank Payment : Type}
     (T : DualEngineTrace Time Charge)
     (R : RankInterface Charge Rank)
@@ -723,7 +723,7 @@ end DualEngineSeamSynchronization
 /-- Repo-facing obligation: instantiate this with the concrete phantom/genuine
 Riemann engines.  Once this is filled, the previous payment-synchronization and
 periodic-alignment kernels can share the same seam event.
-(Фикс: `Target : Prop`.) -/
+(Fix: `Target : Prop`.) -/
 structure FinalDualEngineMeetingRankObligation
     (Time Charge Rank Payment : Type) (Target : Prop) where
   T : DualEngineTrace Time Charge
@@ -740,13 +740,13 @@ theorem target_of_finalDualEngineMeetingRankObligation
     Target :=
   O.target_of_sync O.sync
 
-/-- Slogan as a constant (маркер, не утверждение). -/
+/-- Slogan as a constant (marker, not a proposition). -/
 def dualEngineMeetingRankSlogan : String :=
   "phantom and genuine engines meet exactly at rank-change seams; payments live exactly there"
 
 end RiemannDualEngineMeetingRankChange
 
-/-! # Кирпич 3: счётный мост близнецы ↔ встречи ↔ нетривиальные нули -/
+/-! # Brick 3: counting bridge twins ↔ meetings ↔ nontrivial zeros -/
 
 namespace RiemannTwinMeetingZeroBridge
 

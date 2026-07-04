@@ -1,43 +1,43 @@
 /-
-  Шаг 00 — Обзор: главная теорема и базовые определения.
-  Проза: prose/00_Overview.md
+  Step 00 — Overview: main theorem and basic definitions.
+  Prose: prose/00_Overview.md
 
-  Здесь фиксируется формальная цель всей цепочки — утверждение гипотезы простых-близнецов —
-  и вводятся базовые определения, на которые опираются остальные шаги.
+  Here the formal goal of the entire chain is fixed — the statement of the twin-prime conjecture —
+  and the basic definitions on which all subsequent steps rely are introduced.
 
-  Статус: формулировка главной теоремы оставлена как `sorry` (это и есть конечная цель программы);
-  её доказательство собирается в шаге 13/14 и упирается в открытые места шага 15.
+  Status: the statement of the main theorem is left as `sorry` (this is the ultimate goal of the program);
+  its proof is assembled in steps 13/14 and runs into the open gaps of step 15.
 
-  NB: проект ещё не компилировался (Lean не установлен). См. lakefile.toml.
+  NB: the project has not yet been compiled (Lean is not installed). See lakefile.toml.
 -/
 import Mathlib
 
 namespace EuclidsPath
 
-/-- Пара простых-близнецов с младшим членом `p`: простые `p` и `p+2`. -/
+/-- A twin-prime pair with lesser member `p`: primes `p` and `p+2`. -/
 def IsTwinPair (p : ℕ) : Prop := p.Prime ∧ (p + 2).Prime
 
-/-- Множество младших членов пар близнецов. -/
+/-- The set of lesser members of twin-prime pairs. -/
 def TwinLowers : Set ℕ := { p | IsTwinPair p }
 
 /--
-  **Главная теорема (гипотеза простых-близнецов).**
-  Существует бесконечно много простых `p`, для которых `p + 2` также простое.
+  **Main theorem (twin-prime conjecture).**
+  There are infinitely many primes `p` for which `p + 2` is also prime.
 
-  Это конечная цель всей цепочки `Euclids-path`. Доказательство собирается из шагов 00–14 и
-  упирается в открытые леммы шага 15 (BDNC⁺, DASC, G2, `c_G > η_D + η_B`, O4C-res).
+  This is the ultimate goal of the entire `Euclids-path` chain. The proof is assembled from steps 00–14 and
+  runs into the open lemmas of step 15 (BDNC⁺, DASC, G2, `c_G > η_D + η_B`, O4C-res).
 -/
 theorem twin_prime_conjecture : TwinLowers.Infinite := by
-  -- OPEN: финальная цель программы. Сборка — Step13/Step14; несущие пробелы — Step15.
+  -- OPEN: ultimate goal of the program. Assembly — Step13/Step14; open gaps — Step15.
   sorry
 
 /--
-  Индексная (центровая) форма: центр `m` задаёт пару близнецов, если оба `6m-1` и `6m+1` простые.
-  Связь с `IsTwinPair` устанавливается в шаге 01 (`Step01_CenterReduction`).
+  Index (center) form: center `m` defines a twin-prime pair when both `6m-1` and `6m+1` are prime.
+  The connection with `IsTwinPair` is established in step 01 (`Step01_CenterReduction`).
 -/
 def IsTwinCenter (m : ℕ) : Prop := (6 * m - 1).Prime ∧ (6 * m + 1).Prime
 
-/-- Множество центров пар близнецов. -/
+/-- The set of centers of twin-prime pairs. -/
 def TwinCenters : Set ℕ := { m | IsTwinCenter m }
 
 end EuclidsPath

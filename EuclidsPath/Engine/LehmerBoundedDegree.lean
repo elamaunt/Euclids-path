@@ -1,69 +1,70 @@
 /-
-  LehmerBoundedDegree — ЛЕМЕР ПРИ ОГРАНИЧЕННОЙ СТЕПЕНИ: разрыв над 1 существует
-  для КАЖДОЙ фиксированной степени n (константа ЗАВИСИТ от n).
+  LehmerBoundedDegree — LEHMER AT BOUNDED DEGREE: a gap above 1 exists
+  for EACH fixed degree n (the constant DEPENDS on n).
 
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │  ГРОМКИЙ ЧЕСТНЫЙ ЗАГОЛОВОК: ЭТО НЕ ГИПОТЕЗА ЛЕМЕРА.                        │
-  │  Константа c = c(n) ЗАВИСИТ от степени n. РАВНОМЕРНОСТЬ ПО n —             │
-  │  единая c > 1 для ВСЕХ степеней сразу — И ЕСТЬ открытая гипотеза Лемера.   │
+  │  LOUD HONEST HEADER: THIS IS NOT LEHMER'S CONJECTURE.                      │
+  │  The constant c = c(n) DEPENDS on the degree n. UNIFORMITY IN n —          │
+  │  a single c > 1 for ALL degrees at once — IS the open Lehmer conjecture.   │
   └───────────────────────────────────────────────────────────────────────────┘
 
-  ИДЕЯ (полностью зелёная, машинная): при фиксированной степени n множество мер
-  Малера в окне (1, 2] — образ КОНЕЧНОГО множества многочленов (Норткотт,
-  `Polynomial.finite_mahlerMeasure_le`, граница B = 2). У конечного непустого
-  множества вещественных чисел есть минимум; он строго больше 1 (каждый элемент
-  окна > 1). Значит, ниже минимума мер нет: интервал (1, c(n)) ПУСТ. Если окно
-  пусто — годится c = 2. Это КОМПАКТНОСТНОЕ соображение, известное классикам:
-  «Лемер при ограниченной степени тривиален по Норткотту». Вся тяжесть гипотезы —
-  в том, что c(n) может стремиться к 1 при n → ∞; запретить это НИКТО не умеет.
+  IDEA (fully green, machine-verified): for a fixed degree n the set of Mahler
+  measures in the window (1, 2] is the image of a FINITE set of polynomials
+  (Northcott, `Polynomial.finite_mahlerMeasure_le`, bound B = 2). A finite
+  non-empty set of real numbers has a minimum; it is strictly greater than 1
+  (every element of the window is > 1). Hence no measure lies below the minimum:
+  the interval (1, c(n)) is EMPTY. If the window is empty, c = 2 works. This is
+  a COMPACTNESS argument well known to the classics:
+  "Lehmer at bounded degree is trivial by Northcott." The full weight of the
+  conjecture lies in c(n) possibly tending to 1 as n → ∞; nobody can forbid this.
 
-  🟢 ЗЕЛЁНОЕ (машинно, в этом файле; грузонесущие ЦИТИРУЮТ реальный mathlib):
-   · `measureWindow_finite` — окно {natDegree ≤ n, 1 < мера ≤ 2} конечно;
-     прямой королларий `LehmerFront.mahler_northcott_shadow` :=
-     `Polynomial.finite_mahlerMeasure_le` (Норткотт, ДОКАЗАН в mathlib).
-   · `lehmer_gap_at_bounded_degree` — ∃ c ∈ (1, 2]: НИ ОДИН целочисленный
-     многочлен степени ≤ n не имеет меры Малера в интервале (1, c).
-     Минимум конечного множества через `Set.exists_min_image`.
-   · `lehmer_at_bounded_degree` — ЦЕЛЬ: ∀ n ∃ c > 1: всякий p с natDegree ≤ n
-     и мерой > 1 имеет меру ≥ c ИЛИ меру > 2.
-   · `mahlerMeasure_neg` — мера Малера не видит знака: M(-p) = M(p)
-     (через `mahlerMeasure_mul` и `mahlerMeasure_const`; в mathlib v4.31 этой
-     конкретной леммы нет, выводим на месте).
-   · `uniformLehmerGap_iff_all_degrees` — АУДИТ НА ПЕРЕИМЕНОВАНИЕ ЦЕЛИ (машинный
-     iff): якорь `UniformLehmerGap` РАВНОСИЛЕН «одна константа на все степени
-     сразу» — т.е. якорь ЕСТЬ равномерная версия нашей теоремы, и его имя не
-     провозит контрабандой никакого прогресса.
-   · `uniformLehmerGap_of_lehmerConjecture` — мост: из монической формулировки
-     `LehmerFront.LehmerConjecture` следует якорь `UniformLehmerGap` (разбор
-     старшего коэффициента: |lc| ≥ 2 даёт меру ≥ 2 по
-     `leadingCoeff_le_mahlerMeasure`; lc = ±1 сводится к монической ±p).
+  🟢 GREEN (machine-verified in this file; load-bearing lemmas CITE real mathlib):
+   · `measureWindow_finite` — the window {natDegree ≤ n, 1 < measure ≤ 2} is finite;
+     direct corollary of `LehmerFront.mahler_northcott_shadow` :=
+     `Polynomial.finite_mahlerMeasure_le` (Northcott, PROVED in mathlib).
+   · `lehmer_gap_at_bounded_degree` — ∃ c ∈ (1, 2]: NO integer polynomial of
+     degree ≤ n has Mahler measure in the interval (1, c).
+     Minimum of a finite set via `Set.exists_min_image`.
+   · `lehmer_at_bounded_degree` — GOAL: ∀ n ∃ c > 1: every p with natDegree ≤ n
+     and measure > 1 has measure ≥ c OR measure > 2.
+   · `mahlerMeasure_neg` — the Mahler measure is sign-blind: M(-p) = M(p)
+     (via `mahlerMeasure_mul` and `mahlerMeasure_const`; this specific lemma is
+     absent in mathlib v4.31, so we derive it in place).
+   · `uniformLehmerGap_iff_all_degrees` — GOAL-RENAMING AUDIT (machine iff, like
+     `offCriticalBridge_iff_RH`): the data anchor `UniformLehmerGap` is EQUIVALENT
+     to "one constant for all degrees at once" — i.e. the anchor IS the uniform
+     version of our theorem, and its name smuggles no hidden progress.
+   · `uniformLehmerGap_of_lehmerConjecture` — bridge: the monic formulation
+     `LehmerFront.LehmerConjecture` implies the anchor `UniformLehmerGap`
+     (case analysis on the leading coefficient: |lc| ≥ 2 gives measure ≥ 2 by
+     `leadingCoeff_le_mahlerMeasure`; lc = ±1 reduces to monic ±p).
 
-  🔴 ЧЕСТНО ОТКРЫТОЕ (НЕ доказано; named data-anchor):
-   · `UniformLehmerGap` — РАВНОМЕРНЫЙ разрыв: ∃ c > 1 (одна на ВСЕ степени),
-     без мер Малера в (1, c). Это и есть гипотеза Лемера в форме разрыва.
-     ЧТО МАТЕМАТИКА ДОЛЖНА ПРЕДЪЯВИТЬ: нижнюю оценку c(n) ≥ c₀ > 1, НЕ зависящую
-     от n; лучшее известное безусловное — Добровольский (1979):
-     c(n) ≥ 1 + c·(log log n / log n)³ → 1, чего НЕДОСТАТОЧНО. В mathlib v4.31
-     нет ни теоремы Добровольского, ни чего-либо сильнее; нет и имени вида
-     `Polynomial.lehmer_conjecture` (proof_wanted). Кандидат-константа — мера
-     многочлена Лемера ≈ 1.17628.
+  🔴 HONESTLY OPEN (NOT proved; named data-anchor):
+   · `UniformLehmerGap` — UNIFORM gap: ∃ c > 1 (one constant for ALL degrees),
+     with no Mahler measures in (1, c). This is Lehmer's conjecture in gap form.
+     WHAT MATHEMATICS MUST PROVIDE: a lower bound c(n) ≥ c₀ > 1 independent of n;
+     the best known unconditional result — Dobrowolski (1979):
+     c(n) ≥ 1 + c·(log log n / log n)³ → 1, which is INSUFFICIENT. In mathlib v4.31
+     there is neither Dobrowolski's theorem nor anything stronger; there is no name
+     of the form `Polynomial.lehmer_conjecture` (proof_wanted). The candidate
+     constant is the Mahler measure of Lehmer's polynomial ≈ 1.17628.
 
-  ЧЕСТНАЯ НОВИЗНА. Мы НЕ доказываем Лемера и НЕ приближаемся к нему: теорема
-  `lehmer_at_bounded_degree` — фольклорный королларий Норткотта, его ценность
-  здесь — машинная фиксация ТОЧНОЙ границы между зелёным (каждое n по
-  отдельности) и красным (все n сразу). Это НЕ решение и НЕ гёделевский трюк.
+  HONEST NOVELTY. We do NOT prove Lehmer and do NOT approach it: the theorem
+  `lehmer_at_bounded_degree` is a folklore corollary of Northcott; its value here
+  is the machine-precise fixation of the EXACT boundary between green (each n
+  separately) and red (all n at once). This is NOT a solution and NOT a Gödelian trick.
 
-  Никакого `sorry`, никакого `admit`, никакого `native_decide`, никакой новой
-  аксиомы. Все экспорты — стандартная тройка `propext` / `Classical.choice` /
-  `Quot.sound`. Такса репозитория (47) этим файлом НЕ меняется.
+  No `sorry`, no `admit`, no `native_decide`, no new axiom. All exports use the
+  standard triple `propext` / `Classical.choice` / `Quot.sound`. The repository
+  taint count (47) is NOT changed by this file.
 
-  Компиляция: cd /f/Primes/Euclids-path &&
+  Compilation: cd /f/Primes/Euclids-path &&
     "$USERPROFILE/.elan/bin/lake.exe" env lean EuclidsPath/Engine/LehmerBoundedDegree.lean
-    → ноль ошибок.
+    → zero errors.
 
-  Родство: EuclidsPath/Engine/LehmerFront.lean (Норткотт-тень, Кронекер, вентиль
-    `LehmerConjecture`); Mathlib/NumberTheory/MahlerMeasure.lean (Норткотт);
-    Mathlib/Analysis/Polynomial/MahlerMeasure.lean (определение меры, тип ℝ).
+  Related: EuclidsPath/Engine/LehmerFront.lean (Northcott shadow, Kronecker, gate
+    `LehmerConjecture`); Mathlib/NumberTheory/MahlerMeasure.lean (Northcott);
+    Mathlib/Analysis/Polynomial/MahlerMeasure.lean (measure definition, type ℝ).
 -/
 import Mathlib
 import EuclidsPath.Engine.LehmerFront
@@ -75,13 +76,14 @@ namespace EuclidsPath.LehmerBoundedDegree
 open Polynomial
 
 /-! ################################################################################
-    §1  🟢 ОКНО НОРТКОТТА: многочлены степени ≤ n с мерой Малера в (1, 2] — конечно
+    §1  🟢 NORTHCOTT WINDOW: integer polynomials of degree ≤ n with Mahler measure in (1, 2] — finite
     ################################################################################ -/
 
-/-- ОКНО ЛЕМЕРА при степени ≤ `n`: целочисленные многочлены с мерой Малера строго
-    между 1 и 2 (включая 2). Мера Малера здесь — РЕАЛЬНАЯ `Polynomial.mahlerMeasure`
-    (тип ℝ) комплексификации, как в `LehmerFront`. Именно в этом окне живёт весь
-    вопрос Лемера: ниже 1 мер нет (`mahler_lower_bound`), ровно 1 — Кронекер. -/
+/-- LEHMER WINDOW at degree ≤ `n`: integer polynomials with Mahler measure strictly
+    between 1 and 2 (2 included). The Mahler measure here is the REAL-valued
+    `Polynomial.mahlerMeasure` (type ℝ) of the complexification, as in `LehmerFront`.
+    The entire Lehmer question lives in this window: no measure below 1
+    (`mahler_lower_bound`), measure exactly 1 — Kronecker. -/
 def measureWindow (n : ℕ) : Set ℤ[X] :=
   {p : ℤ[X] | p.natDegree ≤ n ∧
     1 < (p.map (Int.castRingHom ℂ)).mahlerMeasure ∧
@@ -93,9 +95,9 @@ def measureWindow (n : ℕ) : Set ℤ[X] :=
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ≤ 2 :=
   Iff.rfl
 
-/-- 🟢 ОКНО КОНЕЧНО (грузонесущее — Норткотт). Прямой королларий
+/-- 🟢 WINDOW IS FINITE (load-bearing — Northcott). Direct corollary of
     `LehmerFront.mahler_northcott_shadow` := `Polynomial.finite_mahlerMeasure_le`
-    при границе B = 2: ограниченная степень + мера ≤ 2 ⟹ конечно много. -/
+    at bound B = 2: bounded degree + measure ≤ 2 ⟹ finitely many. -/
 theorem measureWindow_finite (n : ℕ) : (measureWindow n).Finite := by
   refine (LehmerFront.mahler_northcott_shadow n 2).subset ?_
   intro p hp
@@ -103,24 +105,24 @@ theorem measureWindow_finite (n : ℕ) : (measureWindow n).Finite := by
   exact ⟨hp.1, by exact_mod_cast hp.2.2⟩
 
 /-! ################################################################################
-    §2  🟢 ЦЕЛЬ: разрыв над 1 при фиксированной степени (константа ЗАВИСИТ от n!)
+    §2  🟢 GOAL: a gap above 1 at fixed degree (the constant DEPENDS on n!)
     ################################################################################ -/
 
-/-- 🟢 РАЗРЫВ ПРИ ОГРАНИЧЕННОЙ СТЕПЕНИ (форма «пустой интервал»).
-    Для каждого `n` существует `c ∈ (1, 2]` такое, что НИ ОДИН целочисленный
-    многочлен степени ≤ `n` не имеет меры Малера в открытом интервале `(1, c)`.
+/-- 🟢 GAP AT BOUNDED DEGREE (empty-interval form).
+    For each `n` there exists `c ∈ (1, 2]` such that NO integer polynomial of
+    degree ≤ `n` has Mahler measure in the open interval `(1, c)`.
 
-    ДОКАЗАТЕЛЬСТВО: окно `(1, 2]` конечно (Норткотт); если оно непусто, берём
-    многочлен минимальной меры (`Set.exists_min_image`) — его мера и есть `c`;
-    если пусто, годится `c = 2`.
+    PROOF: the window `(1, 2]` is finite (Northcott); if it is non-empty, we take
+    the polynomial of minimal measure (`Set.exists_min_image`) — its measure is `c`;
+    if empty, `c = 2` works.
 
-    ⚠️ ЧЕСТНО: `c = c(n)` ЗАВИСИТ от `n`. Единая `c` для всех `n` — открытая
-    гипотеза Лемера (`UniformLehmerGap` ниже). ЭТО НЕ ЛЕМЕР. -/
+    ⚠️ HONEST: `c = c(n)` DEPENDS on `n`. A single `c` for all `n` — the open
+    Lehmer conjecture (`UniformLehmerGap` below). THIS IS NOT LEHMER. -/
 theorem lehmer_gap_at_bounded_degree (n : ℕ) :
     ∃ c : ℝ, 1 < c ∧ c ≤ 2 ∧ ∀ p : ℤ[X], p.natDegree ≤ n →
       (p.map (Int.castRingHom ℂ)).mahlerMeasure ∉ Set.Ioo 1 c := by
   by_cases hne : (measureWindow n).Nonempty
-  · -- окно непусто: минимум меры по конечному окну
+  · -- window non-empty: minimum measure over the finite window
     obtain ⟨p₀, hp₀, hmin⟩ :=
       Set.exists_min_image (measureWindow n)
         (fun p : ℤ[X] => (p.map (Int.castRingHom ℂ)).mahlerMeasure)
@@ -133,22 +135,22 @@ theorem lehmer_gap_at_bounded_degree (n : ℕ) :
       rw [mem_measureWindow]
       exact ⟨hdeg, h1, (h2.trans_le hp₀.2.2).le⟩
     exact absurd (hmin p hp_mem) (not_le.mpr h2)
-  · -- окно пусто: любой многочлен с мерой в (1, 2) лежал бы в окне
+  · -- window empty: any polynomial with measure in (1, 2) would lie in the window
     refine ⟨2, one_lt_two, le_refl 2, ?_⟩
     intro p hdeg hmem
     obtain ⟨h1, h2⟩ := hmem
     exact hne ⟨p, by rw [mem_measureWindow]; exact ⟨hdeg, h1, h2.le⟩⟩
 
-/-- 🟢 ЦЕЛЬ МОДУЛЯ: для каждой степени `n` существует `c > 1` такое, что всякий
-    целочисленный многочлен `p` с `natDegree p ≤ n` и мерой Малера > 1 имеет меру
-    Малера ≥ `c` ИЛИ меру Малера > 2. Эквивалентно (см.
-    `lehmer_gap_at_bounded_degree`): мер в интервале `(1, c)` НЕТ.
+/-- 🟢 MODULE GOAL: for each degree `n` there exists `c > 1` such that every
+    integer polynomial `p` with `natDegree p ≤ n` and Mahler measure > 1 has Mahler
+    measure ≥ `c` OR Mahler measure > 2. Equivalently (see
+    `lehmer_gap_at_bounded_degree`): NO measure lies in the interval `(1, c)`.
 
-    ⚠️ ГРОМКО И ЧЕСТНО: ЭТО НЕ ГИПОТЕЗА ЛЕМЕРА. Константа `c = c(n)` зависит от
-    степени `n`; факт при фиксированном `n` — фольклорный королларий конечности
-    Норткотта (`Polynomial.finite_mahlerMeasure_le`). Гипотеза Лемера — это
-    РАВНОМЕРНОСТЬ ПО `n`: одна `c > 1` на все степени сразу (якорь
-    `UniformLehmerGap`); она ОТКРЫТА, и этот файл её НЕ закрывает. -/
+    ⚠️ LOUD AND HONEST: THIS IS NOT LEHMER'S CONJECTURE. The constant `c = c(n)`
+    depends on the degree `n`; the fact at fixed `n` is a folklore corollary of
+    Northcott finiteness (`Polynomial.finite_mahlerMeasure_le`). Lehmer's conjecture
+    is UNIFORMITY IN `n`: a single `c > 1` for all degrees at once (data anchor
+    `UniformLehmerGap`); it IS OPEN, and this file does NOT close it. -/
 theorem lehmer_at_bounded_degree (n : ℕ) :
     ∃ c : ℝ, 1 < c ∧ ∀ p : ℤ[X], p.natDegree ≤ n →
       1 < (p.map (Int.castRingHom ℂ)).mahlerMeasure →
@@ -161,29 +163,30 @@ theorem lehmer_at_bounded_degree (n : ℕ) :
   · exact absurd (Set.mem_Ioo.mpr ⟨h1, not_le.mp hcle⟩) (hgap p hdeg)
 
 /-! ################################################################################
-    §3  🔴 ЯКОРЬ: равномерность по n (= сам Лемер) + машинный аудит на переименование
+    §3  🔴 DATA ANCHOR: uniformity in n (= Lehmer itself) + machine audit for goal renaming
     ################################################################################ -/
 
-/-- 🔴 ЯКОРЬ (data-anchor, ОТКРЫТ): РАВНОМЕРНЫЙ разрыв Лемера — существует ОДНА
-    константа `c > 1` (не зависящая от степени!) такая, что ни один целочисленный
-    многочлен не имеет меры Малера в `(1, c)`. Это гипотеза Лемера в форме разрыва.
+/-- 🔴 DATA ANCHOR (OPEN): UNIFORM Lehmer gap — there exists ONE constant `c > 1`
+    (independent of degree!) such that no integer polynomial has Mahler measure in
+    `(1, c)`. This is Lehmer's conjecture in gap form.
 
-    ЧТО МАТЕМАТИКА ДОЛЖНА ПРЕДЪЯВИТЬ: оценку снизу на `c(n)` из
-    `lehmer_gap_at_bounded_degree`, НЕ зависящую от `n`. Лучшее безусловное —
-    теорема Добровольского (1979): `c(n) ≥ 1 + c·(log log n / log n)³`, которая
-    стремится к 1 и НЕ закрывает якорь. В mathlib v4.31 НЕТ ни Добровольского,
-    ни Смита (для не-взаимных), ни какого-либо `Polynomial.lehmer_*`
-    (proof_wanted). Кандидат — мера многочлена Лемера
-    `X¹⁰+X⁹-X⁷-X⁶-X⁵-X⁴-X³+X+1` ≈ 1.17628. Мы этот Prop НЕ доказываем. -/
+    WHAT MATHEMATICS MUST PROVIDE: a lower bound on `c(n)` from
+    `lehmer_gap_at_bounded_degree` that is INDEPENDENT of `n`. The best known
+    unconditional result — Dobrowolski (1979): `c(n) ≥ 1 + c·(log log n / log n)³`,
+    which tends to 1 and does NOT close the anchor. In mathlib v4.31 there is neither
+    Dobrowolski's theorem nor Smith's (for non-reciprocal polynomials), nor any
+    `Polynomial.lehmer_*` (proof_wanted). The candidate is the Mahler measure of
+    Lehmer's polynomial `X¹⁰+X⁹-X⁷-X⁶-X⁵-X⁴-X³+X+1` ≈ 1.17628.
+    We do NOT prove this Prop. -/
 def UniformLehmerGap : Prop :=
   ∃ c : ℝ, 1 < c ∧ ∀ p : ℤ[X],
     (p.map (Int.castRingHom ℂ)).mahlerMeasure ∉ Set.Ioo 1 c
 
-/-- 🟢 АУДИТ НА ПЕРЕИМЕНОВАНИЕ ЦЕЛИ (машинный iff, как `offCriticalBridge_iff_RH`).
-    Якорь `UniformLehmerGap` РАВНОСИЛЕН утверждению «в `lehmer_gap_at_bounded_degree`
-    можно взять одну константу на все степени сразу». То есть якорь — это В ТОЧНОСТИ
-    равномерная версия нашей зелёной теоремы, никакого скрытого содержания в его
-    имени нет: назвать его — не значит продвинуться. -/
+/-- 🟢 GOAL-RENAMING AUDIT (machine iff, like `offCriticalBridge_iff_RH`).
+    The anchor `UniformLehmerGap` is EQUIVALENT to the statement "one constant can be
+    chosen for all degrees at once in `lehmer_gap_at_bounded_degree`". That is, the
+    anchor IS EXACTLY the uniform version of our green theorem; its name carries no
+    hidden content: naming it is not the same as proving it. -/
 theorem uniformLehmerGap_iff_all_degrees :
     UniformLehmerGap ↔
       ∃ c : ℝ, 1 < c ∧ ∀ n : ℕ, ∀ p : ℤ[X], p.natDegree ≤ n →
@@ -195,26 +198,26 @@ theorem uniformLehmerGap_iff_all_degrees :
     exact ⟨c, hc, fun p => hgap p.natDegree p le_rfl⟩
 
 /-! ################################################################################
-    §4  🟢 МОСТ К LehmerFront: моническая формулировка влечёт якорь
+    §4  🟢 BRIDGE TO LehmerFront: the monic formulation implies the anchor
     ################################################################################ -/
 
-/-- 🟢 Мера Малера не видит знака: `M(-p) = M(p)`. В mathlib v4.31 такой леммы нет
-    (есть `mahlerMeasure_mul` и `mahlerMeasure_const`); выводим: `-p = C(-1)·p`,
-    множитель даёт `‖-1‖ = 1`. -/
+/-- 🟢 The Mahler measure is sign-blind: `M(-p) = M(p)`. In mathlib v4.31 this lemma
+    is absent (though `mahlerMeasure_mul` and `mahlerMeasure_const` exist); we derive
+    it: `-p = C(-1)·p`, and the constant factor contributes `‖-1‖ = 1`. -/
 theorem mahlerMeasure_neg (p : ℂ[X]) : (-p).mahlerMeasure = p.mahlerMeasure := by
   have h : (-p : ℂ[X]) = Polynomial.C (-1 : ℂ) * p := by
     rw [map_neg, map_one, neg_one_mul]
   rw [h, Polynomial.mahlerMeasure_mul, Polynomial.mahlerMeasure_const]
   simp
 
-/-- 🟢 МОСТ (при якоре фронт закрывается — в обе стороны формулировок).
-    Моническая формулировка гипотезы Лемера из `LehmerFront.LehmerConjecture`
-    ВЛЕЧЁТ якорь `UniformLehmerGap` для ВСЕХ целочисленных многочленов.
+/-- 🟢 BRIDGE (when the anchor holds the front closes — in both directions of the formulation).
+    The monic formulation of Lehmer's conjecture from `LehmerFront.LehmerConjecture`
+    IMPLIES the anchor `UniformLehmerGap` for ALL integer polynomials.
 
-    Разбор: у ненулевого `p` старший коэффициент `lc ≠ 0`. Если `|lc| ≥ 2`, то
-    мера ≥ `‖lc‖` ≥ 2 (`Polynomial.leadingCoeff_le_mahlerMeasure`) — вне окна
-    `(1, min c 2)`. Если `lc = 1`, `p` моничен — работает `LehmerConjecture`.
-    Если `lc = -1`, моничен `-p`, а мера знака не видит (`mahlerMeasure_neg`). -/
+    Case analysis: for a non-zero `p` the leading coefficient `lc ≠ 0`. If `|lc| ≥ 2`,
+    then the measure ≥ `‖lc‖` ≥ 2 (`Polynomial.leadingCoeff_le_mahlerMeasure`) — outside
+    the window `(1, min c 2)`. If `lc = 1`, `p` is monic — `LehmerConjecture` applies.
+    If `lc = -1`, `-p` is monic, and the measure is sign-blind (`mahlerMeasure_neg`). -/
 theorem uniformLehmerGap_of_lehmerConjecture
     (h : LehmerFront.LehmerConjecture) : UniformLehmerGap := by
   obtain ⟨c, hc1, hLeh⟩ := h
@@ -226,7 +229,7 @@ theorem uniformLehmerGap_of_lehmerConjecture
     rintro rfl
     rw [Polynomial.map_zero, Polynomial.mahlerMeasure_zero] at h1
     linarith
-  -- старший коэффициент комплексификации — каст целого старшего коэффициента
+  -- leading coefficient of the complexification — cast of the integer leading coefficient
   have hlc_map : (p.map (Int.castRingHom ℂ)).leadingCoeff = (p.leadingCoeff : ℂ) := by
     rw [Polynomial.leadingCoeff_map_of_injective (Int.castRingHom ℂ).injective_int]
     exact eq_intCast _ _
@@ -237,17 +240,17 @@ theorem uniformLehmerGap_of_lehmerConjecture
           rw [Complex.norm_intCast]
       _ ≤ _ := hnorm
   rcases lt_or_ge |p.leadingCoeff| 2 with hsmall | hbig
-  · -- |lc| = 1: p или -p моничен, применяем моническую формулировку
+  · -- |lc| = 1: p or -p is monic, apply the monic formulation
     have hlc1 : |p.leadingCoeff| = 1 := by
       have hge : 1 ≤ |p.leadingCoeff| :=
         Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.mpr hp0)
       omega
     rcases (abs_eq (by norm_num : (0 : ℤ) ≤ 1)).mp hlc1 with hlc | hlc
-    · -- lc = 1: p моничен
+    · -- lc = 1: p is monic
       have hMon : p.Monic := hlc
       have := hLeh p hMon h1.ne'
       linarith
-    · -- lc = -1: -p моничен, мера та же
+    · -- lc = -1: -p is monic, the measure is the same
       have hMon : (-p).Monic := by
         show (-p).leadingCoeff = 1
         rw [Polynomial.leadingCoeff_neg, hlc, neg_neg]
@@ -261,39 +264,39 @@ theorem uniformLehmerGap_of_lehmerConjecture
       have hge := hLeh (-p) hMon hne1
       rw [hμneg] at hge
       linarith
-  · -- |lc| ≥ 2: мера ≥ 2, окно (1, min c 2) недостижимо
+  · -- |lc| ≥ 2: measure ≥ 2, the window (1, min c 2) is unreachable
     have h2le : (2 : ℝ) ≤ (|p.leadingCoeff| : ℝ) := by exact_mod_cast hbig
     linarith
 
 /-!
 ################################################################################
-  ИТОГ (LOUD HONEST): что доказано, что переиспользовано, что ОСТАЁТСЯ ОТКРЫТЫМ
+  SUMMARY (LOUD HONEST): what is proved, what is reused, what REMAINS OPEN
 ################################################################################
 
-  🟢 ГРУЗОНЕСУЩИЕ ЗЕЛЁНЫЕ (этот файл):
-     · `measureWindow_finite`          — окно (1, 2] конечно (Норткотт);
-     · `lehmer_gap_at_bounded_degree`  — ∃ c(n) ∈ (1, 2]: интервал (1, c(n)) пуст;
-     · `lehmer_at_bounded_degree`      — ЦЕЛЬ: мера ≥ c(n) или мера > 2;
+  🟢 LOAD-BEARING GREEN (this file):
+     · `measureWindow_finite`          — the window (1, 2] is finite (Northcott);
+     · `lehmer_gap_at_bounded_degree`  — ∃ c(n) ∈ (1, 2]: the interval (1, c(n)) is empty;
+     · `lehmer_at_bounded_degree`      — GOAL: measure ≥ c(n) or measure > 2;
      · `mahlerMeasure_neg`             — M(-p) = M(p);
-     · `uniformLehmerGap_iff_all_degrees` — аудит: якорь = равномерная версия;
-     · `uniformLehmerGap_of_lehmerConjecture` — мост от монической формулировки.
+     · `uniformLehmerGap_iff_all_degrees` — audit: anchor = uniform version;
+     · `uniformLehmerGap_of_lehmerConjecture` — bridge from the monic formulation.
 
-  🟢 ПЕРЕИСПОЛЬЗОВАНО (цитируется, НЕ пере-выводится):
+  🟢 REUSED (cited, NOT re-derived):
      · `LehmerFront.mahler_northcott_shadow` := `Polynomial.finite_mahlerMeasure_le`;
-     · `Set.exists_min_image` (минимум конечного множества);
+     · `Set.exists_min_image` (minimum of a finite set);
      · `Polynomial.mahlerMeasure_mul`, `mahlerMeasure_const`,
        `leadingCoeff_le_mahlerMeasure`, `leadingCoeff_map_of_injective`.
 
-  🔴 ОТКРЫТО (named data-anchor; НЕ доказано, НЕ закрыто движком):
-     · `UniformLehmerGap` — одна константа c > 1 на ВСЕ степени = гипотеза Лемера.
-       Аудит `uniformLehmerGap_iff_all_degrees` показывает: якорь есть В ТОЧНОСТИ
-       равномерная версия зелёной теоремы, переименование цели исключено машинно.
+  🔴 OPEN (named data-anchor; NOT proved, NOT closed by the engine):
+     · `UniformLehmerGap` — one constant c > 1 for ALL degrees = Lehmer's conjecture.
+       The audit `uniformLehmerGap_iff_all_degrees` shows: the anchor IS EXACTLY
+       the uniform version of the green theorem; goal renaming is excluded machine-precisely.
 
-  ЧЕСТНАЯ НОВИЗНА: НУЛЕВАЯ математическая (фольклорный королларий Норткотта);
-  ценность — машинная фиксация ТОЧНОЙ границы зелёное/красное: каждое n по
-  отдельности — тривиально, все n сразу — Лемер. ЭТО НЕ РЕШЕНИЕ И НЕ ГЁДЕЛЬ.
-  Никакого `sorry`, никакой новой аксиомы, никакого `native_decide`;
-  такса репозитория (47) этим файлом НЕ меняется.
+  HONEST NOVELTY: ZERO mathematical novelty (folklore corollary of Northcott);
+  the value is the machine-precise fixation of the EXACT boundary green/red: each n
+  separately — trivial, all n at once — Lehmer. THIS IS NOT A SOLUTION AND NOT GODEL.
+  No `sorry`, no new axiom, no `native_decide`;
+  the repository taint count (47) is NOT changed by this file.
 -/
 
 #print axioms measureWindow_finite

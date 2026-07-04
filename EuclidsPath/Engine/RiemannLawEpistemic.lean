@@ -1,43 +1,44 @@
 /-
-  RiemannLawEpistemic — ЭПИСТЕМИЧЕСКИЙ КОМПЛЕМЕНТ закона манифестации Римана
-  (зеркало CollatzFirstCause/PNPFirstCause по программе Яруса 1).
-  Зелёная машина: Engine/RiemannManifestationFront.lean (цепь L1–L9).
+  RiemannLawEpistemic — the EPISTEMIC COMPLEMENT of the Riemann manifestation law
+  (mirror of CollatzFirstCause/PNPFirstCause under the Tier-1 programme).
+  Green machine: Engine/RiemannManifestationFront.lean (chain L1–L9).
 
-  ЧТО ЭТО. «Решить Римана изнутри» = внутренне самообосновать закон манифестации
-  (`RiemannManifestationLaw`, содержание декретного поля `riemannBoundary` —
-  здесь НЕ принимаемого): нести одновременно сам закон и свидетельство, что он
-  выведен из-за собственного горизонта. Самообоснование самоуничтожается
-  (`riemannCause_unknowable`), а единственный внутренний след отклонения —
-  вечный двигатель: поставка отклонения на разрешённом масштабе СТРОИТ
-  двигатель-свидетель (`deviation_carries_engine_at_resolved_scale`), который
-  убит lexRank'ом. Решает только внешний декрет: закон при границе даёт RH —
-  здесь граница фигурирует ГИПОТЕЗОЙ (`h : TheStrictLastStep00Obligation`),
-  НЕ аксиомой; модуль карантин не импортирует.
+  WHAT THIS IS. "Solving Riemann from inside" = internally self-grounding the
+  manifestation law (`RiemannManifestationLaw`, the content of the decree field
+  `riemannBoundary` — NOT accepted here): carrying at once the law itself and a
+  witness that it was derived from beyond one's own horizon. The self-grounding
+  self-destructs (`riemannCause_unknowable`), and the only internal trace of a
+  deviation is a perpetual engine: a deviation supply at a resolved scale BUILDS
+  an engine-witness (`deviation_carries_engine_at_resolved_scale`), which is
+  killed by lexRank. Only an external decree decides: the law under the boundary
+  gives RH — here the boundary appears as a HYPOTHESIS
+  (`h : TheStrictLastStep00Obligation`), NOT an axiom; the module does not import
+  the quarantine.
 
-  ЧЕСТНОСТЬ (обязательные оговорки):
-    * Это модель-внутренняя эпистемика, НЕ решение гипотезы Римана и НЕ Гёдель
-      (никакой независимости/неподвижной точки — только пижонхол-стена).
-    * Связка `InternalisedRiemannGround` ФОРМАЛЬНА — как у Коллатца после
-      падения декрета: `beyondOwnHorizon = ¬ground` (форма P ∧ ¬P). Чем она
-      оплачена: настоящим зелёным фактом «поставка в стабильной вселенной
-      строит двигатель» (`infiniteFlows_in_stableNoEnergy_build_engine`,
-      потреблённая в `no_deviationFlowSupply_at_resolved_scale`) — он
-      потребляется НЕ ex falso в отдельной теореме
+  HONESTY (mandatory caveats):
+    * This is model-internal epistemics, NOT a solution of the Riemann hypothesis
+      and NOT Gödel (no independence/fixed point — only a pigeonhole wall).
+    * The bundle `InternalisedRiemannGround` is FORMAL — as with Collatz after
+      the decree fell: `beyondOwnHorizon = ¬ground` (the form P ∧ ¬P). What pays
+      for it: the genuine green fact "a supply in a stable universe builds an
+      engine" (`infiniteFlows_in_stableNoEnergy_build_engine`, consumed in
+      `no_deviationFlowSupply_at_resolved_scale`) — it is consumed NOT ex falso
+      in the separate theorem
       `deviation_carries_engine_at_resolved_scale`.
-    * Ни одно поле связки зелёно не заселяемо: нуль-свидетель = ¬RH,
-      разрешающий леджер — открытый twin-узел (при A ≤ 4 разрешение
-      опровергнуто `no_projection_resolves_at_smallScale`); по L6
+    * No field of the bundle is green-populatable: the zero-witness = ¬RH,
+      the resolving ledger — an open twin node (at A ≤ 4 resolution is
+      refuted by `no_projection_resolves_at_smallScale`); by L6
       (`manifestationLaw_iff_no_resolution_above_zero`) `beyondOwnHorizon`
-      при данном `ground` эквивалентен отрицанию его следствия. Это НИЖЕ
-      эталона P/NP (там `beyondOwnHorizon` зелёно инстанцирован при A ≤ 4)
-      и ровно уровень Коллатца.
-    * В отличие от безусловного на объекте `nonHalting_carries_perpetual_engine`
-      Коллатца, римановский двигатель ГЕЙТИРОВАН разрешающим масштабом:
-      отклонение предъявляет двигатель только там, где книги сведены, — а
-      разрешение и есть открытый twin-узел/граница.
-  Модуль ЦЕЛИКОМ ЗЕЛЁНЫЙ: без axiom/sorry, без импорта карантина
-  (CausalClosureAxiom), таинт репозитория (47 после снятия четвёртой границы,
-  1936826) НЕ меняется.
+      under a given `ground` is equivalent to the negation of its consequence.
+      This is BELOW the P/NP benchmark (there `beyondOwnHorizon` is green-
+      instantiated at A ≤ 4) and exactly the Collatz level.
+    * Unlike the object-unconditional `nonHalting_carries_perpetual_engine` of
+      Collatz, the Riemann engine is GATED by the resolving scale: a deviation
+      presents an engine only where the books are reconciled — and reconciliation
+      is exactly the open twin node/boundary.
+  The module is ENTIRELY GREEN: no axiom/sorry, no import of the quarantine
+  (CausalClosureAxiom); the repository taint (47 after removing the fourth
+  boundary, 1936826) does NOT change.
 -/
 
 import EuclidsPath.Engine.RiemannManifestationFront
@@ -47,53 +48,54 @@ set_option autoImplicit false
 
 namespace EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation.Epistemic
 
-/-! ## Модель: внутреннее решение = самообоснование за собственным горизонтом -/
+/-! ## Model: internal solution = self-grounding beyond one's own horizon -/
 
-/-- **Внутреннее самообоснование закона манифестации Римана**: несёт сам закон
-    (`ground`) И свидетельство, что тот выведен из-за собственного горизонта
-    (`beyondOwnHorizon`). ФОРМА КАК У КОЛЛАТЦА (`InternalisedCollatzGround`):
-    `beyondOwnHorizon = ¬ground` — тавтологическая пара P ∧ ¬P, и это сказано
-    прямо. Содержательность оплачена отдельно: настоящий зелёный факт «поставка
-    отклонения в стабильной вселенной строит двигатель»
-    (`infiniteFlows_in_stableNoEnergy_build_engine` внутри
-    `no_deviationFlowSupply_at_resolved_scale`) потребляется НЕ ex falso в
-    `deviation_carries_engine_at_resolved_scale` ниже. Ни одно поле зелёно не
-    заселяемо: нуль = ¬RH, разрешающий леджер — открытый twin-узел. -/
+/-- **Internal self-grounding of the Riemann manifestation law**: carries the
+    law itself (`ground`) AND a witness that it was derived from beyond one's own
+    horizon (`beyondOwnHorizon`). SAME FORM AS COLLATZ (`InternalisedCollatzGround`):
+    `beyondOwnHorizon = ¬ground` — a tautological P ∧ ¬P pair, and this is said
+    outright. The substance is paid for separately: the genuine green fact "a
+    deviation supply in a stable universe builds an engine"
+    (`infiniteFlows_in_stableNoEnergy_build_engine` inside
+    `no_deviationFlowSupply_at_resolved_scale`) is consumed NOT ex falso in
+    `deviation_carries_engine_at_resolved_scale` below. No field is green-
+    populatable: the zero = ¬RH, the resolving ledger — an open twin node. -/
 structure InternalisedRiemannGround : Prop where
   ground : RiemannManifestationLaw
   beyondOwnHorizon : ¬ RiemannManifestationLaw
 
-/-- «Внутреннее знание причины Римана» = внутреннее самообоснование закона
-    манифестации (зеркало `InternalKnowledgeOfCollatzCause`). -/
+/-- "Internal knowledge of the Riemann cause" = internal self-grounding of the
+    manifestation law (mirror of `InternalKnowledgeOfCollatzCause`). -/
 abbrev InternalKnowledgeOfRiemannCause : Prop := InternalisedRiemannGround
 
-/-! ## Ядро: самообоснование самоуничтожается (🟢) -/
+/-! ## Core: the self-grounding self-destructs (🟢) -/
 
-/-- Самообоснование самоуничтожается — ровно `fun H => H.beyondOwnHorizon
-    H.ground` Коллатца. ЧЕСТНОСТЬ: несущая часть здесь — форма; содержание
-    живёт в `deviation_carries_engine_at_resolved_scale`. ЗЕЛЁНАЯ, без аксиом. -/
+/-- The self-grounding self-destructs — exactly Collatz's `fun H =>
+    H.beyondOwnHorizon H.ground`. HONESTY: the load-bearing part here is the
+    form; the content lives in `deviation_carries_engine_at_resolved_scale`.
+    GREEN, no axioms. -/
 theorem no_internalisedRiemannGround : InternalisedRiemannGround → False :=
   fun H => H.beyondOwnHorizon H.ground
 
-/-- **«УЗНАТЬ НЕЛЬЗЯ ИЗНУТРИ» — ТЕОРЕМА** (зеркало `collatzCause_unknowable`,
-    `pnpCause_unknowable`): внутреннее самообоснование закона манифестации
-    невозможно. НЕ утверждается ни гёделевская независимость, ни что-либо о
-    самой RH — только невозможность внутреннего самообоснования. ЗЕЛЁНАЯ. -/
+/-- **"CANNOT BE KNOWN FROM INSIDE" — THEOREM** (mirror of `collatzCause_unknowable`,
+    `pnpCause_unknowable`): internal self-grounding of the manifestation law is
+    impossible. Neither Gödelian independence nor anything about RH itself is
+    asserted — only the impossibility of internal self-grounding. GREEN. -/
 theorem riemannCause_unknowable : ¬ InternalKnowledgeOfRiemannCause :=
   no_internalisedRiemannGround
 
-/-! ## Оплата: опровержение-несёт-двигатель для Римана (🟢, не ex falso) -/
+/-! ## Payment: refutation-carries-engine for Riemann (🟢, not ex falso) -/
 
-/-- **«ОТКЛОНЕНИЕ НЕСЁТ ДВИГАТЕЛЬ» (подлинная конструкция, зеркало
-    `nonHalting_carries_perpetual_engine`):** поставка отклонения на
-    разрешённом масштабе СТРОИТ конкретный евклидов двигатель — стабильная
-    no-energy вселенная + бесконечное семейство ⟹ пижонхол-коллизия конечного
-    ключа ⟹ двигатель-свидетель. Гипотезы потребляются ПО-НАСТОЯЩЕМУ (не
-    ex falso): это та самая цепь, что внутри L2
-    (`no_deviationFlowSupply_at_resolved_scale`), с явным двигателем в выводе.
-    ОГОВОРКА: в отличие от Коллатца факт гейтирован разрешающим масштабом
-    (`hres`) — а разрешение и есть открытый twin-узел (при A ≤ 4 оно
-    опровергнуто `no_projection_resolves_at_smallScale`). -/
+/-- **"A DEVIATION CARRIES AN ENGINE" (genuine construction, mirror of
+    `nonHalting_carries_perpetual_engine`):** a deviation supply at a resolved
+    scale BUILDS a concrete Euclidean engine — a stable no-energy universe +
+    an infinite family ⟹ a pigeonhole collision of the finite key ⟹ an
+    engine-witness. The hypotheses are consumed FOR REAL (not ex falso): this is
+    the very chain inside L2 (`no_deviationFlowSupply_at_resolved_scale`), with
+    an explicit engine in the conclusion.
+    CAVEAT: unlike Collatz, the fact is gated by the resolving scale (`hres`) —
+    and reconciliation is exactly the open twin node (at A ≤ 4 it is refuted by
+    `no_projection_resolves_at_smallScale`). -/
 theorem deviation_carries_engine_at_resolved_scale {A M0 : ℕ}
     (proj : SemanticExtendedFlowLedgerProjection A M0)
     (hres : SemanticExtendedFlowLedgerCollisionResolves proj)
@@ -106,31 +108,31 @@ theorem deviation_carries_engine_at_resolved_scale {A M0 : ℕ}
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact ⟨A, M0, hEngine⟩
 
-/-- Ex-falso companion (зеркало `internalisedPNPGround_builds_engine`): из
-    самообоснования (уже ложного) выводится и сам двигатель. ЧЕСТНОСТЬ:
-    маршрут ex falso; несущая часть — `no_internalisedRiemannGround`, а
-    НЕ-ex-falso двигатель Римана — `deviation_carries_engine_at_resolved_scale`. -/
+/-- Ex-falso companion (mirror of `internalisedPNPGround_builds_engine`): from
+    the (already false) self-grounding the engine itself is also derived. HONESTY:
+    an ex-falso route; the load-bearing part is `no_internalisedRiemannGround`,
+    while the NON-ex-falso Riemann engine is `deviation_carries_engine_at_resolved_scale`. -/
 theorem internalisedRiemannGround_builds_engine :
     InternalisedRiemannGround → SomeConcreteEuclideanEngine :=
   fun H => (no_internalisedRiemannGround H).elim
 
-/-! ## Сводки: решение заперто за двигателем (🟢) -/
+/-! ## Summaries: the solution is locked behind the engine (🟢) -/
 
-/-- **«РЕШЕНИЕ ЗАПЕРТО ЗА ДВИГАТЕЛЕМ» — 3-РАЗВИЛКА (зелёная; зеркало
+/-- **"THE SOLUTION IS LOCKED BEHIND THE ENGINE" — 3-PRONGED FORK (green; mirror of
     `collatz_no_internal_decision_without_engine`):**
-    (1) ОТКЛОНЕНИЕ ПРИ СВЕДЁННЫХ КНИГАХ = ДВИГАТЕЛЬ — подлинная конструкция
-        (`deviation_carries_engine_at_resolved_scale`), двигатель затем убит
-        lexRank'ом (`no_someConcreteEuclideanEngine`);
-    (2) САМООБОСНОВАТЬ закон изнутри — самоуничтожается
+    (1) A DEVIATION WITH THE BOOKS RECONCILED = AN ENGINE — a genuine construction
+        (`deviation_carries_engine_at_resolved_scale`), the engine then killed by
+        lexRank (`no_someConcreteEuclideanEngine`);
+    (2) SELF-GROUNDING the law from inside — self-destructs
         (`no_internalisedRiemannGround`);
-    (3) ВНЕШНИЙ ДЕКРЕТ решает: закон при границе даёт RH
+    (3) AN EXTERNAL DECREE decides: the law under the boundary gives RH
         (`riemannHypothesis_of_manifestation_and_boundary` +
-        `no_someConcreteEuclideanEngine`) — граница фигурирует ГИПОТЕЗОЙ
-        `h : TheStrictLastStep00Obligation`, НЕ аксиомой: конъюнкт остаётся
-        зелёной импликацией, таинт не растёт.
-    НЕ утверждается ни RH, ни её независимость — только: оба внутренних пути
-    стоят двигателя, а декретная дверь оценена (по L7 закон при границе ровно
-    RH-силы: `manifestationLaw_iff_RH_of_boundary`). -/
+        `no_someConcreteEuclideanEngine`) — the boundary appears as a HYPOTHESIS
+        `h : TheStrictLastStep00Obligation`, NOT an axiom: the conjunct stays a
+        green implication, the taint does not grow.
+    Neither RH nor its independence is asserted — only: both internal paths cost
+    an engine, and the decree door is assessed (by L7 the law under the boundary
+    is exactly RH-strength: `manifestationLaw_iff_RH_of_boundary`). -/
 theorem riemann_no_internal_decision_without_engine :
     (∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
         SemanticExtendedFlowLedgerCollisionResolves proj →
@@ -145,14 +147,14 @@ theorem riemann_no_internal_decision_without_engine :
       riemannHypothesis_of_manifestation_and_boundary
         no_someConcreteEuclideanEngine h hLaw⟩
 
-/-- Итоговый эпистемический статус римановского горизонта (зеркало
-    `pnp_locked_behind_engine_status` / `collatz_open_status`; целиком в
-    implication-форме — зелёный, декрет только гипотезой):
-    внутреннее знание невозможно (теорема) / отклонение при сведённых книгах
-    строит двигатель (теорема, подлинная конструкция) / поставки отклонения на
-    разрешённом масштабе нет (теорема L2 — та же стена) / закон при границе
-    даёт RH (условно, `TheStrictLastStep00Obligation` гипотезой). RH остаётся
-    открытой; этот статус её НЕ двигает. -/
+/-- The final epistemic status of the Riemann horizon (mirror of
+    `pnp_locked_behind_engine_status` / `collatz_open_status`; entirely in
+    implication form — green, the decree only as a hypothesis):
+    internal knowledge is impossible (theorem) / a deviation with the books
+    reconciled builds an engine (theorem, genuine construction) / there is no
+    deviation supply at a resolved scale (theorem L2 — the same wall) / the law
+    under the boundary gives RH (conditionally, `TheStrictLastStep00Obligation`
+    as a hypothesis). RH stays open; this status does NOT move it. -/
 theorem riemann_locked_behind_engine_status :
     (¬ InternalKnowledgeOfRiemannCause) ∧
     (∀ (A M0 : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
@@ -171,20 +173,20 @@ theorem riemann_locked_behind_engine_status :
       riemannHypothesis_of_manifestation_and_boundary
         no_someConcreteEuclideanEngine hBoundary hLaw⟩
 
-/-! ## Twin-сторона: twin-граница замораживает всякий разрешающий леджер (🟢) -/
+/-! ## Twin side: the twin boundary freezes every resolving ledger (🟢) -/
 
-/-- **Twin-граница замораживает разрешение**: если выше масштаба `M0` близнецов
-    нет (`TwinBoundAbove M0`), то НИКАКАЯ леджер-проекция на этом масштабе не
-    сводит книги — twin-bound зелёно поставляет бесконечное семейство потоков
-    (L1, `deviationFlowSupply_of_twinBound`), а разрешённый масштаб такой
-    поставки не терпит (L2, `no_deviationFlowSupply_at_resolved_scale`:
-    коллизия ⟹ двигатель ⟹ lexRank). Именует twin-сторону характеризации L6
-    (`manifestationLaw_iff_no_resolution_above_zero`) явной леммой.
-    ЧЕСТНОСТЬ: логически это переупаковка композиции L1 ∘ L2 — НЕ
-    `twins_infinite_of_noEngine_and_boundary` (та лемма живёт в карантинном
-    модуле и выводит бесконечность близнецов из ¬двигателей + границы —
-    другое утверждение). Про сами близнецы здесь НИЧЕГО не утверждается:
-    `TwinBoundAbove` — гипотеза. ЗЕЛЁНАЯ, без аксиом. -/
+/-- **The twin boundary freezes resolution**: if above scale `M0` there are no
+    twins (`TwinBoundAbove M0`), then NO ledger projection at this scale
+    reconciles the books — the twin-bound green-supplies an infinite family of
+    flows (L1, `deviationFlowSupply_of_twinBound`), and a resolved scale does not
+    tolerate such a supply (L2, `no_deviationFlowSupply_at_resolved_scale`:
+    collision ⟹ engine ⟹ lexRank). Names the twin side of the L6 characterisation
+    (`manifestationLaw_iff_no_resolution_above_zero`) with an explicit lemma.
+    HONESTY: logically this is a repackaging of the composition L1 ∘ L2 — NOT
+    `twins_infinite_of_noEngine_and_boundary` (that lemma lives in the quarantine
+    module and derives the infinitude of twins from ¬engines + the boundary — a
+    different statement). Nothing is asserted here about the twins themselves:
+    `TwinBoundAbove` is a hypothesis. GREEN, no axioms. -/
 theorem twinBound_freezes_resolution {M0 : ℕ}
     (hTwinBound : TwinBoundAbove M0) :
     ∀ (A : ℕ) (proj : SemanticExtendedFlowLedgerProjection A M0),
@@ -193,22 +195,22 @@ theorem twinBound_freezes_resolution {M0 : ℕ}
     no_deviationFlowSupply_at_resolved_scale proj hres
       (deviationFlowSupply_of_twinBound hTwinBound)
 
-/-! ## Лиувиллева ветвь: обе RH-ветви сходятся к одному декрету (🟢-условно) -/
+/-! ## Liouville branch: both RH branches converge to one decree (🟢-conditional) -/
 
-/-- **Лиувилль вшит в декрет (зелёно-условная цепь):** классический мост
-    Лиувилля (гипотезой) + ¬двигателей + граница (гипотезой) + закон
-    манифестации ⟹ `LiouvilleBound` (`|L(x)| ≤ C·x^{1/2+ε}`). Композиция:
-    тройка essence-гипотез даёт RH (L4,
-    `riemannHypothesis_of_manifestation_and_boundary`), мост переносит RH в
-    арифметический bound (`bridge.mpr`). ЧЕМ ОПЛАЧЕНО (честно, по слоям):
-    (1) `LiouvilleRHBridge` — КРАСНЫЙ вход: классическая эквивалентность
-        `LiouvilleBound ⟺ RH` аналитической теории чисел, в mathlib
-        отсутствует — здесь строго ГИПОТЕЗОЙ;
-    (2) граница — ГИПОТЕЗОЙ (`TheStrictLastStep00Obligation`), не аксиомой;
-    (3) закон манифестации при границе ровно RH-силы (L7,
-        `manifestationLaw_iff_RH_of_boundary`) — теорема НЕ добывает bound,
-        а показывает СХОДИМОСТЬ обеих RH-ветвей (нулевой и лиувиллевой)
-        к одному и тому же декрету. НЕ решение RH и не новый bound. -/
+/-- **Liouville sewn into the decree (green-conditional chain):** the classical
+    Liouville bridge (as a hypothesis) + ¬engines + the boundary (as a hypothesis)
+    + the manifestation law ⟹ `LiouvilleBound` (`|L(x)| ≤ C·x^{1/2+ε}`). The
+    composition: the triple of essence-hypotheses gives RH (L4,
+    `riemannHypothesis_of_manifestation_and_boundary`), the bridge carries RH into
+    the arithmetic bound (`bridge.mpr`). WHAT PAYS FOR IT (honestly, by layers):
+    (1) `LiouvilleRHBridge` — a RED input: the classical equivalence
+        `LiouvilleBound ⟺ RH` of analytic number theory, absent from mathlib —
+        here strictly as a HYPOTHESIS;
+    (2) the boundary — as a HYPOTHESIS (`TheStrictLastStep00Obligation`), not an axiom;
+    (3) the manifestation law under the boundary is exactly RH-strength (L7,
+        `manifestationLaw_iff_RH_of_boundary`) — the theorem does NOT extract a bound,
+        but shows the CONVERGENCE of both RH branches (the zero one and the Liouville
+        one) to one and the same decree. NOT a solution of RH and not a new bound. -/
 theorem liouvilleBound_of_manifestation_and_boundary
     (hBridge : EuclidsPath.RiemannLiouville.LiouvilleRHBridge)
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
@@ -219,35 +221,34 @@ theorem liouvilleBound_of_manifestation_and_boundary
     (riemannHypothesis_of_manifestation_and_boundary
       hNoEngine hBoundary hManifest)
 
-/-! ## Минимизация второй границы: закон только на собственной высоте нуля (🟢) -/
+/-! ## Minimising the second boundary: the law only at the zero's own height (🟢) -/
 
-/-- **МИНИМАЛЬНЫЙ закон манифестации (law-at-own-height):** от каждого
-    off-critical нуля требуется манифестация ТОЛЬКО на масштабе его
-    собственной высоты `M0 = zeroHeight Z` — а не на всех масштабах
-    `M0 ≥ zeroHeight Z`, как в полном `RiemannManifestationLaw`. Синтаксически
-    строго слабее полного закона (тот навешивает ∀-хвост по масштабам);
-    essence-лемма L3 содержательно использует РОВНО этот один масштаб
-    (`le_refl` в `noOffCriticalZero_of_manifestation_and_boundary`) — поэтому
-    минимальной формы достаточно (`minimalLaw_suffices` ниже). Документирует
-    минимальное логическое содержание декретного поля `riemannBoundary`;
-    здесь НЕ принимается — только определён. -/
+/-- **MINIMAL manifestation law (law-at-own-height):** every off-critical zero
+    is required to manifest ONLY at the scale of its own height
+    `M0 = zeroHeight Z` — and not at all scales `M0 ≥ zeroHeight Z`, as in the
+    full `RiemannManifestationLaw`. Syntactically strictly weaker than the full
+    law (that one hangs a ∀-tail over the scales); the essence-lemma L3
+    substantively uses EXACTLY this one scale (`le_refl` in
+    `noOffCriticalZero_of_manifestation_and_boundary`) — hence the minimal form
+    suffices (`minimalLaw_suffices` below). Documents the minimal logical content
+    of the decree field `riemannBoundary`; not accepted here — only defined. -/
 def MinimalRiemannManifestationLaw : Prop :=
   ∀ (Z : RiemannOffCriticalZero) (A : ℕ)
     (proj : SemanticExtendedFlowLedgerProjection A (zeroHeight Z)),
     SemanticExtendedFlowLedgerCollisionResolves proj →
       DeviationFlowSupply A (zeroHeight Z)
 
-/-- Полный закон влечёт минимальный: инстанциация `M0 := zeroHeight Z`,
-    `le_refl`. Тривиальное направление — ослабление синтаксическое. -/
+/-- The full law entails the minimal one: instantiation `M0 := zeroHeight Z`,
+    `le_refl`. The trivial direction — a syntactic weakening. -/
 theorem minimalLaw_of_manifestationLaw
     (hLaw : RiemannManifestationLaw) : MinimalRiemannManifestationLaw :=
   fun Z A proj hres => hLaw Z A (zeroHeight Z) (le_refl _) proj hres
 
-/-- Essence-лемма при МИНИМАЛЬНОМ законе (переигранное L3): ¬двигателей +
-    граница (гипотезой) + минимальный закон ⟹ off-critical нулей нет.
-    Дословно тот же вывод, что L3, — подтверждение, что полный закон нигде
-    не использовался сверх собственной высоты нуля. Все гипотезы потребляются
-    по-настоящему (двигатель-свидетель убит именно `hNoEngine`). -/
+/-- The essence-lemma under the MINIMAL law (L3 replayed): ¬engines + the
+    boundary (as a hypothesis) + the minimal law ⟹ there are no off-critical
+    zeros. Verbatim the same conclusion as L3 — confirmation that the full law
+    was nowhere used beyond the zero's own height. All hypotheses are consumed
+    for real (the engine-witness is killed precisely by `hNoEngine`). -/
 theorem noOffCriticalZero_of_minimalLaw_and_boundary
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -265,10 +266,11 @@ theorem noOffCriticalZero_of_minimalLaw_and_boundary
     infiniteFlows_in_stableNoEnergy_build_engine hStable h𝓕
   exact hNoEngine ⟨A, zeroHeight Z, hEngine⟩
 
-/-- **Минимальной формы достаточно:** ¬двигателей + граница (гипотезой) +
-    минимальный закон ⟹ RH. Зеркало L4 над `MinimalRiemannManifestationLaw`;
-    экстракция нуля из ¬RH — mathlib-точная (`offCriticalZero_of_not_RH`).
-    ГРАНИЦА ГИПОТЕЗОЙ, не аксиомой — конъюнкт зелёный, таинт не растёт. -/
+/-- **The minimal form suffices:** ¬engines + the boundary (as a hypothesis) +
+    the minimal law ⟹ RH. Mirror of L4 over `MinimalRiemannManifestationLaw`;
+    extraction of a zero from ¬RH is mathlib-precise (`offCriticalZero_of_not_RH`).
+    THE BOUNDARY AS A HYPOTHESIS, not an axiom — the conjunct is green, the taint
+    does not grow. -/
 theorem minimalLaw_suffices
     (hNoEngine : ¬ SomeConcreteEuclideanEngine)
     (hBoundary : TheStrictLastStep00Obligation)
@@ -279,28 +281,28 @@ theorem minimalLaw_suffices
     hNoEngine hBoundary hMinimal
     (EuclidsPath.RiemannImpossibleEngineOff.offCriticalZero_of_not_RH hNotRH)
 
-/-- **ОБЯЗАТЕЛЬНЫЙ АУДИТ ЦЕНЫ (зеркало L7):** при границе минимальный закон
-    ⟺ RH — та же RH-сила, что у полного закона. -/
+/-- **MANDATORY PRICE AUDIT (mirror of L7):** under the boundary the minimal law
+    ⟺ RH — the same RH-strength as the full law. -/
 theorem minimalManifestationLaw_iff_RH_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     MinimalRiemannManifestationLaw ↔ RiemannHypothesis :=
   ⟨minimalLaw_suffices no_someConcreteEuclideanEngine hBoundary,
    fun hRH => minimalLaw_of_manifestationLaw (manifestationLaw_of_RH hRH)⟩
 
-/-- **ЧЕСТНАЯ ОГОВОРКА МАШИННО:** при границе минимальный закон ⟺ полный —
-    «ослабление» СИНТАКСИЧЕСКОЕ, не силовое (по L7 и аудиту выше обе формы
-    ровно RH-силы). Это УТОЧНЕНИЕ цены декрета — какое именно логическое
-    содержание поля `riemannBoundary` несёт всю нагрузку, — а НЕ снижение
-    этой цены. БЕЗ границы доказана только тривиальная половина
-    (`minimalLaw_of_manifestationLaw`). -/
+/-- **HONEST CAVEAT, MACHINE-CHECKED:** under the boundary the minimal law ⟺ the
+    full one — the "weakening" is SYNTACTIC, not in strength (by L7 and the audit
+    above both forms are exactly RH-strength). This is a REFINEMENT of the decree's
+    price — precisely which logical content of the field `riemannBoundary` carries
+    the whole load — and NOT a reduction of that price. WITHOUT the boundary only
+    the trivial half is proved (`minimalLaw_of_manifestationLaw`). -/
 theorem minimalLaw_iff_manifestationLaw_of_boundary
     (hBoundary : TheStrictLastStep00Obligation) :
     MinimalRiemannManifestationLaw ↔ RiemannManifestationLaw :=
   (minimalManifestationLaw_iff_RH_of_boundary hBoundary).trans
     (manifestationLaw_iff_RH_of_boundary hBoundary).symm
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка максимум),
-таинт репозитория НЕ меняется -/
+/-! ## Axiom audit: the whole module is green (standard triple at most),
+the repository taint does NOT change -/
 #print axioms InternalisedRiemannGround
 #print axioms InternalKnowledgeOfRiemannCause
 #print axioms no_internalisedRiemannGround

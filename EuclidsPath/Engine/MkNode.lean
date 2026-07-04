@@ -1,15 +1,15 @@
 /-
-  mkNode: построение RankNode из clean composite side. Формализация авторского файла.
-  Источник: step00 извлечение RankNode из GlobalOldAbsorption (2026-07-01). Проза: prose/34_MkNode.md.
+  mkNode: construction of a RankNode from a clean composite side. Formalisation of the author's file.
+  Source: step00 extraction of RankNode from GlobalOldAbsorption (2026-07-01). Prose: prose/34_MkNode.md.
 
-  Доказуемая АРИФМЕТИКА (здесь, без входов):
-    • prod_ge: список факторов >A ⟹ (A+1)^len ≤ prod;
-    • factor_rank_le_four: факторы >A, prod ≤ 6X_A+1 < A^5 ⟹ len ≤ 4;
-    • composite_rank_ge_two: 1<N составное ⟹ ≥2 простых фактора;
-    • prime_factor_gt_A: clean сторона + p∣сторона ⟹ p>A;
-    • mkNode: primeFactorsList даёт RankNode с факторами>A, AmbientLegal, rank 2..4.
+  Provable ARITHMETIC (here, without named inputs):
+    • prod_ge: list of factors >A ⟹ (A+1)^len ≤ prod;
+    • factor_rank_le_four: factors >A, prod ≤ 6X_A+1 < A^5 ⟹ len ≤ 4;
+    • composite_rank_ge_two: 1<N composite ⟹ ≥2 prime factors;
+    • prime_factor_gt_A: clean side + p∣side ⟹ p>A;
+    • mkNode: primeFactorsList yields a RankNode with factors>A, AmbientLegal, rank 2..4.
 
-  Единственный реальный остаток (не здесь) — БЕСКОНЕЧНОСТЬ nodeable-центров из GlobalOldAbsorption.
+  The only genuine remainder (not here) — INFINITY of nodeable centres from GlobalOldAbsorption.
 -/
 import Mathlib
 import EuclidsPath.Engine.ProductCore
@@ -20,7 +20,7 @@ namespace EuclidsPath.MkNode
 
 open EuclidsPath.ProductCore
 
-/-- **prod ≥ (A+1)^len** для списка факторов `> A`. -/
+/-- **prod ≥ (A+1)^len** for a list of factors `> A`. -/
 theorem prod_ge_of_factors_gt {A : ℕ} (L : List ℕ) (h : ∀ a ∈ L, A < a) :
     (A + 1) ^ L.length ≤ L.prod := by
   induction L with
@@ -33,31 +33,31 @@ theorem prod_ge_of_factors_gt {A : ℕ} (L : List ℕ) (h : ∀ a ∈ L, A < a) 
       _ = x * xs.prod := by ring
 
 /--
-  **factor_rank_le_four (§7) — ДОКАЗАНО.** Список простых факторов `> A` с произведением
-  `≤ 6X_A+1 < A^5` имеет длину `≤ 4`. (Иначе `(A+1)^5 ≤ prod ≤ 6X_A+1 < A^5 ≤ (A+1)^5`.) -/
+  **factor_rank_le_four (§7) — PROVED.** A list of prime factors `> A` with product
+  `≤ 6X_A+1 < A^5` has length `≤ 4`. (Otherwise `(A+1)^5 ≤ prod ≤ 6X_A+1 < A^5 ≤ (A+1)^5`.) -/
 theorem factor_rank_le_four {A X_A : ℕ} (L : List ℕ) (hA : 1 ≤ A)
     (hgt : ∀ a ∈ L, A < a) (hprod : L.prod ≤ 6 * X_A + 1) (hscale : 6 * X_A + 1 < A ^ 5) :
     L.length ≤ 4 := by
   by_contra h
-  simp only [not_le] at h        -- 5 ≤ L.length (т.е. 4 < length)
+  simp only [not_le] at h        -- 5 ≤ L.length (i.e. 4 < length)
   have h5 : (A + 1) ^ 5 ≤ L.prod :=
     le_trans (Nat.pow_le_pow_right (by omega) h) (prod_ge_of_factors_gt L hgt)
   have hA5 : A ^ 5 < (A + 1) ^ 5 := Nat.pow_lt_pow_left (by omega) (by norm_num)
   omega
 
 /--
-  **composite_rank_ge_two (§7) — ДОКАЗАНО.** `1 < N`, `N` составное ⟹ список простых факторов
-  имеет длину `≥ 2`. (Длина 0 ⟹ N=1; длина 1 ⟹ N простое.) -/
+  **composite_rank_ge_two (§7) — PROVED.** `1 < N`, `N` composite ⟹ list of prime factors
+  has length `≥ 2`. (Length 0 ⟹ N=1; length 1 ⟹ N prime.) -/
 theorem composite_rank_ge_two {N : ℕ} (hN : 1 < N) (hcomp : ¬ N.Prime) :
     2 ≤ (Nat.primeFactorsList N).length := by
   have hprod : (Nat.primeFactorsList N).prod = N := Nat.prod_primeFactorsList (by omega)
   by_contra h
   simp only [not_le] at h        -- length < 2
   interval_cases hl : (Nat.primeFactorsList N).length
-  · -- length 0 ⟹ prod = 1 = N, противоречие с 1<N
+  · -- length 0 ⟹ prod = 1 = N, contradiction with 1<N
     have : Nat.primeFactorsList N = [] := List.length_eq_zero_iff.mp hl
     rw [this, List.prod_nil] at hprod; omega
-  · -- length 1 ⟹ prod = p = N, и p простое ⟹ N простое
+  · -- length 1 ⟹ prod = p = N, and p prime ⟹ N prime
     obtain ⟨p, hp⟩ := List.length_eq_one_iff.mp hl
     have hpp : p ∈ Nat.primeFactorsList N := by rw [hp]; exact List.mem_singleton.mpr rfl
     have hpprime := Nat.prime_of_mem_primeFactorsList hpp
@@ -65,9 +65,9 @@ theorem composite_rank_ge_two {N : ℕ} (hN : 1 < N) (hcomp : ¬ N.Prime) :
     rw [← hprod] at hcomp; exact hcomp hpprime
 
 /--
-  **mkNode (Theorem 7.1) — ДОКАЗАНО.** Из `1 < N`, `N` составное, и `∀ p∣N → A<p` строится
-  `RankNode r` (sign фиксирован) с `r = len(primeFactorsList N)`, `2 ≤ r ≤ 4`, факторами `>A`,
-  AmbientLegal (всё делит `N ≤ 6X_A+1`). Возвращает r, node, и доказательства. -/
+  **mkNode (Theorem 7.1) — PROVED.** From `1 < N`, `N` composite, and `∀ p∣N → A<p` one constructs
+  `RankNode r` (sign fixed) with `r = len(primeFactorsList N)`, `2 ≤ r ≤ 4`, factors `>A`,
+  AmbientLegal (everything divides `N ≤ 6X_A+1`). Returns r, node, and proofs. -/
 theorem mkNode_of_composite {A X_A N : ℕ} (sgn : Sign) (hA : 1 ≤ A)
     (hN : 1 < N) (hcomp : ¬ N.Prime) (hNle : N ≤ 6 * X_A + 1) (hscale : 6 * X_A + 1 < A ^ 5)
     (hbig : ∀ p, p.Prime → p ∣ N → A < p) :
@@ -80,22 +80,22 @@ theorem mkNode_of_composite {A X_A N : ℕ} (sgn : Sign) (hA : 1 ≤ A)
   have hprodN : L.prod = N := Nat.prod_primeFactorsList (by omega)
   have hr4 : L.length ≤ 4 := factor_rank_le_four L hA hgt (by rw [hprodN]; exact hNle) hscale
   refine ⟨L.length, hr2, hr4, ⟨sgn, fun i => L.get i⟩, ?_, ?_⟩
-  · -- AmbientLegal: каждый L.get i делит N
+  · -- AmbientLegal: every L.get i divides N
     refine ⟨N, by omega, hNle, fun i => ?_⟩
     rw [← hprodN]; exact List.dvd_prod (List.get_mem L i)
   · -- (List.ofFn (L.get ·)).prod = L.prod = N
     simp only []
     rw [List.ofFn_get L]; exact hprodN
 
-/-! ### Связка с carrier: composite side, prime factor > A -/
+/-! ### Connection to carrier: composite side, prime factor > A -/
 
-/-- `Clean A m` (ℕ-форма, как в Residuals): ни один `q≤A` не делит ни одну сторону. -/
+/-- `Clean A m` (ℕ-form, as in Residuals): no `q≤A` divides either side. -/
 def Clean (A m : ℕ) : Prop :=
   ∀ q : ℕ, q.Prime → q ≤ A → ¬ (q ∣ (6 * m - 1) ∨ q ∣ (6 * m + 1))
 
 /--
-  **prime_factor_gt_A (Lemma 6.1) — ДОКАЗАНО.** Clean центр + простой `p ∣ 6m+1` (или `6m−1`) ⟹
-  `p > A`. (Иначе `p ≤ A` делит clean-сторону — противоречие.) -/
+  **prime_factor_gt_A (Lemma 6.1) — PROVED.** Clean centre + prime `p ∣ 6m+1` (or `6m−1`) ⟹
+  `p > A`. (Otherwise `p ≤ A` divides a clean side — contradiction.) -/
 theorem prime_factor_gt_A_plus {A m p : ℕ} (hcl : Clean A m) (hp : p.Prime)
     (hdvd : p ∣ (6 * m + 1)) : A < p := by
   by_contra hle
@@ -107,8 +107,8 @@ theorem prime_factor_gt_A_minus {A m p : ℕ} (hcl : Clean A m) (hp : p.Prime)
   exact hcl p hp (by omega) (Or.inl hdvd)
 
 /--
-  **composite_side_of_clean_not_twin (Lemma 5.1) — ДОКАЗАНО.** Если `m` НЕ twin-центр (не обе
-  стороны простые) и обе стороны `> 1`, то существует сторона `> 1`, которая составна. -/
+  **composite_side_of_clean_not_twin (Lemma 5.1) — PROVED.** If `m` is NOT a twin centre (not both
+  sides prime) and both sides are `> 1`, then there exists a side `> 1` that is composite. -/
 theorem composite_side_of_not_twin {m : ℕ} (hlo : 1 < 6 * m - 1) (hhi : 1 < 6 * m + 1)
     (hnt : ¬ ((6 * m - 1).Prime ∧ (6 * m + 1).Prime)) :
     (1 < 6 * m - 1 ∧ ¬ (6 * m - 1).Prime) ∨ (1 < 6 * m + 1 ∧ ¬ (6 * m + 1).Prime) := by

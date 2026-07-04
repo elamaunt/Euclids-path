@@ -1,47 +1,47 @@
 /-
-  TwinScaleAdvances — два масштабных продвижения главного узла (близнецы) + мост скелетов.
-  Раздел отчёта: «Гипотеза близнецов», кандидаты №4 (allM0) и №5 (растущий разделяющий
-  масштаб, CORR-маршрут) + №6 (мост BoundaryDecomp ↔ CarrierBridge).
-  Проза: prose/29_CarrierBridge.md §29.5–29.6 (масштабный барьер и план закрытия),
-  prose/30 (SeparatingScale). Зелёные машины: Engine/ConcreteStep00Graph.lean,
+  TwinScaleAdvances — two scale-level advances of the main node (twins) + skeleton bridge.
+  Report section: "Twin Primes Conjecture", candidates #4 (allM0) and #5 (growing separating
+  scale, CORR-route) + #6 (bridge BoundaryDecomp ↔ CarrierBridge).
+  Prose: prose/29_CarrierBridge.md §29.5–29.6 (scale barrier and closing plan),
+  prose/30 (SeparatingScale). Green machines: Engine/ConcreteStep00Graph.lean,
   Engine/ProductCore.lean, Engine/CarrierBridge.lean, Engine/BoundaryDecomp.lean.
 
-  ЧТО ЗДЕСЬ.
-  (а) `no_projection_resolves_at_smallScale_allM0`: малошкальная полоса узла (A ≤ 4)
-      мертва при ЛЮБОЙ базе M0 ≥ 1, а не только при M0 = 1. Оплата та же, что у
-      `no_projection_resolves_at_smallScale`: 5-адическая цепь (инъективная поставка
-      через `fiveAdicChain_strictMono`) + пижонхол `Finite.exists_ne_map_eq_of_infinite`;
-      старт цепи берётся выше любого M0 (цепь неограничена: `fiveAdicChain_ge`),
-      терминал `center 1` остаётся старым при 1 ≤ M0.
-  (б) `exists_growing_separating_scale`: шаг (1) плана закрытия §29.6 — для каждого
-      окна m ≥ 1 существует масштаб A (с явной верхней границей 12m+2), при котором
-      сторона 6m+1 укладывается в окно (X_A := m) И разделяющий масштаб выполняется:
-      6m+1 < oldPrimorial A. Оплата: постулат Бертрана
-      (`Nat.exists_prime_lt_and_le_two_mul`, mathlib) + делимость примориала
-      (`prime_dvd_oldPrimorial` + `Nat.le_of_dvd`). CORR-исправление учтено:
-      oldPrimorial НЕ содержит 2 и 3, поэтому ход «2·p > 6m+1» недоступен — вместо
-      него ОДИН Бертран на n = 6m+1 даёт простое p > 6m+1, p ≥ 5, A := p.
-  (в) `factorization_collision_as_absorber_instance`: pump-цепь CarrierBridge
-      (`engine_of_factorization`) машинно прогнана через пижонхол-скелет
+  WHAT IS HERE.
+  (a) `no_projection_resolves_at_smallScale_allM0`: the small-scale band of the node (A ≤ 4)
+      is dead for ANY base M0 ≥ 1, not only for M0 = 1. The payment is the same as for
+      `no_projection_resolves_at_smallScale`: the 5-adic chain (injective supply
+      via `fiveAdicChain_strictMono`) + pigeonhole `Finite.exists_ne_map_eq_of_infinite`;
+      the chain start is taken above any M0 (the chain is unbounded: `fiveAdicChain_ge`),
+      the terminal `center 1` remains old for 1 ≤ M0.
+  (b) `exists_growing_separating_scale`: step (1) of the closing plan §29.6 — for each
+      window m ≥ 1 there exists a scale A (with an explicit upper bound 12m+2) at which
+      the side 6m+1 fits in the window (X_A := m) AND the separating scale holds:
+      6m+1 < oldPrimorial A. Payment: Bertrand's postulate
+      (`Nat.exists_prime_lt_and_le_two_mul`, mathlib) + primorial divisibility
+      (`prime_dvd_oldPrimorial` + `Nat.le_of_dvd`). CORR correction accounted for:
+      oldPrimorial does NOT contain 2 and 3, so the move "2·p > 6m+1" is unavailable — instead
+      ONE Bertrand on n = 6m+1 gives a prime p > 6m+1, p ≥ 5, A := p.
+  (c) `factorization_collision_as_absorber_instance`: the CarrierBridge pump-chain
+      (`engine_of_factorization`) is machine-fed through the pigeonhole skeleton
       `BoundaryDecomp.global_absorber_forces_engine` (key := coreSigOf ∘ node,
-      pump := ДОКАЗАННАЯ descent-машина ProductCore). Это отождествление ДВУХ
-      СКЕЛЕТОВ, а НЕ «одна стена вместо двух»: красные входы (FactorizationData
-      у CarrierBridge; pump/GlobalOldAbsorption у настоящих генеалогий) остаются оба.
+      pump := PROVED descent machine ProductCore). This is an identification of TWO
+      SKELETONS, NOT "one wall instead of two": both red inputs (FactorizationData
+      for CarrierBridge; pump/GlobalOldAbsorption for the genuine genealogies) remain.
 
-  ЧЕСТНОСТЬ. Ничто здесь НЕ доказывает гипотезу близнецов и НЕ является Гёделем.
-  (а) — усиление уже опровергнутой ветви A ≤ 4 (узел живёт только при A ≥ 5, где
-  нужна арифметика дирихле-класса, отсутствующая в репо). (б) — зелёная конечная
-  арифметика: она закрывает ровно шаг (1) плана §29.6 (существование масштаба)
-  и НЕ трогает несводимое ядро GlobalOldAbsorption (шаг (2): согласованное с
-  масштабом поглощение). Более того, барьер §29.5 здесь машинно виден:
-  `fixedWindow_factorization_impossible_at_separating_scale` — при ФИКСИРОВАННОМ
-  окне и разделяющем масштабе вход `FactorizationData` вообще пуст, т.е. недостающие
-  карты обязаны жить на РАСТУЩЕМ масштабе, как и говорит проза. (в) — «двигатель»
-  поставляется pump-контрадикцией (ex falso от rank-1 арифметики) — это принятая
-  форма самого `engine_of_factorization`, здесь она лишь прогнана через второй скелет.
+  HONESTY. Nothing here PROVES the twin primes conjecture or IS Godel.
+  (a) — strengthening of the already-refuted branch A ≤ 4 (the node survives only at A ≥ 5,
+  where Dirichlet-class arithmetic is needed, which is absent from the repo). (b) — green finite
+  arithmetic: it closes exactly step (1) of plan §29.6 (existence of the scale)
+  and does NOT touch the irreducible core GlobalOldAbsorption (step (2): scale-consistent
+  absorption). Moreover, the barrier §29.5 is machine-visible here:
+  `fixedWindow_factorization_impossible_at_separating_scale` — at a FIXED
+  window and separating scale the input `FactorizationData` is altogether empty, i.e. the missing
+  maps must live on the GROWING scale, as the prose says. (c) — the "perpetual engine"
+  is supplied by a pump-contradiction (ex falso from rank-1 arithmetic) — this is the accepted
+  form of `engine_of_factorization` itself, here merely fed through the second skeleton.
 
-  Файл ЦЕЛИКОМ ЗЕЛЁНЫЙ: не импортирует Engine/CausalClosureAxiom (карантин),
-  не добавляет аксиом и sorry, таинт-список из 47 деклараций не меняется.
+  The file is ENTIRELY GREEN: it does not import Engine/CausalClosureAxiom (quarantine),
+  adds no axioms or sorry, and the taint list of 47 declarations does not change.
 -/
 
 import EuclidsPath.Engine.ConcreteStep00Graph
@@ -58,17 +58,17 @@ open EuclidsPath.ConcreteStep00Graph.GeneratedFlowFormulation
 open EuclidsPath.Residuals
 open EuclidsPath.ProductCore
 
-/-! ## (а) Малый масштаб мёртв при ВСЕХ базах M0 ≥ 1
+/-! ## (a) Small scale is dead for ALL bases M0 ≥ 1
 
-Существующее `no_projection_resolves_at_smallScale` жёстко фиксировано на M0 = 1
-(`fiveAdicChainFlow : ExtendedProperGeneratedFlow A 1`). Обобщаем: сама 5-адическая
-цепь и её peel'ы от M0 не зависят (в `ProperRealStep` база входит только в
-конструктор `absorb`, монотонно), терминал `center 1` — старый при любом M0 ≥ 1,
-а старт берётся выше M0, потому что цепь растёт быстрее номера. -/
+The existing `no_projection_resolves_at_smallScale` is hard-fixed to M0 = 1
+(`fiveAdicChainFlow : ExtendedProperGeneratedFlow A 1`). We generalise: the 5-adic chain
+itself and its peels do not depend on M0 (in `ProperRealStep` the base enters only the
+constructor `absorb`, monotonically), the terminal `center 1` is old for any M0 ≥ 1,
+and the start is taken above M0 because the chain grows faster than the index. -/
 
-/-- **Монотонность собственного шага по базе.** `ProperRealStep A M0 ⊆ ProperRealStep A M1`
-    при `M0 ≤ M1`: конструкторы `clean`/`boundary`/`peel` от базы не зависят, `absorb`
-    требует `n ≤ M0 ≤ M1`. Чистая структурная лемма (разбор случаев). -/
+/-- **Monotonicity of the proper step in the base.** `ProperRealStep A M0 ⊆ ProperRealStep A M1`
+    when `M0 ≤ M1`: constructors `clean`/`boundary`/`peel` do not depend on the base, `absorb`
+    requires `n ≤ M0 ≤ M1`. Pure structural lemma (case analysis). -/
 theorem properRealStep_mono_basepoint {A M0 M1 : ℕ} (hM : M0 ≤ M1) {U V : State}
     (h : ProperRealStep A M0 U V) : ProperRealStep A M1 U V := by
   cases h with
@@ -77,8 +77,8 @@ theorem properRealStep_mono_basepoint {A M0 M1 : ℕ} (hM : M0 ≤ M1) {U V : St
   | peel hcert => exact ProperRealStep.peel hcert
   | absorb hOld => exact ProperRealStep.absorb (le_trans hOld hM)
 
-/-- 5-адическая цепь не отстаёт от номера: `k ≤ c(k)`. Вместе со строгой
-    монотонностью это неограниченность цепи — старт можно взять выше любого M0. -/
+/-- The 5-adic chain does not fall behind the index: `k ≤ c(k)`. Together with strict
+    monotonicity this gives unboundedness of the chain — the start can be taken above any M0. -/
 theorem fiveAdicChain_ge : ∀ k : ℕ, k ≤ fiveAdicChain k
   | 0 => Nat.zero_le _
   | k + 1 => by
@@ -86,11 +86,11 @@ theorem fiveAdicChain_ge : ∀ k : ℕ, k ≤ fiveAdicChain k
       show k + 1 ≤ 5 * fiveAdicChain k + 1
       omega
 
-/-- **Admissible-генеалогия при произвольной базе `M0 ≥ 1`** (обобщение
-    `fiveAdicChainFlow` с M0 = 1). Старт — `c(M0+k+1) > M0` (свежесть через
-    `fiveAdicChain_ge`), путь — тот же 5-адический (`fiveAdicChainPath`, поднятый
-    по базе через `properRealStep_mono_basepoint`), терминал — старый clean-центр 1
-    (`extendedLedgerTerminal_oldCleanCenter`, общий по M0). БЕЗ какой-либо twin-гипотезы. -/
+/-- **Admissible genealogy at an arbitrary base `M0 ≥ 1`** (generalisation of
+    `fiveAdicChainFlow` with M0 = 1). Start — `c(M0+k+1) > M0` (freshness via
+    `fiveAdicChain_ge`), path — the same 5-adic (`fiveAdicChainPath`, lifted in
+    the base via `properRealStep_mono_basepoint`), terminal — the old clean-center 1
+    (`extendedLedgerTerminal_oldCleanCenter`, common across M0). WITHOUT any twin hypothesis. -/
 def fiveAdicChainFlowAt {A M0 : ℕ} (hA : A ≤ 4) (hM0 : 1 ≤ M0) (k : ℕ) :
     ExtendedProperGeneratedFlow A M0 :=
   { start := fiveAdicChain (M0 + k + 1)
@@ -108,8 +108,8 @@ def fiveAdicChainFlowAt {A M0 : ℕ} (hA : A ≤ 4) (hM0 : 1 ≤ M0) (k : ℕ) :
     ledgerTerminal := extendedLedgerTerminal_oldCleanCenter hM0
       (clean_of_scale_le_four hA le_rfl) }
 
-/-- Семья инъективна по k — через строгую монотонность стартов
-    (`fiveAdicChain_strictMono`), как и оригинал при M0 = 1. -/
+/-- The family is injective in k — via strict monotonicity of the starts
+    (`fiveAdicChain_strictMono`), just like the original at M0 = 1. -/
 theorem fiveAdicChainFlowAt_injective {A M0 : ℕ} (hA : A ≤ 4) (hM0 : 1 ≤ M0) :
     Function.Injective (fiveAdicChainFlowAt hA hM0) := by
   intro k₁ k₂ h
@@ -118,13 +118,13 @@ theorem fiveAdicChainFlowAt_injective {A M0 : ℕ} (hA : A ≤ 4) (hM0 : 1 ≤ M
   have := fiveAdicChain_strictMono.injective hstart
   omega
 
-/-- **МАЛЫЙ МАСШТАБ МЁРТВ ПРИ ВСЕХ БАЗАХ (кандидат №4).** Для `A ≤ 4` и ЛЮБОГО
-    `M0 ≥ 1` никакая конечноключевая проекция не резолвит: инъективная 5-адическая
-    поставка выше M0 + пижонхол `Finite.exists_ne_map_eq_of_infinite` дают same-key
-    пару, а обе альтернативы резолюции сожжены (`no_extendedFlowResolutionAlternative`).
-    Существующее `no_projection_resolves_at_smallScale` — частный случай M0 = 1.
-    ЧЕСТНОСТЬ: при A ≥ 5 тот же приём требует чистых стартов с контролем peel-целей —
-    арифметики дирихле-класса, которой в репо нет; узел там подлинно открыт. -/
+/-- **SMALL SCALE IS DEAD FOR ALL BASES (candidate #4).** For `A ≤ 4` and ANY
+    `M0 ≥ 1` no finite-key projection resolves: the injective 5-adic
+    supply above M0 + pigeonhole `Finite.exists_ne_map_eq_of_infinite` yield a same-key
+    pair, and both resolution alternatives are burned (`no_extendedFlowResolutionAlternative`).
+    The existing `no_projection_resolves_at_smallScale` is the special case M0 = 1.
+    HONESTY: at A ≥ 5 the same technique requires clean starts with peel-target control —
+    Dirichlet-class arithmetic that is absent from the repo; the node is genuinely open there. -/
 theorem no_projection_resolves_at_smallScale_allM0 {A M0 : ℕ} (hA : A ≤ 4) (hM0 : 1 ≤ M0)
     (proj : SemanticExtendedFlowLedgerProjection A M0) :
     ¬ SemanticExtendedFlowLedgerCollisionResolves proj := by
@@ -138,9 +138,9 @@ theorem no_projection_resolves_at_smallScale_allM0 {A M0 : ℕ} (hA : A ≤ 4) (
   exact no_extendedFlowResolutionAlternative A M0
     (hRes _ _ hFne (extendedFlow_admissible _) (extendedFlow_admissible _) hkey)
 
-/-- **Равномерное опровержение ветви A ≤ 4**: узел падает не «на всех M0 сразу
-    через M0 = 1» (как `smallScale_branch_of_lastStep00Obligation_refuted`),
-    а В КАЖДОЙ отдельной базе M0 ≥ 1 — резолвящей проекции нет ни при одной. -/
+/-- **Uniform refutation of the A ≤ 4 branch**: the node falls not "for all M0 at once
+    via M0 = 1" (as in `smallScale_branch_of_lastStep00Obligation_refuted`),
+    but AT EACH individual base M0 ≥ 1 — no resolving projection exists for any of them. -/
 theorem smallScale_branch_refuted_at_every_basepoint {A M0 : ℕ}
     (hA : A ≤ 4) (hM0 : 1 ≤ M0) :
     ¬ ∃ proj : SemanticExtendedFlowLedgerProjection A M0,
@@ -148,25 +148,25 @@ theorem smallScale_branch_refuted_at_every_basepoint {A M0 : ℕ}
   rintro ⟨proj, hRes⟩
   exact no_projection_resolves_at_smallScale_allM0 hA hM0 proj hRes
 
-/-! ## (б) Растущий разделяющий масштаб (шаг (1) плана §29.6, CORR-маршрут)
+/-! ## (b) Growing separating scale (step (1) of plan §29.6, CORR-route)
 
-План закрытия §29.6 начинается с масштаб-функции: для каждого окна m нужен масштаб A,
-при котором сторона 6m+1 укладывается в окно (X_A := m — тривиально, равенством) и
-выполняется разделяющий масштаб `6·X_A+1 < P_A` (гипотеза `hsep` всей pump-машины
-ProductCore/CarrierBridge и `SeparatingScale.no_productHall`). CORR: примориал
-`oldPrimorial A = ∏_{5≤p≤A} p` НЕ содержит 2 и 3, поэтому маршрут — один Бертран
-на n = 6m+1: простое p с 6m+1 < p ≤ 12m+2 автоматически ≥ 5, и p само делит
+The closing plan §29.6 begins with a scale-function: for each window m a scale A is needed
+at which the side 6m+1 fits in the window (X_A := m — trivially, by equality) and
+the separating scale `6·X_A+1 < P_A` holds (hypothesis `hsep` of the entire pump machine
+ProductCore/CarrierBridge and `SeparatingScale.no_productHall`). CORR: the primorial
+`oldPrimorial A = ∏_{5≤p≤A} p` does NOT contain 2 and 3, so the route is one Bertrand
+on n = 6m+1: a prime p with 6m+1 < p ≤ 12m+2 is automatically ≥ 5, and p itself divides
 oldPrimorial p. -/
 
-/-- **РАСТУЩИЙ РАЗДЕЛЯЮЩИЙ МАСШТАБ (кандидат №5, CORR-маршрут).** Для каждого окна
-    `m ≥ 1` существует масштаб `A` с явной границей `A ≤ 12m+2`, при котором
-    `6m+1 < oldPrimorial A` — т.е. гипотеза разделяющего масштаба `hsep` выполнима
-    с запасом на каждом окне, и масштаб-функция из шага (1) плана §29.6 существует.
-    ОПЛАЧЕНО: постулат Бертрана (`Nat.exists_prime_lt_and_le_two_mul`: простое
-    `6m+1 < p ≤ 12m+2`), `p ≥ 5` (т.к. `p > 6m+1 ≥ 7`), `p ∣ oldPrimorial p`
-    (`prime_dvd_oldPrimorial`) и `Nat.le_of_dvd` + `oldPrimorial_pos`.
-    ЧЕСТНОСТЬ: это конечная зелёная арифметика; несводимый шаг (2) плана —
-    согласованное с масштабом поглощение (GlobalOldAbsorption) — НЕ затронут. -/
+/-- **GROWING SEPARATING SCALE (candidate #5, CORR-route).** For each window
+    `m ≥ 1` there exists a scale `A` with an explicit bound `A ≤ 12m+2`, at which
+    `6m+1 < oldPrimorial A` — i.e. the separating-scale hypothesis `hsep` is satisfiable
+    with margin at every window, and the scale-function from step (1) of plan §29.6 exists.
+    PAID: Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul`: prime
+    `6m+1 < p ≤ 12m+2`), `p ≥ 5` (since `p > 6m+1 ≥ 7`), `p ∣ oldPrimorial p`
+    (`prime_dvd_oldPrimorial`) and `Nat.le_of_dvd` + `oldPrimorial_pos`.
+    HONESTY: this is finite green arithmetic; the irreducible step (2) of the plan —
+    scale-consistent absorption (GlobalOldAbsorption) — is NOT touched. -/
 theorem exists_growing_separating_scale (m : ℕ) (hm : 1 ≤ m) :
     ∃ A : ℕ, 5 ≤ A ∧ A ≤ 12 * m + 2 ∧ 6 * m + 1 < oldPrimorial A := by
   obtain ⟨p, hp, hlt, hle⟩ :=
@@ -176,9 +176,9 @@ theorem exists_growing_separating_scale (m : ℕ) (hm : 1 ≤ m) :
   have hlep : p ≤ oldPrimorial p := Nat.le_of_dvd (oldPrimorial_pos p) hdvd
   exact ⟨p, hp5, by omega, by omega⟩
 
-/-- **Масштаб растёт вместе с окном**: разделяющий масштаб для окна `m` достижим
-    ВЫШЕ любой наперёд заданной планки `B` — Бертран на `max (6m+1) B`. Это
-    «согласованный рост A и X_A вместе с m» из §29.6 в существовательной форме. -/
+/-- **The scale grows with the window**: the separating scale for window `m` is achievable
+    ABOVE any given threshold `B` — Bertrand on `max (6m+1) B`. This is
+    the "consistent growth of A and X_A together with m" from §29.6 in existential form. -/
 theorem exists_growing_separating_scale_above (m B : ℕ) (hm : 1 ≤ m) :
     ∃ A : ℕ, B ≤ A ∧ 5 ≤ A ∧ 6 * m + 1 < oldPrimorial A := by
   obtain ⟨p, hp, hlt, _⟩ :=
@@ -188,10 +188,10 @@ theorem exists_growing_separating_scale_above (m B : ℕ) (hm : 1 ≤ m) :
   have hlep : p ≤ oldPrimorial p := Nat.le_of_dvd (oldPrimorial_pos p) hdvd
   exact ⟨p, by omega, hp5, by omega⟩
 
-/-- **ProductHall мёртв на растущем окне** (стыковка с главой 30): для каждого
-    окна `m ≥ 1` найдётся масштаб `A`, при котором legal ProductHall с
-    `X_A := m`, `P_A := oldPrimorial A` невозможен — чистая арифметика
-    `SeparatingScale.no_productHall`, гипотеза `hsep` которой оплачена
+/-- **ProductHall is dead on the growing window** (interface with chapter 30): for each
+    window `m ≥ 1` there exists a scale `A` at which a legal ProductHall with
+    `X_A := m`, `P_A := oldPrimorial A` is impossible — pure arithmetic
+    `SeparatingScale.no_productHall`, whose hypothesis `hsep` is paid by
     `exists_growing_separating_scale`. -/
 theorem no_legalProductHall_on_growing_window (m : ℕ) (hm : 1 ≤ m) :
     ∃ A : ℕ, 5 ≤ A ∧
@@ -199,37 +199,37 @@ theorem no_legalProductHall_on_growing_window (m : ℕ) (hm : 1 ≤ m) :
   obtain ⟨A, h5, _, hsep⟩ := exists_growing_separating_scale m hm
   exact ⟨A, h5, fun PH => SeparatingScale.no_productHall hsep PH⟩
 
-/-- **Барьер §29.5 машинно виден.** При ФИКСИРОВАННОМ окне `X_A` и разделяющем
-    масштабе вход `FactorizationData A X_A` ПУСТ: бесконечная инъективная
-    AmbientLegal-семья на одном окне самоуничтожается pump-машиной (пижонхол по
-    конечной `CoreSig` + доказанный descent + rank-1 арифметика) — это
-    `engine_of_factorization` при `Engine := False`. ЧЕСТНОЕ следствие: недостающие
-    карты `rankOf`/`mkNode`/`hinj`/`hamb` ОБЯЗАНЫ жить на растущем масштабе
-    (шаг (2) плана §29.6, GlobalOldAbsorption), фиксированное окно исключено. -/
+/-- **Barrier §29.5 is machine-visible.** At a FIXED window `X_A` and separating
+    scale the input `FactorizationData A X_A` is EMPTY: an infinite injective
+    AmbientLegal family on a single window is destroyed by the pump machine (pigeonhole over
+    finite `CoreSig` + proved descent + rank-1 arithmetic) — this is
+    `engine_of_factorization` with `Engine := False`. HONEST corollary: the missing
+    maps `rankOf`/`mkNode`/`hinj`/`hamb` MUST live on the growing scale
+    (step (2) of plan §29.6, GlobalOldAbsorption), the fixed window is excluded. -/
 theorem fixedWindow_factorization_impossible_at_separating_scale
     {A X_A P_A : ℕ} [NeZero P_A] (hsep : 6 * X_A + 1 < P_A)
     (F : CarrierBridge.FactorizationData A X_A) : False :=
   CarrierBridge.engine_of_factorization (P_A := P_A) hsep F
 
-/-! ## (в) Мост скелетов: CarrierBridge через пижонхол BoundaryDecomp
+/-! ## (c) Skeleton bridge: CarrierBridge via BoundaryDecomp pigeonhole
 
-`BoundaryDecomp.global_absorber_forces_engine` — пижонхол-скелет Hall-узла
-(бесконечные старты → конечный ключ → коллизия → pump). Ниже данные CarrierBridge
-прогнаны через ЭТОТ скелет: key := coreSigOf ∘ node (конечный кодомен по
-`coreSig_fintype`), pump := ДОКАЗАННАЯ машина ProductCore
-(`product_core_pump_closed` = descent `core_step_proved` + rank-1 база). -/
+`BoundaryDecomp.global_absorber_forces_engine` — the pigeonhole skeleton of the Hall node
+(infinite starts → finite key → collision → pump). Below, the CarrierBridge data are
+fed through THIS skeleton: key := coreSigOf ∘ node (finite codomain by
+`coreSig_fintype`), pump := PROVED machine ProductCore
+(`product_core_pump_closed` = descent `core_step_proved` + rank-1 base). -/
 
-/-- **МОСТ СКЕЛЕТОВ (кандидат №6).** `FactorizationData` + разделяющий масштаб дают
-    `EuclideanEngine` РОВНО ЧЕРЕЗ пижонхол-скелет `global_absorber_forces_engine`:
-    старты — subtype бесконечного `F.S`, ключ — `coreSigOf ∘ F.node` в конечную
-    `CoreSig P_A F.r` (нужен фиксированный `P_A` с `[NeZero P_A]` и `hsep`; `hamb`
-    обязателен для pump-направления), pump — доказанная descent-машина ProductCore.
-    ЧЕСТНОСТЬ (CORR): это машинное ОТОЖДЕСТВЛЕНИЕ ДВУХ СКЕЛЕТОВ (Hall-pump узла
-    BoundaryDecomp и цепи `engine_of_factorization`), а НЕ «одна стена вместо двух»:
-    красные входы остаются оба — `FactorizationData` здесь по-прежнему гипотеза
-    (при разделяющем масштабе она к тому же пуста, см. барьер выше, так что
-    отождествление касается МАРШРУТА ДОКАЗАТЕЛЬСТВА, а не новых обитателей),
-    а pump-гипотеза для настоящих генеалогий (GlobalOldTwinAbsorption) не закрыта. -/
+/-- **SKELETON BRIDGE (candidate #6).** `FactorizationData` + separating scale yield
+    `EuclideanEngine` EXACTLY VIA the pigeonhole skeleton `global_absorber_forces_engine`:
+    starts — subtype of infinite `F.S`, key — `coreSigOf ∘ F.node` into finite
+    `CoreSig P_A F.r` (a fixed `P_A` with `[NeZero P_A]` and `hsep` is required; `hamb`
+    is mandatory for the pump direction), pump — the proved descent machine ProductCore.
+    HONESTY (CORR): this is a machine IDENTIFICATION OF TWO SKELETONS (the Hall-pump node of
+    BoundaryDecomp and the chain `engine_of_factorization`), NOT "one wall instead of two":
+    both red inputs remain — `FactorizationData` is still a hypothesis here
+    (at the separating scale it is moreover empty, see the barrier above, so the
+    identification concerns the PROOF ROUTE, not new inhabitants),
+    and the pump hypothesis for genuine genealogies (GlobalOldTwinAbsorption) is not closed. -/
 theorem factorization_collision_as_absorber_instance
     {A X_A P_A : ℕ} {EuclideanEngine : Prop} [NeZero P_A]
     (hsep : 6 * X_A + 1 < P_A)
@@ -245,7 +245,7 @@ theorem factorization_collision_as_absorber_instance
     fun h => hne (Subtype.ext (F.hinj γ₁.2 γ₂.2 h)),
     F.hamb γ₁.1 γ₁.2, F.hamb γ₂.1 γ₂.2, hkey⟩
 
-/-! ## Аудит аксиом: весь модуль зелёный (стандартная тройка), таинт репо НЕ меняется -/
+/-! ## Axiom audit: the whole module is green (standard triple), the repo taint does NOT change -/
 #print axioms properRealStep_mono_basepoint
 #print axioms fiveAdicChain_ge
 #print axioms fiveAdicChainFlowAt

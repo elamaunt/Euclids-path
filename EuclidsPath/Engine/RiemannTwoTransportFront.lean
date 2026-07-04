@@ -1,29 +1,29 @@
 /-
-  RiemannTwoTransportFront — декомпозиция живого входа №1 RH-ветки (EngineBridge)
-  в two-transport форму. Кирпичи: Riemann_two_transport_engine_bridge_patch +
-  Riemann_two_transport_local_certificate_patch. Проза: prose/30.
+  RiemannTwoTransportFront — decomposition of live named input #1 of the RH branch (EngineBridge)
+  into two-transport form. Bricks: Riemann_two_transport_engine_bridge_patch +
+  Riemann_two_transport_local_certificate_patch. Prose: prose/30.
 
-  ЗДЕСЬ (чистая сборка, std аксиомы, без sorry):
-    * TwoTransportLaw — non-opaque замена OffCriticalRiemannEngineBridge:
-      все paid-dynamics обязательства выставлены полями;
-    * локальный слой: TransportSide (flip-инволюция), SignedImbalance (paidWork > 0),
-      SpectralTwoTransportSplit → LocalTwoTransportMechanism (левый И правый
-      шаги с положительной работой, tethered-вселенная) → law core → фабрика;
-    * сборочные теоремы: split + realization ⟹ certificate ⟹ core-мост ⟹
-      старый мост ⟹ RH; TwoTransportStrictFront — точная карта обязательств.
+  HERE (clean build, std axioms, no sorry):
+    * TwoTransportLaw — non-opaque replacement for OffCriticalRiemannEngineBridge:
+      all paid-dynamics obligations are exposed as fields;
+    * local layer: TransportSide (flip-involution), SignedImbalance (paidWork > 0),
+      SpectralTwoTransportSplit → LocalTwoTransportMechanism (left AND right
+      steps with positive work, tethered universe) → law core → factory;
+    * assembly theorems: split + realization ⟹ certificate ⟹ core-bridge ⟹
+      old bridge ⟹ RH; TwoTransportStrictFront — exact obligation map.
 
-  ⚠️ МАШИННАЯ ЧЕСТНОСТЬ (конкретный слой, добавлен при интеграции):
-    * поля Universe/Total/Work закона ОТДЕЛЬНЫ от closedPaid — фабрика
-      достигается только КОГЕРЕНТНЫМИ законами (CoherentLaw);
-    * no_coherent_twoTransportLaw / no_coherent_lawCore — когерентный закон
-      для реального нуля ПУСТ (фабрика безусловно пуста: engine-killer);
-    * coherentTwoTransportBridge_iff_RH — когерентный two-transport мост
-      ⟺ RH ДОСЛОВНО: циркулярность старого моста НАСЛЕДУЕТСЯ; декомпозиция —
-      карта обязательств, а не некруговой путь;
-    * regateTrivially — аудит-гейты zero_anchored/non_circular свободны
-      (True-перегейтовка): маркеры, не проверки.
-  Фиксы кирпичей: builder-дефы объявлены : Prop, но Law → Factory — Type 1
-  (аннотация снята); слоган §6 — Type-конъюнкт обёрнут в Nonempty.
+  ⚠️ MACHINE HONESTY (concrete layer, added at integration):
+    * Universe/Total/Work fields of the law are SEPARATE from closedPaid — the factory
+      is reached only by COHERENT laws (CoherentLaw);
+    * no_coherent_twoTransportLaw / no_coherent_lawCore — a coherent law
+      for a REAL zero is EMPTY (the factory is unconditionally empty: engine-killer);
+    * coherentTwoTransportBridge_iff_RH — coherent two-transport bridge
+      ⟺ RH LITERALLY: the circularity of the old bridge IS INHERITED; the decomposition is
+      an obligation map, not a non-circular path;
+    * regateTrivially — audit gates zero_anchored/non_circular are free
+      (True-regating): markers, not checks.
+  Brick fixes: builder defs declared : Prop, but Law → Factory is Type 1
+  (annotation removed); §6 slogan — Type-conjunction wrapped in Nonempty.
 -/
 import Mathlib
 import EuclidsPath.Engine.ClosedUniverse
@@ -756,20 +756,20 @@ end TwoTransportLocal
 end RiemannImpossibleEngineOff
 end EuclidsPath
 
-/-! Конкретный слой + машинная честность -/
+/-! Concrete layer + machine honesty -/
 
 namespace EuclidsPath
 namespace RiemannImpossibleEngineOff
 
 open EuclidsPath.ClosedUniverse
 
-/-- Когерентность: собственная вселенная закона совпадает со вселенной его
-    платной динамики (без этого закон не достигает фабрики). -/
+/-- Coherence: the law's own universe coincides with the universe of its
+    paid dynamics (without this the law cannot reach the factory). -/
 def CoherentLaw {Z : OffCriticalZero}
     (T : TwoTransportLaw OffCriticalZero ClosedPaidDynamics Z) : Prop :=
   ∀ x, T.Universe x ↔ T.closedPaid.Universe x
 
-/-- КОНКРЕТНЫЙ builder: когерентный two-transport закон строит фабрику репо. -/
+/-- CONCRETE builder: a coherent two-transport law builds the repo factory. -/
 def factoryOff_of_twoTransportLaw {Z : OffCriticalZero}
     (T : TwoTransportLaw OffCriticalZero ClosedPaidDynamics Z)
     (hC : CoherentLaw T) :
@@ -781,23 +781,23 @@ def factoryOff_of_twoTransportLaw {Z : OffCriticalZero}
   seed_in_universe := (hC T.seed).mp T.seed_in_universe
   next := fun x hx => T.next x ((hC x).mpr hx)
 
-/-- **ЧЕСТНОСТЬ (пустота):** когерентный закон для РЕАЛЬНОГО нуля невозможен —
-    он строил бы фабрику, а фабрика безусловно пуста (engine-killer). Выполнить
-    обязательство «построй закон из нуля» некруговым образом нельзя: обитаемость
-    закона = отсутствие нулей. -/
+/-- **HONESTY (vacuity):** a coherent law for a REAL zero is impossible —
+    it would build a factory, and the factory is unconditionally empty (engine-killer).
+    The obligation "build a law from a zero" cannot be discharged non-circularly:
+    inhabitation of the law = absence of zeros. -/
 theorem no_coherent_twoTransportLaw {Z : OffCriticalZero}
     (T : TwoTransportLaw OffCriticalZero ClosedPaidDynamics Z)
     (hC : CoherentLaw T) : False :=
   no_riemannEngineFactoryOff Z ⟨factoryOff_of_twoTransportLaw T hC⟩
 
-/-- Когерентный two-transport мост (конкретная форма фронта). -/
+/-- Coherent two-transport bridge (concrete form of the front). -/
 def CoherentTwoTransportBridge : Prop :=
   ∀ Z : OffCriticalZero,
     ∃ T : TwoTransportLaw OffCriticalZero ClosedPaidDynamics Z, CoherentLaw T
 
-/-- **ЧЕСТНОСТЬ (циркулярность наследуется):** когерентный two-transport мост
-    ⟺ RH ДОСЛОВНО — как и старый opaque-мост. Декомпозиция полезна как карта
-    обязательств, но выполнимой некруговым образом она не стала. -/
+/-- **HONESTY (circularity is inherited):** the coherent two-transport bridge
+    ⟺ RH LITERALLY — just like the old opaque bridge. The decomposition is useful as an
+    obligation map, but it has not become dischargeable non-circularly. -/
 theorem coherentTwoTransportBridge_iff_RH :
     CoherentTwoTransportBridge ↔ RiemannHypothesis := by
   constructor
@@ -812,12 +812,12 @@ theorem coherentTwoTransportBridge_iff_RH :
 
 namespace TwoTransportLocal
 
-/-- Когерентность для локального core-закона. -/
+/-- Coherence for the local core law. -/
 def CoherentLawCore {Z : OffCriticalZero}
     (T : TwoTransportLawCore OffCriticalZero ClosedPaidDynamics Z) : Prop :=
   ∀ x, T.Universe x ↔ T.closedPaid.Universe x
 
-/-- Builder для core-закона. -/
+/-- Builder for the core law. -/
 def factoryOff_of_lawCore {Z : OffCriticalZero}
     (T : TwoTransportLawCore OffCriticalZero ClosedPaidDynamics Z)
     (hC : CoherentLawCore T) :
@@ -829,15 +829,15 @@ def factoryOff_of_lawCore {Z : OffCriticalZero}
   seed_in_universe := (hC T.seed).mp T.seed_in_universe
   next := fun x hx => T.next x ((hC x).mpr hx)
 
-/-- **ЧЕСТНОСТЬ:** когерентный core-закон для реального нуля пуст. -/
+/-- **HONESTY:** a coherent core law for a real zero is empty. -/
 theorem no_coherent_lawCore {Z : OffCriticalZero}
     (T : TwoTransportLawCore OffCriticalZero ClosedPaidDynamics Z)
     (hC : CoherentLawCore T) : False :=
   no_riemannEngineFactoryOff Z ⟨factoryOff_of_lawCore T hC⟩
 
-/-- **ЧЕСТНОСТЬ (гейты свободны):** аудит-поля zero_anchored/non_circular —
-    свободные Prop-поля: любой закон перегейтируется в True-гейты. Гейты —
-    документирующие маркеры, НЕ машинная проверка некруговости. -/
+/-- **HONESTY (gates are free):** the audit fields zero_anchored/non_circular are
+    free Prop fields: any law can be regated to True gates. Gates are
+    documentation markers, NOT machine checks of non-circularity. -/
 def regateTrivially {Z : OffCriticalZero}
     (T : TwoTransportLawCore OffCriticalZero ClosedPaidDynamics Z) :
     TwoTransportLawCore OffCriticalZero ClosedPaidDynamics Z :=

@@ -1,27 +1,27 @@
 /-
-  MersennePeelPressure — два следующих слоя платёжного маршрута Мерсенна
-  (кирпичи: mersenne_peel_payment_pressure + mersenne_peel_coverage_pressure).
-  Проза: prose/24 (Мерсенн-ветка).
+  MersennePeelPressure — the next two layers of the Mersenne payment route
+  (bricks: mersenne_peel_payment_pressure + mersenne_peel_coverage_pressure).
+  Prose: prose/24 (Mersenne branch).
 
-  Слой 1 (peel-payment): pressure расщеплён на
-    CofinalMersennePeelCoverage (близнецы навязывают попадания генеалогий
-    в base-4 repunit-центры) + PeelHitForcesPrimePayment (попадание платит
-    обе стороны 6m_k ∓ 1); вместе + soundness ⟹ ∞ Мерсенн-близнецов.
-  Слой 2 (peel-coverage/debt): coverage расщеплён дальше —
-    CofinalPeelDebtPressure (неограниченные peel-debt индексы) +
-    PeelDebtRealizesHit (debt-индекс реализуется как hit); полная
-    дефект-трихотомия при tail-отсутствии.
+  Layer 1 (peel-payment): pressure is split into
+    CofinalMersennePeelCoverage (twins force genealogy hits
+    into base-4 repunit centers) + PeelHitForcesPrimePayment (a hit pays
+    both sides 6m_k ∓ 1); together + soundness ⟹ ∞ Mersenne twins.
+  Layer 2 (peel-coverage/debt): coverage is split further —
+    CofinalPeelDebtPressure (unbounded peel-debt indices) +
+    PeelDebtRealizesHit (a debt index is realized as a hit); full
+    defect-trichotomy under tail absence.
 
-  СТЫКОВКА (при интеграции): центры трёх слоёв совпадают (индукция по
-  рекурренции); ЦЕПИ ДО ЦЕЛИ: twinLowersInfinite_of_peelPaymentRoute и
-  twinLowersInfinite_of_debtRoute — оба route-пакета ⟹ TwinLowers.Infinite.
+  STITCHING (on integration): the centers of all three layers coincide (induction on
+  the recurrence); CHAINS TO GOAL: twinLowersInfinite_of_peelPaymentRoute and
+  twinLowersInfinite_of_debtRoute — both route packages ⟹ TwinLowers.Infinite.
 
-  ⚠️ МАШИННАЯ ЧЕСТНОСТЬ: canonical_coverage_iff — для канонической системы
-  («hit = уже twin» над everything-prime леджером; payment-law дефинициален)
-  coverage ⟺ переименованный ВЫВОД. Расщепления честны только для НАСТОЯЩЕЙ
-  Step00-структуры: hit = реальное попадание генеалогии в repunit-центр
-  (base-4 peel — подпоследовательность peel-шагов графа), платежи навязаны
-  boundary/ledger-механикой. Их построение — живой фронт Мерсенн-ветки.
+  ⚠️ MACHINE HONESTY: canonical_coverage_iff — for the canonical system
+  ("hit = already twin" over the everything-prime ledger; payment-law is definitional)
+  coverage ⟺ goal renaming. Splits are honest only for the REAL
+  Step00 structure: hit = actual genealogy hit into a repunit center
+  (base-4 peel — a subsequence of graph peel steps), payments forced by
+  boundary/ledger mechanics. Their construction is the live front of the Mersenne branch.
 -/
 import Mathlib
 import EuclidsPath.Engine.MersennePaymentConflict
@@ -885,12 +885,12 @@ end PeelCoveragePressure
 end Mersenne
 end EuclidsPath
 
-/-! Стыковка слоёв + цепь до цели + машинная честность -/
+/-! Layer stitching + chain to goal + machine honesty -/
 
 namespace EuclidsPath
 namespace Mersenne
 
-/-- Центры всех трёх слоёв совпадают (одна рекурренция). -/
+/-- The centers of all three layers coincide (one recurrence). -/
 theorem peelCenter_eq_conflictCenter :
     ∀ k, PeelPaymentPressure.mersenneCenter k
       = PrimePaymentConflict.mersenneCenter k
@@ -909,7 +909,7 @@ theorem coverageCenter_eq_conflictCenter :
         PrimePaymentConflict.mersenneCenter_succ,
         coverageCenter_eq_conflictCenter k]
 
-/-- Перенос ∞-supply из peel-payment слоя в базовый. -/
+/-- Transfer of ∞-supply from the peel-payment layer to the base layer. -/
 theorem conflictSupply_of_peelSupply
     (h : PeelPaymentPressure.InfinitelyManyMersenneTwinCenters Nat.Prime) :
     PrimePaymentConflict.InfinitelyManyMersenneTwinCenters Nat.Prime := by
@@ -920,7 +920,7 @@ theorem conflictSupply_of_peelSupply
   rw [peelCenter_eq_conflictCenter k] at hraw
   exact ⟨k, hk, hraw⟩
 
-/-- Перенос ∞-supply из coverage слоя в базовый. -/
+/-- Transfer of ∞-supply from the coverage layer to the base layer. -/
 theorem conflictSupply_of_coverageSupply
     (h : PeelCoveragePressure.InfinitelyManyMersenneTwinCenters Nat.Prime) :
     PrimePaymentConflict.InfinitelyManyMersenneTwinCenters Nat.Prime := by
@@ -931,7 +931,7 @@ theorem conflictSupply_of_coverageSupply
   rw [coverageCenter_eq_conflictCenter k] at hraw
   exact ⟨k, hk, hraw⟩
 
-/-- **ЦЕПЬ ДО ЦЕЛИ:** peel-payment route ⟹ TwinLowers.Infinite. -/
+/-- **CHAIN TO GOAL:** peel-payment route ⟹ TwinLowers.Infinite. -/
 theorem twinLowersInfinite_of_peelPaymentRoute
     {TwinAbove : PeelPaymentPressure.OrdinaryTwinSupplyAbove}
     (R : PeelPaymentPressure.MersennePeelPaymentRoute Nat.Prime TwinAbove) :
@@ -940,7 +940,7 @@ theorem twinLowersInfinite_of_peelPaymentRoute
     (conflictSupply_of_peelSupply
       (PeelPaymentPressure.infinite_mersenne_supply_of_peelPaymentRoute R))
 
-/-- **ЦЕПЬ ДО ЦЕЛИ:** debt route ⟹ TwinLowers.Infinite. -/
+/-- **CHAIN TO GOAL:** debt route ⟹ TwinLowers.Infinite. -/
 theorem twinLowersInfinite_of_debtRoute
     {TwinAbove : PeelCoveragePressure.OrdinaryTwinSupplyAbove}
     (R : PeelCoveragePressure.MersennePeelDebtRoute Nat.Prime TwinAbove) :
@@ -949,21 +949,21 @@ theorem twinLowersInfinite_of_debtRoute
     (conflictSupply_of_coverageSupply
       (PeelCoveragePressure.infinite_mersenne_supply_of_debtRoute R))
 
-/-- Каноническая peel-система: «hit = уже twin» над everything-prime леджером. -/
+/-- Canonical peel system: "hit = already twin" over the everything-prime ledger. -/
 def canonicalPeelSystem : PeelPaymentPressure.MersennePeelPaymentSystem where
   ledger := ⟨Unit, fun _ n => Nat.Prime n⟩
   MersennePeelHit := fun _ k =>
     PeelPaymentPressure.MersenneTwinCenter Nat.Prime k
 
-/-- Для канонической системы payment-law выполняется дефинициально. -/
+/-- For the canonical system the payment-law holds definitionally. -/
 theorem canonical_paymentLaw :
     PeelPaymentPressure.MersennePeelPaymentSystem.PeelHitForcesPrimePayment
       canonicalPeelSystem :=
   fun _ _ h => h
 
-/-- **ЧЕСТНОСТЬ:** для канонической системы coverage ⟺ переименованный ВЫВОД.
-    Несущие входы честны только для НАСТОЯЩЕЙ Step00-структуры (hit = реальное
-    попадание генеалогии в repunit-центр, платежи навязаны графом). -/
+/-- **HONESTY:** for the canonical system coverage ⟺ goal renaming.
+    Named inputs are honest only for the REAL Step00 structure (hit = actual
+    genealogy hit into a repunit center, payments forced by the graph). -/
 theorem canonical_coverage_iff
     {TwinAbove : PeelPaymentPressure.OrdinaryTwinSupplyAbove}
     (hInh : TwinAbove 0) :

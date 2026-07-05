@@ -252,6 +252,16 @@ cosmologies (Wiltshire, Buchert), where cosmic acceleration is read off inhomoge
 energy. Time does not accelerate; the way is curved, and from inside a curved contraction that curvature *feels* like
 acceleration.
 
+**One curvature, and it draws the horizon.** This curvature is not local to the picture. It is read off the *numbers* — and
+the numbers lie under everything built on them: language and proof, knowledge, matter examined up close, the cosmos in the
+large. So the prohibition is the same at every scale and in every guise, for it is defined over *any* relation and transfers
+along *any* rank into a well-founded order (`no_perpetual_engine_of_rank`, [01](01_EPMI.md)) — fundamental, and portable to
+any language that can count. And it is exactly this natural prohibition that lays down the horizon: `universal_engine_dividing_line`
+marks where motion is forbidden — the discrete, the well-founded, the derivable and knowable — from where it is realised —
+the continuum, mass, singularity — while the first cause on the far side can only be accepted, never known from inside
+([33](33_CausalFirstCause.md)). The engine's own interdiction is the event horizon: on the near side the reachable and the
+real, on the far side the metaphysical.
+
 ![Thought experiment — the observer, the event horizon and the arrow of time flowing inward](assets/7_observer_horizon.png)
 
 *Thought experiment (a conceptual superstructure on a *real* genealogy). The observer (white) is

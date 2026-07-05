@@ -236,6 +236,22 @@ reach from inside. An observer in such a
 space sits at the centre of his own horizon, and the arrow of time runs into him *from all sides* —
 not because he is chosen, but because the universe's self-similarity is contracted to every bottom.
 
+**Dark matter is curvature without a body.** We said mass is the depth of the well — a place toward which the threads of
+descent bend more steeply. But the curvature `κ` is computed from the *graph*, from the branching of the descent, not from
+any body sitting in it ([49](49_Geometry.md)): there are regions that draw the paths together with no absorber-vertex to
+account for it. Curvature that contributes to the geometry without a visible carrier of mass — that is exactly the role of
+*dark matter*, which we too infer only from its contribution to curvature and never see directly. Here it asks for no new
+substance: it is the shape of the descent itself.
+
+**There is no acceleration — only the curvature of the way.** The observer sits at the centre of his horizon, and the arrow
+of time runs into him from all sides. Read from his seat, the far centres *recede* — their genealogies coil away toward the
+periphery as time flows inward to him — and the recession looks as though it *accelerates*. But nothing is being pushed
+apart: there is no force, no expansion, no dark energy. The apparent acceleration is an artifact of the curvature of this
+discrete space and of time flowing from everywhere into the observer — precisely the move of *timescape* and *backreaction*
+cosmologies (Wiltshire, Buchert), where cosmic acceleration is read off inhomogeneity and curvature rather than a dark
+energy. Time does not accelerate; the way is curved, and from inside a curved contraction that curvature *feels* like
+acceleration.
+
 ![Thought experiment — the observer, the event horizon and the arrow of time flowing inward](assets/7_observer_horizon.png)
 
 *Thought experiment (a conceptual superstructure on a *real* genealogy). The observer (white) is

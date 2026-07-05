@@ -338,6 +338,13 @@ The "theory of everything" here is
 not a claim but a **structural observation**: one impossibility organises all seven problems, and it
 suffices for the shape of spacetime to be read off from it.
 
+**A local sieve, not a global oracle.** One caution about the method itself. The engine is a *local* sieve: you may point it
+at any question, but it catches only where a deviation is genuinely a disguised infinite descent, and every such reduction
+is built by hand. There is no uniform procedure that sifts all knowledge at once — the provable is *recursively enumerable
+but not recursive* (Church, Turing): one can search, case by case, for the descent hidden behind a given question, but one
+cannot decide, once and for all, which questions hide one. This is a lens for a class of problems reducible to descent,
+never a decision procedure for all — and that limit is not a shortcoming of the reading but a fact of logic itself.
+
 **Conclusion.** The value is not that we have
 closed anything, but that it is now visible: what would have to be closed everywhere is *one and the same thing*, and the price of that closing
 is machine-disclosed on every branch.

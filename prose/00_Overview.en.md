@@ -416,7 +416,7 @@ green and unconditional — the Euler–Lagrange pearl: Sophie Germain primes wi
 Mersenne numbers. And the [geometry of the path](49_Geometry.md) (chapter 49) reads the descent graph
 itself as curved spacetime: an arrow of time, computed curvature, and a violation of Euclid's second postulate.
 
-The eighth millennium problem — [Birch–Swinnerton-Dyer](53_BirchSwinnertonDyer.md) (chapter 53) —
+The eighth mask — [Birch–Swinnerton-Dyer](53_BirchSwinnertonDyer.md) (chapter 53) —
 enters differently: here the engine prohibition does not guard a deviation but serves as a
 **method** — Fermat's infinite descent proves finiteness of the rank (Mordell–Weil, on a real
 mathlib curve), while the parity of the rank turns out to be the same rank-parity node that stands

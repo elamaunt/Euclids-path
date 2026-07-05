@@ -1,6 +1,6 @@
 site_name: Путь Евклида
 site_url: https://elamaunt.github.io/Euclids-path/
-site_description: Один запрещённый вечный двигатель под восемью задачами тысячелетия — одна rank-parity программа, машинно проверенная в Lean 4.
+site_description: Один запрещённый вечный двигатель под шестью открытыми проблемами тысячелетия — одна rank-parity программа, машинно проверенная в Lean 4.
 site_author: elamaunt
 repo_url: https://github.com/elamaunt/Euclids-path
 repo_name: elamaunt/Euclids-path

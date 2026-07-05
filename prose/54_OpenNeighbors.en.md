@@ -12,7 +12,7 @@
 
 ## Where we are
 
-Eight masks have exhausted the millennium problems. But the perpetual-engine prohibition — descent,
+Eight masks are behind us — among them, all six open millennium problems. But the perpetual-engine prohibition — descent,
 height, rank parity — lives on in neighbouring open problems as well. Here we cast a shadow of five
 of them with a single device: **a real mathlib anchor plus an honest gate**. The anchor is a proven
 theorem (a polynomial analogue, a finiteness, a structure) which is itself the reading through the

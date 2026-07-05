@@ -1,7 +1,7 @@
 # Euclid's Path
 
 > A single impossibility — **Euclid's perpetual engine**, an infinite strictly-descending chain on a
-> well-ordered line, which does not exist — read underneath eight millennium problems and a whole
+> well-ordered line, which does not exist — read underneath eight masks and a whole
 > arithmetic tail. One programme, one axiom, machine-checked in **Lean 4**.
 
 We take the oldest proof object in mathematics — Fermat's infinite descent, rewritten

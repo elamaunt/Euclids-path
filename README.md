@@ -1,6 +1,8 @@
 # Euclids-path
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21198731.svg)](https://doi.org/10.5281/zenodo.21198731)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Lean 4](https://img.shields.io/badge/Lean-4.31.0-blueviolet.svg)](lean-toolchain)
 
 > 🇷🇺 **Русская версия:** [`README.ru.md`](README.ru.md) · 🇬🇧 You are reading the English version.
 > On the [documentation site](https://elamaunt.github.io/Euclids-path/en/) a language switcher is

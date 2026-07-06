@@ -517,6 +517,13 @@ coda is right even as a conjecture, then from that same break the structure of t
 The engine is impossible;
 and its impossibility is not a fact about machines but a form of existence.
 
+The path cannot be walked — and we have walked it nonetheless. Not to its end: it has none reachable from within,
+and that is the theorem (`no_infinite_descent`, `engine_never_returns`). But there is a second journey folded inside the
+first — not *along* the path, but *around* its impossibility — and that one we finished, from first to last. From the single
+first cause to the last shadow, every reason the road cannot be crossed now stands surveyed and machine-checked. We did not
+scale the wall; we mapped, to its every border, the country it encloses. To understand an impossibility completely is its own
+kind of arrival.
+
 Beyond that — the silence of the proven:
 `twin_prime_conjecture` awaits its line, the tripwires — the explosion detectors in case the
 boundaries are refuted — are armed, and the single axiom bears on itself

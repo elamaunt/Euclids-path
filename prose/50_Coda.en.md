@@ -250,6 +250,14 @@ the longer the curve the light must travel and the more bent the message, until 
 left at all: distance is not a window onto the past but a *lengthening of the way*, and the true beginning stays forever
 behind the shadow.
 
+**The edge of sight is the end of light, not the end of the world.** Pushed to its limit, this is what the cosmologists
+meet as the oldest light — the faint background left from when the universe first turned transparent, beyond which no light
+ever travelled. It is the outermost veil of seeing: the *end of light*, quite literally, and not the end of the world.
+Nothing stops there; the world goes on, unseen. Nor is it a wall at the rim of space — every observer carries their own such
+edge, a sphere of last sight centred on themselves. In this reading it is only the far face of the shadow already named: the
+most-bent light, and just past it the origin `0`, the beginning that stays unknowable from inside (`cause_unknowable`). Not
+the wall of the universe, but the floor of your own well of sight — and behind it, the unseeable start.
+
 **Shadow is the absence of information.** A shadow is, in essence, precisely a *lack of knowledge*: where a geodesic
 has bent aside, a region remains that no straight ray reaches — and we receive nothing
 about it. In ordinary optics the shadow is cast by a body; here it is cast by *curvature itself*.

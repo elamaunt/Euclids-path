@@ -32,8 +32,8 @@ keywords:
   - Riemann hypothesis
   - Navier-Stokes
   - Collatz
-doi: "10.5281/zenodo.21198731"
+doi: "10.5281/zenodo.21211991"
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.21198731"
+    value: "10.5281/zenodo.21211991"
     description: "Zenodo archive of this release"

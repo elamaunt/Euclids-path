@@ -20,6 +20,10 @@ on a well-ordered line, which does not exist (`no_infinite_descent`, [01](01_EPM
 does it mean that *seven* of the deepest open problems of mathematics and physics turned out to be
 shadows of one prohibition? And how far does this unity extend?
 
+> **Note.** These seven are the great questions of the main line. Birch–Swinnerton-Dyer is the **eighth** mask
+> ([ch. 53](53_BirchSwinnertonDyer.md)), which enters differently — eight masks in all. Six of the eight are open
+> Millennium problems; the twins and Collatz are not.
+
 ## One prohibition, seven masks
 
 Let us gather the picture in a single view. Everywhere below it is the same prohibition of the

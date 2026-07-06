@@ -339,7 +339,7 @@ honest key has remained external — **to verify exactly as far as the gaze can 
 
 ## Place in the greater arc
 
-Collatz completes the eighth mask differently from how it began it. It entered as a mirror of the
+Collatz completes its mask differently from how it began it. It entered as a mirror of the
 [first cause (ch. 33)](33_CausalFirstCause.md), of [Riemann (38)](38_RiemannFirstCause.md) and of
 [Mersenne (43)](43_MersenneFirstCause.md): a green impossibility of the engine from inside plus an external
 boundary accepted by decree at an honestly disclosed price. And it exits with the same green impossibility, but
@@ -348,7 +348,7 @@ boundary accepted by decree at an honestly disclosed price. And it exits with th
 What sets Collatz apart, and what the decree's fall only sharpened, is that the engine here is **literal** (the
 tail of a non-converging orbit *is* perpetual motion on ℕ, not a surrogate), and that is why the narrative
 "verification, not derivation" reads most clearly on it: `no_infinite_descent` — one prohibition — turns out to be
-also a prohibition on infinite information extraction. For the eighth time it brings us right up to the boundary
+also a prohibition on infinite information extraction. Once more it brings us right up to the boundary
 of the knowable — and this time it shows that even the boundary itself, set too generously, honestly collapses
 under its own price.
 

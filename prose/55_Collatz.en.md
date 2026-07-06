@@ -18,9 +18,9 @@
 
 ## Where we are
 
-The main line has carried the single prohibition `no_infinite_descent` through seven masks (a mask is a great
+The main line has carried the single prohibition `no_infinite_descent` through its masks (a mask is a great
 problem read through the engine prohibition; see the [glossary](GLOSSARY.md)) and the arithmetic zoo.
-Collatz is the eighth and a special one: here the "engine" is not a surrogate but a *literal* object on ℕ.
+Collatz is the strangest of them: here the "engine" is not a surrogate but a *literal* object on ℕ.
 
 This appendix
 translates the conjecture into the language of the engine and the rope, shows exactly where it breaks our laws (and

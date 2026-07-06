@@ -562,6 +562,22 @@ breaks off at once. It is precisely their infinitude that is the open line held 
 > dive deeper toward the centre); colour by $\log p$ (turbo). Twin-centres (empty genealogy) sit on the rim
 > as golden points.
 
+## What remains — and is worth it too
+
+The synthesis closes here. The chapters that follow were added once the core was in place; they extend the reading rather
+than conclude it — and each stands on its own:
+
+- **[51. Numerical evidence](51_NumericalEvidence.md)** — the counts and pictures beneath the claims: descent statistics,
+  twin-centre density, the fronts made visible.
+- **[52. The dyadic model of fluid](52_DyadicModel.md)** — Navier–Stokes stripped to its dyadic skeleton, where the
+  blow-up question meets the engine head-on.
+- **[53. Birch–Swinnerton-Dyer — the eighth mask](53_BirchSwinnertonDyer.md)** — the same descent on a real elliptic
+  curve: a green descent-without-engine, plus one honestly named open input.
+- **[54. Neighbours beyond the horizon](54_OpenNeighbors.md)** — open arithmetic problems that sit just past the same
+  wall, where the reading points but cannot yet reach.
+- **[55. Collatz](55_Collatz.md)** & **[56. The Collatz first cause](56_CollatzFirstCause.md)** — the boundary walk in
+  full: a decree taken and then withdrawn when its law was machine-refuted (n = 27) — and what honest defeat leaves standing.
+
 <!--navbot-->
 
 ---

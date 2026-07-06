@@ -149,7 +149,7 @@ plugins:
             VIII. Геометрия и кода: VIII. Geometry and coda
             49. Геометрия пути: 49. The geometry of the path
             50. Кода: 50. Coda
-            Приложения: Appendices
+            Приложения и поздние фронты: Appendices & later fronts
             51. Численная опора: 51. Numerical support
             52. Дискретная модель жидкости: 52. The discrete fluid model
             53. Бёрч–Свиннертон-Дайер: 53. Birch–Swinnerton-Dyer
@@ -219,7 +219,7 @@ nav:
   - VIII. Геометрия и кода:
       - 49. Геометрия пути: 49_Geometry.md
       - 50. Кода: 50_Coda.md
-  - Приложения:
+  - Приложения и поздние фронты:
       - 51. Численная опора: 51_NumericalEvidence.md
       - 52. Дискретная модель жидкости: 52_DyadicModel.md
       - 53. Бёрч–Свиннертон-Дайер: 53_BirchSwinnertonDyer.md

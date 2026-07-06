@@ -241,6 +241,15 @@ the first cause can be neither derived nor known* — not because we lack instru
 every signal travels along a curve, and there simply is no straight line to the origin. Light does not lie — it simply cannot
 travel straight, and therefore cannot transmit what would be the straight truth about the beginning.
 
+**Looking far is looking up the curve.** So what do we see when we look far out — the past, or a distorted present? Neither
+cleanly. Distance here is *upstream*: the arrow of time flows inward toward us, so a far object lies earlier in the flow,
+and its light is old — in that sense, the past. But that light reaches us only bent, having crossed all the curvature
+between; what arrives is not a clean image but a distorted signal, delivered *now*. So the past and the distorted present
+are one thing seen from two sides — an old message, curved out of true, received in the present. And the farther we look,
+the longer the curve the light must travel and the more bent the message, until at the origin itself no straight line is
+left at all: distance is not a window onto the past but a *lengthening of the way*, and the true beginning stays forever
+behind the shadow.
+
 **Shadow is the absence of information.** A shadow is, in essence, precisely a *lack of knowledge*: where a geodesic
 has bent aside, a region remains that no straight ray reaches — and we receive nothing
 about it. In ordinary optics the shadow is cast by a body; here it is cast by *curvature itself*.

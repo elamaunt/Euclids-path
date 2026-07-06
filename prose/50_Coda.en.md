@@ -245,6 +245,13 @@ this cannot be known from inside* (`lines_meet_but_unknowable_from_inside`). The
 exactly the eternal shadow of the contracting order: not darkness, but a region from which no straight light bearing information
 reaches us.
 
+**We see form, because we do not see the origin.** Look at a table: we see its *form* — and that is exactly what is
+knowable, the outline, the surface, the computable curvature `κ`. What we do not see is its *core*. Each mass is a well, and
+every well bottoms at a singularity — the origin `0`, the first cause, which cannot be known from inside. We see form
+*because* the origin is screened: to see through the form would be to see the singularity itself, and that is forbidden — it
+would run the engine. So a thing shows us its shape and hides its beginning; in this reading the table is, at bottom, built
+of singularities — points of pure origin, each unknowable — wearing a visible shape.
+
 **A black hole is a well into which the arrow of time only enters.** Let us assemble the picture. A black hole,
 in this reading, is a well of limiting depth, a vertex where the contraction is so strong that the arrow
 of irreversible time points *only inward*: one can enter, but return — no, for return would be

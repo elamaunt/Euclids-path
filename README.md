@@ -16,6 +16,11 @@ This is **not a finished proof**. It is a machine-checkable assembly in which th
 reduced to a **single** open node, and the whole path — from the engine's laws to the final
 reduction — is visible across the numbered files.
 
+> **Paper.** An arXiv-style write-up of the whole programme (LaTeX + PDF) is attached to the
+> [latest release](https://github.com/elamaunt/Euclids-path/releases/latest) and is being prepared for
+> publication. What still changes is mostly the **prose** — the exposition is being refined; the
+> mathematical content and the machine-checked results are settled.
+
 ![Euclid's-path fractal — the genealogy ornament](tools/fractal/out/6_genealogy_ornament.png)
 
 *Euclid's-path fractal · **genealogy ornament**: the full old-peel descent of every centre

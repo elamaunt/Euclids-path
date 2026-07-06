@@ -365,6 +365,18 @@ but not recursive* (Church, Turing): one can search, case by case, for the desce
 cannot decide, once and for all, which questions hide one. This is a lens for a class of problems reducible to descent,
 never a decision procedure for all — and that limit is not a shortcoming of the reading but a fact of logic itself.
 
+**Collatz walks the boundary.** The clearest case of all this is the Collatz problem. It is a tug of war on a knife's edge —
+the odd step pulls a number up, the even step pulls it down — walking exactly along the border between two mutually
+exclusive worlds. In one, every orbit falls at last into the vacuum `1`: the descent wins, and there is no engine. In the
+other, a single orbit escapes forever: the ascent wins, and that runaway *is* a perpetual engine
+(`nonHalting_carries_perpetual_engine`). One or the other — there is no third. Which world we live in cannot be known from
+inside: the Collatz cause is unknowable (`collatzCause_unknowable`), and — a small marvel — that theorem leans on *no axiom
+at all*. We say it precisely, though: this is *unknowable from within*, not *undecidable in principle*; Collatz stays
+honestly open. And here the discipline shows its teeth most sharply, for this is the one place where a decree was taken and
+then *withdrawn* — the programme once posited a law that would have forced the descent to win, and the machine caught it
+false at `n = 27` (`ropeLaw_universal_refuted`). We could not even decree which reality wins without being refuted. The
+boundary stands; which side it falls to, no one inside can say.
+
 **Conclusion.** The value is not that we have
 closed anything, but that it is now visible: what would have to be closed everywhere is *one and the same thing*, and the price of that closing
 is machine-disclosed on every branch.

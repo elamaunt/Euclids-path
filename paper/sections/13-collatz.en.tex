@@ -248,6 +248,38 @@ Open, and untouched by the decree's fall: the refuted law was strictly stronger 
 conjecture, so its fall says only that Collatz cannot be closed by \emph{such} a decree.
 \end{conjecture}
 
+\subsection{Why Collatz stands alone}
+The decree fell here, and --- machine-checked across the programme --- nowhere else can it. An attack of the kind that
+felled the rope law needs two coincidences. The decreed law must be \emph{strictly stronger} than the conjecture it guards
+--- only the arrow (law $\Rightarrow$ conjecture) is proved, the converse false --- so a counterexample kills the law yet
+leaves the conjecture open; and its predicate must be \emph{decidable} over $\mathbb{N}$, so one small witness closes by
+\code{decide}. The rope law has both: the ladder \code{reaches\_one\_of\_countingLaw} runs one way, the content-free
+companion \code{valueLaw\_iff\_reaches\_one} absorbs the equivalence to convergence, and $n=27$ --- which \emph{converges}
+yet fails the law --- refutes it by kernel computation.
+
+Every other boundary fails at least one condition, and the failure is itself a theorem. The \emph{taken} decrees are
+equivalence-locked or barrier-protected. Riemann: \code{manifestationLaw\_iff\_RH\_of\_boundary} makes the law
+$\Leftrightarrow$ RH, so refuting it \emph{is} exhibiting an off-critical zero --- a disproof of RH over an analytic,
+non-$\mathbb{N}$ domain with no \code{decide}; Yang--Mills and Hodge are identical
+(\code{quantizationLaw\_iff\_massGap}, \code{descentLaw\_iff\_hodgeProperty}). The twin node is equivalent in force to its
+conjecture (\code{quarantine\_inconsistent\_if\_node\_refuted}), and, unlike Collatz's unconditional
+\code{nonHalting\_carries\_perpetual\_engine}, its refutation-builds-engine arrow needs the very stability the decree
+supplies (\code{twinRefutation\_in\_stableUniverse\_builds\_engine}); the incompatibility barrier
+(\code{higherEnergyIncompatibility\_main}) forbids internal refutation outright. Navier--Stokes has no
+$\Leftrightarrow$-mirror at all: its only witness is a smooth force-free energy-gaining solution on $\mathbb{R}^3$, at least
+as hard as the open steady-state Liouville problem.
+
+The \emph{deferred} boundaries are no softer. Mersenne and Fermat are proved equivalent to their conjectures under the
+boundary (\code{mersenneManifestationLaw\_iff\_unbounded\_of\_boundary},
+\code{fermatManifestationLaw\_iff\_unbounded\_of\_boundary}); they were withheld by the \emph{sign} of a heuristic, not
+because they are attackable. The decidable zoo fronts --- Goldbach, Legendre, perfect numbers --- carry a
+\code{decide}-checkable witness (the strongest unpresentability) but again an equivalent universal, so a refutation would be
+a full disproof.
+
+The moral sharpens the section's. A decree can fall honestly only where it over-claims a \emph{falsifiable} strength beyond
+its conjecture. That the discipline admits a boundary only when its refuting witness is unpresentable, or its law equivalent
+to the conjecture, is exactly what makes every surviving decree un-attackable --- and what caught Collatz.
+
 The classical statement is due to Collatz and surveyed by Lagarias~\cite{lagarias1985,lagarias2010}; the strongest known result towards it is Tao's, that almost all orbits attain almost bounded values~\cite{tao2022}.
 The lesson of the section is methodological: a decree that fell honestly --- its price disclosed, its
 tripwire armed, its fall recorded as a theorem --- is worth more than a decree that stands unexamined.

@@ -399,6 +399,14 @@ remove `ℕ`; to remove `ℕ` is to remove numbers, and with them mathematics it
 singularity `0` from which everything began. Numbers walk with mathematics from the very start, and the engine
 prohibition comes with them — not as an added axiom but as the form of counting itself.
 
+And read as time, this same divide answers the question it invites. The irreversible descent is the arrow of time
+(`engine_never_returns`); but on the well-founded line it *cannot* run forever — there time is a **finite** descent, with a
+beginning at the event `0 → 1` and a bottom it reaches, and so it is *not* a perpetual engine. Only on the continuum, where
+well-foundedness fails, is a perpetual descent realised (`perpetualEngine_on_real`): an eternal approach to a limit never
+touched. So *"is time a perpetual engine?"* is exactly *"is time discrete or continuous?"* — `universal_engine_dividing_line`
+draws the answer: never perpetual where the line is well-founded, perpetual precisely when it leaves it. That the descent is
+*time* is, as always, the interpretation; the divide itself is proved.
+
 There remains an honestly open and ambiguous question, with which we shall end this view: if every
 space secretly carries Euclid's path and its one prohibition, then **do we need other
 spaces at all** — or are they all merely re-encodings of one well-ordered "cannot", convenient lenses, but

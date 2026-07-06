@@ -38,6 +38,9 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
+extra_css:
+  - assets/mermaid.css
+
 extra_javascript:
   - assets/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

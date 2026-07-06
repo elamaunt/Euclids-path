@@ -1,0 +1,14 @@
+/* Wide navigator graph (00_Overview §3): the map is deliberately broad, and
+   Material shrinks a mermaid SVG to the content column, which makes the node
+   text unreadable. Let the diagram render at its natural size and scroll the
+   whole map horizontally instead of squeezing it into an illegible strip.
+   Only the Overview map is this wide, so the override is safe site-wide. */
+.md-typeset .mermaid {
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: left;
+}
+.md-typeset .mermaid > svg {
+  max-width: none !important;
+  height: auto !important;
+}

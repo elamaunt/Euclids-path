@@ -257,6 +257,12 @@ in this reading, is a well of limiting depth, a vertex where the contraction is 
 of irreversible time points *only inward*: one can enter, but return — no, for return would be
 a reversal of time, that is, a perpetual engine (`engine_never_returns`).
 
+And it is mass *bared* to the last. Read through the screen of form: a black hole is mass stripped bare to the very limit,
+worn down toward its naked singularity, until it can show no form at all. Where every other object keeps only its origin
+secret and lets its shape be seen, here even the shape is surrendered — the contraction so total that space curves back on
+itself and folds the form out of sight. The one thing an ordinary mass never gives up, its visible form, the black hole
+gives up too; all that remains is the bare origin `0`, and drawn over it, the last veil.
+
 The event horizon is the boundary beyond which all threads of descent are already coiled inward. The ur-black-hole is
 the bottom itself, the singularity `0`: everything flows down to it, while the event `0 → 1` that begot it lies out of
 reach from inside. An observer in such a

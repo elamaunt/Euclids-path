@@ -78,29 +78,36 @@ formalisation-unifying; the taint is unchanged.
 
 ```mermaid
 flowchart TD
-    ROOT["⚙️ no_infinite_descent · EPMI<br/>Euclid's perpetual engine is impossible<br/>bare Lean core 🟢"]
+    ROOT["⚙️ no_infinite_descent · EPMI<br/>Euclid’s perpetual engine is impossible · bare Lean core 🟢"]
 
-    ROOT --> FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · three boundaries"}}
-    FC --> TP["Twins 🟡<br/>causalBoundary — the Step00 node"]
-    FC --> RH["Riemann 🟡<br/>riemannBoundary — the zero-manifestation law"]
-    FC --> NS["Navier–Stokes 🟡<br/>nsBoundary — the gate energy balance"]
+    ROOT --> FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · three LIVING boundaries"}}
+
+    FC --> TP["Twins 🟡 · taken<br/>NOT Collatz-attackable: irreducible node,<br/>law ⟺ conjecture · incompatibility barrier<br/>(refute⟹engine needs the decreed stability)"]
+    FC --> RH["Riemann 🟡 · taken<br/>NOT attackable: RiemannManifestationLaw ⟺ RH<br/>refuting = an off-critical zero (not over ℕ)"]
+    FC --> NS["Navier–Stokes 🟡 · taken<br/>NOT attackable: witness ≥ Galdi Liouville problem<br/>no ⟺-mirror, no decidable predicate"]
 
     ROOT --> PNP["P/NP 🟢<br/>rank-fast traversal ≠ full certificate payment"]
-    ROOT --> YM["Yang–Mills 🟢<br/>spectral quantisation ⟹ mass gap"]
-    ROOT --> HC["Hodge 🟢<br/>descent law ⟹ payment by cycles"]
+    ROOT --> YM["Yang–Mills 🟢<br/>spectral quantisation ⟺ mass gap"]
+    ROOT --> HC["Hodge 🟢<br/>descent law ⟺ payment by cycles"]
+    ROOT --> BSD["Birch–Swinnerton-Dyer 🟢/🔴 · the eighth mask<br/>descent-without-engine on a real curve<br/>🔴 analytic rank = ord L (outside mathlib)"]
 
-    ROOT --> ZOO["Arithmetic zoo 🟢<br/>6 manifestation fronts: Polignac · Sophie Germain<br/>Goldbach · Legendre · perfect · Fermat — NO fields (§17)"]
-    ROOT --> GEO["Geometry of the path 🟢<br/>arrow · curvature κ=1−outdeg (χ=−5) · no parallels"]
+    ROOT --> MP["Mersenne ⏸️ · DEFERRED<br/>reason for refusal: the heuristic sign is negative<br/>(Σ over pairs converges; 5∣2^p−3) · witness ≥ 29, unpresentable"]
+    ROOT --> ZOO["Arithmetic zoo 🟢 · fields NOT taken (§17)<br/>Polignac · Sophie Germain — sign «for»<br/>Goldbach · Legendre · perfect — witness by decide (strongest unpresentability)<br/>Fermat ⏸️ — sign «against» (strictly stronger than twins)"]
+
+    ROOT --> CL["Collatz ✗ · THE DECREE FELL<br/>reason: the rope law was over-strong + decidable<br/>refuted at n=27 (ropeLaw_universal_refuted, decide)<br/>boundary removed, conjecture still open"]
+
+    ROOT --> GEO["Geometry of the path 🟢<br/>arrow · curvature κ=1−outdeg (χ=−5)"]
     GEO -. the same twin boundary .-> TP
-
-    ROOT --> CL["Collatz 🟢<br/>the decree fell: the rope law is refuted (n=27)"]
 
     classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;
     classDef yellow fill:#4d3b00,stroke:#ffc107,color:#fff8e1;
+    classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
+    classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
     classDef root fill:#1a1a1a,stroke:#888,color:#ffffff;
-    class ROOT,PNP,YM,HC,ZOO,GEO green;
+    class ROOT,PNP,YM,HC,BSD,ZOO,GEO green;
     class TP,RH,NS yellow;
-    class CL green;
+    class MP deferred;
+    class CL fallen;
     class FC root;
 ```
 
@@ -108,6 +115,8 @@ Colours: 🟢 — machine-proved under standard axioms (the structural part / a 
 theorem); 🟡 — AXIOM-TAINTED, conditional on the first cause (the object accepted by decree at an
 honestly disclosed price); 🔴 — an open input (the real object: the QFT spectrum, the primes'
 Hamiltonian, a Leray solution, the `(p,p)`-classes, a Turing machine — absent from the formalisation).
+⏸️ — the problem is examined but its boundary is NOT taken: deferred by heuristic sign (Mersenne, Fermat)
+or a zoo front with no field (§16–17). ✗ — the decree was taken and FELL (Collatz, refuted at n = 27).
 Collatz went through the full cycle of the discipline: its rope law was the **fourth boundary** of
 `step00FirstCause` — and it was machine-REFUTED (`ropeLaw_universal_refuted`, witness n = 27); the
 tripwire fired, the boundary was removed, the decree path closed by a forged refutation. The green

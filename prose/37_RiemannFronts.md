@@ -91,7 +91,9 @@ $$\forall Z,\; \forall\, T : \mathrm{TwoTransportLaw}(Z),\quad \mathrm{CoherentL
 И главное,
 
 **Теорема 37.4** (`coherentTwoTransportBridge_iff_RH`) 🟢. Когерентный two-transport мост эквивалентен RH *дословно*:
-$$\mathrm{CoherentTwoTransportBridge} \;\Longleftrightarrow\; \mathrm{RiemannHypothesis}. \tag{37.4}$$ Декомпозиция — карта обязательств, а не некруговой путь;
+$$\mathrm{CoherentTwoTransportBridge} \;\Longleftrightarrow\; \mathrm{RiemannHypothesis}. \tag{37.4}$$
+
+Декомпозиция — карта обязательств, а не некруговой путь;
 аудит-гейты `zero_anchored`/`non_circular` свободны (`regateTrivially` перегейтирует их в `True`) —
 маркеры, не проверки.
 
@@ -109,7 +111,9 @@ $$\forall Z,\quad \mathrm{Nonempty}\big(\mathrm{ArithmeticTwoTransportLaw}(Z)\bi
 арифметический вопрос, разведённый по полярности под гипотезой нуля, и
 
 **Теорема 37.6** (`front_pair_iff_no_zero`) 🟢. Пара входов (мост и невозможность) совместно выполнима тогда и только тогда, когда нулей нет:
-$$\big(\mathrm{ArithmeticTwoTransportBridge} \wedge \mathrm{ArithmeticTwoTransportImpossible}\big) \;\Longleftrightarrow\; \lnot\,\mathrm{Nonempty}(\mathrm{OffCriticalZero}). \tag{37.6}$$ Циркулярность
+$$\big(\mathrm{ArithmeticTwoTransportBridge} \wedge \mathrm{ArithmeticTwoTransportImpossible}\big) \;\Longleftrightarrow\; \lnot\,\mathrm{Nonempty}(\mathrm{OffCriticalZero}). \tag{37.6}$$
+
+Циркулярность
 сохраняется, пока anchor свободен. Сборка с настоящим извлечением репо
 (`RH_of_concreteArithmeticFront`) готова — но кормить её пока нечем.
 

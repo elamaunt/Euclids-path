@@ -44,13 +44,17 @@ Let us introduce the Liouville function and its summatory function.
 > where $\Omega(n)$ is the number of prime factors of $n$ *counted with multiplicity* (for instance $\Omega(12)=\Omega(2^2\cdot 3)=3$).
 > In mathlib this is `ArithmeticFunction.liouville`, and $\Omega(n)$ is `cardFactors n`.
 
-> **Definition 31.2** (summatory function). $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
+> **Definition 31.2** (summatory function).
+>
+> $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
 > In Lean: `def L (x : ℕ) : ℤ := ∑ n ∈ Finset.Icc 1 x, liouville n`.
 
 The function $\lambda$ is completely multiplicative and takes values $\pm 1$; $L(x)$ is an alternating
 sum, the accumulated imbalance between the numbers with an even and an odd number of prime factors up to $x$.
 
-> **Definition 31.3** (`LiouvilleBound`). $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
+> **Definition 31.3** (`LiouvilleBound`).
+>
+> $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
 > In Lean this is `LiouvilleBound : Prop`. In substance: a sum of $\pm 1$ of length $x$ behaves like
 > a random walk — growing no faster than $\sqrt{x}$ (up to $x^\varepsilon$), not linearly.
 
@@ -64,7 +68,9 @@ The supporting fact is a well-known theorem of analytic number theory (mathlib d
 introduce it as an **explicit input-bridge** — an input, or gate, is an honestly named unproven statement
 (see the [glossary](GLOSSARY.md)) — rather than postulating RH):
 
-> **Definition 31.5** (the Liouville bridge $H_L$, `LiouvilleRHBridge`). $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
+> **Definition 31.5** (the Liouville bridge $H_L$, `LiouvilleRHBridge`).
+>
+> $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
 > In Lean — `LiouvilleRHBridge : Prop`.
 
 This is the classical equivalence: the bound $L(x)=O(x^{1/2+\varepsilon})$ is equivalent to the absence of zeros

@@ -68,7 +68,7 @@ It is natural to ask: does reasoning by contradiction supply a new lever — per
 
 | Route | Where the open part lives | Why this is a red line |
 |---|---|---|
-| **Counting** (union bound over primes) | $2\!\sum_{A<p\le\sqrt X} 1/p < \text{density}$ | By Mertens $\sum 1/p \to \infty$, so the union bound *never* beats the carrier; the fix goes only through Brun's inclusion–exclusion, and its main term $\prod(1-2/p)\cdot|\Omega|$ together with remainder control on a real interval is Bombieri–Vinogradov, i.e. the distribution of primes. |
+| **Counting** (union bound over primes) | $2\!\sum_{A<p\le\sqrt X} 1/p < \text{density}$ | By Mertens $\sum 1/p \to \infty$, so the union bound *never* beats the carrier; the fix goes only through Brun's inclusion–exclusion, and its main term $\prod(1-2/p)\cdot\lvert\Omega\rvert$ together with remainder control on a real interval is Bombieri–Vinogradov, i.e. the distribution of primes. |
 | **EPMI** (infinite descent) | "manufacture a total descent chain $H:\mathbb N\to\mathbb N$" | Inverts the burden: to apply `no_infinite_descent` one needs a *perpetual* descent chain, and "the covering is total" is exactly what must be refuted, not assumed. An orphan branch, resting on nothing on the live line. |
 | **Four-corner** (this file) | the conjunct "strict real four-corner" in `H` | The model$\to$reality transfer (`real_four_corner_of_remainder`): the harness `tools/RESULTS_remainder.md` shows the remainder is $\sim 4\times$ the model while the model's gap melts away — the model four-corner does *not* transfer distribution-free. This is parity. |
 

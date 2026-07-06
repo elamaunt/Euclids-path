@@ -27,11 +27,13 @@ The observation we formalise says the opposite. The cost of a repetition grows n
 ## Defining the cost of a repetition
 
 By the catalogue of §23, the cost of repeating an atom of height $h$ at active scale $A$ is subject to the *cubic threshold*
+
 $$
 h\,(1 + 6h) < \frac{A}{12}.
 $$
 
 Expanding the brackets and passing to the honest integer form (with no root extraction, so as to stay in $\mathbb{N}$ and lose no rounding rigour), we obtain the input hypothesis
+
 $$
 12\,\bigl(h + 6h^2\bigr) < A.
 \tag{7.1}
@@ -44,6 +46,7 @@ It is natural to expect (and below we prove it) that the quadratic term dominate
 ## Theorem: the cubic squeeze
 
 **Theorem 7.1** (`cubic_squeeze`). Let $A, h \in \mathbb{N}$ and suppose $(7.1)$ holds, that is, $12(h + 6h^2) < A$. Then
+
 $$
 72\,h^2 < A.
 \tag{7.2}
@@ -54,10 +57,12 @@ $$
 *Why this is true.* The key is that $12(h + 6h^2) = 12h + 72h^2$ and both summands are non-negative. The strict inequality $(7.1)$ is only strengthened by removing one of the positive summands on the left: $72h^2 \le 12h + 72h^2 < A$. This is exactly why the proof is elementary — all the work is done by expanding the brackets, and `omega` merely closes the trivial linear arithmetic.
 
 *What it means.* The inequality $(7.2)$ is equivalent (in the real-valued interpretation) to the bound
+
 $$
 h < \sqrt{\frac{A}{72}}.
 \tag{7.3}
 $$
+
 The height of the repetition cannot exceed $\sqrt{A/72}$.
 
 **Conclusion.** The valid segment of the train has length of order $\sqrt{A}$, not $A$ and certainly not $\infty$. The affine line of indices is infinite, but the stretch of it the engine can actually traverse is compressed to the square root of the active scale. This is the *cubic squeeze* — the cubic cost squeezes the quadratic result into a square root.
@@ -67,6 +72,7 @@ The height of the repetition cannot exceed $\sqrt{A/72}$.
 ## Corollary: the repetition is even shorter
 
 **Theorem 7.2** (`cubic_squeeze_sq_lt`). Under the same input $(7.1)$ we have
+
 $$
 h^2 < A, \qquad\text{and a fortiori}\qquad h < A.
 \tag{7.4}

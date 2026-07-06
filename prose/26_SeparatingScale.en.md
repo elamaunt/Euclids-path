@@ -25,9 +25,11 @@ $$
 where `X_A` is the upper bound on the centre `m` on the layer under consideration. Alongside this we have the primorial $P_A = \prod_{p \le A} p$, which defines the coarse passport of the active factor as the residue $a \bmod P_A$.
 
 > **Definition 26.1** (separating scale). We say the scale is *separating* (a separating scale) if the primorial outruns the carrier bound:
+>
 > $$
 > 6X_A + 1 < P_A . \tag{26.1}
 > $$
+>
 > Put differently — and this is the central definition — it is the condition under which a legal factor is guaranteed to be *smaller* than the passport's modulus.
 
 The intuition: the passport $a \bmod P_A$ is coarse as a map on all natural numbers, but on the legal region it sees the factor in full, provided the factor itself does not reach `P_A`. It is precisely the separating scale that secures `a < P_A`, turning coarse data into exact data *without changing the passport itself*.

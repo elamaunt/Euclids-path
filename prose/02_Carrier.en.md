@@ -37,6 +37,7 @@ $$
 It is natural to conjecture that precisely this fixed difference governs all joint divisibility of the sides. Let us formalise this.
 
 **Definition 2.1** (common divisor of the sides). A prime (or, in the general formulation, any natural number) $p$ is called a *common divisor of the sides* of the centre $m$ if simultaneously
+
 $$
 p \mid (6m-1) \qquad \text{and} \qquad p \mid (6m+1).
 $$
@@ -48,13 +49,17 @@ The chapter's first theorem asserts that every such $p$ is forced to divide two.
 The meaning of the statement: a common divisor of the sides cannot be larger than their difference permits. The proof is transparent and rests on one identity and one divisibility property.
 
 *Anatomy of the proof.* The key step is to rewrite the larger side through the smaller one:
+
 $$
 6m + 1 = (6m - 1) + 2 . \tag{2.2}
 $$
+
 In Lean this equality is closed by the tactic `omega` (linear arithmetic over $\mathbb{N}$, accounting for truncated subtraction under $m \ge 1$). After the substitution, the hypothesis $p \mid (6m+1)$ turns into
+
 $$
 p \mid \big((6m-1) + 2\big).
 $$
+
 Now a basic divisibility property applies: if $p$ divides a sum and divides one of the summands, it divides the other as well. In the Lean 4 kernel this is `Nat.dvd_add_right`: from $p \mid (6m-1)$ follows the equivalence $p \mid \big((6m-1)+2\big) \iff p \mid 2$, and the left-hand side is already in our hands. Hence $p \mid 2$. $\qquad\blacksquare$
 
 > **Note.** Neither of the numbers $6m\pm1$ enters this proof in any essential way — only their *difference* does the work. The same reasoning would give: any common divisor of two numbers divides their difference, and therefore $\gcd(6m-1, 6m+1) \mid 2$. The formulation via $p \mid 2$ is chosen because what interests us later is precisely the behaviour of prime divisors rather than the numerical value of the $\gcd$; but in substance the theorem is exactly the statement $\gcd(6m-1,\,6m+1) \mid 2$.

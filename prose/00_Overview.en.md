@@ -32,9 +32,11 @@ At the summit of the whole construction stands a single statement — `higherEne
 green, with no axiom at all.
 
 **Theorem 0.1** (`higherEnergyIncompatibility_main`). The five faces meet in a single conjunction:
+
 $$
 \bigl(\mathsf{KnowsCause}\Rightarrow\mathsf{Engine}\bigr)\ \wedge\ \neg\,\mathsf{KnowsCause}\ \wedge\ W_{\mathrm{fin}}\ \wedge\ W_{\infty}\ \wedge\ \bigl(\neg\,\mathsf{Engine}\wedge\mathsf{Step00}\Rightarrow \#\{\text{twin lowers}\}=\infty\bigr).\tag{0.1}
 $$
+
 Here $\mathsf{KnowsCause}\Rightarrow\mathsf{Engine}$ — internal knowledge of the first cause builds a
 concrete Euclidean engine; $\neg\,\mathsf{KnowsCause}$ — the cause is unknowable from inside
 (`cause_unknowable`); $W_{\mathrm{fin}}$ — for any sieving system $S$, scale $A$, certificate and class
@@ -69,9 +71,11 @@ is the corollary below.
 
 **Corollary 0.2** (`higherEnergyIncompatibility_twins`). Instantiating the fifth face of (0.1) by the
 decree `step00FirstCause` yields the form-unconditional
+
 $$
 \#\{\text{twin lowers}\}=\infty \qquad(\texttt{TwinLowers.Infinite}).\tag{0.2}
 $$
+
 🟡: the fifth face, instantiated by the decree `step00FirstCause` (a decree is the intentional
 acceptance of a law by axiom rather than by proof; see the [glossary](GLOSSARY.md)). The core above it
 stays green, but the corollary itself is conditional — it is **not** a proof of the twin conjecture.

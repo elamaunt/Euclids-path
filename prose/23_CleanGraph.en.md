@@ -15,9 +15,11 @@ In this chapter we bring order to the notion of a halt — and discover a hidden
 ## The "sink-is-clean" gap
 
 Let us begin with an observation about a concrete failure. The descent audit (`RESULTS_descent_gap`) revealed that a Euclidean descent from a clean start can slip through to a small twin centre that is itself *not* clean. The canonical example:
+
 $$
 m = 18 \;\longrightarrow\; (6\cdot18-1,\;6\cdot18+1) = (107,\,109).
 $$
+
 The pair $(107,109)$ consists of genuine twin primes, but the centre $m=18$ is divisible by the primes $2,3$, which are certainly $\le A$, and hence $18 \notin \Omega_A$ (not old-free).
 
 To such a centre the theorem `clean_twin_above` is **inapplicable**: its premise demands cleanliness of the sides with respect to all $q \le A$, whereas here $6m\pm1$, though prime, sit on a "contaminated" centre. The formally proven anchoring "the sink lies above $M_0$" collapses precisely because we allowed the descent to finish at an unclean centre and still called that a sink.
@@ -33,15 +35,19 @@ A small unclean twin such as $18$ is then honestly classified as boundary, not a
 Fix a sieving threshold $A$ and work with centres $m \in \mathbb{N}$ (sides $6m-1$, $6m+1$). The basic property is inherited from [22](22_Residuals.md), but here we take its natural-number form.
 
 **Definition 23.1** (clean centre). A centre $m$ is called *clean* with respect to $A$ if no prime $q \le A$ divides either side:
+
 $$
 \mathrm{Clean}\,A\,m \;:\equiv\; \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).
 $$
+
 In Lean this is `Clean` (the ℕ-version; its ℤ-twin is `CleanZ` from `Residuals`, and we shall exhibit the bridge between them below).
 
 **Definition 23.2** (active edge). An edge $m \to n$ is *active* if $n$ is a smaller target centre of the descent:
+
 $$
 \mathrm{ActiveEdge}\,A\,m\,n \;:\equiv\; \top \ \land\ n < m .
 $$
+
 In `ActiveEdge` the carrier is abstract: the concrete mechanism (a composite side $6m+\sigma = a\,(6n+\varepsilon)$ with $a > A$) is delegated to `OldPeel`/cofactor and to `active_descent_height` from [22](22_Residuals.md); all that matters here is that an active edge carries a strict drop in height, $n < m$.
 
 The distinction within active edges is the subject of this chapter:
@@ -57,6 +63,7 @@ A boundary exit is an edge leaving the clean graph. It is *not* a sink: it is an
 The first theorem is a complete and unconditional classification of every active edge leaving a clean centre.
 
 **Theorem 23.5** (`active_edge_clean_or_boundary`)**.** If $m$ is clean and there is an active edge $m \to n$, then this edge is either clean or a boundary exit:
+
 $$
 \mathrm{Clean}\,A\,m \ \land\ \mathrm{ActiveEdge}\,A\,m\,n \;\Longrightarrow\; \mathrm{CleanActiveEdge}\,A\,m\,n \ \lor\ \mathrm{BoundaryExit}\,A\,m\,n . \tag{23.1}
 $$
@@ -74,12 +81,15 @@ It is this dichotomy that lets us rigorously separate the "interior work" of the
 Now for the correct notion of a halt.
 
 **Definition 23.6** (clean sink). $m$ is a *clean sink* if $m$ is clean and has no active edge at all:
+
 $$
 \mathrm{CleanSink}\,A\,m \;:\equiv\; \mathrm{Clean}\,A\,m \ \land\ \neg\,\exists n,\ \mathrm{ActiveEdge}\,A\,m\,n .
 $$
+
 The key phrase is "no edge at all": an unclean target reached by a boundary edge does *not* count as a sink. A descent that runs into $18 \to (107,109)$ *does* have an active edge (the transition exists), so it is not a clean sink but a boundary exit. Thus the "sink-is-clean" gap is eliminated at the level of the definition.
 
 **Theorem 23.7** (`clean_sink_is_twin`, the corrected Lemma 3.1)**.** If $m$ is clean, both sides $6m-1,\,6m+1 \ge 2$ and both $< A^2$, and $m$ is a clean sink, then $m$ is a twin centre:
+
 $$
 2 \le 6m-1,\ \ 2 \le 6m+1,\ \ 6m-1 < A^2,\ \ 6m+1 < A^2,\ \ \mathrm{CleanSink}\,A\,m \;\Longrightarrow\; \mathrm{TwinCenterZ}\,m . \tag{23.2}
 $$
@@ -95,6 +105,7 @@ Old-free below $A^2 \Rightarrow$ prime; parity and divisibility by $3$ are eleme
 Let us merge the edge dichotomy and the notion of sink into a single classification.
 
 **Theorem 23.8** (`clean_center_outcome`, §5)**.** For every clean centre $m$, exactly one of four holds:
+
 $$
 \mathrm{TwinCenterZ}\,m
 \ \lor\ (\exists n,\ \mathrm{CleanActiveEdge}\,A\,m\,n)
@@ -113,14 +124,17 @@ The theorem's significance is that it *correctly excludes* the unclean small twi
 It remains to tie the correct halt to height — the very thing for which the restriction "sink only in the clean graph" was introduced.
 
 **Theorem 23.9** (`clean_sink_above`, §4)**.** If $6M_0+1 < A$, $m \ge 1$, $m$ is clean and a twin, then $m > M_0$:
+
 $$
 6M_0+1 < A,\ \ 1 \le m,\ \ \mathrm{Clean}\,A\,m,\ \ \mathrm{TwinCenterZ}\,m \;\Longrightarrow\; M_0 < m . \tag{23.4}
 $$
 
 This is a bridge to the already-proven `Residuals.clean_twin_above`. The only work here is transporting ℕ-divisibility of the sides to ℤ-divisibility: the equalities
+
 $$
 \bigl((6m-1 : \mathbb{N}) : \mathbb{Z}\bigr) = 6m-1, \qquad \bigl((6m+1 : \mathbb{N}) : \mathbb{Z}\bigr) = 6m+1
 $$
+
 (the first requires $1 \le 6m$ for a correct `Nat.cast_sub`) allow us to rewrite the premise `hcl` from natural-number cleanliness into integer cleanliness, after which `clean_twin_above` fires.
 
 Substantively it says: the prime $6m-1$ must be $> A$ (otherwise an old prime would divide its own side, violating cleanliness), and $A > 6M_0+1$, whence $6m-1 > 6M_0+1$ and $m > M_0$. This implication is now *safe* precisely because we have guaranteed the cleanliness of $m$: at the unclean centre $18$ it would not apply — and we no longer try to apply it there.

@@ -31,10 +31,13 @@ We begin with an observation about the structure of rank (on rank as the "height
 **The law of exclusivity.** No $p>2$ divides both sides: the classes $p\mid 6m-1$ and $p\mid 6m+1$ are incompatible. This is `no_large_shared_divisor` from [12](12_FourCorner.md).
 
 From this it is natural to posit that the contribution of a prime $p$ to the rank generating function is a factor
+
 $$
 G_p(x,y)\;=\;c_p + a_p\,x + b_p\,y,\qquad a_p=b_p\ (\text{$\pm$-symmetry}),\ \textbf{no } xy\ \text{term}\ (\text{exclusivity}),
 $$
+
 where $x$ marks a divisor of the lower side, $y$ of the upper, and the absence of $xy$ is the direct reflection of the fact that "both at once" is impossible. The full generating function is the product over the primes of the layer:
+
 $$
 G(x,y)\;=\;\prod_{p}\bigl(c_p + a_p x + a_p y\bigr).
 $$
@@ -42,10 +45,13 @@ $$
 > **Note.** It is precisely the absence of the $xy$ term that is the heart of the whole argument. In the general (non-exclusive) model the factor would be $c+ax+by+dxy$, and the sign of the four-corner would not be forced. Exclusivity zeroes out $d$ at *every* prime, not merely on average; this is a Diophantine property, not a statistical one.
 
 The key **self-similarity**: the factor $G_p$ depends on $x$ and $y$ only through the symmetric combination, so the product $G(x,y)$ is a function of a single variable $s=x+y$. In the equilibrium (homogeneous) model, where all $n$ primes of the layer share a common weight $w$ and a common constant term normalised to one, this gives
+
 $$
 G(x,y)\;=\;\prod_{k=1}^{n}\bigl(1 + w(x+y)\bigr)\;=\;\bigl(1+w\,s\bigr)^{n},\qquad s=x+y.\tag{13.1}
 $$
+
 The expansion in $s$ is the Maclaurin binomial:
+
 $$
 (1+ws)^n=\sum_{k\ge0}\binom{n}{k}w^k\,s^k .
 $$
@@ -53,11 +59,13 @@ $$
 ## From the generating function to the counts
 
 The count $N_{ij}$ — the coefficient of $x^i y^j$ — is extracted from the coefficient $Q_k$ of $s^k$ by distributing the exponents between $x$ and $y$:
+
 $$
 N_{ij}\;=\;Q_{i+j}\cdot\binom{i+j}{i},\qquad Q_k=\binom{n}{k}w^k .
 $$
 
 The factor $\binom{i+j}{i}$ is the number of ways to scatter $i+j$ chosen primes over $i$ lower and $j$ upper positions; this is exactly the "choice-within-choice" identity that will become the core of the Lean proof below. Substituting the corners of the rectangle $\{0,3\}\times\{0,3\}$, we obtain
+
 $$
 \begin{aligned}
 N_{00}&=Q_0\binom{0}{0}=1,\\
@@ -67,10 +75,13 @@ N_{33}&=Q_6\binom{6}{3}=20\,\binom{n}{6}\,w^6,
 $$
 
 where $\binom{6}{3}=20$ is the very constant that in [12](12_FourCorner.md) we denoted $R_{\mathrm{CRT}}=20\,e_6/e_3^2$. The four-corner $N_{00}N_{33}\le N_{03}N_{30}$ becomes
+
 $$
 1\cdot\bigl(20\,\tbinom{n}{6}w^6\bigr)\;\le\;\bigl(\tbinom{n}{3}w^3\bigr)^2,
 $$
+
 and after cancelling $w^6$ — a purely binomial inequality:
+
 $$
 \boxed{\,20\,\binom{n}{6}\le\binom{n}{3}^2\,.}\tag{13.2}
 $$
@@ -78,9 +89,11 @@ $$
 ## The binomial four-corner: `four_corner_binom`
 
 **Definition 13.1** (model four-corner). By the model four-corner we mean the inequality
+
 $$
 20\,\binom{n}{6}\le\binom{n}{3}^2\qquad\text{for all }n\in\mathbb N,
 $$
+
 understood over $\mathbb N$ (for $n<6$ the left-hand side is trivially zero).
 
 **Theorem 13.2** (`four_corner_binom`). 🟢 For all $n\in\mathbb N$, $20\,\binom{n}{6}\le\binom{n}{3}^2$.
@@ -89,22 +102,29 @@ theorem four_corner_binom (n : ℕ) : 20 * n.choose 6 ≤ (n.choose 3) ^ 2
 ```
 
 The proof is elementary and rests on the **"choice-within-choice" identity**. In Mathlib this is `Nat.choose_mul`:
+
 $$
 \binom{n}{6}\binom{6}{3}=\binom{n}{3}\binom{n-3}{3}.\tag{13.3}
 $$
+
 On the left we choose $6$ primes out of $n$, then $3$ of those six (for the upper side); on the right, we choose $3$ out of $n$ straight away, then $3$ more out of the remaining $n-3$. Both ways count the same thing — an ordered pair of disjoint triples — hence they are equal. Substituting $\binom{6}{3}=20$ (`decide` in Lean) and $6-3=3$, we obtain
+
 $$
 20\,\binom{n}{6}=\binom{n}{3}\binom{n-3}{3}.
 $$
 
 What remains is the **monotonicity** of the binomial coefficient in its upper argument, `Nat.choose_le_choose`:
+
 $$
 \binom{n-3}{3}\le\binom{n}{3}\quad(\text{since }n-3\le n),
 $$
+
 whence
+
 $$
 20\,\binom{n}{6}=\binom{n}{3}\binom{n-3}{3}\le\binom{n}{3}\binom{n}{3}=\binom{n}{3}^2.
 $$
+
 In Lean the step `_ ≤ _` is closed by the tactic `gcongr` (monotonicity of multiplication), the final equalities by `ring`.
 
 > **Note.** What this inequality *means*. The corners $N_{00}$ and $N_{33}$ (both ranks minimal / both maximal) cannot together outweigh the mixed corners $N_{03},N_{30}$. This is precisely **negative association** of the ranks: high divisibility of one side repels high divisibility of the other. The cause is exclusivity: a triple of divisors "occupied" by the upper side is unavailable to the lower one, which is exactly what the transition $\binom{n}{3}\to\binom{n-3}{3}$ expresses (the second side has three fewer candidates). We assumed nothing about *how often* primes divide the sides — only that they divide them mutually exclusively.
@@ -133,15 +153,19 @@ theorem four_corner_binom_strict {n : ℕ} (hn : 7 ≤ n) :
 ```
 
 The proof strengthens the monotonicity to a *strict inequality* via Pascal's identity `Nat.choose_succ_succ`:
+
 $$
 \binom{n}{3}=\binom{n-1}{2}+\binom{n-1}{3}.
 $$
 
 For $n\ge7$ we have $\binom{n-1}{2}>0$ (`Nat.choose_pos`), so together with the monotonicity $\binom{n-3}{3}\le\binom{n-1}{3}$ we obtain
+
 $$
 \binom{n-3}{3}\le\binom{n-1}{3}<\binom{n-1}{2}+\binom{n-1}{3}=\binom{n}{3}.
 $$
+
 Since $\binom{n}{3}>0$ for $n\ge7$, multiplying the strict inequality $\binom{n-3}{3}<\binom{n}{3}$ by $\binom{n}{3}$ (`mul_lt_mul_of_pos_left`) gives
+
 $$
 20\,\binom{n}{6}=\binom{n}{3}\binom{n-3}{3}<\binom{n}{3}^2 .
 $$

@@ -30,9 +30,11 @@
 зелёное, без всякой аксиомы.
 
 **Теорема 0.1** (`higherEnergyIncompatibility_main`). Пять граней смыкаются в одну конъюнкцию:
+
 $$
 \bigl(\mathsf{KnowsCause}\Rightarrow\mathsf{Engine}\bigr)\ \wedge\ \neg\,\mathsf{KnowsCause}\ \wedge\ W_{\mathrm{fin}}\ \wedge\ W_{\infty}\ \wedge\ \bigl(\neg\,\mathsf{Engine}\wedge\mathsf{Step00}\Rightarrow \#\{\text{twin lowers}\}=\infty\bigr).\tag{0.1}
 $$
+
 Здесь $\mathsf{KnowsCause}\Rightarrow\mathsf{Engine}$ — знание первопричины изнутри строит конкретный
 евклидов двигатель; $\neg\,\mathsf{KnowsCause}$ — причина изнутри непознаваема (`cause_unknowable`);
 $W_{\mathrm{fin}}$ — для любой просеивающей системы $S$, масштаба $A$, сертификата и класса $B$: если
@@ -65,9 +67,11 @@ $W_{\mathrm{fin}}$ — для любой просеивающей системы
 
 **Следствие 0.2** (`higherEnergyIncompatibility_twins`). Инстанцируя пятую грань (0.1) декретом
 `step00FirstCause`, получаем безусловное по форме
+
 $$
 \#\{\text{twin lowers}\}=\infty \qquad(\texttt{TwinLowers.Infinite}).\tag{0.2}
 $$
+
 🟡: пятая грань, инстанциированная декретом `step00FirstCause` (декрет — намеренное принятие закона
 аксиомой, а не доказательством; см. [словарь](GLOSSARY.md)). Ядро над ней остаётся зелёным, но само
 следствие условно — это **не** доказательство гипотезы близнецов.

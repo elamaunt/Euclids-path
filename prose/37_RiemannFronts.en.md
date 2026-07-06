@@ -91,7 +91,9 @@ since $T$ would build a factory, and a factory is unconditionally empty (the eng
 And the main point,
 
 **Theorem 37.4** (`coherentTwoTransportBridge_iff_RH`) 🟢. A coherent two-transport bridge is equivalent to RH *verbatim*:
-$$\mathrm{CoherentTwoTransportBridge} \;\Longleftrightarrow\; \mathrm{RiemannHypothesis}. \tag{37.4}$$ The decomposition is a map of obligations, not a non-circular path;
+$$\mathrm{CoherentTwoTransportBridge} \;\Longleftrightarrow\; \mathrm{RiemannHypothesis}. \tag{37.4}$$
+
+The decomposition is a map of obligations, not a non-circular path;
 the audit gates `zero_anchored`/`non_circular` are free (`regateTrivially` regates them into `True`) —
 markers, not checks.
 
@@ -109,7 +111,9 @@ Both inputs of the front — `bridge_iff` and `impossible_iff` — are one and t
 arithmetic question, split by polarity under the zero hypothesis, and
 
 **Theorem 37.6** (`front_pair_iff_no_zero`) 🟢. The pair of inputs (bridge and impossibility) is jointly satisfiable if and only if there are no zeros:
-$$\big(\mathrm{ArithmeticTwoTransportBridge} \wedge \mathrm{ArithmeticTwoTransportImpossible}\big) \;\Longleftrightarrow\; \lnot\,\mathrm{Nonempty}(\mathrm{OffCriticalZero}). \tag{37.6}$$ The circularity
+$$\big(\mathrm{ArithmeticTwoTransportBridge} \wedge \mathrm{ArithmeticTwoTransportImpossible}\big) \;\Longleftrightarrow\; \lnot\,\mathrm{Nonempty}(\mathrm{OffCriticalZero}). \tag{37.6}$$
+
+The circularity
 persists as long as the anchor is free. The assembly with genuine extraction from the repository
 (`RH_of_concreteArithmeticFront`) is ready — but there is nothing to feed it yet.
 

@@ -33,6 +33,7 @@ sieve-to-the-root this entails the primality of both sides; see [10](10_NonCover
 
 Coarsen the ranks to the binary feature "zero / nonzero" and introduce the $2\times2$ tally matrix over
 the pair $(\,[r_-{>}0]\,,[r_+{>}0]\,)$:
+
 $$
 \begin{array}{c|cc}
  & r_+=0 & r_+>0\\\hline
@@ -55,9 +56,11 @@ bound on twin centers within a block.
 It is natural to assume that, to first approximation, the spoilage indicators of the left and right sides
 are *independent*. If the probabilities $\Pr[r_->0]=\pi_-$ and $\Pr[r_+>0]=\pi_+$ were independent, the tally
 matrix $N_{ij}$ would have **rank 1**:
+
 $$
 N_{ij}\ \approx\ T\cdot u_i\, v_j,\qquad u=(1-\pi_-,\ \pi_-),\quad v=(1-\pi_+,\ \pi_+),
 $$
+
 where `T` is the total number of centers. For a rank-1 matrix all four $2\times2$ minors vanish; in
 particular, the exact equality holds
 $$N_{00}\,N_{33}\ =\ N_{03}\,N_{30}.\tag{12.2}$$
@@ -86,9 +89,11 @@ exclusive: `p` divides either `6m-1`, or `6m+1`, or nothing — but *never both*
 
 From this the per-prime generating function of the ranks is a **product over primes with no cross
 term**:
+
 $$
 \prod_{2<p\le A}\big(c_p+a_p\,x+b_p\,y\big),\qquad a_p=b_p\ (\pm\text{ symmetry}),\ \textbf{no term }xy,
 $$
+
 where `x` marks the contribution to `r_-`, `y` — to `r_+`, and the absence of `xy` is a direct consequence
 of "both at once" being forbidden.
 

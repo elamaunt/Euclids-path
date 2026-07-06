@@ -133,6 +133,7 @@ The three elementary links assemble into one unconditional theorem — the heart
 
 **Theorem 21.7** (`regeneration_dichotomy`)**.** *For every centre $t$ and threshold $A$, exactly one
 of the following outcomes holds:*
+
 $$
 \mathrm{Twin}(t)
 \ \lor\

@@ -17,9 +17,11 @@ Lean source: `EuclidsPath/Engine/Cycle.lean` (`factor_repeat_rigidity`, `cross_s
 Let us recall the configuration inherited from the carrier of [02. Carrier of two](02_Carrier.md) and the descent of [04. Descent](04_Descent.md).
 
 The centres of the engine (the engine is the forbidden infinite descent, see the [glossary](GLOSSARY.md)) along a single affine line form an arithmetic progression: the value "scanned" by a prime divisor at the point with coordinate $n$ has the form
+
 $$
 V(n) = N_0 + q\cdot n, \tag{9.1}
 $$
+
 where $N_0$ is the base offset (the shift of the line) and $q$ is the step of the train (the common multiplier of the coordinate). This is a linear train in the programme's terminology: a single line in $\mathbb{Z}$, parametrised by an integer $n$, along which we ask which primes divide it and at which centres.
 
 It is natural to expect that a "large" divisor, once used, cannot repeat cheaply: if it divides $V(n)$ at two distinct centres, those centres are not free relative to each other. It is precisely this statement that we make precise.
@@ -29,27 +31,34 @@ It is natural to expect that a "large" divisor, once used, cannot repeat cheaply
 ## Definition (repeat rigidity)
 
 **Definition 9.1** (repeat rigidity). Let a prime (or, more broadly, an integer) $\ell$ divide the values of the train at two centres $n_1, n_2$:
+
 $$
 \ell \mid N_0 + q\,n_1,\qquad \ell \mid N_0 + q\,n_2,
 $$
+
 and let $\ell$ be coprime to the step, $\mathrm{IsCoprime}(\ell,q)$. We say that the repeat of the divisor $\ell$ is **rigid** if the difference of the centres is a multiple of $\ell$:
+
 $$
 \ell \mid (n_2 - n_1).
 $$
+
 In other words, the set of centres at which $\ell$ "fires" is itself an arithmetic progression with step $\ell$ in the coordinate $n$.
 
 ## The repeat-rigidity theorem
 
 **Theorem 9.2** (`factor_repeat_rigidity`). For integers $\ell, q, N_0, n_1, n_2$
+
 $$
 \ell \mid N_0 + q\,n_1 \ \wedge\ \ell \mid N_0 + q\,n_2 \ \wedge\ \mathrm{IsCoprime}(\ell,q)
 \ \Longrightarrow\ \ell \mid (n_2 - n_1). \tag{9.2}
 $$
 
 *Walking through the proof.* It is elementary and fully constructive; in Lean it takes three lines. Subtracting one divisibility condition from the other, we find that $\ell$ divides the difference of the train's values, while the base offset $N_0$ cancels:
+
 $$
 (N_0 + q\,n_2) - (N_0 + q\,n_1) = q\,(n_2 - n_1),
 $$
+
 whence $\ell \mid q\,(n_2 - n_1)$. Now coprimality goes to work: $\ell$ divides the product $q\cdot(n_2-n_1)$ but shares no factors with $q$, so the entire "divisibility" is carried over to the second factor — $\ell \mid (n_2 - n_1)$. In Lean this step is exactly `hcop.dvd_of_dvd_mul_left hd` (Euclid's lemma in `IsCoprime` form).
 
 *Why this is true.* The key is the cancellation of $N_0$ under subtraction. The linearity of the train means that the divisibility $\ell \mid V(n)$ is a condition on $n$ modulo $\ell$: $q\,n \equiv -N_0 \pmod{\ell}$. Since $q$ is invertible modulo $\ell$ (coprimality), this equation has a *unique* residue class of solutions $n \bmod \ell$. Two solutions $n_1, n_2$ therefore lie in the same class — their difference is a multiple of $\ell$. The condition $\gcd(\ell,q)=1$ is not a technicality here: without it $q$ is non-invertible, the class of solutions may be empty or "smeared", and rigidity collapses.
@@ -63,26 +72,33 @@ whence $\ell \mid q\,(n_2 - n_1)$. Now coprimality goes to work: $\ell$ divides 
 Repeat rigidity describes a single linear train. But a link of the engine is the Euclidean equation $XY - ZW = 2$ (the rank-$(3,3)$ form `abv + 2 = qrs`, see [05. Irreversibility](05_Irreversibility.md)), which has two sides, and the constant $+2$ lives precisely in the coupling between them. The second law of this chapter tracks how divisibility is transported through the two from one side of the star rectangle to the opposite one.
 
 **Definition 9.3** (fuel-law, divisibility form). Consider a prime $p$ dividing linear forms on opposite sides, differing by exactly the constant $2$ (the legacy of the $+2$ of the det-form). In its pure form: suppose that for parameters $a, c, \alpha, \beta$ we have
+
 $$
 p \mid a\,\alpha + c,\qquad p \mid a\,\beta + c - 2.
 $$
+
 The first is $p$ landing on the side $\alpha$; the second, on the opposite side $\beta$, shifted by $-2$ by the two of the equation.
 
 **Theorem 9.4** (`cross_side_fuel`). Under these conditions
+
 $$
 p \mid \bigl(a\,(\beta - \alpha) - 2\bigr). \tag{9.3}
 $$
 
 *Walking through the proof.* The mechanics are the same as for rigidity: subtract and cancel the free term $c$. Namely,
+
 $$
 (a\,\beta + c - 2) - (a\,\alpha + c) = a\,(\beta - \alpha) - 2,
 $$
+
 and the left-hand side is divisible by $p$ as a difference of two multiples of $p$. In Lean this is `dvd_sub h2 h1`, rewritten via the `ring` identity. No additional coprimality is needed here — the two does not cancel and remains explicitly on the right-hand side.
 
 *Why this is true, and what it means.* Unlike Theorem 9.2 (`factor_repeat_rigidity`), where after cancellation a "clean" $q\,(n_2-n_1)$ remained and the Euclidean transfer applied, here after cancelling $c$ a hard trace of $-2$ remains. Hence Theorem 9.4 (`cross_side_fuel`) yields not the congruence $a(\beta-\alpha)\equiv 0$ but the *shifted* congruence
+
 $$
 a\,(\beta - \alpha) \equiv 2 \pmod{p}.
 $$
+
 The two of the Euclidean equation "travels" between the sides: for a divisor $p$ to stand on both sides of the star rectangle at once, it must reconcile the cross-side difference $\beta-\alpha$ with $2/a \bmod p$. This is the transport of the $+2$ fuel across the sides (the transport mechanism is dissected in detail in [11. Block core](11_TwoTransport.md) and synthesised as "the first law — conservation of the two").
 
 **Conclusion.** Geometrically (see the doc-string in `Cycle.lean`) this is a form of the condition $p \mid 2 + a\,q\,(\beta-\alpha)$ on the det-form of the star rectangle: two opposite sides cannot "catch" the same $p$ independently — their positions are tied through the two.

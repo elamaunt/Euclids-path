@@ -15,9 +15,11 @@ But a model is not reality. In the present chapter we honestly separate these tw
 ## Model and reality: two systems of accounts
 
 Let us recall the setting. We work with rank counts `N_{ij}` — the number of carrier centres of a given layer for which the side `6m-1` has rank (number of distinguishing small divisors) `i` and the side `6m+1` has rank `j`. The four-corner is the inequality
+
 $$
 N_{00}\, N_{33} \;\le\; N_{03}\, N_{30}, \tag{14.1}
 $$
+
 which expresses negative association of the ranks: "both high" is rarer than "crosswise".
 
 We have **two** realisations of these counts.
@@ -29,9 +31,11 @@ We have **two** realisations of these counts.
 The model counts we have **proven** elementarily; the real ones are what we actually need. The difference between them is the only thing standing between the machine-verified route and the twin conjecture.
 
 > **Definition 14.3** (sieve remainder). For each corner `(i,j)` set
+>
 > $$
 > e_{ij} \;:=\; N_{ij}^{real} - N_{ij}^{CRT}. \tag{14.2}
 > $$
+>
 > The remainder `e_{ij}` is an integer of **arbitrary sign** (reality may either undercount or overshoot the model).
 
 The key disciplinary requirement: `e_{ij} ∈ ℤ` with no assumptions about sign or smallness. All we allow ourselves to do with the remainder is ring algebra over `ℤ`. No analysis, no distribution, no sieve estimates.
@@ -41,9 +45,11 @@ The key disciplinary requirement: `e_{ij} ∈ ℤ` with no assumptions about sig
 For brevity, denote the model counts of the four corners by `m00 = N_{00}^{CRT}`, `m03, m30, m33` and the corresponding remainders by `e00, e03, e30, e33`. The real count of each corner is `m + e`. Substitute this into the real four-corner and expand.
 
 > **Theorem 14.4** (`real_four_corner_decomp`). For any integers `m00, m03, m30, m33, e00, e03, e30, e33`
+>
 > $$
 > (m_{00}+e_{00})(m_{33}+e_{33}) - (m_{03}+e_{03})(m_{30}+e_{30})
 > $$
+>
 > $$
 > =\; \underbrace{(m_{00}m_{33} - m_{03}m_{30})}_{\text{model difference } \Delta_{model}}
 > \;+\; \underbrace{(m_{00}e_{33} + e_{00}m_{33} + e_{00}e_{33} - m_{03}e_{30} - e_{03}m_{30} - e_{03}e_{30})}_{\text{remainder term } R}. \tag{14.3}
@@ -58,15 +64,20 @@ In Lean this is a pure ring identity, closed by the `ring` tactic. No geometry, 
 The identity gives us a precise condition under which the real four-corner follows from the model one. The model part `Δ_{model} = m_{00}m_{33} - m_{03}m_{30}` we control: the model four-corner is $m_{00}m_{33} \le m_{03}m_{30}$, that is, $Δ_{model} \le 0$, and the model **margin** is $m_{03}m_{30} - m_{00}m_{33} = -\Delta_{model} \ge 0$. Then the real four-corner holds exactly when the remainder fits within this margin.
 
 > **Theorem 14.5** (`real_four_corner_of_remainder`). Suppose the model four-corner holds,
+>
 > $$
 > m_{00}\, m_{33} \;\le\; m_{03}\, m_{30} \qquad (\text{hypothesis } \verb|_hmodel|),
 > $$
+>
 > and the remainder term fits within the model margin,
+>
 > $$
 > R \;=\; m_{00}e_{33} + e_{00}m_{33} + e_{00}e_{33} - m_{03}e_{30} - e_{03}m_{30} - e_{03}e_{30}
 > \;\le\; m_{03}m_{30} - m_{00}m_{33} \qquad (\text{hypothesis } \verb|hrem|).
 > $$
+>
 > Then the **real** four-corner holds as well:
+>
 > $$
 > (m_{00}+e_{00})(m_{33}+e_{33}) \;\le\; (m_{03}+e_{03})(m_{30}+e_{30}).
 > $$

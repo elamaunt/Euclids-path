@@ -44,13 +44,17 @@ pigeonhole).
 > где $\Omega(n)$ — число простых факторов $n$ *с учётом кратности* (например $\Omega(12)=\Omega(2^2\cdot 3)=3$).
 > В mathlib это `ArithmeticFunction.liouville`, а $\Omega(n)$ — это `cardFactors n`.
 
-> **Определение 31.2** (суммирующая функция). $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
+> **Определение 31.2** (суммирующая функция).
+>
+> $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
 > В Lean: `def L (x : ℕ) : ℤ := ∑ n ∈ Finset.Icc 1 x, liouville n`.
 
 Функция $\lambda$ вполне мультипликативна и принимает значения $\pm 1$; $L(x)$ — знакопеременная
 сумма, накопленный дисбаланс между числами с чётным и нечётным количеством простых множителей до $x$.
 
-> **Определение 31.3** (`LiouvilleBound`). $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
+> **Определение 31.3** (`LiouvilleBound`).
+>
+> $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
 > В Lean это `LiouvilleBound : Prop`. Содержательно: сумма $\pm 1$ длины $x$ ведёт себя как
 > случайное блуждание — растёт не быстрее $\sqrt{x}$ (с точностью до $x^\varepsilon$), а не линейно.
 
@@ -64,7 +68,9 @@ pigeonhole).
 вводим её как **явный вход-мост** — вход, или гейт, это честно названное недоказанное утверждение
 (см. [словарь](GLOSSARY.md)), — а не постулируем RH):
 
-> **Определение 31.5** (мост Лиувилля $H_L$, `LiouvilleRHBridge`). $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
+> **Определение 31.5** (мост Лиувилля $H_L$, `LiouvilleRHBridge`).
+>
+> $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
 > В Lean — `LiouvilleRHBridge : Prop`.
 
 Это классическая эквивалентность: оценка $L(x)=O(x^{1/2+\varepsilon})$ равносильна отсутствию нулей

@@ -90,7 +90,7 @@ the same descent; we honestly exhibit them and derive engine-free descent throug
 
 **Gate** (`BealConjecture`, `FermatCatalanConjecture`, 🔴). *The integral Beal (`Aˣ+Bʸ=Cᶻ`,
 `x,y,z>2`, coprime ⟹ a common divisor) and the full Fermat–Catalan are open.* Darmon–Granville
-proved finiteness only for fixed exponents (via Faltings); the $1M prize is unclaimed.
+proved finiteness only for fixed exponents (via Faltings); the \$1M prize is unclaimed.
 
 > **Note.** With this wave the front got repaired in several places. The Fermat–Catalan gate itself
 > we rewrote in terms of **value triples**, and the previous tuple form was green-refuted

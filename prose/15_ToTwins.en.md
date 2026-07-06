@@ -26,21 +26,26 @@ Recall the working definitions fixed in the overview module `Step00_Overview.lea
 
 **Definition 15.1** (`IsTwinCenter`)**.** A centre $m$ determines a twin pair if both sides of the
 six-fold window are prime:
+
 $$
 \mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.
 $$
 
 **Definition 15.2** (`TwinLowers`)**.** The set of lower members of twin pairs is
+
 $$
 \mathrm{TwinLowers} \;=\; \{\,p \mid p\ \text{prime}\ \wedge\ (p+2)\ \text{prime}\,\},
 $$
+
 and the final goal of the whole chain is the statement `TwinLowers.Infinite`, that is, the
 infinitude of this set.
 
 Our task in this chapter is to exhibit a theorem of the form
+
 $$
 (\text{real four-corner at all scales}) \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite},
 $$
+
 in which the premise is the single hypothesis, and the implication is machine-checked in its
 entirety, without `sorry`. All the intermediate links have by this point already been proven in
 separate modules; here they are joined into one derivation.
@@ -55,9 +60,11 @@ Lean names and explain what each one does.
 **Lemma 15.3** (`N33_lt_N00_of_four_corner`)**.** Given $N_{00}>0$, the strict four-corner
 $N_{00}\cdot N_{33} < N_{03}\cdot N_{30}$ and the side-corner $N_{03}\cdot N_{30} \le N_{00}^2$,
 it follows that
+
 $$
 N_{33} < N_{00}. \tag{15.1}
 $$
+
 The proof is elementary and purely arithmetical: from $N_{00}N_{33} < N_{03}N_{30} \le N_{00}^2$
 we get $N_{00}N_{33} < N_{00}N_{00}$, and cancelling the positive factor $N_{00}$ (the lemma
 `lt_of_mul_lt_mul_left`) yields $N_{33}<N_{00}$.
@@ -81,11 +88,13 @@ cover the whole carrier, so at least one centre survives.
 **Link 3 — the block core.**
 
 **Theorem 15.5** (`twin_prime_conjecture_of_blocks`)**.** From the premise
+
 $$
 \forall N,\ \exists\,\text{carrier},\ \text{bad}:\quad
 (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\
 (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow\mathrm{IsTwinCenter}(m)) \tag{15.2}
 $$
+
 it follows that `TwinLowers.Infinite`. Via the auxiliary `twin_center_of_block` it extracts the
 survivor (link 2, Lemma 15.4), places it above $N$, and by the condition "survivor $\Rightarrow$
 twin" recognizes it as a twin centre.
@@ -106,16 +115,20 @@ state its hypothesis $H$ explicitly.
 > **Hypothesis `H` (real four-corner at all scales).** For every $N\in\mathbb{N}$
 > there exist finite rank sets $R_{00}, R_{03}, R_{30}, R_{33}$ and sets
 > $\mathrm{carrier}, \mathrm{bad}$ such that
+>
 > $$
 > 0 < |R_{00}|,\qquad
 > |R_{00}|\cdot|R_{33}| \;<\; |R_{03}|\cdot|R_{30}| \quad(\text{strict four-corner}),
 > $$
+>
 > $$
 > |R_{03}|\cdot|R_{30}| \;\le\; |R_{00}|^2 \quad(\text{side-corner, light}),
 > $$
+>
 > $$
 > |\mathrm{carrier}| = |R_{00}|,\qquad |\mathrm{bad}| = |R_{33}|,
 > $$
+>
 > $$
 > (\forall m\in\mathrm{carrier},\ N<m),\qquad
 > (\forall m\in\mathrm{carrier},\ m\notin\mathrm{bad}\Rightarrow\mathrm{IsTwinCenter}(m)).
@@ -127,6 +140,7 @@ counts give the strict four-corner (plus the light side-corner), the whole carri
 $N$, and every surviving carrier centre is a twin.
 
 **Theorem 15.7** (`twin_primes_of_four_corner`)**.** 🟢 (a green conditional theorem: axiom-clean, conditional on the named input $H$)
+
 $$
 H \;\Longrightarrow\; \mathrm{TwinLowers}.\mathrm{Infinite}. \tag{15.3}
 $$
@@ -136,9 +150,11 @@ for every $N$, to exhibit a block with $|\mathrm{bad}| < |\mathrm{carrier}|$. We
 obtaining the ranks, the carrier, the bad set and all seven conjuncts.
 
 The key step is link 1 (Lemma 15.3):
+
 $$
 |R_{33}| < |R_{00}| \quad\text{via}\quad `N33_lt_N00_of_four_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
 $$
+
 Then, by the identities $|\mathrm{carrier}|=|R_{00}|$ and $|\mathrm{bad}|=|R_{33}|$, we rewrite
 this inequality as $|\mathrm{bad}| < |\mathrm{carrier}|$ — exactly the premise of the block core.
 

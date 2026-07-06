@@ -71,11 +71,19 @@ $$\lambda(n) \;=\; (-1)^{\Omega(n)} \;=\; -(-1)^{\Omega(m)} \;=\; -\lambda(m).$$
 In Lean these are two theorems.
 
 > **Theorem 32.3** (`liouville_eq_neg_one_pow_rank`). For every $n\ne 0$
-> $$\lambda(n) \;=\; (-1)^{\texttt{cardFactors}\,n}. \tag{32.1}$$
+>
+> $$
+> \lambda(n) \;=\; (-1)^{\texttt{cardFactors}\,n}. \tag{32.1}
+> $$
+>
 > Proven with no inputs of ours, as a consequence of `liouville_apply` from mathlib. 🟢
 
 > **Theorem 32.4** (`liouville_flip_of_mul_prime`). For a prime $p$ and every $m$
-> $$\lambda(p\cdot m) \;=\; -\,\lambda(m). \tag{32.2}$$
+>
+> $$
+> \lambda(p\cdot m) \;=\; -\,\lambda(m). \tag{32.2}
+> $$
+>
 > Proven via `cardFactors_mul` + `cardFactors_apply_prime`. 🟢
 
 > **Note.** The meaning of these two lines is larger than their proof. They say that **the Liouville

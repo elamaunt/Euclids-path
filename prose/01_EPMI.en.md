@@ -26,7 +26,11 @@ along it and must reach the bottom in a finite number of steps. The full gallery
 in [`tools/fractal/`](https://github.com/elamaunt/Euclids-path/tree/main/tools/fractal).*
 
 > **Generation algorithm (Figure 1.1).** Source: `tools/fractal/euclid_fractal.py::descent_landscape`. For every centre $m = 0, 1, \dots, S^2-1$ laid on an $S\times S$ raster ($S = 620$, row-major in $m$), compute the *small-prime load*
-> $$L(m) \;=\; \Omega_B(6m-1) + \Omega_B(6m+1),$$
+>
+> $$
+> L(m) \;=\; \Omega_B(6m-1) + \Omega_B(6m+1),
+> $$
+>
 > where $\Omega_B(x)$ is the number of prime factors of $x$, counted with multiplicity and restricted to the first $B = 12$ primes $\ge 5$ (that is, $5, 7, 11, \dots, 41$). Colour each cell by $L(m)$ (palette `inferno`, clipped at the 99th percentile). Twin centres — where both sides $6m\pm1$ are prime — have $L(m) = 0$ and appear as the dark valleys; the self-similar relief is the Chinese-remainder periodicity of the small primes.
 
 ## Defining the descent step and the height

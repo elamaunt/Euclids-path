@@ -87,7 +87,10 @@ threshold. The key theorem:
 
 > **Theorem 24.1** (`boundary_exit_decomposes`)**.** Let $1 \le n$, $\eta \in \{+1,-1\}$, and let a small prime $q$ with
 > $q \ge 5$, $q \bmod 6 \in \{1,5\}$ divide the side $6n+\eta$. Then there exists a valid smaller center:
-> $$\exists\, t',\ (\exists\,\eta'\in\{\pm1\}) \ \land\ 0 \le t' \ \land\ t' < n.$$
+>
+> $$
+> \exists\, t',\ (\exists\,\eta'\in\{\pm1\}) \ \land\ 0 \le t' \ \land\ t' < n.
+> $$
 
 The proof is one step: from `cofactor_is_center` (proven algebraically in [23](23_CleanGraph.md), 100% on 307010
 cases) the divisibility $q \mid 6n+\eta$ immediately gives the cofactor $(6n+\eta)/q$ of the form $6t'+\eta'$ with
@@ -120,7 +123,11 @@ the flow of all clean starts above the threshold is absorbed by a finite old set
 the final node is formulated as an implication:
 
 > **Definition 24.2** (`GlobalAbsorberNode`)**.** (§4 — not proven, an explicit hypothesis.)
-> $$\mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine} \;:=\; \mathrm{NoNewTwinAbove}\,M_0 \;\to\; \mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;\to\; \mathsf{Engine}. \tag{24.1}$$
+>
+> $$
+> \mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine} \;:=\; \mathrm{NoNewTwinAbove}\,M_0 \;\to\; \mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;\to\; \mathsf{Engine}. \tag{24.1}
+> $$
+>
 > Substantively: "a finite set of old twin absorbers cannot absorb all the fresh clean
 > starts above $M_0$ *without an engine*."
 
@@ -169,7 +176,11 @@ To localize precisely what remains, the global node is unfolded into a combinato
 > **Theorem 24.4** (`global_absorber_forces_engine`)**.** (Combinatorics proven.) Let $S$ be an infinite set of
 > fresh starts (`hInfStarts : S.Infinite`), let $\mathrm{Codom}$ be finite (`[Finite Codom]`), and let
 > $\mathrm{key} : \alpha \to \mathrm{Codom}$ be a start's passport $\mathrm{key}\,\gamma = (\text{absorber}\,\gamma,\ \mathrm{NormSig}\,\gamma)$. If given the node pump
-> $$\mathrm{pump} : \forall\, \gamma_1\,\gamma_2,\ \gamma_1 \ne \gamma_2 \to \mathrm{key}\,\gamma_1 = \mathrm{key}\,\gamma_2 \to \mathsf{Engine}, \tag{24.2}$$
+>
+> $$
+> \mathrm{pump} : \forall\, \gamma_1\,\gamma_2,\ \gamma_1 \ne \gamma_2 \to \mathrm{key}\,\gamma_1 = \mathrm{key}\,\gamma_2 \to \mathsf{Engine}, \tag{24.2}
+> $$
+>
 > then $\mathsf{Engine}$.
 
 The proof is an honest pigeonhole: by contradiction, if there is no engine then `pump` is forbidden, so `key`

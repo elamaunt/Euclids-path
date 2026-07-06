@@ -33,12 +33,20 @@ Fix a threshold $A$ (the scale of the "old" primes already peeled off) and intro
 
 > **Definition 21.1** (old-free centre)**.** A centre $t$ is called *old-free* relative to the threshold $A$ if
 > no prime $q$ with $5\le q\le A$ divides either of the sides $6t\pm1$:
-> $$\mathrm{OldFree}(A,t)\ :\Longleftrightarrow\ \forall q\ \text{prime},\ 5\le q\le A\ \Longrightarrow\ \neg\bigl(q\mid 6t-1\ \lor\ q\mid 6t+1\bigr).$$
+>
+> $$
+> \mathrm{OldFree}(A,t)\ :\Longleftrightarrow\ \forall q\ \text{prime},\ 5\le q\le A\ \Longrightarrow\ \neg\bigl(q\mid 6t-1\ \lor\ q\mid 6t+1\bigr).
+> $$
+>
 > In Lean this is `def OldFree (A t : ℕ) : Prop`. Substantively, $\mathrm{OldFree}(A,t)$ is
 > membership of the centre in the "clean zone" $\Omega_A$: it is not caught by any of the primes already passed.
 
 > **Definition 21.2** (twin centre)**.** A centre $t$ is a *twin* if both sides are prime:
-> $$\mathrm{Twin}(t)\ :\Longleftrightarrow\ (6t-1)\ \text{prime}\ \land\ (6t+1)\ \text{prime}.$$
+>
+> $$
+> \mathrm{Twin}(t)\ :\Longleftrightarrow\ (6t-1)\ \text{prime}\ \land\ (6t+1)\ \text{prime}.
+> $$
+>
 > In Lean this is `def Twin (t : ℕ) : Prop`. This is the only kind of legitimate sink: a pair of
 > twin primes $(6t-1,6t+1)$.
 

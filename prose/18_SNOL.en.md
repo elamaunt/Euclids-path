@@ -33,7 +33,10 @@ $$6n+\varepsilon = a.$$
 Then the opposite side of the same centre is computed with nothing left over.
 
 > **Theorem 18.1** (`rank1_opposite`). If $6n+\varepsilon=a$, then
-> $$6n-\varepsilon = a - 2\varepsilon.$$
+>
+> $$
+> 6n-\varepsilon = a - 2\varepsilon.
+> $$
 
 The proof is pure carry-the-two arithmetic (`omega`): subtracting $2\varepsilon$ from both sides of the equality $6n+\varepsilon=a$, we obtain $6n-\varepsilon=a-2\varepsilon$. Substantively this means: as soon as one side of a rank-1 wedge *is* the active prime, the second side is **rigidly fixed** as the shifted neighbour $a-2\varepsilon$. It is precisely this shifted neighbour that becomes the arena of all the ensuing struggle — not $a$ itself, but its neighbour $a-2\varepsilon$ (for $\varepsilon=+1$ this is $a-2$, for $\varepsilon=-1$ it is $a+2$).
 
@@ -42,7 +45,11 @@ The proof is pure carry-the-two arithmetic (`omega`): subtracting $2\varepsilon$
 Now suppose the active prime lies in the neighbour corridor with respect to a finite set $Q$ of pairwise coprime small moduli: for every $q\in Q$ we have $a\equiv 2\varepsilon\pmod q$, equivalently $q\mid a-2\varepsilon$. Then the divisibility lifts to the primorial.
 
 > **Theorem 18.2** (`neighbour_saturation`). Suppose $(Q)_{\mathrm{Set}}$ are pairwise coprime and $q\mid a-2\varepsilon$ for all $q\in Q$. Then
-> $$\Bigl(\prod_{q\in Q} q\Bigr)\ \Big|\ a-2\varepsilon,$$
+>
+> $$
+> \Bigl(\prod_{q\in Q} q\Bigr)\ \Big|\ a-2\varepsilon,
+> $$
+>
 > that is, $a = k\!\cdot\!\prod_{q\in Q} q + 2\varepsilon$ for some $k$.
 
 The proof lifts the pairwise divisibility to divisibility by the product via pairwise coprimality (`Finset.prod_dvd_of_coprime`, with coprimality translated into `IsCoprime` over $\mathbb Z$). This is exactly the Euclidean twin-neighbour shift of the form $kP\pm 2$: an active prime whose entire neighbour has been "eaten up" by the small primes is forced to have the form $a=kP+2\varepsilon$. There is no distribution anywhere here — this is a divisibility identity.
@@ -64,7 +71,10 @@ Substantively: a nontrivial active prime **cannot saturate an entire corridor** 
 To connect the rank-1 algebra with the twin conjecture, we fix the **SNOL input** — the same typed block predicate that closes the whole programme in [15 ToTwins](15_ToTwins.md).
 
 > **Definition 18.4** (`SNOLInput`). The statement
-> $$\forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).$$
+>
+> $$
+> \forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).
+> $$
 
 That is: at every scale $N$ there exists a carrier above $N$ in which the "bad" elements (carriers of the terminal shifted-neighbour obstruction) are strictly fewer than the whole, and every survivor is a twin centre. SNOL as a substantive claim says exactly this: the terminal shifted-neighbour current **cannot be carrier-scale**, so the block input holds.
 

@@ -44,7 +44,11 @@ the centre.
 One successful clean descent is a step that reduces the height by at least a factor of `A`.
 
 > **Definition 5.2** (descent step). For $A,h,h' \in \mathbb{N}$
-> $$\mathrm{DescentStep}(A,h,h') \;:\Longleftrightarrow\; A\cdot h' < h. \tag{5.1}$$
+>
+> $$
+> \mathrm{DescentStep}(A,h,h') \;:\Longleftrightarrow\; A\cdot h' < h. \tag{5.1}
+> $$
+>
 > Substantively: from a state of height `h` the engine passes to a state of height `h'`, with
 > $A\cdot h' < h$, that is, the height falls by at least a factor of `A` (`Engine/EPMI`).
 
@@ -68,7 +72,10 @@ statement about the whole trajectory.
 > **Theorem 5.4** (`engine_never_returns`). Let $1 \le A$ and let $H : \mathbb{N} \to \mathbb{N}$ be a trajectory
 > in which every step is a successful descent: $\forall t,\; \mathrm{DescentStep}(A,\,H(t),\,H(t+1))$.
 > Then `H` is **strictly antitone**:
-> $$\mathrm{StrictAnti}\,H \;:\Longleftrightarrow\; \bigl(\forall s\,t,\; s < t \Rightarrow H(t) < H(s)\bigr). \tag{5.2}$$
+>
+> $$
+> \mathrm{StrictAnti}\,H \;:\Longleftrightarrow\; \bigl(\forall s\,t,\; s < t \Rightarrow H(t) < H(s)\bigr). \tag{5.2}
+> $$
 
 **What is proven.** Not merely that "adjacent states decrease", but that *any* later state is strictly
 lower than *any* earlier one. The engine never returns to any of the states already passed
@@ -148,7 +155,10 @@ the length of any descent.
 
 > **Theorem 5.7** (`turned_engine_halts`). Let $H : \mathbb{N} \to \mathbb{N}$ and suppose the engine has made `k`
 > strict steps downward, that is, `H(t+1) < H(t)` for all `t < k`. Then
-> $$k \;\le\; H(0). \tag{5.3}$$
+>
+> $$
+> k \;\le\; H(0). \tag{5.3}
+> $$
 
 **What is proven.** If the engine has turned into a descent, it will halt within at most `H(0)` steps — exactly
 as many as its initial height. The descent is not merely finite; it is finite *with an explicit, easily

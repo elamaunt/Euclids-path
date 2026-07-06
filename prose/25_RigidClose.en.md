@@ -27,16 +27,26 @@ This chapter formalizes that observation as an abstract "rigid" graph with a hei
 Let us abstract away from the arithmetic. All that the descent mechanism needs is a height, a transition relation, and a sink predicate.
 
 > **Definition 25.1** (`HeightGraph`). A rigid graph with a height over a type of states $\sigma$ is a triple
-> $$G = \bigl(\mathrm{height} : \sigma \to \mathbb{N},\; \mathrm{Twin} : \sigma \to \mathrm{Prop},\; \mathrm{Step} : \sigma \to \sigma \to \mathrm{Prop}\bigr),$$
+>
+> $$
+> G = \bigl(\mathrm{height} : \sigma \to \mathbb{N},\; \mathrm{Twin} : \sigma \to \mathrm{Prop},\; \mathrm{Step} : \sigma \to \sigma \to \mathrm{Prop}\bigr),
+> $$
+>
 > subject to a single axiom of strict fall:
-> $$\forall\, s\, t,\quad \mathrm{Step}\,s\,t \;\Longrightarrow\; \mathrm{height}\,t < \mathrm{height}\,s.$$
+>
+> $$
+> \forall\, s\, t,\quad \mathrm{Step}\,s\,t \;\Longrightarrow\; \mathrm{height}\,t < \mathrm{height}\,s.
+> $$
 
 In Lean this is the structure `HeightGraph` with the field `step_drops : ∀ {s t}, Step s t → height t < height s`. The field `Twin` is the predicate of a proper sink (in the application — "$t$ is a twin center"); the field `Step` is the relation "there is a descent edge" (in the application — an old-peel or an active edge).
 
 The single substantive input to the construction we isolate as a separate property.
 
 > **Definition 25.2** (`Regenerates`). The graph $G$ **regenerates** if every non-twin state has a descending successor:
-> $$\mathrm{Regenerates}(G) \;:\equiv\; \forall\, s,\; \neg\,\mathrm{Twin}\,s \;\Longrightarrow\; \exists\, t,\; \mathrm{Step}\,s\,t.$$
+>
+> $$
+> \mathrm{Regenerates}(G) \;:\equiv\; \forall\, s,\; \neg\,\mathrm{Twin}\,s \;\Longrightarrow\; \exists\, t,\; \mathrm{Step}\,s\,t.
+> $$
 
 In Lean this is `def Regenerates (G : HeightGraph σ) : Prop`. Note the asymmetry of the burden: the axiom `step_drops` about the height falling comes "for free" with the structure itself (it is built into the definition of an edge), whereas `Regenerates` is the only property that will have to be proven in the application.
 
@@ -47,7 +57,10 @@ The entire theorem to come lives over these two givens and demands nothing more.
 Now the chapter's central statement.
 
 > **Theorem 25.3** (`reaches_twin`). If $G$ regenerates, then a twin is reached from any start:
-> $$\mathrm{Regenerates}(G) \;\Longrightarrow\; \forall\, s : \sigma,\; \exists\, t,\; \mathrm{Twin}\,t.$$
+>
+> $$
+> \mathrm{Regenerates}(G) \;\Longrightarrow\; \forall\, s : \sigma,\; \exists\, t,\; \mathrm{Twin}\,t.
+> $$
 
 Let us take apart what is proven here and *why* it goes this way. The proof is strong induction on the height of the start (`Nat.strong_induction_on`). The auxiliary statement:
 $$\mathrm{key} : \forall\, n : \mathbb{N},\; \forall\, s,\; \mathrm{height}\,s = n \;\Longrightarrow\; \exists\, t,\; \mathrm{Twin}\,t.$$
@@ -67,7 +80,10 @@ The rigidity of the graph — the fact that *every* step strictly drops the heig
 The same well-foundedness we also record in an explicit, "graph-theoretic" form — as a direct replacement of the old rigid cycle.
 
 > **Theorem 25.4** (`no_cycle`). In a graph with strictly decreasing height, a directed cycle does not exist. More precisely, for any chain $z : \mathbb{N} \to \sigma$
-> $$\bigl(\forall\, k,\; \mathrm{Step}\,(z\,k)\,(z\,(k{+}1))\bigr) \;\Longrightarrow\; \bot.$$
+>
+> $$
+> \bigl(\forall\, k,\; \mathrm{Step}\,(z\,k)\,(z\,(k{+}1))\bigr) \;\Longrightarrow\; \bot.
+> $$
 
 The proof is one line: from the chain $z$ we obtain the sequence of heights $k \mapsto \mathrm{height}\,(z\,k)$, which by `step_drops` strictly decreases at every step, and `OldPeel.old_peel_terminates` (the same core as `no_infinite_engine_descent` from [19 old-peel]) asserts that a strictly descending infinite chain in $\mathbb{N}$ does not exist. That is, `no_cycle` is a repackaging of an already-proven impossibility of the engine: we do not prove it anew, we point out that "an infinite $\mathrm{Step}$-chain" is a special case of "infinite strict descent".
 
@@ -78,7 +94,10 @@ The proof is one line: from the chain $z$ we obtain the sequence of heights $k \
 One thing remains: to show that the abstract edge `Step` is, in the arithmetic application, actually **constructed**, not postulated. This is exactly where a hole used to hide — from "a divisor $q$ exists" it does not follow automatically that the quotient is a *valid smaller center* of the required form $6t'+\eta'$. This construction we prove by algebra.
 
 > **Theorem 25.5** (`cofactor_is_center`). Let $t,q,\eta \in \mathbb{Z}$, with $t \ge 1$, $\eta \in \{+1,-1\}$, a prime divisor $q \ge 5$ coprime to $6$ (that is, $q \bmod 6 \in \{1,5\}$) and $q \mid 6t+\eta$. Then there exist $t',\eta'$ such that
-> $$\eta' \in \{+1,-1\},\qquad 6t'+\eta' = \frac{6t+\eta}{q},\qquad 0 \le t' \;<\; t.$$
+>
+> $$
+> \eta' \in \{+1,-1\},\qquad 6t'+\eta' = \frac{6t+\eta}{q},\qquad 0 \le t' \;<\; t.
+> $$
 
 This is the chapter's key substantive lemma: it turns divisibility into a **state**. Let us see why the conclusion has exactly this shape.
 
@@ -108,7 +127,10 @@ Here it is important to draw an honest line.
 With that in place we record the remaining input — in the house sense: an honestly named unproven link (see the [glossary](GLOSSARY.md)) — as an **honest reduction**, not passed off as a proof:
 
 > **Theorem 25.6** (`regenerates_needs_target_center`). If for every non-twin center a downward edge is built, then the graph regenerates:
-> $$\bigl(\forall\, t,\; \neg\,\mathrm{Twin}\,t \Rightarrow \exists\, t',\; \mathrm{Step}\,t\,t'\bigr) \;\Longrightarrow\; \mathrm{Regenerates}(G).$$
+>
+> $$
+> \bigl(\forall\, t,\; \neg\,\mathrm{Twin}\,t \Rightarrow \exists\, t',\; \mathrm{Step}\,t\,t'\bigr) \;\Longrightarrow\; \mathrm{Regenerates}(G).
+> $$
 
 This theorem is tautological by construction (in Lean its body is simply `build_target`), and that is precisely its value: it **explicitly names the single remaining constructive input**. Not "there is a hole somewhere", but exactly: what is needed is that for every non-twin center the divisor produce a valid smaller center.
 

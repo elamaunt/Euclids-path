@@ -87,7 +87,10 @@ $$\mathrm{BoundaryOutcome}\,A\,M_0\,n \;:=\; \underbrace{\bigl(\exists\, t<n\big
 
 > **Теорема 24.1** (`boundary_exit_decomposes`)**.** Пусть $1 \le n$, $\eta \in \{+1,-1\}$, малый простой $q$ с
 > $q \ge 5$, $q \bmod 6 \in \{1,5\}$ делит сторону $6n+\eta$. Тогда существует валидный меньший центр:
-> $$\exists\, t',\ (\exists\,\eta'\in\{\pm1\}) \ \land\ 0 \le t' \ \land\ t' < n.$$
+>
+> $$
+> \exists\, t',\ (\exists\,\eta'\in\{\pm1\}) \ \land\ 0 \le t' \ \land\ t' < n.
+> $$
 
 Доказательство одношаговое: из `cofactor_is_center` (доказанной алгебраически в [23](23_CleanGraph.md), 100% на 307010
 случаях) делимость $q \mid 6n+\eta$ немедленно даёт кофактор $(6n+\eta)/q$ вида $6t'+\eta'$ с
@@ -120,7 +123,11 @@ $$\mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;:=\; \text{«все свежие cl
 финальный узел формулируется как импликация:
 
 > **Определение 24.2** (`GlobalAbsorberNode`)**.** (§4 — не доказан, явная гипотеза.)
-> $$\mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine} \;:=\; \mathrm{NoNewTwinAbove}\,M_0 \;\to\; \mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;\to\; \mathsf{Engine}. \tag{24.1}$$
+>
+> $$
+> \mathrm{GlobalAbsorberNode}\,A\,M_0\,\mathsf{Engine} \;:=\; \mathrm{NoNewTwinAbove}\,M_0 \;\to\; \mathrm{GlobalOldTwinAbsorption}\,A\,M_0 \;\to\; \mathsf{Engine}. \tag{24.1}
+> $$
+>
 > Содержательно: «конечное множество старых twin-absorber'ов не может поглотить все свежие чистые
 > старты выше $M_0$ *без двигателя*».
 
@@ -169,7 +176,11 @@ engine (узел), а engine запрещён (EPMI, доказан), то absor
 > **Теорема 24.4** (`global_absorber_forces_engine`)**.** (Доказана комбинаторика.) Пусть $S$ — бесконечное множество
 > свежих стартов (`hInfStarts : S.Infinite`), $\mathrm{Codom}$ конечен (`[Finite Codom]`), и
 > $\mathrm{key} : \alpha \to \mathrm{Codom}$ — паспорт старта $\mathrm{key}\,\gamma = (\text{absorber}\,\gamma,\ \mathrm{NormSig}\,\gamma)$. Если дан узел-насос
-> $$\mathrm{pump} : \forall\, \gamma_1\,\gamma_2,\ \gamma_1 \ne \gamma_2 \to \mathrm{key}\,\gamma_1 = \mathrm{key}\,\gamma_2 \to \mathsf{Engine}, \tag{24.2}$$
+>
+> $$
+> \mathrm{pump} : \forall\, \gamma_1\,\gamma_2,\ \gamma_1 \ne \gamma_2 \to \mathrm{key}\,\gamma_1 = \mathrm{key}\,\gamma_2 \to \mathsf{Engine}, \tag{24.2}
+> $$
+>
 > то $\mathsf{Engine}$.
 
 Доказательство — честный pigeonhole: от противного, если engine нет, то `pump` запрещён, значит `key`

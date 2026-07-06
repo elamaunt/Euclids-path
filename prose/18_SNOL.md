@@ -33,7 +33,10 @@ $$6n+\varepsilon = a.$$
 Тогда противоположная сторона того же центра вычисляется без остатка.
 
 > **Теорема 18.1** (`rank1_opposite`). Если $6n+\varepsilon=a$, то
-> $$6n-\varepsilon = a - 2\varepsilon.$$
+>
+> $$
+> 6n-\varepsilon = a - 2\varepsilon.
+> $$
 
 Доказательство — чистая арифметика переноса двойки (`omega`): вычитая $2\varepsilon$ из обеих сторон равенства $6n+\varepsilon=a$, получаем $6n-\varepsilon=a-2\varepsilon$. Содержательно это значит: как только одна сторона rank-1 клина *есть* активное простое, вторая сторона **жёстко фиксирована** как сдвинутый сосед $a-2\varepsilon$. Именно этот сдвинутый сосед и становится ареной всей дальнейшей борьбы — не сам $a$, а его сосед $a-2\varepsilon$ (при $\varepsilon=+1$ это $a-2$, при $\varepsilon=-1$ это $a+2$).
 
@@ -42,7 +45,11 @@ $$6n+\varepsilon = a.$$
 Пусть теперь активное простое лежит в neighbour-коридоре по конечному множеству $Q$ попарно взаимно простых малых модулей: для каждого $q\in Q$ выполнено $a\equiv 2\varepsilon\pmod q$, эквивалентно $q\mid a-2\varepsilon$. Тогда делимость поднимается до примориала.
 
 > **Теорема 18.2** (`neighbour_saturation`). Пусть $(Q)_{\mathrm{Set}}$ попарно взаимно просты и $q\mid a-2\varepsilon$ для всех $q\in Q$. Тогда
-> $$\Bigl(\prod_{q\in Q} q\Bigr)\ \Big|\ a-2\varepsilon,$$
+>
+> $$
+> \Bigl(\prod_{q\in Q} q\Bigr)\ \Big|\ a-2\varepsilon,
+> $$
+>
 > то есть $a = k\!\cdot\!\prod_{q\in Q} q + 2\varepsilon$ для некоторого $k$.
 
 Доказательство поднимает попарную делимость до делимости на произведение через попарную взаимную простоту (`Finset.prod_dvd_of_coprime`, coprimality переводится в `IsCoprime` над $\mathbb Z$). Это ровно евклидов twin-neighbour сдвиг вида $kP\pm 2$: активное простое, весь сосед которого «съеден» малыми простыми, обязано иметь форму $a=kP+2\varepsilon$. Никакого распределения здесь нет — это тождество делимости.
@@ -64,7 +71,10 @@ $$6n+\varepsilon = a.$$
 Чтобы соединить rank-1 алгебру с гипотезой близнецов, зафиксируем **SNOL-вход** — тот же типизированный блочный предикат, что замыкает всю программу в [15 ToTwins](15_ToTwins.md).
 
 > **Определение 18.4** (`SNOLInput`). Утверждение
-> $$\forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).$$
+>
+> $$
+> \forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).
+> $$
 
 То есть: на каждом масштабе $N$ существует carrier выше $N$, в котором «плохих» (носителей terminal shifted-neighbour obstruction) строго меньше, чем всех, и каждый выживший — twin-центр. SNOL как содержательное утверждение говорит ровно это: terminal shifted-neighbour current **не может быть carrier-scale**, то есть блочный вход выполнен.
 

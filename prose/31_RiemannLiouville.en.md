@@ -40,13 +40,20 @@ of prime factors — and the number of prime factors is precisely our rank.
 Let us introduce the Liouville function and its summatory function.
 
 > **Definition 31.1** (Liouville function). For $n \ge 1$
-> $$\lambda(n) \;=\; (-1)^{\Omega(n)},$$
+>
+> $$
+> \lambda(n) \;=\; (-1)^{\Omega(n)},
+> $$
+>
 > where $\Omega(n)$ is the number of prime factors of $n$ *counted with multiplicity* (for instance $\Omega(12)=\Omega(2^2\cdot 3)=3$).
 > In mathlib this is `ArithmeticFunction.liouville`, and $\Omega(n)$ is `cardFactors n`.
 
 > **Definition 31.2** (summatory function).
 >
-> $$L(x) \;=\; \sum_{n=1}^{x} \lambda(n).$$
+> $$
+> L(x) \;=\; \sum_{n=1}^{x} \lambda(n).
+> $$
+>
 > In Lean: `def L (x : ℕ) : ℤ := ∑ n ∈ Finset.Icc 1 x, liouville n`.
 
 The function $\lambda$ is completely multiplicative and takes values $\pm 1$; $L(x)$ is an alternating
@@ -54,7 +61,10 @@ sum, the accumulated imbalance between the numbers with an even and an odd numbe
 
 > **Definition 31.3** (`LiouvilleBound`).
 >
-> $$\texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.$$
+> $$
+> \texttt{LiouvilleBound} \;:\!\!\iff\; \forall\,\varepsilon>0\ \exists\,C>0\ \forall x:\quad |L(x)| \le C\,x^{1/2+\varepsilon}.
+> $$
+>
 > In Lean this is `LiouvilleBound : Prop`. In substance: a sum of $\pm 1$ of length $x$ behaves like
 > a random walk — growing no faster than $\sqrt{x}$ (up to $x^\varepsilon$), not linearly.
 
@@ -70,7 +80,10 @@ introduce it as an **explicit input-bridge** — an input, or gate, is an honest
 
 > **Definition 31.5** (the Liouville bridge $H_L$, `LiouvilleRHBridge`).
 >
-> $$\texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).$$
+> $$
+> \texttt{LiouvilleRHBridge} \;:\!\!\iff\; \bigl(\texttt{LiouvilleBound} \iff \texttt{RiemannHypothesis}\bigr).
+> $$
+>
 > In Lean — `LiouvilleRHBridge : Prop`.
 
 This is the classical equivalence: the bound $L(x)=O(x^{1/2+\varepsilon})$ is equivalent to the absence of zeros
@@ -82,7 +95,11 @@ Given the bridge, the branch closes by a trivial implication.
 
 > **Theorem 31.6** (`riemann_of_liouville_bound`). If the bridge `LiouvilleRHBridge` is given and
 > `LiouvilleBound` is proven, then `RiemannHypothesis`.
-> $$\texttt{LiouvilleRHBridge} \;\wedge\; \texttt{LiouvilleBound} \;\Rightarrow\; \texttt{RiemannHypothesis}.\tag{31.1}$$
+>
+> $$
+> \texttt{LiouvilleRHBridge} \;\wedge\; \texttt{LiouvilleBound} \;\Rightarrow\; \texttt{RiemannHypothesis}.\tag{31.1}
+> $$
+>
 > The Lean proof is a single line, `bridge.mp hbound`: all the analysis is isolated in the bridge,
 > and the arithmetic (`LiouvilleBound`) is the only substantive goal.
 
@@ -96,7 +113,11 @@ exactly **our rank** `RankNode`: with us, `RankNode r` has `factors : Fin r → 
 the node's number of factors. From this, instantly:
 
 > **Theorem 31.7** (`liouville_eq_neg_one_pow_rank`). For $n\ne 0$
-> $$\lambda(n) \;=\; (-1)^{\mathrm{cardFactors} n} \;=\; (-1)^{\text{rank}}.\tag{31.2}$$
+>
+> $$
+> \lambda(n) \;=\; (-1)^{\mathrm{cardFactors} n} \;=\; (-1)^{\text{rank}}.\tag{31.2}
+> $$
+>
 > In Lean this is simply `liouville_apply hn`: the Liouville sign is the parity of the rank.
 
 So $L(x)$ is the accumulated sum of the signs $(-1)^{\text{rank}}$ over all nodes up to $x$. `LiouvilleBound`
@@ -109,7 +130,11 @@ $r\to r-1$ by removing one role. In terms of numbers this is the passage from $n
 prime factor). What happens to the sign?
 
 > **Theorem 31.8** (`liouville_flip_of_mul_prime`). For a prime $p$ and $m\ne 0$
-> $$\lambda(p\cdot m) \;=\; -\,\lambda(m).\tag{31.3}$$
+>
+> $$
+> \lambda(p\cdot m) \;=\; -\,\lambda(m).\tag{31.3}
+> $$
+>
 > Proof (Lean): $\mathrm{cardFactors}(p\cdot m)=\mathrm{cardFactors} m + 1$
 > (via `cardFactors_mul` and `cardFactors_apply_prime`), whence $(-1)^{\Omega(m)+1}=-(-1)^{\Omega(m)}$.
 

@@ -23,16 +23,26 @@
 Абстрагируемся от арифметики. Всё, что нужно от механизма спуска, — это высота, отношение перехода и признак стока.
 
 > **Определение 25.1** (`HeightGraph`). Жёсткий граф с высотой над типом состояний $\sigma$ — это набор
-> $$G = \bigl(\mathrm{height} : \sigma \to \mathbb{N},\; \mathrm{Twin} : \sigma \to \mathrm{Prop},\; \mathrm{Step} : \sigma \to \sigma \to \mathrm{Prop}\bigr),$$
+>
+> $$
+> G = \bigl(\mathrm{height} : \sigma \to \mathbb{N},\; \mathrm{Twin} : \sigma \to \mathrm{Prop},\; \mathrm{Step} : \sigma \to \sigma \to \mathrm{Prop}\bigr),
+> $$
+>
 > подчинённый единственной аксиоме строгого падения:
-> $$\forall\, s\, t,\quad \mathrm{Step}\,s\,t \;\Longrightarrow\; \mathrm{height}\,t < \mathrm{height}\,s.$$
+>
+> $$
+> \forall\, s\, t,\quad \mathrm{Step}\,s\,t \;\Longrightarrow\; \mathrm{height}\,t < \mathrm{height}\,s.
+> $$
 
 В Lean это структура `HeightGraph` с полем `step_drops : ∀ {s t}, Step s t → height t < height s`. Поле `Twin` — предикат корректного стока (в приложении — «$t$ есть twin-центр»); поле `Step` — отношение «есть ребро спуска» (в приложении — old-peel или active edge).
 
 Единственный содержательный вход в конструкцию мы выделяем в отдельное свойство.
 
 > **Определение 25.2** (`Regenerates`). Граф $G$ **регенерирует**, если каждое не-twin состояние имеет нисходящего преемника:
-> $$\mathrm{Regenerates}(G) \;:\equiv\; \forall\, s,\; \neg\,\mathrm{Twin}\,s \;\Longrightarrow\; \exists\, t,\; \mathrm{Step}\,s\,t.$$
+>
+> $$
+> \mathrm{Regenerates}(G) \;:\equiv\; \forall\, s,\; \neg\,\mathrm{Twin}\,s \;\Longrightarrow\; \exists\, t,\; \mathrm{Step}\,s\,t.
+> $$
 
 В Lean это `def Regenerates (G : HeightGraph σ) : Prop`. Заметим асимметрию нагрузки: аксиома `step_drops` про падение высоты дана «бесплатно» самой структурой (она встроена в определение ребра), тогда как `Regenerates` — единственное свойство, которое придётся доказывать в приложении. Вся дальнейшая теорема живёт над этими двумя данностями и больше ничего не требует.
 
@@ -41,7 +51,10 @@
 Теперь центральное утверждение главы.
 
 > **Теорема 25.3** (`reaches_twin`). Если $G$ регенерирует, то из любого старта достигается twin:
-> $$\mathrm{Regenerates}(G) \;\Longrightarrow\; \forall\, s : \sigma,\; \exists\, t,\; \mathrm{Twin}\,t.$$
+>
+> $$
+> \mathrm{Regenerates}(G) \;\Longrightarrow\; \forall\, s : \sigma,\; \exists\, t,\; \mathrm{Twin}\,t.
+> $$
 
 Разберём, что здесь доказано и *почему* именно так. Доказательство — сильная индукция по высоте старта (`Nat.strong_induction_on`). Вспомогательное утверждение:
 $$\mathrm{key} : \forall\, n : \mathbb{N},\; \forall\, s,\; \mathrm{height}\,s = n \;\Longrightarrow\; \exists\, t,\; \mathrm{Twin}\,t.$$
@@ -61,7 +74,10 @@ $$\mathrm{key} : \forall\, n : \mathbb{N},\; \forall\, s,\; \mathrm{height}\,s =
 Ту же фундированность мы фиксируем и в явном, «графовом» виде — как прямую замену прежнего rigid-цикла.
 
 > **Теорема 25.4** (`no_cycle`). В графе с строго убывающей высотой directed cycle не существует. Точнее, для любой цепи $z : \mathbb{N} \to \sigma$
-> $$\bigl(\forall\, k,\; \mathrm{Step}\,(z\,k)\,(z\,(k{+}1))\bigr) \;\Longrightarrow\; \bot.$$
+>
+> $$
+> \bigl(\forall\, k,\; \mathrm{Step}\,(z\,k)\,(z\,(k{+}1))\bigr) \;\Longrightarrow\; \bot.
+> $$
 
 Доказательство — одна строка: из цепи $z$ получаем последовательность высот $k \mapsto \mathrm{height}\,(z\,k)$, которая по `step_drops` строго убывает на каждом шаге, а `OldPeel.old_peel_terminates` (то же ядро, что `no_infinite_engine_descent` из [19 old-peel]) утверждает, что строго нисходящей бесконечной цепи в $\mathbb{N}$ не бывает. То есть `no_cycle` — это переупаковка уже доказанной невозможности двигателя: мы не доказываем её заново, мы указываем, что «бесконечная $\mathrm{Step}$-цепь» есть частный случай «бесконечного строгого спуска».
 
@@ -72,7 +88,10 @@ $$\mathrm{key} : \forall\, n : \mathbb{N},\; \forall\, s,\; \mathrm{height}\,s =
 Осталось одно: показать, что абстрактное ребро `Step` в арифметическом приложении действительно **строится**, а не постулируется. Именно тут прежде пряталась дыра — из «делитель $q$ существует» не следует автоматически, что частное есть *валидный меньший центр* нужной формы $6t'+\eta'$. Эту конструкцию мы доказываем алгеброй.
 
 > **Теорема 25.5** (`cofactor_is_center`). Пусть $t,q,\eta \in \mathbb{Z}$, причём $t \ge 1$, $\eta \in \{+1,-1\}$, простой делитель $q \ge 5$ взаимно прост с $6$ (то есть $q \bmod 6 \in \{1,5\}$) и $q \mid 6t+\eta$. Тогда существуют $t',\eta'$ такие, что
-> $$\eta' \in \{+1,-1\},\qquad 6t'+\eta' = \frac{6t+\eta}{q},\qquad 0 \le t' \;<\; t.$$
+>
+> $$
+> \eta' \in \{+1,-1\},\qquad 6t'+\eta' = \frac{6t+\eta}{q},\qquad 0 \le t' \;<\; t.
+> $$
 
 Это ключевая содержательная лемма главы: она превращает делимость в **состояние**. Разберём почему заключение именно такое.
 
@@ -100,7 +119,10 @@ $$\mathrm{key} : \forall\, n : \mathbb{N},\; \forall\, s,\; \mathrm{height}\,s =
 С учётом этого мы фиксируем оставшийся вход — в домовом смысле: честно названное недоказанное звено (см. [словарь](GLOSSARY.md)) — как **честную редукцию**, а не выдаём её за доказательство:
 
 > **Теорема 25.6** (`regenerates_needs_target_center`). Если для каждого не-twin центра построено ребро вниз, то граф регенерирует:
-> $$\bigl(\forall\, t,\; \neg\,\mathrm{Twin}\,t \Rightarrow \exists\, t',\; \mathrm{Step}\,t\,t'\bigr) \;\Longrightarrow\; \mathrm{Regenerates}(G).$$
+>
+> $$
+> \bigl(\forall\, t,\; \neg\,\mathrm{Twin}\,t \Rightarrow \exists\, t',\; \mathrm{Step}\,t\,t'\bigr) \;\Longrightarrow\; \mathrm{Regenerates}(G).
+> $$
 
 Эта теорема тавтологична по построению (в Lean её тело — просто `build_target`), и именно в этом её ценность: она **явно называет единственный оставшийся конструктивный вход**. Не «где-то есть дыра», а точно: нужно, чтобы у каждого не-twin центра делитель порождал валидный меньший центр. Половину этого входа — форму и падение — мы уже закрыли (теорема 25.5 (`cofactor_is_center`) плюс height-drop леммы); остаётся собрать это в единое `build_target` над полной дихотомией, то есть удостовериться, что дихотомия действительно доставляет делитель во *всех* не-twin случаях без несclassifiable терминала.
 

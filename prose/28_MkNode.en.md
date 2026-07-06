@@ -46,7 +46,10 @@ The first and most elementary fact is a lower bound on the product of the list o
 
 > **Definition 28.1** (list of large factors). Let `L : List ℕ` be a list of natural numbers. We say
 > that `L` consists of factors greater than `A` if
-> $$\forall a \in L,\quad A < a .$$
+>
+> $$
+> \forall a \in L,\quad A < a .
+> $$
 
 **Theorem 28.2** (`prod_ge_of_factors_gt`). If every element of the list `L` is strictly greater than `A`, then
 
@@ -156,7 +159,10 @@ a hypothesis, comes from. It follows from the cleanness of the centre.
 
 > **Definition 28.5** (`Clean A m`). The centre `m` is clean with respect to `A` if no prime `q ≤ A`
 > divides either of its sides:
-> $$\forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).$$
+>
+> $$
+> \forall q\ \text{prime},\ q \le A \;\Rightarrow\; \neg\bigl(q \mid (6m-1)\ \lor\ q \mid (6m+1)\bigr).
+> $$
 
 **Theorem 28.6** (`prime_factor_gt_A_plus`, `prime_factor_gt_A_minus`). Let the centre `m` be clean
 (`Clean A m`), and let `p` be prime. If `p ∣ (6m + 1)` (respectively `p ∣ (6m - 1)`), then
@@ -207,7 +213,10 @@ length `≥ 2`, §28.3 — length `≤ 4`, §28.5 — that all factors are `> A`
 > **Definition 28.8** (`AmbientLegal`, a reminder from chapter 27). The family `factors : Fin r → ℕ`
 > is legal in the ambient `X_A` if there exists a common top-side `N₀` which they all divide and which
 > does not exceed the sieve's ceiling:
-> $$\exists N_0,\ 0 < N_0\ \land\ N_0 \le 6X_A + 1\ \land\ \forall i,\ \mathtt{factors}\,i \mid N_0 .$$
+>
+> $$
+> \exists N_0,\ 0 < N_0\ \land\ N_0 \le 6X_A + 1\ \land\ \forall i,\ \mathtt{factors}\,i \mid N_0 .
+> $$
 
 **Theorem 28.9** (`mkNode_of_composite`). Let `1 ≤ A`, `1 < N`, let the number `N` be composite, not exceeding
 the ceiling `N ≤ 6X_A + 1`, let the scale inequality `6X_A + 1 < A^5` hold, and let every prime divisor

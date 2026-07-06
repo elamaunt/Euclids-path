@@ -27,7 +27,11 @@ against which it rests.
 Let us introduce the set of clean centers at a fixed threshold $A$.
 
 > **Definition 29.1** (CleanCenters). For $A\in\mathbb{N}$ we set
-> $$\mathrm{CleanCenters}(A)\;:=\;\{\,m\in\mathbb{N}\;\mid\;\mathrm{CleanZ}\,A\,(m:\mathbb{Z})\,\},$$
+>
+> $$
+> \mathrm{CleanCenters}(A)\;:=\;\{\,m\in\mathbb{N}\;\mid\;\mathrm{CleanZ}\,A\,(m:\mathbb{Z})\,\},
+> $$
+>
 > where `CleanZ A m` means that no prime $q\le A$ divides either of the sides $6m-1$, $6m+1$
 > (in $\mathbb{Z}$). This is a clean center: a center free of the "old" primes $\le A$.
 
@@ -36,7 +40,10 @@ fact `carrier_nonempty_above`, already proven in `Residuals`, which for any $A,N
 center strictly above $N$ (constructively, $m=(N+1)\cdot\mathrm{oldPrimorial}\,A$; no density is needed).
 
 > **Theorem 29.2** (`cleanCenters_infinite`). For every $A$ the set $\mathrm{CleanCenters}(A)$ is infinite:
-> $$(\mathrm{CleanCenters}\,A).\mathrm{Infinite}.$$
+>
+> $$
+> (\mathrm{CleanCenters}\,A).\mathrm{Infinite}.
+> $$
 
 The proof is simple in form and substantive in meaning. We apply
 `Set.infinite_of_not_bddAbove`: it suffices to show that the set is not bounded above. For any
@@ -77,7 +84,10 @@ obtain an engine at once.
 
 > **Theorem 29.4** (`engine_of_factorization`). Under the separating scale $6X_A+1<P_A$ and given
 > $F:\mathrm{FactorizationData}\,A\,X_A$, `Engine` holds:
-> $$6X_A+1<P_A\;\wedge\;F\;\Longrightarrow\;\mathrm{Engine}.\tag{29.1}$$
+>
+> $$
+> 6X_A+1<P_A\;\wedge\;F\;\Longrightarrow\;\mathrm{Engine}.\tag{29.1}
+> $$
 
 This is literally `product_core_engine_of_carrier` with the fields of the package $F$ plugged in: the
 rank `F.r`, the set `F.S`, the infinitude `F.hS`, the map `F.node`, the injectivity `F.hinj`, the
@@ -103,7 +113,10 @@ infinite subset of *one* rank. This is a purely combinatorial fact, and it is pr
 
 > **Theorem 29.5** (`exists_infinite_fiber`). Let $S$ be infinite and $f:S\to \mathrm{Fin}(n+1)$. Then some
 > fiber is infinite:
-> $$\exists c,\;\{x\mid x\in S\wedge f\,x=c\}.\mathrm{Infinite}.$$
+>
+> $$
+> \exists c,\;\{x\mid x\in S\wedge f\,x=c\}.\mathrm{Infinite}.
+> $$
 
 The proof is the infinite pigeonhole principle by contradiction. If every fiber were finite, then
 $S\subseteq\bigcup_c\{x\in S\mid f\,x=c\}$ would be a finite union of finite sets, hence finite —
@@ -135,7 +148,10 @@ Joining everything, we obtain the link's final theorem.
 > **Theorem 29.7** (`engine_of_carrier_and_factorize`). Under the separating scale $6X_A+1<P_A$, an infinite
 > carrier $C$, and given a rank function `rankOf` and a node map `mkNode` that is injective and
 > `AmbientLegal` on each rank — `Engine` holds:
-> $$6X_A+1<P_A,\;C.\mathrm{Infinite},\;\mathrm{rankOf},\;\mathrm{mkNode},\;\mathrm{hinj},\;\mathrm{hamb}\;\Longrightarrow\;\mathrm{Engine}.\tag{29.2}$$
+>
+> $$
+> 6X_A+1<P_A,\;C.\mathrm{Infinite},\;\mathrm{rankOf},\;\mathrm{mkNode},\;\mathrm{hinj},\;\mathrm{hamb}\;\Longrightarrow\;\mathrm{Engine}.\tag{29.2}
+> $$
 
 It is the composition `engine_of_factorization ∘ factorizationData_of_carrier` (Theorem 29.4 ∘ Definition 29.6). **What is proven in
 full inside the link:** the infinitude of the carrier (Theorem 29.2, `cleanCenters_infinite`), the choice of an
@@ -199,7 +215,10 @@ reaches this far: the barrier of §29.5 shows that any finite $X_A$ gets cut off
 > bounded fan-in together with the impossibility of infinite descent (the already proven
 > `no_infinite_descent`) — implies that infinitely many genealogies are "absorbed": their old primes
 > are fully absorbed, and their sides become legally factorizable at their own scale. Formally:
-> $$\text{descent-forest bounded}\;\Longrightarrow\;\{\,m\;\mid\;m\ \text{absorbed, rank}\le 4,\ \text{node injective}\,\}\ \text{is infinite}.$$
+>
+> $$
+> \text{descent-forest bounded}\;\Longrightarrow\;\{\,m\;\mid\;m\ \text{absorbed, rank}\le 4,\ \text{node injective}\,\}\ \text{is infinite}.
+> $$
 
 > **Closure plan.** (1) Define a scale function $A(m),X_A(m)$ growing together with $m$ so that the
 > side $6m\pm 1$ falls into the window $\le 6X_A(m)+1$ while the separating scale $6X_A(m)+1<P_{A(m)}$

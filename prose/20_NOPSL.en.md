@@ -26,7 +26,11 @@ pieces of data: the height of a state, the predicate of correct stopping, the st
 them together. We gather these into a single structure.
 
 > **Definition 20.1** (`OldPeelLedger`). An old-peel ledger over a type of states $\sigma$ is a tuple
-> $$L=\bigl(h,\ \mathrm{Sink},\ \mathrm{Step},\ \texttt{step\_drops},\ \texttt{regenerate}\bigr), \tag{20.1}$$
+>
+> $$
+> L=\bigl(h,\ \mathrm{Sink},\ \mathrm{Step},\ \texttt{step\_drops},\ \texttt{regenerate}\bigr), \tag{20.1}
+> $$
+>
 > where
 > - $h:\sigma\to\mathbb N$ is the **height** of a state (the scale of the current centre);
 > - $\mathrm{Sink}:\sigma\to\mathrm{Prop}$ is the predicate of **correct stopping** (a twin centre or
@@ -74,7 +78,10 @@ Now the main statement. It says that the abstract structure closes itself.
 
 > **Theorem 20.2** (`no_old_peel_sink`, §11.1/13.1). For every old-peel ledger $L$ over $\sigma$ and every
 > start $\mathrm{start}\in\sigma$ there exists a state $s$ with $\mathrm{Sink}(s)$:
-> $$\forall L,\ \forall\,\mathrm{start},\quad \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.2}$$
+>
+> $$
+> \forall L,\ \forall\,\mathrm{start},\quad \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.2}
+> $$
 
 Let us show why this is true, and follow the Lean proof at the same time — it is short and contains
 not a single loophole.
@@ -117,7 +124,10 @@ In [18 SNOL](18_SNOL.md) the final node was the "terminal shifted-neighbour obst
 carrier-scale catch that leads nowhere. Now we can say why it does not exist.
 
 > **Theorem 20.3** (`snol_of_nopsl`, §13). For every old-peel ledger $L$ and start there exists a sink:
-> $$\exists\,s,\ L.\mathrm{Sink}(s). \tag{20.5}$$
+>
+> $$
+> \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.5}
+> $$
 
 Formally `snol_of_nopsl` is exactly Theorem 20.2 (`no_old_peel_sink`) applied to $L$ and `start`; the separate name is there to
 emphasise the substantive reading. If the terminal SN-obstruction existed, its states
@@ -136,6 +146,7 @@ $N$.
 > - a family of ledgers $L(N)$ and starts $\mathrm{start}(N)$ for every scale $N\in\mathbb N$;
 > - a centre function $\mathrm{center}(N,\cdot):\sigma\to\mathbb N$;
 > - a stop-on-twin condition
+>
 >   $$\texttt{sink\_is\_twin}:\quad \forall N,s,\ \ L(N).\mathrm{Sink}(s)\ \Rightarrow\ N<\mathrm{center}(N,s)\ \wedge\ \mathrm{IsTwinCenter}\bigl(\mathrm{center}(N,s)\bigr). \tag{20.6}$$
 >
 > Then $\mathrm{TwinLowers.Infinite}$ — there are infinitely many twin primes.

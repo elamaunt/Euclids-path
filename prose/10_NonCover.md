@@ -24,7 +24,11 @@
 
 > **Определение 10.1** (twin-центр и `TwinLowers`). Индексная (центровая) форма пары близнецов: центр $m$ задаёт пару, если оба
 > соседа шестёрки просты. Формально `IsTwinCenter`:
-> $$\mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{простое}\ \wedge\ (6m+1)\ \text{простое}.$$
+>
+> $$
+> \mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{простое}\ \wedge\ (6m+1)\ \text{простое}.
+> $$
+>
 > Целевое множество — младшие члены пар, `TwinLowers` $= \{\,p \mid p\ \text{и}\ p+2\ \text{просты}\,\}$;
 > гипотеза близнецов есть в точности `TwinLowers.Infinite`.
 
@@ -47,7 +51,10 @@ $6m\pm1$ составная, потому что её накрыл какой-т
 от комбинаторного ядра, — это строгое неравенство мощностей.
 
 > **Определение 10.2** (non-cover). Говорим, что `bad` *не покрывает* `Ω`, если
-> $$|\mathrm{bad}| < |\Omega|.$$
+>
+> $$
+> |\mathrm{bad}| < |\Omega|.
+> $$
 
 **Теорема 10.3** (`survivor_of_not_covered`). *Если $|\mathrm{bad}| < |\Omega|$, то существует
 $m \in \Omega$ с $m \notin \mathrm{bad}$.*

@@ -71,11 +71,19 @@ $$\lambda(n) \;=\; (-1)^{\Omega(n)} \;=\; -(-1)^{\Omega(m)} \;=\; -\lambda(m).$$
 В Lean это две теоремы.
 
 > **Теорема 32.3** (`liouville_eq_neg_one_pow_rank`). Для всякого $n\ne 0$
-> $$\lambda(n) \;=\; (-1)^{\texttt{cardFactors}\,n}. \tag{32.1}$$
+>
+> $$
+> \lambda(n) \;=\; (-1)^{\texttt{cardFactors}\,n}. \tag{32.1}
+> $$
+>
 > Доказано без наших входов, как следствие `liouville_apply` из mathlib. 🟢
 
 > **Теорема 32.4** (`liouville_flip_of_mul_prime`). Для простого $p$ и всякого $m$
-> $$\lambda(p\cdot m) \;=\; -\,\lambda(m). \tag{32.2}$$
+>
+> $$
+> \lambda(p\cdot m) \;=\; -\,\lambda(m). \tag{32.2}
+> $$
+>
 > Доказано через `cardFactors_mul` + `cardFactors_apply_prime`. 🟢
 
 > **Примечание.** Смысл этих двух строк больше, чем их доказательство. Они говорят, что **знак

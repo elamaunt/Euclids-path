@@ -26,7 +26,11 @@
 их. Мы собираем это в одну структуру.
 
 > **Определение 20.1** (`OldPeelLedger`). Old-peel ledger над типом состояний $\sigma$ — это набор
-> $$L=\bigl(h,\ \mathrm{Sink},\ \mathrm{Step},\ \texttt{step\_drops},\ \texttt{regenerate}\bigr), \tag{20.1}$$
+>
+> $$
+> L=\bigl(h,\ \mathrm{Sink},\ \mathrm{Step},\ \texttt{step\_drops},\ \texttt{regenerate}\bigr), \tag{20.1}
+> $$
+>
 > где
 > - $h:\sigma\to\mathbb N$ — **высота** состояния (масштаб текущего центра);
 > - $\mathrm{Sink}:\sigma\to\mathrm{Prop}$ — предикат **корректной остановки** (twin-центр либо
@@ -74,7 +78,10 @@ catch'ей.
 
 > **Теорема 20.2** (`no_old_peel_sink`, §11.1/13.1). Для любого old-peel ledger $L$ над $\sigma$ и любого
 > старта $\mathrm{start}\in\sigma$ существует состояние $s$ с $\mathrm{Sink}(s)$:
-> $$\forall L,\ \forall\,\mathrm{start},\quad \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.2}$$
+>
+> $$
+> \forall L,\ \forall\,\mathrm{start},\quad \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.2}
+> $$
 
 Покажем, почему это верно, и одновременно проследим за Lean-доказательством — оно короткое и в нём
 нет ни одной лазейки.
@@ -117,7 +124,10 @@ $$\forall k,\quad h\bigl(z(k+1)\bigr)<h\bigl(z(k)\bigr). \tag{20.4}$$
 carrier-scale catch, который никуда не ведёт. Теперь мы можем сказать, почему его нет.
 
 > **Теорема 20.3** (`snol_of_nopsl`, §13). Для любого old-peel ledger $L$ и старта существует sink:
-> $$\exists\,s,\ L.\mathrm{Sink}(s). \tag{20.5}$$
+>
+> $$
+> \exists\,s,\ L.\mathrm{Sink}(s). \tag{20.5}
+> $$
 
 Формально `snol_of_nopsl` — это в точности Теорема 20.2 (`no_old_peel_sink`) применённая к $L$ и `start`; отдельное имя нужно, чтобы
 подчеркнуть содержательное прочтение. Если бы terminal SN-obstruction существовал, его состояния
@@ -136,6 +146,7 @@ $N$.
 > - семейство ledger'ов $L(N)$ и стартов $\mathrm{start}(N)$ для каждого масштаба $N\in\mathbb N$;
 > - функция центра $\mathrm{center}(N,\cdot):\sigma\to\mathbb N$;
 > - условие остановки-на-близнеце
+>
 >   $$\texttt{sink\_is\_twin}:\quad \forall N,s,\ \ L(N).\mathrm{Sink}(s)\ \Rightarrow\ N<\mathrm{center}(N,s)\ \wedge\ \mathrm{IsTwinCenter}\bigl(\mathrm{center}(N,s)\bigr). \tag{20.6}$$
 >
 > Тогда $\mathrm{TwinLowers.Infinite}$ — простых-близнецов бесконечно много.

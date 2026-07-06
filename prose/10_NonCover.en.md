@@ -27,7 +27,11 @@ fix the basic definitions we rely on (step 00).
 
 > **Definition 10.1** (twin center and `TwinLowers`). The index (center) form of a twin pair: a center $m$ defines a pair if both
 > neighbours of the sextuple are prime. Formally `IsTwinCenter`:
-> $$\mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.$$
+>
+> $$
+> \mathrm{IsTwinCenter}(m) \;:\Longleftrightarrow\; (6m-1)\ \text{prime}\ \wedge\ (6m+1)\ \text{prime}.
+> $$
+>
 > The target set is the lower members of the pairs, `TwinLowers` $= \{\,p \mid p\ \text{and}\ p+2\ \text{prime}\,\}$;
 > the twin conjecture is exactly `TwinLowers.Infinite`.
 
@@ -50,7 +54,10 @@ $6m\pm1$ is composite, because some forbidding divisor has covered it). The only
 from the combinatorial core is a strict inequality of cardinalities.
 
 > **Definition 10.2** (non-cover). We say that `bad` *does not cover* `Ω` if
-> $$|\mathrm{bad}| < |\Omega|.$$
+>
+> $$
+> |\mathrm{bad}| < |\Omega|.
+> $$
 
 **Theorem 10.3** (`survivor_of_not_covered`). *If $|\mathrm{bad}| < |\Omega|$, then there exists
 $m \in \Omega$ with $m \notin \mathrm{bad}$.*

@@ -33,12 +33,20 @@ twin, — при элементарном разборе не возникает
 
 > **Определение 21.1** (old-free центр)**.** Центр $t$ называется *old-free* относительно порога $A$, если
 > ни одно простое $q$ с $5\le q\le A$ не делит ни одну из сторон $6t\pm1$:
-> $$\mathrm{OldFree}(A,t)\ :\Longleftrightarrow\ \forall q\ \text{prime},\ 5\le q\le A\ \Longrightarrow\ \neg\bigl(q\mid 6t-1\ \lor\ q\mid 6t+1\bigr).$$
+>
+> $$
+> \mathrm{OldFree}(A,t)\ :\Longleftrightarrow\ \forall q\ \text{prime},\ 5\le q\le A\ \Longrightarrow\ \neg\bigl(q\mid 6t-1\ \lor\ q\mid 6t+1\bigr).
+> $$
+>
 > В Lean это `def OldFree (A t : ℕ) : Prop`. Содержательно $\mathrm{OldFree}(A,t)$ — это
 > принадлежность центра «чистой зоне» $\Omega_A$: он не ловится ни одним из уже пройденных простых.
 
 > **Определение 21.2** (twin-центр)**.** Центр $t$ — *twin*, если обе стороны простые:
-> $$\mathrm{Twin}(t)\ :\Longleftrightarrow\ (6t-1)\ \text{prime}\ \land\ (6t+1)\ \text{prime}.$$
+>
+> $$
+> \mathrm{Twin}(t)\ :\Longleftrightarrow\ (6t-1)\ \text{prime}\ \land\ (6t+1)\ \text{prime}.
+> $$
+>
 > В Lean это `def Twin (t : ℕ) : Prop`. Это единственный сорт корректного стока: пара
 > простых-близнецов $(6t-1,6t+1)$.
 

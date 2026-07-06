@@ -419,6 +419,14 @@ but not recursive* (Church, Turing): one can search, case by case, for the desce
 cannot decide, once and for all, which questions hide one. This is a lens for a class of problems reducible to descent,
 never a decision procedure for all — and that limit is not a shortcoming of the reading but a fact of logic itself.
 
+**The universe may be infinite; we hold it only locally.** The same locality has a face in the sky: cosmology gives us a
+finite *observable* universe — a patch bounded by the horizon — while the whole may well be unbounded. This is not the eye's
+weakness but the law just stated: a finite observer possesses any infinity only in a neighbourhood, never as a whole. It is
+the cosmological twin of the local sieve, and of `∞`, which sits on the number line yet is never reached from within, and of
+the twins, infinite yet never all shown at once. The infinite is real; the local is what is given. To hold the whole in one
+grasp would be the global oracle again — the totality seen from inside — and that is the very thing forbidden. So we live,
+always, in a local universe: not because the rest is not there, but because possessing it entire would cost the engine.
+
 **Collatz walks the boundary.** The clearest case of all this is the Collatz problem. It is a tug of war on a knife's edge —
 the odd step pulls a number up, the even step pulls it down — walking exactly along the border between two mutually
 exclusive worlds. In one, every orbit falls at last into the vacuum `1`: the descent wins, and there is no engine. In the

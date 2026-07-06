@@ -86,7 +86,7 @@ flowchart TD
     FC --> TP["Twins 🟡 · taken<br/>NOT Collatz-attackable: irreducible node,<br/>law ⟺ conjecture · incompatibility barrier<br/>(refute⟹engine needs the decreed stability)"]
     FC --> RH["Riemann 🟡 · taken<br/>NOT attackable: RiemannManifestationLaw ⟺ RH<br/>refuting = an off-critical zero (not over ℕ)"]
     FC --> NS["Navier–Stokes 🟡 · taken<br/>NOT attackable: witness ≥ Galdi Liouville problem<br/>no ⟺-mirror, no decidable predicate"]
-    MT -.->|"load-bearing face 🟡: incompatibility + boundary ⟹ twins ∞ (higherEnergyIncompatibility_twins)"| TP
+    MT -.->|"load-bearing face 🟡: incompatibility + boundary ⟹ twins are infinite"| TP
 
     ROOT --> PNP["P/NP 🟢<br/>rank-fast traversal ≠ full certificate payment"]
     ROOT --> YM["Yang–Mills 🟢<br/>spectral quantisation ⟺ mass gap"]

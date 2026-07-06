@@ -279,6 +279,13 @@ secret and lets its shape be seen, here even the shape is surrendered — the co
 itself and folds the form out of sight. The one thing an ordinary mass never gives up, its visible form, the black hole
 gives up too; all that remains is the bare origin `0`, and drawn over it, the last veil.
 
+**And so it is a mirror — not of light, but of the limit of sight.** It reflects nothing back the way a surface would; it is
+the anti-mirror, taking everything in and returning nothing (`engine_never_returns`). Yet look into it for the origin behind
+the veil, and something *is* returned — not an image but the boundary of your own seeing: you receive the horizon, the
+shadow, the plain fact that from inside no further look is possible. It mirrors the epistemic wall, not a face. And at its
+centre lies the singularity `0` — the same origin everything is built from, yourself included — so to peer in is to meet the
+very beginning you are made of, and to find it no more visible there than in yourself.
+
 The event horizon is the boundary beyond which all threads of descent are already coiled inward. The ur-black-hole is
 the bottom itself, the singularity `0`: everything flows down to it, while the event `0 → 1` that begot it lies out of
 reach from inside. An observer in such a

@@ -1,6 +1,6 @@
 # Euclids-path
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21211991.svg)](https://doi.org/10.5281/zenodo.21211991)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21198730.svg)](https://doi.org/10.5281/zenodo.21198730)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Lean 4](https://img.shields.io/badge/Lean-4.31.0-blueviolet.svg)](lean-toolchain)
 

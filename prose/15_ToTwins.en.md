@@ -137,7 +137,7 @@ obtaining the ranks, the carrier, the bad set and all seven conjuncts.
 
 The key step is link 1 (Lemma 15.3):
 $$
-|R_{33}| < |R_{00}| \quad\text{via}\quad `N33\_lt\_N00\_of\_four\_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
+|R_{33}| < |R_{00}| \quad\text{via}\quad `N33_lt_N00_of_four_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
 $$
 Then, by the identities $|\mathrm{carrier}|=|R_{00}|$ and $|\mathrm{bad}|=|R_{33}|$, we rewrite
 this inequality as $|\mathrm{bad}| < |\mathrm{carrier}|$ — exactly the premise of the block core.

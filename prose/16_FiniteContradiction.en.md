@@ -81,7 +81,7 @@ The reconnaissance verdict, verbatim: «No route escapes the four-corner/carrier
 Let us draw the line strictly. What is proven is the **conditional theorem** (Theorem 16.2) `finite ∧ H ⟹ False` — machine-checked, without `sorry`, on the standard axioms. It is a correctly assembled contradiction, complete at the level of the model: every link of the glue (16.4)
 
 $$
-\texttt{N33\_lt\_N00\_of\_four\_corner}\ \to\ \texttt{survivor\_of\_not\_covered}\ \to\ \texttt{twin\_prime\_conjecture\_of\_blocks}\ \to\ \texttt{infinite\_of\_unbounded\_centers} \tag{16.4}
+\texttt{N33_lt_N00_of_four_corner}\ \to\ \texttt{survivor\_of\_not\_covered}\ \to\ \texttt{twin\_prime\_conjecture\_of\_blocks}\ \to\ \texttt{infinite\_of\_unbounded\_centers} \tag{16.4}
 $$
 
 is verified and distribution-free. What remains open is *exactly* `H` (Definition 16.1), and inside `H` the only substantively open conjunct is the strict real four-corner (= parity + the model$\to$reality transfer) together with the lower bound on the carrier (= density). The model side (`four_corner_binom_strict`, `model_four_corner`) is already proven unconditionally; what fails to transfer is precisely the step from model to reality.

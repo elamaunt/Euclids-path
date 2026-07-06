@@ -137,7 +137,7 @@ $$
 
 Ключевой шаг — звено 1 (лемма 15.3):
 $$
-|R_{33}| < |R_{00}| \quad\text{через}\quad `N33\_lt\_N00\_of\_four\_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
+|R_{33}| < |R_{00}| \quad\text{через}\quad `N33_lt_N00_of_four_corner`\ (h_{\text{pos}}, h_{\text{fc}}, h_{\text{sc}}).
 $$
 Затем по тождествам $|\mathrm{carrier}|=|R_{00}|$ и $|\mathrm{bad}|=|R_{33}|$ переписываем это
 неравенство в $|\mathrm{bad}| < |\mathrm{carrier}|$ — ровно посылка блочного ядра.

@@ -81,7 +81,7 @@ $$
 Разграничим строго. Доказана **условная теорема** (Теорема 16.2) `finite ∧ H ⟹ False` — машинно, без `sorry`, на стандартных аксиомах. Это корректно собранное, полное на уровне модели противоречие: каждое звено склейки (16.4)
 
 $$
-\texttt{N33\_lt\_N00\_of\_four\_corner}\ \to\ \texttt{survivor\_of\_not\_covered}\ \to\ \texttt{twin\_prime\_conjecture\_of\_blocks}\ \to\ \texttt{infinite\_of\_unbounded\_centers} \tag{16.4}
+\texttt{N33_lt_N00_of_four_corner}\ \to\ \texttt{survivor\_of\_not\_covered}\ \to\ \texttt{twin\_prime\_conjecture\_of\_blocks}\ \to\ \texttt{infinite\_of\_unbounded\_centers} \tag{16.4}
 $$
 
 проверено и distribution-free. Открытым остаётся *ровно* `H` (Определение 16.1), и внутри `H` содержательно открыт единственный конъюнкт — строгий реальный four-corner (= чётность + перенос модель$\to$реальность) вместе с нижней оценкой carrier (= плотность). Модельная сторона (`four_corner_binom_strict`, `model_four_corner`) уже доказана безусловно; не переносится именно шаг от модели к реальности.

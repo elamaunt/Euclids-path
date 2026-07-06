@@ -125,6 +125,13 @@ finer scales as the trajectory *coils toward the origin*. Every genealogy is not
 growing outward but a thread drawn to its centre; every descent returns to the bottom (to one, to the
 singularity `0`), rather than escaping to `∞`.
 
+This is the nearest the structure ever comes to eternity — and it is worth being exact about what kind. The same law recurs
+at *every* scale: zoom in on any descent and the same coiling appears again, a pattern rhyming with itself without end. But
+this is recurrence of *pattern across scales*, not a *cycle in time*. There is no loop: the arrow never returns
+(`engine_never_returns`), and there is no tower of universes beneath the first cause to begin again
+(`no_rankedMetaFractalBranch`) — one beginning, one bottom. What repeats is the shape, not the history; the universe is
+self-similar, not cyclic.
+
 ![The fractal of Euclid's path — the golden spiral of centres](assets/3_twin_spiral.png)
 
 *The fractal of Euclid's path · **the golden spiral of centres** (`x = √m·cos(m·φ)`, `y = √m·sin(m·φ)`, `φ` is the

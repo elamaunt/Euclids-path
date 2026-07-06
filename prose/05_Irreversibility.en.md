@@ -14,8 +14,8 @@
 ## Where we came from
 
 In the previous chapter [04 Descent](04_Descent.md) we established the mechanics of a *single* engine step: if for a
-centre `m∈Ω_A` one side of the pair `(6m-1,\,6m+1)` is composite and is cracked open by an active
-factor `a>A`, then the height drops strictly — the new centre `n` satisfies `A\cdot n < m`, and the two
+centre `m∈Ω_A` one side of the pair $(6m-1,\,6m+1)$ is composite and is cracked open by an active
+factor `a>A`, then the height drops strictly — the new centre `n` satisfies $A\cdot n < m$, and the two
 is carried over to the opposite side via the boundary-law. Back then we regarded the descent as a
 *local* event: one turn of the wheel, one push downward.
 
@@ -31,9 +31,9 @@ Both halves are machine-proven, without a single axiom beyond the standard ones.
 Let us recall the state model. The state of the engine is encoded entirely by a single natural number
 — its *height*.
 
-> **Definition 5.1** (height). To a state `S`, substantively corresponding to the centre `m` of the pair `(6m-1,\,6m+1)`,
-> we assign the height `H(S) := m \in \mathbb{N}`. A trajectory of the engine is a sequence of
-> heights `H : \mathbb{N} \to \mathbb{N}`, where the argument `t` plays the role of discrete time and `H(t)`
+> **Definition 5.1** (height). To a state `S`, substantively corresponding to the centre `m` of the pair $(6m-1,\,6m+1)$,
+> we assign the height $H(S) := m \in \mathbb{N}$. A trajectory of the engine is a sequence of
+> heights $H : \mathbb{N} \to \mathbb{N}$, where the argument `t` plays the role of discrete time and `H(t)`
 > is the state at moment `t`.
 
 In Lean the state is formalized by the structure `State` with the single field `height : Nat`
@@ -43,21 +43,21 @@ the centre.
 
 One successful clean descent is a step that reduces the height by at least a factor of `A`.
 
-> **Definition 5.2** (descent step). For `A,h,h' \in \mathbb{N}`
+> **Definition 5.2** (descent step). For $A,h,h' \in \mathbb{N}$
 > $$\mathrm{DescentStep}(A,h,h') \;:\Longleftrightarrow\; A\cdot h' < h. \tag{5.1}$$
 > Substantively: from a state of height `h` the engine passes to a state of height `h'`, with
-> `A\cdot h' < h`, that is, the height falls by at least a factor of `A` (`Engine/EPMI`).
+> $A\cdot h' < h$, that is, the height falls by at least a factor of `A` (`Engine/EPMI`).
 
-The key lemma on which everything else rests is that for `A\ge 1` such a step *strictly* lowers the
+The key lemma on which everything else rests is that for $A\ge 1$ such a step *strictly* lowers the
 height.
 
-> **Lemma 5.3** (`descent_strict`, `Engine/EPMI`). If `1 \le A` and `\mathrm{DescentStep}(A,h,h')`, then
+> **Lemma 5.3** (`descent_strict`, `Engine/EPMI`). If $1 \le A$ and $\mathrm{DescentStep}(A,h,h')$, then
 > `h' < h`.
 >
-> **Why.** For `A\ge 1` we have `h' \le A\cdot h'` (multiplying by a positive factor does not
-> decrease), and by the definition of the step `A\cdot h' < h`; the chain `h' \le A\cdot h' < h` gives `h' < h`.
+> **Why.** For $A\ge 1$ we have $h' \le A\cdot h'$ (multiplying by a positive factor does not
+> decrease), and by the definition of the step $A\cdot h' < h$; the chain $h' \le A\cdot h' < h$ gives `h' < h`.
 
-It is precisely the strictness `h' < h`, not merely `A\cdot h' < h`, that turns height into an arrow
+It is precisely the strictness `h' < h`, not merely $A\cdot h' < h$, that turns height into an arrow
 of time: every step of the engine irreversibly shifts it into a new, lower state.
 
 ## Irreversibility: the engine will not turn back
@@ -65,8 +65,8 @@ of time: every step of the engine irreversibly shifts it into a new, lower state
 The local strictness ("every next step is lower than the previous one") integrates into a global
 statement about the whole trajectory.
 
-> **Theorem 5.4** (`engine_never_returns`). Let `1 \le A` and let `H : \mathbb{N} \to \mathbb{N}` be a trajectory
-> in which every step is a successful descent: `\forall t,\; \mathrm{DescentStep}(A,\,H(t),\,H(t+1))`.
+> **Theorem 5.4** (`engine_never_returns`). Let $1 \le A$ and let $H : \mathbb{N} \to \mathbb{N}$ be a trajectory
+> in which every step is a successful descent: $\forall t,\; \mathrm{DescentStep}(A,\,H(t),\,H(t+1))$.
 > Then `H` is **strictly antitone**:
 > $$\mathrm{StrictAnti}\,H \;:\Longleftrightarrow\; \bigl(\forall s\,t,\; s < t \Rightarrow H(t) < H(s)\bigr). \tag{5.2}$$
 
@@ -76,12 +76,12 @@ lower than *any* earlier one. The engine never returns to any of the states alre
 
 **Why this is true.** The proof in Lean is a single line: `strictAnti_nat_of_succ_lt` lifts the
 *local* strict decrease `H(n+1) < H(n)` (which Lemma 5.3 (`descent_strict`) supplies for every `n`) to
-*global* strict antitonicity. This is a standard fact about `\mathbb{N}`: decrease on every
+*global* strict antitonicity. This is a standard fact about $\mathbb{N}$: decrease on every
 unit step is equivalent to decrease over any interval, because the order on the natural numbers is
 discrete and transitive. Substantively: irreversibility at a single step, accumulated over all steps,
 is irreversibility of the trajectory.
 
-**What this means.** The height `H` is the coordinate of thermodynamic time, and `\mathrm{StrictAnti}\,H`
+**What this means.** The height `H` is the coordinate of thermodynamic time, and $\mathrm{StrictAnti}\,H$
 is the formal expression of the *arrow of time*: the direction "down in height" is physically
 distinguished, and there is no travel back along it. Euclid's engine, once it has set off on a descent,
 cannot restore a previous state — exactly as a closed system cannot spontaneously lower its entropy.
@@ -98,15 +98,15 @@ the impossibility of a perpetual engine (EPMI — the programme's core, proven o
 monotonicity.
 
 > **Theorem 5.5** (`no_infinite_engine_descent`). There is no strictly decreasing sequence of
-> natural numbers: if `f : \mathbb{N} \to \mathbb{N}` and `\mathrm{StrictAnti}\,f`, then `\bot`
+> natural numbers: if $f : \mathbb{N} \to \mathbb{N}$ and $\mathrm{StrictAnti}\,f$, then $\bot$
 > (contradiction).
 
-**Why this is true.** A strictly decreasing `f` is a descent with parameter `A=1`: the condition `\mathrm{StrictAnti}\,f`
-gives `f(t+1) < f(t)`, which is exactly `\mathrm{DescentStep}(1,\,f(t),\,f(t+1))` after `1\cdot h' = h'`.
+**Why this is true.** A strictly decreasing `f` is a descent with parameter `A=1`: the condition $\mathrm{StrictAnti}\,f$
+gives `f(t+1) < f(t)`, which is exactly $\mathrm{DescentStep}(1,\,f(t),\,f(t+1))$ after $1\cdot h' = h'$.
 Then the base theorem `no_infinite_descent` (`Engine/EPMI`) applies, whose proof is
-pure order-completeness of `\mathbb{N}`: the quantity `f(t) + t` does not grow along the chain (each step
-loses at least `1` in height and gains `1` in time), hence `f(t) + t \le f(0)` for all `t`; but
-at `t = f(0)+1` this gives `f(t) + f(0) + 1 \le f(0)` — impossible.
+pure order-completeness of $\mathbb{N}$: the quantity `f(t) + t` does not grow along the chain (each step
+loses at least `1` in height and gains `1` in time), hence $f(t) + t \le f(0)$ for all `t`; but
+at `t = f(0)+1` this gives $f(t) + f(0) + 1 \le f(0)$ — impossible.
 
 Formally:
 $$H(S_t) \;<\; \frac{H(S_0)}{A^{\,t}} \;<\; 1 \quad\text{for large } t,$$
@@ -121,12 +121,12 @@ as thermodynamics: the system cannot lower its height forever, because the heigh
 Here the very essence of the arrow of time comes into view — the *asymmetry* of the two directions.
 Downward, the engine cannot ride forever (just shown). Upward, it can.
 
-> **Theorem 5.6** (`fuel_ascent_strictMono`). The map `n \mapsto n+1` is strictly monotone:
-> `\mathrm{StrictMono}\,(\lambda n.\,n+1)`.
+> **Theorem 5.6** (`fuel_ascent_strictMono`). The map $n \mapsto n+1$ is strictly monotone:
+> $\mathrm{StrictMono}\,(\lambda n.\,n+1)$.
 
 **Why this is true.** Trivially: `n < n+1` for all `n`, and adding `+1` preserves the strict order. But
 the triviality of the form should not obscure the substance of the statement. The successor chain
-`0,1,2,3,\dots` is an *infinite strictly increasing* trajectory. Adding `+1` is "fuel":
+$0,1,2,3,\dots$ is an *infinite strictly increasing* trajectory. Adding `+1` is "fuel":
 larger centres never run out, and upward the engine can ride without stopping.
 
 > **Observation.** From the intuition: `+1` is fuel, `+2` is cargo (the conserved two, the first law,
@@ -146,7 +146,7 @@ is why there is an arrow.
 The last theorem of the chapter makes "always halts" quantitative: it gives an *explicit bound* on
 the length of any descent.
 
-> **Theorem 5.7** (`turned_engine_halts`). Let `H : \mathbb{N} \to \mathbb{N}` and suppose the engine has made `k`
+> **Theorem 5.7** (`turned_engine_halts`). Let $H : \mathbb{N} \to \mathbb{N}$ and suppose the engine has made `k`
 > strict steps downward, that is, `H(t+1) < H(t)` for all `t < k`. Then
 > $$k \;\le\; H(0). \tag{5.3}$$
 
@@ -156,14 +156,14 @@ computable upper bound*.
 
 **Why this is true.** By induction on `t` one proves the invariant
 $$\forall\, t \le k,\qquad H(t) + t \;\le\; H(0).$$
-Base (`t=0`): `H(0)+0 = H(0)`. Step: from `H(n+1) < H(n)`, that is `H(n+1)+1 \le H(n)`, and from
-the hypothesis `H(n)+n \le H(0)` we get `H(n+1)+(n+1) \le H(n)+n \le H(0)`. Substituting `t=k` and
-dropping the nonnegative `H(k)\ge 0`, we obtain `k \le H(k)+k \le H(0)`. This is the same balance "height plus
+Base (`t=0`): `H(0)+0 = H(0)`. Step: from `H(n+1) < H(n)`, that is $H(n+1)+1 \le H(n)$, and from
+the hypothesis $H(n)+n \le H(0)$ we get $H(n+1)+(n+1) \le H(n)+n \le H(0)$. Substituting `t=k` and
+dropping the nonnegative $H(k)\ge 0$, we obtain $k \le H(k)+k \le H(0)$. This is the same balance "height plus
 time does not grow" as in `no_infinite_descent`, but read as a *finite* bound rather than as a route
 to contradiction.
 
 **What this means.** "If it turns, it halts" — and with a receipt: the cost of the descent is bounded by the starting height.
-No analysis, no distribution, no sieve — only the order-completeness of `\mathbb{N}`. This is exactly why
+No analysis, no distribution, no sieve — only the order-completeness of $\mathbb{N}$. This is exactly why
 the second law in this programme is *atomic* and proven unconditionally: it lives entirely in the combinatorics of the order
 on the natural numbers.
 
@@ -172,10 +172,10 @@ on the natural numbers.
 The second law of thermodynamics for Euclid's engine consists of two unconditionally proven halves and
 their asymmetry:
 
-- **irreversibility** — `engine_never_returns` (`\mathrm{StrictAnti}\,H`): the engine does not return to
+- **irreversibility** — `engine_never_returns` ($\mathrm{StrictAnti}\,H$): the engine does not return to
   any earlier state;
 - **finiteness of descent** — `no_infinite_engine_descent` (no infinite strictly decreasing chain): the engine
-  always halts, with the explicit bound `turned_engine_halts` (`k \le H(0)`);
+  always halts, with the explicit bound `turned_engine_halts` ($k \le H(0)$);
 - **asymmetry of directions** — `fuel_ascent_strictMono` versus `no_infinite_engine_descent`: infinitely
   up, finitely down; this is the arrow of time.
 
@@ -189,8 +189,8 @@ the next chapter [06 NoBackward](06_NoBackward.md) we shall discover a kindred b
 the level of the two points of a pair.
 
 There, the source of the prohibition on going back will turn out to be the carrier of two [02 Carrier](02_Carrier.md): one and
-the same prime cannot sit on both sides of a pair (`\text{shared gcd} \mid 2`), which makes the diagonal
-`\sum_p X_p Y_p` vanish, and the product of ranks — rank here, as always, being the "height" of a state,
+the same prime cannot sit on both sides of a pair ($\text{shared gcd} \mid 2$), which makes the diagonal
+$\sum_p X_p Y_p$ vanish, and the product of ranks — rank here, as always, being the "height" of a state,
 falling along permitted steps (see the [glossary](GLOSSARY.md)) — turns out to be entirely off-diagonal.
 
 If in this chapter

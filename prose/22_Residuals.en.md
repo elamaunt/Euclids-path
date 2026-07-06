@@ -111,8 +111,8 @@ $$p^2 \ \le\ p \cdot (n/p) \ =\ n. \tag{22.4}$$
 But then $A^2 < p^2 \le n < A^2$ — a contradiction (`nlinarith`). Hence $n$ is prime.
 
 > **Note.** The threshold `A^2` is not a heuristic but the exact "sieve of Eratosthenes" boundary: a
-> number without prime divisors `\le A` and smaller than `A^2` cannot be composite, since a composite
-> number always has a prime divisor `\le \sqrt{n} < A`. This makes the derivation of primality
+> number without prime divisors $\le A$ and smaller than `A^2` cannot be composite, since a composite
+> number always has a prime divisor $\le \sqrt{n} < A$. This makes the derivation of primality
 > *elementary*: one needs neither to know the distribution of primes nor to count them — it suffices
 > that the sides are clean and lie below `A^2`.
 
@@ -161,7 +161,7 @@ Hence $6n+\varepsilon \le (6m+\sigma)/5$, and for $m \ge 1$ the fraction is stri
 running through the four sign combinations is closed by `nlinarith`. Substantively: divisibility of the active side
 by a large $a > A$ cannot fail to "compress" the centre — the new $n$ is strictly lower.
 
-> **Note.** The factor `5` here is no accident: it is the smallest old prime, and `a > A \ge 5`
+> **Note.** The factor `5` here is no accident: it is the smallest old prime, and $a > A \ge 5$
 > only strengthens the compression. It is the same coefficient `1/5` as in the height-drop of old-peel [19](19_OldPeel.md)
 > (`old_peel_height_drop`, `t < n/5`); here it appears on the active edge of the dichotomy and makes the descent
 > strict. It is precisely the strict decrease of height that forbids an infinite chain and closes the flow onto the

@@ -12,7 +12,7 @@
 > `engine_of_carrier_and_factorize`, `product_core_engine_of_carrier`.
 
 In the previous chapter (28, `mkNode`) we learned how to extract from a single clean side a concrete
-core node `RankNode r`: factoring the composite side `6m\pm 1` into primes `> A` gave us a sign and a
+core node `RankNode r`: factoring the composite side $6m\pm 1$ into primes `> A` gave us a sign and a
 role-indexed set of factors, and `factor_rank_le_four` pinned the rank between `2` and `4`. In other
 words, we possess a local map "center $m$ $\mapsto$ core node".
 

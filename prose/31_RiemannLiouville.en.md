@@ -6,14 +6,14 @@
 
 
 
-> Lean: `Engine/RiemannLiouville.lean`. Numbers: `|L(x)|/\sqrt{x}` is bounded (the classical
+> Lean: `Engine/RiemannLiouville.lean`. Numbers: $|L(x)|/\sqrt{x}$ is bounded (the classical
 > Liouville equivalent of RH). Link to the engine: the Liouville sign = `(−1)^rank`, flipped by `deleteFactor`.
 
 ## Where we are
 
 In chapters 30–31 (`SeparatingScale`, `RankDescent`, `ProductCore`) we closed `ProductHall` by pure
 arithmetic and shifted the whole burden onto the concrete product core `RankNode r` — a structure with a sign and
-`r` factors, along which a correct `rank descent` `r \to r-1 \to \dots \to 1` runs. The logic of the descent
+`r` factors, along which a correct `rank descent` $r \to r-1 \to \dots \to 1$ runs. The logic of the descent
 is sound; what remained open were the stitching nodes (extensionality on residual ranks, finiteness of `ProdSig` against
 the pigeonhole).
 
@@ -58,7 +58,7 @@ sum, the accumulated imbalance between the numbers with an even and an odd numbe
 > the **official mathlib formulation** (a quantifier over all zeros of `riemannZeta`, excluding the trivial ones
 > `-2(n+1)` and `s = 1`), and *not* a home-made `def`. The same goal as in `RiemannBranch`.
 
-## The classical bridge: `LiouvilleBound \iff RH`
+## The classical bridge: $LiouvilleBound \iff RH$
 
 The supporting fact is a well-known theorem of analytic number theory (mathlib does not yet have it, so we
 introduce it as an **explicit input-bridge** — an input, or gate, is an honestly named unproven statement
@@ -137,7 +137,7 @@ $\sqrt{x}$ which in chapter 30 separated the legal layer; here it surfaces as th
 > strictly flips the sign along a lineage, but the horizontal balance is probabilistic, and the two must not
 > be confused.
 
-## Honestly: `LiouvilleBound \equiv RH` is the parity wall
+## Honestly: $LiouvilleBound \equiv RH$ is the parity wall
 
 Now let us say plainly where the wall is, and not pass the reduction off as a proof. We have *not* proven
 `LiouvilleBound`. We have shown only that this equivalent of RH is expressible in our language and that our operation
@@ -174,7 +174,7 @@ The closing plan, step by step, with an honest assessment of each:
    systematically skewed (for instance $L(x)\gg \sqrt{x}$), that would give a "free" directed
    pumping of mass along the descent — the very perpetual engine forbidden by `no_infinite_descent`
    (EPMI — the impossibility core for the perpetual engine, see the [glossary](GLOSSARY.md)). This is exactly the logic of the `RiemannBranch` line, but expressed through the Liouville sign rather than through the
-   height $H$. The task is to make this implication precise: `parity skew \Rightarrow Engine`.
+   height $H$. The task is to make this implication precise: $parity skew \Rightarrow Engine$.
 3. **Fold it into the bound.** From the boundedness of the skew — derive $O(x^{1/2+\varepsilon})$.
 
 > **Note.** Step 2 is the heart of the plan and, at the same time, the boundary of honesty. It repeats the structure of
@@ -187,7 +187,7 @@ The closing plan, step by step, with an honest assessment of each:
 ## Conclusion
 
 The Liouville branch gives the shortest honest formulation of RH in our theory: we take the ready-made
-equivalence `LiouvilleBound \iff RH` (the bridge `LiouvilleRHBridge`), and RH reduces to a single
+equivalence $LiouvilleBound \iff RH$ (the bridge `LiouvilleRHBridge`), and RH reduces to a single
 arithmetic goal — the bound $|L(x)|=O(x^{1/2+\varepsilon})$ (Theorem 31.6, `riemann_of_liouville_bound`).
 
 This goal

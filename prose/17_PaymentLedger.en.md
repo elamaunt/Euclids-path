@@ -43,7 +43,7 @@ is: in which residue class modulo `p` is the source `m` forced to lie?
 
 > **Definition 17.1** (channel class). For given `a, ε, σ` and a prime `p`, a source `m` is called a
 > *compatible channel modulo `p`* if the lift relation and the boundary condition
-> `p ∣ 6n − ε` hold. By a channel we mean the admissible residue class `6m \bmod p`.
+> `p ∣ 6n − ε` hold. By a channel we mean the admissible residue class $6m \bmod p$.
 
 **Theorem 17.2** (`channel_residue`). If `p > 3`, `6m + σ = a(6n + ε)` and `p ∣ 6n − ε`, then
 
@@ -113,7 +113,7 @@ passage is tax-free. Then all the divisibilities `q ∣ a − θ` add up, and �
 pairwise coprime — their product divides the shift as well.
 
 > **Definition 17.5** (primorial over `G`). For a finite set of pairwise coprime `q` we write
-> `P := \prod_{q \in G} q`. This is the primorial (product) of the small primes at which the passage
+> $P := \prod_{q \in G} q$. This is the primorial (product) of the small primes at which the passage
 > is tax-free.
 
 **Theorem 17.6** (`primorial_dvd_shift`). If `(G).Pairwise Nat.Coprime` and `∀ q ∈ G, q ∣ a − θ`, then
@@ -149,7 +149,7 @@ with `dvd_abs` gives `P ≤ |a − θ|`. This is the **defect law** in its exact
 The meaning is direct and strong. A free passage to an ordered prime `p` requires tax-freedom at all
 the smaller small primes, and therefore — that `a − θ` is divisible by the *entire primorial* `P_{<p}`
 of the small primes below `p`. But then either `a = θ` (the trivial, degenerate case), or the
-primorial is bounded by the active divisor: `P_{<p} \le |a - θ|`.
+primorial is bounded by the active divisor: $P_{<p} \le |a - θ|$.
 
 **Conclusion.** As soon as the primorial outgrows the active divisor, there simply *is no*
 nontrivial tax-free passage.
@@ -167,7 +167,7 @@ free**: beyond the threshold `Y_A` there is no nontrivial `a ≤ Z` divisible by
 a tax-free (free) passage to a late `p` is impossible.
 
 > **Note.** Numerically (`tools/RESULTS_payment_budget.md` and the accompanying audit) the threshold
-> arrives early: `Y_A / A ≈ 0.15\text{–}0.6`, and this fraction **drops** as the scale grows. That is,
+> arrives early: $Y_A / A ≈ 0.15\text{–}0.6$, and this fraction **drops** as the scale grows. That is,
 > free late boundaries are almost nonexistent — the primorial of the small primes overtakes the
 > active divisor, and the defect law bites for the overwhelming majority of late `p`.
 
@@ -181,7 +181,7 @@ programme?
 No — and it is important to understand *why*. There is no crude overflow of a single prime: `p` has
 exactly `p − 2` channels, just like the carrier. The real lever is joint compatibility across **all**
 `q < p`, that is, the shifted primorial, and it drives everything into a single quantitative
-question: how many active `a \le A^\kappa` have a *large* shifted gcd `\gcd(a - \theta,\, P_{<p})`?
+question: how many active $a \le A^\kappa$ have a *large* shifted gcd $\gcd(a - \theta,\, P_{<p})$?
 The harness stress test gives an unpleasant answer:
 
 | `D` | `A=70, p=29` | `A=130, p=31` | `A=240, p=37` |
@@ -190,11 +190,11 @@ The harness stress test gives an unpleasant answer:
 | 1000 | 0.027 | 0.074 | 0.147 |
 | 100 | 0.099 | 0.262 | 0.526 |
 
-The fraction `\mathrm{frac}(\gcd \ge p^2)` *grows* with the scale (3% → 7% → 13%). The two budgets —
+The fraction $\mathrm{frac}(\gcd \ge p^2)$ *grows* with the scale (3% → 7% → 13%). The two budgets —
 shifted-charge and tax — pull in opposite directions and **do not close simultaneously**
 distribution-free:
 
-- if the shifted-charge is small (a large threshold `D` is needed), then the "tax" part `\gcd < D` is
+- if the shifted-charge is small (a large threshold `D` is needed), then the "tax" part $\gcd < D$ is
   almost everything, but its capacity is lost only as
 
   $$
@@ -202,9 +202,9 @@ distribution-free:
   \tag{17.2}
   $$
 
-  (Mertens: divergence of `\sum 1/q`) — that is, the total capacity loss over the small primes is
+  (Mertens: divergence of $\sum 1/q$) — that is, the total capacity loss over the small primes is
   vanishingly slow;
-- if the tax is small (small `D`), then the shifted-charge is `\ge 13\%` and keeps growing.
+- if the tax is small (small `D`), then the shifted-charge is $\ge 13\%$ and keeps growing.
 
 **Section takeaway.** There is no `D = D(A)` for which *both* budgets are simultaneously `o(|S_0|)`
 without appealing to distribution.
@@ -220,7 +220,7 @@ without appealing to distribution.
 > the shift's divisors** — the territory of Brun/Selberg (the sieve) and of controlling the remainder
 > on a real interval (Bombieri–Vinogradov). That is, the red parity line, not elementary algebra.
 >
-> We do *not* pass this reduction off as a proof: the total capacity loss `\sim 1/\ln A` (Mertens) is
+> We do *not* pass this reduction off as a proof: the total capacity loss $\sim 1/\ln A$ (Mertens) is
 > a wall, and it cannot be broken through distribution-free.
 
 ## Summary and the bridge to chapter 18
@@ -239,7 +239,7 @@ that `a` arrived from the descent of a wedge centre rather than being taken at r
 In chapter 18 we make exactly this strategic shift: via rank descent (the rank is the "height" of a
 state, strictly dropping along permitted steps; see the [glossary](GLOSSARY.md)) all product-state
 defects are reduced to rank-1, and rank-1 — to a single SNOL lemma, **non-counting by construction**,
-about the terminal shifted neighbour `p \mid a - 2\varepsilon`. Where the payment route secretly
+about the terminal shifted neighbour $p \mid a - 2\varepsilon$. Where the payment route secretly
 called for distribution, SNOL *forbids* it and demands a Euclidean pedigree of `a`.
 
 <!--navbot-->

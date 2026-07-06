@@ -38,7 +38,7 @@ The first statement is simple but load-bearing. It says that the sum of "self" t
 **Theorem 6.2** (`exclusive_diag_zero`). For a finite set $s$ and weights $X, Y : \iota \to \mathbb{N}$, if $X_p \cdot Y_p = 0$ for all $p \in s$, then
 $$\sum_{p\in s}X_p\cdot Y_p=0. \tag{6.1}$$
 
-The Lean proof is a single line (`Finset.sum_eq_zero hexcl`): a sum of zeros is zero. But the substantive meaning matters more than the brevity. The quantity `\sum_p X_p Y_p` is the *diagonal*: it counts the cases where a prime `p` divides both the left and the right side — that is, a "backward move on one point", a self-transition in which the engine at that prime returns into itself, touching both sides simultaneously. Exclusivity erases this diagonal completely: `\text{DIAG}=0`.
+The Lean proof is a single line (`Finset.sum_eq_zero hexcl`): a sum of zeros is zero. But the substantive meaning matters more than the brevity. The quantity $\sum_p X_p Y_p$ is the *diagonal*: it counts the cases where a prime `p` divides both the left and the right side — that is, a "backward move on one point", a self-transition in which the engine at that prime returns into itself, touching both sides simultaneously. Exclusivity erases this diagonal completely: $\text{DIAG}=0$.
 
 > **Note.** The diagonal here is not a metaphor but a concrete term of a decomposition. In matrix language, if `N_{ij}` is the count of centres with ranks `(r_-,r_+)=(i,j)`, then nonzero diagonal contributions at the level of primes would correspond to the "both divide" correlation. Exclusivity annihilates them pointwise, before any summation over centres.
 
@@ -49,15 +49,15 @@ The second statement is the main one. It turns the pointwise vanishing of the di
 **Theorem 6.3** (`exclusive_no_backward`). For a finite set $s$ with decidable equality of indices $[\mathrm{DecidableEq}\; \iota]$ and weights $X, Y : \iota \to \mathbb{N}$, under the exclusivity $X_p \cdot Y_p = 0$ for all $p \in s$,
 $$\Bigl(\sum_{i\in s}X_i\Bigr)\cdot\Bigl(\sum_{j\in s}Y_j\Bigr)=\sum_{i\in s}\ \sum_{j\in s\setminus\{i\}}X_i\cdot Y_j. \tag{6.2}$$
 
-That is, the product of ranks `r_-\cdot r_+` is entirely *off-diagonal*: the double sum contains no terms with `i=j`; only the pairs `i\neq j` remain.
+That is, the product of ranks $r_-\cdot r_+$ is entirely *off-diagonal*: the double sum contains no terms with `i=j`; only the pairs $i\neq j$ remain.
 
 *Why this is true.* Expand the product of sums. Distributivity (`Finset.sum_mul`, then `Finset.mul_sum`) gives
 $$\Bigl(\sum_i X_i\Bigr)\Bigl(\sum_j Y_j\Bigr)=\sum_{i\in s}\sum_{j\in s}X_i\,Y_j.$$
-Split the inner sum over `j\in s` by extracting the term `j=i` (the lemma `Finset.add_sum_erase`):
+Split the inner sum over $j\in s$ by extracting the term `j=i` (the lemma `Finset.add_sum_erase`):
 $$\sum_{j\in s}X_i\,Y_j=X_i\,Y_i+\sum_{j\in s\setminus\{i\}}X_i\,Y_j.$$
-The extracted term `X_i Y_i` is exactly `X_i\cdot Y_i`, and by exclusivity `X_i\cdot Y_i=0` for `i\in s` (`hexcl i hi`). After `zero_add`, only the off-diagonal part survives. Summing over `i` completes the proof.
+The extracted term `X_i Y_i` is exactly $X_i\cdot Y_i$, and by exclusivity $X_i\cdot Y_i=0$ for $i\in s$ (`hexcl i hi`). After `zero_add`, only the off-diagonal part survives. Summing over `i` completes the proof.
 
-Structurally, this is precisely "no backward move on two points". The product `(\sum X)(\sum Y)` describes the joint behaviour of the engine on the left and right side. The diagonal `i=j` would correspond to a simultaneous move "into itself" on both points — the self-transition `2\to 2`. Exclusivity forbids it at each prime, and therefore forbids it in the whole sum: only the cross transitions `i\neq j` remain, where the left divisor and the right divisor are different primes.
+Structurally, this is precisely "no backward move on two points". The product $(\sum X)(\sum Y)$ describes the joint behaviour of the engine on the left and right side. The diagonal `i=j` would correspond to a simultaneous move "into itself" on both points — the self-transition $2\to 2$. Exclusivity forbids it at each prime, and therefore forbids it in the whole sum: only the cross transitions $i\neq j$ remain, where the left divisor and the right divisor are different primes.
 
 > **Note.** The requirement `[DecidableEq ι]` is needed only technically: so that `s.erase i` is defined (one must be able to decide `j=i`). It carries no mathematical content — for finite sets of primes, equality is always decidable.
 
@@ -69,7 +69,7 @@ where $\text{DIAG}$ gathers the "both divide at one prime" contributions.
 
 Theorem 6.2 (`exclusive_diag_zero`) annihilates the pointwise diagonal, and Theorem 6.3 (`exclusive_no_backward`) shows that the entire structure of the product of ranks is off-diagonal. This is exactly where the sign comes from: the vanished diagonal is the "heat" removed by irreversibility, and it shifts the association of `(r_-,r_+)` toward the negative.
 
-The numerical reconnaissance (`tools/RESULTS_rank2.md`) confirms this robustly: the count matrix `N_{ij}` is close to rank 1 (the ranks are almost independent, `sv_2/sv_1\approx 0.001`), while the sign of the rank-2 correction — the very one the four-corner sees — is *negative at all scales tested*, because `\mathrm{Cov}(r_-,r_+)<0` everywhere.
+The numerical reconnaissance (`tools/RESULTS_rank2.md`) confirms this robustly: the count matrix `N_{ij}` is close to rank 1 (the ranks are almost independent, $sv_2/sv_1\approx 0.001$), while the sign of the rank-2 correction — the very one the four-corner sees — is *negative at all scales tested*, because $\mathrm{Cov}(r_-,r_+)<0$ everywhere.
 
 **Conclusion.** The source of this sign is neither the density of primes nor statistics, but *exact arithmetic exclusivity*: a prime divides at most one side (`shared gcd ∣ 2`).
 
@@ -82,13 +82,13 @@ equivalently $\text{DIAG}\ge\text{CROSS}$.
 
 **Closing plan.** Exclusivity (`Carrier.no_large_shared_divisor`, Theorem 6.2 (`exclusive_diag_zero`)) gives the pointwise structure "a per-prime product with no cross $xy$ term" — this is exactly the product CRT model $\prod_p(c_p+a_p x+b_p y)$ without the $xy$ term ([chapter 12](12_FourCorner.md)). For such a model, negative association is provable elementarily (Maclaurin).
 
-What remains is the control of the model→reality remainder: showing that the real `\text{CROSS}` does not exceed `\text{DIAG}`. This is a distribution-free candidate, but numerically `1-R_{fc}\to 0` (knife-edge), which points to proximity to the parity wall. None of the available techniques yields a distribution-independent closure so far; hence the node here is declared open, not closed (on node statuses, see the [glossary](GLOSSARY.md)).
+What remains is the control of the model→reality remainder: showing that the real $\text{CROSS}$ does not exceed $\text{DIAG}$. This is a distribution-free candidate, but numerically $1-R_{fc}\to 0$ (knife-edge), which points to proximity to the parity wall. None of the available techniques yields a distribution-independent closure so far; hence the node here is declared open, not closed (on node statuses, see the [glossary](GLOSSARY.md)).
 
 ## Bridge to the next chapter
 
 We have obtained the prohibition on moving backward on two points — an arithmetic mechanism that annihilates the diagonal and makes the joint structure of the ranks purely off-diagonal. This constraint acts on the *width* of the engine's move (the joint behaviour of the sides).
 
-In the [next chapter, 07](07_Squeeze.md) we turn to the constraint on the *length* of the move: the algebraic cubic squeeze `12(h+6h^2)<A\Rightarrow 72h^2<A`, that is `h<\sqrt{A/72}`, shows that the valid segment of a train — the number of actually reachable centres along the affine line — is short, even when the line itself and the `+1` fuel are infinite.
+In the [next chapter, 07](07_Squeeze.md) we turn to the constraint on the *length* of the move: the algebraic cubic squeeze $12(h+6h^2)<A\Rightarrow 72h^2<A$, that is $h<\sqrt{A/72}$, shows that the valid segment of a train — the number of actually reachable centres along the affine line — is short, even when the line itself and the `+1` fuel are infinite.
 
 **Section takeaway.** Irreversibility in height, the backward prohibition in width, and the short train in length together squeeze the engine from all sides.
 

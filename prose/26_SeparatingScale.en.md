@@ -16,13 +16,13 @@ In the present chapter we go around it honestly: not by strengthening the passpo
 
 ## The setup: legal carrier and separating scale
 
-Fix a threshold `A` and work on the legal carrier layer. The active factor is a divisor `a ∣ N` of the carrier `N = 6m + σ`, where `σ ∈ \{-1, +1\}`. The legal restriction on the carrier gives the bound
+Fix a threshold `A` and work on the legal carrier layer. The active factor is a divisor `a ∣ N` of the carrier `N = 6m + σ`, where $σ ∈ \{-1, +1\}$. The legal restriction on the carrier gives the bound
 
 $$
 0 < N \le 6X_A + 1,
 $$
 
-where `X_A` is the upper bound on the centre `m` on the layer under consideration. Alongside this we have the primorial `P_A = \prod_{p \le A} p`, which defines the coarse passport of the active factor as the residue `a \bmod P_A`.
+where `X_A` is the upper bound on the centre `m` on the layer under consideration. Alongside this we have the primorial $P_A = \prod_{p \le A} p$, which defines the coarse passport of the active factor as the residue $a \bmod P_A$.
 
 > **Definition 26.1** (separating scale). We say the scale is *separating* (a separating scale) if the primorial outruns the carrier bound:
 > $$
@@ -30,7 +30,7 @@ where `X_A` is the upper bound on the centre `m` on the layer under consideratio
 > $$
 > Put differently — and this is the central definition — it is the condition under which a legal factor is guaranteed to be *smaller* than the passport's modulus.
 
-The intuition: the passport `a \bmod P_A` is coarse as a map on all natural numbers, but on the legal region it sees the factor in full, provided the factor itself does not reach `P_A`. It is precisely the separating scale that secures `a < P_A`, turning coarse data into exact data *without changing the passport itself*.
+The intuition: the passport $a \bmod P_A$ is coarse as a map on all natural numbers, but on the legal region it sees the factor in full, provided the factor itself does not reach `P_A`. It is precisely the separating scale that secures `a < P_A`, turning coarse data into exact data *without changing the passport itself*.
 
 ## The separating congruence
 
@@ -67,7 +67,7 @@ The proof is a chain of inequalities. Divisibility `a ∣ N` with `0 < N` gives 
 
 Note exactly where each hypothesis is used: divisibility gives `a ≤ N`, the legal carrier bound gives `N ≤ 6X_A + 1`, and the separating scale supplies the final strict step `6X_A + 1 < P_A`. Remove any one of them — and the conclusion `a < P_A` collapses.
 
-> **Note.** This is precisely where the separating scale "does the work". Without it the factor could climb past `P_A`, and then `a \bmod P_A` would no longer recover `a` — the coarse passport would remain genuinely coarse. The condition `P_A > 6X_A + 1` is exactly the point at which a coarse passport becomes exact on the legal region.
+> **Note.** This is precisely where the separating scale "does the work". Without it the factor could climb past `P_A`, and then $a \bmod P_A$ would no longer recover `a` — the coarse passport would remain genuinely coarse. The condition `P_A > 6X_A + 1` is exactly the point at which a coarse passport becomes exact on the legal region.
 
 ## The ProductHall configuration on the legal layer
 
@@ -97,7 +97,7 @@ The proof assembles the three previous bricks. From Lemma 26.3 (`legal_lift_lt_p
 
 What is proven: under the separating scale, two legal factors congruent modulo `P_A` are *forced to coincide*, so a pair "distinct yet congruent" does not exist. Why this is true: the separating scale drives both factors below the modulus (`< P_A`), and below the modulus congruence is equivalent to equality.
 
-**Conclusion.** The coarse passport `a \bmod P_A` is injective on the legal region — it distinguishes everything that ever occurs there — and therefore cannot "glue" two distinct factors together. The trilemma of chapter 25 is bypassed honestly: the passport remained coarse (we gave it no extra distinguishing power), yet on the legal domain it became exact *automatically*.
+**Conclusion.** The coarse passport $a \bmod P_A$ is injective on the legal region — it distinguishes everything that ever occurs there — and therefore cannot "glue" two distinct factors together. The trilemma of chapter 25 is bypassed honestly: the passport remained coarse (we gave it no extra distinguishing power), yet on the legal domain it became exact *automatically*.
 
 > **Note (minimal axioms).** The formalisation of `no_productHall` rests only on `propext` and `Quot.sound` and *does not use* `Classical.choice`. This is constructive arithmetic: the node is closed by computation, not by choice. For the first time in the programme a pump node has been closed by a genuine proof rather than a renaming of the wall.
 
@@ -116,9 +116,9 @@ $$
 \qquad\text{in the decimal scale}\quad \log_{10} P_A \sim \frac{A}{\ln 10}.
 $$
 
-If we take the most pessimistic carrier estimate of the form `6X_A + 1 \lesssim 6\,A^{4.5}`, then its logarithm `\log_{10}(6A^{4.5}) \approx 4.5\log_{10}A + \log_{10}6` grows only like `A^{4.5}` on the logarithmic scale, whereas `\log_{10}P_A` grows linearly in `A`. The linear `A/\ln 10` overtakes `4.5\log_{10}A` already at `A ≈ 50`, and beyond that the gap only widens:
+If we take the most pessimistic carrier estimate of the form $6X_A + 1 \lesssim 6\,A^{4.5}$, then its logarithm $\log_{10}(6A^{4.5}) \approx 4.5\log_{10}A + \log_{10}6$ grows only like `A^{4.5}` on the logarithmic scale, whereas $\log_{10}P_A$ grows linearly in `A`. The linear $A/\ln 10$ overtakes $4.5\log_{10}A$ already at `A ≈ 50`, and beyond that the gap only widens:
 
-| `A` | `\log_{10} P_A` | `\log_{10}(6\,A^{4.5})` | `P_A > 6X_A + 1` |
+| `A` | $\log_{10} P_A$ | $\log_{10}(6\,A^{4.5})$ | `P_A > 6X_A + 1` |
 |---|---|---|---|
 | 50 | 17.0 | 8.4 | ✓ |
 | 200 | 81.1 | 11.1 | ✓ |
@@ -136,7 +136,7 @@ Closing `ProductHall` does not close the whole programme — it *narrows* it. Th
 
 This is pure logic (`Or.resolve_right`), and it is honestly framed as a reduction, not a result: the predicate `energy_defect_trichotomy` itself, which produces the disjunction `L ∨ PH`, remains an open node. In the same spirit we record the skeleton of the rank descent:
 
-> **Skeleton lemma 26.8 (`rank_descent_terminates`).** Given a rank reduction `r → r-1` on the range `1 < r ≤ 4` and a closure of rank 1 (SNOL), the descent `r → \dots → 1` is finite.
+> **Skeleton lemma 26.8 (`rank_descent_terminates`).** Given a rank reduction `r → r-1` on the range `1 < r ≤ 4` and a closure of rank 1 (SNOL), the descent $r → \dots → 1$ is finite.
 
 Here `lower_step` (the actual rank reduction) and `rank1_closes` (the closure of rank 1 via SNOL) are explicit hypotheses, not theorems. We do not pass the scaffold off as a proof: it merely shows that *if* the substantive steps are supplied, a well-founded induction on `r ≤ 4` assembles them.
 
@@ -144,7 +144,7 @@ Here `lower_step` (the actual rank reduction) and `rank1_closes` (the closure of
 
 ## Summary and bridge to the next chapter
 
-We introduced the separating scale `P_A > 6X_A + 1`, showed it attainable with exponential margin, and on three arithmetic lemmas (`eq_of_modEq_of_lt`, `legal_lift_lt_primorial`, `no_productHall`) closed the node `ProductHall` on the legal layer constructively, without `Classical.choice`. The `uniqueLegalLift` trilemma is bypassed not by strengthening the passport but by squeezing the factors below the modulus: on the legal region the coarse passport `a \bmod P_A` is injective, and so "distinct yet congruent" factors are impossible.
+We introduced the separating scale `P_A > 6X_A + 1`, showed it attainable with exponential margin, and on three arithmetic lemmas (`eq_of_modEq_of_lt`, `legal_lift_lt_primorial`, `no_productHall`) closed the node `ProductHall` on the legal layer constructively, without `Classical.choice`. The `uniqueLegalLift` trilemma is bypassed not by strengthening the passport but by squeezing the factors below the modulus: on the legal region the coarse passport $a \bmod P_A$ is injective, and so "distinct yet congruent" factors are impossible.
 
 Yet all this arithmetic worked with a *flat* factor `a ∣ N`. To carry injectivity through the entire rank descent, a single number is not enough — one needs an extensional model of the state, one that distinguishes the roles of the factors and does not drag along the many-to-one tail of the absorber.
 

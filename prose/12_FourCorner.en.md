@@ -12,7 +12,7 @@ and the "bad" part is strictly smaller than the carrier. With that, the entire c
 problem was compressed into a single block inequality of cardinalities.
 
 The present chapter takes that inequality and translates it into the language of *tallies by
-side ranks* of `6m\pm1`, where it assumes the form of a *four-corner* relation. We
+side ranks* of $6m\pm1$, where it assumes the form of a *four-corner* relation. We
 will show that the required direction `N_{33}<N_{00}` is not a density fact but a **symmetry** fact: it
 is forced by the negative association of the two ranks, which in turn is a shadow of the exclusive
 (per-prime) structure of the two.
@@ -27,7 +27,7 @@ $$r_-(m)=\bigl\lvert\{p\le A: p\mid 6m-1\}\bigr\rvert,\qquad r_+(m)=\bigl\lvert\
 center if and only if both sides are free of small divisors, that is, `r_-=r_+=0` (after the
 sieve-to-the-root this entails the primality of both sides; see [10](10_NonCover.md)).
 
-> **Note.** The rank here counts precisely the **small** divisors `p\le A`; the completeness of the
+> **Note.** The rank here counts precisely the **small** divisors $p\le A$; the completeness of the
 > rank (that zero rank entails primality) is guaranteed by the sides lying below `A^2` — this is the
 > same sieve-to-the-root mechanism `prime_of_no_small_prime_factor` from [10](10_NonCover.md).
 
@@ -81,7 +81,7 @@ need, and precisely this sign that is not accidental.
 
 Negative association is not postulated here — it flows from the already proven
 **exclusivity** of divisors (see [02](02_Carrier.md), `no_large_shared_divisor`): a prime `p>2` cannot divide
-both sides at once, for `\gcd(6m-1,6m+1)\mid 2`. Hence at every prime the contribution to the two ranks is
+both sides at once, for $\gcd(6m-1,6m+1)\mid 2$. Hence at every prime the contribution to the two ranks is
 exclusive: `p` divides either `6m-1`, or `6m+1`, or nothing — but *never both*.
 
 From this the per-prime generating function of the ranks is a **product over primes with no cross
@@ -111,7 +111,7 @@ The four-corner inequality by itself compares the diagonal `N_{00}N_{33}` with t
 the **side-corner**:
 $$N_{03}\,N_{30}\ \le\ N_{00}^{\,2}.\tag{12.5}$$
 It says that the mixed corners are small compared with the clean one: low rank is markedly more likely
-than high rank (the same survivor recursion `q\to q-2`), so the clean corner `N_{00}` dominates. Formally
+than high rank (the same survivor recursion $q\to q-2$), so the clean corner `N_{00}` dominates. Formally
 we have formalized precisely the *algebra of the passage* — that these two inequalities together force the conclusion.
 
 The non-strict passage is the lemma:
@@ -120,7 +120,7 @@ The non-strict passage is the lemma:
 
 The proof is elementary: the chain $N_{00}N_{33}\le N_{03}N_{30}\le N_{00}\cdot N_{00}$ gives
 $N_{00}N_{33}\le N_{00}N_{00}$, whence cancelling the positive factor `N_{00}`
-(`Nat.le_of_mul_le_mul_left`) yields `N_{33}\le N_{00}`.
+(`Nat.le_of_mul_le_mul_left`) yields $N_{33}\le N_{00}$.
 
 The strict form — what we actually need (a strict gap `B_5>0`, that is, *more* clean
 centers than fully spoiled ones) — is given by the lemma:
@@ -136,13 +136,13 @@ enter the product symmetrically ($a_p=b_p$), the mixed corners are equal: $N_{03
 
 **Theorem 12.5** (`side_corner_of_le`). Let $N_{00},N_{03},N_{30}\in\mathbb N$. If $N_{03}=N_{30}$ and $N_{03}\le N_{00}$, then the side-corner $N_{03}\,N_{30}\le N_{00}^{2}$ holds. 🟢
 
-Substituting the symmetry reduces the quadratic inequality `N_{03}N_{30}\le N_{00}^2` to a product of two
-identical factors `N_{03}\cdot N_{03}\le N_{00}\cdot N_{00}`, each of which is majorized via
-`N_{03}\le N_{00}` (`Nat.mul_le_mul`). Thus the entire lateral node rests on a single linear
+Substituting the symmetry reduces the quadratic inequality $N_{03}N_{30}\le N_{00}^2$ to a product of two
+identical factors $N_{03}\cdot N_{03}\le N_{00}\cdot N_{00}$, each of which is majorized via
+$N_{03}\le N_{00}$ (`Nat.mul_le_mul`). Thus the entire lateral node rests on a single linear
 fact: there are no more mixed centers than purely twin centers.
 
 > **Note.** All three lemmas `N33_le_N00_of_four_corner`, `N33_lt_N00_of_four_corner`,
-> `side_corner_of_le` are over `\mathbb N`, machine-checked, and use no `sorry`. They
+> `side_corner_of_le` are over $\mathbb N$, machine-checked, and use no `sorry`. They
 > formalize the **algebra of the passage**, not the corner inequalities themselves.
 
 ## Numerical background and magnitudes
@@ -191,7 +191,7 @@ the exclusive per-prime structure of the two: the product `c+ax+by` *without* th
 
 In the next chapter [13](13_FractalLayer.md)
 we lift this observation to the level of the **fractal layer of the engine**: we show that the same two
-organizes the self-similar recursion of survivors upward through the primes (`q\to q-2`) and the finite blocker
+organizes the self-similar recursion of survivors upward through the primes ($q\to q-2$) and the finite blocker
 collapse downward in scale, and that it is precisely this fractal exclusivity that is the common source both of the direction
 $R_{\mathrm{fc}}\le1$ and of the finiteness of the descent depth (EPMI — the impossibility of a perpetual engine,
 see the [glossary](GLOSSARY.md)).

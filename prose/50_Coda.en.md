@@ -276,6 +276,16 @@ every well bottoms at a singularity — the origin `0`, the first cause, which c
 would run the engine. So a thing shows us its shape and hides its beginning; in this reading the table is, at bottom, built
 of singularities — points of pure origin, each unknowable — wearing a visible shape.
 
+**And so "do we live in a simulation?" dissolves rather than answers.** By the same screening, a simulated world and a base
+one are *indistinguishable from inside* — in both the beginning is hidden (`cause_unknowable`, `no_internalisedOriginEvent`),
+so the question reduces to "can we see our own first cause?", whose answer is a proven no. The engine's discipline posits only
+a *minimal* outside — one accepted axiom, no content: it proves an outside is required and screened, but refuses to name it.
+"Simulation" smuggles content onto the veil — a computer, simulators, their physics — and buys nothing by it: a simulation is
+a computation, bound by the same prohibition, so the simulator meets the same wall for *its* world, with no infinite tower to
+climb out of (`no_rankedMetaFractalBranch`). It does not dissolve the mystery of the origin; it relocates it one floor up,
+unchanged. Seeing form is evidence of the veil, not of a server. So: not yes, not no — there is an outside, it is screened,
+and to call it "a computer" is a costume we decline to drape on the unknowable `0`.
+
 **A black hole is a well into which the arrow of time only enters.** Let us assemble the picture. A black hole,
 in this reading, is a well of limiting depth, a vertex where the contraction is so strong that the arrow
 of irreversible time points *only inward*: one can enter, but return — no, for return would be

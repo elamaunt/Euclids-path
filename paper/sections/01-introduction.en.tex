@@ -57,16 +57,17 @@ bilingual site at \url{https://elamaunt.github.io/Euclids-path/}. Building with
 \code{lake build} checks the whole development, and \srcpath{lake env lean scripts/VerifyAll.lean}
 re-establishes the two honesty invariants and fails loudly if either is violated.
 
-\begin{sidewaysfigure}
+\begin{figure}[t]
   \centering
-  \includegraphics[width=0.95\textheight]{figures/navigator.en.pdf}
+  \includegraphics[width=\textwidth]{figures/navigator.en.pdf}
   \caption{Navigator map of the programme. One prohibition (\code{no\_infinite\_descent}); the main
-  theorem \code{higherEnergyIncompatibility\_main}, green and axiom-free, \emph{pressing on} the single
-  axiom (unknowable from within $\Rightarrow$ accept, do not derive); and every examined problem with its
-  honest status --- \emph{taken} (and why not Collatz-attackable), \emph{deferred} (the heuristic sign),
-  or \emph{fallen} (Collatz, refuted at $n=27$).}
+  theorem \code{higherEnergyIncompatibility\_main}, green and axiom-free, pressing on the single axiom
+  \code{step00FirstCause}; and every examined problem grouped by its honest status --- \emph{green}
+  (axiom-free, read through the engine), \emph{axiom-tainted} (taken, not Collatz-attackable), or
+  \emph{deferred}/\emph{fallen} (Collatz refuted at $n=27$). The full, interactive version of this map
+  is on the companion site.}
   \label{fig:navigator}
-\end{sidewaysfigure}
+\end{figure}
 
 \paragraph{Plan.}
 \cref{sec:engine} proves the impossibility of the engine and its irreversibility.

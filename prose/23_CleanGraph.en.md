@@ -6,7 +6,7 @@
 
 
 
-In [22 Residuals] we closed the residual Lean lemmas of the engine without appealing to density: a constructive clean start above any $N$ (`carrier_nonempty_above`), the elementary `sink_is_twin` (an old-free side below $A^2$ is prime), and the anchoring `clean_twin_above` (when $6N+1 < A$, the twin centre automatically lies above $N$).
+In [22 Residuals](22_Residuals.md) we closed the residual Lean lemmas of the engine without appealing to density: a constructive clean start above any $N$ (`carrier_nonempty_above`), the elementary `sink_is_twin` (an old-free side below $A^2$ is prime), and the anchoring `clean_twin_above` (when $6N+1 < A$, the twin centre automatically lies above $N$).
 
 These three facts gave us tools, but not architecture: they tell us *what a halt of the descent turns out to be*, not *where exactly* the descent is allowed to halt.
 
@@ -147,7 +147,7 @@ The clean part has honestly localised the difficulty — it has narrowed the ent
 
 > **Note.** The "sink-is-clean" gap and the number $59\%$ are two sides of the same fact. While we were mistakenly counting unclean twins as sinks, the graph *appeared* almost closed: the descent "halted" everywhere. As soon as halting is restricted to clean centres, it turns out that $59\%$ of the apparent halts were in fact boundary exits. The repair did not create the load on the boundary — it *made it visible*.
 
-**Closure plan.** (H) is neither a counting nor a distributional hypothesis; it is in the spirit of `regenerate` from [20 NOPSL] and of Lemma 6.1 on regeneration from [21 Regeneration].
+**Closure plan.** (H) is neither a counting nor a distributional hypothesis; it is in the spirit of `regenerate` from [20 NOPSL](20_NOPSL.md) and of Lemma 6.1 on regeneration from [21 Regeneration](21_Regeneration.md).
 
 It is natural to conjecture that a boundary exit $m \to n$ with $n \notin \Omega_A$ yields, by the definition of $\Omega_A$, a prime divisor $q \le A$, $q \ge 5$ of one of the sides of $n$ — that is, an old-peel edge — and that the old-peel ledger of [19](19_OldPeel.md)–[21](21_Regeneration.md) closes on this divisor with a drop in height.
 

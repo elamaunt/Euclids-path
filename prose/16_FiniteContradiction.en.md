@@ -6,7 +6,7 @@
 
 
 
-In chapter [15 ToTwins] we assembled the direct chain: from the real four-corner at all scales follows `TwinLowers.Infinite` — the infinitude of twins. Now we look at the same construction from the opposite side: assume the contrary — that the twins are *finite* — and show that together with the four-corner input this leads to `False`. This is not a new theorem but the *contraposition* of the whole programme, and its value lies in localizing, with mathematical precision, the single open node.
+In chapter [15 ToTwins](15_ToTwins.md) we assembled the direct chain: from the real four-corner at all scales follows `TwinLowers.Infinite` — the infinitude of twins. Now we look at the same construction from the opposite side: assume the contrary — that the twins are *finite* — and show that together with the four-corner input this leads to `False`. This is not a new theorem but the *contraposition* of the whole programme, and its value lies in localizing, with mathematical precision, the single open node.
 
 > Machine-checked: `Engine/FiniteContradiction.lean` (`twin_finite_contradiction`, no `sorry`, standard axioms only).
 
@@ -38,7 +38,7 @@ $$
 (\forall m\in\mathrm{carrier})\; m\notin\mathrm{bad}\ \Rightarrow\ \mathtt{IsTwinCenter}\ m. \tag{16.3}
 $$
 
-The first inequality $|R_{00}|\cdot|R_{33}| < |R_{03}|\cdot|R_{30}|$ is the strict *real* four-corner on the genuine rank counts; the second, $|R_{03}|\cdot|R_{30}| \le |R_{00}|^2$, is the easy side-corner. Together, as shown in [15 ToTwins] via `N33_lt_N00_of_four_corner`, they yield $|R_{33}| < |R_{00}|$ — the bad centres in the block are strictly fewer than the carrier slots — hence at least one survivor, and that survivor is a twin.
+The first inequality $|R_{00}|\cdot|R_{33}| < |R_{03}|\cdot|R_{30}|$ is the strict *real* four-corner on the genuine rank counts; the second, $|R_{03}|\cdot|R_{30}| \le |R_{00}|^2$, is the easy side-corner. Together, as shown in [15 ToTwins](15_ToTwins.md) via `N33_lt_N00_of_four_corner`, they yield $|R_{33}| < |R_{00}|$ — the bad centres in the block are strictly fewer than the carrier slots — hence at least one survivor, and that survivor is a twin.
 
 ## The contradiction theorem
 
@@ -74,7 +74,7 @@ It is natural to ask: does reasoning by contradiction supply a new lever — per
 
 The reconnaissance verdict, verbatim: «No route escapes the four-corner/carrier/parity wall; all three reduce to it. The machine-checked links are all distribution-FREE and red-line-clean; distribution is quarantined entirely inside `H`.» Three different starting points — counting primes, infinite descent, the four-corner — converge on a single point, and that convergence is itself evidence: the wall is structural, not an artifact of one choice of route.
 
-> **Note.** The convergence of the three routes has a geometric image. The real four-corner holds as long as the *margin* — the gap $|R_{03}|\cdot|R_{30}| - |R_{00}|\cdot|R_{33}|$, normalized by the block's scale — stays positive. Numerically the margin creeps *toward zero*: it is a knife-edge. And it melts not for an accidental reason, but because the remainder $e_{ij}$ of the real counts relative to the CRT model [14 RealFourCorner] carries the same sign structure that, in the sieve, is sensitive to the parity of the number of prime factors. In other words, margin$\to 0$ is not "almost there" but a manifestation of the parity problem: distribution-free methods are in principle blind to the sign on which the four-corner's advantage depends.
+> **Note.** The convergence of the three routes has a geometric image. The real four-corner holds as long as the *margin* — the gap $|R_{03}|\cdot|R_{30}| - |R_{00}|\cdot|R_{33}|$, normalized by the block's scale — stays positive. Numerically the margin creeps *toward zero*: it is a knife-edge. And it melts not for an accidental reason, but because the remainder $e_{ij}$ of the real counts relative to the CRT model [14 RealFourCorner](14_RealFourCorner.md) carries the same sign structure that, in the sieve, is sensitive to the parity of the number of prime factors. In other words, margin$\to 0$ is not "almost there" but a manifestation of the parity problem: distribution-free methods are in principle blind to the sign on which the four-corner's advantage depends.
 
 ## What is honestly proven — and what is not
 

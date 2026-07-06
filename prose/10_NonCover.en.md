@@ -181,7 +181,7 @@ $|\mathrm{bad}| < |\mathrm{carrier}|$ bears the load at every scale.
 
 How exactly this
 reinforcement is assembled into a single machine-verified non-circular bridge "conjecture $\Longleftarrow$
-block core" is the subject of the next chapter [11 TwoTransport], where `twin_prime_conjecture_of_blocks`
+block core" is the subject of the next chapter [11 TwoTransport](11_TwoTransport.md), where `twin_prime_conjecture_of_blocks`
 isolates the open core and passes it further down the chain.
 
 <!--navbot-->

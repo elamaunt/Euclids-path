@@ -113,7 +113,7 @@ $$\forall k,\quad h\bigl(z(k+1)\bigr)<h\bigl(z(k)\bigr). \tag{20.4}$$
 ## SNOL как немедленное следствие
 
 Прежде чем связывать sink с близнецами, зафиксируем формально исчезновение прежнего препятствия.
-В [18 SNOL] финальным узлом был «terminal shifted-neighbour obstruction»: гипотетический
+В [18 SNOL](18_SNOL.md) финальным узлом был «terminal shifted-neighbour obstruction»: гипотетический
 carrier-scale catch, который никуда не ведёт. Теперь мы можем сказать, почему его нет.
 
 > **Теорема 20.3** (`snol_of_nopsl`, §13). Для любого old-peel ledger $L$ и старта существует sink:

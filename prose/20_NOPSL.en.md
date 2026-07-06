@@ -113,7 +113,7 @@ already proven.
 ## SNOL as an immediate consequence
 
 Before tying the sink to twins, let us record formally the disappearance of the former obstacle.
-In [18 SNOL] the final node was the "terminal shifted-neighbour obstruction": a hypothetical
+In [18 SNOL](18_SNOL.md) the final node was the "terminal shifted-neighbour obstruction": a hypothetical
 carrier-scale catch that leads nowhere. Now we can say why it does not exist.
 
 > **Theorem 20.3** (`snol_of_nopsl`, §13). For every old-peel ledger $L$ and start there exists a sink:
@@ -200,7 +200,7 @@ quotients. Everything else — from the strict drop in height to the infinitude 
 by the compiler.
 
 It is natural to ask: can `regenerate` itself be proven, at least in parts? In
-[21 Dichotomy] we formalise Lemma 6.1 on regeneration and show that its elementary core
+[21 Dichotomy](21_Regeneration.md) we formalise Lemma 6.1 on regeneration and show that its elementary core
 — the full dichotomy of the quotient centre plus the sign law — is proven in Lean without the distribution, leaving
 as explicit inputs only fan-in/Hall and the rigid signature of the cycle.
 

@@ -13,7 +13,7 @@
 
 ## Where we are
 
-In chapter [18 SNOL] the whole programme was reduced to a single machine-fixed node —
+In chapter [18 SNOL](18_SNOL.md) the whole programme was reduced to a single machine-fixed node —
 the **terminal shifted-neighbour obstruction** at the carrier scale: if the twins are finite, then for
 an active prime `a > A` the neighbouring side `a-2\varepsilon` is systematically caught by a small
 prime `p \le A`, which is written as the divisibility
@@ -198,9 +198,9 @@ twin".
 
 ## Bridge to the next chapter
 
-We have unfolded the final node of [18 SNOL] into a strict descent and closed its core onto the proven
+We have unfolded the final node of [18 SNOL](18_SNOL.md) into a strict descent and closed its core onto the proven
 engine. Exactly one premise remains — the regeneration `regenerate`: that the old-peel flow cannot
-forever evade a correct sink. In chapter [20 NOPSL] we formalise this premise by the abstract
+forever evade a correct sink. In chapter [20 NOPSL](20_NOPSL.md) we formalise this premise by the abstract
 structure `OldPeelLedger` (height, sink, step, `step_drops`, `regenerate`) and machine-prove the full
 closure `OldPeelLedger \Rightarrow \mathrm{TwinLowers.Infinite}` through the same strict-descent
 logic — thereby carrying the entire SNOL/NOPSL reduction from prose into verified deduction.

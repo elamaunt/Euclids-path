@@ -8,7 +8,7 @@
 
 > Source: `Engine/RigidClose.lean` (namespace `EuclidsPath.RigidClose`; standard axioms, no `sorry` in the core — a single constructive input remains open). Numbers: cofactor `100%` on `307010` cases.
 
-In the previous chapter [24 boundary] we decomposed the active side into boundary layers and convinced ourselves that divisibility of the catch always arrives with a concrete divisor — the boundary is never "empty".
+In the previous chapter [24 boundary](24_BoundaryDecomp.md) we decomposed the active side into boundary layers and convinced ourselves that divisibility of the catch always arrives with a concrete divisor — the boundary is never "empty".
 
 Now we take that divisor and show that it does not merely exist but **builds the next, smaller center** — and that this one fact suffices to close the entire descent construction without appealing to a cycle and without the engine branch. In other words, we replace the old argument "a flow without sinks ⟹ directed cycle ⟹ Euclid's engine ⟹ ⊥" with a direct statement of well-foundedness.
 
@@ -92,13 +92,13 @@ We write $6t+\eta = q\cdot c$, whence $(6t+\eta)/q = c$ (the integer division is
 
 Thus the cofactor $c=(6t+\eta)/q$ **always** turns out to be a proper center $6t'+\eta'$ of strictly smaller height $t'<t$.
 
-The divisibility delivered by the boundary from [24 boundary] converts automatically into a `Step` edge of the rigid graph — the fall of the height is secured by point 3, the center form by point 1, non-negativity by point 2.
+The divisibility delivered by the boundary from [24 boundary](24_BoundaryDecomp.md) converts automatically into a `Step` edge of the rigid graph — the fall of the height is secured by point 3, the center form by point 1, non-negativity by point 2.
 
 > **Note (numbers).** The statement was checked empirically on 307010 cases with a 100% hit rate: in every checked catch the cofactor indeed turned out to be a valid smaller center of the form $6t'+\eta'$. This does not replace the proof (it is purely algebraic and already complete), but it confirms that the lemma covers the real old-peel flow with no exceptions — there are no "holes at the edges" of the range.
 
 ## An honest reduction: what is built and what remains an input
 
-Let us take stock of what is proven and what is open. The regeneration dichotomy (`regeneration_dichotomy`, [21 regeneration]) for a center $t$ yields one of three elementary classes: `Twin t`; or (`¬OldFree`) an old-peel divisor $q$; or (`OldFree`, not a twin) a composite active side. To obtain `Regenerates`, from each of the right-hand cases one must **construct a concrete downward edge** — that is, exhibit $t' < t$ of center form.
+Let us take stock of what is proven and what is open. The regeneration dichotomy (`regeneration_dichotomy`, [21 regeneration](21_Regeneration.md)) for a center $t$ yields one of three elementary classes: `Twin t`; or (`¬OldFree`) an old-peel divisor $q$; or (`OldFree`, not a twin) a composite active side. To obtain `Regenerates`, from each of the right-hand cases one must **construct a concrete downward edge** — that is, exhibit $t' < t$ of center form.
 
 Here it is important to draw an honest line.
 

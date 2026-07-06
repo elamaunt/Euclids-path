@@ -10,7 +10,7 @@
 > `Engine/Regeneration.lean` (5 theorems, standard axioms, no `sorry`). Relies on
 > `Engine/OldPeel.lean` (`old_peel_height_drop`) and feeds `Engine/NOPSL.lean` (the `regenerate` field).
 
-In [20 NOPSL] we reduced the entire programme to a single structural fact — the premise `regenerate`
+In [20 NOPSL](20_NOPSL.md) we reduced the entire programme to a single structural fact — the premise `regenerate`
 of the abstract `OldPeelLedger`: every non-sink state is obliged to have an old-peel successor, that is,
 the flow of quotient centres has "nowhere to go except downward or into a twin". The closure was proven
 by machine, but `regenerate` itself remained an input — an honestly named unproven statement, a gate in

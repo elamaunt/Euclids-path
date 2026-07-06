@@ -116,9 +116,9 @@ Both ratios tend to 1 from below (the model margin `-\Delta_{model} \to 0`), but
 
 ## Bridge to the next chapter
 
-So we have an exact fork: real four-corner ⟸ model four-corner (proven) + `hrem` (open, non-model). In the next chapter [15 ToTwins] we assemble exactly this fork into one machine-verified chain: the real four-corner plus the side-corner give `N_{33} < N_{00}`, whence a surviving carrier centre, whence a twin, whence `TwinLowers.Infinite`.
+So we have an exact fork: real four-corner ⟸ model four-corner (proven) + `hrem` (open, non-model). In the next chapter [15 ToTwins](15_ToTwins.md) we assemble exactly this fork into one machine-verified chain: the real four-corner plus the side-corner give `N_{33} < N_{00}`, whence a surviving carrier centre, whence a twin, whence `TwinLowers.Infinite`.
 
-The real four-corner enters there as the open input `H` — a gate, that is, an honestly named missing statement (see the [glossary](GLOSSARY.md)); this is the first exact formulation of the programme's single distributional node, which will later be rethought no longer as a counting node but as a structural one [18 SNOL]. In other words, chapter 15 shows that `hrem` is not one of many difficulties, but **the** difficulty — the single one to which the entire branch reduces.
+The real four-corner enters there as the open input `H` — a gate, that is, an honestly named missing statement (see the [glossary](GLOSSARY.md)); this is the first exact formulation of the programme's single distributional node, which will later be rethought no longer as a counting node but as a structural one [18 SNOL](18_SNOL.md). In other words, chapter 15 shows that `hrem` is not one of many difficulties, but **the** difficulty — the single one to which the entire branch reduces.
 
 <!--navbot-->
 

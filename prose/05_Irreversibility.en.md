@@ -13,7 +13,7 @@
 
 ## Where we came from
 
-In the previous chapter [04 Descent] we established the mechanics of a *single* engine step: if for a
+In the previous chapter [04 Descent](04_Descent.md) we established the mechanics of a *single* engine step: if for a
 centre `m∈Ω_A` one side of the pair `(6m-1,\,6m+1)` is composite and is cracked open by an active
 factor `a>A`, then the height drops strictly — the new centre `n` satisfies `A\cdot n < m`, and the two
 is carried over to the opposite side via the boundary-law. Back then we regarded the descent as a
@@ -130,7 +130,7 @@ the triviality of the form should not obscure the substance of the statement. Th
 larger centres never run out, and upward the engine can ride without stopping.
 
 > **Observation.** From the intuition: `+1` is fuel, `+2` is cargo (the conserved two, the first law,
-> [03 TwoGap]). It is natural to suppose that precisely this difference of directions is the source of
+> [03 TwoGap](03_TwoGap.md)). It is natural to suppose that precisely this difference of directions is the source of
 > irreversibility: upward, the state space is unbounded (`no_infinite_engine_descent` does not apply,
 > because the chain does not decrease), downward it runs into a floor (`no_infinite_engine_descent` forbids
 > infinitude). The engine rides infinitely **in one direction only** — upward; every descent
@@ -185,10 +185,10 @@ distribution of primes.
 ## Bridge to the next chapter
 
 We have established that the engine does not turn back *in time* — along its trajectory in height. In
-the next chapter [06 NoBackward] we shall discover a kindred but different irreversibility — a *spatial* one, at
+the next chapter [06 NoBackward](06_NoBackward.md) we shall discover a kindred but different irreversibility — a *spatial* one, at
 the level of the two points of a pair.
 
-There, the source of the prohibition on going back will turn out to be the carrier of two [02 Carrier]: one and
+There, the source of the prohibition on going back will turn out to be the carrier of two [02 Carrier](02_Carrier.md): one and
 the same prime cannot sit on both sides of a pair (`\text{shared gcd} \mid 2`), which makes the diagonal
 `\sum_p X_p Y_p` vanish, and the product of ranks — rank here, as always, being the "height" of a state,
 falling along permitted steps (see the [glossary](GLOSSARY.md)) — turns out to be entirely off-diagonal.

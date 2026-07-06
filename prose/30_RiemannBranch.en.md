@@ -114,7 +114,7 @@ lowers the height without exiting onto the boundary, which cannot happen in the 
 pumping is the engine forbidden by `no_infinite_descent`.
 
 > **Note.** `EngineBridge` is **not proven**, and in any foreseeable form is, by all appearances, comparable in difficulty
-> to RH itself — exactly as, for the twins, the final distributional node ([18 SNOL])
+> to RH itself — exactly as, for the twins, the final distributional node ([18 SNOL](18_SNOL.md))
 > turned out comparable to the twin conjecture itself. We do not mask this: the branch is honest only because
 > all its unprovenness is localized in one explicit premise, not smeared across the chain of reasoning.
 
@@ -261,7 +261,7 @@ So the Riemann branch rests on exactly one arithmetic imbalance — the deviatio
 exact value $+2$.
 
 The same question, "how large is the deviation and does it tear on the boundary",
-arises outside zeta as well — in the purely multiplicative statistics of divisor signs. In [31 Liouville] we
+arises outside zeta as well — in the purely multiplicative statistics of divisor signs. In [31 Liouville](31_RiemannLiouville.md) we
 take the Liouville function $\lambda(n)=(-1)^{\Omega(n)}$ and its summatory function — and show how the same
 descent mechanism and the same dichotomy "balance or engine" carry over to the parity defect of $\Omega$,
 yielding one more contrapositional branch on the shared EPMI core.

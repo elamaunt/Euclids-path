@@ -61,7 +61,7 @@ $$6n+\varepsilon = a.$$
 
 ## Финальная условная теорема
 
-Чтобы соединить rank-1 алгебру с гипотезой близнецов, зафиксируем **SNOL-вход** — тот же типизированный блочный предикат, что замыкает всю программу в [15 ToTwins].
+Чтобы соединить rank-1 алгебру с гипотезой близнецов, зафиксируем **SNOL-вход** — тот же типизированный блочный предикат, что замыкает всю программу в [15 ToTwins](15_ToTwins.md).
 
 > **Определение 18.4** (`SNOLInput`). Утверждение
 > $$\forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).$$
@@ -70,7 +70,7 @@ $$6n+\varepsilon = a.$$
 
 > **Теорема 18.5** (`twin_primes_of_SNOL`). Если выполнен `SNOLInput`, то `TwinLowers.Infinite` — простых-близнецов бесконечно много.
 
-Доказательство — прямой мост `twin_prime_conjecture_of_blocks`: тот же капстоун-переход «блочное доминирование выживших $\Rightarrow$ неограниченность twin-центров $\Rightarrow$ бесконечность», что и в [15 ToTwins], только вход подан в форме SNOL, а не реального four-corner. Контрапозиция замыкает картину.
+Доказательство — прямой мост `twin_prime_conjecture_of_blocks`: тот же капстоун-переход «блочное доминирование выживших $\Rightarrow$ неограниченность twin-центров $\Rightarrow$ бесконечность», что и в [15 ToTwins](15_ToTwins.md), только вход подан в форме SNOL, а не реального four-corner. Контрапозиция замыкает картину.
 
 > **Теорема 18.6** (`finite_contradicts_SNOL`). Если `TwinLowers` конечно и выполнен `SNOLInput`, то `False`.
 

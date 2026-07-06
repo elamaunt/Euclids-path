@@ -8,7 +8,7 @@
 
 > Lean: `Engine/TwoTransport.lean` (`twin_prime_conjecture_of_blocks`, `twin_center_of_block`, `prime_of_no_small_prime_factor`, `isTwinCenter_of_root_sieve`).
 
-In chapter [10 NonCover] we built two elementary facts: from an overweight of the carrier over the "bad" set a survivor is extracted (`survivor_of_not_covered`), and a scale-unbounded supply of twin centers implies the conjecture itself (`infinite_of_unbounded_centers`). Now we assemble these bricks into a single non-circular bridge and, more importantly, delineate precisely where within it the boundary between the proven and the open runs.
+In chapter [10 NonCover](10_NonCover.md) we built two elementary facts: from an overweight of the carrier over the "bad" set a survivor is extracted (`survivor_of_not_covered`), and a scale-unbounded supply of twin centers implies the conjecture itself (`infinite_of_unbounded_centers`). Now we assemble these bricks into a single non-circular bridge and, more importantly, delineate precisely where within it the boundary between the proven and the open runs.
 
 The present chapter is a nodal one: it states a conditional reduction of the twin prime conjecture to a single block statement and proves that one of the three ingredients of that statement (the survivor⟹twin passage) is elementary, so that all the remaining difficulty is localized in the counting part.
 
@@ -58,7 +58,7 @@ exact twin_center_of_block habove hcov htwin
 The point of the theorem is that it **isolates the open core** in a form fit for further work. The implication "block core $\Rightarrow$ conjecture" is machine-verified and non-circular: nowhere does it use the conjecture itself, and it does not hide the conjecture inside the premise. What remains open is exactly the premise — that at every scale such a block exists. This premise splits into three independent nodes:
 
 1. **the carrier lower bound** — that the carrier of candidates above $N$ is large enough (in the programme's terms this is the input `CarrierInput` — a named 🔴 statement still missing on the way to the goal, see the [glossary](GLOSSARY.md));
-2. **the bad upper bound** — that the bad set is strictly smaller than the carrier (via the fan/cycle count, see [09 Cycle]);
+2. **the bad upper bound** — that the bad set is strictly smaller than the carrier (via the fan/cycle count, see [09 Cycle](09_Cycle.md));
 3. **survivor⟹twin** — that every non-bad survivor really is a twin center.
 
 > **Note.** The split into three nodes is not cosmetic. It turns "prove the conjecture" into "prove a cardinality inequality plus a survival criterion", that is, into a purely combinatorial problem about finite sets. No step of the bridge appeals to the density of primes. This is precisely why we call it non-circular: the conjecture is derived, not postulated somewhere deep inside the premise.
@@ -102,7 +102,7 @@ Let us take stock of the chapter. Machine-verified and non-circular are:
 
 **Chapter takeaway.** What remains open is the **counting core** — nodes (1) and (2): at every $N$, the carrier above $N$ strictly outweighs the bad set, $|\mathit{bad}| < |\mathit{carrier}|$.
 
-It is natural to expect that this overweight is secured by the structural **exclusivity of two** (chapter [02 Carrier]): a prime $p>2$ divides at most one of the sides $6m\pm 1$, since $\gcd(6m-1, 6m+1) \mid 2$. From this exclusivity the bad classes over different primes cannot "add up freely" — they partially exclude one another, and the total bad share does not cover the carrier.
+It is natural to expect that this overweight is secured by the structural **exclusivity of two** (chapter [02 Carrier](02_Carrier.md)): a prime $p>2$ divides at most one of the sides $6m\pm 1$, since $\gcd(6m-1, 6m+1) \mid 2$. From this exclusivity the bad classes over different primes cannot "add up freely" — they partially exclude one another, and the total bad share does not cover the carrier.
 
 The plan for closing is this: translate the overweight $|\mathit{bad}| < |\mathit{carrier}|$ into an inequality on the counts of low and high ranks and prove that inequality combinatorially, not through the density of primes.
 

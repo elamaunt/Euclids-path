@@ -6,7 +6,7 @@
 
 
 
-In [17 Payment] we sharpened "the engine does not stop for free" into a precise *defect law*: a free pass to a prime $p$ requires that $a-\theta$ be divisible by the entire primorial of the small primes, and as soon as the primorial outgrows the active divisor, such a pass is impossible for a nontrivial $a$.
+In [17 Payment](17_PaymentLedger.md) we sharpened "the engine does not stop for free" into a precise *defect law*: a free pass to a prime $p$ requires that $a-\theta$ be divisible by the entire primorial of the small primes, and as soon as the primorial outgrows the active divisor, such a pass is impossible for a nontrivial $a$.
 
 But there the single distributional input — that is, a named missing statement, a gate (see the [glossary](GLOSSARY.md)) — remained isolated in a scalar: the balance of shifted-charge and tax, pulling in opposite directions and refusing to close simultaneously without counting. The present chapter changes the angle of attack: instead of trying to defeat that scalar budget by counting, we reduce the *entire* programme to a single algebraic node and show why that node is **non-counting by construction**.
 
@@ -55,13 +55,13 @@ The saturation $P\mid a-2\varepsilon$ comes into conflict with size as soon as t
 
 The proof splits into two cases. If $a-2\varepsilon=0$, the claim is trivial. Otherwise $a-2\varepsilon\neq 0$, and from $P\mid a-2\varepsilon$ we get $P\le|a-2\varepsilon|$ (`Int.le_of_dvd` applied to a nonzero dividend) — contradicting $|a-2\varepsilon|<P$, so the remaining case is closed by `omega`.
 
-Substantively: a nontrivial active prime **cannot saturate an entire corridor** whose primorial has exceeded its shift. This is exactly the same defect law as in [17 Payment] (`shifted_primorial_bound`, `late_boundary_not_free`), but for the neighbour shift $2\varepsilon$ instead of the compatibility shift $\theta$.
+Substantively: a nontrivial active prime **cannot saturate an entire corridor** whose primorial has exceeded its shift. This is exactly the same defect law as in [17 Payment](17_PaymentLedger.md) (`shifted_primorial_bound`, `late_boundary_not_free`), but for the neighbour shift $2\varepsilon$ instead of the compatibility shift $\theta$.
 
 > **Note.** The three theorems above — the whole of the rank-1 algebra — are proven **without a single distributional assumption**. Numerically the rank descent is short: the old-free composite sides $6m\pm1$ exhibit *100% rank 2* (exactly two primes $>A$), so in practice the chain $4\to3\to2\to1$ degenerates into a single step $2\to1$; and the neighbour corridor $kP\pm2$ is confirmed by an exact identity ($Q=\{5,7,11\}$, $P=385$: $a=385k\pm2\Rightarrow a\mp2\equiv0\pmod{385}$).
 
 ## The final conditional theorem
 
-To connect the rank-1 algebra with the twin conjecture, we fix the **SNOL input** — the same typed block predicate that closes the whole programme in [15 ToTwins].
+To connect the rank-1 algebra with the twin conjecture, we fix the **SNOL input** — the same typed block predicate that closes the whole programme in [15 ToTwins](15_ToTwins.md).
 
 > **Definition 18.4** (`SNOLInput`). The statement
 > $$\forall N,\ \exists\,\text{carrier},\text{bad}:\ (\forall m\in\text{carrier},\ N<m)\ \wedge\ |\text{bad}|<|\text{carrier}|\ \wedge\ (\forall m\in\text{carrier},\ m\notin\text{bad}\Rightarrow \mathrm{IsTwinCenter}\,m).$$
@@ -70,7 +70,7 @@ That is: at every scale $N$ there exists a carrier above $N$ in which the "bad" 
 
 > **Theorem 18.5** (`twin_primes_of_SNOL`). If `SNOLInput` holds, then `TwinLowers.Infinite` — there are infinitely many twin primes.
 
-The proof is the direct bridge `twin_prime_conjecture_of_blocks`: the same capstone passage "block dominance of the survivors $\Rightarrow$ unboundedness of twin centres $\Rightarrow$ infinitude" as in [15 ToTwins], only with the input supplied in the form of SNOL rather than the genuine four-corner. Contraposition completes the picture.
+The proof is the direct bridge `twin_prime_conjecture_of_blocks`: the same capstone passage "block dominance of the survivors $\Rightarrow$ unboundedness of twin centres $\Rightarrow$ infinitude" as in [15 ToTwins](15_ToTwins.md), only with the input supplied in the form of SNOL rather than the genuine four-corner. Contraposition completes the picture.
 
 > **Theorem 18.6** (`finite_contradicts_SNOL`). If `TwinLowers` is finite and `SNOLInput` holds, then `False`.
 

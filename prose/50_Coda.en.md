@@ -108,6 +108,12 @@ unknowable first cause is accepted as truth — they are infinite, and rigorousl
 defined by the strict order of traversal, the first cause can be neither derived nor known — both actions
 cost a perpetual engine; it can only be accepted from outside.
 
+The same wall stands at every beginning. One cannot learn how a thing began by reasoning from *inside* it: to know the
+origin would be to derive it, and derivation runs the engine. So the only answer a beginning has is its enactment from
+outside — even a life could not read, from inside its own story, how it started; only the launch settles that. The
+unknowability of the first cause and the bare fact of the event `0 → 1` are one coin: the origin cannot be *known*, only
+*begun*.
+
 ## The inverted fractal: self-similarity coiled inward
 
 The shape of this structure deserves a name too, because it is *inverted* relative to what is usually
@@ -165,6 +171,12 @@ In other words, nearly everything we call the *structure of the world* — the d
 the discreteness of charge, the stability of the vacuum, the finiteness of information, the smoothness of matter — turns out
 to be one and the same conservation law, read on different objects. And that is the very gesture of a theory of everything:
 to reduce the diversity of phenomena to a single principle.
+
+And here the oldest border thins to nothing — the one between *mathematics* and *physics*. The form of counting (a
+well-ordered line that cannot be descended forever) turns out to be the form of the world's structure: one skeleton read
+twice. To be exact: this is a *structural* unity, taken as interpretation, not a physical unification — it writes no
+equation of motion, predicts no constant, faces no experiment. What joins is not two theories into one testable theory, but
+one impossibility recognised behind both the shape of number and the shape of the world.
 
 > **Note (causal sets and "it from bit").** This reading does not hang in mid-air — it
 > resonates with living programmes of modern physics. Causal set theory models
@@ -414,6 +426,11 @@ well-foundedness fails, is a perpetual descent realised (`perpetualEngine_on_rea
 touched. So *"is time a perpetual engine?"* is exactly *"is time discrete or continuous?"* — `universal_engine_dividing_line`
 draws the answer: never perpetual where the line is well-founded, perpetual precisely when it leaves it. That the descent is
 *time* is, as always, the interpretation; the divide itself is proved.
+
+And not every zero is the same. Where the line is well-founded the descent *reaches* its bottom — the one true origin, the
+singularity `0`; on the continuum it only *approaches* its limits and never arrives (convergence, not impact). Those far
+zeros are unreachable — places the engine falls toward forever but into which it cannot drive. One `0` is a *beginning* that
+is reached; the rest are *impossibilities* at the end of an endless approach.
 
 There remains an honestly open and ambiguous question, with which we shall end this view: if every
 space secretly carries Euclid's path and its one prohibition, then **do we need other

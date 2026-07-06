@@ -106,13 +106,13 @@ flowchart TD
     classDef yellow fill:#4d3b00,stroke:#ffc107,color:#fff8e1;
     classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
     classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
-    classDef root fill:#1a1a1a,stroke:#888,color:#ffffff;
+    classDef rootnode fill:#1a1a1a,stroke:#888,color:#ffffff;
     class ROOT,PNP,YM,HC,BSD,ZOO,GEO green;
     class MT apex;
     class TP,RH,NS yellow;
     class MP deferred;
     class CL fallen;
-    class FC root;
+    class FC rootnode;
 ```
 
 Colours: 🟢 — machine-proved under standard axioms (the structural part / a green conditional

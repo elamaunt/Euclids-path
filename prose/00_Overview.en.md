@@ -131,44 +131,7 @@ contraposition and, as §4 will show, one rank-parity invariant.
 
 *Navigator map: one prohibition → the main theorem (pressing on the axiom) → the axiom and its boundaries; every problem with its honest status — taken 🟡 / deferred ⏸️ / fallen ✗.*
 
-```mermaid
-flowchart TD
-    ROOT["⚙️ no_infinite_descent · EPMI<br/>Euclid’s perpetual engine is impossible · bare Lean core 🟢"]
-
-    ROOT --> MT["★ MAIN THEOREM · higherEnergyIncompatibility_main 🟢 · core with NO axiom<br/>knowing the first cause from within = a perpetual engine (forbidden)<br/>⟹ the first cause is unknowable; from inside, twins can be neither proved nor refuted"]
-    MT ==>|"PRESSES ON THE AXIOM: since it is impossible from within, the first cause can only be ACCEPTED from outside, never derived"| FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · three LIVING boundaries"}}
-
-    FC --> TP["Twins 🟡 · taken<br/>NOT Collatz-attackable: irreducible node,<br/>law ⟺ conjecture · incompatibility barrier<br/>(refute⟹engine needs the decreed stability)"]
-    FC --> RH["Riemann 🟡 · taken<br/>NOT attackable: RiemannManifestationLaw ⟺ RH<br/>refuting = an off-critical zero (not over ℕ)"]
-    FC --> NS["Navier–Stokes 🟡 · taken<br/>NOT attackable: witness ≥ Galdi Liouville problem<br/>no ⟺-mirror, no decidable predicate"]
-    MT -.->|"load-bearing face 🟡: incompatibility + boundary ⟹ twins are infinite"| TP
-
-    ROOT --> PNP["P/NP 🟢<br/>rank-fast traversal ≠ full certificate payment"]
-    ROOT --> YM["Yang–Mills 🟢<br/>spectral quantisation ⟺ mass gap"]
-    ROOT --> HC["Hodge 🟢<br/>descent law ⟺ payment by cycles"]
-    ROOT --> BSD["Birch–Swinnerton-Dyer 🟢/🔴 · the eighth mask<br/>descent-without-engine on a real curve<br/>🔴 analytic rank = ord L (outside mathlib)"]
-
-    ROOT --> MP["Mersenne ⏸️ · DEFERRED<br/>reason for refusal: the heuristic sign is negative<br/>(Σ over pairs converges; 5∣2^p−3) · witness ≥ 29, unpresentable"]
-    ROOT --> ZOO["Arithmetic zoo 🟢 · fields NOT taken (§17)<br/>Polignac · Sophie Germain — sign «for»<br/>Goldbach · Legendre · perfect — witness by decide (strongest unpresentability)<br/>Fermat ⏸️ — sign «against» (strictly stronger than twins)"]
-
-    ROOT --> CL["Collatz ✗ · THE DECREE FELL<br/>reason: the rope law was over-strong + decidable<br/>refuted at n=27 (ropeLaw_universal_refuted, decide)<br/>boundary removed, conjecture still open"]
-
-    ROOT --> GEO["Geometry of the path 🟢<br/>arrow · curvature κ=1−outdeg (χ=−5)"]
-    GEO -. the same twin boundary .-> TP
-
-    classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;
-    classDef apex fill:#0b3d0b,stroke:#ffd700,stroke-width:2px,color:#eaffea;
-    classDef yellow fill:#4d3b00,stroke:#ffc107,color:#fff8e1;
-    classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
-    classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
-    classDef root fill:#1a1a1a,stroke:#888,color:#ffffff;
-    class ROOT,PNP,YM,HC,BSD,ZOO,GEO green;
-    class MT apex;
-    class TP,RH,NS yellow;
-    class MP deferred;
-    class CL fallen;
-    class FC root;
-```
+![Navigator map of the programme](assets/navigator.en.svg){ .nav-map }
 
 **I. The engine and its laws (ch. 01–09, 🟢).** The impossibility core (`Engine/EPMI`, ch. 01);
 the carrier of two `no_large_shared_divisor` (`Engine/Carrier`, ch. 02); the 1st law $XY-ZW=2$ —

@@ -1,31 +1,30 @@
-/* Wide navigator graph (00_Overview §3). The map is deliberately broad, and
-   Material shrinks the mermaid diagram to the content column, which makes the
-   node text unreadable with no way to zoom. Two layers, in priority order:
+/* Navigator map (00_Overview §3). The map is wide and dense; we ship it as a
+   pre-rendered, theme-neutral SVG (crisp vector <text> labels) and let the
+   reader pan/zoom it. Two layers, in priority order:
 
-   1. FALLBACK (assets/mermaid-zoom.js did not run — e.g. offline mkdocs serve):
-      render at natural size and scroll horizontally, so the map is never clipped
-      with no escape.
-   2. ENHANCED (the script wrapped the diagram): a bounded, letterboxed frame
-      that is the viewport to pan/zoom within, with visible controls + a caption.
+   1. FALLBACK (assets/mermaid-zoom.js or the fetch did not run): the page's
+      <img class="nav-map"> shows the SVG as a crisp static image, scaled to fit.
+   2. ENHANCED (the script inlined the SVG): a bounded, letterboxed frame that is
+      the viewport to pan/zoom within, with visible controls + a caption.
 
-   Material renders the ```mermaid fence into <div class="mermaid"> whose SVG is
-   inside a CLOSED shadow root, so `.mermaid > svg` selectors cannot reach it;
-   the pan/zoom is a CSS transform on the light-DOM wrapper, driven by the JS. */
+   The SVG is deliberately self-contained (dark node chips + mid-grey edges +
+   dark edge-label pills), so it reads on both the light and the dark palette. */
 
-/* ---- 1. Fallback: natural-size horizontal scroll ---- */
-.md-typeset .mermaid {
-  overflow-x: auto;
-  overflow-y: hidden;
-  text-align: left;
+/* ---- 1. Fallback: the static image ---- */
+.md-typeset img.nav-map {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1em auto;
 }
 
 /* ---- 2. Enhanced: bounded zoom frame (added by the JS) ---- */
 .md-typeset .mzoom-frame {
   position: relative;
   width: 100%;
-  height: 76vh;
-  min-height: 360px;
-  max-height: 880px;
+  height: 62vh;
+  min-height: 340px;
+  max-height: 820px;
   margin: 1em 0;
   overflow: hidden;                 /* letterbox: pan/zoom replaces scrolling */
   border: 1px solid var(--md-default-fg-color--lightest);
@@ -33,8 +32,7 @@
   background: var(--md-default-bg-color);
   cursor: grab;
   outline: none;
-  /* Keep vertical page scroll on touch; horizontal/pinch drive the map. */
-  touch-action: pan-y;
+  touch-action: pan-y;              /* keep vertical page scroll on touch */
 }
 .md-typeset .mzoom-frame.mzoom-grabbing { cursor: grabbing; }
 .md-typeset .mzoom-frame:focus-visible {
@@ -42,20 +40,17 @@
   box-shadow: 0 0 0 2px var(--md-accent-fg-color);
 }
 
-/* The element the JS transforms; origin at top-left so fit math is exact. */
+/* The element the JS transforms; origin at top-left so fit math is exact.
+   No will-change: promoting it to a raster layer blurs the vector on zoom. */
 .md-typeset .mzoom-frame .mzoom-inner {
   position: absolute;
   top: 0;
   left: 0;
   transform-origin: 0 0;
-  will-change: transform;
 }
-
-/* Inside the frame the host shrink-wraps the graph at the pinned natural size. */
-.md-typeset .mzoom-frame .mzoom-inner > .mermaid {
-  margin: 0;
-  overflow: visible;
-  max-width: none;
+.md-typeset .mzoom-frame .mzoom-inner > svg {
+  display: block;
+  max-width: none !important;
 }
 
 /* ---- Controls: real <button>s, palette-aware, legible in light + dark ---- */
@@ -105,20 +100,12 @@
   text-align: center;
 }
 
-/* Smaller frame on phones. */
 @media screen and (max-width: 44.9em) {
-  .md-typeset .mzoom-frame { height: 62vh; min-height: 300px; }
+  .md-typeset .mzoom-frame { height: 56vh; min-height: 300px; }
 }
 
-/* Print: let the map lie flat, no frame/controls. */
 @media print {
-  .md-typeset .mzoom-frame {
-    height: auto;
-    max-height: none;
-    overflow: visible;
-    border: none;
-  }
-  .md-typeset .mzoom-nav,
-  .md-typeset .mzoom-caption { display: none; }
+  .md-typeset .mzoom-frame { height: auto; max-height: none; overflow: visible; border: none; }
+  .md-typeset .mzoom-nav, .md-typeset .mzoom-caption { display: none; }
   .md-typeset .mzoom-frame .mzoom-inner { position: static; transform: none !important; }
 }

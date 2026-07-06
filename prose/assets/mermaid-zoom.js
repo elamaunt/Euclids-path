@@ -1,38 +1,30 @@
 /* assets/mermaid-zoom.js
  *
- * Interactive pan + zoom for the wide navigator flowchart on 00_Overview §3
- * (and its EN mirror /en/00_Overview/), under Material for MkDocs 9.7.
+ * Interactive pan + zoom for the navigator map on 00_Overview §3 (and its EN
+ * mirror /en/00_Overview/), under Material for MkDocs.
  *
- * WHY IT IS BUILT THIS WAY (verified empirically against the shipped site):
- *   Material renders the ```mermaid fence into <div class="mermaid"> whose SVG
- *   lives inside a CLOSED shadow root. The inner <svg> is unreachable from page
- *   JS and page CSS, so svg-pan-zoom / d3-zoom on the svg is impossible. The one
- *   lever we have is a CSS transform on the light-DOM host, which the browser
- *   applies to the closed-shadow subtree visually (and, being vector, stays
- *   crisp at any zoom). Pointer and wheel events raised on the shadow SVG are
- *   composed, so they bubble to a light-DOM wrapper — meaning a wrapper-level
- *   transform pan/zoom needs NO external library at all.
+ * WHY A PRE-RENDERED INLINE SVG (not the live mermaid fence):
+ *   Material renders a ```mermaid fence into a div whose SVG sits in a CLOSED
+ *   shadow root, and its labels are HTML in <foreignObject>. Chrome RASTERISES
+ *   foreignObject under a CSS transform, so zooming blurred the edge labels and
+ *   the shadow SVG was unreachable for anything better. Instead we ship a
+ *   pre-rendered SVG whose labels are native SVG <text> (htmlLabels:false): it
+ *   stays razor-crisp at any zoom, lives in the light DOM, and is theme-neutral
+ *   (self-contained dark chips + mid-grey edges read on light and dark pages).
  *
- * Guarantees:
- *   - RU (/) and EN (/en/): keys off the DOM, not the URL.
- *   - Light + dark palettes: all colours come from Material CSS variables (CSS).
- *   - Survives Material instant navigation: one document$ subscription, full
- *     teardown (unwrap + listener removal) on every emission, idempotency guard.
- *   - Degrades gracefully: if this script does not run, mermaid.css keeps the
- *     natural-size horizontal-scroll fallback; nothing here throws.
- *   - Non-hostile on touch: touch-action:pan-y (CSS) keeps vertical page scroll;
- *     the +/-/reset buttons zoom without a wheel.
+ * The page carries <img class="nav-map" src="assets/navigator.<loc>.svg"> — the
+ * src is resolved to the correct URL by MkDocs, and the <img> is the graceful
+ * fallback (a crisp static image) if this script or the fetch does not run.
+ * When it does run, we fetch that SVG, inline it, and drive a self-contained
+ * transform pan/zoom (wheel, drag, +/-/reset buttons, keyboard). No library.
  */
 (function () {
   "use strict";
   if (typeof window === "undefined") return;
 
-  var GUARD = "mzoom";          // host.dataset.mzoom === "1" once wrapped
-  var MIN = 0.25, MAX = 16;     // zoom range
-  var BTN = 1.45;               // per-click / per-key zoom factor
-  var WHEEL_BASE = 1.0018;      // wheel sensitivity (factor = base^-deltaY)
-  var live = [];                // active instances, for teardown
-  var mo = null;                // MutationObserver for async render
+  var GUARD = "mzoom";
+  var MIN = 0.15, MAX = 20, BTN = 1.45, WHEEL_BASE = 1.0018;
+  var live = [], mo = null;
 
   function isRu() {
     var l = (document.documentElement.getAttribute("lang") || "en").toLowerCase();
@@ -49,152 +41,135 @@
       : { in: "Zoom in", out: "Zoom out", reset: "Reset view" };
   }
 
-  function enhance(host) {
-    if (!host || host.dataset[GUARD] === "1") return;
-    // Must be laid out (closed-shadow graph has non-zero box) or fit math is NaN.
-    var w0 = host.offsetWidth, h0 = host.offsetHeight;
-    if (!w0 || !h0) return;                 // retry later via the observer
-    var parent = host.parentNode;
-    if (!parent) return;
-    host.dataset[GUARD] = "1";
+  function svgNaturalSize(svg) {
+    var w = parseFloat(svg.getAttribute("width"));
+    var h = parseFloat(svg.getAttribute("height"));
+    if (w && h) return { w: w, h: h };
+    var vb = (svg.getAttribute("viewBox") || "").split(/[ ,]+/).map(Number);
+    if (vb.length === 4 && vb[2] && vb[3]) return { w: vb[2], h: vb[3] };
+    var r = svg.getBoundingClientRect();
+    return { w: r.width || 1000, h: r.height || 500 };
+  }
 
-    // ---- build frame > inner > host, plus controls + caption ----
-    var frame = document.createElement("div");
-    frame.className = "mzoom-frame";
-    frame.setAttribute("tabindex", "0");
-    frame.setAttribute("role", "group");
-    frame.setAttribute("aria-label", isRu() ? "Интерактивная карта-навигатор" : "Interactive navigator map");
+  function enhance(img) {
+    if (!img || img.dataset[GUARD] === "1") return;
+    var src = img.currentSrc || img.getAttribute("src");
+    var parent = img.parentNode;
+    if (!src || !parent) return;
+    img.dataset[GUARD] = "1";
 
-    var inner = document.createElement("div");
-    inner.className = "mzoom-inner";
+    fetch(src).then(function (r) {
+      if (!r.ok) throw new Error("fetch " + r.status);
+      return r.text();
+    }).then(function (svgText) {
+      if (img.dataset[GUARD] !== "1" || !img.parentNode) return; // torn down meanwhile
 
-    parent.insertBefore(frame, host);
-    inner.appendChild(host);
-    frame.appendChild(inner);
+      var frame = document.createElement("div");
+      frame.className = "mzoom-frame";
+      frame.setAttribute("tabindex", "0");
+      frame.setAttribute("role", "group");
+      frame.setAttribute("aria-label", isRu() ? "Интерактивная карта-навигатор" : "Interactive navigator map");
 
-    // Pin the host to its measured natural size so the closed-shadow SVG
-    // (max-width:100%) resolves stably once it is out of the document flow.
-    host.style.margin = "0";
-    host.style.display = "block";
-    host.style.width = w0 + "px";
-    host.style.height = h0 + "px";
-    host.style.maxWidth = "none";
+      var inner = document.createElement("div");
+      inner.className = "mzoom-inner";
+      inner.innerHTML = svgText;
+      var svg = inner.querySelector("svg");
+      if (!svg) throw new Error("no svg");
+      svg.style.display = "block";
+      svg.style.maxWidth = "none";
+      svg.removeAttribute("style"); // drop any mermaid max-width; keep width/height attrs
+      svg.style.display = "block";
 
-    var lbl = labels();
-    var nav = document.createElement("div");
-    nav.className = "mzoom-nav";
-    nav.innerHTML =
-      '<button type="button" class="mzoom-btn mzoom-in" title="' + lbl.in + '" aria-label="' + lbl.in + '">+</button>' +
-      '<button type="button" class="mzoom-btn mzoom-out" title="' + lbl.out + '" aria-label="' + lbl.out + '">−</button>' +
-      '<button type="button" class="mzoom-btn mzoom-reset" title="' + lbl.reset + '" aria-label="' + lbl.reset + '">⤡</button>';
-    frame.appendChild(nav);
+      // place the frame where the image was; keep the <img> as hidden fallback source
+      parent.insertBefore(frame, img);
+      frame.appendChild(inner);
+      img.style.display = "none";
 
-    var caption = document.createElement("p");
-    caption.className = "mzoom-caption";
-    caption.textContent = captionText();
-    if (frame.nextSibling) parent.insertBefore(caption, frame.nextSibling);
-    else parent.appendChild(caption);
+      var lbl = labels();
+      var nav = document.createElement("div");
+      nav.className = "mzoom-nav";
+      nav.innerHTML =
+        '<button type="button" class="mzoom-btn mzoom-in" title="' + lbl.in + '" aria-label="' + lbl.in + '">+</button>' +
+        '<button type="button" class="mzoom-btn mzoom-out" title="' + lbl.out + '" aria-label="' + lbl.out + '">−</button>' +
+        '<button type="button" class="mzoom-btn mzoom-reset" title="' + lbl.reset + '" aria-label="' + lbl.reset + '">⤡</button>';
+      frame.appendChild(nav);
 
-    // ---- transform state ----
-    var st = { scale: 1, tx: 0, ty: 0 };
-    function apply() {
-      inner.style.transform =
-        "translate(" + st.tx + "px," + st.ty + "px) scale(" + st.scale + ")";
-    }
-    function clamp(s) { return Math.max(MIN, Math.min(MAX, s)); }
+      var caption = document.createElement("p");
+      caption.className = "mzoom-caption";
+      caption.textContent = captionText();
+      if (frame.nextSibling) parent.insertBefore(caption, frame.nextSibling);
+      else parent.appendChild(caption);
 
-    function fit() {
-      var fw = frame.clientWidth, fh = frame.clientHeight;
-      if (!fw || !fh || !w0 || !h0) return;
-      var s = clamp(Math.min(fw / w0, fh / h0) * 0.98);
-      st.scale = s;
-      st.tx = (fw - w0 * s) / 2;
-      st.ty = (fh - h0 * s) / 2;
-      apply();
-    }
-
-    // Zoom keeping the frame-space point (px,py) fixed under the pointer.
-    function zoomAt(px, py, factor) {
-      var ns = clamp(st.scale * factor);
-      if (ns === st.scale) return;
-      var k = ns / st.scale;
-      st.tx = px - k * (px - st.tx);
-      st.ty = py - k * (py - st.ty);
-      st.scale = ns;
-      apply();
-    }
-    function toFrame(clientX, clientY) {
-      var r = frame.getBoundingClientRect();
-      return { x: clientX - r.left, y: clientY - r.top };
-    }
-    function centerZoom(factor) { zoomAt(frame.clientWidth / 2, frame.clientHeight / 2, factor); }
-
-    // ---- wheel zoom ----
-    function onWheel(e) {
-      e.preventDefault();
-      var p = toFrame(e.clientX, e.clientY);
-      zoomAt(p.x, p.y, Math.pow(WHEEL_BASE, -e.deltaY));
-    }
-    frame.addEventListener("wheel", onWheel, { passive: false });
-
-    // ---- drag pan (pointer events; skip when starting on a control) ----
-    var dragging = false, lastX = 0, lastY = 0, pid = null;
-    function onDown(e) {
-      if (e.target && e.target.closest && e.target.closest(".mzoom-nav")) return;
-      dragging = true; lastX = e.clientX; lastY = e.clientY; pid = e.pointerId;
-      if (e.pointerType !== "touch" && frame.setPointerCapture) {
-        try { frame.setPointerCapture(e.pointerId); } catch (_) {}
+      var nat = svgNaturalSize(svg);
+      var w0 = nat.w, h0 = nat.h;
+      var st = { scale: 1, tx: 0, ty: 0 };
+      function apply() {
+        inner.style.transform = "translate(" + st.tx + "px," + st.ty + "px) scale(" + st.scale + ")";
       }
-      frame.classList.add("mzoom-grabbing");
-    }
-    function onMove(e) {
-      if (!dragging) return;
-      st.tx += e.clientX - lastX; st.ty += e.clientY - lastY;
-      lastX = e.clientX; lastY = e.clientY; apply();
-    }
-    function onUp() {
-      if (!dragging) return;
-      dragging = false; frame.classList.remove("mzoom-grabbing");
-      if (pid != null && frame.releasePointerCapture) {
-        try { frame.releasePointerCapture(pid); } catch (_) {}
+      function clamp(s) { return Math.max(MIN, Math.min(MAX, s)); }
+      function fit() {
+        var fw = frame.clientWidth, fh = frame.clientHeight;
+        if (!fw || !fh || !w0 || !h0) return;
+        var s = clamp(Math.min(fw / w0, fh / h0) * 0.98);
+        st.scale = s; st.tx = (fw - w0 * s) / 2; st.ty = (fh - h0 * s) / 2; apply();
       }
-      pid = null;
-    }
-    frame.addEventListener("pointerdown", onDown);
-    frame.addEventListener("pointermove", onMove);
-    frame.addEventListener("pointerup", onUp);
-    frame.addEventListener("pointercancel", onUp);
-    frame.addEventListener("pointerleave", onUp);
-
-    // ---- buttons ----
-    nav.querySelector(".mzoom-in").addEventListener("click", function () { centerZoom(BTN); });
-    nav.querySelector(".mzoom-out").addEventListener("click", function () { centerZoom(1 / BTN); });
-    nav.querySelector(".mzoom-reset").addEventListener("click", fit);
-
-    // ---- keyboard (frame focused): +/- zoom, arrows pan, 0 reset ----
-    function onKey(e) {
-      var pan = 60;
-      switch (e.key) {
-        case "+": case "=": centerZoom(BTN); break;
-        case "-": case "_": centerZoom(1 / BTN); break;
-        case "0": fit(); break;
-        case "ArrowLeft":  st.tx += pan; apply(); break;
-        case "ArrowRight": st.tx -= pan; apply(); break;
-        case "ArrowUp":    st.ty += pan; apply(); break;
-        case "ArrowDown":  st.ty -= pan; apply(); break;
-        default: return;
+      function zoomAt(px, py, factor) {
+        var ns = clamp(st.scale * factor);
+        if (ns === st.scale) return;
+        var k = ns / st.scale;
+        st.tx = px - k * (px - st.tx); st.ty = py - k * (py - st.ty); st.scale = ns; apply();
       }
-      e.preventDefault();
-    }
-    frame.addEventListener("keydown", onKey);
+      function toFrame(cx, cy) { var r = frame.getBoundingClientRect(); return { x: cx - r.left, y: cy - r.top }; }
+      function centerZoom(f) { zoomAt(frame.clientWidth / 2, frame.clientHeight / 2, f); }
 
-    // ---- fit now and once more after fonts/layout settle ----
-    fit();
-    var settle = setTimeout(fit, 200);
-    function onResize() { fit(); }
-    window.addEventListener("resize", onResize);
+      function onWheel(e) { e.preventDefault(); var p = toFrame(e.clientX, e.clientY); zoomAt(p.x, p.y, Math.pow(WHEEL_BASE, -e.deltaY)); }
+      frame.addEventListener("wheel", onWheel, { passive: false });
 
-    live.push({ host: host, frame: frame, parent: parent, caption: caption, onResize: onResize, settle: settle });
+      var dragging = false, lastX = 0, lastY = 0, pid = null;
+      function onDown(e) {
+        if (e.target && e.target.closest && e.target.closest(".mzoom-nav")) return;
+        dragging = true; lastX = e.clientX; lastY = e.clientY; pid = e.pointerId;
+        if (e.pointerType !== "touch" && frame.setPointerCapture) { try { frame.setPointerCapture(e.pointerId); } catch (_) {} }
+        frame.classList.add("mzoom-grabbing");
+      }
+      function onMove(e) { if (!dragging) return; st.tx += e.clientX - lastX; st.ty += e.clientY - lastY; lastX = e.clientX; lastY = e.clientY; apply(); }
+      function onUp() { if (!dragging) return; dragging = false; frame.classList.remove("mzoom-grabbing"); if (pid != null && frame.releasePointerCapture) { try { frame.releasePointerCapture(pid); } catch (_) {} } pid = null; }
+      frame.addEventListener("pointerdown", onDown);
+      frame.addEventListener("pointermove", onMove);
+      frame.addEventListener("pointerup", onUp);
+      frame.addEventListener("pointercancel", onUp);
+      frame.addEventListener("pointerleave", onUp);
+
+      nav.querySelector(".mzoom-in").addEventListener("click", function () { centerZoom(BTN); });
+      nav.querySelector(".mzoom-out").addEventListener("click", function () { centerZoom(1 / BTN); });
+      nav.querySelector(".mzoom-reset").addEventListener("click", fit);
+
+      function onKey(e) {
+        var pan = 60;
+        switch (e.key) {
+          case "+": case "=": centerZoom(BTN); break;
+          case "-": case "_": centerZoom(1 / BTN); break;
+          case "0": fit(); break;
+          case "ArrowLeft": st.tx += pan; apply(); break;
+          case "ArrowRight": st.tx -= pan; apply(); break;
+          case "ArrowUp": st.ty += pan; apply(); break;
+          case "ArrowDown": st.ty -= pan; apply(); break;
+          default: return;
+        }
+        e.preventDefault();
+      }
+      frame.addEventListener("keydown", onKey);
+
+      fit();
+      var settle = setTimeout(fit, 200);
+      function onResize() { fit(); }
+      window.addEventListener("resize", onResize);
+
+      live.push({ img: img, frame: frame, caption: caption, parent: parent, onResize: onResize, settle: settle });
+    }).catch(function () {
+      // leave the <img> visible as the static fallback
+      img.dataset[GUARD] = "";
+    });
   }
 
   function teardown() {
@@ -202,10 +177,7 @@
       try { clearTimeout(i.settle); } catch (_) {}
       try { window.removeEventListener("resize", i.onResize); } catch (_) {}
       try {
-        i.host.style.margin = ""; i.host.style.display = ""; i.host.style.width = "";
-        i.host.style.height = ""; i.host.style.maxWidth = ""; i.host.style.transform = "";
-        delete i.host.dataset[GUARD];
-        if (i.parent && i.frame && i.frame.parentNode === i.parent) i.parent.insertBefore(i.host, i.frame);
+        if (i.img) { i.img.style.display = ""; delete i.img.dataset[GUARD]; }
         if (i.frame) i.frame.remove();
         if (i.caption) i.caption.remove();
       } catch (_) {}
@@ -215,8 +187,9 @@
   }
 
   function scan() {
-    var hosts = document.querySelectorAll(".md-typeset div.mermaid, .md-content div.mermaid");
-    hosts.forEach(function (h) { if (h.dataset[GUARD] !== "1") enhance(h); });
+    document.querySelectorAll("img.nav-map").forEach(function (img) {
+      if (img.dataset[GUARD] !== "1") enhance(img);
+    });
   }
 
   function onPage() {
@@ -226,12 +199,11 @@
     var stopped = false;
     mo = new MutationObserver(function () { if (!stopped) scan(); });
     mo.observe(root, { childList: true, subtree: true });
-    // Mermaid renders a tick (or more) after document$; stop watching once settled.
     setTimeout(function () { stopped = true; if (mo) { try { mo.disconnect(); } catch (_) {} } scan(); }, 4000);
   }
 
   if (window.document$ && typeof window.document$.subscribe === "function") {
-    window.document$.subscribe(onPage);          // fires on load AND instant-nav
+    window.document$.subscribe(onPage);
   } else if (document.readyState !== "loading") {
     onPage();
   } else {

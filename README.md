@@ -80,11 +80,13 @@ formalisation-unifying; the taint is unchanged.
 flowchart TD
     ROOT["⚙️ no_infinite_descent · EPMI<br/>Euclid’s perpetual engine is impossible · bare Lean core 🟢"]
 
-    ROOT --> FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · three LIVING boundaries"}}
+    ROOT --> MT["★ MAIN THEOREM · higherEnergyIncompatibility_main 🟢 · core with NO axiom<br/>knowing the first cause from within = a perpetual engine (forbidden)<br/>⟹ the first cause is unknowable; from inside, twins can be neither proved nor refuted"]
+    MT ==>|"PRESSES ON THE AXIOM: since it is impossible from within, the first cause can only be ACCEPTED from outside, never derived"| FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · three LIVING boundaries"}}
 
     FC --> TP["Twins 🟡 · taken<br/>NOT Collatz-attackable: irreducible node,<br/>law ⟺ conjecture · incompatibility barrier<br/>(refute⟹engine needs the decreed stability)"]
     FC --> RH["Riemann 🟡 · taken<br/>NOT attackable: RiemannManifestationLaw ⟺ RH<br/>refuting = an off-critical zero (not over ℕ)"]
     FC --> NS["Navier–Stokes 🟡 · taken<br/>NOT attackable: witness ≥ Galdi Liouville problem<br/>no ⟺-mirror, no decidable predicate"]
+    MT -.->|"load-bearing face 🟡: incompatibility + boundary ⟹ twins ∞ (higherEnergyIncompatibility_twins)"| TP
 
     ROOT --> PNP["P/NP 🟢<br/>rank-fast traversal ≠ full certificate payment"]
     ROOT --> YM["Yang–Mills 🟢<br/>spectral quantisation ⟺ mass gap"]
@@ -100,11 +102,13 @@ flowchart TD
     GEO -. the same twin boundary .-> TP
 
     classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;
+    classDef apex fill:#0b3d0b,stroke:#ffd700,stroke-width:2px,color:#eaffea;
     classDef yellow fill:#4d3b00,stroke:#ffc107,color:#fff8e1;
     classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
     classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
     classDef root fill:#1a1a1a,stroke:#888,color:#ffffff;
     class ROOT,PNP,YM,HC,BSD,ZOO,GEO green;
+    class MT apex;
     class TP,RH,NS yellow;
     class MP deferred;
     class CL fallen;

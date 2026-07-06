@@ -77,11 +77,13 @@ $6m\pm1$, сотканный хордами на круге центров; цв
 flowchart TD
     ROOT["⚙️ no_infinite_descent · EPMI<br/>вечный двигатель Евклида невозможен · голое ядро Lean 🟢"]
 
-    ROOT --> FC{{"step00FirstCause · ЕДИНСТВЕННАЯ аксиома<br/>первопричина 0 → 1 · три ЖИВЫЕ границы"}}
+    ROOT --> MT["★ ГЛАВНАЯ ТЕОРЕМА · higherEnergyIncompatibility_main 🟢 · ядро БЕЗ аксиомы<br/>знать первопричину изнутри = вечный двигатель (запрещён)<br/>⟹ первопричина непознаваема; изнутри близнецов ни доказать, ни опровергнуть"]
+    MT ==>|"ДАВИТ НА АКСИОМУ: раз изнутри нельзя — первопричину только ПРИНЯТЬ извне, не вывести"| FC{{"step00FirstCause · ЕДИНСТВЕННАЯ аксиома<br/>первопричина 0 → 1 · три ЖИВЫЕ границы"}}
 
     FC --> TP["Близнецы 🟡 · взято<br/>НЕ атакуемо как Коллатц: неприводимый узел,<br/>закон ⟺ гипотеза · барьер несовместимости<br/>(refute⟹двигатель требует decree-стабильности)"]
     FC --> RH["Риман 🟡 · взято<br/>НЕ атакуемо: RiemannManifestationLaw ⟺ RH<br/>опровергнуть = внекритический ноль (не над ℕ)"]
     FC --> NS["Навье–Стокс 🟡 · взято<br/>НЕ атакуемо: свидетель ≥ проблема Лиувилля Галди<br/>нет ⟺-зеркала, нет разрешимого предиката"]
+    MT -.->|"несущая грань 🟡: несовместимость + граница ⟹ близнецы ∞ (higherEnergyIncompatibility_twins)"| TP
 
     ROOT --> PNP["P/NP 🟢<br/>ранго-быстрый проезд ≠ полная оплата сертификатов"]
     ROOT --> YM["Янг–Миллс 🟢<br/>квантованность спектра ⟺ масс-щель"]
@@ -97,11 +99,13 @@ flowchart TD
     GEO -. та же граница близнецов .-> TP
 
     classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;
+    classDef apex fill:#0b3d0b,stroke:#ffd700,stroke-width:2px,color:#eaffea;
     classDef yellow fill:#4d3b00,stroke:#ffc107,color:#fff8e1;
     classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
     classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
     classDef root fill:#1a1a1a,stroke:#888,color:#ffffff;
     class ROOT,PNP,YM,HC,BSD,ZOO,GEO green;
+    class MT apex;
     class TP,RH,NS yellow;
     class MP deferred;
     class CL fallen;

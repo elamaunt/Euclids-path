@@ -37,6 +37,16 @@ the verifier tracks each case.
 - **[First cause and the main theorem (ch. 33)](33_CausalFirstCause.md)** — why the node cannot be closed from within.
 - **[Coda (ch. 50)](50_Coda.md)** — one prohibition, seven masks, and spacetime as its shadow.
 
+## Appendices and later fronts
+
+Added once the core was in place — extensions of the synthesis above, each worth reading on its own:
+
+- **[Numerical evidence (ch. 51)](51_NumericalEvidence.md)** — the counts and pictures beneath the claims.
+- **[The dyadic model of fluid (ch. 52)](52_DyadicModel.md)** — Navier–Stokes stripped to its dyadic skeleton.
+- **[Birch–Swinnerton-Dyer — the eighth mask (ch. 53)](53_BirchSwinnertonDyer.md)** — the same descent on a real elliptic curve.
+- **[Neighbours beyond the horizon (ch. 54)](54_OpenNeighbors.md)** — open arithmetic problems just past the same wall.
+- **[Collatz (ch. 55)](55_Collatz.md)** & **[The Collatz first cause (ch. 56)](56_CollatzFirstCause.md)** — the boundary walk, and a decree withdrawn when its law was machine-refuted.
+
 Sources and machine verification are in the [GitHub repository](https://github.com/elamaunt/Euclids-path).
 
 > **Bilingual.** The site is being prepared in two languages — Russian and English. The Russian

@@ -202,6 +202,14 @@ gap and mass as depth of the well are one: both are a measure of how steeply the
 of irreversible time is bent here. The limiting mass is the bottom itself, the singularity `0`: the event `0 → 1`, which
 cannot be caused from inside ([33](33_CausalFirstCause.md)).
 
+**Gravity is the curvature of time.** We just said mass is a measure of how steeply the arrow of irreversible time is bent.
+Take that one step further: the bending *itself* — not the depth alone but the curving of the way — is what physics calls
+**gravity**. It is not a separate force added to the picture; it is the computed curvature `κ` of the descent graph
+([49](49_Geometry.md)), and the descent is the arrow of time. So gravity and time are not two things: they are two faces of
+one flow — its *curvature* and its *direction*. Gravity is the curvature of time. (That the descent is *time* and its
+bending *gravity* is, once more, the interpretation; what is proved is that there is one irreversible descent with a
+computed curvature.)
+
 **Light travels along curves — and therefore carries no information.** Let light be that which propagates
 along the geodesics of this space, along the shortest paths of descent. But the space is curved almost
 everywhere (`κ ≠ 0`), and there are no straight lines here in the Euclidean sense — Euclid's path *violates the second postulate

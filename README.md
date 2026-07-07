@@ -101,13 +101,16 @@ flowchart TD
     ROOT --> GEO["Geometry of the path 🟢<br/>arrow · curvature κ=1−outdeg (χ=−5)<br/>twin ± flip ⟂ time (C, not T)"]
     GEO -. the same twin boundary .-> TP
 
+    ROOT --> WF["Well-foundedness canon 🟢<br/>Goodstein/hydra (ω-worm, transfinite rank) · Markov descent · Poincaré line<br/>the engine reaches classical termination"]
+    WF -. underpins the one prohibition .-> MT
+
     classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;
     classDef apex fill:#0b3d0b,stroke:#ffd700,stroke-width:2px,color:#eaffea;
     classDef yellow fill:#4d3b00,stroke:#ffc107,color:#fff8e1;
     classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
     classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
     classDef rootnode fill:#1a1a1a,stroke:#888,color:#ffffff;
-    class ROOT,PNP,YM,HC,BSD,ZOO,GEO green;
+    class ROOT,PNP,YM,HC,BSD,ZOO,GEO,WF green;
     class MT apex;
     class TP,RH,NS yellow;
     class MP deferred;

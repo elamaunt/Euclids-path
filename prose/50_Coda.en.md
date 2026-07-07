@@ -429,6 +429,42 @@ the orange meridian-arrows are the generative direction of time from `0` to the 
 > of time from the `0`-pole to the observer-pole; golden dots are twin-centres; the two poles are labelled
 > "observer (now)" and "start of time · singularity 0".
 
+**Two computations, and what they add.** Two later runs sharpen this picture, and it is worth saying
+exactly what they add and what they do not. The first ([49](49_Geometry.md)) proved that the total
+curvature of any closed region is not a free number but the Euler characteristic — a *topological*
+invariant, `Σκ = |V| − |E| = χ` (`gaussBonnet_eq_euler`). Read as gravity, the bending of the way is
+book-kept by the shape of the descent alone, with nothing left over; in two-dimensional gravity that
+is the honest split — the curvature term `∫R = 4πχ` is topological, while a cosmological constant `Λ`
+would pair not with curvature but with *volume*. So the picture needs no dark-energy term and predicts
+none — only the honest restatement of "no acceleration, only the curvature of the way." What we did
+*not* do is derive `Λ` or its value; that stays a category error and an open problem of physics (the
+cosmological-constant note above).
+
+**Time is orthogonal to the pair.** The second run ([44](44_SidesAndPolignac.md)) proved that proper
+time does not see the ± flip at all: the two members of a pair sit at the *same* instant, differing
+only along an axis orthogonal to time (`lexRank_side_invariant`). Read as the behaviour of quantum
+particles, this is the one place the picture says something a physicist would call *correct*: a
+particle and its partner are joined by charge conjugation `C` — a fixed-time involution — not by a
+reversal of time `T`. The Feynman intuition that an antiparticle "runs backward in time" cannot be
+literal here, for backward is a `lexRank` increase, the forbidden engine; the honest reading is the
+orthogonal one. Past this single true distinction we explain no quantum behaviour: closed quantum
+evolution is *reversible* and this world is irreversible to the core, so the two meet only in the
+irreversible sector — measurement, decoherence, the arrow of time — never in the unitary law.
+
+**Redshift is the lengthening of the way — a picture, not a mechanism.** Put the two together and the
+far light we followed "up the curve" gets its name: what stretches it is the growing length of the
+curved descent between the source and us — a faithful *picture* of a redshift, an old signal drawn out
+by all the curvature it crossed. But a picture only: we have no metric, no wavelength, no expansion
+factor, and we compute no shift. Real redshift is general relativity's; our graph adds nothing to its
+physics — it only shows the same one-way, curvature-lengthened geometry in which such a stretching
+would be the natural shadow of the arrow of time.
+
+**What, then, do the two runs explain?** The *structure of the picture*, not the physics. They add two
+theorems — curvature is topological, time is orthogonal to the pair — and each buys exactly one clean
+sentence about the world: gravity keeps no dark-energy debt, and a particle fixes its partner *now*.
+Everything beyond those two sentences — the value of `Λ`, the redshift, the quantum law — stays where
+the honest verdicts left it: outside, unproven, and not ours to claim.
+
 Let us repeat the boundary without evasion: only the irreversibility of time and the curvature of
 space are rigorously proven here (plus the verified M6 fork above). Mass-as-depth, light-along-curves, shadow-as-lack
 and black-hole-as-well are a translation, a conjecture, a way to *see* what is already proven as physics. It predicts

@@ -267,6 +267,22 @@ EC-высоты/L-ряды для BSD, калибровочная КТП для 
 
 ---
 
+## Коллапс — дуальная маска дядического взрыва (`collapse`)
+
+**Статус.** Зелёное ядро СДЕЛАНО (коммит 2963939, `Engine/CollapseExtinction.lean`, самодостаточно, без `step00FirstCause`): `sublinear_collapse_extinction` — точный дуал `superlinear_blowup_sq`: нет глобального положительного C¹ `r` с сублинейным ВНУТРЕННИМ драйвом `r' ≤ -C·r^α` (`C>0`, `0≤α<1`); коллапс к `r=0` за конечное время `T = r0^(1-α)/((1-α)C)`. Доказательство — зеркало взрыва: `v := r^(1-α) + (1-α)C·t` антитонно на `[0,∞)` (ибо `r^α·r^(α-1)=1`), механизм `HasDerivAt.rpow_const` + `antitoneOn_of_deriv_nonpos`; не-вакуумность `sublinear_collapse_example` (линейный α=0 свидетель `r=r0-C·t`). Таинт 47 не тронут, кириллицы 0, инварианты VerifyAll OK.
+
+**Красный вход** (именован, открыт, вне mathlib): вывод самого драйва `r' ≤ -C·r^α` из физического закона само-гравитации (Эйлер–Пуассон / автомодельный коллапс Ларсона–Пенстона — строг в литературе [arXiv:2011.01013], но далеко за пределами mathlib) — прямой дуал именованного `superlinearDrive`/`FrontDomination` каскада. Порог Чандрасекара (~1.44 M☉) даёт лишь абстрактную дихотомию «драйв есть ⟹ вымирание / драйва нет ⟹ опора держит»; физическое значение порога — не зелёное.
+
+**Жёлтый** (опциональный эпилог, НЕ сделан): «отскок/взрыв» как манифестация первопричины — только через РЕЮЗ `step00FirstCause.nsBoundary` (Option A, зеркало `dyadicBlowup_is_firstCauseManifestation`), таинт +~2; **никогда** не новая граница (сломало бы `step00FirstCause_iff_causalClosure` и повторило бы риск Коллатца — трилемма отклонила бы её).
+
+**Продвижения-кандидаты:**
+- `collapse_rebound_uncausable_from_inside` (🟢 стена: сингулярность не продолжает себя изнутри) + `collapse_rebound_from_firstCause` (🟡, реюз `nsBoundary`) [low] — опциональный жёлтый слой, зеркало `dyadicOrigin_from_firstCause`. *Ценность:* пришивает коллапс к маскам через исток; зелёная математика вымирания от него не зависит.
+- Скобочный абзац в прозе гл. 52 (RU+EN) [trivial] — «дуальная маска коллапса: гипотеза, не результат».
+
+**Честные оговорки (переоценка ходит рядом):** новизна ФОРМАЛИЗАЦИОННАЯ, не математическая — факт сублинейного вымирания стандартен [arXiv:2211.17241], а метод — тот же `w`-приём, что у взрыва. Дуальность blow-up↔коллапс — общий ODE-механизм конечно-временной сингулярности, **не теорема**; shell-модели применяются в астрофизической турбулентности, но строгого соответствия «дядический взрыв ↔ гравитационный коллапс» в литературе НЕТ. «Сверхновая / Чандрасекар / Большой взрыв» — метафора (гл. 52 уже это оговаривает); космическая цензура — гипотеза. Это дуальное **приложение-модель** (сиблинг гл. 52), а не маска-миллениум.
+
+---
+
 ## Ходж (`hodge`)
 
 **Статус.** Зелёное ядро (всё в EuclidsPath/Engine/HodgeFront.lean, аксиомо-чисто, стандартная тройка): модель HodgeLedger с якорем квантования height_zero_iff; HodgeProperty, UnpaidClass, unpaid_height_pos, hodgeProperty_iff_no_unpaidClass; двигатель UnpaidDescentChain убит БЕЗУСЛОВНО в любой модели (no_unpaidDescentChain / isEmpty_unpaidDescentChain — EPMI при A=1, уникальная точка среди всех ветвей); герой hodgeProperty_of_descentLaw (+ цепной маршрут hodgeProperty_of_descentLaw' через descentSeq/unpaidDescentChain_of_descentLaw), no_descentLaw_with_unpaid, no_unpaid_lawful_model; коллапс осуждённого моста descentLaw_iff_hodgeProperty (закон ⟺ цель — потому шестого декрет-поля НЕТ намеренно); кованые модели cookedUnpaid/cookedPaid/cookedUnpaidClass; трилемма hodgeLawUniversal_refuted (V1), hodgeLawExistential_green (V2), hodgeChainManifestationLaw_green (V2' — chain-форма вырождена, ибо цепей нет нигде), hodgeManifestationLaw_refutes_boundary + hodgeManifestationLaw_iff_no_resolution (V3); аудиты §7 hodge_bundling_audit, hodge_front_pair_iff_hodgeProperty, hodge_bundle_refuted_at_cooked, hodgeLaw_freeCollapse, hodgeLaw_cannot_separate. Красный вход один: DescentLaw (per-model закон спуска) для НАМЕРЕННОЙ, не построенной инстанциации настоящими рациональными (p,p)-классами — в mathlib v4.31 теории Ходжа нет вовсе (проверено по пину, шапка модуля). Жёлтая декрет-связь ровно одна: растяжка quarantine_inconsistent_if_hodgeManifestationLaw_decreed (CausalClosureAxiom §14, заражена ровно step00FirstCause); границы Ходжа в Step00FirstCause нет и быть не может (коллапс L9). Эпистемического модуля (InternalisedHodgeGround / hodgeCause_unknowable) НЕТ — grep пуст; это главная незанятая ось ветви.

@@ -130,6 +130,8 @@ What is there, then? The world's first formalisation of a fluid model in a proof
 
 This is more honest than any closure: we did not hide the gap in a metaphor, but exhibited it as a line of code. A cascade that reaches the bottom in finite time is not a forbidden engine but a realised one; and the water blows up in the model exactly where the arithmetic of twins stays silent.
 
+> **Hypothesis: the dual collapse mask.** This blow-up has a mirror twin. Where the cascade carries energy up, to small scales (`y → ∞`), a sublinear inward drive `r' ≤ -C·r^α` (`0 ≤ α < 1`) carries the radius down, to a point (`r → 0`), in finite time. This is already a green fact — `sublinear_collapse_extinction` (`Engine/CollapseExtinction.lean`), the exact dual of `superlinear_blowup_sq` via `v = r^(1-α) + (1-α)C·t`, self-contained and free of the first cause. Beyond it lies the honest boundary: the extinction fact itself is standard; deriving the drive from genuine self-gravity (Euler–Poisson, Larson–Penston) is a red input outside mathlib; and the "supernova / stellar collapse / Big Bang" readings are metaphor, not physics. This is a dual appendix model — a hypothesis of direction, not a new mask and not a result about physical collapse.
+
 ## Place in the greater arc
 
 Appendix B closes the honest question "what does our theory give for fluids": new mathematics — none

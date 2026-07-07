@@ -325,16 +325,18 @@ def genealogy_ornament(M=4200, PMAX=97, DEPTH=10):
 def ascending_twin_ornament(M=3000, PMAX=97, DEPTH=14):
     """Centers 1..M ascend the axis x=0 (height = m). Every old-peel step
        6k∓1 = p·(6t±1) is a semicircular petal on the SIDE of the composite that
-       was peeled (6k+1 -> right, 6k-1 -> left), colored by its Euclid prime p; a
-       smooth (tanh) saturation keeps long descents inside a band, weaving a
-       vesica of nested arcs around the ascending spine. Twin centers (empty
+       was peeled (6k+1 -> right, 6k-1 -> left), colored by its Euclid prime p.
+       Each petal is clipped to a circle of radius M/2, so the whole ornament
+       fills a SPHERE around the ascending twin meridian; twin centers (empty
        genealogy: both sides prime) are golden double sparks flanking the axis."""
     P = primes_upto(6*M + 2); isp = set(int(x) for x in P)
     euclid_primes = [int(p) for p in P if 5 <= p <= PMAX]
-    band = 0.24 * M; bulge = 1.6
+    band = 0.55 * M; bulge = 1.8; R = 0.5 * M                # R = sphere radius (the envelope)
     def petal(k, t, side, npts=30):
         yc, a = 0.5 * (k + t), 0.5 * (k - t)                 # a > 0 since t < k
-        b = side * band * math.tanh(bulge * a / band)        # nested circular petals
+        mag = band * math.tanh(bulge * a / band)             # smooth saturation
+        wc = math.sqrt(max(0.0, R * R - (yc - R) ** 2))      # circle half-width at this height
+        b = side * min(mag, 0.985 * wc)                      # clip each petal -> ornament fills a sphere
         th = np.linspace(-math.pi / 2, math.pi / 2, npts)    # bottom (t) -> top (k)
         return np.column_stack([b * np.cos(th), yc + a * np.sin(th)])
     segs, cols, n_steps = [], [], 0
@@ -352,7 +354,7 @@ def ascending_twin_ornament(M=3000, PMAX=97, DEPTH=14):
     twin = np.array([((6 * k - 1) in isp) and ((6 * k + 1) in isp) for k in m])
     tw = m[twin]
 
-    fig, ax = plt.subplots(figsize=(7.4, 15.8), facecolor="#03040a")
+    fig, ax = plt.subplots(figsize=(13.5, 14.5), facecolor="#03040a")
     ax.set_facecolor("#03040a")
     ax.plot([0, 0], [1, M], color="#2a3350", lw=0.7, alpha=0.6, zorder=1)
     lc = LineCollection(segs, array=np.array(cols), cmap="turbo",
@@ -364,7 +366,7 @@ def ascending_twin_ornament(M=3000, PMAX=97, DEPTH=14):
                edgecolors="none", zorder=5, label="twin center (both sides prime)")
     ax.scatter(np.full(tw.shape, -off), tw, s=6.5, c="#ffd24a", alpha=0.95,
                edgecolors="none", zorder=5)
-    ax.set_xlim(-band * 1.06, band * 1.06); ax.set_ylim(0, M + 1); ax.set_aspect("equal")
+    ax.set_xlim(-R * 1.03, R * 1.03); ax.set_ylim(0, M + 1); ax.set_aspect("equal")
     ax.set_xticks([]); ax.set_yticks([])
     [s.set_visible(False) for s in ax.spines.values()]
     cb = fig.colorbar(lc, ax=ax, pad=0.01, fraction=0.045)

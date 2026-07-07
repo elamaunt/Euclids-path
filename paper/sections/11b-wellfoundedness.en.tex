@@ -1,0 +1,67 @@
+\section{The well-foundedness canon}\label{sec:wellfounded}
+
+The engine is one prohibition --- no infinite strictly descending chain on a well-founded carrier
+(\code{no\_perpetual\_engine\_of\_wellFounded}, \cref{sec:engine}) --- and it transfers along
+\emph{any} rank into a well-founded order (\code{no\_perpetual\_engine\_of\_rank}). Every front so far
+is a corollary of that one theorem. Turned on the classical \emph{termination canon}, whose whole
+content is ``there is no infinite descent,'' it yields green instances reusing mathlib; none adds an
+axiom, and the taint does not move.
+
+\begin{theorem}[the hydra dies]\label{thm:hydra_no_perpetual_engine}
+\green{}\ For any well-founded $r$, the Kirby--Paris cut relation \code{Relation.CutExpand}~$r$ carries
+no perpetual engine: the hydra battle terminates. \leantag{hydra\_no\_perpetual\_engine}
+\end{theorem}
+
+\emph{Proof idea.} A cut is one \code{CutExpand} step; mathlib's \code{WellFounded.cutExpand} gives
+$\mathrm{WellFounded}(r) \Rightarrow \mathrm{WellFounded}(\code{CutExpand}\,r)$, fed to
+\code{no\_perpetual\_engine\_of\_wellFounded}.
+
+\begin{theorem}[the $\omega$-worm: a transfinite rank]\label{thm:omega_worm_no_perpetual_engine}
+\green{}\ A step on a state $(a,b)$ lowers the big register $a$ by one while the small register $b$ may
+jump to any value; the process still carries no perpetual engine, under the \emph{ordinal} rank
+$\omega\cdot a + b$. \leantag{omega\_worm\_no\_perpetual\_engine}
+\end{theorem}
+
+\emph{Proof idea.} Although $b$ may explode, $\omega\cdot a + k < \omega\cdot(a+1) + b'$ for every $k$
+(as $k < \omega$), so \code{no\_perpetual\_engine\_of\_rank} with codomain \code{Ordinal} (not
+$\mathbb{N}$) closes it --- the first transfinite rank in the programme, and the mechanism behind
+Goodstein's theorem and the hydra: the value explodes, the ordinal falls. Full weak Goodstein (base-$b$
+digits read as an ordinal below $\omega^\omega$) extends the same rank; not formalised here.
+
+\begin{theorem}[Markov descent]\label{thm:markov_no_perpetual_engine}
+\green{}\ The Markov tree $x^2+y^2+z^2=3xyz$ carries no perpetual engine of Vieta jumps
+$z \mapsto 3xy-z$: the height $x+y+z$ strictly decreases (\code{markov\_vieta\_lt}), so the tree
+reduces to its root. \leantag{markov\_no\_perpetual\_engine}
+\end{theorem}
+
+\emph{Proof idea.} For $x \le y \le z$ with $y < z$, the jump sends $z$ to $z' = 3xy-z \le y < z$ (since
+$y$ lies between the roots of $t^2 - 3xy\,t + x^2 + y^2$), so the top and the height fall; Vieta closure
+(\code{isMarkov\_vieta}) keeps the triple Markov. This is a \emph{mask}: the termination half is green,
+but the Frobenius uniqueness conjecture (each Markov number is the top of a \emph{unique} triple, open
+since 1913) has no descent structure and is untouched --- a green wall, an honest red gate.
+
+\begin{theorem}[the reversibility dividing line]\label{thm:poincare_dividing_line}
+\green{}\ On a measure space: every well-founded relation forbids the perpetual engine (a descent,
+hence any return), while a conservative --- e.g.\ finite-measure measure-preserving, reversible --- map
+recurs by Poincar\'e, almost every point of a set returning to it infinitely often.
+\leantag{poincare\_dividing\_line}
+\end{theorem}
+
+\emph{Proof idea.} The first half is the engine; the second is mathlib's
+\code{Conservative.ae\_mem\_imp\_frequently\_image\_mem}. Together they are the contraries
+\code{universal\_engine\_dividing\_line} names on $\mathbb{R}$, now on a dynamical system: strict
+descent never returns, measure-preserving reversibility always does --- closing the reversibility axis
+of the quantum reading (\cref{sec:coda}).
+
+\begin{remark}[well-foundedness, not self-reference]
+This canon forces one honesty correction. Goodstein's theorem and the hydra are \emph{textbook}
+instances of the G\"odel incompleteness phenomenon --- true, yet unprovable in Peano arithmetic --- so
+``not a G\"odelian phenomenon'' must be read precisely: our prohibition is a principle of
+\emph{well-foundedness}, not of \emph{self-reference}. G\"odel's sentence is built by diagonalisation;
+these are independent because their proofs need transfinite induction up to $\varepsilon_0$, and
+``$\varepsilon_0$ is well-founded'' is exactly the ordering PA cannot prove (Gentzen: the
+proof-theoretic ordinal of PA is $\varepsilon_0$). The engine is the well-founded machine \emph{behind}
+the natural independence results, reached by well-foundedness, not by self-reference; ``not
+G\"odelian'' is a statement about \emph{mechanism}, not an escape from incompleteness (see
+\cref{sec:coda}).
+\end{remark}

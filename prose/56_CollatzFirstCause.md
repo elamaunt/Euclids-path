@@ -1,7 +1,7 @@
 # 56. Первопричина Коллатца: декрет, который пал
 
 <!--navtop-->
-[← 55. Коллатц](55_Collatz.md) · [Оглавление](00_Overview.md)
+[← 55. Коллатц](55_Collatz.md) · [Оглавление](00_Overview.md) · [57. Канон вполне-фундированности →](57_WellFoundednessCanon.md)
 <!--/navtop-->
 
 > Lean-источник: `Engine/CollatzFirstCause.lean` — теперь **целиком зелёный**: пост-мортем декрета
@@ -348,5 +348,5 @@ $\bigl(\forall n\ge 1,\ \mathrm{RopeCountingLaw}(n)\Rightarrow\exists K,\ \mathr
 
 ---
 
-[← 55. Коллатц](55_Collatz.md) · [Оглавление](00_Overview.md)
+[← 55. Коллатц](55_Collatz.md) · [Оглавление](00_Overview.md) · [57. Канон вполне-фундированности →](57_WellFoundednessCanon.md)
 <!--/navbot-->

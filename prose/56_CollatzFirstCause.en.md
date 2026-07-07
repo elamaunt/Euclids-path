@@ -1,7 +1,7 @@
 # 56. The Collatz first cause: the decree that fell
 
 <!--navtop-->
-[← 55. Collatz](55_Collatz.md) · [Table of contents](00_Overview.md)
+[← 55. Collatz](55_Collatz.md) · [Table of contents](00_Overview.md) · [57. The well-foundedness canon →](57_WellFoundednessCanon.md)
 <!--/navtop-->
 
 > Lean source: `Engine/CollatzFirstCause.lean` — now **entirely green**: the decree's post-mortem
@@ -356,5 +356,5 @@ under its own price.
 
 ---
 
-[← 55. Collatz](55_Collatz.md) · [Table of contents](00_Overview.md)
+[← 55. Collatz](55_Collatz.md) · [Table of contents](00_Overview.md) · [57. The well-foundedness canon →](57_WellFoundednessCanon.md)
 <!--/navbot-->

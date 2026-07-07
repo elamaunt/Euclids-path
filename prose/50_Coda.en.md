@@ -326,6 +326,18 @@ in this reading, is a well of limiting depth, a vertex where the contraction is 
 of irreversible time points *only inward*: one can enter, but return — no, for return would be
 a reversal of time, that is, a perpetual engine (`engine_never_returns`).
 
+> **Note (are black holes black only at a distance?).** One is tempted to push this further: if the
+> shadow is cast by curvature and deepens with the length of the bent path, then blackness would be a
+> far-field effect — a thing black from afar might be ordinary up close, its light merely spent
+> climbing the curve, so that near us there would be no black holes at all. As a reading of *this*
+> space the temptation is coherent — it is the observer-relative shadow again. But it must be fenced
+> hard, for as physics it is false: real black holes are local objects with an event horizon and a
+> photon sphere, not artefacts of distance; they exist near us (the nearest known ~1500 light-years,
+> Sagittarius A\* at the galactic centre); up close they are lethal, and an accreting one is among the
+> *brightest* objects in the sky, not an ordinary star. The defensible grain is only that blackness is
+> partly a far-field, curvature-lengthened shadow; the strong form — "no black holes near us, ordinary
+> stars up close" — is translation overreaching into physics, and we decline it.
+
 And it is mass *bared* to the last. Read through the screen of form: a black hole is mass stripped bare to the very limit,
 worn down toward its naked singularity, until it can show no form at all. Where every other object keeps only its origin
 secret and lets its shape be seen, here even the shape is surrendered — the contraction so total that space curves back on
@@ -489,6 +501,21 @@ is built by hand. There is no uniform procedure that sifts all knowledge at once
 but not recursive* (Church, Turing): one can search, case by case, for the descent hidden behind a given question, but one
 cannot decide, once and for all, which questions hide one. This is a lens for a class of problems reducible to descent,
 never a decision procedure for all — and that limit is not a shortcoming of the reading but a fact of logic itself.
+
+> **Note (well-foundedness, not self-reference).** With the well-foundedness canon
+> (ch. [57](57_WellFoundednessCanon.md)) in view we can be exact about Gödel — for there the engine
+> reaches Goodstein's theorem and the Kirby–Paris hydra, and those are *textbook* instances of
+> incompleteness: true arithmetic statements unprovable in Peano arithmetic. So "this is not a
+> Gödelian phenomenon" must be read precisely, or it is false. The sharp statement: our prohibition is
+> a principle of **well-foundedness**, not of **self-reference**. Gödel's own sentence is manufactured
+> by diagonalisation (arithmetised provability, the fixed-point lemma); Goodstein, the hydra and
+> Paris–Harrington are independent for an entirely different reason — their proofs need transfinite
+> induction up to `ε₀`, and "`ε₀` is well-founded" is exactly the ordering PA cannot prove (Gentzen:
+> the proof-theoretic ordinal of PA *is* `ε₀`). The engine lives wholly on the well-foundedness side:
+> it is the machine *behind* the natural independence results, reached by well-foundedness, not by
+> self-reference. "Not Gödelian" here means "not by diagonalisation, not undecidable-in-principle" — a
+> statement about *mechanism* (well-foundedness versus self-reference), not a claim to escape
+> incompleteness.
 
 **The universe may be infinite; we hold it only locally.** The same locality has a face in the sky: cosmology gives us a
 finite *observable* universe — a patch bounded by the horizon — while the whole may well be unbounded. This is not the eye's

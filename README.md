@@ -23,11 +23,11 @@ reduction — is visible across the numbered files.
 
 ![Euclid's-path fractal — the genealogy ornament](tools/fractal/out/6_genealogy_ornament.png)
 
-*Euclid's-path fractal · **genealogy ornament**: the full old-peel descent of every centre
+Euclid's-path fractal · **genealogy ornament**: the full old-peel descent of every centre
 $6m\pm1$, woven with chords on the circle of centres; the colour is the Euclid prime of the step
 $6m\mp1=p\cdot(6t\pm1)$. The yellow points on the circle are the **twin-centres with empty
 genealogy** (those whose descent breaks off at once): their infinitude is exactly the twin
-conjecture. The other five kinds live in [`tools/fractal/`](tools/fractal/).*
+conjecture. The other five kinds live in [`tools/fractal/`](tools/fractal/).
 
 > **★ Main theorem: "Higher-energy incompatibility"**
 > ([`higherEnergyIncompatibility_main`](EuclidsPath/Engine/FiniteKnowledgeBarrier.lean), core 🟢).

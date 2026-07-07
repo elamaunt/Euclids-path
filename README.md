@@ -98,7 +98,7 @@ flowchart TD
 
     ROOT --> CL["Collatz ✗ · THE DECREE FELL<br/>reason: the rope law was over-strong + decidable<br/>refuted at n=27 (ropeLaw_universal_refuted, decide)<br/>boundary removed, conjecture still open"]
 
-    ROOT --> GEO["Geometry of the path 🟢<br/>arrow · curvature κ=1−outdeg (χ=−5)"]
+    ROOT --> GEO["Geometry of the path 🟢<br/>arrow · curvature κ=1−outdeg (χ=−5)<br/>twin ± flip ⟂ time (C, not T)"]
     GEO -. the same twin boundary .-> TP
 
     classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;

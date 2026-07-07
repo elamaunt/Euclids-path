@@ -95,7 +95,7 @@ flowchart TD
 
     ROOT --> CL["Коллатц ✗ · ДЕКРЕТ ПАЛ<br/>причина: канат-закон был сверх-сильным + разрешимым<br/>опровергнут при n=27 (ropeLaw_universal_refuted, decide)<br/>граница снята, гипотеза открыта"]
 
-    ROOT --> GEO["Геометрия пути 🟢<br/>стрела · кривизна κ=1−outdeg (χ=−5)"]
+    ROOT --> GEO["Геометрия пути 🟢<br/>стрела · кривизна κ=1−outdeg (χ=−5)<br/>флип ± ⟂ время (C, не T)"]
     GEO -. та же граница близнецов .-> TP
 
     classDef green fill:#0b3d0b,stroke:#4caf50,color:#eaffea;

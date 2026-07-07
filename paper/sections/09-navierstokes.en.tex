@@ -206,6 +206,30 @@ whence $1/y = w - C\,t$ must go negative in finite time, contradicting $y > 0$. 
 cascade is a realised perpetual engine: it exists exactly until the moment of blow-up.
 \end{proof}
 
+\begin{theorem}[sublinear drive forces collapse]\label{thm:sublinear_collapse_extinction}
+\green{}\ Dually: no global positive $C^1$ function can satisfy $r'(t) \le -C\,r(t)^{\alpha}$ with
+$C>0$ and $0 \le \alpha < 1$; the assumption of a global solution yields \code{False}. Collapse to
+$r=0$ occurs in finite time, no later than $r(0)^{1-\alpha}/((1-\alpha)C)$.
+\leantag{sublinear\_collapse\_extinction}
+\end{theorem}
+
+\begin{proof}
+Put $v(t) := r(t)^{1-\alpha} + (1-\alpha)C\,t$. Then
+$v'(t) = (1-\alpha)r^{-\alpha}r' + (1-\alpha)C \le 0$ (from $r'\le -C\,r^{\alpha}$ and
+$r^{\alpha}r^{-\alpha}=1$), so $v$ is non-increasing, whence $r^{1-\alpha} = v - (1-\alpha)C\,t$ must
+go negative in finite time, contradicting $r>0$.
+\end{proof}
+
+\emph{Why this is the exact dual.} Blow-up and collapse are one drive $u' = \pm C\,u^{\beta}$ read on
+opposite sides of the critical exponent $\beta=1$: super-linear ($\beta>1$) runs to $\infty$,
+sub-linear ($\beta<1$) to $0$, and at $\beta=1$ there is no finite-time singularity. The same
+substitution $w := u^{1-\beta}$ linearises both, giving the same antitone auxiliary and the same
+mean-value step. The novelty is formalisational, not mathematical: the extinction fact is classical
+and the proof is the mirror of the blow-up above. Deriving the drive $r'\le -C\,r^{\alpha}$ from a
+physical self-gravity law (Euler--Poisson, Larson--Penston self-similar collapse) is a named
+analytic input beyond \code{mathlib}, \emph{not} done here; the ``collapse / supernova / Big-Bang''
+readings are metaphor, not physics. A dual appendix model, not a millennium mask.
+
 \begin{theorem}[the dyadic model blows up]\label{thm:dyadic_blowup}
 \green{}\ The Katz--Pavlovi\'c model \code{DyadicSolution}, with equations
 $a_n' = \lambda^n a_{n-1}^2 - \lambda^{n+1} a_n a_{n+1} - d_n a_n$, is globally empty: blow-up is

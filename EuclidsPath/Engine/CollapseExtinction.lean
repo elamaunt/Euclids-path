@@ -165,4 +165,19 @@ theorem sublinear_collapse_example (C r0 : ℝ) (hC : 0 < C) (hr0 : 0 < r0) :
   · intro t
     simp [Real.rpow_zero]
 
+/--
+**`collapse_drive_forbids_rebound` — PROVEN (green wall: no self-rebound).**
+
+At the singular point `r = 0` the collapse drive `r'(t) ≤ -C·r(t)^α` (`C>0`, `α>0`) forces
+`r' ≤ 0`: since `0^α = 0`, the bound collapses to `r' ≤ 0`, so the state cannot re-expand under the
+drive alone. A "rebound" (`r' > 0`, a fresh `0 → 1` expansion out of the singularity) is therefore
+UNCAUSABLE FROM INSIDE; it requires an external supply. This is the collapse dual of
+`DyadicBlowup.bottomForcing_pos` / `no_internalisedOriginEvent`: the origin of a new expansion cannot
+be begotten from within the dynamics. Axiom-free (only the standard triple). -/
+theorem collapse_drive_forbids_rebound {C α : ℝ} (hC : 0 < C) (hα : 0 < α)
+    {r' : ℝ} (hdrive : r' ≤ -C * (0 : ℝ) ^ α) : r' ≤ 0 := by
+  have hz : (0 : ℝ) ^ α = 0 := Real.zero_rpow (ne_of_gt hα)
+  rw [hz, mul_zero] at hdrive
+  exact hdrive
+
 end EuclidsPath.CollapseExtinction

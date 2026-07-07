@@ -287,6 +287,46 @@ geometric fact is green; its internal grounding costs a perpetual engine.
 > The capstone `geometry_of_euclids_path` gathers the whole green half in a single theorem with no
 > user axioms (the expected triple: `propext`, `Classical.choice`, `Quot.sound`).
 
+## Generalization: total curvature is the Euler characteristic, and nowhere is flat
+
+We close the green half by generalizing its two pillars — the discrete Gauss–Bonnet (Theorem 49.5)
+and forced positivity (Theorems 49.6–49.7) — from a single concrete cone and from the whole graph to
+**any** forward-closed region.
+
+**Theorem 49.17** (`gaussBonnet_eq_euler`, 🟢). *On any forward-closed window `W` the total curvature
+equals the Euler characteristic: `Σκ = |V| − |E| = χ(W)`, where `|E|` is the number of edges of the
+induced subgraph (`inducedEdges`).*
+
+**Why this is true.** The combinatorial identity `Σκ = |W| − Σ outdeg` (`gaussBonnet_sum`) holds
+always; forward-closedness adds exactly what turns the right-hand side into a characteristic: every
+edge out of `W` lands back in `W`, so `Σ outdeg` counts precisely the internal edges
+(`forwardClosed_inducedEdges_eq`). And since the graph is acyclic (`no_closedGeodesic`) there are no
+antiparallel edges, so the directed count coincides with the undirected one — and `|V| − |E|` is a
+bona-fide Euler characteristic of the 1-complex. This remains an analogy under the normalisation
+`κ = 1 − outdeg` (honest boundary 1), not a theorem of differential geometry; but within it `χ` is
+computed exactly. The concrete cone of 49.5 is a special case: `eulerChar 5 4 cone3 = −5`
+(`eulerChar_cone3`).
+
+**Theorem 49.18** (`forwardClosed_has_pole`, 🟢). *Every nonempty forward-closed region has a pole: a
+terminal vertex with `κ = +1`.*
+
+**Why this is true.** From any vertex of the window a line reaches a terminal in finitely many steps
+(`every_line_ends`), and forward-closedness keeps the whole path inside `W`
+(`pathN_stays_in_forwardClosed`), so the terminal too lies in `W`; a terminal has no exits, hence
+`outdeg = 0` and `κ = +1` (`curvature_one_of_terminal`). This is the local form of Theorem 49.7:
+positive curvature is forced not "somewhere in the whole graph" but **in every bounded region**.
+
+**Theorem 49.19** (`forwardClosed_not_flat`, 🟢). *No nonempty forward-closed region is flat: `κ ≤ 0`
+everywhere within it is impossible.*
+
+**Why this is true.** The pole `κ = +1` of Theorem 49.18 contradicts `κ ≤ 0`. This is the local form
+of Theorem 49.6: not only the whole world cannot be flat, but neither can any of its
+downstream-closed pieces — each has a floor.
+
+Thus the pressure on flat space is pushed to the limit: existence has a bottom not only globally, but
+in every region closed along the arrow. Curvature is forced not as decoration and not as a single
+pole for the whole world, but locally, everywhere.
+
 ## Philosophical digression
 
 There is a peculiar bitterness and a peculiar beauty in the fact that the path named after Euclid

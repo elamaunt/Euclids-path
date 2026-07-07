@@ -198,6 +198,23 @@ one impossibility recognised behind both the shape of number and the shape of th
 > engine is the first law of thermodynamics, lifted from a statement about machines to a statement about
 > the very form of being: existence has a bottom, and it cannot be traversed backwards or to the end.
 
+> **Note (Einstein's cosmological constant).** Since causal sets are nearby, let us honestly close
+> the neighbouring temptation too — to derive from our curvature $\kappa$ that constant $\Lambda$
+> which Einstein inserted into the equations to make them work for the universe. It cannot be derived,
+> and not for poverty but by construction: $\kappa = 1 - \mathrm{outdeg}$ is a dimensionless integer, a
+> graph invariant, while $\Lambda$ is a dimensionful quantity ($\text{length}^{-2}$, a vacuum energy
+> density); we have no metric, no stress–energy tensor, no action for $\Lambda$ to be a coefficient
+> in, and its very value is an open problem of physics (a ~120-order discrepancy with field theory).
+> Moreover the "cannot" itself has a clear shape: in two-dimensional gravity the action splits in two
+> — a topological term $\int\!\sqrt{g}\,R = 4\pi\chi$ (exactly Gauss–Bonnet, our $\Sigma\kappa = \chi$
+> from chapter [49](49_Geometry.md)) and a "cosmological" term $-2\Lambda\cdot\text{Area}$. Curvature
+> is paired with topology, $\Lambda$ with volume; they are different terms, and curvature is precisely
+> the one that carries no $\Lambda$. Sorkin's causal sets heuristically predict $\Lambda \sim 1/\sqrt{V}$
+> of the right order — but that is the statistics of a Poisson sprinkling into a volume, which our
+> deterministic descent graph (with its infinite in-degree at zero) does not have; the estimate cannot
+> transfer. We found not $\Lambda$ but its absent address: curvature is topology, $\Lambda$ is volume.
+> This is interpretation, not a theorem.
+
 ## Thought experiment: mass, light and black holes in the space of Euclid's path
 
 > **This is a thought experiment, not a proof.** There is not a single theorem below. We take two things already

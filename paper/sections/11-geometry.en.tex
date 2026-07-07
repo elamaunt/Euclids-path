@@ -94,6 +94,26 @@ its spherical bottom. The normalisation \cref{eq:curvature} is a choice and the 
 Gauss--Bonnet is an analogy, not a theorem of differential geometry; but within it the characteristic
 is computed exactly, by the kernel, without assumption.
 
+The cone is one instance of a general law: on \emph{any} forward-closed window the same identity reads
+the total curvature as an Euler characteristic.
+
+\begin{theorem}[Gauss--Bonnet as Euler characteristic]\label{thm:gaussBonnet_eq_euler}
+\green{}\ On any forward-closed window $W$ the total combinatorial curvature equals the Euler
+characteristic of the induced descent subgraph:
+\begin{equation}\label{eq:gaussBonnetEuler}
+\textstyle\sum_{v\in W} \kappa(v) = |V| - |E| = \chi(W),
+\end{equation}
+where $|E|$ counts the edges of the subgraph induced by $W$ (\code{inducedEdges}).
+\leantag{gaussBonnet\_eq\_euler}
+\end{theorem}
+
+\emph{Proof idea.} The identity $\sum\kappa = |W| - \sum\operatorname{outdeg}$ (\code{gaussBonnet\_sum})
+holds always; forward-closedness makes the right-hand side a characteristic, since every out-edge lands
+back in $W$ and $\sum\operatorname{outdeg}$ then counts exactly the internal edges
+(\code{forwardClosed\_inducedEdges\_eq}). Acyclicity (\code{no\_closedGeodesic}) rules out antiparallel
+edges, so $|V| - |E|$ is a genuine Euler characteristic of the $1$-complex. The cone
+\cref{eq:gaussBonnet} is the special case $\chi(\mathrm{cone3}) = -5$ (\code{eulerChar\_cone3}).
+
 \subsection{A flat world is a perpetual engine}
 
 Could the space have been flat everywhere, $\kappa \equiv 0$? It could not, and the reason is the
@@ -120,6 +140,26 @@ obliged to exist, or the descent would have no floor and run forever. A closed g
 non-empty cycle --- would likewise be an engine witness (\code{closedGeodesic\_is\_engineWitness}),
 already killed by the acyclicity of \code{lexRank} (\code{no\_closedGeodesic}); flatness and
 closedness are two faces of one forbidden machine.
+
+This positivity, moreover, is not merely global but \emph{local} --- it holds in every bounded region.
+
+\begin{theorem}[every forward-closed region has a pole]\label{thm:forwardClosed_has_pole}
+\green{}\ Every nonempty forward-closed window contains a pole --- a terminal vertex with $\kappa = +1$.
+\leantag{forwardClosed\_has\_pole}
+\end{theorem}
+
+\emph{Proof idea.} From any vertex of the window a line reaches a terminal in finitely many steps
+(\cref{thm:every_line_ends}), and forward-closedness keeps the whole path inside $W$
+(\code{pathN\_stays\_in\_forwardClosed}), so the terminal lies in $W$; a terminal has no exits, hence
+$\operatorname{outdeg} = 0$ and $\kappa = +1$ (\code{curvature\_one\_of\_terminal}).
+
+\begin{theorem}[no forward-closed region is flat]\label{thm:forwardClosed_not_flat}
+\green{}\ No nonempty forward-closed window can have $\kappa \le 0$ everywhere --- the local form of
+\cref{thm:nonpositive_curvature_forces_engine}. \leantag{forwardClosed\_not\_flat}
+\end{theorem}
+
+So flatness is forbidden not only for the whole world but for every region closed along the arrow of
+time: each has a floor.
 
 \subsection{The irony of the postulates}
 
@@ -257,3 +297,16 @@ inside. The resulting shape is wound inward: a hyperbolic genealogy above, a foc
 below, with $\chi(\mathrm{cone3}) = -5$ pulling toward a funnel. This places Euclid's path beside
 causal set theory, where spacetime is a locally finite partially ordered set --- our well-ordered line
 with its strict arrow being exactly such an object.
+
+\begin{remark}[Einstein's cosmological constant]
+Given this proximity to causal sets, one is tempted to \emph{derive} Einstein's cosmological constant
+$\Lambda$ from the curvature $\kappa$. This cannot be done, and not for want of effort but by
+construction: $\kappa$ is a dimensionless graph invariant, whereas $\Lambda$ is dimensionful
+(length$^{-2}$, a vacuum energy density), and there is here no metric, no stress--energy tensor, no
+action for $\Lambda$ to be a coefficient in --- its very value being an open problem of physics. The
+``cannot'' has a precise shape: in two-dimensional gravity the action splits into a topological term
+$\int\!\sqrt{g}\,R = 4\pi\chi$ (exactly the Gauss--Bonnet of \cref{thm:gaussBonnet_eq_euler}) and a
+cosmological term $-2\Lambda\cdot\mathrm{Area}$ --- curvature paired with topology, $\Lambda$ with
+volume. Curvature is precisely the term that carries no $\Lambda$. This is a category boundary, stated
+to forestall the overclaim, not a derivation.
+\end{remark}

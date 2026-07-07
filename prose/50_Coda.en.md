@@ -568,6 +568,23 @@ breaks off at once. It is precisely their infinitude that is the open line held 
 > dive deeper toward the centre); colour by $\log p$ (turbo). Twin-centres (empty genealogy) sit on the rim
 > as golden points.
 
+![The fractal of Euclid's path — the ascending twin sphere](assets/9_ascending_twin_ornament.png)
+
+*The fractal of Euclid's path · **the ascending twin sphere**: the same old-peel descent, but the line of
+centres rises bottom to top and each step is a petal on its own side ($6k{+}1$ right, $6k{-}1$ left;
+colour — the Euclid prime of the step). The petals are clipped to a circle of radius $M/2$, so the
+ornament closes into a sphere; the golden double axis is the twin meridian, and the descent converges at
+the lower pole.*
+
+> **Generation algorithm (Figure 50.5).** Source: `tools/fractal/euclid_fractal.py::ascending_twin_ornament`
+> ($M = 3000$, $\mathrm{PMAX} = 97$, $\mathrm{DEPTH} = 14$). Centres $1, \dots, M$ rise along the axis
+> $x=0$ (height $= m$). Each old-peel step $6k\mp1 = p\cdot(6t\pm1)$ is a semicircular petal from $(0, t)$
+> to $(0, k)$ bulging to the side of the peeled composite ($6k{+}1 \to$ right, $6k{-}1 \to$ left); the
+> bulge $b = \mathrm{band}\cdot\tanh(1{.}8\,a/\mathrm{band})$ with $a = (k-t)/2$, $\mathrm{band} = 0{.}55M$,
+> is clipped to the circle of radius $R = M/2$: $b = \min(b,\, 0{.}985\sqrt{R^2 - (y_c - R)^2})$,
+> $y_c = (k+t)/2$ — so the ornament fills a sphere. Colour by $\log p$ (turbo). Twin-centres (empty
+> genealogy) are golden double sparks flanking the meridian axis.
+
 ## What remains — and is worth it too
 
 The synthesis closes here. The chapters that follow were added once the core was in place; they extend the reading rather

@@ -1,10 +1,10 @@
 \section{Figures and their generation algorithms}\label{sec:figures}
 
-The eight figures below are not decoration: each renders a real object of the
+The nine figures below are not decoration: each renders a real object of the
 development --- the centres $6m\pm1$, their prime ranks, the old-peel descent
 genealogy --- and each is reproducible from the public source. We collect them
 here, appendix-style, and give for every figure its generating function and the
-exact construction. Figures~\ref{fig:old-peel-tree}--\ref{fig:genealogy-ornament}
+exact construction. Figures~\ref{fig:old-peel-tree}--\ref{fig:ascending-ornament}
 come from \srcpath{tools/fractal/euclid\_fractal.py}; the two cosmological views,
 Figures~\ref{fig:observer-horizon}--\ref{fig:time-sphere}, from
 \srcpath{tools/fractal/euclid\_cosmology.py}. Both draw the same mathematical
@@ -141,6 +141,26 @@ $\tfrac12(P_a+P_b)\cdot(1-0.92\min(2\Delta\theta,1))$, where
 $\Delta\theta=|a-b|/M$ (long chords dive deeper toward the centre); colour by
 $\log p$ (turbo). Twin-centres (empty genealogy) sit on the rim as golden
 points.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.7\linewidth]{figures/9_ascending_twin_ornament.png}
+  \caption{The ascending twin sphere: the same old-peel genealogies, risen along
+  the axis and clipped to a circle, filling a sphere around the twin meridian.}
+  \label{fig:ascending-ornament}
+\end{figure}
+
+\emph{Generation algorithm (Figure~\ref{fig:ascending-ornament}).} Source:
+\srcpath{tools/fractal/euclid\_fractal.py::ascending\_twin\_ornament} ($M=3000$,
+$\mathrm{PMAX}=97$, $\mathrm{DEPTH}=14$). Centres $1,\dots,M$ rise along the axis
+$x=0$ (height $=m$). Each old-peel step $6k\mp1=p\,(6t\pm1)$ is a semicircular
+petal from $(0,t)$ to $(0,k)$ bulging to the side of the peeled composite
+($6k{+}1\to$ right, $6k{-}1\to$ left); the bulge
+$b=\mathrm{band}\cdot\tanh(1.8\,a/\mathrm{band})$ with $a=(k-t)/2$,
+$\mathrm{band}=0.55M$, is clipped to the circle of radius $R=M/2$,
+$b=\min(b,\,0.985\sqrt{R^2-(y_c-R)^2})$ with $y_c=(k+t)/2$, so the ornament fills
+a sphere; colour by $\log p$ (turbo). Twin-centres (empty genealogy) are golden
+double sparks flanking the meridian.
 
 The two remaining figures are conceptual: they place the \emph{real}
 genealogy in a cosmological picture. We stress the honest boundary, exactly as

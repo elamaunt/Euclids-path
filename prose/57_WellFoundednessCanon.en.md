@@ -75,6 +75,43 @@ well-founded carrier never returns; measure-preserving reversibility always does
 reversibility axis the quantum reading opened (ch. [50](50_Coda.md)): closed, unitary, reversible
 evolution *recurs*; our irreversible descent *cannot*.
 
+## The continuum realizes the engine — and that is exactly why it cannot be pressed
+
+One last sharpening closes the loop with `universal_engine_dividing_line`: the engine is *realized* on
+ℝ (`perpetualEngine_on_real`, the descent `(1/2)ⁿ → 0`) and *forbidden* on the well-founded ℕ
+(`no_perpetual_engine_on_nat`). It is tempting to invert an arithmetic ladder into `(0,1)` and use the
+continuum's infinite subdivision to force an arithmetic infinitude for free. It cannot be done, and here
+is exactly why.
+
+**Theorem 57.5** (`strictAnti_meets_nat_finitely`, 🟢). *A strictly decreasing real sequence bounded
+below takes natural-number values only finitely often.*
+
+**Why this is true.** Its integer values would be an infinite strictly-decreasing set of naturals inside
+a bounded interval — impossible (well-foundedness of ℕ). So the ℝ-engine descends forever through the
+*gaps* — the witness `(1/2)ⁿ` is an integer only at `n = 0` — and is structurally blind to the
+ℕ-skeleton. This is `no_perpetual_engine_on_nat` in analytic dress: the reason the realized ℝ-engine
+carries no arithmetic.
+
+**Theorem 57.6** (`twinCenters_accumulate_at_zero_iff_infinite`, 🟢). *Zero is a limit point of the
+inverted twin centres `{1/m}` (over twin centres `m`) if and only if there are infinitely many twin
+centres.*
+
+**Why this is true.** Infinitely many centres give arbitrarily large `m`, so `1/m` enters every
+neighbourhood of `0`; finitely many give a finite, closed set with no accumulation. Both directions are
+proved with **no number theory** — over the opaque predicate — so the theorem is axiom-clean and, above
+all, it **imports no proof**. The inversion `m ↦ 1/m` is a biconditional *relabelling*: "the twins crowd
+the first cause `0`" is *the same statement* as the twin conjecture, dressed in ℝ-topology, carrying
+exactly its content and no more.
+
+So an observer on a large twin centre, looking down the inverted ladder toward `0` — the grave of zero,
+the first cause — sees the twins crowd the origin *iff* they are infinite; and certifying that crowding
+would complete an infinite descent of the ℕ-skeleton, the forbidden engine. **The continuum gives the
+engine for free precisely because it carries no integer points.** Brun sharpens this against the
+temptation: the twin reciprocals *converge* (Brun's constant), so their crowding at `0` is the thinnest,
+most continuum-invisible signal there is — and convergence is agnostic about cardinality; the one
+reciprocal phenomenon that *does* force an infinitude, the divergence `∑1/p = ∞`, is exactly the one the
+twins fail. This is a strengthening of the observation, never a step toward the conjecture.
+
 > **Note (what is proved, what is deferred, what does not fit).**
 >
 > 1. The ω-worm (57.2) is the transfinite-rank *mechanism* of Goodstein and the hydra, not the full

@@ -53,6 +53,26 @@ recurs by Poincar\'e, almost every point of a set returning to it infinitely oft
 descent never returns, measure-preserving reversibility always does --- closing the reversibility axis
 of the quantum reading (\cref{sec:coda}).
 
+\begin{theorem}[the continuum realizes the engine, which is why it cannot be pressed]\label{thm:reciprocal_dividing_line}
+\green{}\ Two sharpenings of the dividing line ($\code{perpetualEngine\_on\_real}$ on $\mathbb{R}$ vs
+$\code{no\_perpetual\_engine\_on\_nat}$). (i) A strictly-decreasing real sequence bounded below takes
+natural values only finitely often (\code{strictAnti\_meets\_nat\_finitely}): the $\mathbb{R}$-engine
+descends through the gaps, blind to the $\mathbb{N}$-skeleton. (ii) $0$ is a limit point of the inverted
+twin centres $\{1/m\}$ iff there are infinitely many twin centres.
+\leantag{twinCenters\_accumulate\_at\_zero\_iff\_infinite}
+\end{theorem}
+
+\begin{remark}[a relabelling, not progress]
+Part (ii) is proved with no number theory, over the opaque predicate, so it is axiom-clean and imports
+no proof: the inversion $m\mapsto 1/m$ is a biconditional restatement --- ``the twins crowd the origin''
+\emph{is} the twin conjecture in $\mathbb{R}$-topology, with exactly its content and no more. This is why
+the $\mathbb{R}$-side of the dividing line cannot be pressed for an arithmetic infinitude: the realized
+engine carries no integers. (Brun sharpens it --- the twin reciprocals converge, so their accumulation
+at $0$ is the thinnest possible signal, and convergence is agnostic about cardinality; the divergence
+$\sum 1/p = \infty$ that would force an infinitude is exactly what twins lack.) A strengthening of the
+observation, never a step toward the conjecture.
+\end{remark}
+
 \begin{remark}[well-foundedness, not self-reference]
 This canon forces one honesty correction. Goodstein's theorem and the hydra are \emph{textbook}
 instances of the G\"odel incompleteness phenomenon --- true, yet unprovable in Peano arithmetic --- so

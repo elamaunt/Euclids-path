@@ -104,6 +104,8 @@ This is word for word the same figure that sits at the foundation of the whole p
 from inside, since self-ignition would be a perpetual engine (`no_internalisedOriginEvent`). The origin of the cascade is
 the first cause, and its `0` is the very singularity of the cosmological reading of the [coda](50_Coda.md).
 
+But this does not make Navier–Stokes *the* Big Bang — it is easy to overreach here, and we do not. The Big Bang of the cosmological reading is the first cause itself, the event `0 → 1`; Navier–Stokes is only **one of its three boundaries** (Theorem 33.4 (`step00FirstCause_iff_causalClosure`): `Step00FirstCause ↔ (twin node ∧ Riemann law ∧ NS gate)`, [chapter 33](33_CausalFirstCause.md)). The fluid blow-up is not the beginning of the world; its origin `n=0`, unable to start itself, only borrows a spark from that same single beginning. It is one of three faces of one singularity, not the singularity itself — and, as everywhere in the programme, the cosmology here is a translation of rigorous theorems, not a claim about physics.
+
 Hence — the single deliberate yellow layer of this appendix.
 
 **Theorem 52.8** (`dyadicBlowup_is_firstCauseManifestation`, 🟡 — ⚠️ AXIOM-TAINTED). *The same

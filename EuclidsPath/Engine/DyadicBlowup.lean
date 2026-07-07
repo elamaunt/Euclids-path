@@ -929,8 +929,41 @@ theorem dyadicOrigin_uncausable_from_inside {lam T : ℝ} (hlam : 1 < lam) {t : 
   simp only [kpRHS_forced, if_true] at huniq
   linarith [huniq, hpos]
 
+/-- **`ssOrigin_selfCaused_iff_noPump` — PROVEN (🟢, biconditional).**
+
+The exact green statement to which the informal question "is blow-up equivalent to the pump being the
+first cause?" honestly reduces. It is NOT about the blow-up (that is the drive `ssLead_drive`, which
+is axiom-free and needs no pump); it is about the ORIGIN. The self-similar source (mode `n=0`) obeys
+the PURE, unforced Katz–Pavlović coupling at `t` IF AND ONLY IF the external pump vanishes there:
+  `HasDerivAt (ssMode 0) (kpRHS 0) t  ↔  bottomForcing lam T t = 0`.
+
+Proof: the true dynamics is `ssMode(0)' = kpRHS_forced 0 = kpRHS 0 + bottomForcing`
+(`ssMode_dynamics_forced`, branch n=0); by uniqueness of the derivative the pure coupling holds iff
+the added forcing is zero. Since `bottomForcing_pos` gives `bottomForcing > 0` on `[0,T)`, the right
+side is FALSE, so the self-igniting origin is NEVER self-caused (this recovers
+`dyadicOrigin_uncausable_from_inside`); the blowing self-similar solution always needs an EXTERNAL
+pump. Green and axiom-free — a link to an external pump, saying NOTHING about that pump being the
+first cause (a separate decree, and one that cannot be derived from inside). -/
+theorem ssOrigin_selfCaused_iff_noPump {lam T : ℝ} (hlam : 1 < lam) {t : ℝ} (ht : t < T) :
+    HasDerivAt (fun s => ssMode lam T 0 s)
+        (kpRHS lam (fun _ => 0) (ssMode lam T) 0 t) t
+      ↔ bottomForcing lam T t = 0 := by
+  have hf := ssMode_dynamics_forced hlam 0 ht
+  constructor
+  · intro h
+    have huniq := h.unique hf
+    simp only [kpRHS_forced, if_true] at huniq
+    linarith [huniq]
+  · intro h0
+    have hval : kpRHS_forced lam T (fun _ => 0) (ssMode lam T) 0 t
+        = kpRHS lam (fun _ => 0) (ssMode lam T) 0 t := by
+      simp only [kpRHS_forced, if_true, h0, add_zero]
+    rw [hval] at hf
+    exact hf
+
 #print axioms bottomForcing_pos
 #print axioms dyadicOrigin_uncausable_from_inside
+#print axioms ssOrigin_selfCaused_iff_noPump
 
 /-! ### §4. SUMMARY AND AXIOM AUDIT
 

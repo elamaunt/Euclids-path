@@ -283,6 +283,18 @@ EC-высоты/L-ряды для BSD, калибровочная КТП для 
 
 ---
 
+## Хокинг: утечка не атакует горизонт (`hawking_leaky_horizon`)
+
+**Статус.** Зелёная лемма СДЕЛАНА (`Engine/HawkingLeakyHorizon.lean`, таинт 49 не тронут): на вопрос «атаковать первопричину/близнецов излучением Хокинга изнутри» машинный ответ — **нельзя, утечка сдвигает барьер на ноль**. Хокинговское восстановление интерьера — операция СНАРУЖИ (физически «никакая операция над излучением не влияет на падающего наблюдателя»); в словаре проекта это `ExternalUniverseCause` (`Step00CausalClosureBeyondHorizon`) — уже разрешённый путь, а не `InternalUniverseCause`. `hawking_leaky_horizon` — конъюнкция двух зелёных: (i) внешняя утечка → близнецы (`causalClosureBeyondHorizon_generates_twins`, условно, аксиомо-свободно), (ii) внутренний вывод по-прежнему невозможен (`no_internalisedHorizonBoundary`). Корроборирует `no_internalisedHorizonBoundary`, не атакует.
+
+**Прозрение (единственное новое):** проект склеивает под словом «горизонт» ДВА барьера — логический само-референсный (`InternalUniverseCause P ⟺ P∧¬P`, тавтология) и причинно-информационный (космологический, `FiniteKnowledgeBarrier`). Хокинг моделирует второй и уточняет: горизонт может течь, но только наружу (у проекта он сейчас «герметичный»). Занесено в прозу гл. 33 (RU+EN).
+
+**Честные оговорки:** это НЕ физика — в Lean нет метрики/температуры/энтропии, только эпистемическое смещение. Сохранение информации (Page curve, острова, реплика-червоточины) — модельный результат в 2D/AdS, основания оспариваются; декодирование предположительно экспоненциально трудно (Python's Lunch). Лемма ни на что из этого не опирается.
+
+**НЕ делать:** граница-декрет из Хокинга — гипотетичная физика в роли аксиомы (запрещено дисциплиной), плюс структурно избыточна (`step00FirstCause_iff_causalClosure`). Формализация сложности декодирования — только research-note (Python's Lunch ↔ «сертификат есть, оплатить нельзя» у P/NP), не декрет.
+
+---
+
 ## Ходж (`hodge`)
 
 **Статус.** Зелёное ядро (всё в EuclidsPath/Engine/HodgeFront.lean, аксиомо-чисто, стандартная тройка): модель HodgeLedger с якорем квантования height_zero_iff; HodgeProperty, UnpaidClass, unpaid_height_pos, hodgeProperty_iff_no_unpaidClass; двигатель UnpaidDescentChain убит БЕЗУСЛОВНО в любой модели (no_unpaidDescentChain / isEmpty_unpaidDescentChain — EPMI при A=1, уникальная точка среди всех ветвей); герой hodgeProperty_of_descentLaw (+ цепной маршрут hodgeProperty_of_descentLaw' через descentSeq/unpaidDescentChain_of_descentLaw), no_descentLaw_with_unpaid, no_unpaid_lawful_model; коллапс осуждённого моста descentLaw_iff_hodgeProperty (закон ⟺ цель — потому шестого декрет-поля НЕТ намеренно); кованые модели cookedUnpaid/cookedPaid/cookedUnpaidClass; трилемма hodgeLawUniversal_refuted (V1), hodgeLawExistential_green (V2), hodgeChainManifestationLaw_green (V2' — chain-форма вырождена, ибо цепей нет нигде), hodgeManifestationLaw_refutes_boundary + hodgeManifestationLaw_iff_no_resolution (V3); аудиты §7 hodge_bundling_audit, hodge_front_pair_iff_hodgeProperty, hodge_bundle_refuted_at_cooked, hodgeLaw_freeCollapse, hodgeLaw_cannot_separate. Красный вход один: DescentLaw (per-model закон спуска) для НАМЕРЕННОЙ, не построенной инстанциации настоящими рациональными (p,p)-классами — в mathlib v4.31 теории Ходжа нет вовсе (проверено по пину, шапка модуля). Жёлтая декрет-связь ровно одна: растяжка quarantine_inconsistent_if_hodgeManifestationLaw_decreed (CausalClosureAxiom §14, заражена ровно step00FirstCause); границы Ходжа в Step00FirstCause нет и быть не может (коллапс L9). Эпистемического модуля (InternalisedHodgeGround / hodgeCause_unknowable) НЕТ — grep пуст; это главная незанятая ось ветви.

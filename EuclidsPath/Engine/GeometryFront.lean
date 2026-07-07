@@ -537,6 +537,54 @@ theorem cone3_forwardClosed : ForwardClosed 5 4 cone3 := by decide
     the branching of funnels −3 and −4. -/
 theorem gaussBonnet_cone3 : cone3.sum (curvature 5 4) = -5 := by decide
 
+/-!
+  ### Discrete Gauss–Bonnet, general form: Σκ = χ = |V| − |E|
+
+  `gaussBonnet_cone3` computes the Euler characteristic for one concrete cone.
+  Here we lift that: on ANY forward-closed window the total combinatorial
+  curvature equals the Euler characteristic |V| − |E| of the induced descent
+  subgraph. Because the graph is acyclic (`no_closedGeodesic`) there are no
+  antiparallel edges, so the directed edge count equals the undirected one and
+  |V| − |E| is a bona-fide Euler characteristic of the 1-complex. This is still
+  an analogue at the normalisation κ = 1 − outdeg (honest boundary №1), not a
+  theorem of differential geometry — but within that choice it is exact.
+-/
+
+/-- Edge count of the subgraph induced by `W`: each `v ∈ W` contributes those of
+    its out-targets that land back in `W`. -/
+def inducedEdges (A M0 : ℕ) (W : Finset State) : ℕ :=
+  W.sum (fun v => (outTargets A M0 v ∩ W).card)
+
+/-- On a forward-closed window every out-edge lands in `W`, so the induced-edge
+    count equals the total out-degree. This is where forward-closedness is used. -/
+theorem forwardClosed_inducedEdges_eq {A M0 : ℕ} {W : Finset State}
+    (hclosed : ForwardClosed A M0 W) :
+    inducedEdges A M0 W = W.sum (fun v => outDeg A M0 v) := by
+  unfold inducedEdges outDeg
+  refine Finset.sum_congr rfl (fun v hv => ?_)
+  congr 1
+  apply Finset.Subset.antisymm Finset.inter_subset_left
+  intro x hx
+  exact Finset.mem_inter.mpr ⟨hx, hclosed v hv hx⟩
+
+/-- Euler characteristic of the window `W` read as a 1-complex: |V| − |E|. -/
+def eulerChar (A M0 : ℕ) (W : Finset State) : ℤ :=
+  (W.card : ℤ) - (inducedEdges A M0 W : ℤ)
+
+/-- **Discrete Gauss–Bonnet = Euler characteristic (general form)**: on ANY
+    forward-closed window the total combinatorial curvature equals the Euler
+    characteristic |V| − |E| of the induced descent subgraph. Generalises
+    `gaussBonnet_cone3` from the single cone to every forward-closed region. -/
+theorem gaussBonnet_eq_euler {A M0 : ℕ} {W : Finset State}
+    (hclosed : ForwardClosed A M0 W) :
+    W.sum (curvature A M0) = eulerChar A M0 W := by
+  rw [gaussBonnet_sum, eulerChar, forwardClosed_inducedEdges_eq hclosed, Nat.cast_sum]
+
+/-- Consistency: the general Euler characteristic reproduces `gaussBonnet_cone3`. -/
+theorem eulerChar_cone3 : eulerChar 5 4 cone3 = -5 := by
+  rw [← gaussBonnet_eq_euler cone3_forwardClosed]
+  exact gaussBonnet_cone3
+
 /-#############################################################################
   §3. Lines (🟢): every line is finite, none are infinite, a web above the horizon
 #############################################################################-/
@@ -580,6 +628,60 @@ theorem every_line_ends {A M0 : ℕ} (v : State) :
         have hdrop : lexRank w < lexRank v := timeArrow_step hstep
         obtain ⟨k, Y, hpath, hY⟩ := IH (lexRank w) hdrop w rfl
         exact ⟨k + 1, Y, ⟨w, hstep, hpath⟩, hY⟩
+
+/-!
+  ### Local flat-space pressure: every forward-closed region has a pole
+
+  `space_positively_curved_somewhere` says the WHOLE graph is positively curved
+  somewhere. Here we sharpen it to a LOCAL statement: every nonempty forward-closed
+  region contains a pole (κ = +1), so no such region can be flat (κ ≤ 0 everywhere)
+  — the local form of `nonpositive_curvature_forces_engine`.
+-/
+
+/-- A terminal vertex has curvature +1: no exits, so outdeg 0, so κ = 1 − 0 = 1. -/
+theorem curvature_one_of_terminal {A M0 : ℕ} {v : State}
+    (h : Terminal A M0 v) : curvature A M0 v = 1 := by
+  have h0 : outDeg A M0 v = 0 := by
+    by_contra hne
+    rw [outDeg] at hne
+    obtain ⟨w, hw⟩ := Finset.card_pos.mp (Nat.pos_of_ne_zero hne)
+    exact h w (mem_outTargets.mp hw)
+  simp [curvature, h0]
+
+/-- A path starting inside a forward-closed window stays inside it. -/
+theorem pathN_stays_in_forwardClosed {A M0 : ℕ} {W : Finset State}
+    (hclosed : ForwardClosed A M0 W) {k : ℕ} {v Y : State}
+    (hv : v ∈ W) (hpath : PathN (RealStep A M0) k v Y) : Y ∈ W := by
+  induction k generalizing v with
+  | zero =>
+      have hvy : v = Y := hpath
+      subst hvy
+      exact hv
+  | succ n ih =>
+      obtain ⟨Z, hstep, hrest⟩ := hpath
+      exact ih (hclosed v hv (mem_outTargets.mpr hstep)) hrest
+
+/-- **Every forward-closed region has a pole**: a nonempty forward-closed window
+    contains a terminal vertex, whose curvature is +1. The LOCAL form of
+    `space_positively_curved_somewhere` — not "somewhere in the whole graph" but
+    "in every bounded region there is a floor". -/
+theorem forwardClosed_has_pole {A M0 : ℕ} {W : Finset State}
+    (hne : W.Nonempty) (hclosed : ForwardClosed A M0 W) :
+    ∃ v ∈ W, Terminal A M0 v ∧ curvature A M0 v = 1 := by
+  obtain ⟨start, hstart⟩ := hne
+  obtain ⟨k, Y, hpath, hY⟩ := every_line_ends (A := A) (M0 := M0) start
+  have hYW : Y ∈ W := pathN_stays_in_forwardClosed hclosed hstart hpath
+  exact ⟨Y, hYW, hY, curvature_one_of_terminal hY⟩
+
+/-- **No forward-closed region is flat**: a nonempty forward-closed window cannot
+    have κ ≤ 0 everywhere — the LOCAL form of `nonpositive_curvature_forces_engine`. -/
+theorem forwardClosed_not_flat {A M0 : ℕ} {W : Finset State}
+    (hne : W.Nonempty) (hclosed : ForwardClosed A M0 W) :
+    ¬ (∀ v ∈ W, curvature A M0 v ≤ 0) := by
+  intro hflat
+  obtain ⟨v, hvW, _, hκ⟩ := forwardClosed_has_pole hne hclosed
+  have hle := hflat v hvW
+  omega
 
 /-- **Infinite line**: a sequence of states connected by real
     steps at EVERY tick — a "line extended indefinitely". -/
@@ -908,3 +1010,9 @@ end EuclidsPath.GeometryFront
 #print axioms EuclidsPath.GeometryFront.geometry_of_euclids_path
 #print axioms EuclidsPath.GeometryFront.twin_vertices_beyond_every_horizon
 #print axioms EuclidsPath.GeometryFront.lines_meet_but_unknowable_from_inside
+
+-- Generalised Gauss–Bonnet and the local flat-space pressure — all 🟢
+-- (expected standard triple `propext`, `Classical.choice`, `Quot.sound`).
+#print axioms EuclidsPath.GeometryFront.gaussBonnet_eq_euler
+#print axioms EuclidsPath.GeometryFront.forwardClosed_has_pole
+#print axioms EuclidsPath.GeometryFront.forwardClosed_not_flat

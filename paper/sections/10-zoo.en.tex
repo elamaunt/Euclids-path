@@ -146,6 +146,37 @@ fields \code{cousinBoundary}, \code{sexyBoundary} are machine-admissible, and bo
 taken --- here there is no chain to saw at all, and a serial decree would erase the uniqueness
 in which the quarantine's meaning resides.
 
+\subsection{The plus/minus axis is orthogonal to proper time}
+
+The two sides of a centre --- the would-be members of a pair $6m\pm1$ --- are exchanged by the side
+flip \code{mirrorSide}, an involution (\code{mirrorSide\_involutive}). Proper time does not see it.
+
+\begin{theorem}[the plus/minus flip is orthogonal to proper time]\label{thm:lexRank_side_invariant}
+\green{}\ \code{lexRank} is invariant under the side flip: the two members of a pair $6m\pm1$ sit at
+the same proper time, differing only along the orthogonal $\pm$ axis --- the exact complement of the
+arrow of time (\cref{thm:timeArrow_step}). \leantag{lexRank\_side\_invariant}
+\end{theorem}
+
+\emph{Proof idea.} \code{lexRank} is $3c+p$, where the centre $c$ (\code{centerOf}) and the phase $p$
+(\code{phase}) both discard the \code{Side} of a defect; the flip changes nothing the clock reads
+(by \code{rfl}).
+
+\begin{theorem}[the pair is a reflection about $6m$]\label{thm:signedSideValue_reflection_sum}
+\green{}\ In $\mathbb{Z}$, $(6z+1)+(6z-1)=12z$ exactly (\code{signedSideValue\_reflection\_sum}); the
+$\mathbb{N}$ form holds for $m\ge 1$ (\code{sideValue\_reflection\_sum}), the guard avoiding the
+truncation $6\cdot 0-1=0$ (the grave of zero). \leantag{signedSideValue\_reflection\_sum}
+\end{theorem}
+
+\begin{remark}[charge conjugation $C$, not time reversal $T$]
+The $\pm$ side flip is a fixed-time involution ($C^2=1$), a discrete analogue of charge conjugation
+$C$ --- \emph{not} a time reversal $T$. Reading the pair as opposite \emph{time} directions would be a
+\code{lexRank} increase, i.e.\ the forbidden perpetual engine (the arrow of time,
+\cref{thm:timeArrow_step}); the orthogonality above is exactly why the $C$ reading is the consistent
+one --- an internal symmetry orthogonal to the temporal axis in the sense of Coleman--Mandula. This is
+a translation, not a claim: the Lean has no Hilbert space, field or charge, only a two-element
+\code{Side}.
+\end{remark}
+
 \subsection{Sophie Germain: doubling and a classical divisibility}
 
 A Sophie Germain pair is $(p,\,2p+1)$, both prime. In grid coordinates it is one-sided, and

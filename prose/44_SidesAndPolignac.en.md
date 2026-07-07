@@ -326,6 +326,34 @@ The sexy conjunct is a mirror (threshold 17). There is no decree-conjunct: the f
 > hypothesis in conjuncts; the quarantine is not imported by the module, the repository taint does
 > not change.
 
+## The ± axis is orthogonal to time
+
+The spine of honesty has one more structural fact, and it is green. The two sides of a centre — the
+would-be members of a pair `6m ± 1` — are exchanged by the side flip `mirrorSide`, an involution
+(`mirrorSide_involutive`). And proper time does not see this flip at all.
+
+**Theorem 44.10** (`lexRank_side_invariant`, 🟢). *`lexRank` is invariant under the side flip:
+`lexRank (defect n q (mirrorSide s)) = lexRank (defect n q s)`. Both members of a pair sit at the
+SAME proper time; they differ only along the orthogonal ± axis.*
+
+**Why this is true.** `lexRank = 3·centerOf + phase`, and both `centerOf` and `phase` discard the
+`Side` argument of a defect — so the flip changes nothing the clock reads. This is the exact
+complement of the arrow of time (Theorem 49.1, `timeArrow_step`): descent runs
+along the time axis, the ± flip along an axis orthogonal to it.
+
+**Theorem 44.11** (`signedSideValue_reflection_sum`, 🟢). *The pair is a reflection about `6m`: in ℤ,
+`signedSideValue plus z + signedSideValue minus z = 12z` exactly; the ℕ form
+`sideValue plus n + sideValue minus n = 12n` holds for `n ≥ 1` (`sideValue_reflection_sum`).*
+
+**Why this is true.** `(6z + 1) + (6z − 1) = 12z` by `ring` in ℤ. In ℕ the identity is guarded by
+`n ≥ 1`: at `n = 0` the truncation `6·0 − 1 = 0` (the grave of zero) breaks it, so the ℤ form is the
+honest unconditional one.
+
+So the ± axis is a reflection about the centre value, and time is orthogonal to it: fixing one member
+places its partner at the same instant, not at a reversed one. A physical reading — the pair as a
+charge-conjugation-like involution, distinct from a *forbidden* time reversal — is fenced in the
+Coda, [50](50_Coda.md): it is a translation, not a theorem.
+
 ## Place in the greater arc
 
 Polignac has joined Mersenne and Riemann in one rank: in all three a refutation exhibits a perpetual

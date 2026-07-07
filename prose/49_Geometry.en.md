@@ -270,6 +270,10 @@ all the content lives in the green fact.
 The summary fits into one phrase: **the lines meet, but this cannot be known from inside.** The
 geometric fact is green; its internal grounding costs a perpetual engine.
 
+The twin pair this coda names carries one further green symmetry: the ± flip exchanging its two members
+is orthogonal to proper time (`lexRank_side_invariant`, [44](44_SidesAndPolignac.md)) — a fixed-time
+involution, not a reversal of time. Fixing one twin places its partner at the same instant.
+
 > **Note (honest boundaries, all six).** Let us gather what must not be inflated.
 >
 > 1. `κ` here is combinatorial, not Riemannian, and "curvature" is legitimate only in the sense of

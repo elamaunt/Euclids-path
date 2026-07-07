@@ -215,6 +215,20 @@ one impossibility recognised behind both the shape of number and the shape of th
 > transfer. We found not $\Lambda$ but its absent address: curvature is topology, $\Lambda$ is volume.
 > This is interpretation, not a theorem.
 
+> **Note (the twin pair as charge conjugation $C$).** A pair $6m\pm1$ is like a particle–antiparticle
+> pair: create one member and the other is already fixed. It is tempting to say they "run in opposite
+> directions in time" (an antiparticle in the Feynman–Stückelberg picture) — but that is **time
+> reversal $T$**, and in this world $T$ is forbidden: it is a `lexRank` increase, hence a return,
+> hence a perpetual engine (`engine_never_returns`, above). The honest reading, and the only one
+> compatible with the core, is different: the ± flip is **charge conjugation $C$**, an involution
+> $C^2=1$ (`mirrorSide_involutive`), internal and at **fixed** time. And the "orthogonality" one feels
+> here is literal: `lexRank` is invariant under the flip (`lexRank_side_invariant`, ch.
+> [44](44_SidesAndPolignac.md)) — both members sit at the same proper time. In physics language this
+> is the Coleman–Mandula theorem: an internal symmetry enters the algebra as a direct product with
+> Poincaré, without mixing with spacetime — that is, orthogonally to it. Hard boundary: the Lean has
+> no Hilbert space, no field, no charge; `Side` is a two-element label and $C$ a $\mathbb{Z}/2$ on it.
+> This is a translation, not a theorem.
+
 ## Thought experiment: mass, light and black holes in the space of Euclid's path
 
 > **This is a thought experiment, not a proof.** There is not a single theorem below. We take two things already

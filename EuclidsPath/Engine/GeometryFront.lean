@@ -1016,3 +1016,9 @@ end EuclidsPath.GeometryFront
 #print axioms EuclidsPath.GeometryFront.gaussBonnet_eq_euler
 #print axioms EuclidsPath.GeometryFront.forwardClosed_has_pole
 #print axioms EuclidsPath.GeometryFront.forwardClosed_not_flat
+
+-- The ± side flip is orthogonal to proper time — all 🟢 (standard triple).
+#print axioms EuclidsPath.ConcreteStep00Graph.mirrorSide_involutive
+#print axioms EuclidsPath.ConcreteStep00Graph.lexRank_side_invariant
+#print axioms EuclidsPath.ConcreteStep00Graph.signedSideValue_reflection_sum
+#print axioms EuclidsPath.ConcreteStep00Graph.sideValue_reflection_sum

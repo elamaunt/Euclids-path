@@ -8652,6 +8652,47 @@ theorem signedSideValue_neg_mirror (z : ℤ) (s : Side) :
     signedSideValue s (-z) = - signedSideValue (mirrorSide s) z := by
   cases s <;> simp [signedSideValue, mirrorSide] <;> ring
 
+/-!
+  ### The ± side flip is orthogonal to proper time
+
+  `mirrorSide` swaps the two sides of a centre (`6n-1 ↔ 6n+1`). It is an
+  involution, and — crucially — `lexRank` is INVARIANT under it: since `centerOf`
+  and `phase` both discard the `Side` argument of a defect, the two members of a
+  twin pair sit at the SAME proper time, differing only along the orthogonal ±
+  axis. This is the exact complement of `lexRank_strict_decrease_on_RealStep`
+  (which governs the descent/time axis). NB: this is the fixed-centre flip; it is
+  distinct from the coordinate-negating (`z ↦ -z`) mirror used by the firewall.
+-/
+
+/-- The side flip is an involution. -/
+theorem mirrorSide_involutive (s : Side) : mirrorSide (mirrorSide s) = s := by
+  cases s <;> rfl
+
+/-- **Proper time is orthogonal to the ± axis**: `lexRank` is invariant under the
+    side flip, because `centerOf` and `phase` ignore the `Side` of a defect. The
+    complement of `lexRank_strict_decrease_on_RealStep`. -/
+theorem lexRank_side_invariant (n q : ℕ) (s : Side) :
+    lexRank (State.defect n q (mirrorSide s)) = lexRank (State.defect n q s) := by
+  rfl
+
+/-- The two members of a pair at centre `n` share the same proper time. -/
+theorem lexRank_defect_plus_eq_minus (n q : ℕ) :
+    lexRank (State.defect n q Side.plus) = lexRank (State.defect n q Side.minus) := by
+  rfl
+
+/-- **Reflection about `6z`** (exact, in ℤ): the two sides sum to `12z`, so the
+    pair is symmetric about the centre value `6z`. -/
+theorem signedSideValue_reflection_sum (z : ℤ) :
+    signedSideValue Side.plus z + signedSideValue Side.minus z = 12 * z := by
+  simp only [signedSideValue]; ring
+
+/-- ℕ-form of the reflection identity, guarded by `1 ≤ n`. At `n = 0` the ℕ
+    truncation `6*0 - 1 = 0` (the grave of zero) breaks it (`1 + 0 ≠ 0`); the ℤ
+    form `signedSideValue_reflection_sum` is unconditional. -/
+theorem sideValue_reflection_sum {n : ℕ} (hn : 1 ≤ n) :
+    sideValue Side.plus n + sideValue Side.minus n = 12 * n := by
+  simp only [sideValue]; omega
+
 /-#############################################################################
   §2. Signed Step00 states and unsigned projection
 #############################################################################-/

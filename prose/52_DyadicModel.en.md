@@ -100,6 +100,11 @@ the unforced equation of shell `n=0`: its true dynamics carries a strictly posit
 the unforced right-hand side, uniqueness of the derivative would yield `bottomForcing = 0` —
 a contradiction. External pumping is obligatory.
 
+> **Sharper — a biconditional.** The origin obeys the unforced coupling *if and only if* the pump
+> vanishes (`ssOrigin_selfCaused_iff_noPump`, 🟢); and since `bottomForcing > 0`, self-ignition is
+> impossible. This is about the origin and an external pump in general — not the blow-up (which is
+> green and needs no pump), nor the first cause (a separate decree, underivable from inside).
+
 This is word for word the same figure that sits at the foundation of the whole programme: the event `0 → 1`, which cannot be caused
 from inside, since self-ignition would be a perpetual engine (`no_internalisedOriginEvent`). The origin of the cascade is
 the first cause, and its `0` is the very singularity of the cosmological reading of the [coda](50_Coda.md).

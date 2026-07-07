@@ -165,6 +165,25 @@ def _peel_step(k, isp, euclid_primes):
             return t, p
     return None
 
+def _peel_step_side(k, isp, euclid_primes):
+    """As _peel_step, but also returns the side eps of the peeled composite 6k+eps
+       (so an ornament can place each step on the side it came from)."""
+    for eps in (-1, 1):
+        val = 6*k + eps
+        if val in isp:
+            continue
+        p = next((q for q in euclid_primes if val % q == 0), None)
+        if p is None:
+            continue
+        co = val // p
+        d = 1 if co % 6 == 1 else (-1 if co % 6 == 5 else 0)
+        if d == 0:
+            continue
+        t = (co - d) // 6
+        if 1 <= t < k:
+            return t, p, eps
+    return None
+
 def twin_line_genealogy(M=2400, PMAX=97):
     """The line of centers m. Above the line: 6m+1, below: 6m-1 (prime = spark).
        Twin centers = golden double sparks flanking the line symmetrically.
@@ -298,6 +317,72 @@ def genealogy_ornament(M=4200, PMAX=97, DEPTH=10):
     plt.close(fig)
     print(f"6_genealogy_ornament.png  (steps={n_steps}, twins={int(twin.sum())})")
 
+# ---------------------------------------------------------------------------
+# (9) ASCENDING TWIN ORNAMENT — vertical sibling of the genealogy ornament:
+#     genealogies rise the axis bottom->top; each peel step is a petal on the
+#     side of the composite it came from (6k+1 -> right, 6k-1 -> left).
+# ---------------------------------------------------------------------------
+def ascending_twin_ornament(M=3000, PMAX=97, DEPTH=14):
+    """Centers 1..M ascend the axis x=0 (height = m). Every old-peel step
+       6k∓1 = p·(6t±1) is a semicircular petal on the SIDE of the composite that
+       was peeled (6k+1 -> right, 6k-1 -> left), colored by its Euclid prime p; a
+       smooth (tanh) saturation keeps long descents inside a band, weaving a
+       vesica of nested arcs around the ascending spine. Twin centers (empty
+       genealogy: both sides prime) are golden double sparks flanking the axis."""
+    P = primes_upto(6*M + 2); isp = set(int(x) for x in P)
+    euclid_primes = [int(p) for p in P if 5 <= p <= PMAX]
+    band = 0.24 * M; bulge = 1.6
+    def petal(k, t, side, npts=30):
+        yc, a = 0.5 * (k + t), 0.5 * (k - t)                 # a > 0 since t < k
+        b = side * band * math.tanh(bulge * a / band)        # nested circular petals
+        th = np.linspace(-math.pi / 2, math.pi / 2, npts)    # bottom (t) -> top (k)
+        return np.column_stack([b * np.cos(th), yc + a * np.sin(th)])
+    segs, cols, n_steps = [], [], 0
+    for k0 in range(2, M + 1):
+        k = k0
+        for _ in range(DEPTH):
+            st = _peel_step_side(k, isp, euclid_primes)
+            if st is None: break
+            t_, p, eps = st
+            pts = petal(k, t_, 1.0 if eps == 1 else -1.0)
+            segs.extend(np.stack([pts[:-1], pts[1:]], axis=1))
+            cols.extend([math.log(p)] * (len(pts) - 1))
+            n_steps += 1; k = t_
+    m = np.arange(1, M + 1)
+    twin = np.array([((6 * k - 1) in isp) and ((6 * k + 1) in isp) for k in m])
+    tw = m[twin]
+
+    fig, ax = plt.subplots(figsize=(7.4, 15.8), facecolor="#03040a")
+    ax.set_facecolor("#03040a")
+    ax.plot([0, 0], [1, M], color="#2a3350", lw=0.7, alpha=0.6, zorder=1)
+    lc = LineCollection(segs, array=np.array(cols), cmap="turbo",
+                        linewidths=0.42, alpha=0.30, zorder=2)
+    ax.add_collection(lc)
+    off = 0.010 * M
+    ax.hlines(tw, -off, off, colors="#ffd24a", lw=0.4, alpha=0.35, zorder=4)
+    ax.scatter(np.full(tw.shape, off), tw, s=6.5, c="#ffd24a", alpha=0.95,
+               edgecolors="none", zorder=5, label="twin center (both sides prime)")
+    ax.scatter(np.full(tw.shape, -off), tw, s=6.5, c="#ffd24a", alpha=0.95,
+               edgecolors="none", zorder=5)
+    ax.set_xlim(-band * 1.06, band * 1.06); ax.set_ylim(0, M + 1); ax.set_aspect("equal")
+    ax.set_xticks([]); ax.set_yticks([])
+    [s.set_visible(False) for s in ax.spines.values()]
+    cb = fig.colorbar(lc, ax=ax, pad=0.01, fraction=0.045)
+    cb.set_label("Euclid prime p of each genealogy step  6m∓1 = p·(6t±1)", color="#aab")
+    cb.ax.yaxis.set_tick_params(color="#778")
+    plt.setp(plt.getp(cb.ax.axes, "yticklabels"), color="#aab")
+    ticks = [q for q in (5, 7, 13, 23, 43, 79) if q <= PMAX]
+    cb.set_ticks([math.log(q) for q in ticks]); cb.set_ticklabels([str(q) for q in ticks])
+    ax.legend(loc="lower right", framealpha=0.25, facecolor="#0a0c14",
+              edgecolor="#334", labelcolor="#cda", markerscale=2.0)
+    ax.set_title("Euclid fractal · ascending twin ornament\n"
+                 "genealogies rise the axis; each peel petal on its own side (6m±1), colored by the Euclid prime",
+                 color="#cfe", fontsize=12.5)
+    fig.savefig(os.path.join(OUT, "9_ascending_twin_ornament.png"), dpi=160,
+                bbox_inches="tight", facecolor="#03040a")
+    plt.close(fig)
+    print(f"9_ascending_twin_ornament.png  (steps={n_steps}, twins={int(twin.sum())})")
+
 if __name__ == "__main__":
     twin_spiral()
     rank_field()
@@ -305,4 +390,5 @@ if __name__ == "__main__":
     descent_landscape()
     twin_line_genealogy()
     genealogy_ornament()
+    ascending_twin_ornament()
     print("done ->", OUT)

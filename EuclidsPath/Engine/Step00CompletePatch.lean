@@ -409,15 +409,22 @@ theorem not_theLastStep00Obligation :
     ((strictLastStep00Obligation_iff_lastStep00Obligation).mpr H)
 
 /-!
-### The old first-cause node becomes inconsistent if imported.
+### Post-mortem.
+
+Historically (before the repair) `step00FirstCause` asserted the finite-key twin
+boundary `TheStrictLastStep00Obligation` as its `causalBoundary` field.  Since that
+obligation is FALSE (`not_theStrictLastStep00Obligation`, above), the axiom was
+inconsistent: one had `not_theStrictLastStep00Obligation step00CausalClosure : False`.
+
+This has been repaired.  The twin boundary is now `TimePumpStep00Obligation`
+(`Engine/TimePumpBoundary`), which is sound — provably equivalent to the twin
+conjecture (`Step00PatchAudit`) — and does NOT carry the finite-key resolution
+structure the adic construction refutes.  Hence `step00CausalClosure :
+TimePumpStep00Obligation`, and the old inconsistency derivation no longer typechecks.
+
+This file survives as the refutation record: `not_theStrictLastStep00Obligation` is the
+green proof that the ORIGINAL boundary was false — the reason the repair was necessary.
 -/
-
-theorem step00FirstCause_inconsistent : False := by
-  exact quarantine_inconsistent_if_node_refuted
-    not_theStrictLastStep00Obligation
-
-theorem step00FirstCause_inconsistent_direct : False := by
-  exact not_theStrictLastStep00Obligation step00CausalClosure
 
 /-!
 ## Part III: unit pump layer — “+1 fuel per step”

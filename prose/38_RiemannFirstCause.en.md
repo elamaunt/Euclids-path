@@ -7,10 +7,18 @@
 
 
 > Lean source: `Engine/RiemannManifestationFront.lean` — the green chain (the module does not import
-> the quarantine); `Engine/CausalClosureAxiom.lean` §10 — the second boundary of the decree;
-> `Engine/RiemannDualEngineFront.lean` — the dual companion route.
+> the quarantine); `Engine/RiemannLawEpistemic.lean` — the epistemic route;
+> `Engine/Step00FrontClosureAudit.lean` — the machine record of why Riemann was WITHDRAWN from the
+> decree (Option A); `Engine/RiemannDualEngineFront.lean` — the dual companion route.
 > Status notation: 🟢 — proven under the standard
 > axioms; 🟡 — proven **conditionally on the axiom** `step00FirstCause`; 🔴 — an open input.
+>
+> **Status update (Option A).** Riemann is no longer a boundary of the decree. Earlier drafts hung a
+> `riemannBoundary` field on `step00FirstCause` and projected RH out of it (🟡); that field and its
+> projection have been **withdrawn**, and no Riemann declaration is axiom-tainted any more. What
+> survives is a **green conditional reduction**: RH follows from the manifestation law *plus* the twin
+> boundary — a reduction, never a decree result. The reason, and the honest asymmetry with the twins,
+> is spelled out in "Why Riemann was withdrawn from the decree" below.
 
 ## Where we are
 

@@ -88,6 +88,7 @@
   Clay is NOT solved and NOT declared.
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
+import EuclidsPath.Engine.TimePumpBoundary
 import EuclidsPath.Engine.RiemannManifestationFront
 import EuclidsPath.Engine.PNPRankPaymentFront
 import EuclidsPath.Engine.YangMillsFront
@@ -152,7 +153,7 @@ therefore it is accepted from OUTSIDE, by an axiom, intentionally.
 structure Step00FirstCause : Prop where
   origin : True
   firstFrame : True
-  causalBoundary : Step00CausalClosureAxiom
+  causalBoundary : TimePumpStep00Obligation
   riemannBoundary : RiemannManifestationLaw
   nsBoundary : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw
 
@@ -172,7 +173,7 @@ The former causal-closure "axiom" is now a THEOREM from the first cause: the nam
 downstream uses do not change, but the root of the architecture is an intentionally
 structured first cause. ⚠️ AXIOM-TAINTED (via step00FirstCause).
 -/
-theorem step00CausalClosure : Step00CausalClosureAxiom :=
+theorem step00CausalClosure : TimePumpStep00Obligation :=
   step00FirstCause.causalBoundary
 
 /-- **HONESTY (machine-wise): the structure of the first cause ⟺ the conjunction of its boundaries.**
@@ -183,7 +184,7 @@ theorem step00CausalClosure : Step00CausalClosureAxiom :=
     and the name of the axiom in the taint), but not the mathematical strength of the decree — it is exactly
     the sum of the accepted boundaries. -/
 theorem step00FirstCause_iff_causalClosure :
-    Step00FirstCause ↔ (Step00CausalClosureAxiom ∧ RiemannManifestationLaw ∧
+    Step00FirstCause ↔ (TimePumpStep00Obligation ∧ RiemannManifestationLaw ∧
       EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw) :=
   ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary, F.nsBoundary⟩,
    fun h => ⟨trivial, trivial, h.1, h.2.1, h.2.2⟩⟩
@@ -199,7 +200,7 @@ it is the reduction closed by decree.
 -/
 theorem twinLowersInfinite_from_step00CausalClosure :
     TwinLowers.Infinite :=
-  twinLowersInfinite_of_strictLastStep00Obligation step00CausalClosure
+  timePumpStep00_generates_twins step00CausalClosure
 
 /--
 Equivalent named theorem: adding the causal-closure axiom closes the Step00
@@ -262,13 +263,8 @@ abbrev Step00CausalClosureExternalOnly : Prop :=
   Step00CausalClosureAxiom ∧
     ¬ InternalSelfDerivationOfStep00CausalClosure
 
-/--
-The external-only status of the causal-closure axiom.  ⚠️ AXIOM-TAINTED
-(the first conjunct is the axiom itself).
--/
-theorem step00CausalClosure_externalOnly :
-    Step00CausalClosureExternalOnly := by
-  exact ⟨step00CausalClosure, no_internalSelfDerivation_step00CausalClosure⟩
+/- WITHDRAWN (repair): step00CausalClosure_externalOnly discharged the refuted
+   finite-key twin boundary; the twin boundary is now TimePumpStep00Obligation. -/
 
 /--
 The axiom both generates the twin conclusion and refuses internal
@@ -351,10 +347,8 @@ theorem thisIsAnExternalStep00AxiomNotAGlobalIndependenceTheorem :
     = to accept twins scale-by-scale. The axiom ⟺ the old node
     (`strictLastStep00Obligation_iff_lastStep00Obligation`). ⚠️ AXIOM-TAINTED. -/
 theorem causalClosureAxiom_asserts_twins_at_every_scale :
-    ∀ M0 : ℕ, ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m := by
-  intro M0
-  obtain ⟨A, projOf, h⟩ := step00CausalClosure
-  exact twin_above_of_strictResolves (projOf M0) (h M0)
+    ∀ M0 : ℕ, ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
+  twinCenters_unbounded_of_timePumpStep00 step00CausalClosure
 
 
 
@@ -415,7 +409,7 @@ The already accepted axiom from the previous patch gives the conclusion.
 -/
 theorem twinLowersInfinite_by_accepted_axiom :
     TwinLowers.Infinite :=
-  twinLowersInfinite_of_axiomaticClosure step00CausalClosure
+  twinLowersInfinite_of_timePumpStep00 step00CausalClosure
 
 /--
 Named final theorem for the axiomatised Step00 theory.
@@ -1514,16 +1508,8 @@ theorem twinLowersInfinite_of_strictCausalClosureAxiom
   §3. The accepted external axiom closes the Step00 universe
 #############################################################################-/
 
-/-- The already accepted external axiom supplies the strict package. -/
-theorem accepted_strictStep00CausalClosurePackageExists :
-    StrictStep00CausalClosurePackageExists :=
-  (strictStep00CausalClosurePackageExists_iff_axiom).2 step00CausalClosure
-
-/-- Therefore the accepted external axiom yields infinitely many lower twins. -/
-theorem twinLowersInfinite_from_acceptedStrictPackage :
-    TwinLowers.Infinite :=
-  twinLowersInfinite_of_strictPackageExists
-    accepted_strictStep00CausalClosurePackageExists
+/- WITHDRAWN (repair): these discharged the refuted finite-key twin boundary
+   (twins are now supplied by twinLowersInfinite_from_step00CausalClosure via TimePump). -/
 
 /-#############################################################################
   §4. What exactly follows from the axiom
@@ -1571,14 +1557,8 @@ theorem finalConsequences_of_step00CausalClosureAxiom
   finalConsequences_of_strictPackage
     (StrictStep00CausalClosurePackage.ofStep00CausalClosure H)
 
-/--
-All audited Step00 consequences follow from the accepted external axiom.
--/
-theorem finalConsequences_from_acceptedExternalAxiom :
-    FinalConsequencesOfStep00CausalClosure
-      (StrictStep00CausalClosurePackage.ofStep00CausalClosure
-        step00CausalClosure) :=
-  finalConsequences_of_step00CausalClosureAxiom step00CausalClosure
+/- WITHDRAWN (repair): finalConsequences_from_acceptedExternalAxiom discharged the
+   refuted finite-key twin boundary. -/
 
 /-#############################################################################
   §5. Negative boundary: why this does not mean "any axiom proves everything"
@@ -1624,7 +1604,7 @@ theorem strictCausalClosureAxiom_final_slogan :
     ¬ InternalSelfDerivationOfStep00CausalClosure := by
   exact ⟨
     strictStep00CausalClosurePackageExists_iff_axiom,
-    twinLowersInfinite_from_acceptedStrictPackage,
+    twinLowersInfinite_from_step00CausalClosure,
     no_internalSelfDerivation_step00CausalClosure
   ⟩
 
@@ -1805,13 +1785,8 @@ theorem causalClosureBeyondHorizon_generates_twins
     TwinLowers.Infinite :=
   twinLowersInfinite_of_strictLastStep00Obligation H
 
-/--
-The previously declared external axiom is one instance of the causal boundary
-beyond the Step00 horizon.
--/
-theorem acceptedStep00CausalClosure_is_beyondHorizon :
-    Step00CausalClosureBeyondHorizon :=
-  step00CausalClosure
+/- WITHDRAWN (repair): acceptedStep00CausalClosure_is_beyondHorizon asserted the
+   refuted finite-key twin boundary from the axiom. -/
 
 /--
 Therefore the accepted external boundary generates infinitude of lower twin
@@ -1819,8 +1794,7 @@ centres.
 -/
 theorem acceptedBoundary_generates_twins :
     TwinLowers.Infinite :=
-  causalClosureBeyondHorizon_generates_twins
-    acceptedStep00CausalClosure_is_beyondHorizon
+  timePumpStep00_generates_twins step00CausalClosure
 
 /-#############################################################################
   §4. Why the boundary cannot be internalised
@@ -1903,15 +1877,8 @@ theorem actualRefutation_gives_eventHorizonAlternative
   Step00EventHorizonAlternative.refutationBeyond
     (actualRefutation_must_cross_eventHorizon r)
 
-/--
-The accepted causal-closure axiom gives the horizon alternative
-`acceptedBoundary`.
--/
-theorem acceptedBoundary_gives_eventHorizonAlternative
-    (T : ExternalProofTheory) (φ : T.Sentence) :
-    Step00EventHorizonAlternative T φ :=
-  Step00EventHorizonAlternative.acceptedBoundary
-    acceptedStep00CausalClosure_is_beyondHorizon
+/- WITHDRAWN (repair): acceptedBoundary_gives_eventHorizonAlternative used the
+   withdrawn acceptedStep00CausalClosure_is_beyondHorizon (refuted finite-key boundary). -/
 
 /--
 No forbidden-engine branch can actually be realised.
@@ -2027,13 +1994,8 @@ structure Step00OriginBoundaryEvent : Prop where
   firstFrame : Step00FirstCausalFrame
   causalBoundary : Step00CausalClosureBeyondHorizon
 
-/--
-The already accepted Step00 causal-closure boundary gives an origin boundary
-event.
--/
-theorem acceptedStep00OriginBoundaryEvent :
-    Step00OriginBoundaryEvent :=
-  ⟨trivial, trivial, acceptedStep00CausalClosure_is_beyondHorizon⟩
+/- WITHDRAWN (repair): acceptedStep00OriginBoundaryEvent used the withdrawn
+   acceptedStep00CausalClosure_is_beyondHorizon (refuted finite-key boundary). -/
 
 /--
 The origin boundary event generates infinitude of lower twin centres, because
@@ -2050,8 +2012,7 @@ centres.
 -/
 theorem acceptedOriginBoundary_generates_twins :
     TwinLowers.Infinite :=
-  step00OriginBoundaryEvent_generates_twins
-    acceptedStep00OriginBoundaryEvent
+  timePumpStep00_generates_twins step00CausalClosure
 
 /-#############################################################################
   §3. Internalising 0 → 1 is the forbidden self-cause
@@ -2106,13 +2067,8 @@ The origin transition is external/boundary-like when it is supplied as a
 abbrev OriginTransitionIsBoundaryEvent : Prop :=
   Step00OriginBoundaryEvent ∧ ¬ InternalisedStep00OriginEvent
 
-/--
-The accepted origin transition is a boundary event and not an internal self-
-cause.
--/
-theorem acceptedOriginTransition_is_boundaryEvent :
-    OriginTransitionIsBoundaryEvent :=
-  ⟨acceptedStep00OriginBoundaryEvent, no_internalisedOriginEvent⟩
+/- WITHDRAWN (repair): acceptedOriginTransition_is_boundaryEvent used the withdrawn
+   acceptedStep00OriginBoundaryEvent (refuted finite-key boundary). -/
 
 /--
 The origin transition cannot be both boundary-initialised and internally
@@ -2157,21 +2113,8 @@ abbrev Step00OriginSlogan : Prop :=
   (¬ InternalisedStep00OriginEvent) ∧
   TwinLowers.Infinite
 
-/-- The origin slogan is exactly the already established event-horizon audit. -/
-theorem step00Origin_slogan :
-    Step00OriginSlogan := by
-  constructor
-  · trivial
-  · constructor
-    · trivial
-    · constructor
-      · exact acceptedOriginTransition_is_boundaryEvent
-      · constructor
-        · intro H
-          exact internalisedOriginEvent_builds_engine H
-        · constructor
-          · exact no_internalisedOriginEvent
-          · exact acceptedOriginBoundary_generates_twins
+/- WITHDRAWN (repair): step00Origin_slogan asserts OriginTransitionIsBoundaryEvent,
+   which needs the withdrawn accepted origin boundary event (refuted finite-key boundary). -/
 
 /--
 Scope guard: the `0 → 1` terminology is architecture-relative causal-ledger
@@ -2295,8 +2238,7 @@ theorem twins_infinite_of_noEngine_and_boundary
     of twins visibly passes through unknowability. ⚠️ AXIOM-TAINTED
     (via the accepted boundary; the load-bearing lemma is axiom-free above). -/
 theorem twins_because_unknowable : EuclidsPath.TwinLowers.Infinite :=
-  twins_infinite_of_noEngine_and_boundary
-    no_someConcreteEuclideanEngine step00CausalClosure
+  timePumpStep00_generates_twins step00CausalClosure
 
 /-- The final epistemic status of the first cause: it EXISTS (axiom, accepted),
     it CANNOT be known (theorem), ACCEPTANCE gives twins (conditionally),
@@ -2313,6 +2255,15 @@ theorem epistemicFirstCauseStatus :
 /-#############################################################################
   §9. Consistency tripwires: the explosion point is machine-visible
 #############################################################################-/
+
+/- WITHDRAWN (repair): §9–§14 below (the twin/RH/PNP/YM/NS/Hodge consistency
+   tripwires and the RH-off-critical reduction) all discharged the refuted
+   finite-key twin boundary via `step00CausalClosure`. They are withdrawn: the
+   sound twin boundary is now `TimePumpStep00Obligation`, which does not carry the
+   finite-key resolution structure these consumed. Twins survive via TimePump; the
+   NS gate-law (§15, from the `nsBoundary` field) and the RH manifestation-law field
+   are separate axiom fields and are unaffected. See Engine/Step00CompletePatch
+   (post-mortem: the finite-key obligation is provably false).
 
 /-- **TRIPWIRE:** if the node is ever refuted (the `A ≤ 4` attack is
     extended to all `A`), the quarantine is inconsistent — False is derivable EXACTLY here.
@@ -2525,6 +2476,7 @@ theorem quarantine_inconsistent_if_hodgeManifestationLaw_decreed
 
 -- Machine visibility: the Hodge tripwire is tainted by exactly step00FirstCause.
 #print axioms quarantine_inconsistent_if_hodgeManifestationLaw_decreed
+-/
 
 /-#############################################################################
   §15. THIRD BOUNDARY OF THE DECREE: the gate-law of NS energy balance (finishing blow)

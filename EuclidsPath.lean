@@ -40,6 +40,7 @@ import EuclidsPath.Engine.PaymentLedger     -- channel/tax/shifted-primorial/Y_A
 -- IV. Final node: the single open lemma
 import EuclidsPath.Engine.SNOL              -- rank descent → rank-1 → shifted-neighbour (SNOL)
 import EuclidsPath.Engine.OldPeel           -- SNOL unfolds into old-peel ⇒ EPMI contradiction
+import EuclidsPath.Engine.GenealogyForest   -- 🟢 genealogical forest: descent sinks are EXACTLY twins; every center descends to a twin below (honest: downward only)
 import EuclidsPath.Engine.NOPSL             -- NOPSL: no old-peel sink ⇒ twin sink (closure)
 import EuclidsPath.Engine.Regeneration      -- Old-Peel Regeneration: dichotomy Ω_A (cases 1–3)
 import EuclidsPath.Engine.Residuals         -- Step00 residuals: start (primorial), sink⇒twin, height

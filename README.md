@@ -61,8 +61,8 @@ At the foundation lies a single physical prohibition: **the impossibility of a p
 (`no_infinite_descent`, the bare Lean core). Seven great questions turn out to be its shadows on
 different objects. The structural half of each is proved **green** (where the engine is forbidden,
 there is no deviation); and the last step — the tie to a real object — is either accepted by the
-**single first-cause axiom** `step00FirstCause` (three yellow decree boundaries), or remains a green
-conditional theorem, or stays an open 🔴 input. A through-line discussion is in the
+**single first-cause axiom** `step00FirstCause` (ONE yellow decree boundary — the twins), or remains a
+green conditional theorem, or stays an open 🔴 input. A through-line discussion is in the
 [prologue](prose/00_Overview.en.md).
 
 **Universal form** (`Engine/UniversalEngine`): the engine is defined over ANY relation
@@ -81,12 +81,18 @@ flowchart TD
     ROOT["⚙️ no_infinite_descent · EPMI<br/>Euclid’s perpetual engine is impossible · bare Lean core 🟢"]
 
     ROOT --> MT["★ MAIN THEOREM · higherEnergyIncompatibility_main 🟢 · core with NO axiom<br/>knowing the first cause from within = a perpetual engine (forbidden)<br/>⟹ the first cause is unknowable; from inside, twins can be neither proved nor refuted"]
-    MT ==>|"PRESSES ON THE AXIOM: since it is impossible from within, the first cause can only be ACCEPTED from outside, never derived"| FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · three LIVING boundaries"}}
+    MT ==>|"PRESSES ON THE AXIOM: since it is impossible from within, the first cause can only be ACCEPTED from outside, never derived"| FC{{"step00FirstCause · the SINGLE axiom<br/>first cause 0 → 1 · ONE living boundary (twins, seriality form)"}}
 
-    FC --> TP["Twins 🟡 · taken<br/>NOT Collatz-attackable: irreducible node,<br/>law ⟺ conjecture · incompatibility barrier<br/>(refute⟹engine needs the decreed stability)"]
-    FC --> RH["Riemann 🟡 · taken<br/>NOT attackable: RiemannManifestationLaw ⟺ RH<br/>refuting = an off-critical zero (not over ℕ)"]
-    FC --> NS["Navier–Stokes 🟡 · taken<br/>NOT attackable: witness ≥ Galdi Liouville problem<br/>no ⟺-mirror, no decidable predicate"]
+    FC --> TP["Twins 🟡 · taken — the ONLY decree boundary<br/>SerialTwinBoundaryObligation ⟺ twin conjecture (two-sided, non-vacuous)<br/>irreducible node · incompatibility barrier"]
     MT -.->|"load-bearing face 🟡: incompatibility + boundary ⟹ twins are infinite"| TP
+
+    FC -.->|"the decree carries ONLY twins — here is why"| WHY
+    WHY["WHY RH and NS ARE NOT DECREED (Option A)<br/>Only the twin boundary is provably ⟺ its conjecture with BOTH sides non-vacuous,<br/>so postulating it = postulating exactly twins. RH and NS lack this, so they were<br/>WITHDRAWN from the axiom and kept as honest green CONDITIONAL fronts — not results.<br/>Machine-checked in Engine/Step00FrontClosureAudit"]
+    WHY -.-> RH
+    WHY -.-> NS
+
+    ROOT --> RH["Riemann 🟢/🔴 · DETACHED front (was decreed, withdrawn)<br/>manifestationLaw ⟺ RH only UNDER the twin boundary, and its reverse is vacuous;<br/>the unconditional bridge = RH renamed (circular). A conditional reduction, not a result"]
+    ROOT --> NS["Navier–Stokes 🟢/🔴 · DETACHED front (was decreed, withdrawn)<br/>gate law ⟹ surrogate only (forward); reverse UNKNOWN (no ℝ³ divergence theorem);<br/>manifestation form ⟹ ¬twin boundary. Real gap: GlobalVorticityControl (BKM)"]
 
     ROOT --> PNP["P/NP 🟢<br/>rank-fast traversal ≠ full certificate payment"]
     ROOT --> YM["Yang–Mills 🟢<br/>spectral quantisation ⟺ mass gap"]
@@ -110,9 +116,13 @@ flowchart TD
     classDef deferred fill:#2a2a2a,stroke:#9e9e9e,color:#e0e0e0,stroke-dasharray: 6 4;
     classDef fallen fill:#3d0b0b,stroke:#e57373,color:#ffebee;
     classDef rootnode fill:#1a1a1a,stroke:#888,color:#ffffff;
+    classDef detached fill:#12333a,stroke:#4dd0e1,color:#e0f7fa,stroke-dasharray: 5 3;
+    classDef note fill:#2b2b3a,stroke:#b39ddb,color:#ede7f6;
     class ROOT,PNP,YM,HC,BSD,ZOO,GEO,WF green;
     class MT apex;
-    class TP,RH,NS yellow;
+    class TP yellow;
+    class RH,NS detached;
+    class WHY note;
     class MP deferred;
     class CL fallen;
     class FC rootnode;
@@ -122,6 +132,9 @@ Colours: 🟢 — machine-proved under standard axioms (the structural part / a 
 theorem); 🟡 — AXIOM-TAINTED, conditional on the first cause (the object accepted by decree at an
 honestly disclosed price); 🔴 — an open input (the real object: the QFT spectrum, the primes'
 Hamiltonian, a Leray solution, the `(p,p)`-classes, a Turing machine — absent from the formalisation).
+🔵 dashed — a **DETACHED front**: it once sat on the decree but was WITHDRAWN (Option A) because it
+lacks a two-sided boundary ⟺ conjecture; it survives as an honest green/red conditional reduction,
+never as a decree result (Riemann, Navier–Stokes; the reason is the `WHY` block in the graph).
 ⏸️ — the problem is examined but its boundary is NOT taken: deferred by heuristic sign (Mersenne, Fermat)
 or a zoo front with no field (§16–17). ✗ — the decree was taken and FELL (Collatz, refuted at n = 27).
 Collatz went through the full cycle of the discipline: its rope law was the **fourth boundary** of
@@ -167,9 +180,11 @@ the exact self-similar solution (`ssLead_drive`) and for a whole class through a
 (`frontDrive_of_invariant`): a monolithic named hypothesis is narrowed to a smaller,
 coordinate-close invariant; the only isolated input left open is front persistence for infinitely many
 modes (the moving KP front). And the source of the cascade (the pump `n=0`, uncausable from within — 🟢
-`dyadicOrigin_uncausable_from_inside`) is **decreed by the first cause** (🟡 `DyadicFirstCause`, via
-`nsBoundary`): the fluid blow-up joins the masks through its own `0`. There is no new MATHEMATICS (the
-Tao barrier); the novelty is in the formalisation. NS is not solved.
+`dyadicOrigin_uncausable_from_inside`) was once **decreed via the first cause** (`DyadicFirstCause`, via
+`nsBoundary`) — but that decree projection was WITHDRAWN with NS (Option A); only the green wall
+`dyadicOrigin_uncausable_from_inside` survives, so the dyadic source is now an open/conditional front,
+not a decree result. There is no new MATHEMATICS (the Tao barrier); the novelty is in the formalisation.
+NS is not solved.
 
 ## Structure
 
@@ -229,10 +244,10 @@ Tao barrier); the novelty is in the formalisation. NS is not solved.
 | 35 | P/NP: node and classical bridge | [35](prose/35_ClassicalPNP.en.md) | `Engine/LocalPNPNode`, `ClassicalPNPBridge`, `CanonicalSelfReduction`, `ClassicalFrontierRoutes`, `RankClosureFront` | 🟢 assembly; 🔴 frame+reconstruction |
 | 36 | Navier–Stokes | [36](prose/36_NavierStokes.en.md) | `Engine/NavierStokes` | 🟢 skeleton; 🔴 EnergyBalanceLaw |
 | 37 | Riemann fronts | [37](prose/37_RiemannFronts.en.md) | `Engine/RiemannTrivialZeros` (input №1 CLOSED), `RiemannRankProjection(+Audit)`, `RiemannTwoTransportFront`, `RiemannArithmeticTwoTransport`, `RiemannSpectralAnchorAudit`, `RiemannLayerBoxFront`, `RiemannTerminalRankFront` | 🟢 arithmetic; 🔴 two inputs; ⚠️ vacuity №2 |
-| 38 | **Riemann via the first cause** | [38](prose/38_RiemannFirstCause.en.md) | `Engine/RiemannManifestationFront` (green chain), `Engine/CausalClosureAxiom` §10, `Engine/RiemannDualEngineFront` | 🟢 chain; 🟡 RH from decree; 🔴 dual packages |
-| 39 | **P/NP: rank certificate payment** | [39](prose/39_PNPRankPayment.en.md) | `Engine/PNPRankPaymentFront` (green separation A ≤ 4 + trilemma), `Engine/PNPFirstCause` (epistemic complement), `Engine/CausalClosureAxiom` §11 | 🟢 separation in the rank model; 🟢 the decision is unknowable from inside a finite-fuel machine (`pnpCause_unknowable`, ch. 56); 🟡 P/NP-language decree; ⚠️ vacuity №4 |
+| 38 | **Riemann via the first cause** | [38](prose/38_RiemannFirstCause.en.md) | `Engine/RiemannManifestationFront` (green chain), `Engine/RiemannLawEpistemic`, `Engine/RiemannDualEngineFront` | 🟢 chain (RH ⟺ manifestation law only UNDER the twin boundary, reverse vacuous); 🔵 DETACHED — RH decree withdrawn (Option A); 🔴 dual packages |
+| 39 | **P/NP: rank certificate payment** | [39](prose/39_PNPRankPayment.en.md) | `Engine/PNPRankPaymentFront` (green separation A ≤ 4 + trilemma), `Engine/PNPFirstCause` (epistemic complement) | 🟢 separation in the rank model; 🟢 the decision is unknowable from inside a finite-fuel machine (`pnpCause_unknowable`, ch. 56); 🔵 P/NP decree projection withdrawn (Option A); ⚠️ vacuity №4 |
 | 40 | **Yang–Mills: mass gap via the engine** | [40](prose/40_YangMills.en.md) | `Engine/YangMillsFront` (green chain + trilemma), `Engine/CausalClosureAxiom` §12 | 🟢 quantisation⟹gap; 🟡 decree language; 🔴 spectral data-anchor |
-| 41 | **NS: smoothness via cascade + integral** | [41](prose/41_NSSmoothness.en.md) | `Engine/NavierStokesFront` (identity + trilemma + COMPLETION: two forgings and the gate law), `Engine/CausalClosureAxiom` §13+§15 | 🟢 identity+cascade+forgings; 🟡 THE THIRD BOUNDARY (gate law) — smoothness of gate-solutions from decree |
+| 41 | **NS: smoothness via cascade + integral** | [41](prose/41_NSSmoothness.en.md) | `Engine/NavierStokesFront` (identity + trilemma + COMPLETION: two forgings and the gate law), `Engine/Step00FrontClosureAudit` | 🟢 identity+cascade+forgings; 🔵 DETACHED — NS decree withdrawn (Option A); the gate law ⟹ surrogate only (forward, reverse unknown), manifestation form refutes the twin boundary |
 | 42 | **Hodge: quantised charges and payment** | [42](prose/42_Hodge.en.md) | `Engine/HodgeFront` (hero + collapse + trilemma), `Engine/CausalClosureAxiom` §14 | 🟢 descent⟹payment, the engine dead unconditionally; 🟡 tripwire; 🔴 DescentLaw |
 | 43 | **Mersenne: refutation = engine** | [43](prose/43_MersenneFirstCause.en.md) | `Engine/MersenneManifestationFront` (Π-witness, law, essence M3), `Engine/CausalClosureAxiom` §16 (comment) | 🟢 chain + "the 4c+1 chain does not peel"; a field is ADMISSIBLE but DEFERRED (heuristic sign against) |
 | 41′ | *(postscript)* **NS: integral assembled on ℝ³ (box)** | [41](prose/41_NSSmoothness.en.md) | `Engine/NavierStokesR3Assembly` | 🟢 R1 derivative under the integral + R2 divergence (faces vanish) + **three integrations by parts DERIVED** (pressure/convection/viscosity) ⟹ box-class energy balance unconditional ⟹ cascade smoothness WITHOUT the decree; 🔴 only the box→ℝ³ limit and TimeDomination remain |
@@ -245,20 +260,22 @@ Tao barrier); the novelty is in the formalisation. NS is not solved.
 | 50 | **★ Coda: Euclid's path and the structure of spacetime** | [50](prose/50_Coda.en.md) | — (synthesis) | a philosophical/physical summary: one prohibition — seven masks + zoo + geometry; a possible TOE |
 | — | **Appendices & later fronts** | | | *the synthesis is closed; what follows extends the core* |
 | 51 | Numerical data | [51](prose/51_NumericalEvidence.en.md) | `tools/RESULTS_*` | — |
-| 52 | Discrete fluid model | [52](prose/52_DyadicModel.en.md) | `Engine/CascadeBudget`, `Engine/DyadicBlowup`, `Engine/DyadicFirstCause` | 🟢 budget+Katz–Pavlović blow-up, the drive DERIVED from the relations; 🟡 the cascade's source = the first cause |
+| 52 | Discrete fluid model | [52](prose/52_DyadicModel.en.md) | `Engine/CascadeBudget`, `Engine/DyadicBlowup`, `Engine/DyadicFirstCause` | 🟢 budget+Katz–Pavlović blow-up, the drive DERIVED from the relations; 🔵 dyadic decree projection withdrawn (Option A) — the source is uncausable from within (green wall `dyadicOrigin_uncausable_from_inside`) |
 | 53 | **Birch–Swinnerton-Dyer (the eighth mask)** | [53](prose/53_BirchSwinnertonDyer.en.md) | `Engine/BSDFront` | 🟢 descent-without-engine on a REAL curve (Mordell–Weil) + a parity bridge to Liouville; 🔴 analytic rank = ord L (outside mathlib); NO boundary (trilemma); NOT a solution of BSD |
 | 54 | **Neighbours beyond the horizon (5 shadows)** | [54](prose/54_OpenNeighbors.en.md) | `Engine/{Chowla,Abc,Beal,Lehmer,Landau}Front` | 🟢 REAL mathlib anchors (Mason–Stothers, Polynomial.flt_catalan, Northcott+Kronecker, Dirichlet, Liouville); 🔴 the conjectures themselves (Chowla/abc/Beal/Lehmer/Landau) are open; no decrees; NOT solutions |
 | 55 | **Collatz: an engine on bounded fuel** | [55](prose/55_Collatz.en.md) | `Engine/CollatzEngine`, `Engine/CollatzFuel`, `Engine/CollatzTugOfWar` | 🟢 engine/rope laws + window budget ⟹ descent + "refutation = perpetual engine"; 🟢 the universal rope law is REFUTED (`not_ropeCountingLaw_27`) |
 | 56 | **The Collatz first cause: the decree that fell** | [56](prose/56_CollatzFirstCause.en.md) | `Engine/CollatzFirstCause`, `Engine/CausalClosureAxiom` §18 | 🟢 post-mortem: the boundary taken and REMOVED (the tripwire fired, the law is false); 🟢 the "verification, not derivation" epistemics survived; the conjecture 🔴 open |
 
 🟢 = machine-checked, without `sorry` (standard axioms). 🟡 = AXIOM-TAINTED (conditional on
-`step00FirstCause`; exactly **47** declarations — 42 in quarantine + the corollary
-`higherEnergyIncompatibility_twins` + **2 geometry declarations** of ch. 49
-(`twin_vertices_beyond_every_horizon`, `lines_meet_but_unknowable_from_inside`, via the accepted twin
-boundary) + **2 dyadic-source declarations** (`DyadicFirstCause.dyadicOrigin_from_firstCause`,
-`dyadicBlowup_is_firstCauseManifestation`, via the `nsBoundary` boundary) — all through accepted
-boundaries. There are NO Collatz declarations in the taint any more: the fourth boundary was removed
-after its law was refuted. 🔴 = an open node / input.
+`step00FirstCause`; exactly **16** declarations, ALL asserting twins through the single accepted twin
+boundary — **13 in the quarantine** (`CausalClosureAxiom`: the decree-consequence family
+`…_generates_twins` / `causalClosureAxiom_asserts_twins_at_every_scale` / `twinLowersInfinite_…`,
+`step00CausalClosure`, plus the status slogans) + the corollary
+`FiniteKnowledgeBarrier.higherEnergyIncompatibility_twins` + **2 geometry declarations** of ch. 49
+(`GeometryFront.twin_vertices_beyond_every_horizon`, `lines_meet_but_unknowable_from_inside`, via the
+same twin boundary). There are NO Riemann, NO Navier–Stokes/dyadic and NO Collatz declarations in the
+taint any more: RH and NS were WITHDRAWN from the decree (Option A) and the Collatz boundary fell — the
+axiom now decrees **only twins**. 🔴 = an open node / input.
 
 ## Status — honestly
 
@@ -284,28 +301,62 @@ single twin hypothesis), so the node lives only at `A ≥ 5`; its satisfiability
 **The single axiom — the first cause** ([chapter 33](prose/33_CausalFirstCause.en.md)). The node cannot
 be closed from within: its self-grounding would build a perpetual engine, and that is a proved
 impossibility. So we accept it **from outside**, by the single axiom `step00FirstCause` — a deliberate
-"0 → 1" event with three causal boundaries: the twins (`causalBoundary`), Riemann (`riemannBoundary`)
-and Navier–Stokes (`nsBoundary`). A fourth boundary — the Collatz rope law — was taken and REMOVED: the
-law was machine-refuted (`ropeLaw_universal_refuted`), the tripwire fired (chapters 55–56). The axiom is
-locked in a quarantine module; the verifier marks every declaration that depends on it (exactly 47:
-43 in quarantine + 2 geometry of ch. 49 through the accepted twin boundary + 2 dyadic-source through
-`nsBoundary`) — there are no leaks into the green line. The honesty is machine-level: the strength of
-the decree is exactly the sum of the accepted boundaries, and it is no weaker than its conclusions (to
-accept the axiom = to accept the twins, and the same for RH). Knowing the cause from within is
-impossible as a theorem (`cause_unknowable`); hence the main theorem above.
+"0 → 1" event carrying exactly ONE causal boundary: the twins, in the transparent seriality form
+`causalBoundary : SerialTwinBoundaryObligation`. Earlier drafts also hung Riemann and Navier–Stokes on
+the decree; both were WITHDRAWN (Option A), because only the twin boundary is provably ⟺ its conjecture
+with both directions non-vacuous (see "Riemann and Navier–Stokes — detached, honestly" below). A
+would-be fourth boundary — the Collatz rope law — was taken and REMOVED: the law was machine-refuted
+(`ropeLaw_universal_refuted`), the tripwire fired (chapters 55–56). The axiom is locked in a quarantine
+module; the verifier marks every declaration that depends on it (exactly 16, ALL asserting twins: 13 in
+the quarantine + the corollary `higherEnergyIncompatibility_twins` + 2 geometry of ch. 49, all through
+the single twin boundary) — there are no leaks into the green line. The honesty is machine-level: the
+strength of the decree is exactly the twin conjecture, no weaker and no stronger — to accept the axiom =
+to accept exactly the twins (`serialTwinBoundary_iff_unboundedTwinCenters`). Knowing the cause from
+within is impossible as a theorem (`cause_unknowable`); hence the main theorem above.
+
+**Riemann and Navier–Stokes — detached, honestly.** The twin closure works because the seriality
+boundary is provably equivalent to the twin conjecture with BOTH directions carrying content (forward =
+rank exhaustion, reverse = build a singleton engine): `serialTwinBoundary_iff_unboundedTwinCenters`. So
+"postulate the boundary" = "postulate exactly twins" — honest and meaningful. Neither Riemann nor
+Navier–Stokes admits this, so both were withdrawn from the decree and kept as green conditional fronts.
+The asymmetry is machine-recorded in `Engine/Step00FrontClosureAudit`:
+
+- **Riemann.** The only equivalence to RH is `manifestationLaw_iff_RH_of_boundary` — and it holds ONLY
+  under the twin-strength hypothesis `TheStrictLastStep00Obligation`, with a vacuous reverse (under RH
+  there are no off-critical zeros, so the quantifier is empty). The unconditional bridges
+  (`offCriticalBridge_iff_RH` and kin) are RH literally renamed — the engine dressing is a no-op, and the
+  repo flags them circular. RH honesty is therefore parasitic on twin honesty; there is no independent
+  two-sided boundary ⟺ RH.
+- **Navier–Stokes.** There is no equivalence at all. The gate law implies only the surrogate
+  `NoSingularCascade` (forward; `noSingularCascade_of_nsSolutionBalanceLaw`), and the reverse is
+  UNKNOWN — blocked by the absence of an ℝ³ divergence theorem in mathlib — so the decree "may overpay".
+  Worse, the NS manifestation form is INCOMPATIBLE with the twin boundary
+  (`nsManifestationLaw_refutes_boundary`), so it cannot even be bundled. The genuine open gap is
+  `GlobalVorticityControl` (the supercritical BKM estimate); the Clay reduction
+  `clayA_of_regularityTransfer_and_vorticityControl` is honest-forward only.
+
+The honest closure is therefore the **asymmetry itself**: one conjecture (twins) admits a transparent
+two-sided equivalence; the other two do not, and we say exactly why — rather than dress a renaming or an
+overpayment as a result.
 
 **Seven branches around one engine.** Every great question is a shadow of the perpetual-engine
 prohibition on its own object, and the outcome is honestly different in each case:
 
-- **Twins** and **Riemann** — a decree boundary 🟡: the node and an off-critical zero are green
-  non-presentable, so they can be honestly accepted by axiom
-  ([33](prose/33_CausalFirstCause.en.md), [38](prose/38_RiemannFirstCause.en.md)).
+- **Twins** — the ONE decree boundary 🟡: the node is green non-presentable and the seriality boundary
+  is provably ⟺ the twin conjecture (two-sided), so it can be honestly accepted by axiom
+  ([33](prose/33_CausalFirstCause.en.md)).
+- **Riemann** — 🔵 a DETACHED front (was decreed, withdrawn): `manifestationLaw ⟺ RH` holds only UNDER
+  the twin boundary and its reverse is vacuous, so RH is an honest conditional reduction, not a decree
+  result (see "Riemann and Navier–Stokes — detached, honestly" above;
+  [38](prose/38_RiemannFirstCause.en.md)).
 - **P/NP** — 🟢 **a theorem with no decree at all**: fast rank traversal provably does not pay for an
   unbounded family of certificates ([39](prose/39_PNPRankPayment.en.md)).
 - **Yang–Mills** and **Hodge** — 🟢 conditional theorems: spectral quantisation ⟹ mass gap, the
   descent law ⟹ payment by cycles ([40](prose/40_YangMills.en.md), [42](prose/42_Hodge.en.md)).
-- **Navier–Stokes** — 🟢 the cascade and the assembled integral; the gate energy balance survived as
-  the third decree boundary ([36](prose/36_NavierStokes.en.md), [41](prose/41_NSSmoothness.en.md)).
+- **Navier–Stokes** — 🔵 a DETACHED front (was decreed, withdrawn): the cascade and the assembled box
+  integral are green, but the gate law reaches only a surrogate (forward, reverse unknown) and its
+  manifestation form refutes the twin boundary — an open/conditional front, not a decree result
+  ([36](prose/36_NavierStokes.en.md), [41](prose/41_NSSmoothness.en.md)).
 - **Mersenne** — a side branch: an honest bridge, all load-bearing inputs 🔴
   ([34](prose/34_MersenneBranch.en.md)).
 
@@ -341,6 +392,6 @@ The verifier walks over every non-internal `EuclidsPath*` theorem/definition, co
 depends on, and prints: total declarations, `sorryAx`-tainted, tainted by a non-standard axiom. Then
 it **self-checks the two eternal honesty invariants** and fails with a non-zero code if either is
 violated: (1) the only non-standard axiom in the whole repository is `step00FirstCause`; (2) the only
-`sorryAx`-tainted declaration is `twin_prime_conjecture`. Current run: **20018** declarations, sorryAx
-**1**, tainted by a non-standard axiom **47** (the number itself changes with the content and is not
-hard-pinned — only the two invariants are).
+`sorryAx`-tainted declaration is `twin_prime_conjecture`. Current run: sorryAx **1**, tainted by a
+non-standard axiom **16** (all asserting twins through the single accepted twin boundary — the number
+itself changes with the content and is not hard-pinned; only the two invariants are).

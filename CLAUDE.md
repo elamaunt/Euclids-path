@@ -50,7 +50,8 @@ basis for a future LaTeX/arXiv compilation.
 - `lake build` — the whole Engine line compiles (exit 0). A full rebuild can hit transient Windows
   file-sharing errors on mathlib `.olean.private`; just re-run.
 - `lake env lean scripts/VerifyAll.lean` — self-checks the honesty invariants: a single non-standard
-  axiom `step00FirstCause`, and a single `sorryAx`-tainted declaration `twin_prime_conjecture`
-  (taint count is reported, currently 47, and is not hard-pinned).
+  axiom `step00FirstCause` (now decreeing ONLY the twin seriality boundary — Riemann/NS/Collatz were
+  withdrawn, Option A), and a single `sorryAx`-tainted declaration `twin_prime_conjecture` (taint count
+  is reported, currently 16 — all asserting twins — and is not hard-pinned).
 - `python scripts/audit_prose.py --data <oracles> --root .` — prose↔Lean audit over the RU **and**
   EN corpus plus both READMEs (phantom names, label mismatches, taint counters). Must be CLEAN.

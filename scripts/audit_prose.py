@@ -8,7 +8,7 @@ the global status counters. It answers four questions:
 
   1. EXISTENCE  — does every cited Lean-declaration-shaped name actually exist?
   2. LABELS     — does every 🟢/🟡 badge match the declaration's real axiom taint?
-  3. COUNTERS   — do the "47 / one axiom / one sorry / three boundaries" claims hold?
+  3. COUNTERS   — do the "16 / one axiom / one sorry / one boundary" claims hold?
   4. OVERCLAIM  — does any sentence claim an open problem is *solved*?
 
 Oracles (produced by a Lean dump — see scripts/dump_audit_data.lean, or pass
@@ -20,9 +20,9 @@ Exit code 0 iff no phantom names, no confirmed label mismatches, and counters OK
 """
 import sys, os, re, glob, argparse
 
-EXPECTED_TAINT = 47          # tainted thm/def (the verifier's methodology)
+EXPECTED_TAINT = 16          # tainted thm/def (all twins; RH/NS/Collatz withdrawn, Option A)
 EXPECTED_SORRY = 1
-EXPECTED_BOUNDARIES = 3
+EXPECTED_BOUNDARIES = 1       # the axiom decrees ONLY the twin seriality boundary
 
 SRC_IDENT = re.compile(r"[A-Za-z_][A-Za-z0-9_']*")
 
@@ -148,8 +148,10 @@ def counter_check(files):
         for m in re.finditer(r"(\d{2,3})\s*(?:AXIOM-TAINTED|таких деклараци|деклараци[йяи][^.]{0,40}аксиом)", txt):
             if m.group(1) != str(EXPECTED_TAINT):
                 issues.append((base, f"taint count {m.group(1)} != {EXPECTED_TAINT}: …{txt[max(0,m.start()-30):m.start()+40]}…"))
-        for stale in ("ровно 52", "ровно 45", "с четырьмя границами", "четырьмя причинными границами",
-                      "exactly 52", "exactly 45", "four causal boundaries", "four decree boundaries"):
+        for stale in ("ровно 52", "ровно 45", "ровно 47", "с четырьмя границами", "четырьмя причинными границами",
+                      "тремя причинными границами", "три границы декрета", "три жёлтые границы", "три живые границы",
+                      "exactly 52", "exactly 45", "exactly 47", "four causal boundaries", "four decree boundaries",
+                      "three causal boundaries", "three decree boundaries", "three living boundaries"):
             if stale in txt:
                 issues.append((base, f"stale phrase: {stale!r}"))
     return issues

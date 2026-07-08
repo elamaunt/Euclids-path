@@ -14,3 +14,4 @@ Thumbs.db
 # MkDocs site build
 /site/
 .cache/
+tools/fractal/__pycache__/

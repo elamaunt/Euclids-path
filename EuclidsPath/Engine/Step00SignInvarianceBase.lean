@@ -75,6 +75,21 @@ theorem twinLowersInfinite_of_engineForcing
     (H : ∀ k : ℕ, twinIndicator k = 0 → FlatCostFreeCycle) : TwinLowers.Infinite :=
   twinLowersInfinite_of_signInvarianceCertificate (certificate_of_engineForcing H)
 
+/-- **The honest audit (backward, VACUOUS): twins make the engine-forcing field trivially inhabited.**
+    If a twin exists above every horizon, then `twinIndicator k = 0` never holds, so the implication
+    is empty (`absurd`).  Together with the forward `twinLowersInfinite_of_engineForcing`, this shows
+    the field `∀ k, twinIndicator k = 0 → FlatCostFreeCycle` is inhabited **iff** the twin conjecture
+    holds.  So "the sign is stable" is a REDUCTION to this field, and the field IS the conjecture —
+    nothing here discharges it, and the sign was proved stable only RELATIVE to it. -/
+noncomputable def engineForcing_of_unboundedTwinCenters
+    (H : ∀ M0 : ℕ, ∃ m : ℕ, M0 < m ∧ TwinCenterZ m) :
+    ∀ k : ℕ, twinIndicator k = 0 → FlatCostFreeCycle := by
+  intro k hzero
+  have hex : ∃ m : ℕ, 5 + k < m ∧ TwinCenterZ m := H (5 + k)
+  unfold twinIndicator at hzero
+  rw [if_pos hex] at hzero
+  exact absurd hzero (by decide)
+
 end Concrete
 end SignInvariance
 end GenealogicalOrnament

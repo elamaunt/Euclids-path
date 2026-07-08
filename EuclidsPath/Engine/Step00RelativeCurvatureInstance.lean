@@ -69,6 +69,24 @@ theorem twinLowersInfinite_of_realRelativeCertificates
   exact ⟨m, hNm, by
     simpa [EuclidsPath.Residuals.TwinCenterZ, EuclidsPath.IsTwinCenter] using hTwinZ⟩
 
+/-- **The single remaining open mathematical node, named as one object.**  For every horizon
+    `M0 ≥ 5`, construct a relative-curvature certificate for the sieve ornament — i.e. prove
+    `relIndex = -5` after quotienting by the killed boundary.  This is the parity-barrier goal;
+    it is NOT proved here, and it is NOT `gaussBonnet_cone3`.
+
+    Declared `Type` (not `Prop`) because a certificate carries the datum `relIndex : Int`; this is
+    exactly the shape of the `certs` parameter above.  The next real step is to discharge THIS by a
+    concrete discrete-Morse matching / killed-boundary exactness — not by adding further bridges. -/
+def RelativeCurvatureRealizationProblem : Type :=
+  ∀ M0 : ℕ, 5 ≤ M0 → RelativeCurvatureCertificate ActiveSieveSafe M0
+
+/-- **The honest main statement of the ornament route.**  The relative-curvature realization
+    problem yields twin infinitude.  Everything is discharged EXCEPT the realization problem itself
+    (the parity-barrier node), which stays visible as the hypothesis `H`. -/
+theorem twinLowersInfinite_of_relativeCurvatureRealization
+    (H : RelativeCurvatureRealizationProblem) : TwinLowers.Infinite :=
+  twinLowersInfinite_of_realRelativeCertificates H
+
 end RealInstance
 end RelativeCurvature
 end GenealogicalOrnament

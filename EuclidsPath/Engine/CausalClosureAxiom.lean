@@ -89,6 +89,7 @@
 -/
 import EuclidsPath.Engine.ConcreteStep00Graph
 import EuclidsPath.Engine.TimePumpBoundary
+import EuclidsPath.Engine.Step00SerialTwinBoundary
 import EuclidsPath.Engine.RiemannManifestationFront
 import EuclidsPath.Engine.PNPRankPaymentFront
 import EuclidsPath.Engine.YangMillsFront
@@ -153,9 +154,7 @@ therefore it is accepted from OUTSIDE, by an axiom, intentionally.
 structure Step00FirstCause : Prop where
   origin : True
   firstFrame : True
-  causalBoundary : TimePumpStep00Obligation
-  riemannBoundary : RiemannManifestationLaw
-  nsBoundary : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw
+  causalBoundary : SerialTwinBoundary.SerialTwinBoundaryObligation
 
 /--
 **THE ONE AXIOM OF THE REPOSITORY — THE FIRST CAUSE (intentionally, by structure).**
@@ -173,7 +172,7 @@ The former causal-closure "axiom" is now a THEOREM from the first cause: the nam
 downstream uses do not change, but the root of the architecture is an intentionally
 structured first cause. ⚠️ AXIOM-TAINTED (via step00FirstCause).
 -/
-theorem step00CausalClosure : TimePumpStep00Obligation :=
+theorem step00CausalClosure : SerialTwinBoundary.SerialTwinBoundaryObligation :=
   step00FirstCause.causalBoundary
 
 /-- **HONESTY (machine-wise): the structure of the first cause ⟺ the conjunction of its boundaries.**
@@ -184,10 +183,9 @@ theorem step00CausalClosure : TimePumpStep00Obligation :=
     and the name of the axiom in the taint), but not the mathematical strength of the decree — it is exactly
     the sum of the accepted boundaries. -/
 theorem step00FirstCause_iff_causalClosure :
-    Step00FirstCause ↔ (TimePumpStep00Obligation ∧ RiemannManifestationLaw ∧
-      EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw) :=
-  ⟨fun F => ⟨F.causalBoundary, F.riemannBoundary, F.nsBoundary⟩,
-   fun h => ⟨trivial, trivial, h.1, h.2.1, h.2.2⟩⟩
+    Step00FirstCause ↔ SerialTwinBoundary.SerialTwinBoundaryObligation :=
+  ⟨fun F => F.causalBoundary,
+   fun h => ⟨trivial, trivial, h⟩⟩
 
 /-#############################################################################
   §2. What the axiom generates (⚠️ conditional on the axiom, NOT proofs)
@@ -200,7 +198,7 @@ it is the reduction closed by decree.
 -/
 theorem twinLowersInfinite_from_step00CausalClosure :
     TwinLowers.Infinite :=
-  timePumpStep00_generates_twins step00CausalClosure
+  SerialTwinBoundary.twinLowersInfinite_of_serialTwinBoundary step00CausalClosure
 
 /--
 Equivalent named theorem: adding the causal-closure axiom closes the Step00
@@ -348,7 +346,7 @@ theorem thisIsAnExternalStep00AxiomNotAGlobalIndependenceTheorem :
     (`strictLastStep00Obligation_iff_lastStep00Obligation`). ⚠️ AXIOM-TAINTED. -/
 theorem causalClosureAxiom_asserts_twins_at_every_scale :
     ∀ M0 : ℕ, ∃ m : ℕ, M0 < m ∧ EuclidsPath.Residuals.TwinCenterZ m :=
-  twinCenters_unbounded_of_timePumpStep00 step00CausalClosure
+  SerialTwinBoundary.twinCenters_unbounded_of_serialTwinBoundary step00CausalClosure
 
 
 
@@ -409,7 +407,7 @@ The already accepted axiom from the previous patch gives the conclusion.
 -/
 theorem twinLowersInfinite_by_accepted_axiom :
     TwinLowers.Infinite :=
-  twinLowersInfinite_of_timePumpStep00 step00CausalClosure
+  SerialTwinBoundary.twinLowersInfinite_of_serialTwinBoundary step00CausalClosure
 
 /--
 Named final theorem for the axiomatised Step00 theory.
@@ -1794,7 +1792,7 @@ centres.
 -/
 theorem acceptedBoundary_generates_twins :
     TwinLowers.Infinite :=
-  timePumpStep00_generates_twins step00CausalClosure
+  SerialTwinBoundary.twinLowersInfinite_of_serialTwinBoundary step00CausalClosure
 
 /-#############################################################################
   §4. Why the boundary cannot be internalised
@@ -2012,7 +2010,7 @@ centres.
 -/
 theorem acceptedOriginBoundary_generates_twins :
     TwinLowers.Infinite :=
-  timePumpStep00_generates_twins step00CausalClosure
+  SerialTwinBoundary.twinLowersInfinite_of_serialTwinBoundary step00CausalClosure
 
 /-#############################################################################
   §3. Internalising 0 → 1 is the forbidden self-cause
@@ -2238,7 +2236,7 @@ theorem twins_infinite_of_noEngine_and_boundary
     of twins visibly passes through unknowability. ⚠️ AXIOM-TAINTED
     (via the accepted boundary; the load-bearing lemma is axiom-free above). -/
 theorem twins_because_unknowable : EuclidsPath.TwinLowers.Infinite :=
-  timePumpStep00_generates_twins step00CausalClosure
+  SerialTwinBoundary.twinLowersInfinite_of_serialTwinBoundary step00CausalClosure
 
 /-- The final epistemic status of the first cause: it EXISTS (axiom, accepted),
     it CANNOT be known (theorem), ACCEPTANCE gives twins (conditionally),
@@ -2489,6 +2487,10 @@ theorem quarantine_inconsistent_if_hodgeManifestationLaw_decreed
   the decree may overpay. Clay is NOT solved and NOT declared.)
 #############################################################################-/
 
+/- WITHDRAWN (Option A): NS is no longer a field of the decree — the `nsBoundary` field is
+   dropped. The GREEN NS core (`noSingularCascade_of_energyBalance`, conditional on the
+   energy-balance law as an explicit hypothesis, NOT the axiom) lives in NavierStokesFront and
+   is unaffected. NS is an open/conditional front, not a decree result.
 /-- Projection of the THIRD boundary of the decree. ⚠️ AXIOM-TAINTED. -/
 theorem nsSolutionBalanceLaw : EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw :=
   step00FirstCause.nsBoundary
@@ -2540,6 +2542,7 @@ theorem quarantine_inconsistent_if_nsGatedViolation_exhibited
 
 -- Machine visibility: the third boundary is tainted by exactly step00FirstCause.
 #print axioms noSingularCascade_from_firstCause
+-/
 
 /-#############################################################################
   §16. MERSENNE: there is NO FOURTH boundary — INTENTIONALLY, BY THE SIGN OF THE HEURISTIC

@@ -56,6 +56,9 @@ def CollapseReboundDecreed : Prop :=
   EuclidsPath.NavierStokesFront.NsSolutionBalanceLaw ∧
     (∀ (C α r' : ℝ), 0 < C → 0 < α → r' ≤ -C * (0 : ℝ) ^ α → r' ≤ 0)
 
+/- WITHDRAWN (Option A): the collapse-rebound decree-NS results are dropped — NS is no longer a
+   field of the decree. The green wall `collapse_drive_forbids_rebound` (axiom-free) is unaffected;
+   collapse attaches to nothing in the decree now.
 /-- **`collapseRebound_from_firstCause` — 🟡 ⚠️ AXIOM-TAINTED.**
 
 The collapse rebound IS DECREED by the first cause: the re-ignition out of the singular point r=0
@@ -85,6 +88,7 @@ theorem collapseRebound_is_firstCauseManifestation :
   ⟨fun _C _α _r' hC hα hdrive => collapse_drive_forbids_rebound hC hα hdrive,
    collapseRebound_from_firstCause,
    step00FirstCause.nsBoundary⟩
+-/
 
 /-!
   ### Machine taint honesty (expectations)
@@ -93,9 +97,7 @@ theorem collapseRebound_is_firstCauseManifestation :
     WITHOUT `step00FirstCause`: the green output is self-contained and the taint is localised here.
 -/
 
--- 🟡 MUST show step00FirstCause:
-#print axioms collapseRebound_from_firstCause
-#print axioms collapseRebound_is_firstCauseManifestation
+-- WITHDRAWN (Option A): collapse-rebound decree-NS results dropped; their #print axioms removed.
 
 -- 🟢 CONTROL: must NOT show step00FirstCause.
 #print axioms collapse_drive_forbids_rebound

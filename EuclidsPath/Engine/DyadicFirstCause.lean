@@ -75,6 +75,9 @@ def DyadicOriginDecreed : Prop :=
       ¬ HasDerivAt (fun s => ssMode lam T 0 s)
           (kpRHS lam (fun _ => 0) (ssMode lam T) 0 t) t)
 
+/- WITHDRAWN (Option A): the dyadic-origin decree-NS results are dropped — NS is no longer a
+   field of the decree. The green wall `dyadicOrigin_uncausable_from_inside` (axiom-free) and the
+   green drive mathematics (STEP A/B) are unaffected.
 /-- **`dyadicOrigin_from_firstCause` — 🟡 ⚠️ AXIOM-TAINTED.**
 
 The dyadic cascade origin IS DECREED by the first cause: the supply at the largest scale `n=0`
@@ -110,6 +113,7 @@ theorem dyadicBlowup_is_firstCauseManifestation :
   ⟨fun _ _ _ hlam ht => dyadicOrigin_uncausable_from_inside hlam ht,
    dyadicOrigin_from_firstCause,
    step00FirstCause.nsBoundary⟩
+-/
 
 /-!
   ### Machine taint honesty (expectations)
@@ -121,9 +125,7 @@ theorem dyadicBlowup_is_firstCauseManifestation :
     that the green output is self-contained and the taint is localised in this file.
 -/
 
--- 🟡 MUST show step00FirstCause:
-#print axioms dyadicOrigin_from_firstCause
-#print axioms dyadicBlowup_is_firstCauseManifestation
+-- WITHDRAWN (Option A): dyadic-origin decree-NS results dropped; their #print axioms removed.
 
 -- 🟢 CONTROL (for comparison): must NOT show step00FirstCause.
 #print axioms dyadicOrigin_uncausable_from_inside

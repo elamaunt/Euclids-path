@@ -1,0 +1,166 @@
+==============================================================================
+WING GRADE CENSUS — Phase 0 baseline (ordered exponent geometry)
+==============================================================================
+[census M=1e+06] sieves+grades built in 1.7s
+
+-- small scale M = 1e+06 (exhaustive, exact) --
+twin centers: 37915   HL ~ 32522
+A=   5: survivor density 0.600000  product law prod(q-2)/q = 0.600000  ratio 1.0000   twin|survivor = 0.06319
+A=  13: survivor density 0.296704  product law prod(q-2)/q = 0.296703  ratio 1.0000   twin|survivor = 0.12778
+A=  31: survivor density 0.186276  product law prod(q-2)/q = 0.186275  ratio 1.0000   twin|survivor = 0.20352
+A= 101: survivor density 0.112859  product law prod(q-2)/q = 0.112616  ratio 1.0022   twin|survivor = 0.33588
+
+  joint (Omega_L-1, Omega_R-1) (all centers)  [rows=L, cols=R, 1000000 centers, %]
+               0       1       2       3       4     >=5
+      0    3.792   7.869   5.971   2.349   0.562   0.108
+      1    7.828  15.742  11.242   4.099   0.939   0.181
+      2    5.999  11.230   7.236   2.332   0.465   0.078
+      3    2.342   4.097   2.322   0.623   0.102   0.018
+      4    0.559   0.948   0.467   0.101   0.015   0.001
+    >=5    0.116   0.167   0.084   0.016   0.001   0.000
+  MI(L;R) = 0.006310 bits   perm-null 0.000018 +/- 0.000005   z = +1183.6
+  Chowla cross moment E[lam_L*lam_R] = +0.000236   (n=1000000, se~0.001000)
+
+  joint (Omega_L-1, Omega_R-1) (survivors A=13)  [rows=L, cols=R, 296704 centers, %]
+               0       1       2       3       4     >=5
+      0   12.778  17.315   5.401   0.403   0.002   0.000
+      1   17.272  23.360   7.158   0.498   0.005   0.000
+      2    5.411   7.183   2.053   0.129   0.000   0.000
+      3    0.392   0.491   0.134   0.004   0.000   0.000
+      4    0.003   0.005   0.001   0.000   0.000   0.000
+    >=5    0.000   0.000   0.000   0.000   0.000   0.000
+  MI(L;R) = 0.000224 bits   perm-null 0.000038 +/- 0.000013   z = +14.0
+  Chowla cross moment E[lam_L*lam_R] = +0.000074   (n=296704, se~0.001836)
+
+  joint (Omega_L-1, Omega_R-1) (survivors A=101)  [rows=L, cols=R, 112859 centers, %]
+               0       1       2       3       4     >=5
+      0   33.588  23.895   0.316   0.000   0.000   0.000
+      1   23.784  17.534   0.268   0.000   0.000   0.000
+      2    0.360   0.251   0.004   0.000   0.000   0.000
+      3    0.000   0.000   0.000   0.000   0.000   0.000
+      4    0.000   0.000   0.000   0.000   0.000   0.000
+    >=5    0.000   0.000   0.000   0.000   0.000   0.000
+  MI(L;R) = 0.000084 bits   perm-null 0.000024 +/- 0.000017   z = +3.4
+  Chowla cross moment E[lam_L*lam_R] = +0.036036   (n=112859, se~0.002977)
+
+  sign walk (all centers): corner freq (+,+)=0.2490 (+,-)=0.2497 (-,+)=0.2502 (-,-)=0.2511
+  transition matrix (rows -> cols):
+    (+,+)   0.2491  0.2506  0.2488  0.2514
+    (+,-)   0.2479  0.2490  0.2521  0.2510
+    (-,+)   0.2497  0.2498  0.2503  0.2503
+    (-,-)   0.2493  0.2496  0.2494  0.2517
+    lag 1: auto_L=-0.00083 auto_R=-0.00041 cross_LR=-0.00029
+    lag 2: auto_L=-0.00003 auto_R=-0.00102 cross_LR=+0.00044
+    lag 3: auto_L=+0.00124 auto_R=-0.00172 cross_LR=-0.00169
+    lag 6: auto_L=+0.00087 auto_R=+0.00123 cross_LR=+0.00017
+
+  sign walk (survivors A=13): corner freq (+,+)=0.2435 (+,-)=0.2496 (-,+)=0.2504 (-,-)=0.2565
+  transition matrix (rows -> cols):
+    (+,+)   0.2442  0.2496  0.2487  0.2575
+    (+,-)   0.2431  0.2525  0.2508  0.2537
+    (-,+)   0.2429  0.2472  0.2524  0.2575
+    (-,-)   0.2440  0.2492  0.2495  0.2573
+    lag 1: auto_L=+0.00320 auto_R=+0.00063 cross_LR=-0.00087
+    lag 2: auto_L=+0.00133 auto_R=+0.00274 cross_LR=+0.00074
+    lag 3: auto_L=+0.00079 auto_R=-0.00175 cross_LR=+0.00064
+    lag 6: auto_L=-0.00043 auto_R=+0.00094 cross_LR=-0.00131
+
+-- PowDef / GapDef marginals (left wing) --
+  PowDef_L: 0:0.9119 1:0.0733 2:0.0121 3:0.0023 4:0.0004  >=5:0.0001  mean=0.106
+  GapDef_L: 0:0.2070 1:0.0005 2:0.0006 3:0.0007 4:0.0008  >=5:0.7903  mean=5912.800
+
+  GapDef gate (A=13), left wing: CMI-excess = 3.011e-05 bits
+    bucket 0 (n=206500): MI=0.00e+00 null=0.00e+00 z=+0.0
+    bucket 2 (n=277961): MI=6.96e-05 null=7.98e-06 z=+9.9
+    bucket 4 (n=85048): MI=2.62e-05 null=2.39e-05 z=+0.1
+    bucket 6 (n=5916): MI=2.99e-04 null=3.20e-04 z=-0.1
+
+  GapDef gate (A=101), left wing: CMI-excess = 2.409e-04 bits
+    bucket 0 (n=206500): MI=0.00e+00 null=0.00e+00 z=+0.0
+    bucket 2 (n=277961): MI=1.73e-04 null=7.41e-06 z=+28.8
+    bucket 4 (n=85048): MI=1.10e-03 null=2.66e-05 z=+71.2
+
+-- parity-foil snapshot (A=13) --
+  truth: survivor mass=    296704  mean grade=1.6193  twin mass frac=0.127781
+  foil+: survivor mass=    296726  mean grade=1.6113  twin mass frac=0.255542
+  foil-: survivor mass=    296682  mean grade=1.6273  twin mass frac=0.000000
+
+-- medium scale M = 1e+07 (Omega/omega only) --
+[census M=1e+07] sieves+grades built in 7.9s
+twin centers: 280557   HL ~ 246972
+
+  joint (Omega_L-1, Omega_R-1) (all centers, M=1e7)  [rows=L, cols=R, 10000000 centers, %]
+               0       1       2       3       4     >=5
+      0    2.806   6.329   5.391   2.435   0.688   0.164
+      1    6.328  13.807  11.180   4.753   1.275   0.292
+      2    5.391  11.187   8.379   3.221   0.782   0.164
+      3    2.432   4.752   3.218   1.077   0.225   0.041
+      4    0.688   1.274   0.786   0.223   0.039   0.005
+    >=5    0.165   0.291   0.164   0.040   0.006   0.001
+  MI(L;R) = 0.005642 bits   perm-null 0.000002 +/- 0.000001   z = +9352.1
+  Chowla cross moment E[lam_L*lam_R] = +0.000135   (n=10000000, se~0.000316)
+
+  sign walk (all centers, M=1e7): corner freq (+,+)=0.2497 (+,-)=0.2499 (-,+)=0.2500 (-,-)=0.2504
+  transition matrix (rows -> cols):
+    (+,+)   0.2496  0.2498  0.2500  0.2505
+    (+,-)   0.2495  0.2501  0.2500  0.2505
+    (-,+)   0.2498  0.2498  0.2501  0.2502
+    (-,-)   0.2499  0.2500  0.2499  0.2502
+    lag 1: auto_L=-0.00028 auto_R=+0.00018 cross_LR=-0.00031
+    lag 2: auto_L=+0.00004 auto_R=-0.00030 cross_LR=-0.00049
+    lag 3: auto_L=+0.00047 auto_R=+0.00001 cross_LR=-0.00005
+    lag 6: auto_L=+0.00014 auto_R=+0.00017 cross_LR=+0.00005
+
+-- large-scale windows (segmented, exact) --
+[window M0=1.0e+09 W=1e+06] exact grades in 0.2s (primes to 77491)
+
+  joint (Omega_L-1, Omega_R-1) window [1.0e+09, +1e+06)  [rows=L, cols=R, 1000000 centers, %]
+               0       1       2       3       4     >=5
+      0    1.558   4.048   4.159   2.363   0.887   0.286
+      1    4.054  10.216  10.164   5.586   1.964   0.616
+      2    4.180  10.180   9.629   4.960   1.609   0.472
+      3    2.360   5.561   4.939   2.329   0.701   0.183
+      4    0.884   1.952   1.627   0.696   0.177   0.041
+    >=5    0.290   0.623   0.474   0.181   0.042   0.009
+  MI(L;R) = 0.004656 bits   perm-null 0.000019 +/- 0.000005   z = +879.1
+  Chowla cross moment E[lam_L*lam_R] = +0.000268   (n=1000000, se~0.001000)
+
+  sign walk window [1.0e+09, +1e+06): corner freq (+,+)=0.2503 (+,-)=0.2500 (-,+)=0.2499 (-,-)=0.2498
+  transition matrix (rows -> cols):
+    (+,+)   0.2500  0.2497  0.2500  0.2503
+    (+,-)   0.2510  0.2493  0.2496  0.2501
+    (-,+)   0.2511  0.2507  0.2488  0.2494
+    (-,-)   0.2492  0.2502  0.2512  0.2494
+    lag 1: auto_L=-0.00058 auto_R=-0.00055 cross_LR=+0.00019
+    lag 2: auto_L=+0.00016 auto_R=+0.00067 cross_LR=+0.00149
+    lag 3: auto_L=+0.00234 auto_R=-0.00008 cross_LR=-0.00017
+    lag 6: auto_L=+0.00064 auto_R=-0.00016 cross_LR=-0.00130
+  PowDef_L distribution: 0:0.9119 1:0.0732 2:0.0122 3:0.0022
+  twins in window: 15577   HL prediction ~ 15626.7
+[window M0=1.0e+12 W=2e+05] exact grades in 0.6s (primes to 2449487)
+
+  joint (Omega_L-1, Omega_R-1) window [1.0e+12, +2e+05)  [rows=L, cols=R, 200000 centers, %]
+               0       1       2       3       4     >=5
+      0    0.888   2.614   3.199   2.064   0.962   0.415
+      1    2.645   7.414   8.665   5.697   2.506   1.021
+      2    3.190   8.607   9.760   6.051   2.565   0.963
+      3    2.163   5.673   6.138   3.647   1.425   0.518
+      4    0.952   2.466   2.554   1.421   0.505   0.183
+    >=5    0.408   1.024   0.980   0.501   0.163   0.051
+  MI(L;R) = 0.003556 bits   perm-null 0.000089 +/- 0.000026   z = +135.0
+  Chowla cross moment E[lam_L*lam_R] = +0.001880   (n=200000, se~0.002236)
+
+  sign walk window [1.0e+12, +2e+05): corner freq (+,+)=0.2492 (+,-)=0.2510 (-,+)=0.2481 (-,-)=0.2517
+  transition matrix (rows -> cols):
+    (+,+)   0.2506  0.2486  0.2483  0.2525
+    (+,-)   0.2523  0.2520  0.2447  0.2511
+    (-,+)   0.2483  0.2487  0.2518  0.2512
+    (-,-)   0.2458  0.2546  0.2476  0.2519
+    lag 1: auto_L=+0.00299 auto_R=+0.00431 cross_LR=+0.00121
+    lag 2: auto_L=-0.00180 auto_R=+0.00115 cross_LR=+0.00160
+    lag 3: auto_L=+0.00069 auto_R=-0.00057 cross_LR=-0.00182
+    lag 6: auto_L=-0.00403 auto_R=-0.00308 cross_LR=+0.00127
+  PowDef_L distribution: 0:0.9120 1:0.0730 2:0.0123 3:0.0022
+  twins in window: 1777   HL prediction ~ 1830.2
+
+done.

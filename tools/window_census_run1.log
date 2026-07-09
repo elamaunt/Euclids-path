@@ -1,0 +1,258 @@
+==============================================================================
+WINDOW CENSUS - Phase 2 signed window sums S(W) = sum wingSign(m)
+==============================================================================
+[build] Omega to 60000001, wingSign, twin mask, survivor masks A=[13, 17, 31] in 4.4s
+sanity: wingSign(twin) = +1 for all 280557 twins: OK
+
+==============================================================================
+(a) plain intervals [M0 + i*H, M0 + (i+1)*H)
+
+-- plain    M0=1e+05 H=1e+03  (10 disjoint instances) --
+   inst S      : +46 +10 +44 -2 -4 -44 -8 +0 -70 -50
+   inst S/sqrt : +1.45 +0.32 +1.39 -0.06 -0.13 -1.39 -0.25 +0.00 -2.21 -1.58
+   agg  |W| =    10000   S =      -78   S/sqrt|W| =  -0.780   inst signs 3+/6-/10   flip-rate 0.30  -> FLIPS
+   corners: N(+1) = 4961   N(-1) = 5039   twins = 445   twin share of N(+1) = 0.0897
+
+-- plain    M0=1e+05 H=1e+04  (10 disjoint instances) --
+   inst S      : -78 -10 -2 +66 +58 -46 +16 +120 +104 +18
+   inst S/sqrt : -0.78 -0.10 -0.02 +0.66 +0.58 -0.46 +0.16 +1.20 +1.04 +0.18
+   agg  |W| =   100000   S =     +246   S/sqrt|W| =  +0.778   inst signs 6+/4-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 50123   N(-1) = 49877   twins = 4268   twin share of N(+1) = 0.0852
+
+-- plain    M0=1e+05 H=1e+05  (10 disjoint instances) --
+   inst S      : +246 +690 -130 -336 +218 +658 -416 -674 +166 +68
+   inst S/sqrt : +0.78 +2.18 -0.41 -1.06 +0.69 +2.08 -1.32 -2.13 +0.52 +0.22
+   agg  |W| =  1000000   S =     +490   S/sqrt|W| =  +0.490   inst signs 6+/4-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 500245   N(-1) = 499755   twins = 35815   twin share of N(+1) = 0.0716
+
+-- plain    M0=1e+06 H=1e+03  (10 disjoint instances) --
+   inst S      : -60 +40 -18 +84 -6 +8 +38 +30 +60 -20
+   inst S/sqrt : -1.90 +1.26 -0.57 +2.66 -0.19 +0.25 +1.20 +0.95 +1.90 -0.63
+   agg  |W| =    10000   S =     +156   S/sqrt|W| =  +1.560   inst signs 6+/4-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 5078   N(-1) = 4922   twins = 338   twin share of N(+1) = 0.0666
+
+-- plain    M0=1e+06 H=1e+04  (10 disjoint instances) --
+   inst S      : +156 +126 +126 +14 -132 -170 +60 -80 +0 -32
+   inst S/sqrt : +1.56 +1.26 +1.26 +0.14 -1.32 -1.70 +0.60 -0.80 +0.00 -0.32
+   agg  |W| =   100000   S =      +68   S/sqrt|W| =  +0.215   inst signs 5+/4-/10   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 50034   N(-1) = 49966   twins = 3230   twin share of N(+1) = 0.0646
+
+-- plain    M0=1e+06 H=1e+05  (10 disjoint instances) --
+   inst S      : +68 -110 +176 +234 -44 -698 +468 -432 -186 +142
+   inst S/sqrt : +0.22 -0.35 +0.56 +0.74 -0.14 -2.21 +1.48 -1.37 -0.59 +0.45
+   agg  |W| =  1000000   S =     -382   S/sqrt|W| =  -0.382   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 499809   N(-1) = 500191   twins = 31095   twin share of N(+1) = 0.0622
+
+-- plain    M0=5e+06 H=1e+03  (10 disjoint instances) --
+   inst S      : -46 +22 +28 +10 -40 -16 +20 -36 +2 -16
+   inst S/sqrt : -1.45 +0.70 +0.89 +0.32 -1.26 -0.51 +0.63 -1.14 +0.06 -0.51
+   agg  |W| =    10000   S =      -72   S/sqrt|W| =  -0.720   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 4964   N(-1) = 5036   twins = 269   twin share of N(+1) = 0.0542
+
+-- plain    M0=5e+06 H=1e+04  (10 disjoint instances) --
+   inst S      : -72 -80 +168 +90 +174 +44 -210 -12 -88 +170
+   inst S/sqrt : -0.72 -0.80 +1.68 +0.90 +1.74 +0.44 -2.10 -0.12 -0.88 +1.70
+   agg  |W| =   100000   S =     +184   S/sqrt|W| =  +0.582   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 50092   N(-1) = 49908   twins = 2692   twin share of N(+1) = 0.0537
+
+-- plain    M0=5e+06 H=1e+05  (10 disjoint instances) --
+   inst S      : +184 +784 -30 +404 +342 +344 +458 -210 +64 +528
+   inst S/sqrt : +0.58 +2.48 -0.09 +1.28 +1.08 +1.09 +1.45 -0.66 +0.20 +1.67
+   agg  |W| =  1000000   S =    +2868   S/sqrt|W| =  +2.868   inst signs 8+/2-/00   flip-rate 0.20  -> FLIPS
+   corners: N(+1) = 501434   N(-1) = 498566   twins = 26366   twin share of N(+1) = 0.0526
+
+==============================================================================
+(b) survivor-restricted intervals (same intervals ^ survivors at A)
+
+-- surv A=13 M0=1e+05 H=1e+03  (10 disjoint instances) --
+   inst S      : +21 +12 -1 +18 -5 -22 +9 +4 -25 -17
+   inst S/sqrt : +1.22 +0.70 -0.06 +1.04 -0.29 -1.27 +0.52 +0.23 -1.44 -0.99
+   agg  |W| =     2966   S =       -6   S/sqrt|W| =  -0.110   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 1480   N(-1) = 1486   twins = 445   twin share of N(+1) = 0.3007
+
+-- surv A=13 M0=1e+05 H=1e+04  (10 disjoint instances) --
+   inst S      : -6 +25 -83 +13 -8 +53 -29 +40 +68 +42
+   inst S/sqrt : -0.11 +0.46 -1.52 +0.24 -0.15 +0.97 -0.53 +0.73 +1.25 +0.77
+   agg  |W| =    29673   S =     +115   S/sqrt|W| =  +0.668   inst signs 6+/4-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 14894   N(-1) = 14779   twins = 4268   twin share of N(+1) = 0.2866
+
+-- surv A=13 M0=1e+05 H=1e+05  (10 disjoint instances) --
+   inst S      : +115 +277 -111 -269 +0 +355 -175 -210 +65 +204
+   inst S/sqrt : +0.67 +1.61 -0.64 -1.56 +0.00 +2.06 -1.02 -1.22 +0.38 +1.18
+   agg  |W| =   296705   S =     +251   S/sqrt|W| =  +0.461   inst signs 5+/4-/10   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 148478   N(-1) = 148227   twins = 35815   twin share of N(+1) = 0.2412
+
+-- surv A=13 M0=1e+06 H=1e+03  (10 disjoint instances) --
+   inst S      : -5 +18 +16 +20 +9 +16 +18 -7 +18 -27
+   inst S/sqrt : -0.29 +1.05 +0.92 +1.17 +0.52 +0.93 +1.05 -0.40 +1.05 -1.56
+   agg  |W| =     2968   S =      +76   S/sqrt|W| =  +1.395   inst signs 7+/3-/00   flip-rate 0.30  -> FLIPS
+   corners: N(+1) = 1522   N(-1) = 1446   twins = 338   twin share of N(+1) = 0.2221
+
+-- surv A=13 M0=1e+06 H=1e+04  (10 disjoint instances) --
+   inst S      : +76 +133 +24 -8 -25 -24 +38 -17 +34 -27
+   inst S/sqrt : +1.40 +2.44 +0.44 -0.15 -0.46 -0.44 +0.70 -0.31 +0.62 -0.50
+   agg  |W| =    29670   S =     +204   S/sqrt|W| =  +1.184   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 14937   N(-1) = 14733   twins = 3230   twin share of N(+1) = 0.2162
+
+-- surv A=13 M0=1e+06 H=1e+05  (10 disjoint instances) --
+   inst S      : +204 -173 +329 +139 -98 -323 +382 -138 -101 +41
+   inst S/sqrt : +1.18 -1.00 +1.91 +0.81 -0.57 -1.88 +2.22 -0.80 -0.59 +0.24
+   agg  |W| =   296700   S =     +262   S/sqrt|W| =  +0.481   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 148481   N(-1) = 148219   twins = 31095   twin share of N(+1) = 0.2094
+
+-- surv A=13 M0=5e+06 H=1e+03  (10 disjoint instances) --
+   inst S      : -26 +9 +3 +34 -15 -4 +6 -28 -7 -18
+   inst S/sqrt : -1.52 +0.52 +0.18 +1.96 -0.87 -0.23 +0.35 -1.64 -0.40 -1.05
+   agg  |W| =     2966   S =      -46   S/sqrt|W| =  -0.845   inst signs 4+/6-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 1460   N(-1) = 1506   twins = 269   twin share of N(+1) = 0.1842
+
+-- surv A=13 M0=5e+06 H=1e+04  (10 disjoint instances) --
+   inst S      : -46 -59 -30 -9 -1 +42 -51 -39 -74 +83
+   inst S/sqrt : -0.84 -1.08 -0.55 -0.17 -0.02 +0.77 -0.94 -0.72 -1.36 +1.52
+   agg  |W| =    29670   S =     -184   S/sqrt|W| =  -1.068   inst signs 2+/8-/00   flip-rate 0.20  -> FLIPS
+   corners: N(+1) = 14743   N(-1) = 14927   twins = 2692   twin share of N(+1) = 0.1826
+
+-- surv A=13 M0=5e+06 H=1e+05  (10 disjoint instances) --
+   inst S      : -184 +74 -21 +3 -17 +235 +211 -139 -269 +222
+   inst S/sqrt : -1.07 +0.43 -0.12 +0.02 -0.10 +1.36 +1.22 -0.81 -1.56 +1.29
+   agg  |W| =   296705   S =     +115   S/sqrt|W| =  +0.211   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 148410   N(-1) = 148295   twins = 26366   twin share of N(+1) = 0.1777
+
+-- surv A=31 M0=1e+05 H=1e+03  (10 disjoint instances) --
+   inst S      : +19 -1 +3 +6 -14 -12 +5 +3 +0 -5
+   inst S/sqrt : +1.40 -0.07 +0.23 +0.43 -1.04 -0.87 +0.36 +0.23 +0.00 -0.37
+   agg  |W| =     1858   S =       +4   S/sqrt|W| =  +0.093   inst signs 5+/4-/10   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 931   N(-1) = 927   twins = 445   twin share of N(+1) = 0.4780
+
+-- surv A=31 M0=1e+05 H=1e+04  (10 disjoint instances) --
+   inst S      : +4 +9 +15 +12 -12 +18 -17 +47 +37 +22
+   inst S/sqrt : +0.09 +0.21 +0.35 +0.28 -0.28 +0.42 -0.39 +1.09 +0.86 +0.51
+   agg  |W| =    18623   S =     +135   S/sqrt|W| =  +0.989   inst signs 8+/2-/00   flip-rate 0.20  -> FLIPS
+   corners: N(+1) = 9379   N(-1) = 9244   twins = 4268   twin share of N(+1) = 0.4551
+
+-- surv A=31 M0=1e+05 H=1e+05  (10 disjoint instances) --
+   inst S      : +135 +318 +1 -121 +3 +317 -70 -142 -46 +66
+   inst S/sqrt : +0.99 +2.33 +0.01 -0.89 +0.02 +2.32 -0.51 -1.04 -0.34 +0.48
+   agg  |W| =   186285   S =     +461   S/sqrt|W| =  +1.068   inst signs 6+/4-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 93373   N(-1) = 92912   twins = 35815   twin share of N(+1) = 0.3836
+
+-- surv A=31 M0=1e+06 H=1e+03  (10 disjoint instances) --
+   inst S      : -2 +22 -5 +15 +19 +12 +6 +2 +4 -5
+   inst S/sqrt : -0.15 +1.61 -0.37 +1.09 +1.37 +0.89 +0.44 +0.15 +0.29 -0.36
+   agg  |W| =     1876   S =      +68   S/sqrt|W| =  +1.570   inst signs 7+/3-/00   flip-rate 0.30  -> FLIPS
+   corners: N(+1) = 972   N(-1) = 904   twins = 338   twin share of N(+1) = 0.3477
+
+-- surv A=31 M0=1e+06 H=1e+04  (10 disjoint instances) --
+   inst S      : +68 +70 +8 -29 -15 -14 +23 -48 +24 -21
+   inst S/sqrt : +1.57 +1.62 +0.19 -0.67 -0.35 -0.33 +0.53 -1.11 +0.55 -0.49
+   agg  |W| =    18634   S =      +66   S/sqrt|W| =  +0.483   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 9350   N(-1) = 9284   twins = 3230   twin share of N(+1) = 0.3455
+
+-- surv A=31 M0=1e+06 H=1e+05  (10 disjoint instances) --
+   inst S      : +66 -103 +171 +155 +47 -79 +308 +30 -63 +61
+   inst S/sqrt : +0.48 -0.75 +1.25 +1.14 +0.34 -0.58 +2.26 +0.22 -0.46 +0.45
+   agg  |W| =   186265   S =     +593   S/sqrt|W| =  +1.374   inst signs 7+/3-/00   flip-rate 0.30  -> FLIPS
+   corners: N(+1) = 93429   N(-1) = 92836   twins = 31095   twin share of N(+1) = 0.3328
+
+-- surv A=31 M0=5e+06 H=1e+03  (10 disjoint instances) --
+   inst S      : -38 +23 +12 +4 -9 -2 +17 -20 +4 -22
+   inst S/sqrt : -2.83 +1.68 +0.88 +0.28 -0.67 -0.15 +1.25 -1.46 +0.29 -1.63
+   agg  |W| =     1867   S =      -31   S/sqrt|W| =  -0.717   inst signs 5+/5-/00   flip-rate 0.50  -> FLIPS
+   corners: N(+1) = 918   N(-1) = 949   twins = 269   twin share of N(+1) = 0.2930
+
+-- surv A=31 M0=5e+06 H=1e+04  (10 disjoint instances) --
+   inst S      : -31 -27 +9 -15 -10 +41 -11 -2 -2 +58
+   inst S/sqrt : -0.72 -0.63 +0.21 -0.35 -0.23 +0.95 -0.25 -0.05 -0.05 +1.35
+   agg  |W| =    18632   S =      +10   S/sqrt|W| =  +0.073   inst signs 3+/7-/00   flip-rate 0.30  -> FLIPS
+   corners: N(+1) = 9321   N(-1) = 9311   twins = 2692   twin share of N(+1) = 0.2888
+
+-- surv A=31 M0=5e+06 H=1e+05  (10 disjoint instances) --
+   inst S      : +10 +98 -16 +10 -62 +226 +196 -79 -155 +36
+   inst S/sqrt : +0.07 +0.72 -0.12 +0.07 -0.45 +1.66 +1.44 -0.58 -1.14 +0.26
+   agg  |W| =   186290   S =     +264   S/sqrt|W| =  +0.612   inst signs 6+/4-/00   flip-rate 0.40  -> FLIPS
+   corners: N(+1) = 93277   N(-1) = 93013   twins = 26366   twin share of N(+1) = 0.2827
+
+==============================================================================
+(c) primorial-anchored progressions m = k*P (auto-clean at scale A)
+
+   P = 5005 (clean scale A = 13): k = 1..1998, all m = k*P survive at A = 13: OK
+
+-- primor   P=5005 A=13  (6 disjoint instances) --
+   inst S      : -1 +3 -17 -11 -21 +13
+   inst S/sqrt : -0.05 +0.16 -0.93 -0.60 -1.15 +0.71
+   agg  |W| =     1998   S =      -34   S/sqrt|W| =  -0.761   inst signs 2+/4-/00   flip-rate 0.33  -> FLIPS
+   corners: N(+1) = 982   N(-1) = 1016   twins = 183   twin share of N(+1) = 0.1864
+
+   P = 85085 (clean scale A = 17): k = 1..117, all m = k*P survive at A = 17: OK
+
+-- primor   P=85085 A=17  (3 disjoint instances) --
+   inst S      : -7 -3 +3
+   inst S/sqrt : -1.12 -0.48 +0.48
+   agg  |W| =      117   S =       -7   S/sqrt|W| =  -0.647   inst signs 1+/2-/00   flip-rate 0.33  -> FLIPS
+   corners: N(+1) = 55   N(-1) = 62   twins = 12   twin share of N(+1) = 0.2182
+
+==============================================================================
+(d) admissible residue classes mod 385 = 5*7*11
+   admissible classes: 135 (expect (5-2)(7-2)(11-2) = 135)  first = 0, mid = 192, last = 382
+
+-- admcls   r=0 mod 385  (8 disjoint instances) --
+   inst S      : -53 +63 -19 -37 -1 -91 +24 +28
+   inst S/sqrt : -0.93 +1.11 -0.33 -0.65 -0.02 -1.60 +0.42 +0.49
+   agg  |W| =    25974   S =      -86   S/sqrt|W| =  -0.534   inst signs 3+/5-/00   flip-rate 0.38  -> FLIPS
+   corners: N(+1) = 12944   N(-1) = 13030   twins = 2055   twin share of N(+1) = 0.1588
+
+-- admcls   r=192 mod 385  (8 disjoint instances) --
+   inst S      : -81 -1 -5 +11 +65 -81 -14 +16
+   inst S/sqrt : -1.42 -0.02 -0.09 +0.19 +1.14 -1.42 -0.25 +0.28
+   agg  |W| =    25974   S =      -90   S/sqrt|W| =  -0.558   inst signs 3+/5-/00   flip-rate 0.38  -> FLIPS
+   corners: N(+1) = 12942   N(-1) = 13032   twins = 2090   twin share of N(+1) = 0.1615
+
+==============================================================================
+mean E[lam_L lam_R] vs survivor conditioning (scale dependence)
+         M     E[ll]       se | E[ll|A=13]  P(tw|13)     n_13 | E[ll|A=31]  P(tw|31)     n_31
+     1e+05  -0.00184  0.00316 |   -0.00081   0.17958    29670 |   +0.01272   0.28596    18625
+     1e+06  +0.00024  0.00100 |   +0.00007   0.12778   296704 |   +0.00339   0.20352   186276
+     1e+07  +0.00014  0.00032 |   -0.00004   0.09456  2967034 |   +0.00042   0.15062  1862713
+   (null: E[ll|surv] = P(tw|surv) if non-twin survivors were sign-balanced;
+    se ~ 1/sqrt(n) per cell)
+
+==============================================================================
+summary verdict per family (CLT null: S ~ +-sqrt(|W|))
+   family                            |W|        S   S/sqrt   signs  flip  twin/N+  verdict
+   plain    M0=1e+05 H=1e+03       10000      -78   -0.780   3+/6-  0.30   0.0897  FLIPS
+   plain    M0=1e+05 H=1e+04      100000     +246   +0.778   6+/4-  0.40   0.0852  FLIPS
+   plain    M0=1e+05 H=1e+05     1000000     +490   +0.490   6+/4-  0.40   0.0716  FLIPS
+   plain    M0=1e+06 H=1e+03       10000     +156   +1.560   6+/4-  0.40   0.0666  FLIPS
+   plain    M0=1e+06 H=1e+04      100000      +68   +0.215   5+/4-  0.40   0.0646  FLIPS
+   plain    M0=1e+06 H=1e+05     1000000     -382   -0.382   5+/5-  0.50   0.0622  FLIPS
+   plain    M0=5e+06 H=1e+03       10000      -72   -0.720   5+/5-  0.50   0.0542  FLIPS
+   plain    M0=5e+06 H=1e+04      100000     +184   +0.582   5+/5-  0.50   0.0537  FLIPS
+   plain    M0=5e+06 H=1e+05     1000000    +2868   +2.868   8+/2-  0.20   0.0526  FLIPS
+   surv A=13 M0=1e+05 H=1e+03       2966       -6   -0.110   5+/5-  0.50   0.3007  FLIPS
+   surv A=13 M0=1e+05 H=1e+04      29673     +115   +0.668   6+/4-  0.40   0.2866  FLIPS
+   surv A=13 M0=1e+05 H=1e+05     296705     +251   +0.461   5+/4-  0.40   0.2412  FLIPS
+   surv A=13 M0=1e+06 H=1e+03       2968      +76   +1.395   7+/3-  0.30   0.2221  FLIPS
+   surv A=13 M0=1e+06 H=1e+04      29670     +204   +1.184   5+/5-  0.50   0.2162  FLIPS
+   surv A=13 M0=1e+06 H=1e+05     296700     +262   +0.481   5+/5-  0.50   0.2094  FLIPS
+   surv A=13 M0=5e+06 H=1e+03       2966      -46   -0.845   4+/6-  0.40   0.1842  FLIPS
+   surv A=13 M0=5e+06 H=1e+04      29670     -184   -1.068   2+/8-  0.20   0.1826  FLIPS
+   surv A=13 M0=5e+06 H=1e+05     296705     +115   +0.211   5+/5-  0.50   0.1777  FLIPS
+   surv A=31 M0=1e+05 H=1e+03       1858       +4   +0.093   5+/4-  0.40   0.4780  FLIPS
+   surv A=31 M0=1e+05 H=1e+04      18623     +135   +0.989   8+/2-  0.20   0.4551  FLIPS
+   surv A=31 M0=1e+05 H=1e+05     186285     +461   +1.068   6+/4-  0.40   0.3836  FLIPS
+   surv A=31 M0=1e+06 H=1e+03       1876      +68   +1.570   7+/3-  0.30   0.3477  FLIPS
+   surv A=31 M0=1e+06 H=1e+04      18634      +66   +0.483   5+/5-  0.50   0.3455  FLIPS
+   surv A=31 M0=1e+06 H=1e+05     186265     +593   +1.374   7+/3-  0.30   0.3328  FLIPS
+   surv A=31 M0=5e+06 H=1e+03       1867      -31   -0.717   5+/5-  0.50   0.2930  FLIPS
+   surv A=31 M0=5e+06 H=1e+04      18632      +10   +0.073   3+/7-  0.30   0.2888  FLIPS
+   surv A=31 M0=5e+06 H=1e+05     186290     +264   +0.612   6+/4-  0.40   0.2827  FLIPS
+   primor   P=5005 A=13             1998      -34   -0.761   2+/4-  0.33   0.1864  FLIPS
+   primor   P=85085 A=17             117       -7   -0.647   1+/2-  0.33   0.2182  FLIPS
+   admcls   r=0 mod 385            25974      -86   -0.534   3+/5-  0.38   0.1588  FLIPS
+   admcls   r=192 mod 385          25974      -90   -0.558   3+/5-  0.38   0.1615  FLIPS
+
+   families with sign-stable instances: 0/31   max |S|/sqrt|W| over families = 2.868
+   uniform nonvanishing requires |S|/sqrt|W| -> infinity and zero flip rate;
+   see verdicts above (expected: none qualifies - the parity barrier).
+
+done in 4.6s.

@@ -1,0 +1,168 @@
+==============================================================================
+TWO-ENGINE OSCILLATION - Phase 1 phase mechanics (ordered exponent geometry)
+==============================================================================
+[build] Omega array to 6000001 + survivor mask A=13 in 0.4s
+
+-- 1. strike-phase verification, q in [5, 97], m <= 1e+06 --
+   (Lean: strike_phase_left/right, strike_phases_antipodal, admissible_card)
+      q  inv6  resL  resR   #strkL   #strkR  #adm   q-2  status
+      5     1     1     4   200000   200000     3     3  OK
+      7     6     6     1   142857   142858     5     5  OK
+     11     2     2     9    90909    90909     9     9  OK
+     13    11    11     2    76923    76923    11    11  OK
+     17     3     3    14    58824    58823    15    15  OK
+     19    16    16     3    52631    52632    17    17  OK
+     23     4     4    19    43479    43478    21    21  OK
+     29     5     5    24    34483    34482    27    27  OK
+     31    26    26     5    32258    32258    29    29  OK
+     37    31    31     6    27027    27027    35    35  OK
+     41     7     7    34    24391    24390    39    39  OK
+     43    36    36     7    23255    23256    41    41  OK
+     47     8     8    39    21277    21276    45    45  OK
+     53     9     9    44    18868    18868    51    51  OK
+     59    10    10    49    16949    16949    57    57  OK
+     61    51    51    10    16393    16394    59    59  OK
+     67    56    56    11    14925    14926    65    65  OK
+     71    12    12    59    14085    14084    69    69  OK
+     73    61    61    12    13698    13699    71    71  OK
+     79    66    66    13    12658    12659    77    77  OK
+     83    14    14    69    12049    12048    81    81  OK
+     89    15    15    74    11236    11236    87    87  OK
+     97    81    81    16    10309    10310    95    95  OK
+   overall: OK - one class per wing, antipodal, distinct, q-2 admissible
+
+-- 2. per-clock interference factors, q in [5, 199], m <= 1e+06 --
+   r_q = P(q!|L and q!|R) / [P(q!|L) P(q!|R)],  exact CRT = q(q-2)/(q-1)^2
+      q     r_meas    r_exact        err   cumprod_meas cumprod_exact
+      5   0.937500   0.937500  -2.22e-16       0.937500      0.937500
+      7   0.972222   0.972222  -1.62e-07       0.911458      0.911458
+     11   0.990000   0.990000  +2.20e-08       0.902344      0.902344
+     13   0.993056   0.993056  +1.50e-08       0.896077      0.896077
+     17   0.996094   0.996094  +4.15e-09       0.892577      0.892577
+     19   0.996914   0.996914  +9.77e-09       0.889822      0.889822
+     23   0.997934   0.997934  -2.38e-08       0.887984      0.887984
+     29   0.998725   0.998724  +1.98e-08       0.886851      0.886851
+     31   0.998889   0.998889  +4.59e-09       0.885866      0.885866
+     37   0.999228   0.999228  +1.59e-09       0.885182      0.885182
+     41   0.999375   0.999375  -1.35e-08       0.884629      0.884629
+     43   0.999433   0.999433  +1.57e-08       0.884127      0.884128
+     47   0.999527   0.999527  +4.35e-09       0.883710      0.883710
+     53   0.999630   0.999630  -3.02e-09       0.883383      0.883383
+     59   0.999703   0.999703  +5.44e-09       0.883120      0.883120
+     61   0.999722   0.999722  -1.98e-09       0.882875      0.882875
+     67   0.999770   0.999770  -3.96e-09       0.882672      0.882672
+     71   0.999796   0.999796  +2.07e-10       0.882492      0.882492
+     73   0.999807   0.999807  +3.72e-09       0.882322      0.882322
+     79   0.999836   0.999836  -7.16e-09       0.882177      0.882177
+     83   0.999851   0.999851  -7.68e-09       0.882046      0.882046
+     89   0.999871   0.999871  -1.04e-09       0.881932      0.881932
+     97   0.999891   0.999891  -4.71e-09       0.881836      0.881836
+    101   0.999900   0.999900  -2.02e-10       0.881748      0.881748
+    103   0.999904   0.999904  +4.76e-09       0.881663      0.881663
+    107   0.999911   0.999911  +5.66e-09       0.881585      0.881585
+    109   0.999914   0.999914  -3.55e-09       0.881509      0.881509
+    113   0.999920   0.999920  +1.05e-09       0.881439      0.881439
+    127   0.999937   0.999937  +2.54e-10       0.881383      0.881383
+    131   0.999941   0.999941  +1.37e-09       0.881331      0.881331
+    137   0.999946   0.999946  -3.43e-09       0.881283      0.881284
+    139   0.999947   0.999947  -3.76e-09       0.881237      0.881237
+    149   0.999954   0.999954  -1.24e-09       0.881197      0.881197
+    151   0.999956   0.999956  +2.24e-10       0.881158      0.881158
+    157   0.999959   0.999959  -9.51e-10       0.881122      0.881122
+    163   0.999962   0.999962  -3.83e-10       0.881088      0.881088
+    167   0.999964   0.999964  +2.92e-10       0.881056      0.881056
+    173   0.999966   0.999966  -1.80e-09       0.881026      0.881026
+    179   0.999968   0.999968  +1.05e-09       0.880998      0.880999
+    181   0.999969   0.999969  -1.55e-09       0.880971      0.880971
+    191   0.999972   0.999972  +1.09e-09       0.880947      0.880947
+    193   0.999973   0.999973  -1.61e-09       0.880923      0.880923
+    197   0.999974   0.999974  +1.47e-09       0.880900      0.880900
+    199   0.999974   0.999974  +1.28e-09       0.880878      0.880878
+
+   cumulative product over q <= 199: measured 0.880878, exact partial 0.880878
+   Hardy-Littlewood limit 2*C2/1.5 = 4*C2/3 = 0.880216
+   partial/limit = 1.000752  (tail factor prod_(q>199)(1 - 1/(q-1)^2) ~ 0.999249; convergence from above, ~1/(Q log Q) tail)
+
+-- 3. CRT beats of clock pairs (exact fractions over one full period) --
+   pair ( 5, 7), period   35: joint = 3/7 ; (5-2)/5 * (7-2)/7 = 3/7 ; singles 3/5, 5/7 ; EXACT EQUAL
+   pair ( 5,11), period   55: joint = 27/55 ; (5-2)/5 * (11-2)/11 = 27/55 ; singles 3/5, 9/11 ; EXACT EQUAL
+   pair ( 7,11), period   77: joint = 45/77 ; (7-2)/7 * (11-2)/11 = 45/77 ; singles 5/7, 9/11 ; EXACT EQUAL
+   clock independence over CRT period: OK (exact, zero error)
+
+-- 4. foil test of ledger L1: weighted MI(Omega_L; Omega_R), m <= 1e+06 --
+   weights: truth w=1, foil+ w=1+lam_L lam_R, foil- w=1-lam_L lam_R (50 shuffled-weight perms per null)
+
+   == all centers ==
+  channel full 6x6 clip(Omega-1,0..5) (n=1000000):
+    truth : MI = 0.006310 bits   indep-null 0.000018 +/- 0.000005   z_indep =   +1337.1
+    foil+ : MI = 1.002035   dMI = +0.995725  (  +7503.5 sigma_W; shuffled-weight null 0.006344 +/- 0.000133)
+            indep-null 0.996065 +/- 0.000091   excess over mechanical = +0.005970  (    +65.6 sigma_I)
+    foil- : MI = 1.002724   dMI = +0.996414  (  +7115.1 sigma_W; shuffled-weight null 0.006316 +/- 0.000140)
+            indep-null 0.996117 +/- 0.000095   excess over mechanical = +0.006607  (    +69.5 sigma_I)
+    channel verdict: PARITY-SENSITIVE vs truth (max |dMI|/sigma_W = 7503.5); foil MI beyond mechanical accounting (max |MI-indep|/sigma_I = 69.5)
+  channel parity 2x2 (Omega mod 2)    (n=1000000):
+    truth : MI = 0.000000 bits   indep-null 0.000001 +/- 0.000001   z_indep =      -0.7
+    foil+ : MI = 0.999987   dMI = +0.999987  (+750261.2 sigma_W; shuffled-weight null 0.000001 +/- 0.000001)
+            indep-null 0.999987 +/- 0.000000   excess over mechanical = +0.000000  (     +0.2 sigma_I)
+    foil- : MI = 0.999999   dMI = +0.999999  (+1292248.6 sigma_W; shuffled-weight null 0.000001 +/- 0.000001)
+            indep-null 0.999999 +/- 0.000000   excess over mechanical = -0.000000  (     -0.2 sigma_I)
+    channel verdict: PARITY-SENSITIVE vs truth (max |dMI|/sigma_W = 1292248.6); foil MI fully explained by mechanical parity-mass accounting (max |MI-indep|/sigma_I = 0.2)
+  channel graded 3x3 clip((Om-1)//2)  (n=1000000):
+    truth : MI = 0.004324 bits   indep-null 0.000003 +/- 0.000002   z_indep =   +2813.9
+    foil+ : MI = 0.006730   dMI = +0.002406  (    +25.9 sigma_W; shuffled-weight null 0.004346 +/- 0.000093)
+            indep-null 0.018615 +/- 0.000288   excess over mechanical = -0.011885  (    -41.2 sigma_I)
+    foil- : MI = 0.041459   dMI = +0.037135  (   +377.0 sigma_W; shuffled-weight null 0.004335 +/- 0.000098)
+            indep-null 0.019092 +/- 0.000296   excess over mechanical = +0.022366  (    +75.5 sigma_I)
+    channel verdict: PARITY-SENSITIVE vs truth (max |dMI|/sigma_W = 377.0); foil MI beyond mechanical accounting (max |MI-indep|/sigma_I = 75.5)
+
+   == survivors A=13 ==
+  channel full 6x6 clip(Omega-1,0..5) (n=296704):
+    truth : MI = 0.000224 bits   indep-null 0.000035 +/- 0.000014   z_indep =     +13.7
+    foil+ : MI = 0.999773   dMI = +0.999549  ( +21217.9 sigma_W; shuffled-weight null 0.000265 +/- 0.000047)
+            indep-null 0.999532 +/- 0.000014   excess over mechanical = +0.000241  (    +16.7 sigma_I)
+    foil- : MI = 1.000157   dMI = +0.999933  ( +19568.2 sigma_W; shuffled-weight null 0.000266 +/- 0.000051)
+            indep-null 1.000016 +/- 0.000010   excess over mechanical = +0.000141  (    +14.2 sigma_I)
+    channel verdict: PARITY-SENSITIVE vs truth (max |dMI|/sigma_W = 21217.9); foil MI beyond mechanical accounting (max |MI-indep|/sigma_I = 16.7)
+  channel parity 2x2 (Omega mod 2)    (n=296704):
+    truth : MI = 0.000000 bits   indep-null 0.000002 +/- 0.000003   z_indep =      -0.6
+    foil+ : MI = 0.999514   dMI = +0.999514  (+374193.3 sigma_W; shuffled-weight null 0.000002 +/- 0.000003)
+            indep-null 0.999514 +/- 0.000002   excess over mechanical = +0.000000  (     +0.2 sigma_I)
+    foil- : MI = 0.999998   dMI = +0.999998  (+185502.6 sigma_W; shuffled-weight null 0.000003 +/- 0.000005)
+            indep-null 0.999998 +/- 0.000000   excess over mechanical = +0.000000  (     +0.0 sigma_I)
+    channel verdict: PARITY-SENSITIVE vs truth (max |dMI|/sigma_W = 374193.3); foil MI fully explained by mechanical parity-mass accounting (max |MI-indep|/sigma_I = 0.2)
+  channel graded 3x3 clip((Om-1)//2)  (n=296704):
+    truth : MI = 0.000127 bits   indep-null 0.000008 +/- 0.000005   z_indep =     +23.1
+    foil+ : MI = 0.009040   dMI = +0.008913  (   +308.5 sigma_W; shuffled-weight null 0.000132 +/- 0.000029)
+            indep-null 0.011995 +/- 0.000550   excess over mechanical = -0.002955  (     -5.4 sigma_I)
+    foil- : MI = 0.020413   dMI = +0.020286  (   +603.2 sigma_W; shuffled-weight null 0.000136 +/- 0.000034)
+            indep-null 0.018167 +/- 0.000413   excess over mechanical = +0.002246  (     +5.4 sigma_I)
+    channel verdict: PARITY-SENSITIVE vs truth (max |dMI|/sigma_W = 603.2); foil MI beyond mechanical accounting (max |MI-indep|/sigma_I = 5.4)
+
+-- 5. sign-corner visitation per decade of m --
+             decade      (+,+)     (+,-)     (-,+)     (-,-)   all>0
+   [1e+03, 1e+04)       2151      2245      2273      2331      OK
+   [1e+04, 1e+05)      22226     22493     22563     22718      OK
+   [1e+05, 1e+06)     224426    224742    225047    225785      OK
+
+   prime-power corner witnesses (Lean families), m <= 1e+07:
+   5^(2k+1) as L-values  (predict lam_L = -1 for every k):
+     e      v=5^e         m  Om(v)  lamL  pred  lamR  corner  status
+     1          5         1      1    -1    -1    -1   (-,-)  OK
+     3        125        21      3    -1    -1    -1   (-,-)  OK
+     5       3125       521      5    -1    -1    +1   (-,+)  OK
+     7      78125     13021      7    -1    -1    +1   (-,+)  OK
+     9    1953125    325521      9    -1    -1    -1   (-,-)  OK
+    11   48828125   8138021     11    -1    -1    +1   (-,+)  OK
+   7^k as R-values  (predict lam_R = (-1)^k, alternating):
+     k      v=7^k         m  Om(v)  lamR  pred  lamL  corner  status
+     1          7         1      1    -1    -1    -1   (-,-)  OK
+     2         49         8      2    +1    +1    -1   (-,+)  OK
+     3        343        57      3    -1    -1    +1   (+,-)  OK
+     4       2401       400      4    +1    +1    -1   (-,+)  OK
+     5      16807      2801      5    -1    -1    +1   (+,-)  OK
+     6     117649     19608      6    +1    +1    +1   (+,+)  OK
+     7     823543    137257      7    -1    -1    -1   (-,-)  OK
+     8    5764801    960800      8    +1    +1    -1   (-,+)  OK
+     9   40353607   6725601      9    -1    -1    +1   (+,-)  OK
+
+done in 20.1s.

@@ -1,0 +1,175 @@
+==============================================================================
+MIRROR PAIRING HARNESS -- Line A recon (phase-mirror involution)
+M = 1e+06, scales A = [13, 31, 101]
+==============================================================================
+[grades] Omega/omega arrays to 6000001 built in 0.8s
+
+==============================================================================
+A = 13
+==============================================================================
+clean 296704 (0.296704, CRT product 0.296703)  killed 703296
+
+variant            n_valid   oor  (i)killed  (ii)label (iii)flip    +-se      z  (iv)invol fixpts
+V1-block-mirror     703295     1   1.000000   0.902273   0.49949 0.00060   -0.9   0.902273      0
+V2-phase-shift      703296     0   1.000000   0.818751   0.49973 0.00060   -0.5   0.818751      0
+V3-near-shift       703291     5   1.000000   0.850570   0.49934 0.00060   -1.1   0.850570      0
+
+graded-sign flip rates vs independence null (excess = obs - null; z approx):
+  sign      pairing             p_src   p_tgt     null      obs   excess       z
+  wingSign  V1-block-mirror    0.5002  0.5001  0.50000  0.49949 -0.00051    -0.9
+  wingSign  V2-phase-shift     0.5002  0.5000  0.50000  0.49973 -0.00027    -0.5
+  wingSign  V3-near-shift      0.5002  0.4997  0.50000  0.49934 -0.00066    -1.1
+  leftSign  V1-block-mirror    0.5011  0.5005  0.50000  0.50105 +0.00106    +1.8
+  leftSign  V2-phase-shift     0.5011  0.5001  0.50000  0.49979 -0.00021    -0.3
+  leftSign  V3-near-shift      0.5011  0.5008  0.50000  0.50081 +0.00081    +1.4
+  rightSign V1-block-mirror    0.5014  0.5005  0.50000  0.50034 +0.00034    +0.6
+  rightSign V2-phase-shift     0.5014  0.4998  0.50000  0.49957 -0.00043    -0.7
+  rightSign V3-near-shift      0.5014  0.5004  0.50000  0.50229 +0.00229    +3.8
+  roughLR   V1-block-mirror    0.5003  0.5001  0.50000  0.49727 -0.00272    -4.6
+  roughLR   V2-phase-shift     0.5003  0.5006  0.50000  0.49786 -0.00214    -3.6
+  roughLR   V3-near-shift      0.5003  0.5005  0.50000  0.49916 -0.00084    -1.4
+  roughL    V1-block-mirror    0.4761  0.4731  0.49871  0.49882 +0.00011    +0.2
+  roughL    V2-phase-shift     0.4761  0.4712  0.49862  0.49896 +0.00034    +0.6
+  roughL    V3-near-shift      0.4761  0.4717  0.49864  0.49846 -0.00019    -0.3
+  roughR    V1-block-mirror    0.4765  0.4737  0.49876  0.49915 +0.00039    +0.7
+  roughR    V2-phase-shift     0.4765  0.4713  0.49865  0.49865 -0.00000    -0.0
+  roughR    V3-near-shift      0.4765  0.4721  0.49869  0.49862 -0.00006    -0.1
+  omegaLR   V1-block-mirror    0.4999  0.5000  0.50000  0.50060 +0.00060    +1.0
+  omegaLR   V2-phase-shift     0.4999  0.5000  0.50000  0.49957 -0.00043    -0.7
+  omegaLR   V3-near-shift      0.4999  0.4999  0.50000  0.50102 +0.00102    +1.7
+
+exactness audit (flip == 100% or 0% exactly?):
+  no exact variant. farthest from coin-flip: roughLR/V1-block-mirror rate 0.49727 (349731/703295); first non-conforming centers m = [6, 8, 9]
+
+failure structure, base wingSign, pairing V3-near-shift:
+  A=13 V3-near-shift: joint clipped total grade T(m) rows vs T(pair m) cols among 352110 sign-flip FAILURES, %:
+              0      1      2      3      4      5    >=6
+      0   0.000  0.000  0.000  0.000  0.000  0.000  0.000
+      1   0.000  0.780  0.000  4.716  0.000  2.076  0.151
+      2   0.000  0.000  9.936  0.000 12.799  0.000  2.250
+      3   0.000  3.747  0.000 19.948  0.000  7.975  0.598
+      4   0.000  0.000  9.788  0.000 10.712  0.000  1.708
+      5   0.000  1.238  0.000  6.020  0.000  2.097  0.129
+    >=6   0.000  0.072  1.321  0.357  1.319  0.106  0.155
+  mean T among successes: m 3.116 / pair 3.331;  among failures: m 3.115 / pair 3.328
+
+null calibration (pairing V3-near-shift):
+  iid random +-1 sign: flip rate 0.49990 (base ~0.5)
+  wingSign flip: truth 0.49934  foil+ 0.49964  foil- 0.49904
+  label preservation under truth: 0.85057
+  label preservation under foil+: 0.84999
+  label preservation under foil-: 0.85115
+
+==============================================================================
+A = 31
+==============================================================================
+clean 186276 (0.186276, CRT product 0.186275)  killed 813724
+
+variant            n_valid   oor  (i)killed  (ii)label (iii)flip    +-se      z  (iv)invol fixpts
+V1-block-mirror     813721     3   1.000000   0.808862   0.49970 0.00055   -0.5   0.808862      0
+V2-phase-shift      813723     1   1.000000   0.733466   0.49992 0.00055   -0.1   0.733466      0
+V3-near-shift       813716     8   1.000000   0.761521   0.49973 0.00055   -0.5   0.761521      0
+
+graded-sign flip rates vs independence null (excess = obs - null; z approx):
+  sign      pairing             p_src   p_tgt     null      obs   excess       z
+  wingSign  V1-block-mirror    0.4998  0.5000  0.50000  0.49970 -0.00030    -0.5
+  wingSign  V2-phase-shift     0.4998  0.4998  0.50000  0.49992 -0.00008    -0.1
+  wingSign  V3-near-shift      0.4998  0.4997  0.50000  0.49973 -0.00027    -0.5
+  leftSign  V1-block-mirror    0.5032  0.5004  0.50000  0.50078 +0.00078    +1.4
+  leftSign  V2-phase-shift     0.5032  0.5002  0.50000  0.49970 -0.00030    -0.5
+  leftSign  V3-near-shift      0.5032  0.5005  0.50000  0.50047 +0.00048    +0.9
+  rightSign V1-block-mirror    0.5036  0.5005  0.50000  0.50021 +0.00021    +0.4
+  rightSign V2-phase-shift     0.5036  0.4999  0.50000  0.49957 -0.00043    -0.8
+  rightSign V3-near-shift      0.5036  0.5007  0.50000  0.50180 +0.00180    +3.3
+  roughLR   V1-block-mirror    0.5132  0.5167  0.49956  0.49780 -0.00176    -3.2
+  roughLR   V2-phase-shift     0.5132  0.5180  0.49952  0.49663 -0.00289    -5.2
+  roughLR   V3-near-shift      0.5132  0.5184  0.49951  0.49897 -0.00055    -1.0
+  roughL    V1-block-mirror    0.4125  0.3992  0.48235  0.48513 +0.00277    +5.0
+  roughL    V2-phase-shift     0.4125  0.3957  0.48174  0.48546 +0.00372    +6.7
+  roughL    V3-near-shift      0.4125  0.3958  0.48176  0.48479 +0.00303    +5.5
+  roughR    V1-block-mirror    0.4127  0.3994  0.48243  0.48693 +0.00450    +8.1
+  roughR    V2-phase-shift     0.4127  0.3957  0.48179  0.48559 +0.00380    +6.9
+  roughR    V3-near-shift      0.4127  0.3959  0.48182  0.48485 +0.00303    +5.5
+  omegaLR   V1-block-mirror    0.4997  0.5000  0.50000  0.50047 +0.00048    +0.9
+  omegaLR   V2-phase-shift     0.4997  0.5000  0.50000  0.49963 -0.00037    -0.7
+  omegaLR   V3-near-shift      0.4996  0.4998  0.50000  0.50107 +0.00107    +1.9
+
+exactness audit (flip == 100% or 0% exactly?):
+  no exact variant. farthest from coin-flip: roughL/V3-near-shift rate 0.48479 (394481/813716); first non-conforming centers m = [4, 6, 24]
+
+failure structure, base wingSign, pairing V1-block-mirror:
+  A=31 V1-block-mirror: joint clipped total grade T(m) rows vs T(pair m) cols among 407103 sign-flip FAILURES, %:
+              0      1      2      3      4      5    >=6
+      0   0.000  0.000  0.000  0.000  0.000  0.000  0.000
+      1   0.000  0.927  0.000  5.814  0.000  2.485  0.184
+      2   0.000  0.000 11.005  0.000 13.990  0.000  2.337
+      3   0.000  3.810  0.000 20.051  0.000  7.513  0.481
+      4   0.000  0.000  9.524  0.000  9.496  0.000  1.213
+      5   0.000  1.285  0.000  5.469  0.000  1.457  0.074
+    >=6   0.000  0.095  1.350  0.315  0.982  0.065  0.076
+  mean T among successes: m 2.998 / pair 3.275;  among failures: m 3.000 / pair 3.275
+
+null calibration (pairing V1-block-mirror):
+  iid random +-1 sign: flip rate 0.50120 (base ~0.5)
+  wingSign flip: truth 0.49970  foil+ 0.49974  foil- 0.49967
+  label preservation under truth: 0.80886
+  label preservation under foil+: 0.80931
+  label preservation under foil-: 0.80842
+
+==============================================================================
+A = 101
+==============================================================================
+clean 112859 (0.112859, CRT product 0.112616)  killed 887141
+
+variant            n_valid   oor  (i)killed  (ii)label (iii)flip    +-se      z  (iv)invol fixpts
+V1-block-mirror     887137     4   1.000000   0.754172   0.49945 0.00053   -1.0   0.754172      0
+V2-phase-shift      887139     2   1.000000   0.684950   0.49951 0.00053   -0.9   0.684950      0
+V3-near-shift       887128    13   1.000000   0.709825   0.49988 0.00053   -0.2   0.709825      0
+
+graded-sign flip rates vs independence null (excess = obs - null; z approx):
+  sign      pairing             p_src   p_tgt     null      obs   excess       z
+  wingSign  V1-block-mirror    0.4978  0.4998  0.50000  0.49945 -0.00055    -1.0
+  wingSign  V2-phase-shift     0.4978  0.4997  0.50000  0.49951 -0.00049    -0.9
+  wingSign  V3-near-shift      0.4978  0.4998  0.50000  0.49988 -0.00012    -0.2
+  leftSign  V1-block-mirror    0.5093  0.5004  0.49999  0.50047 +0.00048    +0.9
+  leftSign  V2-phase-shift     0.5093  0.5004  0.49999  0.49956 -0.00043    -0.8
+  leftSign  V3-near-shift      0.5093  0.5004  0.49999  0.50039 +0.00040    +0.7
+  rightSign V1-block-mirror    0.5096  0.5005  0.49999  0.50026 +0.00027    +0.5
+  rightSign V2-phase-shift     0.5096  0.4996  0.50001  0.49991 -0.00009    -0.2
+  rightSign V3-near-shift      0.5096  0.5009  0.49998  0.50169 +0.00171    +3.2
+  roughLR   V1-block-mirror    0.6081  0.6207  0.47390  0.47243 -0.00147    -2.8
+  roughLR   V2-phase-shift     0.6081  0.6217  0.47367  0.47282 -0.00085    -1.6
+  roughLR   V3-near-shift      0.6081  0.6241  0.47317  0.47097 -0.00220    -4.1
+  roughL    V1-block-mirror    0.2619  0.2501  0.38101  0.38552 +0.00451    +8.7
+  roughL    V2-phase-shift     0.2619  0.2486  0.38029  0.38525 +0.00497    +9.6
+  roughL    V3-near-shift      0.2619  0.2477  0.37986  0.38500 +0.00515   +10.0
+  roughR    V1-block-mirror    0.2621  0.2505  0.38130  0.38706 +0.00577   +11.1
+  roughR    V2-phase-shift     0.2621  0.2489  0.38051  0.38603 +0.00552   +10.7
+  roughR    V3-near-shift      0.2621  0.2479  0.38004  0.38532 +0.00529   +10.2
+  omegaLR   V1-block-mirror    0.4978  0.4998  0.50000  0.50033 +0.00033    +0.6
+  omegaLR   V2-phase-shift     0.4978  0.5000  0.50000  0.49951 -0.00049    -0.9
+  omegaLR   V3-near-shift      0.4978  0.4997  0.50000  0.50125 +0.00126    +2.4
+
+exactness audit (flip == 100% or 0% exactly?):
+  no exact variant. farthest from coin-flip: roughL/V3-near-shift rate 0.38500 (341548/887128); first non-conforming centers m = [4, 6, 8]
+
+failure structure, base wingSign, pairing V1-block-mirror:
+  A=101 V1-block-mirror: joint clipped total grade T(m) rows vs T(pair m) cols among 444057 sign-flip FAILURES, %:
+              0      1      2      3      4      5    >=6
+      0   0.000  0.000  0.000  0.000  0.000  0.000  0.000
+      1   0.000  1.182  0.000  7.195  0.000  3.036  0.220
+      2   0.000  0.000 11.593  0.000 14.812  0.000  2.498
+      3   0.000  3.627  0.000 19.201  0.000  7.273  0.469
+      4   0.000  0.000  8.770  0.000  8.763  0.000  1.121
+      5   0.000  1.178  0.000  5.015  0.000  1.336  0.068
+    >=6   0.000  0.087  1.238  0.289  0.900  0.059  0.070
+  mean T among successes: m 2.902 / pair 3.285;  among failures: m 2.902 / pair 3.285
+
+null calibration (pairing V1-block-mirror):
+  iid random +-1 sign: flip rate 0.50096 (base ~0.5)
+  wingSign flip: truth 0.49945  foil+ 0.49966  foil- 0.49924
+  label preservation under truth: 0.75417
+  label preservation under foil+: 0.75693
+  label preservation under foil-: 0.75144
+
+done.

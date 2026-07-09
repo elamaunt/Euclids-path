@@ -116,6 +116,29 @@ mathematical strength. The strength of the decree is exactly what has been put i
 not a gram more. We have smuggled nothing in under the guise of markers: the "event 0 → 1" is exactly
 equal to the accepted twin boundary.
 
+## Why only the twins — the Option A criterion
+
+Why, of all the problems, does the decree carry exactly the twin boundary? The honesty criterion is a
+single one: **a boundary may be taken only if postulating it = postulating exactly its conjecture** —
+that is, the boundary is provably **equivalent** to the conjecture, with *both* directions of the
+equivalence **non-vacuous** (machine-checked in `Engine/Step00FrontClosureAudit`). Then the decree is
+neither weaker nor stronger than the conclusion.
+
+- **Twins pass.** `SerialTwinBoundaryObligation` is two-sidedly and non-vacuously ⟺ the twin
+  conjecture: to accept the boundary = to accept exactly the twins.
+- **Riemann fails.** The manifestation law ⟺ RH only *under* the twin boundary (conditionally,
+  [chapter 38](38_RiemannFirstCause.md)); and the unconditional two-sided form is the condemned bridge
+  `offCriticalBridge_iff_RH`, a verbatim renaming of the goal. There is no clean two-sided non-vacuous
+  ⟺ RH for the boundary: it would either smuggle the twins in or rename the goal. **Withdrawn (Option A).**
+- **Navier–Stokes fails.** The gate law yields only a surrogate forward; the reverse is unknown (there
+  is no divergence theorem on ℝ³). One-sided is not a two-sided ⟺. **Withdrawn.**
+- **P/NP, Yang–Mills, Hodge** failed the trilemma (the universal form is refutable / the existential is
+  vacuous / the manifestation is a renaming of the goal) — **never taken** as boundaries.
+- **Collatz** was taken, but its rope law was machine-refuted (witness n = 27) — **removed**.
+
+Hence Option A: exactly one boundary passed the criterion — the twin one. The detached problems live as
+honest *conditional* fronts (a green reduction + a red input), not as decree results.
+
 ## What the decree gives — and what it does not
 
 The axiom is locked in a **quarantine module**, and the quarantine is not a metaphor but a machine

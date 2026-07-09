@@ -31,9 +31,11 @@ Start with the carrier.
 > **Definition 58.1** (profinite completion). $\widehat{\mathbb{Z}} = \varprojlim_n \mathbb{Z}/n\mathbb{Z}$
 > is the inverse limit of the residue rings. By the Chinese Remainder Theorem it factors into the
 > $p$-adic integers:
+>
 > $$
 > \widehat{\mathbb{Z}} \;\cong\; \prod_p \mathbb{Z}_p. \tag{58.1}
 > $$
+>
 > Topologically it is a compact, totally disconnected, perfect ring — a Cantor dust. The naturals embed
 > densely, $\mathbb{N} \hookrightarrow \widehat{\mathbb{Z}}$.
 

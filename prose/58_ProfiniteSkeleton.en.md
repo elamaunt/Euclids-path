@@ -9,7 +9,9 @@
 > Lean: `Engine/GenealogyForest.lean` (`PeelStep`, `IsRoot`, `root_iff_twin`,
 > `descent_reaches_twin`, `peelStep_lt`), `Engine/Residuals.lean` (`CleanZ`,
 > `carrier_nonempty_above`, `sink_is_twin`), `Engine/Step00GenealogicalOrnament.lean`
-> (`ActiveSieveSafe`, `safeHole_implies_twin`), `Engine/ParityBarrier.lean`
+> (`ActiveSieveSafe`, `safeHole_implies_twin`, `no_perpetualEngine`, `NoSafeHoleAbove`,
+> `OrnamentEngineBridge`), `Engine/Step00FlatCycleEngine.lean` (`no_flatCostFreeCycle`),
+> `Engine/ParityBarrier.lean`
 > (`parityBlind_cannot_certify_twin`, `sound_cert_requires_cofinal_information`,
 > `exists_clean_nonTwin_block`), `Engine/RiemannLiouville.lean` (`liouville_eq_neg_one_pow_rank`).
 > This chapter is a survey: it proves no new theorem. It places the already-proved scaffold on its
@@ -136,6 +138,67 @@ so $\lambda$ is governed by the **zeros** of $\zeta$ — it lives not on the ari
 repository is the projection onto the parity-blind fractal skeleton ($\widehat{\mathbb{Z}}$,
 `ActiveSieveSafe`, `carrier_nonempty_above`, the descent forest); the missing bit is occupancy, and it
 lies orthogonally. This chapter **locates** the answer, it does not reach it.
+
+## 6. The two Euclid engines and their conspiracy
+
+Gather the whole arc into one concept: the problem has **two engines**.
+
+**The ordinary Euclid engine $E$** — the well-founded rank descent (`no_perpetualEngine`,
+`no_flatCostFreeCycle`, [01](01_EPMI.en.md)): there is no infinite strictly-decreasing path in $\mathbb{N}$, so the
+descent terminates and its sinks are the twins (Theorem 58.2). $E$ forces by **monotonicity** and
+determines the **skeleton**; it is green and blind to parity.
+
+> **Definition 58.6** (orthogonal Euclid engine). $E^{\perp}$ is an operator on a domain $R$, dual to
+> $E$ by three properties. **(O1)** It is sensitive to the sign $\lambda=(-1)^{\Omega}$, orthogonal to
+> all rank/congruence data (`sound_cert_requires_cofinal_information`). **(O2)** It forces not by
+> monotonicity but by **cancellation**: it forbids the $\lambda$-conspiracy (Selberg's parity
+> phenomenon) via a square-root-cancellation bound. **(O3)** Together with $E$ it gives both structure
+> and population: $E$ the descent forest and its sinks, $E^{\perp}$ their cofinality (infinitely many
+> twins).
+
+| | $E$ — ordinary | $E^{\perp}$ — orthogonal |
+|---|---|---|
+| forces by | monotonicity (well-founded $\mathbb{N}$) | cancellation (spectral, square-root) |
+| spins the impossibility of | a perpetual engine | the $\lambda$-conspiracy |
+| sees | the skeleton (rank, congruences) | the occupancy (parity $\lambda$) |
+| over $\mathbb{Z}$ | 🟢 present (`no_perpetualEngine`), insufficient | 🔴 absent ($=$ `sorry`) |
+| over $\mathbb{F}_q[t]$ | present (degree — same type) | present (derivative/Frobenius) $\to$ twins |
+
+**The conspiracy is the bridge skeleton$\to$occupancy.** In engine form it is exactly
+`OrnamentEngineBridge`: from the absence of occupancy above $M_0$ (`NoSafeHoleAbove`) one builds a
+perpetual engine, which is impossible, whence a twin above $M_0$:
+
+$$
+\text{no twin above } M_0 \;\Rightarrow\; \text{a perpetual engine} \;\Rightarrow\; \bot
+\;\Rightarrow\; \exists\ \text{twin} > M_0. \tag{58.4}
+$$
+
+If bridge (58.4) held, twins would be a theorem. The temptation is that $E$ itself conspires them (no
+occupancy $\Rightarrow$ a perpetual engine $\Rightarrow \bot$). But that is false, for two reasons.
+
+> **Statement 58.7** (the conspiracy is $E^{\perp}$'s work, not $E$'s). The premise "only a perpetual
+> engine could conspire the realities" is false, and the function field refutes it: over
+> $\mathbb{F}_q[t]$ the two realities **are** conspired — not by a perpetual engine, but by $E^{\perp}$ =
+> the derivative $d/dt$ and Frobenius (the identity $f=r+s^p$, $(s^p)'=0$ makes $\mu$ a quadratic
+> character; Deligne's RH gives the square-root cancellation $q^{i/2}$). This is the Sawin-Shusterman
+> theorem (*Annals of Mathematics*, 2022): the exact Hardy-Littlewood asymptotic for twins over
+> $\mathbb{F}_q[t]$. Over $\mathbb{Z}$ this $E^{\perp}$ does not exist.
+
+Over $\mathbb{Z}$, $E$ itself is **orthogonal** to the gap: the object it would force is an oscillation
+of the sign $\lambda$ (the sum $L(x)$ crosses $0$, Haselgrove), and `no_flatCostFreeCycle` forbids only
+a **monotone** cycle, not an oscillation. Hence the only conspiracy theorem over $\mathbb{Z}$ is the
+reverse of the one hoped for.
+
+> **Theorem 58.8** (no-go: the skeleton does not self-conspire). A sound twin-certificate depending only
+> on a finite slice (rank / wheel / descent) cannot exist (`parityBlind_cannot_certify_twin`,
+> Theorem 58.4). That is, $E$ is provably **orthogonal** to occupancy, and bridge (58.4) is unprovable
+> from the skeleton: to prove it is to prove the twins. 🟢
+
+**Section summary.** Over $\mathbb{F}_q[t]$ the conspiracy happened — $E^{\perp}$ made it (Weil/Deligne +
+Sawin-Shusterman), and it is a genuine theorem of that world. Over $\mathbb{Z}$, $E$ is orthogonal to
+the gap, $E^{\perp}$ is absent (no derivative), and only the **no-go** is proved: the skeleton does not
+self-conspire. The positive bridge (58.4) over $\mathbb{Z}$ is `twin_prime_conjecture` $=$ `sorry`,
+standing exactly at the place of the missing $E^{\perp}$.
 
 ## Epilogue
 

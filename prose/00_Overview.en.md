@@ -14,13 +14,11 @@
 > remains open.
 > **Status legend:** 🟢 — machine-proven under the standard Lean/mathlib axioms;
 > 🟡 — **AXIOM-TAINTED**: conditional on the repository's single axiom `step00FirstCause`
-> (the first cause `0 → 1` with three boundaries — the twin node, the Riemann manifestation law and
-> the NS gate-law of energy balance; the fourth, Collatz boundary, was taken and WITHDRAWN after the
-> machine refutation of its law — see chapters 55–56; quarantine
-> `Engine/CausalClosureAxiom.lean`, exactly 47 such declarations — 43 in quarantine, 2 declarations
-> of the chapter 49 geometry (intersection of lines from the same twin boundary) and 2 declarations
-> of the dyadic origin (the cascade pump `n=0` through the boundary `nsBoundary`), with no leaks —
-> the verifier tracks every one);
+> (the first cause `0 → 1` with ONE boundary — the twin node: postulating it = postulating exactly the
+> twins; Riemann, Navier–Stokes and P/NP were **detached** from the decree (Option A, chapters
+> 38/41/39, machine-checked in `Engine/Step00FrontClosureAudit`), and the fourth, Collatz boundary was
+> taken and WITHDRAWN after the machine refutation of its law — see chapters 55–56; **16 such
+> declarations, all asserting the twins**, with no leaks — the verifier tracks every one at each build);
 > 🔴 — an open node / goal.
 > The goal itself, `twin_prime_conjecture`, remains `sorry`. Nothing stronger than machine facts is claimed here.
 > All key notions of the programme are gathered in the [glossary](GLOSSARY.md).
@@ -259,9 +257,10 @@ of the bridges: `offCriticalBridge_iff_RH`, `coherentTwoTransportBridge_iff_RH`,
 `no_coherent_twoTransportLaw` — the decompositions are maps of obligations, not a non-circular path.
 
 ✳️ **Through the first cause (chapter 38):** RH is run through the same rank machine as the twins —
-a zero off the line = an unpaid deviation; the manifestation law (the decree's second boundary;
+a zero off the line = an unpaid deviation; the manifestation law (the Riemann boundary, subsequently
+**withdrawn** from the decree, Option A — a detached front, not a live decree boundary;
 manifestation is the principle "a deviation must show itself", see the [glossary](GLOSSARY.md)) +
-the green impossibility of supply at permitted scales ⟹ `riemannHypothesis_from_firstCause` 🟡.
+the green impossibility of supply at permitted scales ⟹ `riemannHypothesis_from_firstCause` (conditional, WITHDRAWN dead code).
 Not a proof of RH; the price is disclosed: `riemannManifestation_asserts_RH` — under the boundary
 the law is ⟺ RH.
 
@@ -273,9 +272,10 @@ incompressibility is unconditional (`concrete_localSearchIncompressible_smallSca
 ✳️ **The reading "NP = full payment of rank certificates, P = rank-fast passage" is a theorem**:
 `pnp_rank_separation_smallScale` 🟢 and `concrete_localPSuccess_iff_fullPayment` 🟢 (chapter 39);
 the split across scales — the decree at `A ≥ 5` itself pays all the certificates
-(`decreedScale_fullPayment` 🟡); there is machine-checkedly no third boundary of the decree (the
+(`decreedScale_fullPayment` 🟡); there is machine-checkedly no P/NP boundary of the decree (the
 trilemma — the mandatory three-branch test of a boundary candidate,
-see the [glossary](GLOSSARY.md): two candidates are refutable, the third is vacuous).
+see the [glossary](GLOSSARY.md): two candidates are refutable, the third is vacuous). The decree's
+only live boundary is the twins.
 
 ⚠️ **Vacuity no. 4:** the decider-gated extraction fronts are classically empty (`PDecider` is
 free) — their separation conclusions are vacuous. The classical separation
@@ -290,14 +290,14 @@ EPMI mechanism in $\mathbb{R}_{\ge0}$). Nothing is claimed about global regulari
 cascade = a perpetual engine; `noSingularCascade_of_energyBalance` 🟢 — there are no blow-up points
 of cascade type (the surrogate ≠ C^∞ — disclosed); the integral is taken —
 `energy_identity_of_energyBalance` 🟢 (the identity as an equality) and `isNSSolution_integral_form`
-🟢 (the mild form, an E3-valued FTC). There is no fifth boundary of the decree — the trilemma of
+🟢 (the mild form, an E3-valued FTC). There is no Navier–Stokes boundary of the decree — the trilemma of
 chapter 41 (cookedFlow / the zero solution / a forged profile cascade).
 
 **Yang–Mills — a structural result, not Clay (chapter 40).** 🟢: masslessness = a perpetual engine
 (the halving ladder — the very ℝ-counterexample of the cascade warning); **quantization of the
 spectrum ⟹ a mass gap** (`massGap_of_quantizationLaw`: ladder + rank = ℕ-descent, killed by EPMI).
 
-There is no fourth boundary of the decree — the trilemma is machine-checked (the universal is
+There is no Yang–Mills boundary of the decree — the trilemma is machine-checked (the universal is
 refutable, the existential is vacuous, the Riemann mirror is incompatible with the accepted
 boundary — the ladder is presentable, unlike the zero; the collapse
 `quantizationLaw_iff_massGap` — the law is ⟺ the gap, green without the boundary). The decree's
@@ -311,7 +311,7 @@ asymmetry with YM is disclosed); `hodgeProperty_of_descentLaw` — the descent l
 conjecture (strong induction on height).
 
 The collapse `descentLaw_iff_hodgeProperty` (the converse
-side is vacuous — disclosed) — there is no sixth field; the trilemma of chapter 42: the universal
+side is vacuous — disclosed) — there is no Hodge boundary of the decree; the trilemma of chapter 42: the universal
 is refutable (cookedUnpaid), the existential is proven with no axioms at all, the chain form
 degenerates into the green one (V2′), manifestation over a presentable class is incompatible with
 the boundary. mathlib has no Hodge theory; the 🔴 input — `DescentLaw` for genuine (p,p)-classes.
@@ -326,33 +326,20 @@ tokens carry a free field `witness : Prop`, the "engine" is built trivially, the
 conclusions of these bricks are vacuous; the routes in this form cannot be instantiated. The branch
 has no unconditional strong conclusions.
 
-**First cause — 🟡 quarantine, three boundaries.** The single axiom `step00FirstCause` carries the
-twin node (`causalBoundary`), the Riemann manifestation law (`riemannBoundary`, chapter 38) and the
-NS gate-law of energy balance (`nsBoundary`, chapter 41 — the finishing blow: it survived the
-extended trilemma, two forgings were killed by gates; the decree may overpay — disclosed).
-
-The
-fourth boundary — the Collatz rope law — was *taken and withdrawn*: the universal law is
-machine-refuted (`ropeLaw_universal_refuted`, witness n = 27), the tripwire (an intentional
-explosion detector, see the [glossary](GLOSSARY.md)) fired, the decree overpaid into falsehood
-(the story — chapter 56).
-
-47 AXIOM-TAINTED declarations (42 in the quarantine module + the
-corollary `higherEnergyIncompatibility_twins` + 2 of the chapter 49 geometry through the twin
-boundary + 2 of the dyadic origin through `nsBoundary`); the verifier recounts every one at each
-build.
-
-There is no third (P/NP) boundary — intentionally and machine-checkedly (the trilemma of
-chapter 39), nor a fourth (Yang–Mills), a fifth (NS) or a sixth (Hodge)
-(the trilemmas of chapters 40–42); §11–§14 of the quarantine record that the decree already speaks
-the languages of P/NP and YM (at its own scale `A ≥ 5` it pays all the certificates and refuses the
-supply of deviations — gapped), and carry one tripwire each for NS and Hodge.
-
-Consistency of the
-extended theory ⟺ irrefutability of the node and of RH in the base (the tripwires — the node / an
-off-critical zero / ¬RH / the law / incompressibility at all scales / supply at all scales /
-the manifestation laws of NS and Hodge); internalisation of the
-first cause is impossible — an engine (`no_internalSelfDerivation_step00CausalClosure`, 🟢).
+**First cause — 🟡 quarantine, ONE boundary.** The single axiom `step00FirstCause` carries **only the
+twin node** (`causalBoundary`): postulating it = postulating exactly the twins (the two-sided,
+non-vacuous equivalence of the boundary and the conjecture, machine-checked in
+`Engine/Step00FrontClosureAudit`). Riemann (chapter 38), Navier–Stokes (chapter 41) and P/NP (chapter
+39) once projected onto the decree, but were **detached** (Option A): they lack a two-sided boundary
+equivalent to their conjecture, so they were withdrawn from the axiom and live as honest green/red
+*conditional* fronts — not results. The fourth, Collatz boundary was taken and WITHDRAWN after the
+machine refutation of its law (`ropeLaw_universal_refuted`, witness n = 27; the tripwire fired, the
+decree overpaid into falsehood — chapter 56). **16 AXIOM-TAINTED declarations, all asserting the
+twins** (13 in the generated flow formulation + the corollary `higherEnergyIncompatibility_twins` + 2
+of the chapter 49 geometry through the same twin boundary); the verifier recounts every one at each
+build. That the P/NP, Yang–Mills and Hodge boundaries are NOT taken is machine-checked (the trilemmas
+of chapters 39–42). Internalisation of the first cause is impossible — an engine
+(`no_internalSelfDerivation_step00CausalClosure`, 🟢).
 
 **The honest bottom line.** The 🟢 corpus is a genuinely verified machine: the engine, the
 reductions, the audits, the main theorem (its core). The 🟡 layer is exactly what is paid for by
@@ -365,8 +352,8 @@ We have introduced the object (`no_infinite_descent`), declared the strategy (co
 through the engine), charted parts I–VIII and set `higherEnergyIncompatibility_main` at the top of
 the map: knowledge from inside costs a perpetual engine, which does not exist. The next chapter,
 [01. EPMI](01_EPMI.md), builds the foundation literally — on the bare Lean kernel; chapters 33–42
-unfold the first cause (three boundaries — twins, Riemann and the NS gate; the fate of the fourth,
-Collatz one — chapters 55–56) and the classical fronts.
+unfold the first cause (one boundary — the twins; Riemann and the NS gate were detached, Option A;
+the fate of the Collatz one — chapters 55–56) and the classical fronts.
 
 ## Philosophical digression: one physical law beneath seven problems
 

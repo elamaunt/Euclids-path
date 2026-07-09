@@ -7,8 +7,10 @@
 > Lean source: `Engine/CascadeBudget.lean` (the budget lemma + a finite shell model), `Engine/DyadicBlowup.lean`
 > (the blow-up core + the Katz–Pavlović model + the derivation of the drive from the couplings), `Engine/DyadicFirstCause.lean` (the 🟡 layer:
 > the origin of the cascade is decreed by the first cause). The blow-up core and the drive derivation are 🟢 under the standard axioms,
-> with neither `sorry` nor any new axiom. One 🟡 layer is added deliberately: it attaches the origin of the cascade to
-> the first cause and grows the taint by two declarations (45 → 47). This is an **appendix-epilogue**, not a branch
+> with neither `sorry` nor any new axiom. One layer was added deliberately to attach the origin of the cascade to
+> the first cause through the NS boundary — but that boundary was subsequently **detached** from the decree (Option A),
+> so the layer became a detached front, not a live axiom-tainted declaration; the repository's taint is
+> 16, all of it asserting the twins. This is an **appendix-epilogue**, not a branch
 > of the main line.
 
 ## Where we are
@@ -109,19 +111,22 @@ This is word for word the same figure that sits at the foundation of the whole p
 from inside, since self-ignition would be a perpetual engine (`no_internalisedOriginEvent`). The origin of the cascade is
 the first cause, and its `0` is the very singularity of the cosmological reading of the [coda](50_Coda.md).
 
-But this does not make Navier–Stokes *the* Big Bang — it is easy to overreach here, and we do not. The Big Bang of the cosmological reading is the first cause itself, the event `0 → 1`; Navier–Stokes is only **one of its three boundaries** (Theorem 33.4 (`step00FirstCause_iff_causalClosure`): `Step00FirstCause ↔ (twin node ∧ Riemann law ∧ NS gate)`, [chapter 33](33_CausalFirstCause.md)). The fluid blow-up is not the beginning of the world; its origin `n=0`, unable to start itself, only borrows a spark from that same single beginning. It is one of three faces of one singularity, not the singularity itself — and, as everywhere in the programme, the cosmology here is a translation of rigorous theorems, not a claim about physics.
+But this does not make Navier–Stokes *the* Big Bang — it is easy to overreach here, and we do not. The Big Bang of the cosmological reading is the first cause itself, the event `0 → 1`; Navier–Stokes is only a **detached front** of that beginning (Theorem 33.4 (`step00FirstCause_iff_causalClosure`): `Step00FirstCause ↔ SerialTwinBoundaryObligation` — the decree's only boundary is the twins; Riemann and NS were detached, Option A, [chapter 33](33_CausalFirstCause.md)). The fluid blow-up is not the beginning of the world; its origin `n=0`, unable to start itself, only borrows a spark from that same single beginning. It is a detached face of that same singularity, not the singularity itself — and, as everywhere in the programme, the cosmology here is a translation of rigorous theorems, not a claim about physics.
 
-Hence — the single deliberate yellow layer of this appendix.
+Hence — the single deliberate extra layer of this appendix (now detached).
 
-**Theorem 52.8** (`dyadicBlowup_is_firstCauseManifestation`, 🟡 — ⚠️ AXIOM-TAINTED). *The same
-first-cause decree that decrees the seven masks also supplies the origin of the cascade: the supply at scale
-`n=0` is drawn from the boundary `nsBoundary` of the axiom `step00FirstCause`.*
+**Theorem 52.8** (`dyadicBlowup_is_firstCauseManifestation`, detached — WITHDRAWN). *The same
+first-cause decree that carried the masks also supplied the origin of the cascade: the supply at scale
+`n=0` was drawn from the boundary `nsBoundary` of the axiom `step00FirstCause`.* But `nsBoundary` is dead code
+in a WITHDRAWN block (Option A): the NS boundary was detached from the decree, so this layer is no longer
+axiom-tainted but a detached *conditional* front.
 
 The scheme is "two walls": a green wall of impossibility (the origin is uncausable from inside) plus a supply
-decreed from outside. Thus the fluid blow-up joins the masks — but **only through its origin**. The green derivation
+that was once decreed from outside. Thus the fluid blow-up used to join the masks — but **only through its origin**, and
+that attachment is today detached. The green derivation
 of the drive (the self-similar solution and the class) is self-contained and does not depend on this layer: remove the first cause —
 the mathematics of the blow-up stays intact, and all that disappears is the answer to the question "who lit the pump `n=0`". This is exactly why
-the taint grows by precisely two declarations (45 → 47), and not a single one more.
+the repository's taint is 16, all of it asserting the twins, and the NS layer is not part of it.
 
 ## Philosophical digression: a map of the boundary, not a solution
 
@@ -141,9 +146,9 @@ This is more honest than any closure: we did not hide the gap in a metaphor, but
 
 Appendix B closes the honest question "what does our theory give for fluids": new mathematics — none
 (Tao's barrier), but the first formalisation of a discrete model — yes, together with a machine delineation of the limits
-of the engine reading, the derivation of the drive from the couplings, and the attachment of the origin of the cascade to the first cause.
-`twin_prime_conjecture` remains `sorry`; the taint grew by exactly two declarations of the yellow origin layer
-(45 → 47); not a single open problem is solved or declared solved.
+of the engine reading, the derivation of the drive from the couplings, and the (now detached) attachment of the origin of the cascade to the first cause.
+`twin_prime_conjecture` remains `sorry`; the repository's taint is 16, all of it asserting the twins (the NS layer is
+detached, Option A, and not part of the taint); not a single open problem is solved or declared solved.
 
 <!--navbot-->
 

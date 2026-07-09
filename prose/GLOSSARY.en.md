@@ -41,7 +41,7 @@ Lean/mathlib axioms; 🟡 AXIOM-TAINTED — conditional on the single axiom `ste
 🔴 — an open node or a named input. The legend lives in the [prologue](00_Overview.md).
 
 **First cause / `step00FirstCause`** — the repository's single axiom: the intentional event
-`0 → 1` with three causal boundaries (twins, Riemann, Navier–Stokes). It is accepted from
+`0 → 1` with one causal boundary (the twins; Riemann and Navier–Stokes were detached — Option A). It is accepted from
 outside, because self-ignition from within would cost a perpetual engine.
 See [chapter 33](33_CausalFirstCause.md).
 
@@ -56,7 +56,7 @@ decree must survive the trilemma and disclose its price ("the decree may overpay
 lives; everything depending on it is machine-flagged.
 
 **Taint / AXIOM-TAINTED** — the axiom's trace in a declaration's dependency list. The verifier
-(`scripts/VerifyAll.lean`) recounts tainted declarations on every check; there are currently 47,
+(`scripts/VerifyAll.lean`) recounts tainted declarations on every check; there are currently 16,
 and nothing leaks into the green line.
 
 **Tripwire** — an intentional explosion detector: a theorem of the form "if the boundary's law is

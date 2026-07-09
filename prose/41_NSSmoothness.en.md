@@ -7,9 +7,17 @@
 
 
 > Lean source: `Engine/NavierStokesFront.lean` — the green chain, the finishing-off and the trilemma, all 🟢;
-> `Engine/CausalClosureAxiom.lean` §§13, 15 — the tripwire and the third boundary of the decree.
+> `Engine/Step00FrontClosureAudit.lean` — the machine record of why Navier–Stokes was WITHDRAWN from
+> the decree (Option A).
 > Status notation: 🟢 — proven under the standard axioms;
 > 🟡 — proven conditionally on the axiom `step00FirstCause`; 🔴 — an open input.
+>
+> **Status update (Option A).** Navier–Stokes is no longer a boundary of the decree. Earlier drafts
+> hung an `nsBoundary` field on `step00FirstCause` and projected 🟡-theorems out of it; that field and
+> its projections have been **withdrawn**, and no Navier–Stokes declaration is axiom-tainted any more.
+> What survives is the green structural half: the surrogate `NoSingularCascade`, the energy identity,
+> and — on the box class — an unconditional energy balance. The reason for the withdrawal is spelled
+> out in "The Navier–Stokes boundary, withdrawn (Option A)" below.
 
 ## The reading: a singularity is a perpetual engine, and the solution is an integral, taken
 
@@ -94,19 +102,27 @@ Hence the final gate `NsSolutionBalanceLaw`: `f = 0` plus differentiability both
 
 **Conclusion.** And the law itself is not provable: its derivation needs the divergence theorem on `ℝ³`, which mathlib lacks — nor has it been forged by any known means. More than that, refuting it would settle Galdi's open problem on the Liouville property of stationary Navier–Stokes. This is exactly the epistemic status of the twin node: not provable and not refutable — hence an honest boundary candidate.
 
-## The third boundary of the decree and its honest price
+## The Navier–Stokes boundary, withdrawn (Option A)
 
-Thus the first cause acquires a third substantive field `nsBoundary : NsSolutionBalanceLaw`. From it
-follow the 🟡-theorems: cascade smoothness of every gated solution (`noSingularCascade_from_firstCause` —
-a surrogate, not `C^∞`), the energy identity (`energyIdentity_from_firstCause`) and the tripwire — an intentional
-explosion detector for the case the law is refuted (see the [glossary](GLOSSARY.md)) —
-`quarantine_inconsistent_if_nsGatedViolation_exhibited`.
+For one draft the first cause acquired a third substantive field `nsBoundary : NsSolutionBalanceLaw`,
+from which followed the 🟡-theorems: cascade smoothness of every gated solution
+(`noSingularCascade_from_firstCause` — a surrogate, not `C^∞`), the energy identity
+(`energyIdentity_from_firstCause`) and the tripwire — an intentional explosion detector for the case
+the law is refuted (see the [glossary](GLOSSARY.md)) — `quarantine_inconsistent_if_nsGatedViolation_exhibited`.
 
-But this boundary has a peculiarity that must be named honestly. For Riemann the decree was of *exactly* RH strength: "the law ⟺ the goal" at the boundary. Here there is no such mirror.
+Under **Option A that field was withdrawn**. The structure `Step00FirstCause` now carries **only** the
+twin boundary `causalBoundary` (`SerialTwinBoundaryObligation`); the field `nsBoundary`, the law
+`NsSolutionBalanceLaw` itself, and the projections
+`noSingularCascade_from_firstCause`/`energyIdentity_from_firstCause` are now **dead code**, living
+inside a `/- WITHDRAWN -/` comment block (🔵). No Navier–Stokes declaration is axiom-tainted any more;
+the repository taint (16, all asserting twins) does not include it. What follows is the historical
+projection, kept as a record of what was detached.
 
-**Conclusion.** The smoothness surrogate would be satisfied even by an *inequality* (`noSingularCascade_of_twoTimeInequality` 🟢), while the decree asserts the stronger *equality* `dE/dt = −D`. The converse implication is unknown — that is, **the decree may overpay** for its goal. It is the same pattern we shall honestly note for Collatz: the price may exceed the cost.
+The peculiarity that had to be named honestly even then. For Riemann the decree was of *exactly* RH strength: "the law ⟺ the goal" at the boundary. Here there was no such mirror.
 
-The earlier verdict of §13 — "there is no fifth boundary" — stands for the ungated and manifestational forms; `nsBoundary` survived as a *different* candidate, gated, with the overpayment disclosed.
+**Conclusion.** The smoothness surrogate would be satisfied even by an *inequality* (`noSingularCascade_of_twoTimeInequality` 🟢), while the gate law asserted the stronger *equality* `dE/dt = −D`. The converse implication is unknown — that is, **the decree, had it stayed live, might overpay** for its goal. It is the same pattern we shall honestly note for Collatz: the price may exceed the cost. Under Option A the question is moot along with the field.
+
+The earlier verdict of §13 — "there is no fifth boundary" — stands for the ungated and manifestational forms; `nsBoundary` had survived as a *different* candidate, gated, with the overpayment disclosed — but it too is detached under Option A.
 
 ## Philosophical digression: turbulence, the Kolmogorov cascade and the prohibition of singularity
 
@@ -124,7 +140,7 @@ The differentiability gate is the physical demand of "genuine smoothness of the 
 
 Navier–Stokes smoothness is, philosophically, the physical impossibility of extracting infinite energy from the vacuum of scales. Turbulence is the visible tug of war; regularity is the rope, invariably winning at the very bottom.
 
-And as with Collatz and with the primes, the same wall stands here: on average the cascade decays — this we see — but the guarantee for *each* individual trajectory remains the open heart, the named input `EnergyBalanceLaw`, paid for by decree only under an honestly disclosed overpayment.
+And as with Collatz and with the primes, the same wall stands here: on average the cascade decays — this we see — but the guarantee for *each* individual trajectory remains the open heart, the named input `EnergyBalanceLaw`; under Option A it is no longer paid for by decree (the boundary is withdrawn), and is carried greenly only on the box class.
 
 ## Postscript: the passage to ℝ³ — the integral assembled on the box
 

@@ -154,6 +154,57 @@ def counter_check(files):
                       "three causal boundaries", "three decree boundaries", "three living boundaries"):
             if stale in txt:
                 issues.append((base, f"stale phrase: {stale!r}"))
+
+        # Historical/withdrawn marker: a line carrying one is exempt from the boundary checks below.
+        HIST = re.compile(r"(?i)(was |were |Option A|withdrawn|detached|отсоедин|снят|сняты|был[аои]?\b|"
+                          r"истори|history|прежде|раньше|earlier|(?:once|когда-то)|"
+                          r"на тот момент|at (?:that|the) moment)")
+
+        def _line(ms, me, _txt=txt):
+            ls = _txt.rfind("\n", 0, ms) + 1
+            le = _txt.find("\n", me);  le = len(_txt) if le < 0 else le
+            return _txt[ls:le]
+
+        # (a) "three boundaries" / "три|трёх|трех границ*" — the decree carries ONLY the twin boundary.
+        #     Skip lines carrying a historical/withdrawn marker.
+        for m in re.finditer(r"(?i)\b(?:three boundaries|(?:три|трёх|трех)\s+границ\w*)", txt):
+            if not HIST.search(_line(m.start(), m.end())):
+                issues.append((base, f"'three boundaries' phrasing (decree has one, the twins): "
+                                     f"…{txt[max(0,m.start()-30):m.end()+30]}…"))
+
+        # (b) "second|third boundary of the decree" / "вторая|третья граница декрета" asserted as LIVE.
+        for m in re.finditer(r"(?i)(?:(?:second|third)\s+boundary\s+of\s+the\s+decree|"
+                             r"(?:втор\w+|треть\w+)\s+границ\w+\s+декрета)", txt):
+            if not HIST.search(_line(m.start(), m.end())):
+                issues.append((base, f"'second/third boundary of the decree' as LIVE (Riemann/NS withdrawn, "
+                                     f"Option A): …{txt[max(0,m.start()-20):m.end()+30]}…"))
+
+        # (c) taint numbers other than 16 in count phrasings: "declarations depending on it" /
+        #     "зависящих от" / "currently NN" / "сейчас их NN" / "Taint NN" / "toll NN" / "NN -> NN".
+        #     A number is 2-3 digits NOT followed by another digit (so citation years like 2025
+        #     are not partially matched), keywords are whole words (so "Stoll" != "toll").
+        N = r"(\d{2,3})(?!\d)"
+        TAINT_PHRASE = re.compile(
+            r"(?i)"
+            r"(?:\*\*" + N + r"\*\*|\b" + N + r"\b)\s*(?:declarations\s+depending\s+on\s+it|"
+            r"деклараци\w*\s+зависящ\w+\s+от|зависящ\w+\s+от\s+неё\s+деклараци\w*)"
+            r"|\b(?:currently|сейчас\s+их|Taint|Таинт|toll|такса)\b[^0-9\n]{0,25}?\(?\**\s*" + N)
+        for m in TAINT_PHRASE.finditer(txt):
+            nums = [g for g in m.groups() if g is not None]
+            bad = [n for n in nums if n != str(EXPECTED_TAINT)]
+            if bad:
+                issues.append((base, f"taint count(s) {bad} != {EXPECTED_TAINT} in count phrasing: "
+                                     f"…{txt[max(0,m.start()-20):m.end()+20]}…"))
+        # (c') a "NN -> NN" taint delta, but only on a line that also mentions taint/toll/такса —
+        #      so chapter ranges like "00→56" or "chs. 39→42" are not mistaken for taint counts.
+        DELTA = re.compile(r"\b(\d{2,3})(?!\d)\s*(?:->|→|-->)\s*(\d{2,3})(?!\d)\b")
+        TAINT_WORD = re.compile(r"(?i)\b(?:taint|таинт|toll|такса|declarations|деклараци)")
+        for m in DELTA.finditer(txt):
+            ls = txt.rfind("\n", 0, m.start()) + 1
+            le = txt.find("\n", m.end());  le = len(txt) if le < 0 else le
+            if TAINT_WORD.search(txt[ls:le]) and any(g != str(EXPECTED_TAINT) for g in m.groups()):
+                issues.append((base, f"taint delta {m.group(1)}→{m.group(2)} != {EXPECTED_TAINT} "
+                                     f"(restate as 16): …{txt[max(0,m.start()-20):m.end()+20]}…"))
     return issues
 
 CONJ = r"(Риман|Riemann|Коллатц|Collatz|близнец|twin|Ходж|Hodge|Бёрч|Birch|Свиннертон|Swinnerton|Янг|Yang|Навье|Navier|P/NP|P\\?/NP)"

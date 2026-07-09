@@ -17,7 +17,7 @@ one problem.**
 
 The programme rests on a cardinal discipline of honesty. Everything proven by machine under the
 standard Lean/mathlib axioms is marked 🟢. Everything conditional on the repository's **single axiom**
-`step00FirstCause` (the intentional event "0 → 1" with three causal boundaries) is marked 🟡 —
+`step00FirstCause` (the intentional event "0 → 1" with one causal boundary — the twins) is marked 🟡 —
 **AXIOM-TAINTED**, and a verifier recounts every such declaration on every build. Everything open is 🔴.
 
 !!! note "Status legend"
@@ -25,7 +25,7 @@ standard Lean/mathlib axioms is marked 🟢. Everything conditional on the repos
     - 🟡 — **AXIOM-TAINTED**: conditional on the single axiom `step00FirstCause`;
     - 🔴 — an open node or a named entry point.
 
-At build time: **exactly one** non-standard axiom, **47** declarations depending on it, **one**
+At build time: **exactly one** non-standard axiom, **16** declarations depending on it, **one**
 remaining `sorry` (the target `twin_prime_conjecture` itself). Nothing leaks into the green line —
 the verifier tracks each case.
 

@@ -90,36 +90,39 @@ axiom step00FirstCause : Step00FirstCause
 ```
 
 What is this object `Step00FirstCause`? It is the structure of the event "0 → 1" — the transition
-from non-being to the first causal frame. It has five fields, and they fall into two kinds.
+from non-being to the first causal frame. It has three fields, and they fall into two kinds.
 
 Two fields are pure markers carrying only `True`: `origin` marks the singularity "0" (before the
 first frame there is no internal language — there is simply nothing to assert), and `firstFrame`
 marks the first causal frame "1" (from it states, steps, and ledgers become available).
 
-The remaining three fields are **substantive causal boundaries**, one for each big branch of the programme:
+Exactly one **substantive field remains — the single causal boundary**:
 
-- `causalBoundary` — the twin boundary, exactly the open node `TheStrictLastStep00Obligation`;
-- `riemannBoundary` — the Riemann boundary, the law of manifestation of a zero ([chapter 38](38_RiemannFirstCause.md));
-- `nsBoundary` — the Navier–Stokes boundary, the gate law of the energy balance ([chapter 41](41_NSSmoothness.md)).
+- `causalBoundary` — the twin boundary, exactly the open node `TheStrictLastStep00Obligation`.
 
-All the mathematical weight of the first cause lives in these three fields; the markers assert nothing.
+The former fields `riemannBoundary` (the Riemann boundary, [chapter 38](38_RiemannFirstCause.md)) and
+`nsBoundary` (the Navier–Stokes boundary, [chapter 41](41_NSSmoothness.md)) were **detached from the
+decree** (Option A): they survive only as dead code in withdrawn comment blocks and are absent from the
+first-cause structure. The single live boundary of the decree is the twin one.
 
-**Theorem 33.4** (`step00FirstCause_iff_causalClosure`, 🟢). *The first cause is equivalent to the
-conjunction of its boundaries: `Step00FirstCause ↔ (node ∧ Riemann law ∧ NS gate)`.*
+All the mathematical weight of the first cause lives in this single field; the markers assert nothing.
+
+**Theorem 33.4** (`step00FirstCause_iff_causalClosure`, 🟢). *The first cause is equivalent to its
+single boundary: `Step00FirstCause ↔ SerialTwinBoundaryObligation` (the twin boundary).*
 
 The meaning of this equivalence is honesty. It says: the intentional framing changes the *provenance*
 of the result (the root of the architecture, the axiom's name, the label in the audit), but not its
-mathematical strength. The strength of the decree is exactly the sum of what has been put into it,
+mathematical strength. The strength of the decree is exactly what has been put into it,
 not a gram more. We have smuggled nothing in under the guise of markers: the "event 0 → 1" is exactly
-equal to the accepted boundaries.
+equal to the accepted twin boundary.
 
 ## What the decree gives — and what it does not
 
 The axiom is locked in a **quarantine module**, and the quarantine is not a metaphor but a machine
 procedure. A separate verifier walks over all declarations of the repository and marks every one that
-depends on `step00FirstCause` as `AXIOM-TAINTED`. There are today exactly 43 such declarations (42
-inside the quarantine module plus one documented consequence — the yellow corollary of the main
-theorem); not one has leaked into the main, green line.
+depends on `step00FirstCause` as `AXIOM-TAINTED`. There are today exactly 16 such declarations (13 in
+`ConcreteStep00Graph.GeneratedFlowFormulation`, plus `higherEnergyIncompatibility_twins` of the finite
+knowledge barrier, plus 2 in the geometry front); not one has leaked into the main, green line.
 
 The former "closure axiom" has now become a theorem, obtained from the first cause by simple projection:
 `step00CausalClosure := step00FirstCause.causalBoundary`.
@@ -422,7 +425,7 @@ What does the axiom *cost* from the standpoint of consistency? We have made the 
 The tripwires of §9 of the quarantine are charges that detonate exactly where they should:
 
 **Theorem 33.22** (`quarantine_inconsistent_if_node_refuted`, 🟡). *If the node is ever refuted
-(that is, if someone extends the `A ≤ 4` attack to all scales), `False` is derivable exactly here — and all 43
+(that is, if someone extends the `A ≤ 4` attack to all scales), `False` is derivable exactly here — and all 16
 tainted declarations are devalued at once.*
 
 Thus **three worlds** are drawn out:

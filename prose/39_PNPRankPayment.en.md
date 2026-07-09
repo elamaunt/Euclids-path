@@ -101,10 +101,11 @@ Let us also note a handsome asymmetry with Riemann. There the boundary was *need
 the resolving projection. Here, for the separation, the boundary is **not needed**: the killer is green, the decree has nothing to do with it.
 We did not insert an unused hypothesis for the sake of symmetry — it is more honest to leave the asymmetry visible.
 
-## Why there is no third boundary of the decree
+## Why there is no P/NP boundary of the decree
 
-For the twins and Riemann the decree was an honest second boundary. It is natural to ask: should we not add
-a third — a P/NP boundary? The answer is **no, and this is proven machine-wise**. We checked all three conceivable forms
+For the twins the decree carries a live boundary, and Riemann was an honest second boundary,
+subsequently **withdrawn** from the decree (Option A). It is natural to ask: should we not add
+a P/NP boundary? The answer is **no, and this is proven machine-wise**. We checked all three conceivable forms
 of such a field, and every verdict turned out to be a green theorem:
 
 - the **universal form** (in every good-faith frame a P-solver extracts a resolver)
@@ -181,7 +182,8 @@ Yang–Mills and the real `(p,p)`-classes for Hodge.
 ## Place in the greater arc
 
 The three great questions now stand in one architecture, but with three different honest outcomes: the twins —
-a boundary of the decree (a node, 🟡), Riemann — a second boundary of the decree (a manifestation law, 🟡), and P/NP — **a green
+a live boundary of the decree (a node, 🟡), Riemann — the Riemann boundary, **detached** from the decree (Option A —
+a manifestation law, a detached front, not a live boundary), and P/NP — **a green
 theorem in the rank model, without any decree** (🟢), with a machine proof that the decree
 path for it is either contradictory or empty. Classical P ≠ NP is neither proven nor claimed.
 

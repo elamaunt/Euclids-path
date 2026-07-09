@@ -304,7 +304,7 @@ divisors* (`odd_perfect_three_le_card_primeFactors`, in the witness language `od
 > nonexistence of an odd perfect number is asserted here. All the module's theorems are
 > unconditional arithmetic, paid for by mathlib's multiplicativity of σ₁ and mod-2/mod-4 counting; there are no anchors and
 > no boundaries in it. We have proven not that the witness exists, but *what form* it is obliged to have if
-> it does — an eighteenth-century classic, embedded into the programme's language for the first time. Taint 47 does not change.
+> it does — an eighteenth-century classic, embedded into the programme's language for the first time. Taint 16 does not change.
 
 ## Place in the greater arc
 

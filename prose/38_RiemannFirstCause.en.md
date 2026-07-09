@@ -18,7 +18,7 @@
 > projection have been **withdrawn**, and no Riemann declaration is axiom-tainted any more. What
 > survives is a **green conditional reduction**: RH follows from the manifestation law *plus* the twin
 > boundary — a reduction, never a decree result. The reason, and the honest asymmetry with the twins,
-> is spelled out in "Why Riemann was withdrawn from the decree" below.
+> is spelled out in "The Riemann boundary, withdrawn (Option A)" below.
 
 ## Where we are
 
@@ -54,7 +54,8 @@ reconciled**. The strategy mirrors the twin one:
 3. hence there are no deviations; and together with the already-proven classification of the
    trivial zeros, that is the Riemann Hypothesis.
 
-The first point is a causal law, the second boundary of the decree. The second is a green theorem.
+The first point is a causal law — once the Riemann boundary of the decree, now **withdrawn** (Option A);
+what survives is a green conditional reduction. The second is a green theorem.
 Let us take them in order.
 
 ## The manifestation law: how a deviation gives itself away
@@ -161,50 +162,56 @@ place where the axiom lives
 > And "in the precise mathlib sense" means literally: the goal is not a home-made predicate but
 > `RiemannHypothesis` from mathlib (the quantifier over all nontrivial zeros of `riemannZeta`, see [chapter 30](30_RiemannBranch.md)).
 
-## The second boundary of the decree
+## The Riemann boundary, withdrawn (Option A)
 
-The axiom appears at exactly one step — when we place the manifestation law into the first cause as
-its second boundary. The structure `Step00FirstCause` now carries the twin boundary `causalBoundary` and the Riemann
-boundary `riemannBoundary` (plus, from [chapter 41](41_NSSmoothness.md), the Navier–Stokes boundary) — but **the axiom is still one**.
-Projecting the first cause onto its Riemann field, we obtain:
+For one draft the axiom appeared at exactly one further step — when the manifestation law was placed
+into the first cause as a Riemann boundary. Under **Option A that field was withdrawn**: the structure
+`Step00FirstCause` now carries **only** the twin boundary `causalBoundary` (`SerialTwinBoundaryObligation`),
+and `step00FirstCause_iff_causalClosure` reads `Step00FirstCause ↔ SerialTwinBoundaryObligation` — a
+single conjunct. The `riemannBoundary` field and its projection `riemannHypothesis_from_firstCause` are
+now **dead code**, living inside a `/- WITHDRAWN -/` comment block; no Riemann declaration is
+axiom-tainted any more. What we describe next is the historical projection, kept as a record of what
+was detached.
 
-**Theorem 38.7** (`riemannHypothesis_from_firstCause`, 🟡). *From the single extended decree the
-Riemann Hypothesis follows:* $\mathrm{riemannHypothesis\_from\_firstCause} : \mathrm{RiemannHypothesis}$ —
-obtained by applying Theorem 38.6 (`riemannHypothesis_of_manifestation_and_boundary`) to
-`no_someConcreteEuclideanEngine`, the first-cause projection `step00CausalClosure`, and the field
-`riemannManifestationLaw`.
+**Theorem 38.7** (`riemannHypothesis_from_firstCause`, 🔵 — WITHDRAWN dead code, not axiom-tainted).
+*From the single extended decree the Riemann Hypothesis would have followed:*
+$\mathrm{riemannHypothesis\_from\_firstCause} : \mathrm{RiemannHypothesis}$ — obtained by applying
+Theorem 38.6 (`riemannHypothesis_of_manifestation_and_boundary`) to `no_someConcreteEuclideanEngine`,
+the first-cause projection `step00CausalClosure`, and the field `riemannManifestationLaw`. Under
+Option A this declaration is withdrawn; it is no longer a live boundary of the decree.
 
-And immediately — the obligatory honesty. In the machine axiom list of this theorem stands
-`[propext, Classical.choice, Quot.sound, step00FirstCause]`: the last word betrays the taint. **This
-is NOT a proof of the Riemann Hypothesis** — it is a reduction closed by decree, exactly as with the
-twins.
+Had it stayed live, the machine axiom list of this theorem would have carried
+`[propext, Classical.choice, Quot.sound, step00FirstCause]`, the last word betraying a taint — a
+reduction closed by decree, never a proof of the Riemann Hypothesis. Under Option A the field is gone,
+so no live Riemann declaration carries `step00FirstCause` at all; the repository taint (16, all
+asserting twins) does not include RH.
 
-We have honestly
-planted the tripwires too — intentional explosion detectors (see the [glossary](GLOSSARY.md)): if
-anyone presents an off-critical zero, or proves `¬RH`, or refutes
-the manifestation law itself — `False` becomes derivable exactly in the quarantine. In other words,
-the consistency of the extended theory now also requires the irrefutability of RH.
+What survives untouched is the **green conditional reduction**: RH follows from the manifestation law
+*plus* the twin boundary (Theorem 38.6), a reduction that never was and never is a decree result.
 
-> **Note (what to read in the axiom list).** The structure `Step00FirstCause` carries its boundary
-> fields: `causalBoundary` (twins), `riemannBoundary` (Riemann) and the Navier–Stokes gate — but it
-> is projected from a single axiom. In the list `[propext, Classical.choice, Quot.sound, step00FirstCause]` the first three are
+> **Note (what to read in the axiom list).** After Option A the structure `Step00FirstCause` carries a
+> single substantive field, `causalBoundary` (`SerialTwinBoundaryObligation`, the twin boundary); the
+> old `riemannBoundary` and the Navier–Stokes gate were detached and now sit in `/- WITHDRAWN -/`
+> blocks. In a list such as `[propext, Classical.choice, Quot.sound, step00FirstCause]` the first three are
 > the standard axioms of Lean itself (propositional extensionality, choice, quotient soundness);
-> almost every ordinary theorem carries them. Only `step00FirstCause` stands out — the repository's
-> single decree. The "taint" is a machine label: a declaration *inherits* the axiom if it stands in
-> its dependency list (see [chapter 33](33_CausalFirstCause.md)). That is why `riemannHypothesis_from_firstCause` is
-> precisely a **reduction closed by decree**, not a proof of RH: we honestly see where the strength
-> came from.
+> almost every ordinary theorem carries them, and only `step00FirstCause` — the repository's single
+> decree — stands out. The "taint" is a machine label: a declaration *inherits* the axiom if it stands
+> in its dependency list (see [chapter 33](33_CausalFirstCause.md)); the current tainted set is 16, all asserting twins.
+> `riemannHypothesis_from_firstCause`, being withdrawn dead code, is **not** among them.
 
 ## The honest price: a decree of exactly RH strength — yet not a tautology
 
 A legitimate suspicion arises: have we not hidden the Riemann Hypothesis inside the manifestation
 law by simply renaming it? The answer is given machine-wise, and it is subtle.
 
-**Theorem 38.8** (`riemannManifestation_asserts_RH`, 🟡). *Under the accepted twin boundary, the
-manifestation law is equivalent to RH:* $\mathrm{RiemannManifestationLaw} \iff \mathrm{RiemannHypothesis}.$
+**Theorem 38.8** (`riemannManifestation_asserts_RH`, 🟢 — a green conditional equivalence). *Under the
+twin boundary taken as a hypothesis, the manifestation law is equivalent to RH:*
+$\mathrm{RiemannManifestationLaw} \iff \mathrm{RiemannHypothesis}.$
 
-So yes: *accepting the extended first cause = accepting RH*; the decree is no weaker than the
-conclusion — and we do not hide this, we prove it.
+So yes: *the manifestation law, under the twin boundary, is exactly RH strength* — the reduction is no
+weaker than the conclusion, and we do not hide this, we prove it. Note that under Option A this is a
+green conditional (the twin boundary enters as a hypothesis, not as the axiom); Riemann is no longer
+placed into the decree, so no extended first cause is asserted here.
 
 But here lies the difference between an honest law and a forgery. There is the condemned "bridge"
 `OffCriticalRiemannEngineBridge`, for which `offCriticalBridge_iff_RH` is proven — it is equivalent
@@ -330,15 +337,17 @@ not as an axiom: the conjunct remains a green implication, the module does not i
 quarantine, and the repository's taint does not grow. The final status is collected in
 `riemann_locked_behind_engine_status` 🟢.
 
-And the main difference from the neighbours along the horizon. P/NP had no decree boundary, the
-Collatz one fell — while here
-**the boundary is alive**: the manifestation law is still accepted by decree, the field `riemannBoundary` stands in the
-first cause, and its price is disclosed above (`riemannManifestation_asserts_RH`).
+And the difference from the neighbours along the horizon. P/NP had no decree boundary, the Collatz one
+fell — and under **Option A the Riemann boundary was withdrawn as well**: the field `riemannBoundary`
+was detached from the first cause and no longer stands there. What remains is the green conditional
+reduction, whose price is disclosed above (`riemannManifestation_asserts_RH` — the law is equivalent to
+RH *only under* the twin boundary, never on its own). The one boundary the decree still carries is the
+twins.
 
-The epistemics
-neither cancels this nor props it up: it says only that the decree can have no *internal*
-grounding — the engine that would decide for us is forbidden by the same machine with which we prove
-everything. The external door remains the only one, and we entered it with open eyes.
+The epistemics neither cancels this nor props it up: it says only that a self-grounding of the
+manifestation law can have no *internal* footing — the engine that would decide for us is forbidden by
+the same machine with which we prove everything. The external door remains the only one, and it opens
+through the twin boundary alone.
 
 > **Note (what we do NOT claim).** This is not a solution of the Riemann Hypothesis and NOT Gödel:
 > no independence, no fixed point — only the pigeonhole wall, and all the epistemics is
@@ -350,11 +359,13 @@ everything. The external door remains the only one, and we entered it with open 
 
 ## Place in the greater arc
 
-After this chapter, the two great branches share one and the same architecture: a green rank machine
-plus one intentional first cause with an explicit boundary for each branch. The twins enter through
-`causalBoundary`, Riemann through `riemannBoundary`; both boundaries live in one structure, one
-axiom, one quarantine, and both prices are disclosed machine-wise (the decree is no weaker than the
-conclusion — in both cases this is a proven theorem, not an unstated default).
+After this chapter the picture is asymmetric, and Option A names the asymmetry. The twins enter the
+decree through the single boundary `causalBoundary` (`SerialTwinBoundaryObligation`); Riemann *once*
+entered through `riemannBoundary`, but that field was **withdrawn** — it lives now in a `/- WITHDRAWN -/`
+block, detached from the first cause. What both branches still share is the green rank machine; what
+only the twins still carry is a live decree boundary. The Riemann side keeps its green conditional
+reduction (law + twin boundary ⟹ RH), whose price is disclosed machine-wise, but it is no longer a
+boundary of the decree and adds nothing to the taint.
 
 `twin_prime_conjecture` remains `sorry`; the open 🔴 inputs of the remaining Riemann fronts
 ([chapter 37](37_RiemannFronts.md)) are untouched and remain honest maps of obligations. Next, the

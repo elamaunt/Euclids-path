@@ -361,7 +361,7 @@ engine under the law and reconciled books (🟢, conditional on the boundary), a
 decree boundary remained — or would have remained — a conjecture.
 
 But the rule of the series has been refined once more. For Riemann we took the boundary — a stake
-on RH, in which the consensus believes. For Mersenne we deferred by the sign of the heuristic. For
+on RH, in which the consensus believes — but later detached it (Option A). For Mersenne we deferred by the sign of the heuristic. For
 Polignac the heuristic sign is positive, as with Riemann — and we deferred nonetheless, on a new
 ground: where there is no chain there is nothing to prepare, and a serial decree would erase the
 uniqueness in which the entire meaning of the quarantine lies.

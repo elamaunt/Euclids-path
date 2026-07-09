@@ -65,9 +65,9 @@ engines" hypothesis for the sake of beauty.
 **Theorem 40.5** (`massGap_of_quantizationLaw`, 🟢 — the hero of the chapter). *Quantization ⟹ mass gap:* $\mathrm{QuantizationLaw}(S) \Rightarrow \mathrm{MassGap}(S)$. No gap →
 masslessness → a ladder is built → quantization turns it into a natural descent → an EPMI contradiction.
 
-## Why there is no fourth boundary of the decree
+## Why there is no Yang–Mills boundary of the decree
 
-As with P/NP, the temptation arises to add a fourth boundary of the first cause. And again — no, machine-verified. The reason runs deeper than for P/NP, and a single theorem exposes it.
+As with P/NP, the temptation arises to add a Yang–Mills boundary to the first cause. And again — no, machine-verified. The reason runs deeper than for P/NP, and a single theorem exposes it.
 
 **Theorem 40.6** (`quantizationLaw_iff_massGap`, 🟢). *For every model, the quantization law is equivalent
 to the presence of a gap — green and without any boundary:* $\mathrm{QuantizationLaw}(S) \iff \mathrm{MassGap}(S)$.
@@ -80,7 +80,7 @@ Hence, to decree the quantization law for the model would be to decree its gap v
 - the existential form is *already proven* — the forged gapped model `{0,1}`, the decree would be empty;
 - the manifestation form is *incompatible with the boundary already accepted*.
 
-The last point deserves emphasis — it holds the exact asymmetry with Riemann. An off-critical zero is greenly unpresentable (presenting it would refute RH), and that is why in the Riemann branch the manifestation law was an honest second boundary.
+The last point deserves emphasis — it holds the exact asymmetry with Riemann. An off-critical zero is greenly unpresentable (presenting it would refute RH), and that is why in the Riemann branch the manifestation law was an honest second boundary (subsequently withdrawn from the decree, Option A).
 
 But the forged massless ladder is presented by construction — and therefore the same move here blows up the quarantine: `ymManifestationLaw_refutes_boundary` 🟢.
 

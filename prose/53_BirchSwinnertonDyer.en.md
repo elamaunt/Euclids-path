@@ -8,7 +8,7 @@
 > trilemma witnesses). It reuses `Engine/UniversalEngine` (the engine prohibition by rank) and
 > `Engine/RiemannLiouville` (the rank-parity node). The core is grounded on **real** mathlib objects:
 > `WeierstrassCurve.Affine.Point`, `WeierstrassCurve.LSeries`, the class `Northcott`, `AddCommGroup.fg_of_descent`.
-> This is **not** a proof of BSD; the quarantine tax does not change (52), and the `sorry` is still one.
+> This is **not** a proof of BSD; the quarantine tax does not change (16), and the `sorry` is still one.
 
 ## Where we are
 
@@ -62,7 +62,7 @@ law? We checked honestly — and **no**.
 > a free value) the law `(−1)^r = w` is satisfied by a choice of `w` (`bsd_parityLaw_satisfiable`), and the
 > universal form is refutable (`bsd_parityLaw_not_universal`). Hence a parity decree would be
 > **vacuous** — just as for P/NP, Yang–Mills and Hodge. Therefore we do **not** touch the axiom and leave the parity
-> honestly open: the tie to the node remains conceptual, not a decree. The tax — the same 52.
+> honestly open: the tie to the node remains conceptual, not a decree. The tax — the same 16.
 
 ## The analytic bridge — honestly open
 
@@ -114,7 +114,7 @@ Appendix C gives the eighth problem its shadow without embellishment. Formalizat
 height, of the analytics of elliptic-curve `L`-functions exist nowhere (by our survey — Loeffler–Stoll 2025,
 Angdinata–Xu 2023). Hence even a structural engine/rank-parity reading, grounded on real mathlib
 objects, is the first of its kind. But it is **not** a solution of BSD: green are only the descent and the parity node; the analytic
-bridge is honestly 🔴; no decree has been added (the trilemma). `twin_prime_conjecture` remains a `sorry`; the tax — the same 52.
+bridge is honestly 🔴; no decree has been added (the trilemma). `twin_prime_conjecture` remains a `sorry`; the tax — the same 16.
 
 <!--navbot-->
 

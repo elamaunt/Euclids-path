@@ -26,7 +26,9 @@ in advance, we watched it fall. The order of events is this:
 2. the decree discloses its *honest price* — only one arrow is proven, "the decree may overpay";
 3. the universal form of the law is machine-*refuted* (witness `n = 27`);
 4. the tripwire *fires* — keeping the field any longer would make the axiom inconsistent;
-5. the field is *removed* — the boundaries are three again (twins, Riemann, Navier–Stokes).
+5. the field is *removed* — at that moment the axiom was left with three boundaries (twins, Riemann,
+   Navier–Stokes); later Riemann and Navier–Stokes were detached too (Option A), and the decree was left
+   with one boundary — the twins.
 
 There remained a second, deeper question as well: *why* does the problem resist solution so stubbornly — is there a
 rigorous reason why Collatz can be neither proven nor refuted from inside the system? This answer survives the
@@ -45,12 +47,12 @@ The universal law of rope dominance was accepted **by decree** — not as a sepa
 the repository's single axiom `step00FirstCause`. At the moment of acceptance the structure looked like this:
 
 ```
-structure Step00FirstCause : Prop where
+structure Step00FirstCause : Prop where          -- historical state at the moment collatzBoundary was taken
   origin, firstFrame          : True                       -- markers of the event 0 → 1
-  causalBoundary              : …                           -- the twin node
-  riemannBoundary             : RiemannManifestationLaw     -- Riemann (§10)
-  nsBoundary                  : NsSolutionBalanceLaw        -- Navier–Stokes (§15)
-  collatzBoundary             : ∀ n ≥ 1, RopeCountingLaw n  -- Collatz (§18) ← the fourth
+  causalBoundary              : …                           -- the twin node (the only live boundary today)
+  riemannBoundary             : RiemannManifestationLaw     -- Riemann (§10); detached later (Option A)
+  nsBoundary                  : NsSolutionBalanceLaw        -- Navier–Stokes (§15); detached later (Option A)
+  collatzBoundary             : ∀ n ≥ 1, RopeCountingLaw n  -- Collatz (§18) ← the fourth, soon removed
 ```
 
 ### Why the boundary was taken
@@ -98,16 +100,20 @@ advantage in a window from *every* position — which climbing orbits violate. T
 
 The tripwire fired exactly as designed. `collatzQuarantine_inconsistent_if_law_refuted` showed: to keep the
 field any longer is to make the single axiom inconsistent. Therefore **the field and the tripwires left the axiom
-together** — the detector and the object it guarded were removed in one motion. In `Step00FirstCause` there are
-again three boundaries:
+together** — the detector and the object it guarded were removed in one motion. Right after the removal
+`Step00FirstCause` looked like this (an intermediate historical state — Riemann and Navier–Stokes were
+detached later, Option A):
 
 ```
-structure Step00FirstCause : Prop where
+structure Step00FirstCause : Prop where          -- historical state, right after collatzBoundary was removed
   origin, firstFrame  : True
   causalBoundary      : Step00CausalClosureAxiom
-  riemannBoundary     : RiemannManifestationLaw
-  nsBoundary          : NsSolutionBalanceLaw          -- collatzBoundary removed
+  riemannBoundary     : RiemannManifestationLaw   -- detached later (Option A)
+  nsBoundary          : NsSolutionBalanceLaw      -- collatzBoundary removed; nsBoundary detached later (Option A)
 ```
+
+Today, after Option A, the single axiom is left with exactly one boundary — the twin node `causalBoundary`;
+`riemannBoundary` and `nsBoundary` are dead code in WITHDRAWN blocks.
 
 > **Note (what exactly is proven).** What was refuted is the *universal* form of the law —
 > `∀ n ≥ 1, RopeCountingLaw n`. This is not a refutation of the Collatz conjecture: the law was strictly stronger
@@ -305,7 +311,7 @@ proved that no honest third field of `step00FirstCause` exists); for Collatz it 
 forged refutation `ropeLaw_universal_refuted` (the decree taken and removed).
 
 Therefore this entire result is green, adds not a single axiom, and **the repository's taint does not grow**
-(after the removal of the fourth boundary it returned to 47). Everything holds at A ≤ 4.
+(it is 16, every declaration asserting the twins; the removal of the Collatz boundary did not change it). Everything holds at A ≤ 4.
 
 **Section takeaway.** Thus the same prohibition closes, read now through a finite-fuel verifier:
 **the machine that verifies any conjecture is itself the object it cannot surpass.**

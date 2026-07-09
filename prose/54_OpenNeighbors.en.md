@@ -7,7 +7,7 @@
 > Lean sources: `Engine/ChowlaFront.lean`, `Engine/AbcFront.lean`, `Engine/BealFront.lean`,
 > `Engine/LehmerFront.lean`, `Engine/LandauFront.lean`. Each shadow is grounded on a **real proven
 > mathlib theorem** (🟢), while the open conjecture itself remains an honest named 🔴 gate. None of
-> them is solved; the quarantine toll does not change (47), and there is still exactly one `sorry`.
+> them is solved; the quarantine toll does not change (16), and there is still exactly one `sorry`.
 > The novelty is formalizational.
 
 ## Where we are
@@ -178,7 +178,7 @@ as a reading through the engine; wherever an open conjecture stands, we name it 
 and do not pretend to have closed it.
 
 None of the five is solved, no first-cause decrees have been
-added (just as in the arithmetic zoo), and the toll is the same 47.
+added (just as in the arithmetic zoo), and the toll is the same 16.
 
 As far as our searches go,
 neither Chowla, nor abc, nor Beal, nor Lehmer, nor Landau has been read this way before; the novelty

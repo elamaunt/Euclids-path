@@ -22,7 +22,14 @@
   twins at every scale (`causalClosureAxiom_asserts_twins_at_every_scale`)
   — to accept it = to accept twins, the decree is no weaker than the conclusion.
 
-  EXTENSION OF THE DECREE (§10, by the author's decision): to the twin node (`causalBoundary`)
+  ⚠️ OPTION A (CURRENT STATE): the axiom carries EXACTLY ONE boundary — the twin node
+  (`causalBoundary`). The Riemann, Navier–Stokes, P/NP, Yang–Mills and Hodge "extensions" narrated
+  in §§10–15 below were WITHDRAWN / never taken (Option A); each survives only as an honest
+  conditional front, adds NOTHING to the taint (16 tainted declarations, all asserting twins), and
+  the §§10–15 text below is the HISTORICAL pre-Option-A record. Machine-checked in
+  Engine/Step00FrontClosureAudit.
+
+  EXTENSION OF THE DECREE (§10, HISTORICAL — WITHDRAWN under Option A): to the twin node (`causalBoundary`)
   a SECOND causal boundary is added — the Riemann manifestation
   law (`riemannBoundary` : every off-critical zero manifests
   by an unpayable supply of flows at the permitted scales; the green machine —
@@ -124,18 +131,18 @@ abbrev Step00CausalClosureAxiom : Prop :=
 /--
 **STRUCTURE OF THE FIRST CAUSE** — the intentionally accepted external origin of the Step00 world.
 
-Five fields — the exact structure of the event `0 → 1` and its causal boundaries:
+THREE fields — the exact structure of the event `0 → 1` and its single causal boundary:
 * `origin` — the marker of the singularity `0` (the pre-frame state; carries `True`:
   before the first frame there is no internal language, nothing to assert);
 * `firstFrame` — the marker of the first causal frame `1` (from it the language of
   states/steps/ledgers is available; also `True` — a marker, not an assertion);
-* `causalBoundary` — the causal boundary of TWINS: the strict Step00 obligation;
-* `riemannBoundary` — the causal boundary of RIEMANN (extension of the decree, §10):
-  the manifestation law — every off-critical deviation of a zero must show itself
-  by an unpayable supply of flows where the ledger reconciles the books
-  (`RiemannManifestationLaw`, green machine — RiemannManifestationFront);
-* `nsBoundary` — the causal boundary of NAVIER–STOKES (§15): the gate-law of energy balance
-  of forceless solutions (`NsSolutionBalanceLaw`, green machine — NavierStokesFront).
+* `causalBoundary` — the causal boundary of TWINS: the strict Step00 obligation. This is the ONLY
+  substantive field: the axiom carries exactly the twin boundary (16 tainted declarations, all twins).
+
+WITHDRAWN (Option A): the former `riemannBoundary` (Riemann) and `nsBoundary` (Navier–Stokes) fields
+were DETACHED — they are no longer fields of `Step00FirstCause` (the structure below has three fields
+only), surviving as historical dead code in the WITHDRAWN comment blocks. Each lives on as an honest
+green/red CONDITIONAL front (RiemannManifestationFront, NavierStokesFront), not a live decree boundary.
 
 HISTORY OF THE FOURTH BOUNDARY (§18 — TAKEN AND REMOVED). The Collatz boundary
 (`collatzBoundary : ∀ n ≥ 1, RopeCountingLaw n`) was accepted as a fourth field,
@@ -175,13 +182,13 @@ structured first cause. ⚠️ AXIOM-TAINTED (via step00FirstCause).
 theorem step00CausalClosure : SerialTwinBoundary.SerialTwinBoundaryObligation :=
   step00FirstCause.causalBoundary
 
-/-- **HONESTY (machine-wise): the structure of the first cause ⟺ the conjunction of its boundaries.**
-    The markers origin/firstFrame are `True`, all the strength is in the THREE boundaries: the twin node,
-    the Riemann manifestation law and the NS gate-energy-balance (the fourth,
-    the Collatz one, was removed after a machine refutation — see the history of §18 above).
+/-- **HONESTY (machine-wise): the structure of the first cause ⟺ its single boundary.**
+    The markers origin/firstFrame are `True`, all the strength is in the ONE boundary: the twin node
+    (the Riemann manifestation law and the NS gate-energy-balance were detached/withdrawn — Option A;
+    the fourth, Collatz one, was removed earlier after a machine refutation — see the history of §18 above).
     The intentional inclusion of the first cause changes the ORIGIN (the root of the architecture
     and the name of the axiom in the taint), but not the mathematical strength of the decree — it is exactly
-    the sum of the accepted boundaries. -/
+    the single accepted twin boundary. -/
 theorem step00FirstCause_iff_causalClosure :
     Step00FirstCause ↔ SerialTwinBoundary.SerialTwinBoundaryObligation :=
   ⟨fun F => F.causalBoundary,

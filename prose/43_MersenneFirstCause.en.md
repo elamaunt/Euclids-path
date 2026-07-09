@@ -189,7 +189,7 @@ the tail engine from the orbit minimum stays 🟢; Mersenne —
 a manifestation engine under the law and the books (🟢, conditionally), with an admissible but deferred boundary.
 
 The rule of the series has sharpened: an honest boundary requires a greenly-unpresentable witness — *and* a bet
-one need not be ashamed of. `twin_prime_conjecture` remains `sorry`; the quarantine's taint — the same 43
+one need not be ashamed of. `twin_prime_conjecture` remains `sorry`; the quarantine's taint — the same 16
 declarations; not a single open problem has been declared solved.
 
 <!--navbot-->

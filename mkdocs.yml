@@ -161,6 +161,7 @@ plugins:
             55. Коллатц: 55. Collatz
             56. Первопричина Коллатца: 56. The Collatz first cause
             57. Канон вполне-фундированности: 57. The well-foundedness canon
+            58. Профинитный скелет: 58. The profinite skeleton
 
 nav:
   - Главная: index.md
@@ -232,6 +233,7 @@ nav:
       - 55. Коллатц: 55_Collatz.md
       - 56. Первопричина Коллатца: 56_CollatzFirstCause.md
       - 57. Канон вполне-фундированности: 57_WellFoundednessCanon.md
+      - 58. Профинитный скелет: 58_ProfiniteSkeleton.md
 
 extra:
   social:

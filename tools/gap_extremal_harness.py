@@ -56,8 +56,8 @@ def inv6(q):
 
 
 class Tee:
-    def __init__(self, path):
-        self.f = open(path, "w", encoding="utf-8")
+    def __init__(self, path, mode="w"):
+        self.f = open(path, mode, encoding="utf-8")
 
     def write(self, s):
         sys.__stdout__.write(s)
@@ -194,13 +194,15 @@ class SolverTimeout(Exception):
     pass
 
 
-def decision(g, A, deadline=None):
+def decision(g, A, deadline=None, mirror=True):
     """Exact decision: is there a phase tuple covering all offsets 1..g?
 
     Returns (True, [(q, t_q) placed clocks], nodes) or (False, None, nodes).
     Complete search: small clocks (<=13) by phase enumeration with mirror
-    reduction on the first clock; large clocks by first-uncovered anchored
-    DFS with exact residual-capacity pruning.
+    reduction on the first clock (disabled by mirror=False -- the
+    Lean-canonical mode: reps for the first clock = full range(q));
+    large clocks by first-uncovered anchored DFS with exact
+    residual-capacity pruning.
     """
     qs = wing_primes(A)
     smalls = [q for q in qs if q <= 13]
@@ -252,7 +254,7 @@ def decision(g, A, deadline=None):
         sol = dfs(full, bigs)
         return (sol is not None), sol, nodes
     q0 = smalls[0]
-    reps0 = [t for t in range(q0) if t <= (g + 1 - t) % q0]
+    reps0 = [t for t in range(q0) if t <= (g + 1 - t) % q0] if mirror else list(range(q0))
     rest = smalls[1:]
 
     def small_loop(i, acc, placed):
@@ -691,6 +693,226 @@ def task3(scan29_starts=None):
     return info
 
 
+# ================================================= PHASE-COVER W2 (additive)
+#
+# Additive modes for the MAIN ASSAULT W2 (Step00PhaseCoverKernel.lean):
+#   --pc nomirror   : the Lean-canonical solver runs (mirror reduction OFF on
+#                     the first small clock): UNSAT at g=G(A), SAT at g=G(A)-1,
+#                     node counts logged per scale;
+#   --pc leanmodel  : instrumented replica of the Lean kernel checker
+#                     (enumSmallB / dfsB / early-exit capLtB); node counts are
+#                     asserted EQUAL to the no-mirror solver run per scale;
+#   --pc sat        : SAT witnesses re-verified by trial division (23..37 from
+#                     the solver certificates; 17, 19 extracted from the cheap
+#                     full-period scans) -- the run of G-1 consecutive struck
+#                     centers starts at r+1, r and r+G clean;
+#   --pc sweep      : nodes-vs-g table above G(A) (fallback wall instances).
+# Log: appended to tools/phase_cover_run1.log.
+
+LEAN_I6 = {5: 1, 7: 6, 11: 2, 13: 11, 17: 3, 19: 16, 23: 4, 29: 5, 31: 26, 37: 31}
+EXPECTED_G = {**KNOWN_G, 29: 43, 31: 58, 37: 88}
+EXPECTED_NOMIRROR_NODES = {17: 464, 19: 2626, 23: 5301, 29: 11527, 31: 30079, 37: 25543}
+SAT_WITNESS_R = {23: 12694428, 29: 200906185, 31: 21844264615, 37: 1145973108145}
+PC_SCALES = [17, 19, 23, 29, 31, 37]
+
+
+def lean_model_decision(g, A):
+    """Instrumented replica of the Lean checker (Step00PhaseCoverKernel.lean).
+
+    Structure replicated exactly: enumSmallB enumerates ALL phases of the small
+    clocks 5,7,11,13 in list order (NO mirror reduction); dfsB over the big
+    clocks (descending) anchors at the minimal uncovered offset (= head of the
+    order-preserving filtered list), branches over remaining clocks x the two
+    phases covering that offset, and prunes by the exact residual capacity
+    fold (early-exit: Nat.blt c n && capLtB rem (n-c) U).
+
+    Counters:
+      nodes     -- solver-comparable dfs nodes: every dfsB call EXCEPT top-level
+                   calls with |U0| > sc_bigs (those are exactly the calls the
+                   solver's static pre-check skips; in the Lean checker they are
+                   guaranteed immediate capLtB prunes -- asserted here);
+      lean_calls / top_calls / top_skipped -- raw dfsB invocation counts;
+      cap_work  -- Lean cost model of capQ: q phases x |U| element visits,
+                   summed over every capQ evaluation the early-exit fold runs;
+      max_u     -- max |U| over all dfsB calls.
+    Returns (unsat, stats).
+    """
+    qs = wing_primes(A)
+    smalls = [(q, LEAN_I6[q]) for q in qs if q <= 13]
+    bigs = [(q, LEAN_I6[q]) for q in sorted((q for q in qs if q > 13), reverse=True)]
+    for q in qs:
+        assert (6 * LEAN_I6[q]) % q == 1, f"i6 table broken at {q}"
+        assert (2 * LEAN_I6[q]) % q != 0, f"degenerate two-phase branch at {q}"
+    masks = {q: _phase_masks(q, g) for q, _ in bigs}
+    sc_bigs = sum(max(m.bit_count() for m in masks[q]) for q, _ in bigs)
+    st = dict(nodes=0, lean_calls=0, top_calls=0, top_skipped=0, cap_work=0,
+              max_u=0, sc_bigs=sc_bigs)
+
+    def covered(q, i6, t, o):
+        return o % q == (t + i6) % q or o % q == (t + (q - i6)) % q
+
+    def strike_filter(q, i6, t, U):
+        return [o for o in U if not covered(q, i6, t, o)]
+
+    def capQ(q, i6, U):
+        # exact max_t of countP (coveredB q i6 t) U, by residue counting;
+        # cap_work accounts the Lean foldl cost: q phases x |U| visits
+        st["cap_work"] += q * len(U)
+        cnt = [0] * q
+        for o in U:
+            cnt[o % q] += 1
+        best = 0
+        for t in range(q):
+            v = cnt[(t + i6) % q] + cnt[(t + (q - i6)) % q]
+            if v > best:
+                best = v
+        return best
+
+    def capLt(rem, n, U):
+        # the early-exit fold: capLtB [] n U = (0 < n);
+        # capLtB (p::rem) n U = Nat.blt (capQ p U) n && capLtB rem (n - capQ p U) U
+        for (q, i6) in rem:
+            c = capQ(q, i6, U)
+            if not c < n:
+                return False
+            n = n - c
+        return 0 < n
+
+    def dfsB(fuel, rem, U, top=False):
+        st["lean_calls"] += 1
+        if top:
+            st["top_calls"] += 1
+        if len(U) > st["max_u"]:
+            st["max_u"] = len(U)
+        static_skip = top and len(U) > sc_bigs
+        if static_skip:
+            st["top_skipped"] += 1
+        else:
+            st["nodes"] += 1
+        if fuel == 0:
+            return False
+        if not U:
+            return False
+        pruned = capLt(rem, len(U), U)
+        if static_skip:
+            assert pruned, "static-skipped top call must be an immediate capacity prune"
+        if pruned:
+            return True
+        o = U[0]
+        for i in range(len(rem)):
+            q, i6 = rem[i]
+            rem2 = rem[:i] + rem[i + 1:]
+            if not dfsB(fuel - 1, rem2, strike_filter(q, i6, (o + q - i6) % q, U)):
+                return False
+            if not dfsB(fuel - 1, rem2, strike_filter(q, i6, (o + i6) % q, U)):
+                return False
+        return True
+
+    def enum_small(ss, U):
+        if not ss:
+            return dfsB(len(bigs) + 1, bigs, U, top=True)
+        (q, i6), rest = ss[0], ss[1:]
+        for t in range(q):
+            if not enum_small(rest, strike_filter(q, i6, t, U)):
+                return False
+        return True
+
+    unsat = enum_small(smalls, list(range(1, g + 1)))
+    return unsat, st
+
+
+def pc_solver_runs(scales, do_lean_model):
+    log("=" * 78)
+    log("PHASE-COVER W2 -- no-mirror solver runs"
+        + (" + lean-model replica" if do_lean_model else ""))
+    log("=" * 78)
+    solver_nodes = {}
+    for A in scales:
+        G = EXPECTED_G[A]
+        t0 = time.time()
+        sat_u, _, nodes_u = decision(G, A, mirror=False)
+        log(f"  {stamp()} A={A}: no-mirror decision(g={G}): "
+            f"{'SAT' if sat_u else 'UNSAT'} nodes={nodes_u:,} [{time.time()-t0:.1f}s]")
+        assert not sat_u, f"decision({G}) must be UNSAT at A={A}"
+        t0 = time.time()
+        sat_s, sol_s, nodes_s = decision(G - 1, A, mirror=False)
+        log(f"  {stamp()} A={A}: no-mirror decision(g={G-1}): "
+            f"{'SAT' if sat_s else 'UNSAT'} nodes={nodes_s:,} [{time.time()-t0:.1f}s]")
+        assert sat_s, f"decision({G-1}) must be SAT at A={A}"
+        exp = EXPECTED_NOMIRROR_NODES.get(A)
+        log(f"    UNSAT nodes {nodes_u:,} vs expected ~{exp:,} "
+            f"({'MATCH' if nodes_u == exp else 'deviation'})")
+        solver_nodes[A] = nodes_u
+        if do_lean_model:
+            t0 = time.time()
+            unsat, stx = lean_model_decision(G, A)
+            assert unsat, f"lean-model must certify UNSAT at A={A}, g={G}"
+            log(f"  {stamp()} A={A}: lean-model(g={G}): UNSAT  dfs nodes={stx['nodes']:,}  "
+                f"raw dfsB calls={stx['lean_calls']:,} (tops {stx['top_calls']:,}, "
+                f"static-skippable {stx['top_skipped']:,}, sc_bigs={stx['sc_bigs']})  "
+                f"cap-work={stx['cap_work']:,} phase*elem visits  max|U|={stx['max_u']} "
+                f"[{time.time()-t0:.1f}s]")
+            if stx["nodes"] != nodes_u:
+                log(f"*** MISMATCH: replica nodes {stx['nodes']:,} != solver nodes "
+                    f"{nodes_u:,} at A={A} -- STOP")
+                raise AssertionError("lean-model / solver node-count mismatch")
+            log(f"    replica nodes == solver nodes: OK ({stx['nodes']:,})")
+    return solver_nodes
+
+
+def pc_sat_witnesses(scales):
+    log("=" * 78)
+    log("PHASE-COVER W2 -- SAT witnesses re-verified by trial division")
+    log("=" * 78)
+    out = {}
+    for A in scales:
+        G = EXPECTED_G[A]
+        qs = wing_primes(A)
+
+        def struck(x):
+            return any((6 * x - 1) % q == 0 or (6 * x + 1) % q == 0 for q in qs)
+
+        if A in SAT_WITNESS_R:
+            r = SAT_WITNESS_R[A]
+            src = "solver certificate"
+        else:
+            P = primorial(A)
+            pos = clean_positions(A)
+            Gs, starts = max_gap_starts(pos, P)
+            assert Gs == G, f"scan G({A})={Gs} != expected {G}"
+            r = min(s for s in starts if s >= 1)
+            src = f"period scan ({len(starts)} extremal starts)"
+        assert r >= 1
+        assert not struck(r), f"A={A}: r={r} not clean"
+        assert not struck(r + G), f"A={A}: r+G={r+G} not clean"
+        for off in range(1, G):
+            assert struck(r + off), f"A={A}: offset {off} of r={r} not struck"
+        log(f"  A={A}: r={r} ({src}): r clean, r+{G} clean, ALL centers "
+            f"r+1..r+{G-1} struck (trial division over {qs}) -- G({A})={G} "
+            f"witnessed; Lean SAT side: allStruckB clocks r={r} len={G-1}")
+        out[A] = r
+    return out
+
+
+def pc_sweep(scales, budget):
+    log("=" * 78)
+    log("PHASE-COVER W2 -- sweep: no-mirror UNSAT nodes vs g above G(A)")
+    log("=" * 78)
+    for A in scales:
+        G = EXPECTED_G[A]
+        row = []
+        for g in range(G, G + 13, 2):
+            deadline = time.time() + budget
+            try:
+                sat, _, nodes = decision(g, A, deadline, mirror=False)
+                assert not sat
+                row.append((g, nodes))
+            except SolverTimeout:
+                row.append((g, None))
+        log(f"  A={A}: " + "  ".join(f"g={g}:{'timeout' if n is None else format(n, ',')}"
+                                     for g, n in row))
+
+
 # ================================================================= main
 
 def main():
@@ -698,7 +920,28 @@ def main():
     ap.add_argument("--parts", default="1,2,3")
     ap.add_argument("--budget", type=int, default=900, help="per-decision solver budget (s)")
     ap.add_argument("--log", default="tools/gap_extremal_run1.log")
+    ap.add_argument("--pc", default=None,
+                    help="phase-cover W2 modes, comma list of "
+                         "nomirror,leanmodel,sat,sweep (skips --parts)")
+    ap.add_argument("--pc-scales", default=None,
+                    help="comma list of scales for --pc (default 17,19,23,29,31,37)")
+    ap.add_argument("--pc-log", default="tools/phase_cover_run1.log")
     args = ap.parse_args()
+    if args.pc is not None:
+        sys.stdout = Tee(args.pc_log, mode="a")
+        modes = set(args.pc.split(","))
+        scales = ([int(s) for s in args.pc_scales.split(",")]
+                  if args.pc_scales else PC_SCALES)
+        log(f"\nPHASE-COVER W2 RUN -- modes {sorted(modes)}  scales {scales}  "
+            f"date 2026-07-10  numpy {np.__version__}")
+        if "nomirror" in modes or "leanmodel" in modes:
+            pc_solver_runs(scales, do_lean_model="leanmodel" in modes)
+        if "sat" in modes:
+            pc_sat_witnesses(scales)
+        if "sweep" in modes:
+            pc_sweep(scales, args.budget)
+        log(f"{stamp()} phase-cover run done.")
+        return
     sys.stdout = Tee(args.log)
     parts = set(args.parts.split(","))
     log("GAP EXTREMAL HARNESS -- SG0-B gate (extremal gap geometry of the twin-Jacobsthal wall)")

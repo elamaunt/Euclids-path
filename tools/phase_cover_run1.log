@@ -1,0 +1,104 @@
+
+PHASE-COVER W2 RUN -- modes ['leanmodel', 'nomirror', 'sat']  scales [17, 19, 23, 29, 31, 37]  date 2026-07-10  numpy 2.4.4
+==============================================================================
+PHASE-COVER W2 -- no-mirror solver runs + lean-model replica
+==============================================================================
+  [    0.0s] A=17: no-mirror decision(g=18): UNSAT nodes=464 [0.0s]
+  [    0.0s] A=17: no-mirror decision(g=17): SAT nodes=9 [0.0s]
+    UNSAT nodes 464 vs expected ~464 (MATCH)
+  [    0.0s] A=17: lean-model(g=18): UNSAT  dfs nodes=464  raw dfsB calls=5,005 (tops 5,005, static-skippable 4,541, sc_bigs=3)  cap-work=454,410 phase*elem visits  max|U|=9 [0.0s]
+    replica nodes == solver nodes: OK (464)
+  [    0.0s] A=19: no-mirror decision(g=25): UNSAT nodes=2,626 [0.0s]
+  [    0.0s] A=19: no-mirror decision(g=24): SAT nodes=196 [0.0s]
+    UNSAT nodes 2,626 vs expected ~2,626 (MATCH)
+  [    0.1s] A=19: lean-model(g=25): UNSAT  dfs nodes=2,626  raw dfsB calls=5,149 (tops 5,005, static-skippable 2,523, sc_bigs=7)  cap-work=1,343,604 phase*elem visits  max|U|=11 [0.0s]
+    replica nodes == solver nodes: OK (2,626)
+  [    0.1s] A=23: no-mirror decision(g=34): UNSAT nodes=5,301 [0.0s]
+  [    0.1s] A=23: no-mirror decision(g=33): SAT nodes=2,576 [0.0s]
+    UNSAT nodes 5,301 vs expected ~5,301 (MATCH)
+  [    0.1s] A=23: lean-model(g=34): UNSAT  dfs nodes=5,301  raw dfsB calls=5,365 (tops 5,005, static-skippable 64, sc_bigs=12)  cap-work=3,055,412 phase*elem visits  max|U|=14 [0.0s]
+    replica nodes == solver nodes: OK (5,301)
+  [    0.2s] A=29: no-mirror decision(g=43): UNSAT nodes=11,527 [0.0s]
+  [    0.2s] A=29: no-mirror decision(g=42): SAT nodes=964 [0.0s]
+    UNSAT nodes 11,527 vs expected ~11,527 (MATCH)
+  [    0.2s] A=29: lean-model(g=43): UNSAT  dfs nodes=11,527  raw dfsB calls=11,527 (tops 5,005, static-skippable 0, sc_bigs=19)  cap-work=8,900,389 phase*elem visits  max|U|=17 [0.1s]
+    replica nodes == solver nodes: OK (11,527)
+  [    0.4s] A=31: no-mirror decision(g=58): UNSAT nodes=30,079 [0.1s]
+  [    0.4s] A=31: no-mirror decision(g=57): SAT nodes=3,454 [0.0s]
+    UNSAT nodes 30,079 vs expected ~30,079 (MATCH)
+  [    0.6s] A=31: lean-model(g=58): UNSAT  dfs nodes=30,079  raw dfsB calls=30,079 (tops 5,005, static-skippable 0, sc_bigs=29)  cap-work=33,427,777 phase*elem visits  max|U|=22 [0.3s]
+    replica nodes == solver nodes: OK (30,079)
+  [    0.8s] A=37: no-mirror decision(g=88): UNSAT nodes=25,543 [0.1s]
+  [    0.8s] A=37: no-mirror decision(g=87): SAT nodes=2,215 [0.0s]
+    UNSAT nodes 25,543 vs expected ~25,543 (MATCH)
+  [    1.2s] A=37: lean-model(g=88): UNSAT  dfs nodes=25,543  raw dfsB calls=25,543 (tops 5,005, static-skippable 0, sc_bigs=48)  cap-work=69,503,229 phase*elem visits  max|U|=32 [0.4s]
+    replica nodes == solver nodes: OK (25,543)
+==============================================================================
+PHASE-COVER W2 -- SAT witnesses re-verified by trial division
+==============================================================================
+  A=17: r=117 (period scan (20 extremal starts)): r clean, r+18 clean, ALL centers r+1..r+17 struck (trial division over [5, 7, 11, 13, 17]) -- G(17)=18 witnessed; Lean SAT side: allStruckB clocks r=117 len=17
+  A=19: r=110 (period scan (20 extremal starts)): r clean, r+25 clean, ALL centers r+1..r+24 struck (trial division over [5, 7, 11, 13, 17, 19]) -- G(19)=25 witnessed; Lean SAT side: allStruckB clocks r=110 len=24
+  A=23: r=12694428 (solver certificate): r clean, r+34 clean, ALL centers r+1..r+33 struck (trial division over [5, 7, 11, 13, 17, 19, 23]) -- G(23)=34 witnessed; Lean SAT side: allStruckB clocks r=12694428 len=33
+  A=29: r=200906185 (solver certificate): r clean, r+43 clean, ALL centers r+1..r+42 struck (trial division over [5, 7, 11, 13, 17, 19, 23, 29]) -- G(29)=43 witnessed; Lean SAT side: allStruckB clocks r=200906185 len=42
+  A=31: r=21844264615 (solver certificate): r clean, r+58 clean, ALL centers r+1..r+57 struck (trial division over [5, 7, 11, 13, 17, 19, 23, 29, 31]) -- G(31)=58 witnessed; Lean SAT side: allStruckB clocks r=21844264615 len=57
+  A=37: r=1145973108145 (solver certificate): r clean, r+88 clean, ALL centers r+1..r+87 struck (trial division over [5, 7, 11, 13, 17, 19, 23, 29, 31, 37]) -- G(37)=88 witnessed; Lean SAT side: allStruckB clocks r=1145973108145 len=87
+[    1.2s] phase-cover run done.
+
+==============================================================================
+PHASE-COVER W2 -- Lean kernel gate ladder (Step00PhaseCoverKernel.lean)
+==============================================================================
+Checker: enumSmallB (full small-clock phase enumeration 5*7*11*13 = 5005,
+  NO mirror reduction) -> dfsB over the big clocks (min-uncovered-offset
+  anchor, branching over remaining clocks x the two phases covering the
+  anchor, exact residual-capacity prune).  Capacities are read off base-2^16
+  residue-count words (resWord/digit) -- same exact values as the solver's
+  histogram, so the traversal and node counts above stay the Lean-canonical
+  reference (asserted per scale: 464 / 2,626 / 5,301 / 11,527 / 30,079 /
+  25,543 dfs nodes).
+Soundness: one-directional Bool -> Prop (Uncoverable); the bridge
+  cleanGapBound_of_unsatCover instantiates the window-induced assignment
+  f q = (-k) mod q; the SAT side allStruckB + not_cleanGapBound_of_struck
+  refutes CleanGapBound A (G-1) from the trial-division-verified runs above.
+
+Gate layout (per-theorem budget 300 s / 8 GB; w = digit-capQ work model):
+  A=17 g=18: single gate            w=317,013            ~13 s
+  A=19 g=25: 5 t5-chunks            w_max=137,408        ~6 s each
+      (single-theorem variant measured: 92 s naive capQ; 40.7 s wall /
+       8.14 GB peak with digit capQ -> chunked, per the 8 GB budget)
+  A=23 g=34: 5 t5-chunks            w_max=241,054
+  A=29 g=43: 35 t5xt7-chunks        w_max=167,439
+  A=31 g=58: 33 t5xt7-chunks + heavy cells (t5,t7)=(0,2),(4,1) split
+             by t11 (22 sub-chunks) w_max(plain)=528,632
+      (heaviest plain cell measured standalone: 33.6 s wall / 6.94 GB)
+  A=37 g=88: 35 t5xt7-chunks        w_max=613,395
+      (heaviest cell measured standalone: 37.0 s wall / 7.55 GB)
+Full module build (soundness chain + all 117 chunk gates + 6 SAT gates +
+  glue + instances): 1024.1 s wall, peak lean RSS 14.42 GB (lake checks
+  chunk gates concurrently; every individual obligation stays inside the
+  300 s / 8 GB per-theorem budget, per the standalone measurements above).
+
+Axiom audit (scratch #print axioms against the built module):
+  allStruck_17..37                : no axioms
+  unsatCover_17                   : [propext]
+  unsatCover_19..37               : [propext, Quot.sound]
+  not_cleanGapBound_of_struck     : [propext, Quot.sound]
+  enumSmall_sound, cleanGapBound_of_unsatCover, cleanGapBound_A, gapExact_A,
+  twinJacobsthal_at_A, twinJacobsthalSharp_at_A
+                                  : [propext, Classical.choice, Quot.sound]
+  (standard triple or less everywhere; no sorryAx, no Lean.ofReduceBool --
+   native_decide unused.)
+
+Results landed (kernel-verified; no sorry, no new axioms, NO native_decide):
+  TRUE gaps  : cleanGapBound_17/19/23/29/31/37 : CleanGapBound A G(A)
+               for G = 18, 25, 34, 43, 58, 88
+  Exactness  : gapExact_A : CleanGapBound A G(A) /\ ~CleanGapBound A (G(A)-1)
+               (SAT witnesses r = 117, 110, 12694428, 200906185,
+                21844264615, 1145973108145)
+  Wall       : twinJacobsthal_at_23/29/31/37 (34<=75, 43<=120, 58<=137,
+               88<=195; 17/19 instances already existed via chain bounds)
+  Sharp wall : twinJacobsthalSharp_at_17/19/23/29/31/37
+               (18<=20, 25=25 TIGHT, 34<=37, 43<=60, 58<=68, 88<=97)
+The P-scaling wall is broken: kernel cost tracks the branch-and-bound tree
+(hundreds..tens of thousands of nodes), not the period (P_37 ~ 1.3e12; the
+previous record, the A=19 witness chain, was period-bound at P_19=1,616,615
+and 23 GB).

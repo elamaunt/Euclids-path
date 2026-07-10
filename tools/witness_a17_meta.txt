@@ -1,0 +1,6 @@
+A=17 reduced witness chain (clean residues in [1,P], cyclic cover step L=41)
+count=2193
+max_internal_gap=41
+wraparound_gap=22
+first=5
+last=85068

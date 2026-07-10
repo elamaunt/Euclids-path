@@ -1,0 +1,244 @@
+GAP EXTREMAL HARNESS -- SG0-B gate (extremal gap geometry of the twin-Jacobsthal wall)
+date: 2026-07-10   numpy 2.4.4   parts: ['1', '2', '3']
+known exact G(A): {5: 2, 7: 5, 11: 7, 13: 11, 17: 18, 19: 25, 23: 34} (short_survivor_run1.log)
+==============================================================================
+TASK 1 -- reduced witness lists for Lean kernel certificates (A = 17, 19)
+==============================================================================
+
+A=17: P=85,085  clean in [1,P]: 22,275  max cyclic gap = 18 (= known G(17)) OK   L = floor(A^2/7) = 41
+  reduced witness chain: count=2,193 (info-lower-bound ceil(P/L)=2,076)
+  max internal gap=41  wraparound gap=22  first=5  last=85068
+  wrote tools/witness_a17.lean.txt
+  wrote tools/witness_a17_meta.txt
+
+A=19: P=1,616,615  clean in [1,P]: 378,675  max cyclic gap = 25 (= known G(19)) OK   L = floor(A^2/7) = 51
+  reduced witness chain: count=33,412 (info-lower-bound ceil(P/L)=31,699)
+  max internal gap=51  wraparound gap=10  first=5  last=1616610
+  wrote tools/witness_a19.lean.txt
+
+==============================================================================
+TASK 2 -- exact G(A) for A = 29, 31, 37
+==============================================================================
+
+solver validation against known exact G (SAT at G-1 must hold, UNSAT at G):
+  A=13: decision(10)=SAT (nodes 0), decision(11)=UNSAT (nodes 0, 0.0s) -> OK
+  A=17: decision(17)=SAT (nodes 9), decision(18)=UNSAT (nodes 292, 0.0s) -> OK
+  A=19: decision(24)=SAT (nodes 196), decision(25)=UNSAT (nodes 1,594, 0.0s) -> OK
+  A=23: decision(33)=SAT (nodes 2,576), decision(34)=UNSAT (nodes 3,236, 0.0s) -> OK
+
+A=29: full-period chunked scan (P_29 = 1,078,282,205):
+  [    3.8s] scan A=29 m<1,078,282,205 (FULL period): max gap 43 (2 start(s), first at r=200906185), 214,708,725 clean [3.7s]
+  EXACT G(29) = 43, 2 extremal start(s): [200906185, 877375977]
+  solver cross-check:
+  decision(42)=SAT (nodes 964), decision(43)=UNSAT (nodes 6,873) -> OK (solver == scan)
+
+A=31: partial scan for lower bound, then exact branch-and-bound:
+  [    4.8s] scan A=31 m<300,000,000 (partial): max gap 50 (1 start(s), first at r=113629015), 55,882,383 clean [1.0s]
+  [    4.8s] decision(A=31, g=50): SAT nodes=1,165 [0.0s]
+  [    4.8s] decision(A=31, g=51): SAT nodes=1,165 [0.0s]
+  [    4.8s] decision(A=31, g=52): SAT nodes=2,050 [0.0s]
+  [    4.8s] decision(A=31, g=53): SAT nodes=4,577 [0.0s]
+  [    4.9s] decision(A=31, g=54): SAT nodes=4,577 [0.0s]
+  [    4.9s] decision(A=31, g=55): SAT nodes=3,570 [0.0s]
+  [    4.9s] decision(A=31, g=56): SAT nodes=3,570 [0.0s]
+  [    4.9s] decision(A=31, g=57): SAT nodes=3,454 [0.0s]
+  [    5.0s] decision(A=31, g=58): UNSAT nodes=18,113 [0.1s]
+  EXACT G(31) = 58  (UNSAT at g=58 exhausts the phase space; SAT at g=57)
+  certificate: clean r=21844264615, offsets 1..57 all struck, r and r+58 clean (verified by trial division); placed phases: [(5, 0), (7, 2), (11, 3), (13, 9), (17, 16), (31, 23), (29, 1), (23, 13), (19, 7)]
+
+A=37: partial scan for lower bound, then exact branch-and-bound:
+  [    6.0s] scan A=37 m<300,000,000 (partial): max gap 63 (1 start(s), first at r=27819087), 52,861,682 clean [1.0s]
+  [    6.0s] decision(A=37, g=63): SAT nodes=1,174 [0.0s]
+  [    6.0s] decision(A=37, g=64): SAT nodes=1,174 [0.0s]
+  [    6.0s] decision(A=37, g=65): SAT nodes=884 [0.0s]
+  [    6.0s] decision(A=37, g=66): SAT nodes=884 [0.0s]
+  [    6.0s] decision(A=37, g=67): SAT nodes=634 [0.0s]
+  [    6.0s] decision(A=37, g=68): SAT nodes=588 [0.0s]
+  [    6.0s] decision(A=37, g=69): SAT nodes=588 [0.0s]
+  [    6.0s] decision(A=37, g=70): SAT nodes=3,437 [0.0s]
+  [    6.0s] decision(A=37, g=71): SAT nodes=3,437 [0.0s]
+  [    6.1s] decision(A=37, g=72): SAT nodes=6,742 [0.0s]
+  [    6.1s] decision(A=37, g=73): SAT nodes=4,082 [0.0s]
+  [    6.1s] decision(A=37, g=74): SAT nodes=4,082 [0.0s]
+  [    6.1s] decision(A=37, g=75): SAT nodes=4,288 [0.0s]
+  [    6.1s] decision(A=37, g=76): SAT nodes=4,288 [0.0s]
+  [    6.2s] decision(A=37, g=77): SAT nodes=3,520 [0.0s]
+  [    6.2s] decision(A=37, g=78): SAT nodes=3,522 [0.0s]
+  [    6.2s] decision(A=37, g=79): SAT nodes=3,522 [0.0s]
+  [    6.2s] decision(A=37, g=80): SAT nodes=2,268 [0.0s]
+  [    6.2s] decision(A=37, g=81): SAT nodes=2,268 [0.0s]
+  [    6.2s] decision(A=37, g=82): SAT nodes=4,229 [0.0s]
+  [    6.3s] decision(A=37, g=83): SAT nodes=3,057 [0.0s]
+  [    6.3s] decision(A=37, g=84): SAT nodes=3,057 [0.0s]
+  [    6.3s] decision(A=37, g=85): SAT nodes=2,539 [0.0s]
+  [    6.3s] decision(A=37, g=86): SAT nodes=2,539 [0.0s]
+  [    6.3s] decision(A=37, g=87): SAT nodes=2,215 [0.0s]
+  [    6.4s] decision(A=37, g=88): UNSAT nodes=15,669 [0.1s]
+  EXACT G(37) = 88  (UNSAT at g=88 exhausts the phase space; SAT at g=87)
+  certificate: clean r=1145973108145, offsets 1..87 all struck, r and r+88 clean (verified by trial division); placed phases: [(5, 0), (7, 2), (11, 3), (13, 5), (17, 16), (19, 2), (29, 1), (37, 34), (23, 13), (31, 22)]
+
+------------------------------------------------------------------------------
+margins table: G(A) vs A^2/7 (wall constant) and A^2/6
+------------------------------------------------------------------------------
+    A   G(A)    A^2/7  G/(A^2/7)    A^2/6  G/(A^2/6)   G<=A^2/7
+    5      2     3.57      0.560     4.17      0.480        YES
+    7      5     7.00      0.714     8.17      0.612        YES
+   11      7    17.29      0.405    20.17      0.347        YES
+   13     11    24.14      0.456    28.17      0.391        YES
+   17     18    41.29      0.436    48.17      0.374        YES
+   19     25    51.57      0.485    60.17      0.416        YES
+   23     34    75.57      0.450    88.17      0.386        YES
+   29     43   120.14      0.358   140.17      0.307        YES
+   31     58   137.29      0.422   160.17      0.362        YES
+   37     88   195.57      0.450   228.17      0.386        YES
+
+G(A) <= A^2/7 holds for every exactly-known A -- wall constant A^2/7 stands.
+
+==============================================================================
+TASK 3 -- extremal phase portraits and the transfer hypothesis (A <= 23)
+==============================================================================
+
+A=5: P=5  G=2  extremal starts: 2  mirror orbits: 1 (0 palindromic)
+    r=0: q5:1
+    r=3: q5:1
+
+A=7: P=35  G=5  extremal starts: 2  mirror orbits: 1 (0 palindromic)
+    r=12: q5:2,4  q7:1,3
+    r=18: q5:1,3  q7:2,4
+
+A=11: P=385  G=7  extremal starts: 4  mirror orbits: 2 (0 palindromic)
+    r=150: q5:1,4,6  q7:3,5  q11:2,6
+    r=158: q5:1,3,6  q7:2,4  q11:5
+    r=220: q5:1,4,6  q7:3,5  q11:2
+    r=228: q5:1,3,6  q7:2,4  q11:1,5
+
+A=13: P=5,005  G=11  extremal starts: 12  mirror orbits: 6 (0 palindromic)
+    r=122: q5:2,4,7,9  q7:3,5,10  q11:1,8  q13:6,10
+    r=642: q5:2,4,7,9  q7:1,3,8,10  q11:5,9  q13:6,10
+    r=1097: q5:2,4,7,9  q7:1,3,8,10  q11:1,5  q13:6,10
+    r=1202: q5:2,4,7,9  q7:1,3,8,10  q11:6,10  q13:5,9
+    r=1657: q5:2,4,7,9  q7:1,3,8,10  q11:2,6  q13:5,9
+    r=2177: q5:2,4,7,9  q7:1,6,8  q11:3,10  q13:5,9
+    ... (6 more)
+
+A=17: P=85,085  G=18  extremal starts: 20  mirror orbits: 10 (0 palindromic)
+    r=117: q5:2,4,7,9,12,14,17  q7:1,3,8,10,15,17  q11:2,6,13,17  q13:2,11,15  q17:5,16
+    r=502: q5:2,4,7,9,12,14,17  q7:1,3,8,10,15,17  q11:2,6,13,17  q13:3,7,16  q17:5,11
+    r=5642: q5:2,4,7,9,12,14,17  q7:1,6,8,13,15  q11:3,10,14  q13:2,11,15  q17:5,16
+    r=6027: q5:2,4,7,9,12,14,17  q7:1,6,8,13,15  q11:3,10,14  q13:3,7,16  q17:5,11
+    r=21497: q5:2,4,7,9,12,14,17  q7:1,6,8,13,15  q11:6,10,17  q13:3,7,16  q17:5,11
+    r=30845: q5:1,4,6,9,11,14,16  q7:3,5,10,12,17  q11:1,8,12  q13:2,6,15  q17:7,13
+    ... (14 more)
+
+A=19: P=1,616,615  G=25  extremal starts: 20  mirror orbits: 10 (0 palindromic)
+    r=110: q5:1,4,6,9,11,14,16,19,21,24  q7:1,3,8,10,15,17,22,24  q11:2,9,13,20,24  q13:5,9,18,22  q17:6,12,23  q19:1,7,20
+    r=26045: q5:1,4,6,9,11,14,16,19,21,24  q7:1,3,8,10,15,17,22,24  q11:1,5,12,16,23  q13:5,9,18,22  q17:2,13,19  q19:1,7,20
+    r=67695: q5:1,4,6,9,11,14,16,19,21,24  q7:1,3,8,10,15,17,22,24  q11:1,8,12,19,23  q13:7,11,20,24  q17:2,13,19  q19:5,18,24
+    r=170035: q5:1,4,6,9,11,14,16,19,21,24  q7:1,3,8,10,15,17,22,24  q11:1,5,12,16,23  q13:3,7,16,20  q17:2,13,19  q19:12,18
+    r=203005: q5:1,4,6,9,11,14,16,19,21,24  q7:1,3,8,10,15,17,22,24  q11:2,9,13,20,24  q13:1,5,14,18  q17:6,12,23  q19:7,13
+    r=373175: q5:1,4,6,9,11,14,16,19,21,24  q7:1,3,8,10,15,17,22,24  q11:2,9,13,20,24  q13:1,5,14,18  q17:6,12,23  q19:1,7,20
+    ... (14 more)
+
+A=23: P=37,182,145  G=34  extremal starts: 4  mirror orbits: 2 (0 palindromic)
+    r=12694428: q5:1,3,6,8,11,13,16,18,21,23,26,28,31,33  q7:1,3,8,10,15,17,22,24,29,31  q11:3,10,14,21,25,32  q13:5,9,18,22,31  q17:2,13,19,30  q19:1,7,20,26  q23:4,12,27
+    r=18165208: q5:1,3,6,8,11,13,16,18,21,23,26,28,31,33  q7:1,3,8,10,15,17,22,24,29,31  q11:3,7,14,18,25,29  q13:2,6,15,19,28,32  q17:3,9,20,26  q19:5,11,24,30  q23:4,12,27
+    r=19016903: q5:1,3,6,8,11,13,16,18,21,23,26,28,31,33  q7:3,5,10,12,17,19,24,26,31,33  q11:5,9,16,20,27,31  q13:2,6,15,19,28,32  q17:8,14,25,31  q19:4,10,23,29  q23:7,22,30
+    r=24487683: q5:1,3,6,8,11,13,16,18,21,23,26,28,31,33  q7:3,5,10,12,17,19,24,26,31,33  q11:2,9,13,20,24,31  q13:3,12,16,25,29  q17:4,15,21,32  q19:8,14,27,33  q23:7,22,30
+
+(a) embedding hypothesis: A'-extremal window start rho = r' mod P_A;
+    entry gap = distance rho -> next Clean(A) residue; is it top-decile among A-gaps?
+        pair    r_ext(A_hi) entry gap G(A_lo)  p90 thr  pctile  top10%? max inner gap
+  ( 5, 7)             12         1       2        2   16.7%       no             1
+  ( 5, 7)             18         2       2        2   66.7%      YES             2
+  ( 7,11)            150         2       5        3   46.7%       no             5
+  ( 7,11)            158         5       5        3   93.3%      YES             5
+  ( 7,11)            220         2       5        3   46.7%       no             5
+  ( 7,11)            228         5       5        3   93.3%      YES             5
+  (11,13)            122         6       7        5   95.6%      YES             6
+  (11,13)            642         6       7        5   95.6%      YES             6
+  (11,13)          1,097         6       7        5   95.6%      YES             6
+  (11,13)          1,202         5       7        5   85.9%      YES             6
+  (11,13)          1,657         5       7        5   85.9%      YES             6
+  (11,13)          2,177         5       7        5   85.9%      YES             6
+  (11,13)          2,817         6       7        5   95.6%      YES             6
+  (11,13)          3,337         6       7        5   95.6%      YES             6
+  (11,13)          3,792         6       7        5   95.6%      YES             6
+  (11,13)          3,897         5       7        5   85.9%      YES             6
+  (11,13)          4,352         5       7        5   85.9%      YES             6
+  (11,13)          4,872         5       7        5   85.9%      YES             6
+  (13,17)            117         5      11        6   78.2%       no            11
+  (13,17)            502         5      11        6   78.2%       no             7
+  (13,17)          5,642         5      11        6   78.2%       no            11
+  (13,17)          6,027         5      11        6   78.2%       no             7
+  (13,17)         21,497         5      11        6   78.2%       no             7
+  (13,17)         30,845         7      11        6   94.2%      YES             7
+  (13,17)         32,842         5      11        6   78.2%       no            11
+  (13,17)         33,227         5      11        6   78.2%       no             7
+  (13,17)         38,367         5      11        6   78.2%       no            11
+  (13,17)         38,752         5      11        6   78.2%       no             7
+  (13,17)         46,315         7      11        6   94.2%      YES             7
+  (13,17)         46,700         2      11        6   29.7%       no            11
+  (13,17)         51,840         7      11        6   94.2%      YES             7
+  (13,17)         52,225         2      11        6   29.7%       no            11
+  (13,17)         54,222         5      11        6   78.2%       no             7
+  (13,17)         63,570         7      11        6   94.2%      YES             7
+  (13,17)         79,040         7      11        6   94.2%      YES             7
+  (13,17)         79,425         2      11        6   29.7%       no            11
+  (13,17)         84,565         7      11        6   94.2%      YES             7
+  (13,17)         84,950         2      11        6   29.7%       no            11
+  (17,19)            110         7      18        7   89.9%      YES            18
+  (17,19)         26,045         7      18        7   89.9%      YES            13
+  (17,19)         67,695         5      18        7   72.0%       no            13
+  (17,19)        170,035        18      18        7  100.0%      YES            18
+  (17,19)        203,005         7      18        7   89.9%      YES            18
+  (17,19)        373,175         7      18        7   89.9%      YES            18
+  (17,19)        399,110         7      18        7   89.9%      YES            13
+  (17,19)        440,760         5      18        7   72.0%       no            13
+  (17,19)        466,940         7      18        7   89.9%      YES            13
+  (17,19)        776,585         5      18        7   72.0%       no            13
+  (17,19)        840,005         7      18        7   89.9%      YES            13
+  (17,19)      1,149,650         5      18        7   72.0%       no            13
+  (17,19)      1,175,830         7      18        7   89.9%      YES            13
+  (17,19)      1,217,480         5      18        7   72.0%       no            13
+  (17,19)      1,243,415        18      18        7  100.0%      YES            18
+  (17,19)      1,413,585        18      18        7  100.0%      YES            18
+  (17,19)      1,446,555         7      18        7   89.9%      YES            18
+  (17,19)      1,548,895         7      18        7   89.9%      YES            13
+  (17,19)      1,590,545         5      18        7   72.0%       no            13
+  (17,19)      1,616,480        18      18        7  100.0%      YES            18
+  (19,23)     12,694,428         4      25        7   53.3%       no            15
+  (19,23)     18,165,208         4      25        7   53.3%       no            15
+  (19,23)     19,016,903         7      25        7   85.5%      YES            15
+  (19,23)     24,487,683         7      25        7   85.5%      YES            15
+  (23,29)    200,906,185        10      34        9   92.2%      YES   (bonus row)
+  (23,29)    877,375,977        23      34        9   99.9%      YES   (bonus row)
+  verdict (a): embedding holds for 1/6 pairs: FAILS on [(5, 7), (7, 11), (13, 17), (17, 19), (19, 23)]
+
+(b) statistical transfer: Spearman rank corr of gap lengths at the same residues
+        pair    rho_S       ~z
+  ( 5, 7)   0.1058      106
+  ( 7,11)   0.7183      718
+  (11,13)   0.7789      779
+  (13,17)   0.8363      836
+  (17,19)   0.8596      860
+  (19,23)   0.8880      888
+  verdict (b): rank transfer strictly positive on all pairs
+
+(c) waste profiles: strike multiplicity per offset, extremal vs random windows
+    A    W | extremal:  cover   mult  dbl+/W | random(20k):  cover mult|cov dbl+/cov  z(dbl)
+    5    1 |            1.000  1.000   0.000 |               0.400    1.000    0.000     nan
+        per-clock redundant/strikes over all extremal windows: q5:0/2
+    7    4 |            1.000  1.000   0.000 |               0.572    1.200    0.200    -0.8
+        per-clock redundant/strikes over all extremal windows: q5:0/4  q7:0/4
+   11    6 |            1.000  1.083   0.083 |               0.650    1.336    0.305    -0.9
+        per-clock redundant/strikes over all extremal windows: q5:2/12  q7:0/8  q11:2/6
+   13   10 |            1.000  1.167   0.167 |               0.702    1.454    0.381    -1.1
+        per-clock redundant/strikes over all extremal windows: q5:10/48  q7:10/44  q11:8/24  q13:12/24
+   17   17 |            1.000  1.212   0.182 |               0.738    1.543    0.431    -2.0
+        per-clock redundant/strikes over all extremal windows: q5:46/140  q7:20/108  q11:36/68  q13:32/56  q17:0/40
+   19   24 |            1.000  1.367   0.246 |               0.766    1.625    0.474    -2.0
+        per-clock redundant/strikes over all extremal windows: q5:88/200  q7:58/160  q11:60/100  q13:44/80  q17:20/60  q19:24/56
+   23   33 |            1.000  1.409   0.333 |               0.786    1.693    0.506    -1.3
+        per-clock redundant/strikes over all extremal windows: q5:34/56  q7:26/40  q11:12/24  q13:12/22  q17:6/16  q19:8/16  q23:0/12
+
+[    9.3s] done.

@@ -19,8 +19,10 @@ pieces of green content:
   chain to `CleanGapBound A L` on all of ℕ through the same periodicity trick as the wall.
 
 * **New kernel instances of the wall.**  `witnessChain_17` (2193 witnesses over `P = 85085`)
-  gives `cleanGapBound_17 : CleanGapBound 17 41` and `twinJacobsthal_at_17` — the margin
-  `G(17) = 41 = 17²/7` is EXACT, the first scale where the wall's `1/7` constant is tight.
+  gives `cleanGapBound_17 : CleanGapBound 17 41` and `twinJacobsthal_at_17`.  HONESTY
+  CORRECTION: `41 = ⌊17²/7⌋` is the greedy chain STEP (the chain's max internal gap equals
+  41 by construction), NOT the true gap — the true gap is `G(17) = 18` (ledger L18/L30,
+  ratio ≈ 0.44).  An earlier version of this header wrongly claimed "G(17) = 41 EXACT/tight".
   The witness data (produced and cross-checked externally, then re-verified here by `decide`)
   lives in `tools/witness_a17.lean.txt`; `tools/gen_witness_lean.py` emits the chunked
   literals below.
@@ -352,8 +354,9 @@ theorem cleanGapBound_17 : CleanGapBound 17 41 := by
   · exact absurd hq (by norm_num)
   · exact ⟨5005, rfl⟩
 
-/-- The wall instance at 17.  The margin is EXACT: `17² / 7 = 41 = G(17)` — the first scale
-    where the wall's `1/7` constant is tight (the small scales 5–13 sit strictly inside). -/
+/-- The wall instance at 17: `CleanGapBound 17 ⌊17²/7⌋`.  HONESTY CORRECTION: `41` is the
+    greedy chain STEP, not the gap — the true gap is `G(17) = 18` (ledger L18/L30, ratio
+    ≈ 0.44); an earlier docstring wrongly claimed the margin was exact/tight. -/
 theorem twinJacobsthal_at_17 : CleanGapBound 17 (17 ^ 2 / 7) :=
   cleanGapBound_mono cleanGapBound_17 (by norm_num)
 

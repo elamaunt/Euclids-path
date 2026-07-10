@@ -20,7 +20,10 @@ Bool-valued single-pass fold:
   this direction is needed: the fold is a certificate CHECKER, not a decision procedure);
 * `witnessChainB_17` — the calibration gate (`decide +kernel` on the 2193-witness chain);
 * `witnessChainB_19` / `witnessChain_19` / `cleanGapBound_19` / `twinJacobsthal_at_19` — the
-  new scale: `G(19) = 51 = 19²/7` EXACT, the second tight scale of the wall after 17;
+  new scale.  HONESTY CORRECTION: `51 = ⌊19²/7⌋` is the greedy chain STEP, not the gap —
+  the true gap is `G(19) = 25` (ledger L30, ratio ≈ 0.49); an earlier version wrongly
+  claimed "G(19) = 51 EXACT/tight".  (Curiosity: `⌊19²/14⌋ = 25` IS genuinely tight —
+  the two-regime observation, see the Sharp wall.);
 * `twin_gap_below_wall` — the cheap general bridge: below the `A²` sieve horizon every
   window `(k, k+L]` served by a `CleanGapBound` contains an actual TWIN center
   (`sink_is_twin`), with concrete instances at `A ∈ {13, 17}`.
@@ -3342,9 +3345,10 @@ theorem witnessChain_19 : WitnessChain 19 51 1616615 witnessList19 := by
 theorem cleanGapBound_19 : CleanGapBound 19 51 :=
   cleanGapBound_of_witnessChain (by norm_num) cover_19 witnessChain_19
 
-/-- The wall instance at 19.  The margin is EXACT for the second scale running:
-    `19² / 7 = 51 = G(19)` — after `A = 17` (`41 = 17²/7`), the wall's `1/7` constant is
-    tight again. -/
+/-- The wall instance at 19: `CleanGapBound 19 ⌊19²/7⌋`.  HONESTY CORRECTION: `51` is the
+    greedy chain STEP, not the gap — the true gap is `G(19) = 25` (ledger L30, ratio ≈ 0.49);
+    an earlier docstring wrongly claimed the margin was exact/tight.  (`⌊19²/14⌋ = 25` IS
+    genuinely tight — the two-regime observation, see the Sharp wall.) -/
 theorem twinJacobsthal_at_19 : CleanGapBound 19 (19 ^ 2 / 7) :=
   cleanGapBound_mono cleanGapBound_19 (by norm_num)
 

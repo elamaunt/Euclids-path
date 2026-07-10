@@ -1,0 +1,141 @@
+
+#### selftest @ 2026-07-10 15:33:57 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== selftest (known facts) ==
+  [1,200] histogram: {0: 40, 1: 139, 2: 20, 3: 1}  expected {0:40,1:139,2:20,3:1}  -> PASS; depth-3 root(s) [146] (expect [146]) -> PASS
+  depth(4229): exact=4 BFS=4 (expect 4) -> PASS; chain [4229, 846, 169, 34, 5] valid peel steps + twin sink -> PASS
+  min-path ratio near 19994: min=4.9766e-05 at (20094, 1, 24113) (expect ~5.00e-5) -> PASS
+  BFS == exact recursion on [1,400] + 40 spot roots -> PASS
+
+#### emit @ 2026-07-10 15:34:18 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.0s)
+== emit: min-depth path witnesses for m in [1,2000] ==
+  depth histogram [1,2000]: {0: 234, 1: 1323, 2: 434, 3: 9} ; max = 3
+  emitted 2000 verified path entries -> C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad\grave_depth\paths_1_2000.json
+  every step re-verified: 6m-eps == p*(6t+delta), p prime >= 5, 1 <= t < m; terminal twin checked
+
+#### census6 @ 2026-07-10 15:34:26 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== census 1e6: roots [1, 1000001), DEPTH_CAP=8 NODE_BUDGET=3000 ==
+    census: 50000/1000000 roots (0s, 230893 nodes)
+    census: 100000/1000000 roots (0s, 492682 nodes)
+    census: 150000/1000000 roots (1s, 765840 nodes)
+    census: 200000/1000000 roots (1s, 1045707 nodes)
+    census: 250000/1000000 roots (1s, 1332291 nodes)
+    census: 300000/1000000 roots (1s, 1621715 nodes)
+    census: 350000/1000000 roots (1s, 1916020 nodes)
+    census: 400000/1000000 roots (1s, 2213493 nodes)
+    census: 450000/1000000 roots (2s, 2514792 nodes)
+    census: 500000/1000000 roots (2s, 2818535 nodes)
+    census: 550000/1000000 roots (2s, 3123347 nodes)
+    census: 600000/1000000 roots (2s, 3430917 nodes)
+    census: 650000/1000000 roots (2s, 3739577 nodes)
+    census: 700000/1000000 roots (3s, 4050701 nodes)
+    census: 750000/1000000 roots (3s, 4363034 nodes)
+    census: 800000/1000000 roots (3s, 4676461 nodes)
+    census: 850000/1000000 roots (3s, 4993323 nodes)
+    census: 900000/1000000 roots (3s, 5310069 nodes)
+    census: 950000/1000000 roots (4s, 5628448 nodes)
+    census: 1000000/1000000 roots (4s, 5947801 nodes)
+  histogram (depth: count): {0: 37915, 1: 520776, 2: 427029, 3: 14254, 4: 26}
+  max depth = 4 at m = 4229; censored(cap)=0 censored(budget)=0; 1000000 roots, 5947801 nodes, 4s
+  exact-DP cross-check over ALL of [1, 10^6]:
+    DP: 200000/1000000 (0s)
+    DP: 400000/1000000 (1s)
+    DP: 600000/1000000 (1s)
+    DP: 800000/1000000 (1s)
+    DP: 1000000/1000000 (2s)
+  BFS == DP on 1000000/1000000 roots  [EXACT MATCH]
+  DP max depth on [1,10^6] = 4 at m = 4229
+    DP histogram [1,2000]: {0: 234, 1: 1323, 2: 434, 3: 9}
+    DP histogram [1,10000]: {0: 810, 1: 6262, 2: 2853, 3: 74, 4: 1}
+    DP histogram [1,100000]: {0: 5330, 1: 57430, 2: 36229, 3: 1008, 4: 3}
+    DP histogram [1,1000000]: {0: 37915, 1: 520776, 2: 427029, 3: 14254, 4: 26}
+
+#### drops6 @ 2026-07-10 15:34:32 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== drops 1e6: roots [1, 1000001) — min-path (smallest-t tie-break) vs max-target ==
+    drops: 50000/1000000 roots (0s)
+    drops: 100000/1000000 roots (0s)
+    drops: 150000/1000000 roots (1s)
+    drops: 200000/1000000 roots (1s)
+    drops: 250000/1000000 roots (1s)
+    drops: 300000/1000000 roots (2s)
+    drops: 350000/1000000 roots (2s)
+    drops: 400000/1000000 roots (2s)
+    drops: 450000/1000000 roots (2s)
+    drops: 500000/1000000 roots (3s)
+    drops: 550000/1000000 roots (3s)
+    drops: 600000/1000000 roots (3s)
+    drops: 650000/1000000 roots (3s)
+    drops: 700000/1000000 roots (4s)
+    drops: 750000/1000000 roots (4s)
+    drops: 800000/1000000 roots (4s)
+    drops: 850000/1000000 roots (5s)
+    drops: 900000/1000000 roots (5s)
+    drops: 950000/1000000 roots (5s)
+    drops: 1000000/1000000 roots (5s)
+  processed 1000000 roots (5s)
+  MIN-path  per-step ratio t/m: n=1417700  min=1.000e-06  q01=1.108e-06  q50=3.390e-04
+  MAX-target per-step ratio t/m: n=3879680  min=4.105e-04  q01=2.387e-03  q50=1.429e-01
+  MIN-path extreme step: ratio 1.000e-06 at (999999, 1, 1199999)
+  MAX-target depth: mean=4.03 max=8 (walk cap misses: 0)
+  VERDICT 1e6: max-target min ratio = 4.105e-04 — NOT drop-controlled (ratio reaches ~0)
+
+#### mn @ 2026-07-10 15:34:38 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== M(N): largest M with [1,M] inside R_3(twins <= N) ==
+  M(10) = 11  (first failure at m = 12, min steps to a twin <= 10 there: >3)
+  M(100) = 102  (first failure at m = 103, min steps to a twin <= 100 there: >3)
+  M(1000) = 1014  (first failure at m = 1015, min steps to a twin <= 1000 there: >3)
+  M(10000) = 4228  (first failure at m = 4229, min steps to a twin <= 10000 there: >3)
+
+#### census9 @ 2026-07-10 15:34:38 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== census 1e9: roots [1000000000, 1000050000), DEPTH_CAP=8 NODE_BUDGET=3000 ==
+    census: 50000/50000 roots (5s, 482599 nodes)
+  histogram (depth: count): {0: 765, 1: 18883, 2: 28673, 3: 1679}
+  max depth = 3 at m = 1000000003; censored(cap)=0 censored(budget)=0; 50000 roots, 482599 nodes, 5s
+
+#### drops9 @ 2026-07-10 15:34:43 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.0s)
+== drops 1e9: roots [1000000000, 1000050000) — min-path (smallest-t tie-break) vs max-target ==
+    drops: 50000/50000 roots (14s)
+  processed 50000 roots (14s)
+  MIN-path  per-step ratio t/m: n=81266  min=1.000e-09  q01=1.000e-09  q50=1.051e-05
+  MAX-target per-step ratio t/m: n=310162  min=1.291e-05  q01=3.662e-04  q50=1.429e-01
+  MIN-path extreme step: ratio 1.000e-09 at (1000049991, 1, 1200059989)
+  MAX-target depth: mean=6.30 max=12 (walk cap misses: 0)
+  VERDICT 1e9: max-target min ratio = 1.291e-05 — NOT drop-controlled (ratio reaches ~0)
+
+#### census12 @ 2026-07-10 15:34:58 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== census 1e12: roots [1000000000000, 1000000050000), DEPTH_CAP=8 NODE_BUDGET=3000 ==
+    census: 50000/50000 roots (13s, 651681 nodes)
+  histogram (depth: count): {0: 448, 1: 14911, 2: 31827, 3: 2810, 4: 4}
+  max depth = 4 at m = 1000000006372; censored(cap)=0 censored(budget)=0; 50000 roots, 651681 nodes, 13s
+
+#### drops12 @ 2026-07-10 15:35:10 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== drops 1e12: roots [1000000000000, 1000000050000) — min-path (smallest-t tie-break) vs max-target ==
+    drops: 50000/50000 roots (41s)
+  processed 50000 roots (41s)
+  MIN-path  per-step ratio t/m: n=87011  min=1.000e-12  q01=1.000e-12  q50=7.070e-07
+  MAX-target per-step ratio t/m: n=406173  min=4.121e-07  q01=9.563e-05  q50=1.429e-01
+  MIN-path extreme step: ratio 1.000e-12 at (1000000049991, 1, 1200000059989)
+  MAX-target depth: mean=8.20 max=15 (walk cap misses: 0)
+  VERDICT 1e12: max-target min ratio = 4.121e-07 — NOT drop-controlled (ratio reaches ~0)
+
+#### basins @ 2026-07-10 15:35:52 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+== basins: canonical grave (left-wing-first minFac) for m <= 100000 ==
+  twins <= 100000: 5330; nonempty basins: 5330; top-10 basin sizes: [(1, 12920), (2, 10527), (3, 8354), (5, 5686), (10, 3796), (7, 3603), (12, 3544), (17, 2565), (18, 2200), (23, 1863)]
+  basin size stats: mean=18.76 median=1 max=12920
+  boundary pairs g(m) != g(m+1): 95792 / 99999  (density 0.9579)
+    basins reach: 20000/100000 (0s)
+    basins reach: 40000/100000 (0s)
+    basins reach: 60000/100000 (1s)
+    basins reach: 80000/100000 (1s)
+  adjacent twin-free pairs checked: 89457; DISJOINT-reach pairs: 4053; unresolved (cap 200): 0
+  disjoint examples (first 10): [27, 28, 34, 35, 36, 59, 60, 82, 93, 108]
+  VERDICT: disjoint-reach twin-free adjacent pair exists <= 1e5: YES

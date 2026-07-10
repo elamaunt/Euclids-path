@@ -1,0 +1,70 @@
+SELF-TEST -- kernel calibration (A,M0) = (5,4): cone(center 3) + curvature spectrum
+  cone3 forward closure: 9 vertices, exact match with Lean cone3 finset -> PASS
+  chi = V - E = 9 - 14 = -5  (Lean gaussBonnet_cone3 = -5) -> PASS
+  curvature spectrum (7 kernel-checked values) -> PASS
+======================================================================
+G1: exact-law selftest of the fills (STOP rule on violation)
+  A= 5 apex=  2 Vs= 1 Tonly=(1,3,0) law1[4+0-1]=OK canon=(1,1,0) law2=FAIL
+  A= 5 apex=  3 Vs= 2 Tonly=(1,7,0) law1[8+0-1]=OK canon=(1,1,0) law2=FAIL
+  A= 5 apex=  5 Vs= 3 Tonly=(1,12,0) law1[13+0-1]=OK canon=(1,2,0) law2=FAIL
+  A= 5 apex=  7 Vs= 4 Tonly=(1,18,0) law1[19+0-1]=OK canon=(1,3,0) law2=FAIL
+  A= 5 apex=  8 Vs= 5 Tonly=(1,24,0) law1[25+0-1]=OK canon=(1,3,0) law2=FAIL
+  A= 5 apex= 10 Vs= 6 Tonly=(1,32,0) law1[32+1-1]=OK canon=(1,5,0) law2=FAIL
+  A= 5 apex= 12 Vs= 7 Tonly=(1,41,0) law1[40+2-1]=OK canon=(1,7,0) law2=FAIL
+  A= 5 apex= 13 Vs= 8 Tonly=(1,49,0) law1[48+2-1]=OK canon=(1,7,0) law2=FAIL
+  A= 5 apex= 15 Vs= 9 Tonly=(1,59,0) law1[57+3-1]=OK canon=(1,9,0) law2=FAIL
+  A= 5 apex= 17 Vs=10 Tonly=(1,70,0) law1[67+4-1]=OK canon=(1,11,0) law2=FAIL
+  A= 5 apex= 18 Vs=11 Tonly=(1,80,0) law1[77+4-1]=OK canon=(1,11,0) law2=FAIL
+  A= 5 apex= 20 Vs=12 Tonly=(1,91,0) law1[88+4-1]=OK canon=(1,12,0) law2=FAIL
+  A= 7 apex=  2 Vs= 1 Tonly=(1,5,0) law1[6+0-1]=OK canon=(1,1,0) law2=FAIL
+  A= 7 apex=  3 Vs= 2 Tonly=(1,11,0) law1[12+0-1]=OK canon=(1,1,0) law2=FAIL
+  A= 7 apex=  5 Vs= 3 Tonly=(1,18,0) law1[19+0-1]=OK canon=(1,2,0) law2=FAIL
+  A= 7 apex=  7 Vs= 4 Tonly=(1,27,0) law1[28+0-1]=OK canon=(1,4,0) law2=FAIL
+  A= 7 apex= 10 Vs= 5 Tonly=(1,39,0) law1[39+1-1]=OK canon=(1,7,0) law2=FAIL
+  A= 7 apex= 12 Vs= 6 Tonly=(1,52,0) law1[51+2-1]=OK canon=(1,9,0) law2=FAIL
+  A= 7 apex= 17 Vs= 7 Tonly=(1,72,0) law1[67+6-1]=OK canon=(1,17,0) law2=FAIL
+  A= 7 apex= 18 Vs= 8 Tonly=(1,88,0) law1[83+6-1]=OK canon=(1,17,0) law2=FAIL
+  A= 7 apex= 23 Vs= 9 Tonly=(1,110,0) law1[103+8-1]=OK canon=(1,23,0) law2=FAIL
+  A= 7 apex= 25 Vs=10 Tonly=(1,132,0) law1[124+9-1]=OK canon=(1,25,0) law2=FAIL
+  A= 7 apex= 28 Vs=11 Tonly=(1,156,0) law1[147+10-1]=OK canon=(1,28,0) law2=FAIL
+  A= 7 apex= 30 Vs=12 Tonly=(1,181,0) law1[172+10-1]=OK canon=(1,30,0) law2=FAIL
+  A=11 apex=  3 Vs= 1 Tonly=(1,7,0) law1[8+0-1]=OK canon=(1,2,0) law2=FAIL
+  A=11 apex=  5 Vs= 2 Tonly=(1,16,0) law1[17+0-1]=OK canon=(1,3,0) law2=FAIL
+  A=11 apex=  7 Vs= 3 Tonly=(1,27,0) law1[28+0-1]=OK canon=(1,5,0) law2=FAIL
+  A=11 apex= 10 Vs= 4 Tonly=(1,41,0) law1[42+0-1]=OK canon=(1,8,0) law2=FAIL
+  A=11 apex= 12 Vs= 5 Tonly=(1,56,0) law1[57+0-1]=OK canon=(1,9,0) law2=FAIL
+  A=11 apex= 17 Vs= 6 Tonly=(1,78,0) law1[77+2-1]=OK canon=(1,16,0) law2=FAIL
+  A=11 apex= 18 Vs= 7 Tonly=(1,98,0) law1[97+2-1]=OK canon=(1,16,0) law2=FAIL
+  A=11 apex= 23 Vs= 8 Tonly=(1,125,0) law1[122+4-1]=OK canon=(1,23,0) law2=FAIL
+  A=11 apex= 25 Vs= 9 Tonly=(1,153,0) law1[149+5-1]=OK canon=(1,26,0) law2=FAIL
+  A=11 apex= 28 Vs=10 Tonly=(1,183,0) law1[178+6-1]=OK canon=(1,29,0) law2=FAIL
+  A=11 apex= 30 Vs=11 Tonly=(1,214,0) law1[209+6-1]=OK canon=(1,31,0) law2=FAIL
+  A=11 apex= 32 Vs=12 Tonly=(1,248,0) law1[242+7-1]=OK canon=(1,34,0) law2=FAIL
+G1 verdict: FAIL (36 regions)
+======================================================================
+G3: foil escalation, H=50; MANAGED-PASS |z_I|>=5 all A and |R101/R13|>=1/3
+[X=1e+06] sieved 150000 centers in 0.0s
+  X=1e+06 A= 13 I1: R(S)=+0.0000 zI=+0.0 | R(Sp)=+0.0000 zW=+0.0 zI=+0.0
+  X=1e+06 A= 13 I3: R(S)=-0.2384 zI=-12.7 | R(Sp)=-0.0499 zW=-2.9 zI=-2.9
+  X=1e+06 A= 13 I5: R(S)=+0.3708 zI=+18.7 | R(Sp)=+0.0852 zW=+4.7 zI=+4.8
+  X=1e+06 A= 31 I1: R(S)=-0.1727 zI=-10.3 | R(Sp)=-0.1737 zW=-9.4 zI=-12.7
+  X=1e+06 A= 31 I3: R(S)=-0.2721 zI=-15.8 | R(Sp)=-0.0329 zW=-1.8 zI=-1.9
+  X=1e+06 A= 31 I5: R(S)=+0.4372 zI=+23.8 | R(Sp)=+0.0833 zW=+4.1 zI=+4.9
+  X=1e+06 A=101 I1: R(S)=-0.3554 zI=-23.1 | R(Sp)=-0.3849 zW=-20.0 zI=-30.6
+  X=1e+06 A=101 I3: R(S)=-0.0068 zI=-0.7 | R(Sp)=+0.0453 zW=+2.5 zI=+5.8
+  X=1e+06 A=101 I5: R(S)=+0.5077 zI=+27.0 | R(Sp)=+0.0624 zW=+3.5 zI=+3.8
+[X=1e+09] sieved 50000 centers in 0.1s
+  X=1e+09 A= 13 I1: R(S)=-0.0998 zI=-3.4 | R(Sp)=-0.0928 zW=-2.6 zI=-3.1
+  X=1e+09 A= 13 I3: R(S)=-0.1953 zI=-6.1 | R(Sp)=-0.0296 zW=-1.0 zI=-0.9
+  X=1e+09 A= 13 I5: R(S)=+0.2559 zI=+8.4 | R(Sp)=+0.0533 zW=+1.7 zI=+1.8
+  X=1e+09 A= 31 I1: R(S)=-0.1189 zI=-4.6 | R(Sp)=-0.1146 zW=-3.4 zI=-4.8
+  X=1e+09 A= 31 I3: R(S)=-0.2060 zI=-6.7 | R(Sp)=+0.0009 zW=+0.0 zI=-0.0
+  X=1e+09 A= 31 I5: R(S)=+0.3104 zI=+9.6 | R(Sp)=+0.0568 zW=+1.8 zI=+1.9
+  X=1e+09 A=101 I1: R(S)=-0.3516 zI=-13.5 | R(Sp)=-0.3585 zW=-10.8 zI=-14.9
+  X=1e+09 A=101 I3: R(S)=-0.0061 zI=-0.6 | R(Sp)=+0.0113 zW=+0.4 zI=+1.0
+  X=1e+09 A=101 I5: R(S)=+0.3463 zI=+10.8 | R(Sp)=+0.0264 zW=+0.9 zI=+1.0
+----------------------------------------------------------------------
+VERDICTS (against de-mechanized load Sp):
+  I1: min|z_I|=0.0 ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION
+  I3: min|z_I|=0.0 ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION
+  I5: min|z_I|=1.0 ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION

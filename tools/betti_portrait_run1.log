@@ -1,0 +1,261 @@
+==============================================================================
+[2026-07-10 13:50:07] S0  localized window-complex builder + STOP selftests
+==============================================================================
+CONVENTION (verbatim): LocalComplex(A,X,H,D), M0=4: centers m in [X,X+H); survivors S = clean centers (residue tests q in [5,A]); defect levels n in [max(0,X-D),X+H) with n < m for some survivor; edges: within-window tournament (clean m->n, both survivors), boundary m->(n,q,s) (q<=A prime, q | sideValue(s,n), n<m), peel edges (n,q,s)->t only if the factor-target t lies in the band [max(0,X-D),X+H), absorb only n<=M0. At X>=10^6 no peel factor-target lies in the band (max target ~ (X+H)/5 < X-D) and no defect level reaches M0=4: the window complexes carry NO peel edges, NO absorbers and NO Q-cells (disclosed). D=H primary; sensitivity D in {0,5H} on a subsample.
+
+  rank_fp (vectorized) == rank_fp_ref (verbatim gain copy), 30 random matrices -> PASS
+  cone3: closure == Lean finset (9 vertices, chi=-5); LocalComplex(5,0,4,D=20)
+         reproduces closure EXACTLY (vertices, edges, sector counts) -> PASS
+  36 G1 regions (A in {5,7,11} x first 12 clean apexes): LocalComplex ==
+         closure EXACTLY on every region -> PASS
+  T-fill chi-law on strips (H=50, D=H, M0=4), primes 10007 AND 10009:
+    A= 5 X=    5 |S|=30 ESS= 435 ESK= 440 EKS= 8 EKK= 18 b1= 447 = ESK+EKS-1 -> OK
+    A= 5 X=   20 |S|=30 ESS= 435 ESK= 620 EKS= 0 EKK= 32 b1= 619 = ESK+EKS-1 -> OK
+    A= 5 X=  120 |S|=30 ESS= 435 ESK= 890 EKS= 0 EKK=  0 b1= 889 = ESK+EKS-1 -> OK
+    A= 5 X= 1020 |S|=30 ESS= 435 ESK= 890 EKS= 0 EKK=  0 b1= 889 = ESK+EKS-1 -> OK
+    A= 7 X=    5 |S|=21 ESS= 210 ESK= 515 EKS=10 EKK= 33 b1= 524 = ESK+EKS-1 -> OK
+    A= 7 X=   20 |S|=21 ESS= 210 ESK= 729 EKS= 0 EKK= 53 b1= 728 = ESK+EKS-1 -> OK
+    A= 7 X=  120 |S|=20 ESS= 190 ESK=1012 EKS= 0 EKK=  0 b1=1011 = ESK+EKS-1 -> OK
+    A= 7 X= 1020 |S|=21 ESS= 210 ESK=1082 EKS= 0 EKK=  0 b1=1081 = ESK+EKS-1 -> OK
+    A=11 X=    5 |S|=18 ESS= 153 ESK= 522 EKS=10 EKK= 44 b1= 531 = ESK+EKS-1 -> OK
+    A=11 X=   20 |S|=17 ESS= 136 ESK= 730 EKS= 0 EKK= 67 b1= 729 = ESK+EKS-1 -> OK
+    A=11 X=  120 |S|=15 ESS= 105 ESK= 963 EKS= 0 EKK=  0 b1= 962 = ESK+EKS-1 -> OK
+    A=11 X= 1020 |S|=17 ESS= 136 ESK=1142 EKS= 0 EKK=  0 b1=1141 = ESK+EKS-1 -> OK
+    A=13 X=    5 |S|=16 ESS= 120 ESK= 538 EKS=10 EKK= 54 b1= 547 = ESK+EKS-1 -> OK
+    A=13 X=   20 |S|=13 ESS=  78 ESK= 638 EKS= 0 EKK= 78 b1= 637 = ESK+EKS-1 -> OK
+    A=13 X=  120 |S|=13 ESS=  78 ESK= 983 EKS= 0 EKK=  0 b1= 982 = ESK+EKS-1 -> OK
+    A=13 X= 1020 |S|=14 ESS=  91 ESK=1088 EKS= 0 EKK=  0 b1=1087 = ESK+EKS-1 -> OK
+S0 verdict: ALL STOP-SELFTESTS PASS (0.3s)
+==============================================================================
+[2026-07-10 13:50:41] S1  portrait registrations + matrix cross-checks (STOP on mismatch)
+==============================================================================
+REGISTRATIONS (verbatim, BEFORE measuring):
+  P5  = residual b1 of the canonical (T+I+Q) fill of the window quotient;
+        combinatorial form b1 = #defects-hit - 1 (certified below).
+        NEGATIVE CONTROL: predicted parity-blind (pure residue arithmetic). Load S.
+  P(ii)= 5-vector of d1 column-submatrix ranks (SS, SK, KS, SK+KS, full);
+        forms (|S|-1, #sources-with-defect-below, 0, same, |S|); predicted blind. Load S.
+  P1  = interface holonomy: residual cycle basis = CONSECUTIVE defect pairs in
+        ordering O1 = lex(n,q,side) [registered HERE, before measurement];
+        cross-check ordering O2 = lex(q,n,side); h_i = lam(ms(n_i))*lam(ms(n_i+1)),
+        ms(n) = minimal survivor > n; portrait = (count, frustrated fraction);
+        count == P5, scalar = frustrated fraction. Loads S'' primary / So secondary
+        (So load excludes the ms-interface survivors).
+  P2  = REGISTERED SUBSTITUTE for the peel twist (no peel edges at X>=1e6,
+        disclosed): boundary edge m->(n,q,s) twisted by gamma = lambda-parity of
+        the defect cofactor sideValue(s,n)/q = (Omega_side(n)-1) mod 2 -- an edge
+        twist, intrinsic, NOT a vertex coboundary; witnesses w_i = gamma_i-gamma_i+1
+        (mod d) over the P1 basis; scalar = nonzero-witness fraction at d=2;
+        twisted d1 ranks over F_10009 and F_10069 (both = 1 mod 12), x of order
+        d in {2,3,4,6}; certificate: rank jump s -> s+1 iff some witness != 0
+        (a gauge-trivial/coboundary twist keeps rank s). Loads S'' / S(=So).
+  P3  = censored BFS grave-depth to nearest twin via PeelStep-style factor
+        descent (targets = cofactor centers over distinct prime factors of both
+        wings); depth cap 6 (censored value 7), node budget 300; scalar = mean
+        depth over (left-half for S'') survivors. P3d = de-mechanized: residual
+        after removing the 20-quantile-bin mean in the window Omega-profile.
+        Load S'' primary; So degenerate (invariant reads every survivor) -> NA.
+  P4  = grade-stratified pair: b1(twin-survivor stratum subcomplex) vs
+        b1(frustrated stratum, lam=-1); b1 = max(#defects below stratum top - 1,0);
+        NA if a stratum is empty; scalar = b1_frustrated - b1_twin. Load S''.
+  SIG = signed-ladder delta: mean over q' of [P2(A+{q'}) - P2(A)]; q' = (17, 19, 23) at A=13,
+        (37, 41, 43) at A=31 (17,19,23 are already clocks at 31 -- adaptation registered).
+  S'' convention: portrait on LocalComplex(A, Xw, H/2, D=H/2) (left half), load =
+        sum of lam over right-half survivors. Degeneracy guard: mode-fraction
+        > 0.9 in a cell -> that portrait recomputed at H=100 (registered pre-foil).
+  Verdict rule (gate_g3 foil-v2 copy): MANAGED-PASS iff min|z_I| >= 5 over the
+        grid AND |R(31)| >= |R(13)|/3 at both X; SOFT-PASS iff min|z_I| >= 3;
+        else PARITY-BLIND-UNDER-ESCALATION-v2. 200 perms + 200 lambda-resamples,
+        seed 20260710.
+
+  DISCLOSURE at X=1e6/1e9, H=50, D=H: max peel factor-target = (6(X+H)+1)/5/6 ~ (X+H)/5 << X-D; min defect level = X-D > M0=4:
+    X=1e+06: max target ~ 200010 < band floor 999950; absorbers require n<=4 -> none
+    X=1e+09: max target ~ 200000010 < band floor 999999950; absorbers require n<=4 -> none
+  P5 / P(ii) / T-law matrix cross-checks at X=1e6 (H=12 x10 + H=30 x2, per A in {13,31}; F_p ranks, p=10007 and 10009 on H=12): 23 window complexes -> PASS
+  P2 twisted-rank certificate (p in {10009, 10069}, both = 1 mod 12; x of order d in {2,3,4,6}):
+    88/88 checks: twisted rank == s + [witness set nontrivial]; untwisted == s
+    rank jumps s->s+1 in 88/88 complexes -> the twist is NOT gauge-trivial (a coboundary twist would keep rank s everywhere) -- CERTIFICATE PASS
+  P1 orderings on 60 windows (A=13, X=1e6): mean frustration O1=0.0625 O2=0.1992 corr=0.855
+  factor tables: SPF<=7000000, 7702 trial-division primes <= 78500 (0.0s)
+  P3 BFS == exhaustive reference on 40/40 uncensored roots -> PASS
+  D-sensitivity P5: mean D=0/H/5H = 47.040/98.105/302.385; corr(D=0,D=H)=0.912 corr(D=5H,D=H)=0.869
+  D-sensitivity P1: mean D=0/H/5H = 0.122/0.062/0.020; corr(D=0,D=H)=0.973 corr(D=5H,D=H)=0.999
+  D-sensitivity P2: mean D=0/H/5H = 0.418/0.420/0.422; corr(D=0,D=H)=0.692 corr(D=5H,D=H)=0.542
+S1 verdict: ALL FORMULA/MATRIX CROSS-CHECKS PASS (0.2s)
+==============================================================================
+[2026-07-10 13:50:53] S2  signed ladder: exact flip-fraction law + twisted-portrait deltas
+==============================================================================
+(alpha) exact flip law, truncSign(K=1): escalation clock q' flips the wing-pair
+        truncated sign exactly on the classes m = +-inv6(q') mod q' -- EXACT
+        count over one full period; STOP on mismatch.
+  q'=17: flip classes {3, 14} = {inv6, -inv6}; both-wings classes: 0 -> EXACT PASS
+  q'=19: flip classes {16, 3} = {inv6, -inv6}; both-wings classes: 0 -> EXACT PASS
+  q'=23: flip classes {4, 19} = {inv6, -inv6}; both-wings classes: 0 -> EXACT PASS
+  ensemble check (X=1e6, 14836 A=13 survivors): fraction in flip classes vs 2/q'
+    q'=17: 1744/14836 = 0.11755 vs 2/q' = 0.11765, binomial z = -0.04 (within 4 sigma)
+    q'=19: 1559/14836 = 0.10508 vs 2/q' = 0.10526, binomial z = -0.07 (within 4 sigma)
+    q'=23: 1285/14836 = 0.08661 vs 2/q' = 0.08696, binomial z = -0.15 (within 4 sigma)
+(beta) twisted-portrait deltas per ladder step vs flip-locus overlap
+       (X=1e6, A=13, NW=600 registered subsample; R + z_W from 200 perms):
+  [X=1e+06] sieved 30000 centers + band 100 in 0.0s
+    q'=17: corr(delta P2, overlap) = +0.1490  z_W = +3.8  n=600  mean delta=-0.00985 mean overlap=1.74
+    q'=19: corr(delta P2, overlap) = +0.0156  z_W = +0.4  n=600  mean delta=-0.00940 mean overlap=1.55
+    q'=23: corr(delta P2, overlap) = +0.0586  z_W = +1.3  n=600  mean delta=-0.00667 mean overlap=1.29
+S2 verdict: exact flip law EXACT-PASS on {17,19,23}; deltas reported (0.1s)
+==============================================================================
+[2026-07-10 13:50:53] S3  escalation transport F-3: b1(A')-b1(A) = dE_SK + dE_KS (EXACT)
+==============================================================================
+  decomposition: demotion (q'-struck survivors leave S: their tournament +
+  boundary incidences deleted; peel edges into them leave E_KS) + new-clock
+  interface (boundary edges into q'-defects; q'-defect peel edges into S).
+  b1 = T-only quotient b1 over F_10007 AND F_10009. STOP on any violation.
+  A= 5-> 7 X=    5: |S| 30->21 demoted=9 | b1  447-> 524 (delta  +77) = dSK  +75 [gain 200 - loss 125] + dKS +2 [gain 4 - loss 2] -> OK
+  A= 5-> 7 X=   20: |S| 30->21 demoted=9 | b1  619-> 728 (delta +109) = dSK +109 [gain 290 - loss 181] + dKS +0 [gain 0 - loss 0] -> OK
+  A= 5-> 7 X=  120: |S| 30->20 demoted=10 | b1  889->1011 (delta +122) = dSK +122 [gain 422 - loss 300] + dKS +0 [gain 0 - loss 0] -> OK
+  A= 5-> 7 X= 1020: |S| 30->21 demoted=9 | b1  889->1081 (delta +192) = dSK +192 [gain 452 - loss 260] + dKS +0 [gain 0 - loss 0] -> OK
+  A= 7->11 X=    5: |S| 21->18 demoted=3 | b1  524-> 531 (delta   +7) = dSK   +7 [gain 108 - loss 101] + dKS +0 [gain 0 - loss 0] -> OK
+  A= 7->11 X=   20: |S| 21->17 demoted=4 | b1  728-> 729 (delta   +1) = dSK   +1 [gain 152 - loss 151] + dKS +0 [gain 0 - loss 0] -> OK
+  A= 7->11 X=  120: |S| 20->15 demoted=5 | b1 1011-> 962 (delta  -49) = dSK  -49 [gain 199 - loss 248] + dKS +0 [gain 0 - loss 0] -> OK
+  A= 7->11 X= 1020: |S| 21->17 demoted=4 | b1 1081->1141 (delta  +60) = dSK  +60 [gain 244 - loss 184] + dKS +0 [gain 0 - loss 0] -> OK
+  A=11->13 X=    5: |S| 18->16 demoted=2 | b1  531-> 547 (delta  +16) = dSK  +16 [gain  83 - loss  67] + dKS +0 [gain 0 - loss 0] -> OK
+  A=11->13 X=   20: |S| 17->13 demoted=4 | b1  729-> 637 (delta  -92) = dSK  -92 [gain  97 - loss 189] + dKS +0 [gain 0 - loss 0] -> OK
+  A=11->13 X=  120: |S| 15->13 demoted=2 | b1  962-> 982 (delta  +20) = dSK  +20 [gain 146 - loss 126] + dKS +0 [gain 0 - loss 0] -> OK
+  A=11->13 X= 1020: |S| 17->14 demoted=3 | b1 1141->1087 (delta  -54) = dSK  -54 [gain 165 - loss 219] + dKS +0 [gain 0 - loss 0] -> OK
+S3 verdict: F-3 EXACT identity holds on all 12 regions (3 escalations x 4 strips) (0.3s)
+==============================================================================
+[2026-07-10 13:51:05] S4-a  ensemble X=1e+06 NW=3000 H=50, A in {13,31}; loads S / S'' / So
+==============================================================================
+  [X=1e+06] sieved 150000 centers + band 100 in 0.0s
+  factor tables: SPF<=7000000, 7702 trial-division primes <= 78500 (0.1s)
+    P3 depth: 10000/44503 roots (0s, 44437 nodes)
+    P3 depth: 20000/44503 roots (0s, 89261 nodes)
+    P3 depth: 30000/44503 roots (0s, 133763 nodes)
+    P3 depth: 40000/44503 roots (0s, 178702 nodes)
+  P3 depth pass: 44503 roots in 0s; nodes=199033 censored(cap)=0 censored(budget)=0
+==============================================================================
+[2026-07-10 13:51:06] CELL  X=1e+06 A=13 NW=3000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=44503 twin-survivors=4793 | witness nonzero share (P2, full windows) = 123910/294474 = 0.4208
+  P1 ordering cross-check: corr(O1,O2)=0.785 | means O1=0.0604 O2=0.1911
+  P3 depth histogram (survivor level, 0..7=censored): [np.int64(4793), np.int64(23135), np.int64(16006), np.int64(569), np.int64(0), np.int64(0), np.int64(0), np.int64(0)] | censored share 0.000
+  P4 valid windows: full=2467 left=1698
+  P5|S       R= -0.0007 zW=  -0.0 zI=  +0.0 n= 3000 
+  PII0|S     R= +0.0023 zW=  +0.1 zI=  +0.2 n= 3000 
+  PII1|S     R= +0.0023 zW=  +0.1 zI=  +0.2 n= 3000 
+  PII2|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 3000 degenerate
+  PII3|S     R= +0.0023 zW=  +0.1 zI=  +0.2 n= 3000 
+  PII4|S     R= +0.0023 zW=  +0.1 zI=  +0.2 n= 3000 
+  P1|S''     R= +0.0091 zW=  +0.5 zI=  +0.6 n= 3000 
+  P1o2|S''   R= -0.0093 zW=  -0.5 zI=  -0.5 n= 3000 
+  P1|So      R= +0.0267 zW=  +1.5 zI=  +1.4 n= 3000 
+  P2|S''     R= +0.0096 zW=  +0.5 zI=  +0.5 n= 3000 
+  P2|S(=So)  R= -0.0053 zW=  -0.3 zI=  -0.2 n= 3000 
+  P3|S''     R= -0.0089 zW=  -0.5 zI=  -0.5 n= 3000 
+  P3d|S''    R= -0.0018 zW=  -0.1 zI=  -0.1 n= 3000 
+  P4|S''     R= +0.0264 zW=  +1.1 zI=  +1.3 n= 1698 
+  SIG|S''    R= -0.0130 zW=  -0.7 zI=  -0.7 n= 3000 
+  cell JSON -> C:/Users/elama/AppData/Local/Temp/claude/f--Primes/97ede83e-b2e6-4536-9b2a-5c0a9ff39583/scratchpad\bp_cell_1000000_13.json
+==============================================================================
+[2026-07-10 13:51:07] CELL  X=1e+06 A=31 NW=3000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=27942 twin-survivors=4793 | witness nonzero share (P2, full windows) = 161417/416078 = 0.3879
+  P1 ordering cross-check: corr(O1,O2)=0.710 | means O1=0.0273 O2=0.1775
+  P3 depth histogram (survivor level, 0..7=censored): [np.int64(4793), np.int64(23135), np.int64(16006), np.int64(569), np.int64(0), np.int64(0), np.int64(0), np.int64(0)] | censored share 0.000
+  P4 valid windows: full=2459 left=1600
+  P5|S       R= -0.0009 zW=  -0.1 zI=  +0.1 n= 3000 
+  PII0|S     R= +0.0105 zW=  +0.7 zI=  +0.6 n= 3000 
+  PII1|S     R= +0.0105 zW=  +0.7 zI=  +0.6 n= 3000 
+  PII2|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 3000 degenerate
+  PII3|S     R= +0.0105 zW=  +0.7 zI=  +0.6 n= 3000 
+  PII4|S     R= +0.0105 zW=  +0.7 zI=  +0.6 n= 3000 
+  P1|S''     R= +0.0376 zW=  +2.1 zI=  +2.0 n= 3000 
+  P1o2|S''   R= +0.0177 zW=  +0.9 zI=  +1.0 n= 3000 
+  P1|So      R= +0.0308 zW=  +1.8 zI=  +1.7 n= 3000 
+  P2|S''     R= -0.0051 zW=  -0.3 zI=  -0.2 n= 3000 
+  P2|S(=So)  R= +0.0139 zW=  +0.7 zI=  +0.8 n= 3000 
+  P3|S''     R= +0.0050 zW=  +0.3 zI=  +0.3 n= 3000 
+  P3d|S''    R= +0.0041 zW=  +0.2 zI=  +0.3 n= 3000 
+  P4|S''     R= +0.0408 zW=  +1.6 zI=  +1.5 n= 1600 
+  SIG|S''    R= +0.0028 zW=  +0.2 zI=  +0.2 n= 3000 
+  cell JSON -> C:/Users/elama/AppData/Local/Temp/claude/f--Primes/97ede83e-b2e6-4536-9b2a-5c0a9ff39583/scratchpad\bp_cell_1000000_31.json
+==============================================================================
+[2026-07-10 13:51:37] S4-b  ensemble X=1e+09 NW=1000 H=50, A in {13,31}; loads S / S'' / So
+==============================================================================
+  [X=1e+09] sieved 50000 centers + band 100 in 0.1s
+  factor tables: SPF<=7000000, 7702 trial-division primes <= 78500 (0.1s)
+    P3 depth: 10000/14835 roots (1s, 72294 nodes)
+  P3 depth pass: 14835 roots in 1s; nodes=107333 censored(cap)=0 censored(budget)=0
+==============================================================================
+[2026-07-10 13:51:38] CELL  X=1e+09 A=13 NW=1000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=14835 twin-survivors=765 | witness nonzero share (P2, full windows) = 41234/98156 = 0.4201
+  P1 ordering cross-check: corr(O1,O2)=0.775 | means O1=0.0604 O2=0.1913
+  P3 depth histogram (survivor level, 0..7=censored): [np.int64(765), np.int64(6040), np.int64(7459), np.int64(571), np.int64(0), np.int64(0), np.int64(0), np.int64(0)] | censored share 0.000
+  P4 valid windows: full=558 left=345
+  P5|S       R= -0.0023 zW=  -0.1 zI=  +0.0 n= 1000 
+  PII0|S     R= +0.0058 zW=  +0.2 zI=  +0.4 n= 1000 
+  PII1|S     R= +0.0058 zW=  +0.2 zI=  +0.4 n= 1000 
+  PII2|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 1000 degenerate
+  PII3|S     R= +0.0058 zW=  +0.2 zI=  +0.4 n= 1000 
+  PII4|S     R= +0.0058 zW=  +0.2 zI=  +0.4 n= 1000 
+  P1|S''     R= -0.0348 zW=  -1.1 zI=  -1.2 n= 1000 
+  P1o2|S''   R= -0.0404 zW=  -1.2 zI=  -1.3 n= 1000 
+  P1|So      R= -0.0295 zW=  -1.0 zI=  -0.9 n= 1000 
+  P2|S''     R= +0.0263 zW=  +0.8 zI=  +0.9 n= 1000 
+  P2|S(=So)  R= -0.0082 zW=  -0.3 zI=  -0.3 n= 1000 
+  P3|S''     R= -0.0377 zW=  -1.2 zI=  -1.1 n= 1000 
+  P3d|S''    R= -0.0403 zW=  -1.3 zI=  -1.3 n= 1000 
+  P4|S''     R= -0.0996 zW=  -1.9 zI=  -1.9 n=  345 
+  SIG|S''    R= -0.0374 zW=  -1.2 zI=  -1.3 n= 1000 
+  cell JSON -> C:/Users/elama/AppData/Local/Temp/claude/f--Primes/97ede83e-b2e6-4536-9b2a-5c0a9ff39583/scratchpad\bp_cell_1000000000_13.json
+==============================================================================
+[2026-07-10 13:51:38] CELL  X=1e+09 A=31 NW=1000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=9311 twin-survivors=765 | witness nonzero share (P2, full windows) = 53784/138611 = 0.3880
+  P1 ordering cross-check: corr(O1,O2)=0.727 | means O1=0.0274 O2=0.1781
+  P3 depth histogram (survivor level, 0..7=censored): [np.int64(765), np.int64(6040), np.int64(7459), np.int64(571), np.int64(0), np.int64(0), np.int64(0), np.int64(0)] | censored share 0.000
+  P4 valid windows: full=557 left=317
+  P5|S       R= -0.0070 zW=  -0.2 zI=  -0.1 n= 1000 
+  PII0|S     R= -0.0230 zW=  -0.7 zI=  -0.6 n= 1000 
+  PII1|S     R= -0.0230 zW=  -0.7 zI=  -0.6 n= 1000 
+  PII2|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 1000 degenerate
+  PII3|S     R= -0.0230 zW=  -0.7 zI=  -0.6 n= 1000 
+  PII4|S     R= -0.0230 zW=  -0.7 zI=  -0.6 n= 1000 
+  P1|S''     R= +0.0076 zW=  +0.2 zI=  +0.2 n= 1000 
+  P1o2|S''   R= -0.0084 zW=  -0.3 zI=  -0.3 n= 1000 
+  P1|So      R= +0.0393 zW=  +1.2 zI=  +1.2 n= 1000 
+  P2|S''     R= +0.0077 zW=  +0.2 zI=  +0.2 n= 1000 
+  P2|S(=So)  R= -0.0186 zW=  -0.6 zI=  -0.6 n= 1000 
+  P3|S''     R= -0.0234 zW=  -0.7 zI=  -0.7 n= 1000 
+  P3d|S''    R= -0.0084 zW=  -0.3 zI=  -0.3 n= 1000 
+  P4|S''     R= +0.0010 zW=  +0.0 zI=  -0.0 n=  317 
+  SIG|S''    R= +0.0629 zW=  +2.0 zI=  +1.9 n= 1000 
+  cell JSON -> C:/Users/elama/AppData/Local/Temp/claude/f--Primes/97ede83e-b2e6-4536-9b2a-5c0a9ff39583/scratchpad\bp_cell_1000000000_31.json
+==============================================================================
+[2026-07-10 13:52:04] S4-verdicts  foil-v2 verdict matrix (portrait x load x grid)
+==============================================================================
+  portrait|load | A=13 X=1e+06     | A=31 X=1e+06     | A=13 X=1e+09     | A=31 X=1e+09     | min|zI|, verdict
+  P5|S       | R-0.001 zI +0.0  | R-0.001 zI +0.1  | R-0.002 zI +0.0  | R-0.007 zI -0.1  | 0.0 ratio_ok=True PARITY-BLIND-UNDER-ESCALATION-v2
+  PII0|S     | R+0.002 zI +0.2  | R+0.011 zI +0.6  | R+0.006 zI +0.4  | R-0.023 zI -0.6  | 0.2 ratio_ok=True PARITY-BLIND-UNDER-ESCALATION-v2
+  P1|S''     | R+0.009 zI +0.6  | R+0.038 zI +2.0  | R-0.035 zI -1.2  | R+0.008 zI +0.2  | 0.2 ratio_ok=False PARITY-BLIND-UNDER-ESCALATION-v2
+  P2|S''     | R+0.010 zI +0.5  | R-0.005 zI -0.2  | R+0.026 zI +0.9  | R+0.008 zI +0.2  | 0.2 ratio_ok=False PARITY-BLIND-UNDER-ESCALATION-v2
+  P3|S''     | R-0.009 zI -0.5  | R+0.005 zI +0.3  | R-0.038 zI -1.1  | R-0.023 zI -0.7  | 0.3 ratio_ok=True PARITY-BLIND-UNDER-ESCALATION-v2
+  P3d|S''    | R-0.002 zI -0.1  | R+0.004 zI +0.3  | R-0.040 zI -1.3  | R-0.008 zI -0.3  | 0.1 ratio_ok=False PARITY-BLIND-UNDER-ESCALATION-v2
+  P4|S''     | R+0.026 zI +1.3  | R+0.041 zI +1.5  | R-0.100 zI -1.9  | R+0.001 zI -0.0  | 0.0 ratio_ok=False PARITY-BLIND-UNDER-ESCALATION-v2
+  SIG|S''    | R-0.013 zI -0.7  | R+0.003 zI +0.2  | R-0.037 zI -1.3  | R+0.063 zI +1.9  | 0.2 ratio_ok=False PARITY-BLIND-UNDER-ESCALATION-v2
+------------------------------------------------------------------------------
+  secondary loads (information, not verdicts):
+  P1|So      | R+0.027 zI +1.4  | R+0.031 zI +1.7  | R-0.029 zI -0.9  | R+0.039 zI +1.2 
+  P2|S(=So)  | R-0.005 zI -0.2  | R+0.014 zI +0.8  | R-0.008 zI -0.3  | R-0.019 zI -0.6 
+  P1o2|S''   | R-0.009 zI -0.5  | R+0.018 zI +1.0  | R-0.040 zI -1.3  | R-0.008 zI -0.3 
+------------------------------------------------------------------------------
+VERDICT SUMMARY (foil-v2 thresholds, seed 20260710):
+  P5        min|z_I|= 0.0 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  P(ii)best min|z_I|= 0.2 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  P1        min|z_I|= 0.2 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  P2        min|z_I|= 0.2 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  P3        min|z_I|= 0.3 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  P3d       min|z_I|= 0.1 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  P4        min|z_I|= 0.0 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  SIGNED    min|z_I|= 0.2 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  degeneracy-guard escalations: none

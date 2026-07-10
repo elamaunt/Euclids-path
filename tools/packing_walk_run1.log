@@ -1,0 +1,488 @@
+==============================================================================
+PACKING-WALK P0 -- stage w1: centered dimension walk (STATISTICAL)
+  seed=20260710  N_PERM=200  numpy=2.4.4  2026-07-10 11:56:47
+  DISCLOSURE: omega = # DISTINCT primes -> omega=1 includes prime
+  powers (25, 49, ...); Omega=1 <=> prime; twin <=> Omega_L=Omega_R=1.
+==============================================================================
+[omega sieve] built omega(n), n <= 60000002 in 3.8s
+[omega sieve] cached to C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad\packing_walk_omega_6e7.npy
+
+-- main scale m <= 1e+07 (exhaustive sieve) --
+  mean omega: L 2.3599   C 4.1797   R 2.3599   (C carries 2 and 3 for every center: +2 exactly)
+
+  joint (omega_L, omega_R) clipped 1..6  [rows=first, cols=second, n=10000000, %]
+               1       2       3       4       5     >=6
+      1    2.808   6.835   5.839   2.056   0.267   0.008
+      2    6.842  15.962  12.813   4.186   0.492   0.014
+      3    5.838  12.821   9.434   2.724   0.272   0.006
+      4    2.057   4.178   2.727   0.659   0.050   0.001
+      5    0.266   0.493   0.273   0.049   0.002   0.000
+    >=6    0.008   0.014   0.006   0.001   0.000   0.000
+
+  joint (omega_C, omega_L) clipped 1..6  [rows=first, cols=second, n=10000000, %]
+               1       2       3       4       5     >=6
+      1    0.000   0.000   0.000   0.000   0.000   0.000
+      2    0.000   0.001   0.000   0.000   0.000   0.000
+      3    3.483   8.479   7.227   2.538   0.328   0.010
+      4    7.634  17.666  14.027   4.505   0.521   0.014
+      5    5.311  11.457   8.181   2.269   0.212   0.004
+    >=6    1.384   2.707   1.660   0.359   0.023   0.000
+
+  joint (omega_C, omega_R) clipped 1..6  [rows=first, cols=second, n=10000000, %]
+               1       2       3       4       5     >=6
+      1    0.000   0.000   0.000   0.000   0.000   0.000
+      2    0.001   0.001   0.000   0.000   0.000   0.000
+      3    3.485   8.480   7.224   2.536   0.330   0.010
+      4    7.628  17.668  14.024   4.514   0.518   0.014
+      5    5.317  11.448   8.188   2.264   0.212   0.004
+    >=6    1.389   2.705   1.655   0.361   0.023   0.000
+  MI (omega_C ; (omega_L, omega_R))                 = 0.010275 bits  null 0.000009+/-0.000001  z =   +9738.1  (n=10000000)
+  MI (omega_L ; omega_R)  [reference]               = 0.004505 bits  null 0.000002+/-0.000001  z =   +8521.0  (n=10000000)
+  MI (omega_L ; omega_R | omega_C in {2,3})         = 0.007673 bits  null 0.000008+/-0.000002  z =   +3417.7  (n=2206632)
+  MI (omega_L ; omega_R | omega_C >= 4)             = 0.004074 bits  null 0.000002+/-0.000001  z =   +5940.2  (n=7793368)
+
+-- transition structure (main scale) --
+
+  transition clip6(omega(n)) -> clip6(omega(n+1)), n in [2, 60000002]  [rows -> cols, row-stochastic]
+                   1       2       3       4       5     >=6
+          1   0.0000  0.0866  0.2992  0.3730  0.1974  0.0438
+          2   0.0221  0.1566  0.3409  0.3203  0.1357  0.0244
+          3   0.0506  0.2255  0.3625  0.2632  0.0865  0.0117
+          4   0.0870  0.2928  0.3638  0.2027  0.0492  0.0045
+          5   0.1327  0.3568  0.3441  0.1417  0.0235  0.0012
+        >=6   0.1909  0.4151  0.3009  0.0848  0.0081  0.0002
+    marginal 1:0.0594 2:0.2325 3:0.3516 4:0.2544 5:0.0884 >=6:0.0137
+
+  transition wing pair (fold3 omega_L, fold3 omega_R), m -> m+1  [fold3 = clip to 1,2,>=3]  [rows -> cols, row-stochastic]
+               (1,1)   (1,2) (1,>=3)   (2,1)   (2,2) (2,>=3) (>=3,1) (>=3,2)(>=3,>=3)
+      (1,1)   0.0116  0.0393  0.0786  0.0396  0.1189  0.1979  0.0785  0.1966  0.2390
+      (1,2)   0.0159  0.0486  0.0809  0.0487  0.1342  0.1904  0.0807  0.1907  0.2100
+    (1,>=3)   0.0270  0.0679  0.0819  0.0677  0.1597  0.1760  0.0827  0.1753  0.1618
+      (2,1)   0.0162  0.0489  0.0806  0.0486  0.1332  0.1905  0.0809  0.1902  0.2108
+      (2,2)   0.0211  0.0573  0.0816  0.0572  0.1457  0.1838  0.0819  0.1845  0.1871
+    (2,>=3)   0.0315  0.0745  0.0824  0.0745  0.1679  0.1705  0.0820  0.1705  0.1462
+    (>=3,1)   0.0271  0.0676  0.0819  0.0674  0.1599  0.1766  0.0820  0.1762  0.1612
+    (>=3,2)   0.0317  0.0741  0.0825  0.0746  0.1678  0.1704  0.0822  0.1707  0.1460
+  (>=3,>=3)   0.0413  0.0885  0.0814  0.0888  0.1843  0.1581  0.0814  0.1580  0.1182
+    marginal (1,1):0.0281 (1,2):0.0683 (1,>=3):0.0817 (2,1):0.0684 (2,2):0.1596 (2,>=3):0.1750 (>=3,1):0.0817 (>=3,2):0.1751 (>=3,>=3):0.1620
+
+-- return times of the wings (Omega = 1 <=> prime) --
+
+  return-to-(Omega=1) times, wing L = 6m-1, m <= 1e+06: 206502 prime wings, 206501 gaps  (null: 200 shuffles)
+     gap    actual%     null%       sd%         z
+       1    18.2992    20.6528     0.0803     -29.3
+       2    15.5772    16.3857     0.0828      -9.8
+       3    13.1011    12.9989     0.0740      +1.4
+       4    10.8803    10.3217     0.0667      +8.4
+       5    10.9365     8.1883     0.0618     +44.5
+       6     6.1927     6.4985     0.0570      -5.4
+       7     5.9457     5.1515     0.0433     +18.3
+       8     3.8615     4.0835     0.0402      -5.5
+       9     3.2121     3.2490     0.0398      -0.9
+      10     3.2140     2.5711     0.0295     +21.8
+      11     1.9593     2.0448     0.0294      -2.9
+      12     1.3685     1.6211     0.0257      -9.8
+    >=13     5.4518     6.2332     0.0364     -21.4
+    stat mean       actual     4.8426  null     4.8425+/-  0.0000  z      +1.1
+    stat sd         actual     3.9943  null     4.3141+/-  0.0091  z     -35.3
+    stat P(gap=1)   actual     0.1830  null     0.2065+/-  0.0008  z     -29.3
+    stat P(gap>=10) actual     0.1199  null     0.1247+/-  0.0004  z     -10.9
+    stat max        actual    53.0000  null    55.6850+/-  5.3391  z      -0.5
+
+  return-to-(Omega=1) times, wing R = 6m+1, m <= 1e+06: 206345 prime wings, 206344 gaps  (null: 200 shuffles)
+     gap    actual%     null%       sd%         z
+       1    18.2361    20.6304     0.0777     -30.8
+       2    15.5449    16.3791     0.0806     -10.3
+       3    13.0549    13.0023     0.0733      +0.7
+       4    10.8227    10.3133     0.0634      +8.0
+       5    10.9865     8.1816     0.0587     +47.7
+       6     6.2653     6.4995     0.0637      -3.7
+       7     5.9561     5.1564     0.0490     +16.3
+       8     4.0011     4.0936     0.0455      -2.0
+       9     3.2097     3.2505     0.0387      -1.1
+      10     3.1908     2.5813     0.0383     +15.9
+      11     1.9947     2.0454     0.0334      -1.5
+      12     1.3351     1.6215     0.0285     -10.1
+    >=13     5.4021     6.2451     0.0365     -23.1
+    stat mean       actual     4.8462  null     4.8462+/-  0.0000  z      -0.1
+    stat sd         actual     3.9861  null     4.3169+/-  0.0093  z     -35.5
+    stat P(gap=1)   actual     0.1824  null     0.2063+/-  0.0008  z     -30.8
+    stat P(gap>=10) actual     0.1192  null     0.1249+/-  0.0004  z     -12.9
+    stat max        actual    47.0000  null    55.6700+/-  5.1070  z      -1.7
+[window X=1.0e+09 W=1e+06] exact triple grades in 0.3s (primes to 77491)
+
+-- window [1e+09, +1e+06) (segmented exact) --
+  mean omega: L 2.6220   C 4.4872   R 2.6219   (C carries 2 and 3 for every center: +2 exactly)
+
+  joint (omega_L, omega_R) clipped 1..6  [rows=first, cols=second, n=1000000, %]
+               1       2       3       4       5     >=6
+      1    1.558   4.292   4.520   2.285   0.581   0.065
+      2    4.303  11.492  11.531   5.617   1.325   0.141
+      3    4.520  11.539  11.009   4.972   1.052   0.105
+      4    2.303   5.579   4.995   2.032   0.392   0.032
+      5    0.576   1.320   1.062   0.385   0.066   0.003
+    >=6    0.068   0.146   0.103   0.030   0.003   0.000
+
+  joint (omega_C, omega_L) clipped 1..6  [rows=first, cols=second, n=1000000, %]
+               1       2       3       4       5     >=6
+      1    0.000   0.000   0.000   0.000   0.000   0.000
+      2    0.000   0.000   0.000   0.000   0.000   0.000
+      3    1.802   5.003   5.255   2.651   0.669   0.081
+      4    4.695  12.534  12.557   6.079   1.424   0.147
+      5    4.486  11.338  10.680   4.772   0.997   0.097
+    >=6    2.317   5.535   4.705   1.830   0.322   0.024
+
+  joint (omega_C, omega_R) clipped 1..6  [rows=first, cols=second, n=1000000, %]
+               1       2       3       4       5     >=6
+      1    0.000   0.000   0.000   0.000   0.000   0.000
+      2    0.000   0.000   0.000   0.000   0.000   0.000
+      3    1.826   4.979   5.244   2.653   0.682   0.077
+      4    4.704  12.524  12.585   6.058   1.414   0.153
+      5    4.471  11.344  10.693   4.768   0.997   0.096
+    >=6    2.326   5.519   4.698   1.842   0.326   0.022
+  MI (omega_C ; (omega_L, omega_R))                 = 0.008127 bits  null 0.000077+/-0.000010  z =    +792.2  (n=1000000)
+  MI (omega_L ; omega_R)  [reference]               = 0.003675 bits  null 0.000018+/-0.000005  z =    +716.6  (n=1000000)
+  MI (omega_L ; omega_R | omega_C in {2,3})         = 0.006496 bits  null 0.000115+/-0.000031  z =    +203.2  (n=154617)
+  MI (omega_L ; omega_R | omega_C >= 4)             = 0.003433 bits  null 0.000021+/-0.000006  z =    +545.2  (n=845383)
+[window X=1.0e+12 W=2e+05] exact triple grades in 0.9s (primes to 2449487)
+
+-- window [1e+12, +2e+05) (segmented exact) --
+  mean omega: L 2.8714   C 4.7675   R 2.8706   (C carries 2 and 3 for every center: +2 exactly)
+
+  joint (omega_L, omega_R) clipped 1..6  [rows=first, cols=second, n=200000, %]
+               1       2       3       4       5     >=6
+      1    0.888   2.764   3.422   2.084   0.809   0.173
+      2    2.778   8.213   9.741   5.990   2.090   0.460
+      3    3.442   9.621  11.047   6.476   2.156   0.408
+      4    2.194   5.966   6.508   3.634   1.099   0.213
+      5    0.765   2.082   2.171   1.105   0.330   0.057
+    >=6    0.178   0.448   0.416   0.207   0.056   0.004
+
+  joint (omega_C, omega_L) clipped 1..6  [rows=first, cols=second, n=200000, %]
+               1       2       3       4       5     >=6
+      1    0.000   0.000   0.000   0.000   0.000   0.000
+      2    0.000   0.000   0.000   0.000   0.000   0.000
+      3    1.028   3.123   3.801   2.408   0.873   0.191
+      4    2.989   8.780  10.326   6.383   2.273   0.481
+      5    3.414   9.845  11.133   6.505   2.118   0.426
+    >=6    2.712   7.524   7.890   4.319   1.248   0.211
+
+  joint (omega_C, omega_R) clipped 1..6  [rows=first, cols=second, n=200000, %]
+               1       2       3       4       5     >=6
+      1    0.000   0.000   0.000   0.000   0.000   0.000
+      2    0.000   0.000   0.000   0.000   0.000   0.000
+      3    1.016   3.084   3.823   2.419   0.874   0.205
+      4    2.928   8.777  10.382   6.428   2.235   0.483
+      5    3.493   9.792  11.164   6.452   2.145   0.395
+    >=6    2.809   7.440   7.937   4.198   1.288   0.232
+  MI (omega_C ; (omega_L, omega_R))                 = 0.006036 bits  null 0.000386+/-0.000052  z =    +109.0  (n=200000)
+  MI (omega_L ; omega_R)  [reference]               = 0.002725 bits  null 0.000087+/-0.000024  z =    +108.9  (n=200000)
+  MI (omega_L ; omega_R | omega_C in {2,3})         = 0.005298 bits  null 0.000774+/-0.000213  z =     +21.2  (n=22845)
+  MI (omega_L ; omega_R | omega_C >= 4)             = 0.002636 bits  null 0.000104+/-0.000029  z =     +88.3  (n=177155)
+
+[w1 done in 190.3s]
+==============================================================================
+PACKING-WALK P0 -- stage w2: additive shift correlations (STATISTICAL)
+  seed=20260710  N_PERM=200  numpy=2.4.4  2026-07-10 12:00:14
+  DISCLOSURE: omega = # DISTINCT primes -> omega=1 includes prime
+  powers (25, 49, ...); Omega=1 <=> prime; twin <=> Omega_L=Omega_R=1.
+==============================================================================
+[omega sieve] loaded cache C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad\packing_walk_omega_6e7.npy
+
+Erdos-Kac u(n) = (omega(n) - lnln n)/sqrt(lnln n), n >= 3; every corr vs its own permutation null (N_PERM shuffles)
+
+-- shift-2 correlation on the full line, n <= 60000002 --
+  corr (u(n), u(n+2)), n <= 6e+07                   = +0.045662  null +0.000020+/-0.000128  z =    +357.9  (n=59999998)
+
+-- triple correlations at m <= 1e+07 --
+  corr (u_L, u_R) at 1e7                            = -0.079851  null -0.000016+/-0.000302  z =    -264.6  (n=10000000)
+  corr (u_C, u_L) at 1e7                            = -0.083365  null -0.000026+/-0.000298  z =    -279.3  (n=10000000)
+  corr (u_C, u_R) at 1e7                            = -0.083443  null -0.000018+/-0.000327  z =    -255.4  (n=10000000)
+
+-- triple correlations, window [1e+09, +1e+06) (segmented exact) --
+[window X=1.0e+09 W=1e+06] exact triple grades in 0.3s (primes to 77491)
+  corr (u_L, u_R) at 1e+09                          = -0.068869  null -0.000123+/-0.001071  z =     -64.2  (n=1000000)
+  corr (u_C, u_L) at 1e+09                          = -0.071589  null +0.000166+/-0.000928  z =     -77.3  (n=1000000)
+  corr (u_C, u_R) at 1e+09                          = -0.071162  null +0.000045+/-0.001013  z =     -70.3  (n=1000000)
+
+-- triple correlations, window [1e+12, +2e+05) (confirmatory only) --
+[window X=1.0e+12 W=2e+05] exact triple grades in 0.8s (primes to 2449487)
+  corr (u_L, u_R) at 1e+12                          = -0.059850  null +0.000007+/-0.002173  z =     -27.5  (n=200000)
+  corr (u_C, u_L) at 1e+12                          = -0.060987  null +0.000037+/-0.002299  z =     -26.5  (n=200000)
+  corr (u_C, u_R) at 1e+12                          = -0.064557  null +0.000054+/-0.002124  z =     -30.4  (n=200000)
+
+-- scale trend of r (addresses the L1 open decay-form goal) --
+    pair        1e7          1e9          1e12(confirm)
+    L-R       -0.079851    -0.068869    -0.059850 
+    C-L       -0.083365    -0.071589    -0.060987 
+    C-R       -0.083443    -0.071162    -0.064557 
+
+[w2 done in 513.1s]
+==============================================================================
+PACKING-WALK P0 -- stage w3: twin-collision census (STATISTICAL, law candidates)
+  seed=20260710  N_PERM=200  numpy=2.4.4  2026-07-10 12:09:24
+  DISCLOSURE: omega = # DISTINCT primes -> omega=1 includes prime
+  powers (25, 49, ...); Omega=1 <=> prime; twin <=> Omega_L=Omega_R=1.
+==============================================================================
+[omega sieve] loaded cache C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad\packing_walk_omega_6e7.npy
+
+exact truncated prediction sum_(5<=q<=31)(1/(q-2) - 1/q) = 41209978/166424895 = 0.247619
+reference partial sums: B=101: 0.256940   B=1e3: 0.260164   B=1e5: 0.260416
+
+-- m <= 1e+07 (exhaustive; twin <=> both wings prime) --
+
+  center contrast all centers, m <= 1e+07:
+    E[omega_C | twin]    = 4.385209   (n_twin = 280557)
+    E[omega_C | no-twin] = 4.173766   (n = 9719443)
+    contrast = +0.211442   z =  +123.46
+    prediction truncated B=31 (exact)       = +0.247619
+    prediction all q <= 1e5 (reference)     = +0.260416
+
+  center contrast survivors A=13, m <= 1e+07:
+    E[omega_C | twin]    = 4.385226   (n_twin = 280555)
+    E[omega_C | no-twin] = 4.369052   (n = 2686479)
+    contrast = +0.016174   z =    +9.11
+    prediction tail 13<q<=31 (truncated)    = +0.022955
+    prediction tail 13<q<=1e5 (reference)   = +0.035752
+
+  center contrast survivors A=31, m <= 1e+07:
+    E[omega_C | twin]    = 4.385239   (n_twin = 280553)
+    E[omega_C | no-twin] = 4.388621   (n = 1582160)
+    contrast = -0.003382   z =    -1.84
+    prediction tail 31<q<=31 (truncated)    = +0.000000
+    prediction tail 31<q<=1e5 (reference)   = +0.012797
+
+  v_2(C) distribution (m <= 1e+07)  [% within group]
+        twin: 1:50.0740 2:25.0163 3:12.4816 4: 6.1852 5: 3.1309 >=6: 3.1120  mean=1.997305
+     no-twin: 1:49.9979 2:24.9995 3:12.5005 4: 6.2519 5: 3.1248 >=6: 3.1254  mean=2.000077
+    mean diff (twin - no-twin) = -0.002772   z = -1.02
+
+  v_3(C) distribution (m <= 1e+07)  [% within group]
+        twin: 1:66.7433 2:22.2279 3: 7.3336 4: 2.4772 5: 0.8120 >=6: 0.4060  mean=1.498002
+     no-twin: 1:66.6645 2:22.2221 3: 7.4095 4: 2.4689 5: 0.8234 >=6: 0.4117  mean=1.500057
+    mean diff (twin - no-twin) = -0.002055   z = -1.24
+
+  mirror asymmetry m <= 1e+07: distribution of omega_L - omega_R [%]
+        <=-4      -3      -2      -1       0      +1      +2      +3    >=+4
+       0.289   2.553  10.298  22.422  28.866  22.439  10.289   2.556   0.288
+    mean = +0.000040  z_mean =   +0.09   skew = -0.000137  z_skew =   -0.18   (n=10000000)
+
+  P(wing prime | opposite-wing state) m <= 1e+07   [state = fold3(omega_opposite); two-proportion z]
+    state      n_L    P(L prime|st_R)      n_R    P(R prime|st_L)       diff        z
+        1   1781927           0.157574   1781286           0.157508  +0.000067     +0.17
+        2   4030214           0.169580   4030885           0.169627  -0.000046     -0.17
+      >=3   4187859           0.195089   4187829           0.194985  +0.000104     +0.38
+
+-- window [1e+09, +1e+06) (segmented exact; twin <=> Omega=1 both) --
+[window X=1.0e+09 W=1e+06] exact triple grades in 0.3s (primes to 77491)
+
+  center contrast window [1e+09, +1e+06):
+    E[omega_C | twin]    = 4.707774   (n_twin = 15577)
+    E[omega_C | no-twin] = 4.483707   (n = 984423)
+    contrast = +0.224068   z =   +27.03
+    prediction truncated B=31 (exact)       = +0.247619
+    prediction all q <= 1e5 (reference)     = +0.260416
+
+  v_2(C) distribution (window 1e+09)  [% within group]
+        twin: 1:50.0610 2:24.7801 3:12.3708 4: 6.4069 5: 3.0558 >=6: 3.3254  mean=2.010978
+     no-twin: 1:49.9990 2:25.0035 3:12.5020 4: 6.2475 5: 3.1261 >=6: 3.1218  mean=1.999830
+    mean diff (twin - no-twin) = +0.011147   z = +0.96
+
+  v_3(C) distribution (window 1e+09)  [% within group]
+        twin: 1:66.7779 2:22.3021 3: 7.4661 4: 2.2597 5: 0.7383 >=6: 0.4558  mean=1.495410
+     no-twin: 1:66.6649 2:22.2209 3: 7.4065 4: 2.4725 5: 0.8243 >=6: 0.4108  mean=1.500070
+    mean diff (twin - no-twin) = -0.004660   z = -0.67
+
+  mirror asymmetry window [1e+09, +1e+06): distribution of omega_L - omega_R [%]
+        <=-4      -3      -2      -1       0      +1      +2      +3    >=+4
+       0.790   3.713  11.220  21.190  26.156  21.224  11.191   3.723   0.792
+    mean = +0.000136  z_mean =   +0.09   skew = +0.000643  z_skew =   +0.26   (n=1000000)
+
+  P(wing prime | opposite-wing state) window [1e+09, +1e+06)   [state = fold3(omega_opposite); two-proportion z]
+    state      n_L    P(L prime|st_R)      n_R    P(R prime|st_L)       diff        z
+        1    133270           0.116891    133006           0.117115  -0.000224     -0.18
+        2    343670           0.124896    344087           0.125035  -0.000139     -0.17
+      >=3    523060           0.142441    522907           0.142788  -0.000348     -0.51
+
+[w3 done in 3.6s]
+==============================================================================
+PACKING-WALK P0 -- stage w4: EXACT truncated layer (fractions.Fraction)
+  seed=20260710  N_PERM=200  numpy=2.4.4  2026-07-10 12:10:26
+  DISCLOSURE: omega = # DISTINCT primes -> omega=1 includes prime
+  powers (25, 49, ...); Omega=1 <=> prime; twin <=> Omega_L=Omega_R=1.
+==============================================================================
+
+EXACT layer over fractions.Fraction -- no scanning, no floats in the
+assertions.  Joint pgf of (d_B(L), d_B(C), d_B(R)) with the center
+counting ONLY q >= 5:  P_B(x,y,z) = prod_(5<=q<=B) ((q-3) + x + y + z)/q,
+driven by the exact 1/1/1/(q-3) residue-class split of m mod q.
+
+-- B = 7  (primes [5, 7], 10 pgf terms) --
+  E1 marginal means: E[d(L)] = E[d(C)] = E[d(R)] = 12/35 = 0.342857   sum 1/q: PASS
+  E2/E3 covariances: cov(d_L,d_C) = cov(d_L,d_R) = cov(d_C,d_R) = -74/1225 = -0.06040816   -sum 1/q^2: PASS
+  E4 clean-center layer: P(clean) = 3/7 = 0.428571 (prod (q-2)/q)
+     E[d(C)|clean] - E[d(C)] = 4/21 = 0.190476 = sum(1/(q-2) - 1/q): PASS
+     survivor-conditioned pgf = prod((q-3) + y)/(q-2): PASS   coeffs y^0:8/15 y^1:2/5 y^2:1/15
+
+-- B = 13  (primes [5, 7, 11, 13], 35 pgf terms) --
+  E1 marginal means: E[d(L)] = E[d(C)] = E[d(R)] = 2556/5005 = 0.510689   sum 1/q: PASS
+  E2/E3 covariances: cov(d_L,d_C) = cov(d_L,d_R) = cov(d_C,d_R) = -1868476/25050025 = -0.07458979   -sum 1/q^2: PASS
+  E4 clean-center layer: P(clean) = 27/91 = 0.296703 (prod (q-2)/q)
+     E[d(C)|clean] - E[d(C)] = 184/819 = 0.224664 = sum(1/(q-2) - 1/q): PASS
+     survivor-conditioned pgf = prod((q-3) + y)/(q-2): PASS   coeffs y^0:128/297 y^1:208/495 y^2:196/1485 y^3:8/495 y^4:1/1485
+
+-- B = 31  (primes [5, 7, 11, 13, 17, 19, 23, 29, 31], 220 pgf terms) --
+  E1 marginal means: E[d(L)] = E[d(C)] = E[d(R)] = 24480530521/33426748355 = 0.732364   sum 1/q: PASS
+  E2/E3 covariances: cov(d_L,d_C) = cov(d_L,d_R) = cov(d_C,d_R) = -94907585495866775241/1117347505588495206025 = -0.08494008   -sum 1/q^2: PASS
+  E4 clean-center layer: P(clean) = 32805/176111 = 0.186275 (prod (q-2)/q)
+     E[d(C)|clean] - E[d(C)] = 41209978/166424895 = 0.247619 = sum(1/(q-2) - 1/q): PASS
+     survivor-conditioned pgf = prod((q-3) + y)/(q-2): PASS   coeffs y^0:11927552/35580303 y^1:73539584/177901515 y^2:1219161088/6226553025 y^3:299261696/6226553025 y^4:185792/26954775 y^5:180464/296502525 y^6:29776/889507575 y^7:992/889507575 y^8:128/6226553025 y^9:1/6226553025
+
+-- FULL-period enumeration cross-check (assert EXACT equality) --
+  B= 7 period=   35: 10 occupied cells, pgf == enumeration EXACTLY: PASS
+  B=13 period= 5005: 35 occupied cells, pgf == enumeration EXACTLY: PASS
+
+==========================================================================
+  KERNEL CENSUS CONSTANTS (targets for the Lean layer):
+    #{r < 210    : truncDim(7, r) = 0}       =    48   (predicted 48)   PASS
+    #{m in [1,35]   : both wings d_7  = 0}   =    15   (predicted 15)   PASS
+    #{m in [1,5005] : both wings d_13 = 0}   =  1485   (predicted 1485) PASS
+  NOTE: truncDim(B, n) counts ALL primes q <= B dividing n, INCLUDING
+  2 and 3 (Lean def uses range(B+1) over all primes).  For the
+  210-census that is exactly the residues coprime to 2*3*5*7, so the
+  count is phi(210) = 48.  For the WING censuses 2 and 3 never divide
+  6m+-1, so counting q >= 5 is equivalent to the full truncDim.
+==========================================================================
+
+  W4 VERDICT: ALL EXACT CHECKS PASS
+
+[w4 done in 0.0s]
+==============================================================================
+PACKING-WALK P0 -- stage w5: foil-v2 (STATISTICAL, pre-registered)
+  seed=20260710  N_PERM=200  numpy=2.4.4  2026-07-10 12:10:49
+  DISCLOSURE: omega = # DISTINCT primes -> omega=1 includes prime
+  powers (25, 49, ...); Omega=1 <=> prime; twin <=> Omega_L=Omega_R=1.
+==============================================================================
+
+PRE-REGISTRATION (fixed before any measurement below):
+  grid A in {13,31,101} x X in {1e6,1e9}; H = 50; NW = 3000 (1e6) /
+  1000 (1e9); N_PERM = 200.  Loads per window:
+    S   = sum of lambda_L*lambda_R over ALL survivors of the window;
+    S0  = self-excluded: survivors NOT read by the invariant
+          (C5: the counted twins are removed from the load);
+    S'' = split-window: invariant on the LEFT half (pos 0..24),
+          load = survivor lambda-sum of the RIGHT half (pos 25..49).
+  Independence null sigma_I exactly as gain_complex_harness.gate_g3:
+  lambda resampled from the pooled survivor empirical, load recomputed,
+  z_I = (R - mean_null)/sd_null; z_W = R/sd(perm of I).
+  Candidates and PRIMARY loads:
+    C1  counts per folded dim-class floor((Omega_L-1)/2) in {0,1,2+}
+        among LEFT-half survivors -> S'' (three class rows; candidate
+        verdict = best class, all three reported);
+    C2  per-window plug-in MI(omega_L; omega_R) over survivors, folded
+        alphabet floor((omega-1)/2) clipped to {0,1,2+} -> PRIMARY S''
+        (left-half MI vs right-half load; full-window MI vs S is
+        reported as SECONDARY: the MI reads survivors whose lambda
+        enters S, so S alone is self-contaminated);
+    C3  frustration density = #(lambda_L*lambda_R = -1, non-top
+        survivors)/#non-top on the LEFT half -> S'' ONLY (the
+        self-excluded load degenerates: it would remove every read
+    C4  sum over survivors of d13(C) minus nsurv * E_exact[d13(C)|clean]
+        with E_exact = sum(1/(q-2), q<=13) = 364/495 = 0.735354
+        -> S primary (residues of m only: lambda-blind by construction).
+        NOTE: the literal d13(L)+d13(R) is IDENTICALLY 0 on survivors
+        for A >= 13 (degenerate), so the registered non-degenerate
+        lambda-blind form is the CENTER residual from the W4 pgf;
+    C5  twin-transit count (twins among survivors) -> S0 (the counted
+        twins are excluded from the load).
+  VERDICT RULE (no threshold adjustments): MANAGED-PASS iff
+  min|z_I| >= 5 over the 6 grid cells on the primary load AND
+  |R(101)/R(13)| >= 1/3 at each X with |R(13)| > 1e-9;
+  SOFT-PASS iff min|z_I| >= 3; else PARITY-BLIND-UNDER-ESCALATION-v2.
+[window X=1.0e+06 W=2e+05] exact triple grades in 0.0s (primes to 2621)
+
+  [X=1e+06 A= 13] survivors 44503/150000 (density 0.2967), twins 4793
+    C1[c0]  vs S2 : R = -0.0216  zW =    -1.2  zI =    -1.3
+    C1[c1]  vs S2 : R = +0.0202  zW =    +1.0  zI =    +1.2
+    C1[c2]  vs S2 : R = +0.0201  zW =    +1.1  zI =    +1.2
+    C2      vs S2 : R = -0.0134  zW =    -0.7  zI =    -0.8
+    C2sec   vs S  : R = +0.0374  zW =    +2.3  zI =    +2.1
+    C3      vs S2 : R = +0.0092  zW =    +0.5  zI =    +0.5
+    C4      vs S  : R = +0.0086  zW =    +0.5  zI =    +0.4
+    C5      vs S0 : R = +0.0870  zW =    +4.3  zI =    +5.3
+
+  [X=1e+06 A= 31] survivors 27942/150000 (density 0.1863), twins 4793
+    C1[c0]  vs S2 : R = +0.0218  zW =    +1.1  zI =    +1.2
+    C1[c1]  vs S2 : R = +0.0028  zW =    +0.1  zI =    +0.1
+    C1[c2]  vs S2 : DEGENERATE (zero variance)
+    C2      vs S2 : R = -0.0034  zW =    -0.2  zI =    -0.2
+    C2sec   vs S  : R = +0.0583  zW =    +3.3  zI =    +3.1
+    C3      vs S2 : R = +0.0135  zW =    +0.7  zI =    +0.6
+    C4      vs S  : R = -0.0017  zW =    -0.1  zI =    -0.1
+    C5      vs S0 : R = +0.0927  zW =    +4.7  zI =    +5.2
+
+  [X=1e+06 A=101] survivors 16907/150000 (density 0.1127), twins 4793
+    C1[c0]  vs S2 : R = +0.0168  zW =    +0.9  zI =    +1.0
+    C1[c1]  vs S2 : R = -0.0064  zW =    -0.3  zI =    -0.4
+    C1[c2]  vs S2 : DEGENERATE (zero variance)
+    C2      vs S2 : R = +0.0178  zW =    +1.0  zI =    +0.9
+    C2sec   vs S  : R = +0.0527  zW =    +2.8  zI =    +2.6
+    C3      vs S2 : R = +0.0119  zW =    +0.8  zI =    +0.6
+    C4      vs S  : R = -0.0164  zW =    -0.9  zI =    -0.9
+    C5      vs S0 : R = +0.1010  zW =    +5.3  zI =    +5.8
+[window X=1.0e+09 W=5e+04] exact triple grades in 0.1s (primes to 77447)
+
+  [X=1e+09 A= 13] survivors 14835/50000 (density 0.2967), twins 765
+    C1[c0]  vs S2 : R = +0.0546  zW =    +1.8  zI =    +2.0
+    C1[c1]  vs S2 : R = -0.0392  zW =    -1.2  zI =    -1.3
+    C1[c2]  vs S2 : R = +0.0282  zW =    +0.9  zI =    +0.8
+    C2      vs S2 : R = -0.0056  zW =    -0.2  zI =    -0.1
+    C2sec   vs S  : R = -0.0259  zW =    -0.9  zI =    -0.8
+    C3      vs S2 : R = -0.0186  zW =    -0.6  zI =    -0.5
+    C4      vs S  : R = +0.0481  zW =    +1.5  zI =    +1.7
+    C5      vs S0 : R = +0.0496  zW =    +1.5  zI =    +1.5
+
+  [X=1e+09 A= 31] survivors 9311/50000 (density 0.1862), twins 765
+    C1[c0]  vs S2 : R = +0.0423  zW =    +1.3  zI =    +1.5
+    C1[c1]  vs S2 : R = -0.0343  zW =    -1.1  zI =    -1.1
+    C1[c2]  vs S2 : R = +0.0624  zW =    +2.0  zI =    +1.8
+    C2      vs S2 : R = -0.0146  zW =    -0.4  zI =    -0.5
+    C2sec   vs S  : R = +0.0840  zW =    +2.6  zI =    +2.4
+    C3      vs S2 : R = +0.0022  zW =    +0.1  zI =    -0.0
+    C4      vs S  : R = -0.0054  zW =    -0.2  zI =    -0.2
+    C5      vs S0 : R = +0.0523  zW =    +1.6  zI =    +1.8
+
+  [X=1e+09 A=101] survivors 5593/50000 (density 0.1119), twins 765
+    C1[c0]  vs S2 : R = +0.0140  zW =    +0.4  zI =    +0.5
+    C1[c1]  vs S2 : R = +0.0134  zW =    +0.4  zI =    +0.6
+    C1[c2]  vs S2 : DEGENERATE (zero variance)
+    C2      vs S2 : R = -0.0171  zW =    -0.5  zI =    -0.5
+    C2sec   vs S  : R = +0.0972  zW =    +3.2  zI =    +3.3
+    C3      vs S2 : R = +0.0151  zW =    +0.5  zI =    +0.5
+    C4      vs S  : R = -0.0367  zW =    -1.1  zI =    -1.0
+    C5      vs S0 : R = +0.0203  zW =    +0.7  zI =    +0.7
+
+==========================================================================
+FOIL-v2 MATRIX (R / z_I on each candidate's registered load)
+  cand     load   X1e+06,A=13   X1e+06,A=31   X1e+06,A=101  X1e+09,A=13   X1e+09,A=31   X1e+09,A=101
+  C1[c0]  S2   -0.022/  -1.3 +0.022/  +1.2 +0.017/  +1.0 +0.055/  +2.0 +0.042/  +1.5 +0.014/  +0.5
+  C1[c1]  S2   +0.020/  +1.2 +0.003/  +0.1 -0.006/  -0.4 -0.039/  -1.3 -0.034/  -1.1 +0.013/  +0.6
+  C1[c2]  S2   +0.020/  +1.2 +0.000/  +0.0 +0.000/  +0.0 +0.028/  +0.8 +0.062/  +1.8 +0.000/  +0.0
+  C2      S2   -0.013/  -0.8 -0.003/  -0.2 +0.018/  +0.9 -0.006/  -0.1 -0.015/  -0.5 -0.017/  -0.5
+  C2sec   S    +0.037/  +2.1 +0.058/  +3.1 +0.053/  +2.6 -0.026/  -0.8 +0.084/  +2.4 +0.097/  +3.3
+  C3      S2   +0.009/  +0.5 +0.013/  +0.6 +0.012/  +0.6 -0.019/  -0.5 +0.002/  -0.0 +0.015/  +0.5
+  C4      S    +0.009/  +0.4 -0.002/  -0.1 -0.016/  -0.9 +0.048/  +1.7 -0.005/  -0.2 -0.037/  -1.0
+  C5      S0   +0.087/  +5.3 +0.093/  +5.2 +0.101/  +5.8 +0.050/  +1.5 +0.052/  +1.8 +0.020/  +0.7
+
+VERDICTS (primary loads; rule as pre-registered above):
+  C1[c0]: min|z_I| =   0.5  ratio_ok = False  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C1[c1]: min|z_I| =   0.1  ratio_ok = False  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C1[c2]: min|z_I| =   0.0  ratio_ok = False  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C1 (best class C1[c0]): min|z_I| =   0.5  ratio_ok = False  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C2: min|z_I| =   0.1  ratio_ok = True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C3: min|z_I| =   0.0  ratio_ok = True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C4: min|z_I| =   0.1  ratio_ok = True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  C5: min|z_I| =   0.7  ratio_ok = True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  [info] C2 secondary (full-window MI vs S): min|z_I| =   0.8  ratio_ok = True  -> PARITY-BLIND-UNDER-ESCALATION-v2 (NOT a verdict load)
+
+[w5 done in 3.3s]

@@ -102,3 +102,65 @@ The P-scaling wall is broken: kernel cost tracks the branch-and-bound tree
 (hundreds..tens of thousands of nodes), not the period (P_37 ~ 1.3e12; the
 previous record, the A=19 witness chain, was period-bound at P_19=1,616,615
 and 23 GB).
+
+PHASE-COVER W2 RUN -- modes ['laws', 'leanmodel', 'nomirror', 'sat', 'scan', 'sharp']  scales [41, 43]  date 2026-07-10  numpy 2.4.4
+==============================================================================
+PHASE-COVER W2 -- partial-scan lower bounds on G(A) (m < 300,000,000)
+==============================================================================
+  [    1.0s] scan A=41 m<300,000,000 (partial, LB): max gap 63 (1 start(s), first at r=27819087), 50,283,047 clean [0.9s]
+  A=41: scan lower bound 63 <= G(41) = 91  (expected LB 63: MATCH)
+  [    1.9s] scan A=43 m<300,000,000 (partial, LB): max gap 70 (1 start(s), first at r=222056285), 47,944,276 clean [1.0s]
+  A=43: scan lower bound 70 <= G(43) = 103  (expected LB 70: MATCH)
+==============================================================================
+PHASE-COVER W2 -- no-mirror solver runs + lean-model replica
+==============================================================================
+  [    4.6s] A=41: no-mirror decision(g=91): UNSAT nodes=473,293 [2.6s]
+  [    6.6s] A=41: no-mirror decision(g=90): SAT nodes=374,899 [2.1s]
+    UNSAT nodes 473,293 vs expected ~473,293 (MATCH)
+  [   13.1s] A=41: lean-model(g=91): UNSAT  dfs nodes=473,293  raw dfsB calls=473,293 (tops 5,005, static-skippable 0, sc_bigs=53)  cap-work=1,189,121,404 phase*elem visits  max|U|=32 [6.5s]
+    replica nodes == solver nodes: OK (473,293)
+  [   42.5s] A=43: no-mirror decision(g=103): UNSAT nodes=4,889,831 [29.4s]
+  [   45.1s] A=43: no-mirror decision(g=102): SAT nodes=439,076 [2.6s]
+    UNSAT nodes 4,889,831 vs expected ~4,889,831 (MATCH)
+  [  117.1s] A=43: lean-model(g=103): UNSAT  dfs nodes=4,889,831  raw dfsB calls=4,889,831 (tops 5,005, static-skippable 0, sc_bigs=68)  cap-work=14,030,653,897 phase*elem visits  max|U|=35 [72.0s]
+    replica nodes == solver nodes: OK (4,889,831)
+==============================================================================
+PHASE-COVER W2 -- SAT witnesses re-verified by trial division
+==============================================================================
+  A=41: r=50077677123072 (solver certificate): r clean, r+91 clean, ALL centers r+1..r+90 struck (trial division over [5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]) -- G(41)=91 witnessed; Lean SAT side: allStruckB clocks r=50077677123072 len=90
+  A=43: r=233885349904190 (solver certificate): r clean, r+103 clean, ALL centers r+1..r+102 struck (trial division over [5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43]) -- G(43)=103 witnessed; Lean SAT side: allStruckB clocks r=233885349904190 len=102
+==============================================================================
+PHASE-COVER W2 -- Sharp-window UNSAT points (g = floor(A^2/14))
+==============================================================================
+  A=41: Sharp window g = floor(41^2/14) = 120, G(41) = 91 <= 120 (ratio 0.758) -- Sharp SURVIVES
+  [  117.4s] A=41: no-mirror decision(g=120): UNSAT nodes=34,749 [0.3s]
+    UNSAT nodes 34,749 vs expected ~34,749 (MATCH)
+  [  118.0s] A=41: lean-model(g=120): UNSAT  dfs nodes=34,749  raw dfsB calls=34,749 (tops 5,005, static-skippable 0, sc_bigs=69)  cap-work=174,254,797 phase*elem visits  max|U|=41 [0.7s]
+    replica nodes == solver nodes: OK (34,749)
+  A=43: Sharp window g = floor(43^2/14) = 132, G(43) = 103 <= 132 (ratio 0.780) -- Sharp SURVIVES
+  [  120.4s] A=43: no-mirror decision(g=132): UNSAT nodes=305,785 [2.3s]
+    UNSAT nodes 305,785 vs expected ~305,785 (MATCH)
+  [  126.7s] A=43: lean-model(g=132): UNSAT  dfs nodes=305,785  raw dfsB calls=305,785 (tops 5,005, static-skippable 0, sc_bigs=83)  cap-work=1,665,079,448 phase*elem visits  max|U|=44 [6.3s]
+    replica nodes == solver nodes: OK (305,785)
+==============================================================================
+PHASE-COVER W2 -- ledger-bound measured laws
+==============================================================================
+  (a) no-mirror UNSAT node counts across the ladder (exponential onset --
+      the exactness ladder ends here):
+      A=17:464  A=19:2,626  A=23:5,301  A=29:11,527  A=31:30,079  A=37:25,543  A=41:473,293  A=43:4,889,831
+  (b) UNSAT trees SHRINK above G(A) -- the capacity prune bites harder
+      as the demand g grows:
+      A=41: 473,293 nodes @ g=91  ->  34,749 nodes @ g=120  (x13.6 shrink; lean cap-work 174,254,797)
+      A=43: 4,889,831 nodes @ g=103  ->  305,785 nodes @ g=132  (x16.0 shrink; lean cap-work 1,665,079,448)
+[  126.7s] phase-cover run done.
+
+PHASE-COVER W2 RUN -- modes ['cells']  scales [41]  date 2026-07-10  numpy 2.4.4
+==============================================================================
+PHASE-COVER W2 -- sharp-window cell decomposition (t5 x t7 x t11, 385 cells)
+==============================================================================
+  [    0.9s] A=41: g=120: 385 cells solved  sum cap-work=174,254,797  sum dfs nodes=34,749 [0.9s]
+    cross-check vs undecomposed lean-model run: cap-work 174,254,797, nodes 34,749 -- EXACT MATCH [0.8s]
+    max cell cap-work=1,397,453 at (t5,t7,t11)=(1,6,5)  (= 0.80% of total)
+    top-5 cells: (1,6,5):1,397,453  (2,0,6):1,397,453  (3,4,10):1,319,600  (0,3,9):1,303,199  (4,2,8):1,303,199
+    wrote tools/sharp41_cells.json
+[    1.7s] phase-cover run done.

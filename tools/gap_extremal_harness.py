@@ -26,6 +26,7 @@ Usage:  python tools/gap_extremal_harness.py [--parts 1,2,3] [--budget 900]
 """
 
 import argparse
+import json
 import sys
 import time
 
@@ -33,7 +34,7 @@ import numpy as np
 
 # ---------------------------------------------------------------- utilities
 
-PRIMES_SMALL = [5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+PRIMES_SMALL = [5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43]
 
 KNOWN_G = {5: 2, 7: 5, 11: 7, 13: 11, 17: 18, 19: 25, 23: 34}  # short_survivor_run1.log
 
@@ -706,18 +707,42 @@ def task3(scan29_starts=None):
 #                     the solver certificates; 17, 19 extracted from the cheap
 #                     full-period scans) -- the run of G-1 consecutive struck
 #                     centers starts at r+1, r and r+G clean;
-#   --pc sweep      : nodes-vs-g table above G(A) (fallback wall instances).
+#   --pc sweep      : nodes-vs-g table above G(A) (fallback wall instances);
+#   --pc scan       : partial-scan lower bounds on G(A) (m < 300,000,000);
+#   --pc sharp      : UNSAT at the Sharp window g = floor(A^2/14) >= G(A)
+#                     (the exact Sharp-wall demand), node counts asserted,
+#                     lean-model replica cross-checked, cap-work recorded;
+#   --pc cells      : chunk-planning dump for the Lean Sharp certificate --
+#                     decompose the sharp-window UNSAT tree by the first three
+#                     small clocks t5 x t7 x t11 (5*7*11 = 385 phase cells),
+#                     per-cell lean-model cap-work / dfs nodes, sorted
+#                     descending -> tools/sharp{A}_cells.json (per-cell sums
+#                     asserted EQUAL to the undecomposed run);
+#   --pc laws       : ledger-bound measured laws (no-mirror node-count ladder
+#                     17..43; UNSAT trees shrink above G).
 # Log: appended to tools/phase_cover_run1.log.
 
-LEAN_I6 = {5: 1, 7: 6, 11: 2, 13: 11, 17: 3, 19: 16, 23: 4, 29: 5, 31: 26, 37: 31}
-EXPECTED_G = {**KNOWN_G, 29: 43, 31: 58, 37: 88}
-EXPECTED_NOMIRROR_NODES = {17: 464, 19: 2626, 23: 5301, 29: 11527, 31: 30079, 37: 25543}
-SAT_WITNESS_R = {23: 12694428, 29: 200906185, 31: 21844264615, 37: 1145973108145}
-PC_SCALES = [17, 19, 23, 29, 31, 37]
+LEAN_I6 = {5: 1, 7: 6, 11: 2, 13: 11, 17: 3, 19: 16, 23: 4, 29: 5, 31: 26, 37: 31,
+           41: 7, 43: 36}
+EXPECTED_G = {**KNOWN_G, 29: 43, 31: 58, 37: 88, 41: 91, 43: 103}
+EXPECTED_NOMIRROR_NODES = {17: 464, 19: 2626, 23: 5301, 29: 11527, 31: 30079, 37: 25543,
+                           41: 473293, 43: 4889831}
+SAT_WITNESS_R = {23: 12694428, 29: 200906185, 31: 21844264615, 37: 1145973108145,
+                 41: 50077677123072, 43: 233885349904190}
+EXPECTED_SCAN_LB = {41: 63, 43: 70}  # partial scan m < 300,000,000
+EXPECTED_SHARP_NODES = {41: 34749, 43: 305785}  # no-mirror UNSAT at g = floor(A^2/14)
+PC_SCALES = [17, 19, 23, 29, 31, 37, 41, 43]
 
 
-def lean_model_decision(g, A):
+def lean_model_decision(g, A, fix=None):
     """Instrumented replica of the Lean checker (Step00PhaseCoverKernel.lean).
+
+    fix: optional {q: t_q} pinning the phase of some small clocks (cell
+    decomposition for chunk planning).  Pinned clocks are strike-filtered
+    up front (order-preserving; filters commute elementwise, so the dfsB
+    traversal and all counters restricted to the cell are exactly the
+    canonical run's -- per-cell sums over a full t5 x t7 x t11 grid equal
+    the undecomposed totals).
 
     Structure replicated exactly: enumSmallB enumerates ALL phases of the small
     clocks 5,7,11,13 in list order (NO mirror reduction); dfsB over the big
@@ -817,7 +842,14 @@ def lean_model_decision(g, A):
                 return False
         return True
 
-    unsat = enum_small(smalls, list(range(1, g + 1)))
+    U0 = list(range(1, g + 1))
+    enum = []
+    for (q, i6) in smalls:
+        if fix is not None and q in fix:
+            U0 = strike_filter(q, i6, fix[q], U0)
+        else:
+            enum.append((q, i6))
+    unsat = enum_small(enum, U0)
     return unsat, st
 
 
@@ -842,6 +874,9 @@ def pc_solver_runs(scales, do_lean_model):
         exp = EXPECTED_NOMIRROR_NODES.get(A)
         log(f"    UNSAT nodes {nodes_u:,} vs expected ~{exp:,} "
             f"({'MATCH' if nodes_u == exp else 'deviation'})")
+        if exp is not None:
+            assert nodes_u == exp, \
+                f"UNSAT nodes {nodes_u:,} != expected {exp:,} at A={A} -- STOP"
         solver_nodes[A] = nodes_u
         if do_lean_model:
             t0 = time.time()
@@ -913,6 +948,134 @@ def pc_sweep(scales, budget):
                                      for g, n in row))
 
 
+def pc_scan(scales):
+    log("=" * 78)
+    log("PHASE-COVER W2 -- partial-scan lower bounds on G(A) (m < 300,000,000)")
+    log("=" * 78)
+    for A in scales:
+        G = EXPECTED_G[A]
+        lb, lb_starts, _, _, _ = chunked_gap_scan(A, 300_000_000, label=" (partial, LB)")
+        assert lb <= G, f"scan lower bound {lb} exceeds expected G({A}) = {G}"
+        exp = EXPECTED_SCAN_LB.get(A)
+        log(f"  A={A}: scan lower bound {lb} <= G({A}) = {G}"
+            + (f"  (expected LB {exp}: {'MATCH' if lb == exp else 'deviation'})"
+               if exp is not None else ""))
+        if exp is not None:
+            assert lb == exp, f"scan LB {lb} != expected {exp} at A={A} -- STOP"
+
+
+def pc_sharp(scales):
+    """UNSAT at the Sharp window g = floor(A^2/14) >= G(A): the capacity prune
+    bites harder as demand grows, so these trees are SMALLER than at g = G(A).
+    Returns {A: (g_sharp, nodes, cap_work)}."""
+    log("=" * 78)
+    log("PHASE-COVER W2 -- Sharp-window UNSAT points (g = floor(A^2/14))")
+    log("=" * 78)
+    out = {}
+    for A in scales:
+        G = EXPECTED_G[A]
+        g = (A * A) // 14
+        assert 14 * G <= A * A, f"Sharp VIOLATED at A={A}: G={G} > floor(A^2/14)={g}"
+        log(f"  A={A}: Sharp window g = floor({A}^2/14) = {g}, G({A}) = {G} <= {g} "
+            f"(ratio {G / g:.3f}) -- Sharp SURVIVES")
+        t0 = time.time()
+        sat, _, nodes = decision(g, A, mirror=False)
+        log(f"  {stamp()} A={A}: no-mirror decision(g={g}): "
+            f"{'SAT' if sat else 'UNSAT'} nodes={nodes:,} [{time.time()-t0:.1f}s]")
+        assert not sat, f"decision({g}) must be UNSAT at A={A} (g >= G)"
+        exp = EXPECTED_SHARP_NODES.get(A)
+        if exp is not None:
+            log(f"    UNSAT nodes {nodes:,} vs expected ~{exp:,} "
+                f"({'MATCH' if nodes == exp else 'deviation'})")
+            assert nodes == exp, \
+                f"sharp UNSAT nodes {nodes:,} != expected {exp:,} at A={A} -- STOP"
+        t0 = time.time()
+        unsat, stx = lean_model_decision(g, A)
+        assert unsat, f"lean-model must certify UNSAT at A={A}, g={g}"
+        log(f"  {stamp()} A={A}: lean-model(g={g}): UNSAT  dfs nodes={stx['nodes']:,}  "
+            f"raw dfsB calls={stx['lean_calls']:,} (tops {stx['top_calls']:,}, "
+            f"static-skippable {stx['top_skipped']:,}, sc_bigs={stx['sc_bigs']})  "
+            f"cap-work={stx['cap_work']:,} phase*elem visits  max|U|={stx['max_u']} "
+            f"[{time.time()-t0:.1f}s]")
+        if stx["nodes"] != nodes:
+            log(f"*** MISMATCH: replica nodes {stx['nodes']:,} != solver nodes "
+                f"{nodes:,} at A={A}, g={g} -- STOP")
+            raise AssertionError("lean-model / solver node-count mismatch (sharp)")
+        log(f"    replica nodes == solver nodes: OK ({stx['nodes']:,})")
+        out[A] = (g, nodes, stx["cap_work"])
+    return out
+
+
+def pc_cells(scales):
+    """Chunk-planning dump for the Lean Sharp certificate: decompose the
+    sharp-window UNSAT tree by the phases of the first three small clocks
+    (t5, t7, t11) -- 5*7*11 = 385 cells, each a pinned lean-model sub-solve
+    over t13 x dfsB.  Per-cell sums are asserted EQUAL to the undecomposed
+    lean-model run (the decomposition is exact).  JSON: tools/sharp{A}_cells.json."""
+    log("=" * 78)
+    log("PHASE-COVER W2 -- sharp-window cell decomposition (t5 x t7 x t11, 385 cells)")
+    log("=" * 78)
+    for A in scales:
+        G = EXPECTED_G[A]
+        g = (A * A) // 14
+        assert 14 * G <= A * A
+        t0 = time.time()
+        cells = []
+        for t5 in range(5):
+            for t7 in range(7):
+                for t11 in range(11):
+                    unsat, stc = lean_model_decision(g, A, fix={5: t5, 7: t7, 11: t11})
+                    assert unsat, f"cell ({t5},{t7},{t11}) must be UNSAT at A={A}, g={g}"
+                    cells.append(dict(t5=t5, t7=t7, t11=t11,
+                                      cap_work=stc["cap_work"], nodes=stc["nodes"]))
+        tot_cap = sum(c["cap_work"] for c in cells)
+        tot_nodes = sum(c["nodes"] for c in cells)
+        log(f"  {stamp()} A={A}: g={g}: 385 cells solved  "
+            f"sum cap-work={tot_cap:,}  sum dfs nodes={tot_nodes:,} [{time.time()-t0:.1f}s]")
+        t0 = time.time()
+        unsat, stf = lean_model_decision(g, A)
+        assert unsat
+        assert tot_cap == stf["cap_work"], \
+            f"cell cap-work sum {tot_cap:,} != full run {stf['cap_work']:,} at A={A} -- STOP"
+        assert tot_nodes == stf["nodes"], \
+            f"cell node sum {tot_nodes:,} != full run {stf['nodes']:,} at A={A} -- STOP"
+        log(f"    cross-check vs undecomposed lean-model run: cap-work "
+            f"{stf['cap_work']:,}, nodes {stf['nodes']:,} -- EXACT MATCH "
+            f"[{time.time()-t0:.1f}s]")
+        cells.sort(key=lambda c: (-c["cap_work"], c["t5"], c["t7"], c["t11"]))
+        top = cells[0]
+        log(f"    max cell cap-work={top['cap_work']:,} at (t5,t7,t11)="
+            f"({top['t5']},{top['t7']},{top['t11']})  "
+            f"(= {100.0 * top['cap_work'] / tot_cap:.2f}% of total)")
+        log("    top-5 cells: " + "  ".join(
+            f"({c['t5']},{c['t7']},{c['t11']}):{c['cap_work']:,}" for c in cells[:5]))
+        fname = f"tools/sharp{A}_cells.json"
+        with open(fname, "w", encoding="ascii") as f:
+            json.dump(dict(A=A, g=g, G=G, n_cells=len(cells),
+                           total_cap_work=tot_cap, total_nodes=tot_nodes,
+                           max_cell_cap_work=top["cap_work"],
+                           cells=cells), f, indent=1)
+        log(f"    wrote {fname}")
+
+
+def pc_laws(sharp_stats):
+    log("=" * 78)
+    log("PHASE-COVER W2 -- ledger-bound measured laws")
+    log("=" * 78)
+    ladder = [A for A in PC_SCALES if A in EXPECTED_NOMIRROR_NODES]
+    log("  (a) no-mirror UNSAT node counts across the ladder (exponential onset --")
+    log("      the exactness ladder ends here):")
+    log("      " + "  ".join(f"A={A}:{EXPECTED_NOMIRROR_NODES[A]:,}" for A in ladder))
+    log("  (b) UNSAT trees SHRINK above G(A) -- the capacity prune bites harder")
+    log("      as the demand g grows:")
+    for A in sorted(sharp_stats):
+        g, nodes, cap = sharp_stats[A]
+        G = EXPECTED_G[A]
+        n_G = EXPECTED_NOMIRROR_NODES[A]
+        log(f"      A={A}: {n_G:,} nodes @ g={G}  ->  {nodes:,} nodes @ g={g}  "
+            f"(x{n_G / nodes:.1f} shrink; lean cap-work {cap:,})")
+
+
 # ================================================================= main
 
 def main():
@@ -922,9 +1085,11 @@ def main():
     ap.add_argument("--log", default="tools/gap_extremal_run1.log")
     ap.add_argument("--pc", default=None,
                     help="phase-cover W2 modes, comma list of "
-                         "nomirror,leanmodel,sat,sweep (skips --parts)")
+                         "scan,nomirror,leanmodel,sat,sharp,cells,laws,sweep "
+                         "(skips --parts)")
     ap.add_argument("--pc-scales", default=None,
-                    help="comma list of scales for --pc (default 17,19,23,29,31,37)")
+                    help="comma list of scales for --pc "
+                         "(default 17,19,23,29,31,37,41,43)")
     ap.add_argument("--pc-log", default="tools/phase_cover_run1.log")
     args = ap.parse_args()
     if args.pc is not None:
@@ -934,10 +1099,18 @@ def main():
                   if args.pc_scales else PC_SCALES)
         log(f"\nPHASE-COVER W2 RUN -- modes {sorted(modes)}  scales {scales}  "
             f"date 2026-07-10  numpy {np.__version__}")
+        if "scan" in modes:
+            pc_scan(scales)
         if "nomirror" in modes or "leanmodel" in modes:
             pc_solver_runs(scales, do_lean_model="leanmodel" in modes)
         if "sat" in modes:
             pc_sat_witnesses(scales)
+        if "sharp" in modes or "laws" in modes:
+            sharp_stats = pc_sharp(scales)
+            if "laws" in modes:
+                pc_laws(sharp_stats)
+        if "cells" in modes:
+            pc_cells(scales)
         if "sweep" in modes:
             pc_sweep(scales, args.budget)
         log(f"{stamp()} phase-cover run done.")

@@ -504,3 +504,176 @@ T6 mean side-L excess: 364/495 - 3/5 = 67/495 == 67/495 == sum(1/(q-2)-1/(q-1)) 
    (= 0.135354; the B=13 truncation of the full reference ~ 0.1539; tail q > 13 ~ 0.0185, disclosed)
 STAGE VERDICT: sidepgf ALL TARGETS T1-T6 PASS -- the Lean kernel constants are reproduced
   byte-exactly by the independent Fraction/int census (0.0s)
+==============================================================================
+[2026-07-11 17:20:15] PRATT-WING MORRISON  stage B: the p+1 genealogy (Morrison DAG) + joint/union navigation (m <= 1e7)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+
+STAGE-MORRISON REGISTRATION -- the p+1 genealogy (Morrison DAG, after the p+1
+primality test; the mirror of the O4 Pratt p-1 campaign, ledger L62) plus the
+joint (depth_P, depth_M) object and reduced union-DAG navigation.  Registered
+BEFORE any measurement line below.  Seed 20260710 (numpy default_rng;
+substreams [SEED,12] = twin pair-of-pairs sample, [SEED,13] = control pair
+sample).  STAGE_TIME_CAP = 5400 s; registered fallback: if the stage threatens
+the cap, HALVE the remaining per-block workload and LOG the shrink -- never
+silently.  Log append-only, ASCII.  Populations are the CACHED P1/P2/P4 of
+this campaign (build_pop7); the L35 gates of this log are NOT re-run
+(untouched; S6 stands earlier in this log); the twin census is re-asserted
+(SM3).
+
+NULL DESIGN -- decision (b), VERBATIM:
+prime-conditioned population; no parity verdict is defined here; deviations from reference curves are navigation, not laws
+All observables below are EXACT-MEASURED navigation; NO parity verdicts are
+issuable; every z is DESCRIPTIVE.
+
+MORRISON CONVENTION (registered): depth_M(2) = 0, nodes_M(2) = 1 -- the 2 <-> 3
+base cycle (2+1 = 3; 3+1 = 4 = 2^2) is cut at the root 2, mirroring Pratt's
+depth(2) = 0; for every odd prime p, depth_M(p) = 1 + max over distinct primes
+r | p+1 of depth_M(r), nodes_M(p) = 1 + sum nodes_M(r) (tree semantics,
+DAG-memoized), breadth_M(p) = omega(p+1).  Well-founded: r <= (p+1)/2 < p for
+odd p; memoized over ALL primes <= 6.1e7 via the same SPF sieve as O4.
+
+REDUCED UNION DAG (registered restriction for M3-M5): edges = Pratt parents
+(distinct primes of p-1) UNION Morrison parents (distinct primes of p+1),
+RESTRICTED to parents r >= 5.  Forced: 2 | p-1 and 3 | p-1 or p+1 for EVERY
+prime p > 3, so the 2/3 hubs connect any two primes at distance 2 and carry
+no navigation; their exclusion is frame, disclosed.
+
+OBSERVABLES (CLOSED LIST -- nothing may be added after this block)
+ M1 depth_M / nodes_M / breadth_M distributions per population P1.L, P1.R,
+    P2.L, P2.R, P4.adj (P4.adj = the prime wings adjacent to the P4 random
+    non-twin centers: whichever of 6m+-1 is prime -- at most one each, since
+    P4 excludes twins; mixed L/R, split disclosed); twin-vs-isolated
+    contrasts per wing type, the O4 protocol mirrored (descriptive z); PLUS
+    the Morrison DAG summary over ALL primes <= 6.1e7 (depth_M histogram,
+    max-depth witness chain, decade means).  MECHANICAL-c DISCLOSURE: for a
+    LEFT wing p = 6m-1, p+1 = 6m = c, so depth_M/breadth_M of EVERY left
+    wing (twin OR isolated) is the anatomy of ITS OWN center -- the L-side
+    contrast is a twin-center-vs-isolated-center anatomy contrast
+    (L35-adjacent, labeled MECHANICAL-c).  The R side (q+1 = 6m+2 = 2(3m+1))
+    is genuinely new data.
+ M2 the JOINT object: per prime the pair (depth_P, depth_M); Pearson
+    correlation per population; conditional means E[depth_M | depth_P = k],
+    k = 3..8; twin-vs-isolated correlation contrast per wing type (Fisher z,
+    descriptive).  Question on record: does the L62 Pratt depth deficit of
+    twin wings (z ~ -17) have a Morrison mirror, and on which side is it
+    mechanical (see the M1 disclosure)?
+ M3 union-DAG inter-pair navigation: meet-in-ancestors distance dist(u, v) =
+    min(d1 + d2) over common ancestors in the reduced union DAG, downward
+    BFS per side, depth cap 4 per side (paths <= 8), budget 20000 expanded
+    nodes per side (budget hits counted and disclosed; no meet within the
+    caps = the >8 bucket; dist 1 means one wing is an ancestor of the
+    other).  Sample: 10^4 seeded pairs of DISTINCT twin pairs ([SEED,12]:
+    indices i, j drawn first, redrawn while i = j, then one wing per pair by
+    a coin); control: 10^4 seeded pairs of isolated P2 primes ([SEED,13]:
+    per side a coin picks the type, L -> a uniform P2.L member's wing, R ->
+    P2.R, the pair redrawn if the two primes coincide).  Distance
+    distributions twin-pair-pairs vs control, descriptive contrasts.
+ M4 twin-subgraph connectivity: all twin wings <= 1e6 (both wings of pairs
+    with 6m+1 <= 1e6), adjacency = sharing at least one reduced-union-DAG
+    parent; union-find; component count / largest / singleton count.
+    Same-pair wings share EXACTLY primes(6m) >= 5 (MECHANICAL: the two
+    wings of one pair are adjacent iff m is not 3-smooth; disclosed and
+    counted).  Control: the isolated P2 wings <= 1e6 under the same
+    adjacency (bin-matched by construction; counts disclosed).
+ M5 GRANDPARENT overlap per twin pair: reduced parent sets par(6m-1) =
+    primes>=5 of (6m-2) u (6m), par(6m+1) = primes>=5 of (6m) u (6m+2); the
+    SHARED parent set is EXACTLY primes(c) >= 5 (MECHANICAL -- the L35
+    object; gcd of the outer sides and c is a power of 2 -- reported as
+    frame only, never contrasted).  Registered NON-frame observable: the
+    overlap of the GRANDparent layers via the EXCLUSIVE parents only:
+    G_L = union of upar(r) over r in par(6m-1) minus shared (= primes>=5 of
+    3m-1), G_R likewise (primes>=5 of 3m+1); OV = |G_L intersect G_R|,
+    share OV > 0, Jaccard on nonempty unions.  Control: the pairs
+    (6*isoL[i]-1, 6*isoR[i]+1) (bin-matched by construction), same formula.
+    Descriptive z on OV and on the share.
+
+SELFTESTS (all STOP: any failure exits 1)
+ SM1 Morrison memo vs brute recursion over an independent trial-division
+     factorizer: depth_M AND nodes_M, ALL primes < 1e4.
+ SM2 union-DAG meet distance: the capped-BFS implementation vs a brute
+     full-ancestor-map path search over an independent trial-division
+     adjacency, ALL pairs of primes 5 <= u < v < 1e3.
+ SM3 population gate: the cached P1 twin census MUST have n = 280557 at 1e7
+     (the L35 census re-assert; the S6 omega-contrast gate is NOT re-run --
+     registered as untouched).
+STOP also on: any incomplete factorization; any value outside the SPF range.
+STAGE-MORRISON REGISTRATION ENDS -- measurements begin below this line.
+
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  pratt memo: loaded cache (C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad)
+  morrison memo: depth_M/nodes_M for 3618045 primes <= 61000000 built in 4.1s
+SM1 Morrison depth_M+nodes_M memo vs brute-force recursion (independent trial division), ALL primes < 1e4 -> PASS
+SM2 union-DAG meet distance: capped BFS vs brute full-ancestor path search, ALL 13695 pairs of primes in [5, 1e3) -> PASS
+SM3 twin census re-assert at 1e7: n_twin = 280557 == 280557 (L35 gate untouched; S6 stands earlier in this log) -> PASS
+
+-- M1: Morrison depth_M/nodes_M/breadth_M per population (EXACT-MEASURED navigation) --
+  P4.adj: 346502 prime wings adjacent to 1122228 random non-twin centers (type L 173399 / type R 173103; mixed-type control, disclosed)
+  P1.L   n= 280557 depth_M 5.0661+-1.048 (max 11) | nodes_M 23.96+-4.63 (max 42) | breadth_M 4.3852+-0.896  [0.3s] [MECHANICAL-c: p+1 = own center 6m]
+        depth_M hist %%: 2:0.029 3:3.378 4:28.046 5:38.018 6:21.721 7:6.969 8:1.553 9:0.251 10:0.035 11:0.001
+        max-depth_M witness p=38913317 chain 38913317->720617->120103->15013->7507->1877->313->157->79->5->3->2
+  P1.R   n= 280557 depth_M 5.2800+-1.066 (max 12) | nodes_M 24.30+-4.63 (max 42) | breadth_M 3.4920+-0.936  [0.2s] [new data: q+1 = 2(3m+1)]
+        depth_M hist %%: 1:0.001 2:0.008 3:1.616 4:22.065 5:38.655 6:25.397 7:9.427 8:2.320 9:0.451 10:0.053 11:0.006 12:0.001
+        max-depth_M witness p=18381361 chain 18381361->9190681->4595341->2297671->22093->11047->1381->691->173->29->5->3->2
+  P2.L   n= 280557 depth_M 5.1185+-1.046 (max 11) | nodes_M 23.89+-4.64 (max 40) | breadth_M 4.2329+-0.863  [0.2s] [MECHANICAL-c: p+1 = own center 6k]
+        depth_M hist %%: 2:0.030 3:2.790 4:26.392 5:38.691 6:22.618 7:7.478 8:1.706 9:0.268 10:0.026 11:0.003
+        max-depth_M witness p=15133883 chain 15133883->1261157->210193->105097->7507->1877->313->157->79->5->3->2
+  P2.R   n= 280557 depth_M 5.3229+-1.061 (max 11) | nodes_M 24.24+-4.64 (max 42) | breadth_M 3.3365+-0.905  [0.2s] [new data]
+        depth_M hist %%: 1:0.001 2:0.005 3:1.321 4:20.587 5:38.987 6:26.282 7:9.815 8:2.460 9:0.470 10:0.064 11:0.008
+        max-depth_M witness p=8124481 chain 8124481->4062241->2031121->1015561->507781->23081->3847->37->19->5->3->2
+  P4.adj n= 346502 depth_M 5.2365+-1.057 (max 11) | nodes_M 24.23+-4.60 (max 42) | breadth_M 3.7927+-0.993  [0.3s] [mixed L/R]
+        depth_M hist %%: 2:0.013 3:1.886 4:23.061 5:38.915 6:24.781 7:8.793 8:2.110 9:0.388 10:0.048 11:0.005
+        max-depth_M witness p=10617601 chain 10617601->5308801->2654401->1327201->663601->331801->165901->7541->419->5->3->2
+
+-- M1 twin-vs-isolated contrasts (DESCRIPTIVE; the L cell is MECHANICAL-c) --
+  P1.L-P2.L dep  delta -0.052335  z  -18.72  (MECHANICAL-c cell)
+  P1.L-P2.L nod  delta +0.064999  z   +5.25  (MECHANICAL-c cell)
+  P1.L-P2.L bre  delta +0.152318  z  +64.85  (MECHANICAL-c cell)
+  P1.R-P2.R dep  delta -0.042918  z  -15.12  (new-data cell)
+  P1.R-P2.R nod  delta +0.056067  z   +4.53  (new-data cell)
+  P1.R-P2.R bre  delta +0.155430  z  +63.25  (new-data cell)
+
+-- Morrison DAG summary (ALL primes <= 61000000; the O4 protocol mirrored) --
+  primes: 3618045; depth_M histogram: {0: 1, 1: 7, 2: 463, 3: 72129, 4: 846093, 5: 1404557, 6: 889339, 7: 314338, 8: 75653, 9: 13563, 10: 1734, 11: 158, 12: 10}
+  max depth_M = 12 at p = 18381361; chain 18381361->9190681->4595341->2297671->22093->11047->1381->691->173->29->5->3->2
+  decade [1e+04, 1e+05): mean depth_M 4.3341  mean nodes_M 15.45  (n=8363)
+  decade [1e+05, 1e+06): mean depth_M 4.7130  mean nodes_M 18.74  (n=68906)
+  decade [1e+06, 1e+07): mean depth_M 5.0399  mean nodes_M 22.06  (n=586081)
+  decade [1e+07, 6e+07): mean depth_M 5.2778  mean nodes_M 24.81  (n=2953466)
+
+-- M2: joint (depth_P, depth_M) per population --
+  P1.L   corr(depth_P, depth_M) = -0.00468 | E[depth_M|depth_P=k]: P=3:5.0430(n=5704) P=4:5.0695(n=62306) P=5:5.0721(n=107261) P=6:5.0646(n=70334) P=7:5.0526(n=26498) P=8:5.0421(n=6871) [MECHANICAL-c: p+1 = own center 6m]
+  P1.R   corr(depth_P, depth_M) = -0.00594 | E[depth_M|depth_P=k]: P=3:5.2711(n=11380) P=4:5.2863(n=77931) P=5:5.2860(n=105855) P=6:5.2744(n=59762) P=7:5.2532(n=19974) P=8:5.2581(n=4619) [new data: q+1 = 2(3m+1)]
+  P2.L   corr(depth_P, depth_M) = -0.00489 | E[depth_M|depth_P=k]: P=3:5.0916(n=4550) P=4:5.1207(n=58301) P=5:5.1242(n=107948) P=6:5.1178(n=73090) P=7:5.1108(n=27737) P=8:5.0891(n=7247) [MECHANICAL-c: p+1 = own center 6k]
+  P2.R   corr(depth_P, depth_M) = -0.00473 | E[depth_M|depth_P=k]: P=3:5.2927(n=9302) P=4:5.3305(n=74003) P=5:5.3293(n=107234) P=6:5.3178(n=62634) P=7:5.3015(n=21411) P=8:5.2869(n=4932) [new data]
+  P4.adj corr(depth_P, depth_M) = -0.01332 | E[depth_M|depth_P=k]: P=3:5.2519(n=8151) P=4:5.2540(n=80257) P=5:5.2384(n=133258) P=6:5.2288(n=84597) P=7:5.2173(n=30830) P=8:5.1841(n=7670) [mixed L/R]
+  P1.L-P2.L corr contrast +0.00021  Fisher z   +0.08 (DESCRIPTIVE; MECHANICAL-c cell)
+  P1.R-P2.R corr contrast -0.00122  Fisher z   -0.46 (DESCRIPTIVE; new-data cell)
+  Morrison mirror of the L62 Pratt depth deficit: see the M1 depth_M contrasts above -- the L cell is c's anatomy (mechanical), the R cell is the genuine mirror.
+
+-- M3: union-DAG inter-pair meet distances (reduced DAG, r >= 5; dcap 4/side, budget 20000/side) --
+  twin-pair-pairs  n=10000 | dist hist {2: 6033, 3: 3646, 4: 316, 5: 5} | no-meet(<=8) 0 (0.0000) | mean(finite) 2.4293+-0.558 | budget hits 0  [0.2s]
+  control (P2)     n=10000 | dist hist {2: 3939, 3: 5192, 4: 849, 5: 20} | no-meet(<=8) 0 (0.0000) | mean(finite) 2.6950+-0.628 | budget hits 0  [0.2s]
+  DESCRIPTIVE contrast twin-vs-control: mean finite dist delta -0.26570  z -31.64 | no-meet share delta +0.00000  z   +nan
+    dist=2 share: twin 0.6033  control 0.3939  delta +0.2094  z +30.29
+    dist=3 share: twin 0.3646  control 0.5192  delta -0.1546  z -22.28
+    dist=4 share: twin 0.0316  control 0.0849  delta -0.0533  z -16.20
+    dist=5 share: twin 0.0005  control 0.0020  delta -0.0015  z  -3.00
+    dist=6 share: twin 0.0000  control 0.0000  delta +0.0000  z   +nan
+    dist=7 share: twin 0.0000  control 0.0000  delta +0.0000  z   +nan
+    dist=8 share: twin 0.0000  control 0.0000  delta +0.0000  z   +nan
+
+-- M4: connectivity of wings <= 1e6 (adjacency = shared reduced parent r >= 5) --
+  twin pairs with wings <= 1e6: 8168 (16336 wings)
+  twin wings      wings  16336 | components     5 | largest  16332 (0.9998) | singletons     4 | shared-parent classes 6131
+  MECHANICAL same-pair adjacency (m not 3-smooth): 8155 of 8168 pairs (0.9984) -- disclosed, not a contrast
+  isolated P2 wings <= 1e6: 16416 (bin-matched; count difference disclosed)
+  isolated wings  wings  16416 | components   199 | largest  16209 (0.9874) | singletons   190 | shared-parent classes 7673
+
+-- M5: grandparent overlap per pair (exclusive parents only; shared parents = FRAME) --
+  twin pairs     n=280557 | OV mean 1.05755+-0.882 | share OV>0 0.71054 | Jaccard 0.14074 (on 280551) | FRAME mean|shared| 2.3852 | mean|exL| 2.4944 mean|exR| 2.4920  [2.0s]
+  control pairs  n=280557 | OV mean 2.21956+-1.086 | share OV>0 0.96136 | Jaccard 0.17546 (on 280557) | FRAME mean|shared| 0.4565 | mean|exL| 4.1149 mean|exR| 4.1149  [2.3s]
+  DESCRIPTIVE contrast twin-vs-control: OV delta -1.16201  z -439.91 | share OV>0 delta -0.25082  z -269.61
+  DISCLOSURE: twin exclusive parents are exactly primes>=5 of 3m-1 / 3m+1; the shared channel (primes of c) is the L35 object and is excluded by construction.
+  factorization completeness: 0 incomplete of 0 calls (target 0)
+[morrison done in 11.2s]

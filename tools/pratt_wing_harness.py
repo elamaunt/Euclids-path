@@ -34,6 +34,12 @@ Stages (argv modes; every stage APPENDS to tools/pratt_wing_run1.log):
              collision law at B=7 (period 35) and B=13 (period 5005), asserted
              byte-equal to the Lean kernel constants of
              EuclidsPath/Engine/Step00SideCollision.lean; STOP on any mismatch.
+  morrison   stage B (the p+1 genealogy): Morrison DAG depth_M/nodes_M/breadth_M
+             memoized over ALL primes <= 6.1e7 (mirror of O4, ledger L62), the
+             joint (depth_P, depth_M) object, and reduced union-DAG navigation
+             (inter-pair meet distances, twin-wing connectivity <= 1e6,
+             grandparent overlap); its own STAGE-MORRISON registration block
+             precedes any measurement line; SM1-SM3 STOP selftests.
 
 Reuse lineage: factorization tiers follow tools/grave_depth_harness.py (SPF /
 numpy trial division / Brent rho + deterministic MR); the registration/staged-log
@@ -1941,11 +1947,678 @@ STAGE-A REGISTRATION ENDS -- measurements begin below this line.
     sys.stdout.flush()
 
 
+# ================================================================== stage: morrison
+
+_DEPTH_M = None    # int8 over [0, SPF_LIM]: Morrison depth at prime indices
+_NODES_M = None    # int32: Morrison tree node count at prime indices
+_UPAR = {}         # reduced union-DAG parent memo (bounded: primes < 1e6 only)
+_UPAR_MEMO_LIM = 10 ** 6
+
+
+def setup_morrison():
+    """Memoize Morrison (p+1) depth/nodes for ALL primes <= SPF_LIM.
+    REGISTERED CONVENTION: depth_M(2) = 0, nodes_M(2) = 1 -- the 2 <-> 3 base
+    cycle (2+1 = 3; 3+1 = 4 = 2^2) is cut at the root 2, mirroring Pratt's
+    depth(2) = 0.  For every odd prime p: depth_M(p) = 1 + max depth_M(r) and
+    nodes_M(p) = 1 + sum nodes_M(r) over distinct primes r | p+1 (tree
+    semantics, DAG-memoized); breadth_M(p) = omega(p+1).  Well-founded
+    ascending walk: every prime r | p+1 has r <= (p+1)/2 < p for odd p."""
+    global _DEPTH_M, _NODES_M
+    if _DEPTH_M is not None:
+        return
+    setup_tables()
+    dpath = os.path.join(SCRATCH, "pratt_wing_mdepth.npy")
+    npath = os.path.join(SCRATCH, "pratt_wing_mnodes.npy")
+    if os.path.exists(dpath) and os.path.exists(npath):
+        _DEPTH_M = np.load(dpath)
+        _NODES_M = np.load(npath)
+        assert _DEPTH_M.size == SPF_LIM + 1 and _NODES_M.size == SPF_LIM + 1
+        print("  morrison memo: loaded cache (%s)" % SCRATCH)
+        sys.stdout.flush()
+        return
+    t0 = time.time()
+    depth = np.zeros(SPF_LIM + 1, dtype=np.int8)
+    nodes = np.zeros(SPF_LIM + 1, dtype=np.int32)
+    depth[2] = 0
+    nodes[2] = 1
+    spf = _SPF
+    primes = np.flatnonzero(spf[2:] == 0) + 2
+    for p in primes[1:].tolist():                    # ascending; factors of p+1 < p
+        x = p + 1
+        dmax = 0
+        nsum = 1
+        while x > 1:
+            q = int(spf[x])
+            if q == 0:
+                q = x
+            d = depth[q]
+            if d > dmax:
+                dmax = d
+            nsum += nodes[q]
+            while x % q == 0:
+                x //= q
+        depth[p] = dmax + 1
+        nodes[p] = nsum
+    _DEPTH_M = depth
+    _NODES_M = nodes
+    try:
+        np.save(dpath, depth)
+        np.save(npath, nodes)
+    except OSError:
+        pass
+    print("  morrison memo: depth_M/nodes_M for %d primes <= %d built in %.1fs"
+          % (primes.size, SPF_LIM, time.time() - t0))
+    sys.stdout.flush()
+
+
+def deep_chain_m(p):
+    """Witness chain p -> r -> ... -> 2 following a max-depth_M parent of p+1."""
+    chain = [p]
+    while p != 2:
+        want = int(_DEPTH_M[p]) - 1
+        nxt = None
+        for q, _ in fac_pairs_spf(p + 1):
+            if int(_DEPTH_M[q]) == want and (nxt is None or q > nxt):
+                nxt = q
+        p = nxt
+        chain.append(p)
+    return chain
+
+
+def upar(p):
+    """Reduced union-DAG parents of prime p <= SPF_LIM - 1: distinct primes
+    r >= 5 dividing p-1 OR p+1.  The 2/3 hubs are excluded (frame, disclosed):
+    2 | p-1 and 3 | p-1 or p+1 for EVERY prime p > 3, so they would connect
+    any two primes at distance 2 and carry no navigation."""
+    r = _UPAR.get(p)
+    if r is not None:
+        return r
+    s = set()
+    for q, _ in fac_pairs_spf(p - 1):
+        if q >= 5:
+            s.add(q)
+    for q, _ in fac_pairs_spf(p + 1):
+        if q >= 5:
+            s.add(q)
+    out = tuple(sorted(s))
+    if p < _UPAR_MEMO_LIM:
+        _UPAR[p] = out
+    return out
+
+
+def meet_distance(u, v, dcap=4, budget=20000):
+    """Meet-in-ancestors distance in the reduced union DAG: min(d1 + d2) over
+    common ancestors, downward (parent-ward) BFS per side, depth <= dcap and
+    <= budget expanded nodes per side.  Returns (dist or -1, budget_hit)."""
+    if u == v:
+        return 0, False
+    maps = []
+    hit = False
+    for w in (u, v):
+        dm = {w: 0}
+        frontier = [w]
+        for d in range(1, dcap + 1):
+            nxt = []
+            for x in frontier:
+                for r in upar(x):
+                    if r not in dm:
+                        dm[r] = d
+                        nxt.append(r)
+                if len(dm) > budget:
+                    hit = True
+                    nxt = []
+                    break
+            frontier = nxt
+            if not frontier:
+                break
+        maps.append(dm)
+    du, dv = maps
+    if len(du) > len(dv):
+        du, dv = dv, du
+    best = -1
+    for a, d1 in du.items():
+        d2 = dv.get(a)
+        if d2 is not None:
+            t = d1 + d2
+            if best < 0 or t < best:
+                best = t
+    return best, hit
+
+
+MORRISON_REGISTRATION = """
+STAGE-MORRISON REGISTRATION -- the p+1 genealogy (Morrison DAG, after the p+1
+primality test; the mirror of the O4 Pratt p-1 campaign, ledger L62) plus the
+joint (depth_P, depth_M) object and reduced union-DAG navigation.  Registered
+BEFORE any measurement line below.  Seed 20260710 (numpy default_rng;
+substreams [SEED,12] = twin pair-of-pairs sample, [SEED,13] = control pair
+sample).  STAGE_TIME_CAP = 5400 s; registered fallback: if the stage threatens
+the cap, HALVE the remaining per-block workload and LOG the shrink -- never
+silently.  Log append-only, ASCII.  Populations are the CACHED P1/P2/P4 of
+this campaign (build_pop7); the L35 gates of this log are NOT re-run
+(untouched; S6 stands earlier in this log); the twin census is re-asserted
+(SM3).
+
+NULL DESIGN -- decision (b), VERBATIM:
+prime-conditioned population; no parity verdict is defined here; deviations from reference curves are navigation, not laws
+All observables below are EXACT-MEASURED navigation; NO parity verdicts are
+issuable; every z is DESCRIPTIVE.
+
+MORRISON CONVENTION (registered): depth_M(2) = 0, nodes_M(2) = 1 -- the 2 <-> 3
+base cycle (2+1 = 3; 3+1 = 4 = 2^2) is cut at the root 2, mirroring Pratt's
+depth(2) = 0; for every odd prime p, depth_M(p) = 1 + max over distinct primes
+r | p+1 of depth_M(r), nodes_M(p) = 1 + sum nodes_M(r) (tree semantics,
+DAG-memoized), breadth_M(p) = omega(p+1).  Well-founded: r <= (p+1)/2 < p for
+odd p; memoized over ALL primes <= 6.1e7 via the same SPF sieve as O4.
+
+REDUCED UNION DAG (registered restriction for M3-M5): edges = Pratt parents
+(distinct primes of p-1) UNION Morrison parents (distinct primes of p+1),
+RESTRICTED to parents r >= 5.  Forced: 2 | p-1 and 3 | p-1 or p+1 for EVERY
+prime p > 3, so the 2/3 hubs connect any two primes at distance 2 and carry
+no navigation; their exclusion is frame, disclosed.
+
+OBSERVABLES (CLOSED LIST -- nothing may be added after this block)
+ M1 depth_M / nodes_M / breadth_M distributions per population P1.L, P1.R,
+    P2.L, P2.R, P4.adj (P4.adj = the prime wings adjacent to the P4 random
+    non-twin centers: whichever of 6m+-1 is prime -- at most one each, since
+    P4 excludes twins; mixed L/R, split disclosed); twin-vs-isolated
+    contrasts per wing type, the O4 protocol mirrored (descriptive z); PLUS
+    the Morrison DAG summary over ALL primes <= 6.1e7 (depth_M histogram,
+    max-depth witness chain, decade means).  MECHANICAL-c DISCLOSURE: for a
+    LEFT wing p = 6m-1, p+1 = 6m = c, so depth_M/breadth_M of EVERY left
+    wing (twin OR isolated) is the anatomy of ITS OWN center -- the L-side
+    contrast is a twin-center-vs-isolated-center anatomy contrast
+    (L35-adjacent, labeled MECHANICAL-c).  The R side (q+1 = 6m+2 = 2(3m+1))
+    is genuinely new data.
+ M2 the JOINT object: per prime the pair (depth_P, depth_M); Pearson
+    correlation per population; conditional means E[depth_M | depth_P = k],
+    k = 3..8; twin-vs-isolated correlation contrast per wing type (Fisher z,
+    descriptive).  Question on record: does the L62 Pratt depth deficit of
+    twin wings (z ~ -17) have a Morrison mirror, and on which side is it
+    mechanical (see the M1 disclosure)?
+ M3 union-DAG inter-pair navigation: meet-in-ancestors distance dist(u, v) =
+    min(d1 + d2) over common ancestors in the reduced union DAG, downward
+    BFS per side, depth cap 4 per side (paths <= 8), budget 20000 expanded
+    nodes per side (budget hits counted and disclosed; no meet within the
+    caps = the >8 bucket; dist 1 means one wing is an ancestor of the
+    other).  Sample: 10^4 seeded pairs of DISTINCT twin pairs ([SEED,12]:
+    indices i, j drawn first, redrawn while i = j, then one wing per pair by
+    a coin); control: 10^4 seeded pairs of isolated P2 primes ([SEED,13]:
+    per side a coin picks the type, L -> a uniform P2.L member's wing, R ->
+    P2.R, the pair redrawn if the two primes coincide).  Distance
+    distributions twin-pair-pairs vs control, descriptive contrasts.
+ M4 twin-subgraph connectivity: all twin wings <= 1e6 (both wings of pairs
+    with 6m+1 <= 1e6), adjacency = sharing at least one reduced-union-DAG
+    parent; union-find; component count / largest / singleton count.
+    Same-pair wings share EXACTLY primes(6m) >= 5 (MECHANICAL: the two
+    wings of one pair are adjacent iff m is not 3-smooth; disclosed and
+    counted).  Control: the isolated P2 wings <= 1e6 under the same
+    adjacency (bin-matched by construction; counts disclosed).
+ M5 GRANDPARENT overlap per twin pair: reduced parent sets par(6m-1) =
+    primes>=5 of (6m-2) u (6m), par(6m+1) = primes>=5 of (6m) u (6m+2); the
+    SHARED parent set is EXACTLY primes(c) >= 5 (MECHANICAL -- the L35
+    object; gcd of the outer sides and c is a power of 2 -- reported as
+    frame only, never contrasted).  Registered NON-frame observable: the
+    overlap of the GRANDparent layers via the EXCLUSIVE parents only:
+    G_L = union of upar(r) over r in par(6m-1) minus shared (= primes>=5 of
+    3m-1), G_R likewise (primes>=5 of 3m+1); OV = |G_L intersect G_R|,
+    share OV > 0, Jaccard on nonempty unions.  Control: the pairs
+    (6*isoL[i]-1, 6*isoR[i]+1) (bin-matched by construction), same formula.
+    Descriptive z on OV and on the share.
+
+SELFTESTS (all STOP: any failure exits 1)
+ SM1 Morrison memo vs brute recursion over an independent trial-division
+     factorizer: depth_M AND nodes_M, ALL primes < 1e4.
+ SM2 union-DAG meet distance: the capped-BFS implementation vs a brute
+     full-ancestor-map path search over an independent trial-division
+     adjacency, ALL pairs of primes 5 <= u < v < 1e3.
+ SM3 population gate: the cached P1 twin census MUST have n = 280557 at 1e7
+     (the L35 census re-assert; the S6 omega-contrast gate is NOT re-run --
+     registered as untouched).
+STOP also on: any incomplete factorization; any value outside the SPF range.
+STAGE-MORRISON REGISTRATION ENDS -- measurements begin below this line.
+"""
+
+
+def stage_morrison():
+    assert_registered()
+    banner("MORRISON", "stage B: the p+1 genealogy (Morrison DAG) + joint/union"
+                       " navigation (m <= 1e7)")
+    print(MORRISON_REGISTRATION)
+    sys.stdout.flush()
+    clock = StageClock()
+    setup_tables()
+    setup_pratt()
+    setup_morrison()
+    twins, isoL, isoR, p4 = build_pop7()
+
+    # ---- SM1: Morrison memo vs brute recursion (independent trial division)
+    def td_pairs(x):
+        out = []
+        d = 2
+        while d * d <= x:
+            if x % d == 0:
+                e = 0
+                while x % d == 0:
+                    x //= d
+                    e += 1
+                out.append((d, e))
+            d += 1
+        if x > 1:
+            out.append((x, 1))
+        return out
+
+    def morrison_brute(p, memo):
+        if p == 2:
+            return 0, 1
+        r = memo.get(p)
+        if r is not None:
+            return r
+        d = 0
+        n = 1
+        for q, _ in td_pairs(p + 1):
+            dq, nq = morrison_brute(q, memo)
+            d = max(d, dq)
+            n += nq
+        memo[p] = (d + 1, n)
+        return memo[p]
+
+    memo = {}
+    for p in primes_upto(10 ** 4):
+        bd, bn = morrison_brute(p, memo)
+        if bd != int(_DEPTH_M[p]) or bn != int(_NODES_M[p]):
+            STOP("SM1: Morrison memo mismatch at p=%d: (%d,%d) vs brute (%d,%d)"
+                 % (p, int(_DEPTH_M[p]), int(_NODES_M[p]), bd, bn))
+    print("SM1 Morrison depth_M+nodes_M memo vs brute-force recursion"
+          " (independent trial division), ALL primes < 1e4 -> PASS")
+    sys.stdout.flush()
+
+    # ---- SM2: capped-BFS meet distance vs brute full-ancestor path search
+    def td_upar(p):
+        s = set()
+        for q, _ in td_pairs(p - 1):
+            if q >= 5:
+                s.add(q)
+        for q, _ in td_pairs(p + 1):
+            if q >= 5:
+                s.add(q)
+        return sorted(s)
+
+    sp3 = [p for p in primes_upto(10 ** 3 - 1) if p >= 5]
+    amaps = {}
+    for p in sp3:
+        dm = {p: 0}
+        level = [p]
+        d = 0
+        while level:
+            d += 1
+            nl = []
+            for x in level:
+                for r in td_upar(x):
+                    if r not in dm:
+                        dm[r] = d
+                        nl.append(r)
+            level = nl
+        amaps[p] = dm
+    n2 = 0
+    for i in range(len(sp3)):
+        for j in range(i + 1, len(sp3)):
+            u, v = sp3[i], sp3[j]
+            du, dv = amaps[u], amaps[v]
+            best = -1
+            for a, d1 in du.items():
+                if d1 > 4:
+                    continue
+                d2 = dv.get(a)
+                if d2 is not None and d2 <= 4:
+                    t = d1 + d2
+                    if best < 0 or t < best:
+                        best = t
+            got, hit = meet_distance(u, v)
+            if hit or got != best:
+                STOP("SM2: meet-distance mismatch at (%d, %d): BFS %d (hit=%s)"
+                     " vs brute %d" % (u, v, got, hit, best))
+            n2 += 1
+    print("SM2 union-DAG meet distance: capped BFS vs brute full-ancestor path"
+          " search, ALL %d pairs of primes in [5, 1e3) -> PASS" % n2)
+    sys.stdout.flush()
+
+    # ---- SM3: L35 twin census re-assert (the gate itself is untouched)
+    if twins.size != N_TWIN_7:
+        STOP("SM3: twin census re-assert failed: %d != %d"
+             % (twins.size, N_TWIN_7))
+    print("SM3 twin census re-assert at 1e7: n_twin = %d == %d (L35 gate"
+          " untouched; S6 stands earlier in this log) -> PASS"
+          % (twins.size, N_TWIN_7))
+    sys.stdout.flush()
+
+    # ---- M1: Morrison depth/nodes/breadth per population + DAG summary
+    print("\n-- M1: Morrison depth_M/nodes_M/breadth_M per population"
+          " (EXACT-MEASURED navigation) --")
+    isp = prime_sieve(N_BIG)
+    adjL = p4[isp[6 * p4 - 1]]
+    adjR = p4[isp[6 * p4 + 1]]
+    p4adj = np.sort(np.concatenate([6 * adjL - 1, 6 * adjR + 1]))
+    print("  P4.adj: %d prime wings adjacent to %d random non-twin centers"
+          " (type L %d / type R %d; mixed-type control, disclosed)"
+          % (p4adj.size, p4.size, adjL.size, adjR.size))
+    plan = [("P1.L", 6 * twins - 1, " [MECHANICAL-c: p+1 = own center 6m]"),
+            ("P1.R", 6 * twins + 1, " [new data: q+1 = 2(3m+1)]"),
+            ("P2.L", 6 * isoL - 1, " [MECHANICAL-c: p+1 = own center 6k]"),
+            ("P2.R", 6 * isoR + 1, " [new data]"),
+            ("P4.adj", p4adj, " [mixed L/R]")]
+    res = {}
+    for name, ps, tag in plan:
+        f = clock.factor()
+        ps = ps[::f]
+        if f > 1:
+            print("  (halved %s to n=%d)" % (name, ps.size))
+        dep = _DEPTH_M[ps].astype(np.int64)
+        nod = _NODES_M[ps].astype(np.int64)
+        t0 = time.time()
+        bre = np.empty(ps.size, np.int16)
+        for i, p in enumerate(ps.tolist()):
+            bre[i] = len(fac_pairs_spf(p + 1))
+        hist = np.bincount(dep, minlength=14).astype(np.float64)
+        hist /= hist.sum()
+        imax = int(np.argmax(dep))
+        pmax = int(ps[imax])
+        res[name] = dict(n=int(ps.size), dep=float(dep.mean()),
+                         dep_sd=float(dep.std()), nod=float(nod.mean()),
+                         nod_sd=float(nod.std()), bre=float(bre.mean()),
+                         bre_sd=float(bre.std()), dmax=int(dep.max()),
+                         hist=[float(h) for h in hist])
+        print("  %-6s n=%7d depth_M %.4f+-%.3f (max %d) | nodes_M %.2f+-%.2f"
+              " (max %d) | breadth_M %.4f+-%.3f  [%.1fs]%s"
+              % (name, ps.size, dep.mean(), dep.std(), dep.max(), nod.mean(),
+                 nod.std(), nod.max(), bre.mean(), bre.std(),
+                 time.time() - t0, tag))
+        print("        depth_M hist %%: " + " ".join(
+            "%d:%.3f" % (k, 100 * hist[k]) for k in range(len(hist)) if hist[k] > 0))
+        print("        max-depth_M witness p=%d chain %s"
+              % (pmax, "->".join(str(c) for c in deep_chain_m(pmax))))
+        sys.stdout.flush()
+    print("\n-- M1 twin-vs-isolated contrasts (DESCRIPTIVE; the L cell is"
+          " MECHANICAL-c) --")
+    for t in ("L", "R"):
+        a, b = res["P1.%s" % t], res["P2.%s" % t]
+        lab = "MECHANICAL-c cell" if t == "L" else "new-data cell"
+        for k in ("dep", "nod", "bre"):
+            z = welch_z(a[k], a[k + "_sd"], a["n"], b[k], b[k + "_sd"], b["n"])
+            print("  P1.%s-P2.%s %-4s delta %+9.6f  z %+7.2f  (%s)"
+                  % (t, t, k, a[k] - b[k], z, lab))
+    print("\n-- Morrison DAG summary (ALL primes <= %d; the O4 protocol"
+          " mirrored) --" % SPF_LIM)
+    primes_all = np.flatnonzero(_SPF[2:] == 0) + 2
+    dall = _DEPTH_M[primes_all].astype(np.int64)
+    h = np.bincount(dall)
+    print("  primes: %d; depth_M histogram: %s"
+          % (primes_all.size, {int(k): int(v) for k, v in enumerate(h) if v}))
+    gmax = int(dall.max())
+    wit = int(primes_all[int(np.argmax(dall == gmax))])
+    print("  max depth_M = %d at p = %d; chain %s"
+          % (gmax, wit, "->".join(str(c) for c in deep_chain_m(wit))))
+    for lo, hi in ((10 ** 4, 10 ** 5), (10 ** 5, 10 ** 6), (10 ** 6, 10 ** 7),
+                   (10 ** 7, SPF_LIM)):
+        sel = (primes_all >= lo) & (primes_all < hi)
+        print("  decade [%.0e, %.0e): mean depth_M %.4f  mean nodes_M %.2f  (n=%d)"
+              % (lo, hi, float(dall[sel].mean()),
+                 float(_NODES_M[primes_all[sel]].mean()), int(sel.sum())))
+    sys.stdout.flush()
+
+    # ---- M2: the joint (depth_P, depth_M) object
+    print("\n-- M2: joint (depth_P, depth_M) per population --")
+    joint = {}
+    for name, ps, tag in plan:
+        ps = ps[::clock.factor()]
+        dp = _DEPTH[ps].astype(np.float64)
+        dm = _DEPTH_M[ps].astype(np.float64)
+        r = float(np.corrcoef(dp, dm)[0, 1])
+        joint[name] = dict(n=int(ps.size), corr=r)
+        cond = []
+        for k in range(3, 9):
+            sel = dp == k
+            cond.append("P=%d:%.4f(n=%d)" % (k, float(dm[sel].mean())
+                                             if sel.any() else float('nan'),
+                                             int(sel.sum())))
+        print("  %-6s corr(depth_P, depth_M) = %+.5f | E[depth_M|depth_P=k]:"
+              " %s%s" % (name, r, " ".join(cond), tag))
+    for t in ("L", "R"):
+        a, b = joint["P1.%s" % t], joint["P2.%s" % t]
+        z = (math.atanh(a["corr"]) - math.atanh(b["corr"])) / math.sqrt(
+            1.0 / (a["n"] - 3) + 1.0 / (b["n"] - 3))
+        print("  P1.%s-P2.%s corr contrast %+.5f  Fisher z %+7.2f (DESCRIPTIVE%s)"
+              % (t, t, a["corr"] - b["corr"], z,
+                 "; MECHANICAL-c cell" if t == "L" else "; new-data cell"))
+    print("  Morrison mirror of the L62 Pratt depth deficit: see the M1 depth_M"
+          " contrasts above -- the L cell is c's anatomy (mechanical), the R"
+          " cell is the genuine mirror.")
+    sys.stdout.flush()
+
+    # ---- M3: union-DAG inter-pair meet distances
+    print("\n-- M3: union-DAG inter-pair meet distances (reduced DAG, r >= 5;"
+          " dcap 4/side, budget 20000/side) --")
+    NP = 10 ** 4
+    f = clock.factor()
+    NP //= f
+    if f > 1:
+        print("  (halved the M3 sample to %d pairs)" % NP)
+    rngT = np.random.default_rng([SEED, 12])
+    twin_pairs = []
+    while len(twin_pairs) < NP:
+        i = int(rngT.integers(0, twins.size))
+        j = int(rngT.integers(0, twins.size))
+        if i == j:
+            continue
+        cu = int(rngT.integers(0, 2))
+        cv = int(rngT.integers(0, 2))
+        u = int(6 * twins[i] - 1) if cu == 0 else int(6 * twins[i] + 1)
+        v = int(6 * twins[j] - 1) if cv == 0 else int(6 * twins[j] + 1)
+        twin_pairs.append((u, v))
+    rngC = np.random.default_rng([SEED, 13])
+    ctrl_pairs = []
+    while len(ctrl_pairs) < NP:
+        cu = int(rngC.integers(0, 2))
+        cv = int(rngC.integers(0, 2))
+        u = (int(6 * isoL[int(rngC.integers(0, isoL.size))] - 1) if cu == 0
+             else int(6 * isoR[int(rngC.integers(0, isoR.size))] + 1))
+        v = (int(6 * isoL[int(rngC.integers(0, isoL.size))] - 1) if cv == 0
+             else int(6 * isoR[int(rngC.integers(0, isoR.size))] + 1))
+        if u == v:
+            continue
+        ctrl_pairs.append((u, v))
+
+    def dist_block(tag, pairs):
+        t0 = time.time()
+        ds = np.empty(len(pairs), np.int8)
+        k = 0
+        hits = 0
+        idx = 0
+        step = 1
+        while idx < len(pairs):
+            u, v = pairs[idx]
+            d, hh = meet_distance(u, v)
+            ds[k] = d
+            k += 1
+            hits += int(hh)
+            idx += step
+            if k % 1000 == 0 and clock.factor() > step:
+                step = 2
+                print("  (halving the remaining %s sample at k=%d)" % (tag, k))
+        ds = ds[:k]
+        fin = ds[ds >= 0].astype(np.float64)
+        hist = {int(d): int((ds == d).sum()) for d in range(1, 9)
+                if int((ds == d).sum())}
+        print("  %-16s n=%5d | dist hist %s | no-meet(<=8) %d (%.4f) |"
+              " mean(finite) %.4f+-%.3f | budget hits %d  [%.1fs]"
+              % (tag, k, hist, int((ds < 0).sum()), float((ds < 0).mean()),
+                 fin.mean() if fin.size else float('nan'),
+                 fin.std() if fin.size else float('nan'), hits,
+                 time.time() - t0))
+        sys.stdout.flush()
+        return ds
+
+    dsT = dist_block("twin-pair-pairs", twin_pairs)
+    dsC = dist_block("control (P2)", ctrl_pairs)
+    finT = dsT[dsT >= 0].astype(np.float64)
+    finC = dsC[dsC >= 0].astype(np.float64)
+    zm = welch_z(float(finT.mean()), float(finT.std()), finT.size,
+                 float(finC.mean()), float(finC.std()), finC.size)
+    zn = share_z(float((dsT < 0).mean()), dsT.size,
+                 float((dsC < 0).mean()), dsC.size)
+    print("  DESCRIPTIVE contrast twin-vs-control: mean finite dist delta %+.5f"
+          "  z %+6.2f | no-meet share delta %+.5f  z %+6.2f"
+          % (float(finT.mean()) - float(finC.mean()), zm,
+             float((dsT < 0).mean()) - float((dsC < 0).mean()), zn))
+    for d in range(2, 9):
+        pT = float((dsT == d).mean())
+        pC = float((dsC == d).mean())
+        print("    dist=%d share: twin %.4f  control %.4f  delta %+.4f"
+              "  z %+6.2f" % (d, pT, pC, pT - pC,
+                              share_z(pT, dsT.size, pC, dsC.size)))
+    sys.stdout.flush()
+
+    # ---- M4: twin-subgraph connectivity below 1e6
+    print("\n-- M4: connectivity of wings <= 1e6 (adjacency = shared reduced"
+          " parent r >= 5) --")
+    WLIM = 10 ** 6
+
+    def connectivity(tag, wings):
+        n = len(wings)
+        parent = list(range(n))
+
+        def find(x):
+            root = x
+            while parent[root] != root:
+                root = parent[root]
+            while parent[x] != root:
+                parent[x], x = root, parent[x]
+            return root
+
+        groups = {}
+        for i in range(n):
+            for r in upar(int(wings[i])):
+                g = groups.get(r)
+                if g is None:
+                    groups[r] = i
+                else:
+                    ra, rb = find(g), find(i)
+                    if ra != rb:
+                        parent[rb] = ra
+        from collections import Counter
+        sizes = Counter(find(i) for i in range(n))
+        ncomp = len(sizes)
+        largest = max(sizes.values()) if sizes else 0
+        single = sum(1 for s in sizes.values() if s == 1)
+        print("  %-15s wings %6d | components %5d | largest %6d (%.4f) |"
+              " singletons %5d | shared-parent classes %d"
+              % (tag, n, ncomp, largest, largest / max(n, 1), single,
+                 len(groups)))
+        sys.stdout.flush()
+        return dict(n=n, ncomp=ncomp, largest=largest, single=single)
+
+    tm = twins[6 * twins + 1 <= WLIM]
+    wingsT = np.concatenate([6 * tm - 1, 6 * tm + 1])
+    print("  twin pairs with wings <= 1e6: %d (%d wings)" % (tm.size, wingsT.size))
+    connT = connectivity("twin wings", wingsT)
+    adj_same = 0
+    for m in tm.tolist():
+        x = int(m)
+        while x % 2 == 0:
+            x //= 2
+        while x % 3 == 0:
+            x //= 3
+        adj_same += int(x > 1)
+    print("  MECHANICAL same-pair adjacency (m not 3-smooth): %d of %d pairs"
+          " (%.4f) -- disclosed, not a contrast" % (adj_same, tm.size,
+                                                    adj_same / max(tm.size, 1)))
+    wingsI = np.concatenate([6 * isoL[6 * isoL - 1 <= WLIM] - 1,
+                             6 * isoR[6 * isoR + 1 <= WLIM] + 1])
+    print("  isolated P2 wings <= 1e6: %d (bin-matched; count difference"
+          " disclosed)" % wingsI.size)
+    connI = connectivity("isolated wings", wingsI)
+
+    # ---- M5: grandparent overlap (exclusive parents only)
+    print("\n-- M5: grandparent overlap per pair (exclusive parents only;"
+          " shared parents = FRAME) --")
+    f = clock.factor()
+    if f > 1:
+        print("  (halved the M5 populations)")
+
+    def gp_block(tag, upairs):
+        t0 = time.time()
+        n = len(upairs)
+        ov = np.empty(n, np.int16)
+        sh_sum = 0
+        exl_sum = 0
+        exr_sum = 0
+        jac = 0.0
+        jn = 0
+        for idx, (u, v) in enumerate(upairs):
+            pu = set(upar(u))
+            pv = set(upar(v))
+            S = pu & pv
+            exu = pu - S
+            exv = pv - S
+            gu = set()
+            for r in exu:
+                gu.update(upar(r))
+            gv = set()
+            for r in exv:
+                gv.update(upar(r))
+            inter = len(gu & gv)
+            ov[idx] = inter
+            uni = len(gu) + len(gv) - inter
+            if uni:
+                jac += inter / uni
+                jn += 1
+            sh_sum += len(S)
+            exl_sum += len(exu)
+            exr_sum += len(exv)
+        o = ov.astype(np.float64)
+        print("  %-14s n=%6d | OV mean %.5f+-%.3f | share OV>0 %.5f | Jaccard"
+              " %.5f (on %d) | FRAME mean|shared| %.4f | mean|exL| %.4f"
+              " mean|exR| %.4f  [%.1fs]"
+              % (tag, n, o.mean(), o.std(), float((ov > 0).mean()),
+                 jac / max(jn, 1), jn, sh_sum / n, exl_sum / n, exr_sum / n,
+                 time.time() - t0))
+        sys.stdout.flush()
+        return dict(n=n, ov=float(o.mean()), ov_sd=float(o.std()),
+                    pos=float((ov > 0).mean()), jac=jac / max(jn, 1),
+                    shared=sh_sum / n)
+
+    tw_pairs = [(int(6 * m - 1), int(6 * m + 1)) for m in twins.tolist()[::f]]
+    ct_pairs = [(int(6 * j - 1), int(6 * k + 1))
+                for j, k in zip(isoL.tolist()[::f], isoR.tolist()[::f])]
+    gt = gp_block("twin pairs", tw_pairs)
+    gc = gp_block("control pairs", ct_pairs)
+    zov = welch_z(gt["ov"], gt["ov_sd"], gt["n"], gc["ov"], gc["ov_sd"], gc["n"])
+    zpos = share_z(gt["pos"], gt["n"], gc["pos"], gc["n"])
+    print("  DESCRIPTIVE contrast twin-vs-control: OV delta %+.5f  z %+6.2f |"
+          " share OV>0 delta %+.5f  z %+6.2f" % (gt["ov"] - gc["ov"], zov,
+                                                 gt["pos"] - gc["pos"], zpos))
+    print("  DISCLOSURE: twin exclusive parents are exactly primes>=5 of 3m-1 /"
+          " 3m+1; the shared channel (primes of c) is the L35 object and is"
+          " excluded by construction.")
+    print("  factorization completeness: %d incomplete of %d calls (target 0)"
+          % (FAC_STATS['incomplete'], FAC_STATS['total']))
+    with open(os.path.join(SCRATCH, "pratt_wing_morrison.json"), "w") as f2:
+        json.dump(dict(m1=res, joint=joint,
+                       m3=dict(twin_hist={int(d): int((dsT == d).sum())
+                                          for d in range(-1, 9)},
+                               ctrl_hist={int(d): int((dsC == d).sum())
+                                          for d in range(-1, 9)}),
+                       m4=dict(twin=connT, iso=connI, same_pair_adj=adj_same),
+                       m5=dict(twin=gt, ctrl=gc)), f2)
+    print("[morrison done in %.1fs]" % (time.time() - clock.t0))
+    sys.stdout.flush()
+
+
 # ================================================================== main
 
 STAGES = dict(selftest=stage_selftest, anatomy7=stage_anatomy7, pratt7=stage_pratt7,
               orders7=stage_orders7, quartic7=stage_quartic7, probe9=stage_probe9,
-              defect=stage_defect, summary=stage_summary, sidepgf=stage_sidepgf)
+              defect=stage_defect, summary=stage_summary, sidepgf=stage_sidepgf,
+              morrison=stage_morrison)
 
 
 def main():

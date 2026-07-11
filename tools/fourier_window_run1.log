@@ -1,0 +1,733 @@
+==============================================================================
+FOURIER-WINDOW SPIKE-ANATOMY RUN 1 -- 2026-07-11 11:45:07
+==============================================================================
+harness: tools/fourier_window_harness.py; log: tools/fourier_window_run1.log
+empirical body of EuclidsPath/Engine/Step00StrikeFourier.lean (Parts R+E2b)
+python 3.11.9 | numpy 2.4.4 | seed 20260710
+conventions: clocks A = primes in [5,A]; window (k,k+g]; Clean <=> m mod q
+notin {i6, q-i6}, i6 = 6^{-1} mod q; mainTerm = g*prod(1-2/q) (Fraction);
+windowFluct = cleanCount - mainTerm; engines = nonzero modes (E2b identity).
+==============================================================================
+SELFTESTS (mandatory, before registration; assert-fail = STOP)
+==============================================================================
+ST1 i6 table: pow(6,-1,q) == LEAN_I6[q] and 6*i6 mod q == 1 for all 12
+    clocks 5..43 (spot: i6(41)=7, i6(43)=36) -- PASS
+ST2 Lean anchors: clocks(5)=[5]; cleanCount(5,0,5)=3 (residue & trial &
+    subset routes); mainTerm(5,5)=3 exact; windowFluct=0 -- PASS
+ST3 1000 random windows A=13 g=11 (k < 1e7, seed 20260713): residue scan ==
+    trial-division scan == subset-formula cleanCount (exact int); windowFluct
+    == sum_{S!=empty} term(S) (exact Fraction) on all 1000 -- PASS
+ST3b int64 vs Python-bigint subset sums, A=43 defect window (4096 masks,
+    g=102): EXACT MATCH -- int64 route safe at every scale used -- PASS
+ST4 mode-picture brute force A=7 (all 35 tuples, windows k in {0,12,47},
+    g in {4,5}): sum over nonzero tuples == windowFluct to 1e-9; per-support
+    tuple groups == centered inclusion-exclusion terms to 1e-9; full sum ==
+    cleanCount; defect window (12,16]: engines == -mainTerm(7,4) EXACT -- PASS
+ST5 A=17: full-period scan (P=85,085): 20 defect starts of length g=17;
+    max struck run == g (kernel gap G=18 confirmed); the 6 log-listed
+    starts all found -- PASS
+    all 20 windows re-verified: zero clean centers; endpoints clean
+ST5 A=19: full-period scan (P=1,616,615): 20 defect starts of length g=24;
+    max struck run == g (kernel gap G=25 confirmed); the 6 log-listed
+    starts all found -- PASS
+    all 20 windows re-verified: zero clean centers; endpoints clean
+ST5 A=23: 4 given start(s), g=33: zero clean centers verified;
+    endpoints r and r+34 clean -- PASS
+ST5 A=29: 2 given start(s), g=42: zero clean centers verified;
+    endpoints r and r+43 clean -- PASS
+ST5 A=31: 1 given start(s), g=57: zero clean centers verified;
+    endpoints r and r+58 clean -- PASS
+ST5 A=37: 1 given start(s), g=87: zero clean centers verified;
+    endpoints r and r+88 clean -- PASS
+ST5 A=41: 1 given start(s), g=90: zero clean centers verified;
+    endpoints r and r+91 clean -- PASS
+ST5 A=43: 1 given start(s), g=102: zero clean centers verified;
+    endpoints r and r+103 clean -- PASS
+SELFTESTS ALL PASS (0.4s)
+==============================================================================
+PRE-REGISTRATION BLOCK (logged before ANY measurement; thresholds fixed)
+==============================================================================
+Populations:
+  Defect windows (exact, zero clean centers verified in ST5): window =
+  (r, r+g], g = G(A)-1: A=17 g=17 (20 starts, full-period scan); A=19 g=24
+  (20 starts, scan); A=23 g=33 (4); A=29 g=42 (2); A=31 g=57 (1); A=37 g=87
+  (1); A=41 g=90 (1); A=43 g=102 (1).
+  Controls per scale (anatomy = function of the phase vector (r mod q)_q;
+  controls are phase vectors, CRT-realizable; 200 each, float64 ratios from
+  exact int64 subset sums -- exactness claimed only on defect windows):
+    matched-phase: phases of q in {5,7,11,13} = defect's r mod q (round-robin
+      over the scale's verified starts), phases of q >= 17 uniform;
+      seed = 20260710 + A.
+    typical: all phases uniform; seed = 20260710 + 1000 + A.
+AN1 -- level spectrum: contribution to windowFluct by level |S| = 1..n as
+  EXACT shares of mainTerm on each defect window (sum of shares == -1 exact).
+  Law-mining questions (registered): universal level profile? drift with A?
+  Control profiles reported raw (share of mainTerm) and normalized by
+  |windowFluct| (= share/|F/mainTerm|; windows with |F/mainTerm| <= 1e-9
+  excluded, count logged).
+AN2 -- top subsets: rank by |term(S)|; per-clock marginal = sum of
+  |term(S)| over S containing q, as share of sum_{S!=empty}|term(S)|;
+  smallest-clock-dominance question; defect vs matched vs typical.
+AN3 -- coherence-margin census of windowFluct/mainTerm:
+  cell 1: X=1e6, A=13, g=G(13)=11, EXHAUSTIVE k in [0, 1e6);
+  cell 2: X=1e9, A=31, g=G(31)=58, 1e5 windows, k uniform in [0, 1e9),
+    seed 20260710+31.  Histogram = counts per cleanCount value; minima and
+    their locations (near-defects) logged.
+AN4 -- Farey/exponential-sum layer: S_W(alpha) = sum_{m in W-survivors}
+  e(alpha m) on the H=50 windows of the AN5 cells; survivors = Clean-at-A
+  centers.  Farey grid {j/q: 2 <= q <= 50, gcd(j,q)=1} (773 alphas) + 200
+  random minor-arc alphas (seed 20260710+4; rejection: distance > 1/2500
+  from every grid point and from {0,1}).  Census statistic = mean over the
+  cell's windows of |S_W(alpha)|^2 (raw).  SELFTEST (L34 discipline): at
+  alpha = j/q with q a clock, direct survivor sum == residue-count route
+  (counts exact integers) to 1e-9, AND the two struck residue classes
+  +-i6(q) hold EXACTLY ZERO survivors; checked on the first 20 windows of
+  cells (X=1e6,A=13) and (X=1e9,A=31), all j.
+AN5 -- foil-v2 on the QUADRATIC class (protocol VERBATIM from the registered
+  gate_g3 machinery; precompute_X / foil_row reused from
+  tools/betti_portrait_harness.py; honest prior: BLIND -- the linear layer
+  was, L38; a null closes the quadratic-representation gap = ledger law):
+  grid A in {13,31} x X in {1e6,1e9}; H = 50; NW = 3000 (1e6) / 1000 (1e9);
+  observables per cell: MARGIN = windowFluct/mainTerm of the H=50 window
+  (left-half variant at H=25 for S''), F2A1..F2A5 = |S_W(alpha)|^2 at the
+  top-5 Farey alphas by AN4 census mean in that cell (rank registered as the
+  observable class; alpha logged per cell before its foil rows; selection is
+  load-blind).  Loads: S = lambda-sum over the window's survivors (support
+  overlaps the observable -- disclosed); S'' = observable on left half, load
+  on right-half survivors (self-excluded); So = NA-degenerate for ALL six
+  observables (each reads every survivor; precedent: betti P3|So).
+  200 sigma_W permutations + 200 sigma_I lambda-resamples; seed 20260710.
+  Verdict per (observable, load) over the 4-cell grid:
+    PARITY-SENSITIVE iff min|z_I| >= 5 AND escalation |R(31)| >= |R(13)|/3
+    at both X (cells with |R(13)| <= 1e-9 skipped, betti stage_s4v copy);
+    SOFT iff min|z_I| >= 3; else PARITY-BLIND-UNDER-ESCALATION-v2.
+STOP (registered): after the registered grid -- no new alphas, no new
+  weightings, no threshold moves.  AN1/AN2 anatomy laws are reported as
+  measured laws with exact numbers regardless of foil verdicts.
+==============================================================================
+AN1 + AN2 -- exact spike anatomy of defect windows (support-grouped)
+==============================================================================
+
+A=17  g=17  clocks=5  subsets=32  defect windows=20  mainTerm=405/91 (~4.450549)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 20 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -1732/8415                     -0.0993701723 -0.2058229352 +0.0179441474
+     2   -5869/14025                    -0.5919738562 -0.6750247574 -0.4184670232
+     3   -35672/126225                  -0.2619647455 -0.3036482472 -0.2429550406
+     4   -32464/378675                  -0.0440620585 -0.0857305077 -0.0243058031
+     5   -2792/378675                   -0.0026291675 -0.0073730772 -0.0004436522
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0993701723  +0.0011402258 | -0.1650539133 -0.0227650503
+     2   -0.3906209943  +0.0374726084 | -0.6405939851 +0.2465950359
+     3   -0.1157577870  -0.0237717568 | -0.1788724148 -0.1014579601
+     4   -0.0111278273  -0.0000047138 | -0.0155905363 -0.0207852533
+     5   -0.0000244537  -0.0003548822 | +0.0001108495 -0.0015867723
+    F/mainTerm: matched mean=-0.6169 sd=0.1381 min=-1.0000 | typical mean=+0.0145 sd=0.2677
+  AN2 top-5 subsets of defect window #1 (r=117) by |term(S)| (share of mainTerm):
+    {5,7}            term/mainTerm = -0.20000000   |term|/sum|term| = 0.1607
+    {5,7,11}         term/mainTerm = -0.12592593   |term|/sum|term| = 0.1012
+    {7}              term/mainTerm = -0.09411765   |term|/sum|term| = 0.0756
+    {5,17}           term/mainTerm = -0.09150327   |term|/sum|term| = 0.0735
+    {5,11,13}        term/mainTerm = -0.08219449   |term|/sum|term| = 0.0661
+  AN2 rank-1 subset census, defect windows: {5,7}:20
+  AN2 rank-1 subset census, matched ctrl: {5,7}:200
+  AN2 rank-1 subset census, typical ctrl: {5,7}:138  {5,7,11}:12  {7}:9
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.6273 / 0.5997 / 0.5605
+    q= 7: 0.6441 / 0.6504 / 0.5975
+    q=11: 0.3433 / 0.3777 / 0.4337
+    q=13: 0.2826 / 0.3222 / 0.3848
+    q=17: 0.3502 / 0.2977 / 0.3277
+
+A=19  g=24  clocks=6  subsets=64  defect windows=20  mainTerm=9720/1729 (~5.621747)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 20 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -34817/201960                  -0.1630817984 -0.1723955239 -0.1258268964
+     2   -659947/1514700                -0.3701203209 -0.5038073546 -0.1695761537
+     3   -287591/1009800                -0.4054090249 -0.6835667129 -0.2814012676
+     4   -16999/181764                  -0.0513826280 -0.1197408728 +0.0995474351
+     5   -893/68850                     -0.0088839374 -0.0273582228 +0.0075962237
+     6   -701/1136025                   -0.0011222904 -0.0062659272 +0.0011051693
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.1439069618  -0.0100591206 | -0.3200207329 -0.0958831739
+     2   -0.1983037186  +0.0083659487 | -0.4068457637 +0.0886948313
+     3   -0.1435861936  +0.0026795889 | -0.2687774390 +0.0891888085
+     4   -0.0097393582  +0.0023074014 | -0.0051024608 +0.0109860235
+     5   -0.0000111958  +0.0014453786 | +0.0009328347 +0.0049807341
+     6   -0.0001609053  +0.0002865232 | -0.0001864382 +0.0020327765
+    F/mainTerm: matched mean=-0.4957 sd=0.1589 min=-1.0000 | typical mean=+0.0050 sd=0.2276
+  AN2 top-5 subsets of defect window #1 (r=110) by |term(S)| (share of mainTerm):
+    {5,7}            term/mainTerm = -0.12777778   |term|/sum|term| = 0.1027
+    {5,7,11}         term/mainTerm = -0.09969136   |term|/sum|term| = 0.0801
+    {5,7,19}         term/mainTerm = -0.08643791   |term|/sum|term| = 0.0695
+    {5,11,13}        term/mainTerm = -0.07225028   |term|/sum|term| = 0.0581
+    {7}              term/mainTerm = -0.06666667   |term|/sum|term| = 0.0536
+  AN2 rank-1 subset census, defect windows: {5,7}:20
+  AN2 rank-1 subset census, matched ctrl: {5,7}:187  {5,7,17}:13
+  AN2 rank-1 subset census, typical ctrl: {5,7}:129  {5,7,11}:23  {11,17}:9
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.5584 / 0.5495 / 0.5361
+    q= 7: 0.5904 / 0.5422 / 0.5016
+    q=11: 0.4097 / 0.4074 / 0.4192
+    q=13: 0.3352 / 0.3425 / 0.3648
+    q=17: 0.2700 / 0.3035 / 0.3226
+    q=19: 0.3446 / 0.3067 / 0.3074
+
+A=23  g=33  clocks=7  subsets=128  defect windows=4  mainTerm=40095/5681 (~7.057736)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 4 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -57076/647955                  -0.1059927001 -0.1238990362 -0.0880863640
+     2   -13427264/29157975             -0.4694240427 -0.4783475190 -0.4605005663
+     3   -3985507/12496275              -0.3292635548 -0.3395915068 -0.3189356028
+     4   -215636/1943865                -0.0860317422 -0.1109315719 -0.0611319125
+     5   -471872/23856525               -0.0089855996 -0.0197795781 +0.0018083789
+     6   -149552/87473925               -0.0003039915 -0.0017096752 +0.0011016921
+     7   -14864/262421775               +0.0000016310 -0.0000566416 +0.0000599036
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0811240981  -0.0025307159 | -1.3337932140 -0.1423889576
+     2   -0.0970111961  -0.0086502195 | +0.0187428041 -0.7654357462
+     3   -0.0414347295  +0.0041569523 | +0.1362660868 +0.3290473850
+     4   -0.0079782662  +0.0020886535 | +0.2738795615 +0.2524613260
+     5   -0.0002278873  -0.0000596121 | +0.0284744205 +0.0607000442
+     6   -0.0000142369  -0.0002898385 | -0.0122118935 +0.0056709898
+     7   -0.0000073162  -0.0000620211 | -0.0013577655 -0.0000550411
+    F/mainTerm: matched mean=-0.2278 sd=0.1813 min=-0.7166 | typical mean=-0.0053 sd=0.1927
+  AN2 top-5 subsets of defect window #1 (r=12694428) by |term(S)| (share of mainTerm):
+    {5,23}           term/mainTerm = -0.07022607   |term|/sum|term| = 0.0617
+    {7,17}           term/mainTerm = -0.05818182   |term|/sum|term| = 0.0511
+    {7,23}           term/mainTerm = -0.04213564   |term|/sum|term| = 0.0370
+    {5}              term/mainTerm = -0.04040404   |term|/sum|term| = 0.0355
+    {5,7,19}         term/mainTerm = -0.04028520   |term|/sum|term| = 0.0354
+  AN2 rank-1 subset census, defect windows: {5,23}:4
+  AN2 rank-1 subset census, matched ctrl: {5,23}:101  {5,7,17}:28  {11,13}:10
+  AN2 rank-1 subset census, typical ctrl: {5,23}:69  {5,7,11}:52  {11,13}:16
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.4970 / 0.5145 / 0.5168
+    q= 7: 0.4149 / 0.4214 / 0.4509
+    q=11: 0.3607 / 0.3489 / 0.3987
+    q=13: 0.3128 / 0.3606 / 0.3577
+    q=17: 0.3221 / 0.3375 / 0.3348
+    q=19: 0.2569 / 0.3230 / 0.3126
+    q=23: 0.3279 / 0.3166 / 0.3154
+
+A=29  g=42  clocks=8  subsets=256  defect windows=2  mainTerm=1377810/164749 (~8.363086)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 2 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -154327/2474010                -0.0623792952 -0.0623792952 -0.0623792952
+     2   -9049613/30362850              -0.2980488656 -0.2980488656 -0.2980488656
+     3   -181744699/333991350           -0.5441598982 -0.5441598982 -0.5441598982
+     4   -25764184/300592215            -0.0857114147 -0.0857114147 -0.0857114147
+     5   -36956959/9017766450           -0.0040982386 -0.0040982386 -0.0040982386
+     6   -1390561/300592215             -0.0046260712 -0.0046260712 -0.0046260712
+     7   -4189354/4508883225            -0.0009291334 -0.0009291334 -0.0009291334
+     8   -23588/500987025               -0.0000470831 -0.0000470831 -0.0000470831
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0322026393  +0.0001298021 | -0.2424685802 -0.0178340392
+     2   -0.1026852861  +0.0026557100 | -0.5272275788 -0.1002110713
+     3   -0.0788103545  +0.0188758762 | -0.1521283429 +0.1217854013
+     4   -0.0053646960  +0.0009371408 | +0.0228764568 -0.0158651360
+     5   -0.0016571773  +0.0006005382 | -0.0025937563 +0.0029506670
+     6   +0.0002072909  -0.0001623597 | +0.0006631643 -0.0001241933
+     7   +0.0001446462  -0.0000836137 | +0.0008610007 -0.0006479533
+     8   -0.0000152331  -0.0000053036 | +0.0000176364 -0.0000536753
+    F/mainTerm: matched mean=-0.2204 sd=0.1508 min=-0.6413 | typical mean=+0.0229 sd=0.1923
+  AN2 top-5 subsets of defect window #1 (r=200906185) by |term(S)| (share of mainTerm):
+    {5,7,17}         term/mainTerm = -0.07449735   |term|/sum|term| = 0.0457
+    {5,23}           term/mainTerm = -0.07029478   |term|/sum|term| = 0.0431
+    {11,13}          term/mainTerm = -0.04569505   |term|/sum|term| = 0.0280
+    {5,19}           term/mainTerm = -0.04528478   |term|/sum|term| = 0.0278
+    {5,13}           term/mainTerm = -0.03896104   |term|/sum|term| = 0.0239
+  AN2 rank-1 subset census, defect windows: {5,7,17}:2
+  AN2 rank-1 subset census, matched ctrl: {5,23}:116  {11,13}:30  {5,7,17}:28
+  AN2 rank-1 subset census, typical ctrl: {5,7,11}:52  {5,23}:50  {5,7}:26
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.5651 / 0.5001 / 0.5135
+    q= 7: 0.4584 / 0.3978 / 0.4381
+    q=11: 0.4298 / 0.3491 / 0.3718
+    q=13: 0.3133 / 0.3583 / 0.3527
+    q=17: 0.4362 / 0.3150 / 0.3044
+    q=19: 0.2479 / 0.3085 / 0.2918
+    q=23: 0.2071 / 0.3110 / 0.2920
+    q=29: 0.3428 / 0.2595 / 0.2426
+
+A=31  g=57  clocks=9  subsets=512  defect windows=1  mainTerm=98415/9269 (~10.617650)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 1 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -56246/3436587                 -0.0163668198 -0.0163668198 -0.0163668198
+     2   -764412196/1460549475          -0.5233730244 -0.5233730244 -0.5233730244
+     3   -12799703447/39434835825       -0.3245785910 -0.3245785910 -0.3245785910
+     4   -12888692944/118304507475      -0.1089450708 -0.1089450708 -0.1089450708
+     5   -8265339692/354913522425       -0.0232883200 -0.0232883200 -0.0232883200
+     6   -17876032/5633547975           -0.0031731392 -0.0031731392 -0.0031731392
+     7   -18657424/70982704485          -0.0002628446 -0.0002628446 -0.0002628446
+     8   -1415168/118304507475          -0.0000119621 -0.0000119621 -0.0000119621
+     9   -1472/6452973135               -0.0000002281 -0.0000002281 -0.0000002281
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0193845013  -0.0003876710 | -0.1793142940 -0.0527809223
+     2   -0.1203863232  +0.0057036941 | -0.8104725593 +0.1369544433
+     3   -0.0255997174  +0.0000981622 | +0.1844272668 -0.0740699689
+     4   -0.0021009176  +0.0054666120 | +0.0693833182 +0.1345758637
+     5   -0.0028262047  -0.0016398581 | -0.0096397641 -0.0183263366
+     6   +0.0003091307  -0.0000240605 | +0.0034071357 +0.0050302484
+     7   +0.0002035954  -0.0000289157 | +0.0020289107 -0.0008194629
+     8   +0.0000065585  -0.0000180889 | +0.0001755153 -0.0005312765
+     9   -0.0000002618  -0.0000012007 | +0.0000044707 -0.0000325883
+    F/mainTerm: matched mean=-0.1698 sd=0.1571 min=-0.6233 | typical mean=+0.0092 sd=0.1755
+  AN2 top-5 subsets of defect window #1 (r=21844264615) by |term(S)| (share of mainTerm):
+    {5,7}            term/mainTerm = -0.07602339   |term|/sum|term| = 0.0595
+    {5,7,17}         term/mainTerm = -0.04857700   |term|/sum|term| = 0.0380
+    {11,13}          term/mainTerm = -0.03934078   |term|/sum|term| = 0.0308
+    {11,17}          term/mainTerm = -0.03274854   |term|/sum|term| = 0.0256
+    {5,23}           term/mainTerm = -0.03258145   |term|/sum|term| = 0.0255
+  AN2 rank-1 subset census, defect windows: {5,7}:1
+  AN2 rank-1 subset census, matched ctrl: {5,7}:200
+  AN2 rank-1 subset census, typical ctrl: {5,7}:60  {5,23}:55  {5,7,11}:37
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.4255 / 0.5041 / 0.5098
+    q= 7: 0.4235 / 0.4327 / 0.4455
+    q=11: 0.3204 / 0.3320 / 0.3635
+    q=13: 0.2917 / 0.3184 / 0.3528
+    q=17: 0.3299 / 0.3066 / 0.3006
+    q=19: 0.2098 / 0.2777 / 0.2760
+    q=23: 0.2089 / 0.2689 / 0.2708
+    q=29: 0.1751 / 0.2329 / 0.2244
+    q=31: 0.1844 / 0.2225 / 0.2280
+
+A=37  g=87  clocks=10  subsets=1024  defect windows=1  mainTerm=99891225/6516107 (~15.329893)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 1 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -6334733/148617315             -0.0426244614 -0.0426244614 -0.0426244614
+     2   -59099716013/140443362675      -0.4208081812 -0.4208081812 -0.4208081812
+     3   -7990167677/24214372875        -0.3299762384 -0.3299762384 -0.3299762384
+     4   -1702059616/10621766925        -0.1602426063 -0.1602426063 -0.1602426063
+     5   -12309612452/300950062875      -0.0409025083 -0.0409025083 -0.0409025083
+     6   -13951560416/2708550565875     -0.0051509322 -0.0051509322 -0.0051509322
+     7   -15519568/53108834625          -0.0002922220 -0.0002922220 -0.0002922220
+     8   -60324608/18959853961125       -0.0000031817 -0.0000031817 -0.0000031817
+     9   291008/902850188625            +0.0000003223 +0.0000003223 +0.0000003223
+    10   35072/3791970792225            +0.0000000092 +0.0000000092 +0.0000000092
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0336786708  -0.0006689365 | -0.3219223310 -0.0134782399
+     2   -0.0911292914  +0.0083597286 | -0.6271600947 +0.0579565670
+     3   -0.0532971811  +0.0076742015 | -0.0231347937 -0.0104153303
+     4   -0.0147465739  -0.0032489522 | +0.0640246065 -0.0004878083
+     5   -0.0004283527  -0.0013248207 | +0.0139592927 -0.0508837552
+     6   -0.0003202925  +0.0001440200 | -0.0066069857 +0.0077465218
+     7   -0.0001236111  -0.0001030909 | +0.0001526415 +0.0007314479
+     8   -0.0000084719  -0.0000553896 | +0.0006018370 -0.0010240489
+     9   +0.0000002580  -0.0000062984 | +0.0000827905 -0.0001404577
+    10   +0.0000000303  -0.0000002169 | +0.0000030368 -0.0000048964
+    F/mainTerm: matched mean=-0.1937 sd=0.1343 min=-0.6086 | typical mean=+0.0108 sd=0.1440
+  AN2 top-5 subsets of defect window #1 (r=1145973108145) by |term(S)| (share of mainTerm):
+    {5,37}           term/mainTerm = -0.04072250   |term|/sum|term| = 0.0275
+    {5,7}            term/mainTerm = -0.03908046   |term|/sum|term| = 0.0264
+    {5,7,17}         term/mainTerm = -0.03300128   |term|/sum|term| = 0.0223
+    {11,17}          term/mainTerm = -0.03218391   |term|/sum|term| = 0.0217
+    {11,13}          term/mainTerm = -0.02612330   |term|/sum|term| = 0.0176
+  AN2 rank-1 subset census, defect windows: {5,37}:1
+  AN2 rank-1 subset census, matched ctrl: {5,7}:141  {5,37}:48  {5,7,17}:11
+  AN2 rank-1 subset census, typical ctrl: {5,7}:55  {5,7,11}:51  {5,7,13}:41
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.5301 / 0.5038 / 0.5035
+    q= 7: 0.4379 / 0.4362 / 0.4362
+    q=11: 0.3012 / 0.3473 / 0.3678
+    q=13: 0.3373 / 0.3382 / 0.3331
+    q=17: 0.3199 / 0.2868 / 0.2875
+    q=19: 0.2488 / 0.2744 / 0.2771
+    q=23: 0.2127 / 0.2586 / 0.2590
+    q=29: 0.1835 / 0.2279 / 0.2252
+    q=31: 0.1653 / 0.2206 / 0.2217
+    q=37: 0.1846 / 0.2141 / 0.2189
+
+A=41  g=90  clocks=11  subsets=2048  defect windows=1  mainTerm=310007250/20550799 (~15.084924)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 1 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -20691713/856562850            -0.0241566781 -0.0241566781 -0.0241566781
+     2   -5257125901/12264422625        -0.4286484624 -0.4286484624 -0.4286484624
+     3   -9499762746703/28330816263750  -0.3353155327 -0.3353155327 -0.3353155327
+     4   -1300522928879/8499244879125   -0.1530162911 -0.1530162911 -0.1530162911
+     5   -5971271006102/127488673186875 -0.0468376590 -0.0468376590 -0.0468376590
+     6   -4793569252/466991476875       -0.0102647896 -0.0102647896 -0.0102647896
+     7   -607204923224/382466019560625  -0.0015876049 -0.0015876049 -0.0015876049
+     8   -2142725456/13188483433125     -0.0001624694 -0.0001624694 -0.0001624694
+     9   -1295565472/127488673186875    -0.0000101622 -0.0000101622 -0.0000101622
+    10   -4558912/13188483433125        -0.0000003457 -0.0000003457 -0.0000003457
+    11   -1854976/382466019560625       -0.0000000049 -0.0000000049 -0.0000000049
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0036674805  -0.0006969370 | -0.0435914334 -0.0237142447
+     2   -0.0430335739  -0.0017452312 | -1.0017605424 -0.3410584871
+     3   -0.0088937603  +0.0085334532 | +0.7143140263 +0.4568140592
+     4   -0.0051322477  -0.0031611648 | -0.1210768495 -0.1739567730
+     5   -0.0002130407  -0.0003350062 | -0.0538576353 -0.0602805105
+     6   +0.0004886846  +0.0001974524 | +0.0334151681 -0.0055880882
+     7   +0.0001222561  +0.0001553756 | +0.0116453671 +0.0063141217
+     8   +0.0000093350  +0.0000362295 | +0.0009532692 +0.0013551462
+     9   -0.0000002289  +0.0000037630 | -0.0000340629 +0.0001103795
+    10   -0.0000000606  +0.0000001822 | -0.0000070867 +0.0000043271
+    11   -0.0000000020  +0.0000000034 | -0.0000002206 +0.0000000697
+    F/mainTerm: matched mean=-0.0603 sd=0.1375 min=-0.4034 | typical mean=+0.0030 sd=0.1487
+  AN2 top-5 subsets of defect window #1 (r=50077677123072) by |term(S)| (share of mainTerm):
+    {11,13}          term/mainTerm = -0.03995511   |term|/sum|term| = 0.0235
+    {5,37}           term/mainTerm = -0.03915344   |term|/sum|term| = 0.0231
+    {5,7,11}         term/mainTerm = -0.03185185   |term|/sum|term| = 0.0188
+    {11,17}          term/mainTerm = -0.03012346   |term|/sum|term| = 0.0177
+    {7,31}           term/mainTerm = -0.02881226   |term|/sum|term| = 0.0170
+  AN2 rank-1 subset census, defect windows: {11,13}:1
+  AN2 rank-1 subset census, matched ctrl: {11,13}:171  {5,7,17}:21  {5,7,23}:8
+  AN2 rank-1 subset census, typical ctrl: {5,7}:52  {5,7,13}:42  {5,7,11}:42
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.4849 / 0.4841 / 0.4907
+    q= 7: 0.4023 / 0.4201 / 0.4319
+    q=11: 0.3060 / 0.3446 / 0.3564
+    q=13: 0.2833 / 0.2990 / 0.3201
+    q=17: 0.2629 / 0.2863 / 0.2827
+    q=19: 0.2293 / 0.2644 / 0.2667
+    q=23: 0.2271 / 0.2519 / 0.2476
+    q=29: 0.2381 / 0.2239 / 0.2142
+    q=31: 0.1903 / 0.2029 / 0.2084
+    q=37: 0.1886 / 0.2056 / 0.2016
+    q=41: 0.1349 / 0.1821 / 0.1719
+
+A=43  g=102  clocks=12  subsets=4096  defect windows=1  mainTerm=351341550/21553277 (~16.301073)
+  coherence identity: windowFluct == -mainTerm EXACT and level shares sum
+  to -1 EXACT on all 1 windows -- OK
+  AN1 level spectrum (share of mainTerm; defect windows, EXACT):
+    lvl  window#1(exact)                mean         min          max
+     1   -382302751/19900810215         -0.0192104114 -0.0192104114 -0.0192104114
+     2   -28142512176047/87762573048150 -0.3206664435 -0.3206664435 -0.3206664435
+     3   -0.427653384471                -0.4276533845 -0.4276533845 -0.4276533845
+     4   -16049965356629/78986315743335 -0.2031993163 -0.2031993163 -0.2031993163
+     5   -0.029099535428                -0.0290995354 -0.0290995354 -0.0290995354
+     6   -0.000097869259                -0.0000978693 -0.0000978693 -0.0000978693
+     7   60369200698/3554384208450075   +0.0000169844 +0.0000169844 +0.0000169844
+     8   -6087828116/80415932317875     -0.0000757043 -0.0000757043 -0.0000757043
+     9   -0.000013330102                -0.0000133301 -0.0000133301 -0.0000133301
+    10   -17007720112/17771921042250375 -0.0000009570 -0.0000009570 -0.0000009570
+    11   -573370528/17771921042250375   -0.0000000323 -0.0000000323 -0.0000000323
+    12   -7507904/17771921042250375     -0.0000000004 -0.0000000004 -0.0000000004
+  AN1 controls (200 each; float64 from exact int64 V):
+    lvl  matched-mean  typical-mean | norm-by-|F|: matched   typical   (excl 0/0)
+     1   -0.0237450180  +0.0010594264 | -0.4373468927 +0.0049267450
+     2   -0.0071729665  -0.0043708679 | +0.0582035184 +0.0021201405
+     3   -0.0134932135  +0.0010399491 | +0.0563672250 -0.2095516745
+     4   -0.0029293836  +0.0014750004 | -0.0462482952 +0.0586265208
+     5   -0.0000603237  -0.0004897689 | -0.0061011195 +0.0384794493
+     6   -0.0006916451  -0.0007313603 | -0.0130025942 -0.0101489227
+     7   -0.0001557906  -0.0001974320 | -0.0029645240 -0.0045374220
+     8   +0.0000171673  -0.0000030462 | +0.0007488831 -0.0000693449
+     9   +0.0000079753  +0.0000045764 | +0.0003038616 +0.0001361928
+    10   +0.0000009613  +0.0000005537 | +0.0000378563 +0.0000174950
+    11   +0.0000000508  +0.0000000237 | +0.0000020412 +0.0000008078
+    12   +0.0000000010  +0.0000000003 | +0.0000000400 +0.0000000129
+    F/mainTerm: matched mean=-0.0482 sd=0.1291 min=-0.3865 | typical mean=-0.0022 sd=0.1451
+  AN2 top-5 subsets of defect window #1 (r=233885349904190) by |term(S)| (share of mainTerm):
+    {5,7,17}         term/mainTerm = -0.03498911   |term|/sum|term| = 0.0179
+    {5,37}           term/mainTerm = -0.03473389   |term|/sum|term| = 0.0177
+    {5,13,17}        term/mainTerm = -0.02412359   |term|/sum|term| = 0.0123
+    {7,17,29}        term/mainTerm = -0.02388768   |term|/sum|term| = 0.0122
+    {5,7,11,17}      term/mainTerm = -0.02290002   |term|/sum|term| = 0.0117
+  AN2 rank-1 subset census, defect windows: {5,7,17}:1
+  AN2 rank-1 subset census, matched ctrl: {5,7,17}:51  {5,37}:45  {5,7,23}:22
+  AN2 rank-1 subset census, typical ctrl: {5,7,11}:89  {5,7,13}:46  {5,7,17}:26
+  AN2 per-clock marginal share of sum|term| (mean): q: defect / matched / typical
+    q= 5: 0.4850 / 0.4706 / 0.4792
+    q= 7: 0.4052 / 0.4215 / 0.4235
+    q=11: 0.3726 / 0.3456 / 0.3508
+    q=13: 0.3107 / 0.3133 / 0.3186
+    q=17: 0.3208 / 0.2875 / 0.2746
+    q=19: 0.2020 / 0.2700 / 0.2593
+    q=23: 0.1708 / 0.2528 / 0.2324
+    q=29: 0.2055 / 0.2091 / 0.2128
+    q=31: 0.1362 / 0.2063 / 0.2071
+    q=37: 0.1636 / 0.1945 / 0.1988
+    q=41: 0.2320 / 0.1729 / 0.1658
+    q=43: 0.1077 / 0.1653 / 0.1664
+
+AN1 DRIFT ACROSS A (defect mean level shares of mainTerm):
+  A    lvl1        lvl2        lvl3        lvl4        tail(5..n)
+  17  -0.099370 -0.591974 -0.261965 -0.044062  -0.002629
+  19  -0.163082 -0.370120 -0.405409 -0.051383  -0.010006
+  23  -0.105993 -0.469424 -0.329264 -0.086032  -0.009288
+  29  -0.062379 -0.298049 -0.544160 -0.085711  -0.009701
+  31  -0.016367 -0.523373 -0.324579 -0.108945  -0.026736
+  37  -0.042624 -0.420808 -0.329976 -0.160243  -0.046349
+  41  -0.024157 -0.428648 -0.335316 -0.153016  -0.058863
+  43  -0.019210 -0.320666 -0.427653 -0.203199  -0.029270
+  drift verdict: level-1 share rises from -0.099370 (A=17) to -0.019210 (A=43);
+  level-2 share falls from -0.591974 to -0.320666; see mined laws.
+AN1+AN2 done (1.1s)
+==============================================================================
+AN3 -- coherence-margin census windowFluct/mainTerm
+==============================================================================
+cell 1: A=13 g=11 EXHAUSTIVE k in [0,1e6)  mainTerm=297/91=3.263736
+  histogram (cleanCount c: windows, margin=(c-mT)/mT):
+    c= 1:    38762  margin=-0.693603
+    c= 2:   232962  margin=-0.387205
+    c= 3:   332477  margin=-0.080808
+    c= 4:   243746  margin=+0.225589
+    c= 5:   126476  margin=+0.531987
+    c= 6:    24778  margin=+0.838384
+    c= 7:      799  margin=+1.144781
+  minimum c=1 (margin -0.693603): 38762 windows; first 5 k: [110, 117, 118, 119, 120]
+  kernel check: c >= 1 everywhere (engineDecay_at_13 empirical) -- OK
+cell 2: A=31 g=58 SAMPLED 1e5 windows, k uniform in [0,1e9) (seed 20260741)
+  mainTerm=10.803925; histogram (c: windows, margin):
+    c= 3:      3  margin=-0.722323
+    c= 4:     31  margin=-0.629764
+    c= 5:    175  margin=-0.537205
+    c= 6:    813  margin=-0.444646
+    c= 7:   2750  margin=-0.352087
+    c= 8:   6966  margin=-0.259528
+    c= 9:  13445  margin=-0.166969
+    c=10:  19186  margin=-0.074410
+    c=11:  21147  margin=+0.018149
+    c=12:  17520  margin=+0.110707
+    c=13:  10906  margin=+0.203266
+    c=14:   5017  margin=+0.295825
+    c=15:   1628  margin=+0.388384
+    c=16:    352  margin=+0.480943
+    c=17:     57  margin=+0.573502
+    c=18:      4  margin=+0.666061
+  minimum c=3 (margin -0.722323): 3 windows; k values (first 5): [545954821, 882314298, 187968695]
+AN3 done (0.3s)
+==============================================================================
+AN4/AN5 cell construction (precompute_X reused from betti_portrait_harness)
+==============================================================================
+  [X=1e+06] sieved 150000 centers + band 100 in 0.0s
+  cell X=1e+06 A=13: NW=3000 survivors=44503 (loads S/S''+200 sigma_I nulls) [0.1s]
+  cell X=1e+06 A=31: NW=3000 survivors=27942 (loads S/S''+200 sigma_I nulls) [0.1s]
+  [X=1e+09] sieved 50000 centers + band 100 in 0.0s
+  cell X=1e+09 A=13: NW=1000 survivors=14835 (loads S/S''+200 sigma_I nulls) [0.0s]
+  cell X=1e+09 A=31: NW=1000 survivors=9311 (loads S/S''+200 sigma_I nulls) [0.0s]
+==============================================================================
+AN4 -- Farey / exponential-sum layer over survivor sets
+==============================================================================
+Farey grid: 773 alphas (j/q, 2<=q<=50); 200 random minor-arc alphas drawn
+(seed 20260714, rejection distance 1/2500) -- registered.
+  SELFTEST cell X=1e+06 A=13: 640 major-arc values (20 windows, all j,
+    all clocks): direct sum == exact-residue-count route, max dev 1.86e-15 <= 1e-9;
+    struck classes +-i6(q) hold 0 survivors EXACTLY -- PASS
+  cell X=1e+06 A=13: NW=3000 survivors/window=14.83
+    mean|S_W|^2: clock-denominator alphas 15.814 | other Farey 10.758 |
+    random minor-arc 19.738 (max 214.342) | survivor count (=|S_W(0)|) 14.83
+    top-10 Farey by mean|S_W|^2: 2/5:67.76  3/5:67.76  19/48:60.33  29/48:60.33  17/43:58.39  26/43:58.39  19/47:56.57  28/47:56.57  23/38:55.69  15/38:55.69
+  cell X=1e+06 A=31: NW=3000 survivors/window=9.31
+    mean|S_W|^2: clock-denominator alphas 7.924 | other Farey 7.815 |
+    random minor-arc 11.182 (max 86.779) | survivor count (=|S_W(0)|) 9.31
+    top-10 Farey by mean|S_W|^2: 3/5:29.63  2/5:29.63  29/48:27.06  19/48:27.06  26/43:26.33  17/43:26.33  15/38:25.32  23/38:25.32  19/47:25.03  28/47:25.03
+  cell X=1e+09 A=13: NW=1000 survivors/window=14.84
+    mean|S_W|^2: clock-denominator alphas 15.817 | other Farey 10.758 |
+    random minor-arc 19.740 (max 214.364) | survivor count (=|S_W(0)|) 14.84
+    top-10 Farey by mean|S_W|^2: 2/5:67.78  3/5:67.78  19/48:60.34  29/48:60.34  17/43:58.40  26/43:58.40  19/47:56.60  28/47:56.60  15/38:55.70  23/38:55.70
+  SELFTEST cell X=1e+09 A=31: 2920 major-arc values (20 windows, all j,
+    all clocks): direct sum == exact-residue-count route, max dev 1.83e-15 <= 1e-9;
+    struck classes +-i6(q) hold 0 survivors EXACTLY -- PASS
+  cell X=1e+09 A=31: NW=1000 survivors/window=9.31
+    mean|S_W|^2: clock-denominator alphas 7.921 | other Farey 7.816 |
+    random minor-arc 11.180 (max 86.686) | survivor count (=|S_W(0)|) 9.31
+    top-10 Farey by mean|S_W|^2: 2/5:29.57  3/5:29.57  29/48:26.93  19/48:26.93  17/43:26.20  26/43:26.20  15/38:25.18  23/38:25.18  19/47:25.05  28/47:25.05
+AN4 done (1.9s)
+==============================================================================
+AN5 -- foil-v2 on the QUADRATIC class (gate_g3 machinery, verbatim)
+==============================================================================
+
+CELL X=1e+06 A=13 NW=3000 H=50 (seed 20260710)
+  registered top-5 Farey alphas (by AN4 census mean |S_W|^2): F2A1=2/5(67.76)  F2A2=3/5(67.76)  F2A3=19/48(60.33)  F2A4=29/48(60.33)  F2A5=17/43(58.39)
+  MARGIN|S   R= +0.0023 zW=  +0.1 zI=  +0.2 n= 3000 
+  MARGIN|S'' R= -0.0068 zW=  -0.3 zI=  -0.4 n= 3000 
+  MARGIN|So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A1  |S   R= +0.0095 zW=  +0.5 zI=  +0.6 n= 3000 
+  F2A1  |S'' R= -0.0016 zW=  -0.1 zI=  -0.0 n= 3000 
+  F2A1  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A2  |S   R= +0.0095 zW=  +0.5 zI=  +0.6 n= 3000 
+  F2A2  |S'' R= -0.0016 zW=  -0.1 zI=  -0.0 n= 3000 
+  F2A2  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A3  |S   R= -0.0055 zW=  -0.3 zI=  -0.3 n= 3000 
+  F2A3  |S'' R= +0.0079 zW=  +0.4 zI=  +0.4 n= 3000 
+  F2A3  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A4  |S   R= -0.0055 zW=  -0.3 zI=  -0.3 n= 3000 
+  F2A4  |S'' R= +0.0079 zW=  +0.4 zI=  +0.4 n= 3000 
+  F2A4  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A5  |S   R= -0.0070 zW=  -0.4 zI=  -0.3 n= 3000 
+  F2A5  |S'' R= +0.0091 zW=  +0.5 zI=  +0.4 n= 3000 
+  F2A5  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+
+CELL X=1e+06 A=31 NW=3000 H=50 (seed 20260710)
+  registered top-5 Farey alphas (by AN4 census mean |S_W|^2): F2A1=3/5(29.63)  F2A2=2/5(29.63)  F2A3=29/48(27.06)  F2A4=19/48(27.06)  F2A5=26/43(26.33)
+  MARGIN|S   R= +0.0105 zW=  +0.7 zI=  +0.6 n= 3000 
+  MARGIN|S'' R= +0.0234 zW=  +1.4 zI=  +1.1 n= 3000 
+  MARGIN|So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A1  |S   R= +0.0009 zW=  +0.1 zI=  +0.1 n= 3000 
+  F2A1  |S'' R= +0.0287 zW=  +1.6 zI=  +1.5 n= 3000 
+  F2A1  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A2  |S   R= +0.0009 zW=  +0.1 zI=  +0.1 n= 3000 
+  F2A2  |S'' R= +0.0287 zW=  +1.6 zI=  +1.5 n= 3000 
+  F2A2  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A3  |S   R= +0.0033 zW=  +0.2 zI=  +0.2 n= 3000 
+  F2A3  |S'' R= +0.0309 zW=  +1.8 zI=  +1.6 n= 3000 
+  F2A3  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A4  |S   R= +0.0033 zW=  +0.2 zI=  +0.2 n= 3000 
+  F2A4  |S'' R= +0.0309 zW=  +1.8 zI=  +1.6 n= 3000 
+  F2A4  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A5  |S   R= +0.0040 zW=  +0.2 zI=  +0.2 n= 3000 
+  F2A5  |S'' R= +0.0310 zW=  +1.8 zI=  +1.6 n= 3000 
+  F2A5  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+
+CELL X=1e+09 A=13 NW=1000 H=50 (seed 20260710)
+  registered top-5 Farey alphas (by AN4 census mean |S_W|^2): F2A1=2/5(67.78)  F2A2=3/5(67.78)  F2A3=19/48(60.34)  F2A4=29/48(60.34)  F2A5=17/43(58.40)
+  MARGIN|S   R= +0.0058 zW=  +0.2 zI=  +0.4 n= 1000 
+  MARGIN|S'' R= +0.0282 zW=  +0.9 zI=  +0.8 n= 1000 
+  MARGIN|So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A1  |S   R= +0.0356 zW=  +1.1 zI=  +1.4 n= 1000 
+  F2A1  |S'' R= +0.0265 zW=  +0.8 zI=  +0.8 n= 1000 
+  F2A1  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A2  |S   R= +0.0356 zW=  +1.1 zI=  +1.4 n= 1000 
+  F2A2  |S'' R= +0.0265 zW=  +0.8 zI=  +0.8 n= 1000 
+  F2A2  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A3  |S   R= +0.0326 zW=  +1.0 zI=  +1.3 n= 1000 
+  F2A3  |S'' R= +0.0293 zW=  +0.9 zI=  +0.9 n= 1000 
+  F2A3  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A4  |S   R= +0.0326 zW=  +1.0 zI=  +1.3 n= 1000 
+  F2A4  |S'' R= +0.0293 zW=  +0.9 zI=  +0.9 n= 1000 
+  F2A4  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A5  |S   R= +0.0319 zW=  +1.0 zI=  +1.2 n= 1000 
+  F2A5  |S'' R= +0.0294 zW=  +0.9 zI=  +0.9 n= 1000 
+  F2A5  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+
+CELL X=1e+09 A=31 NW=1000 H=50 (seed 20260710)
+  registered top-5 Farey alphas (by AN4 census mean |S_W|^2): F2A1=2/5(29.57)  F2A2=3/5(29.57)  F2A3=29/48(26.93)  F2A4=19/48(26.93)  F2A5=17/43(26.20)
+  MARGIN|S   R= -0.0230 zW=  -0.7 zI=  -0.6 n= 1000 
+  MARGIN|S'' R= +0.0224 zW=  +0.7 zI=  +0.6 n= 1000 
+  MARGIN|So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A1  |S   R= -0.0267 zW=  -0.9 zI=  -0.6 n= 1000 
+  F2A1  |S'' R= +0.0424 zW=  +1.3 zI=  +1.3 n= 1000 
+  F2A1  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A2  |S   R= -0.0267 zW=  -0.9 zI=  -0.6 n= 1000 
+  F2A2  |S'' R= +0.0424 zW=  +1.3 zI=  +1.3 n= 1000 
+  F2A2  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A3  |S   R= -0.0352 zW=  -1.1 zI=  -0.9 n= 1000 
+  F2A3  |S'' R= +0.0323 zW=  +1.0 zI=  +1.0 n= 1000 
+  F2A3  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A4  |S   R= -0.0352 zW=  -1.1 zI=  -0.9 n= 1000 
+  F2A4  |S'' R= +0.0323 zW=  +1.0 zI=  +1.0 n= 1000 
+  F2A4  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+  F2A5  |S   R= -0.0359 zW=  -1.2 zI=  -0.9 n= 1000 
+  F2A5  |S'' R= +0.0309 zW=  +1.0 zI=  +1.0 n= 1000 
+  F2A5  |So  NA (degenerate: observable reads every survivor; precedent betti P3|So)
+
+AN5 VERDICTS (rule registered above; grid = 4 cells):
+  MARGIN|S   X1e+06A13 R+0.002 zI +0.2 | X1e+06A31 R+0.011 zI +0.6 | X1e+09A13 R+0.006 zI +0.4 | X1e+09A31 R-0.023 zI -0.6
+             min|z_I|=0.19 esc(1e+06:4.60,1e+09:3.95) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  MARGIN|S'' X1e+06A13 R-0.007 zI -0.4 | X1e+06A31 R+0.023 zI +1.1 | X1e+09A13 R+0.028 zI +0.8 | X1e+09A31 R+0.022 zI +0.6
+             min|z_I|=0.36 esc(1e+06:3.47,1e+09:0.79) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A1  |S   X1e+06A13 R+0.009 zI +0.6 | X1e+06A31 R+0.001 zI +0.1 | X1e+09A13 R+0.036 zI +1.4 | X1e+09A31 R-0.027 zI -0.6
+             min|z_I|=0.09 esc(1e+06:0.10,1e+09:0.75) ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A1  |S'' X1e+06A13 R-0.002 zI -0.0 | X1e+06A31 R+0.029 zI +1.5 | X1e+09A13 R+0.026 zI +0.8 | X1e+09A31 R+0.042 zI +1.3
+             min|z_I|=0.04 esc(1e+06:17.61,1e+09:1.60) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A2  |S   X1e+06A13 R+0.009 zI +0.6 | X1e+06A31 R+0.001 zI +0.1 | X1e+09A13 R+0.036 zI +1.4 | X1e+09A31 R-0.027 zI -0.6
+             min|z_I|=0.09 esc(1e+06:0.10,1e+09:0.75) ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A2  |S'' X1e+06A13 R-0.002 zI -0.0 | X1e+06A31 R+0.029 zI +1.5 | X1e+09A13 R+0.026 zI +0.8 | X1e+09A31 R+0.042 zI +1.3
+             min|z_I|=0.04 esc(1e+06:17.61,1e+09:1.60) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A3  |S   X1e+06A13 R-0.005 zI -0.3 | X1e+06A31 R+0.003 zI +0.2 | X1e+09A13 R+0.033 zI +1.3 | X1e+09A31 R-0.035 zI -0.9
+             min|z_I|=0.19 esc(1e+06:0.60,1e+09:1.08) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A3  |S'' X1e+06A13 R+0.008 zI +0.4 | X1e+06A31 R+0.031 zI +1.6 | X1e+09A13 R+0.029 zI +0.9 | X1e+09A31 R+0.032 zI +1.0
+             min|z_I|=0.39 esc(1e+06:3.90,1e+09:1.10) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A4  |S   X1e+06A13 R-0.005 zI -0.3 | X1e+06A31 R+0.003 zI +0.2 | X1e+09A13 R+0.033 zI +1.3 | X1e+09A31 R-0.035 zI -0.9
+             min|z_I|=0.19 esc(1e+06:0.60,1e+09:1.08) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A4  |S'' X1e+06A13 R+0.008 zI +0.4 | X1e+06A31 R+0.031 zI +1.6 | X1e+09A13 R+0.029 zI +0.9 | X1e+09A31 R+0.032 zI +1.0
+             min|z_I|=0.39 esc(1e+06:3.90,1e+09:1.10) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A5  |S   X1e+06A13 R-0.007 zI -0.3 | X1e+06A31 R+0.004 zI +0.2 | X1e+09A13 R+0.032 zI +1.2 | X1e+09A31 R-0.036 zI -0.9
+             min|z_I|=0.22 esc(1e+06:0.57,1e+09:1.13) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  F2A5  |S'' X1e+06A13 R+0.009 zI +0.4 | X1e+06A31 R+0.031 zI +1.6 | X1e+09A13 R+0.029 zI +0.9 | X1e+09A31 R+0.031 zI +1.0
+             min|z_I|=0.44 esc(1e+06:3.41,1e+09:1.05) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+AN5 done (0.8s)
+==============================================================================
+MINED CANDIDATE LAWS (ranked; exact numbers; foil verdicts independent)
+==============================================================================
+LAW-1 (AN1, exact on defects): the defect conspiracy is LEVEL-1 DOMINATED
+  and OVERSHOOTS: level-1 share of -mainTerm ranges -0.099370 (A=17) .. -0.019210 (A=43)
+  (more negative than -1 alone), corrected by positive level-2 -0.591974 .. -0.320666;
+  level-3 -0.261965 .. -0.427653; alternating-sign decay by level on EVERY defect window.
+  drift: lvl1 non-monotone, lvl2 non-monotone with A across [17, 19, 23, 29, 31, 37, 41, 43]
+LAW-2 (AN2): smallest-clock marginal m(5) = +0.6273 (A=17) .. +0.4850 (A=43);
+  rank-1 subset census over all 50 defect windows: {5,7}:41  {5,23}:4  {5,7,17}:3  {5,37}:1  {11,13}:1
+LAW-3 (AN3): margin minima: A=13/1e6 exhaustive min c=1 (38762 windows,
+  margin -0.693603); A=31/1e9 sampled min c=3 (3 windows, margin -0.722323); c>=1
+  everywhere observed == the kernel wall in census form.
+LAW-4 (AN4): major arcs at clock denominators carry the survivor structure
+  (struck classes empty EXACTLY); see census numbers above.
+LAW-5 (AN5, ledger): 12/12 (observable,load) pairs PARITY-BLIND-UNDER-
+  ESCALATION-v2 -- the first QUADRATIC observable class through the foil;
+  a null here is the registered ledger law (quadratic-representation gap
+  closed empirically).
+ANOMALIES |z| >= 3: none
+==============================================================================
+RUN COMPLETE
+==============================================================================
+total runtime 0.1 min; STOP registered: no new alphas/weightings/thresholds.
+SECTION LINE INDEX (this run, 1-based in this append block):
+  line     1: FOURIER-WINDOW SPIKE-ANATOMY RUN 1 -- 2026-07-11 11:45:07
+  line    10: SELFTESTS (mandatory, before registration; assert-fail = STOP)
+  line    47: PRE-REGISTRATION BLOCK (logged before ANY measurement; thresholds fixed)
+  line   107: AN1 + AN2 -- exact spike anatomy of defect windows (support-grouped)
+  line   480: AN3 -- coherence-margin census windowFluct/mainTerm
+  line   514: AN4/AN5 cell construction (precompute_X reused from betti_portrait_harness)
+  line   523: AN4 -- Farey / exponential-sum layer over survivor sets
+  line   551: AN5 -- foil-v2 on the QUADRATIC class (gate_g3 machinery, verbatim)
+  line   665: MINED CANDIDATE LAWS (ranked; exact numbers; foil verdicts independent)
+  line   685: RUN COMPLETE
+==============================================================================
+POST-RUN ERRATUM (appended same session; data untouched, thresholds untouched)
+==============================================================================
+E1. The LAW-1 prose above ("LEVEL-1 DOMINATED and OVERSHOOTS") is a drafting
+    error: it contradicts the AN1 tables it cites.  The measured law, from
+    the same exact numbers already logged:
+    (a) levels 2+3 jointly dominate the coherent spike: mean lvl2+lvl3 share
+        of -mainTerm by A:  17: -0.8539  19: -0.7755  23: -0.7987
+        29: -0.8422  31: -0.8480  37: -0.7508  41: -0.7640  43: -0.7483;
+        per-window shares at levels 2 and 3 are strictly negative on all 50
+        defect windows (largest lvl2 = -0.169576 at A=19; largest lvl3 =
+        -0.242955 at A=17).
+    (b) level-1 share is small and shrinks toward 0 with A: -0.099370 (17),
+        -0.163082 (19), -0.105993 (23), -0.062379 (29), -0.016367 (31),
+        -0.042624 (37), -0.024157 (41), -0.019210 (43) -- the small clocks
+        strike near their densities; the conspiracy lives in pair/triple
+        correlations.
+    (c) weight migrates up-level with A: lvl4 -0.044062 (17) -> -0.203199
+        (43); tail(5..n) -0.002629 (17) -> -0.029270 (43), peak -0.058863
+        at A=41.
+    The harness template (mined_laws) is corrected in source for future
+    runs; this appended note is the correction of record for run 1.
+E2. Disclosure: in each AN5 cell the registered top-5 Farey alphas contain
+    conjugate pairs (|S_W(alpha)|^2 == |S_W(1-alpha)|^2), so F2A1 == F2A2
+    and F2A3 == F2A4 as observables -- effectively 3 distinct quadratic
+    observables per cell.  The registered selection rule operated as
+    written; foil verdicts unaffected (harness now logs such pairs).
+E3. AN4 census reading (numbers already logged above): the entire top-10 at
+    every cell sits in the major-arc neighborhoods of 2/5 and 3/5 (e.g.
+    |19/48 - 2/5| = 1/240, |17/43 - 2/5| = 3/215) -- the clock-5 pair of
+    unstruck wing phases is the dominant quadratic mode of the survivor
+    process; random minor-arc alphas average HIGHER raw |S|^2 (19.74 vs
+    Farey 10.76-15.81 at A=13) because most Farey points are rationally
+    resonant with nothing and t < 50 truncates slowly-varying phases.

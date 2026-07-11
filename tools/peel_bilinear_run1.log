@@ -1,0 +1,482 @@
+==============================================================================
+[2026-07-11 11:43:15] PEEL-BILINEAR SELFTEST  pre-registration + STOP selftests
+==============================================================================
+
+PRE-REGISTRATION -- peel-bilinear campaign (registered BEFORE any measurement line).
+Seed 20260710 everywhere (numpy default_rng; documented substreams [SEED, k]).
+
+EDGE MODEL (fixed): edges of a window (r, r+L] = for every center m in the window and
+  every wing v = 6m-1, 6m+1, one edge per DISTINCT prime q >= 5 of v with cofactor
+  c = v/q >= 5; target t = center of c (c = 6t+-1); label p = q; fresh wing = the OTHER
+  wing of t (6t-1 if c = 6t+1, else 6t+1).  Identical to grave_depth_harness.peel_steps
+  == betti_portrait_harness.peel_targets == GenealogyForest.PeelStep (selftested; STOP
+  on any mismatch).  Twin centers carry no out-edges (both wings prime).
+
+POPULATIONS
+ (a) DEFECT windows (exact SAT witnesses; window length L = G(A)-1):
+     A=17: 20 starts, full-period scan (calibration: first r=117, count 20; matches
+           tools/gap_extremal_run1.log:124-131);
+     A=19: 20 starts, full-period scan (first r=110; log:133-140);
+     A=23: r in {12694428, 18165208, 19016903, 24487683};
+     A=29: r in {200906185, 877375977};
+     A=31: r = 21844264615 (n=1) + any length-57 runs found by the partial scan;
+     A=37: r = 1145973108145 (n=1);
+     A=41: r = 50077677123072 (L=90; tools/phase_cover_run1.log:105-166);
+     A=43: r = 233885349904190 (L=102; same log).  n=1 at A>=37 (and effectively at 31):
+     the two-sample test there is NOT oversold -- reported as descriptive sigma-offsets.
+ (b) NEAR-DEFECT strata: maximal struck runs of length ell in {G-3, G-2, G-1}, harvested
+     by scan over [0, P_A) for A in {17,19,23,29}, over [0, 2e9) at A=31 (PARTIAL,
+     period 3.34e10 -- disclosed); NO scan at A>=37 (period >= 1.24e12): regression
+     unavailable there, said so in the verdicts.  Harvest cap 60 runs per (A, ell)
+     (uniform subsample, seeded); windows with r < 10 excluded (cofactor >= 5 guard).
+ (c) MATCHED-PHASE controls, per defect witness r: r'_i = r + 5005*u_i, u_i drawn
+     uniformly WITHOUT replacement from [1, U_A], U_A = min(320, P_A/5005 - 1) -- every
+     control stays inside ONE period copy of the witness (magnitude matched; at A=17
+     the orbit has only U=16 distinct controls per witness, disclosed).  Same residues
+     mod 5005 = same small-clock phase tuple (r mod 5,7,11,13); the big-clock phases
+     cycle along the 5005-step orbit (near-uniform individually, NOT iid-CRT jointly;
+     disclosed).  n_ctrl = min(40, U_A) per witness at A <= 31, min(24, U_A) at
+     A >= 37 (rho-tier cost).  Same window length L.
+ (d) TYPICAL windows, per defect witness r: r'_i = r + w_i, w_i uniform WITHOUT
+     replacement from [1, min(320*5005, P_A)] (same magnitude band as (c), no phase
+     constraint); same counts as (c).
+ (e) foil-v2 ensemble grid: A in {13, 31, 101} x X in {1e6, 1e9}, H = 50,
+     NW = 3000 (1e6) / 1000 (1e9), seed 20260710 (betti_portrait precompute_X reused).
+
+PRE-REGISTERED OBSERVABLES (per window; factorization tiers per grave_depth_harness:
+SPF sieve < 6e6, numpy trial division <= 6.1e9, Pollard-rho(Brent) + Miller-Rabin
+above; ADAPTATION disclosed: MR bases extended to the first 12 primes (2..37),
+deterministic for n < 3.186e23 (Sorenson-Webster 2015), because A=43 wings reach
+1.5e15 > the 3.4e14 bound of the 7-base tier; factorization completeness at rho-tier
+scales is counted and reported).
+ O1  dyadic label profile N_j(W) = #edges with label p in [2^j, 2^(j+1)).  The
+     MECHANICAL part is subtracted EXACTLY: for every q <= A the number of label-q
+     edges equals the phase-determined strike count of q in the window (Lean
+     struck_wing_minFac_le / defect_edges_small_labels_17 side; exactness re-verified
+     per window, STOP in selftest on mismatch).  Residual profile = blocks restricted
+     to labels p > A.  Primary scalar: residual edge rate = #(p > A edges)/L.
+     Secondary: per-block Welch z for blocks with pooled count >= 30 (family size
+     disclosed).  Verdict on the residual ONLY.
+ O2  edge spins S(W) = sum over edges with label p in the primary block of
+     jacobi(cofactor mod p | p).  Registered ONLY for labels p > A (small-p spin is a
+     proven level-p^2 function -- excluded BEFORE measurement; cite
+     Step00WingJacobiCollapse.spin_fixed_label_periodic, built in parallel).  Primary
+     block: defect stage p in [w^(1/4), w^(1/2)], w = 6(r+1)+1 (per-window); foil grid
+     p in [X^(1/4), X^(1/2)].  Scalar: spin_norm = S / sqrt(#block edges) (random-walk
+     normalization).  Defect-depth regression + foil-v2.
+ O3  teleported fresh parity F(W) = mean over edges of lambda(fresh wing 6t-delta)
+     (Liouville).  The mechanical channel lambda(cofactor) = -lambda(source wing) is
+     EXCLUDED by construction (the read value is the OTHER wing of the target).
+     P3d-style de-mechanization ADDITIONALLY: residual after removing 20-quantile-bin
+     means in the window Omega-profile (betti demech, verbatim).  Loads S / So / S''.
+ O4  twin-hit rate: fraction of edges whose target t is a twin center (cofactor prime
+     AND fresh wing prime).  Defect vs typical; foil-v2 with primary load S -- O4 reads
+     NO lambda of window members (targets sit below X/5 + 1, outside every window at
+     X >= 1e6), so the plain load S is already self-excluded.
+ O5  cascade strike density: for each label p in [5, A], the renormalized interval
+     [(6r+5-p)/(6p), (6(r+L)+1+p)/(6p)] (EXACT nat-floor-division endpoints of Lean
+     peel_target_window); scalar = mean over p of the fraction of interval centers
+     struck at scale A.  O5 is fully phase-determined (strike density is a function of
+     r mod P_A) -- it carries NO parity content by construction; reported against
+     L32(b) (rank transfer), not re-derived, not claimed new.
+ OMP window Omega-profile = mean over window wings of Omega (for O3 de-mechanization).
+ Also recorded per window: n_struck (struck centers), factorization completeness.
+
+LOADS (foil grid; betti conventions): lambda-load L(W) = sum over scale-A-clean window
+ centers of lambda(6m-1)lambda(6m+1).  S = full window; S'' = split-window (invariant
+ from LEFT half edges, load from RIGHT half survivors); So = self-excluded: excludes
+ window members whose own wings enter the invariant -- at X >= 1e6 every peel target
+ sits below (6(X+H)+1)/30 << X, so NO member's wings are read and So == S (DISCLOSED
+ degenerate; reported anyway).  200 sigma_W permutations + 200 sigma_I lambda-resamples
+ (pool = cell survivors), seed 20260710 -- gate_g3 foil-v2 machinery (bp.foil_row,
+ verbatim).
+
+PRIMARY ROWS (verdict-carrying): O2|S, O3|S'', O4|S.  Secondary (information): O2|S'',
+ O3|S, O3|So, O4|S'', O3d|S'' (de-mechanized; the interpretation gate reads it).
+
+THRESHOLDS (gate_g3 foil-v2, VERBATIM; never moved):
+ PARITY-SENSITIVE (MANAGED-PASS) iff min |z_I| >= 5 over the grid AND escalation ratio
+ |R(A_hi)| >= |R(A_lo)|/3 for BOTH consecutive pairs (13->31, 31->101) at both X;
+ SOFT-PASS iff min |z_I| >= 3; else PARITY-BLIND-UNDER-ESCALATION-v2.
+ Two-sample (defect stage): Welch z; FLAG iff |z| >= 3.  Defect-depth regression:
+ Pearson r of (observable, ell) over strata ell in {G-3, G-2, G-1}; permutation z from
+ 200 seeded shuffles; TREND iff |z| >= 3.
+
+INTERPRETATION GATE (registered): because bilinear observables are the one class where
+ classical theory predicts possible sensitivity, a PASS is claimed as content ONLY if
+ the de-mechanized version also passes; the harness computes the predicted-from-identity
+ mechanical part exactly and subtracts (O1: exact small-label subtraction; O3: excluded
+ channel + demech residual O3d; O2: small-p exclusion before measurement).
+
+STOP (registered VERBATIM): if O2, O3, O4 are all PARITY-BLIND-UNDER-ESCALATION-v2 AND
+ the defect-vs-matched-phase residuals of O1/O5 show no |z| >= 3 trend in the
+ defect-depth regression at >= 2 scales -- write the ledger null ("the bilinear/peel
+ layer is parity-blind and phase-determined"), keep the Lean identities, STOP: no new
+ weightings, no threshold moves, no extra blocks.  A null verdict is a deliverable.
+
+SECONDARY (clearly labeled): tree-profile stats live ONLY in the deterministic
+ lean-model mode of tools/phase_cover_harness.py (proof-search shadow, NOT an
+ arithmetic object, NO Lean statements); the logged node counts are quoted in the
+ summary, nothing new is computed.
+
+RUNTIME FALLBACK (registered): per-stage cap 5400 s; if a cell would blow past, halve
+ NCTRL (defect) / NW (foil) for the REMAINING cells and log the shrink -- never
+ silently.
+PRE-REGISTRATION ENDS -- measurements begin below this line.
+
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+  factor tables: SPF<=7000000, 7702 trial-division primes <= 78500 (0.1s)
+  (a) edge model == gd.peel_steps AND targets == bp.peel_targets on 10^4 sample (m in [2,1e6] u [1e6,1e7] u [1e9,1e9+1e5]) -> PASS
+  (b) Lean peel_parity_transport int-exact (Omega(wing) = Omega(cof) + 1, wing = p*cof, cof a wing of t) on 100000 edges -> PASS
+  (c) Lean peel_target_window intervals verified by enumeration (k in {0,5,100,1000,5000} x g in {5,18}, every edge) -> PASS
+  (d) Lean window_edge_count: #nonTwins == #canonical out-edges on 4 windows; canonical edge is a PeelStep -> PASS
+  (e) listed defect witnesses A in {23,29,31,37,41,43}: r clean, r+1..r+L all struck, r+L+1 clean -> PASS
+      Lean defect_edges_small_labels_17 instances (r=117 kernel-pinned upstream, r=502 in Step00PeelBilinear): minFac <= 17 per center -> PASS
+  (f) O1 mechanical part EXACT (observed label-q counts == phase-determined counts, q <= A) on 60 random windows (A=17, A=23) -> PASS
+  (g) jacobi == Euler criterion on 500 random (a, p) -> PASS
+  scan A=17 m<85,085: runs ell=G-3/G-2/G-1: 22/0/20 [0.0s]
+  scan A=19 m<1,616,615: runs ell=G-3/G-2/G-1: 86/0/20 [0.0s]
+  (h) scan calibration: A=17 -> 20 defect starts, first r=117 (r=502 present); A=19 -> 20 starts, first r=110; matches gap_extremal_run1.log -> PASS
+  (i) twin-hit shortcut (cof prime AND fresh prime) == gd.is_twin on 2000 sample -> PASS
+SELFTEST verdict: ALL STOP-SELFTESTS PASS (1.2s); scan cache -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch
+==============================================================================
+[2026-07-11 11:43:29] PEEL-BILINEAR DEFECT  populations (a)-(d), observables O1-O5, scales 17..43
+==============================================================================
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.0s)
+------------------------------------------------------------------------------
+SCALE A=17  G=18  L=17  P_A=85,085
+  scan cache hit: 42 runs
+  populations: defect n=20 (117,502,5642,6027,...), near G-3/G-2 n=22/0, matched-phase n=320, typical n=320
+  measured defect n=  20  [0.0s]  fac_incomplete(sum)=0
+  measured near   n=  22  [0.0s]  fac_incomplete(sum)=0
+  measured ctrl   n= 320  [0.1s]  fac_incomplete(sum)=0
+  measured typ    n= 320  [0.1s]  fac_incomplete(sum)=0
+  O1  defect mean   +2.4059 | matched   +2.6928 | typical   +2.6689 | z(d-m)   -2.99 (n=20/320) | z(d-t)   -2.74
+  O2  defect mean   -0.1924 | matched   +0.0727 | typical   -0.0009 | z(d-m)   -1.15 (n=20/320) | z(d-t)   -0.83
+  O3  defect mean   -0.2742 | matched   -0.1915 | typical   -0.1646 | z(d-m)   -2.11 (n=20/320) | z(d-t)   -2.79
+  O4  defect mean   +0.3068 | matched   +0.2251 | typical   +0.2180 | z(d-m)   +2.88 (n=20/320) | z(d-t)   +3.12  FLAG(d-t)|z|>=3
+  O5  defect mean   +0.6393 | matched   +0.7094 | typical   +0.7350 | z(d-m)   -2.82 (n=20/320) | z(d-t)   -3.83  FLAG(d-t)|z|>=3
+  O3d (demech vs 20-bin OMP): z(d-m)   -1.42 (n=20/320) | z(d-t)   -2.69
+  O1 block 2^11..2^12: z(d-m) = -4.31  FLAG|z|>=3 (rate d=0.1000 m=0.1750)
+  O1 block 2^16..2^17: z(d-m) = -3.53  FLAG|z|>=3 (rate d=0.0529 m=0.1338)
+  O1 block 2^17..2^18: z(d-m) = -8.88  FLAG|z|>=3 (rate d=0.0000 m=0.0301)
+  O1 per-block family: 14 blocks tested (pooled>=30), flags printed above if any
+  depth-regression O1  vs ell: r=-0.0996 z=  -0.63 n=42
+  depth-regression O2  vs ell: r=-0.0279 z=  -0.19 n=42
+  depth-regression O3  vs ell: r=-0.0126 z=  -0.08 n=42
+  depth-regression O4  vs ell: r=+0.1283 z=  +0.77 n=42
+  depth-regression O5  vs ell: r=-0.1938 z=  -1.27 n=42
+  factorization completeness at A=17: 0 incomplete of 67547 factor calls so far (cumulative counter 0/67547)
+  scale A=17 done [0.2s]
+------------------------------------------------------------------------------
+SCALE A=19  G=25  L=24  P_A=1,616,615
+  scan cache hit: 106 runs
+  near-defect ell=22: 86 found, capped to 60 (registered cap)
+  populations: defect n=20 (110,26045,67695,170035,...), near G-3/G-2 n=60/0, matched-phase n=800, typical n=800
+  measured defect n=  20  [0.0s]  fac_incomplete(sum)=0
+  measured near   n=  60  [0.0s]  fac_incomplete(sum)=0
+  measured ctrl   n= 800  [0.5s]  fac_incomplete(sum)=0
+  measured typ    n= 800  [0.5s]  fac_incomplete(sum)=0
+  O1  defect mean   +2.8646 | matched   +2.9997 | typical   +2.9988 | z(d-m)   -1.40 (n=20/800) | z(d-t)   -1.39
+  O2  defect mean   +0.1256 | matched   -0.0267 | typical   -0.0392 | z(d-m)   +0.65 (n=20/800) | z(d-t)   +0.70
+  O3  defect mean   -0.1827 | matched   -0.1163 | typical   -0.1140 | z(d-m)   -2.01 (n=20/800) | z(d-t)   -2.07
+  O4  defect mean   +0.2197 | matched   +0.1618 | typical   +0.1616 | z(d-m)   +2.37 (n=20/800) | z(d-t)   +2.38
+  O5  defect mean   +0.6599 | matched   +0.7561 | typical   +0.7686 | z(d-m)   -6.44 (n=20/800) | z(d-t)   -7.26  FLAG|z|>=3  FLAG(d-t)|z|>=3
+  O3d (demech vs 20-bin OMP): z(d-m)   -1.71 (n=20/800) | z(d-t)   -2.17
+  O1 block 2^21..2^22: z(d-m) = -19.44  FLAG|z|>=3 (rate d=0.0000 m=0.0452)
+  O1 per-block family: 18 blocks tested (pooled>=30), flags printed above if any
+  depth-regression O1  vs ell: r=-0.1721 z=  -1.62 n=80
+  depth-regression O2  vs ell: r=+0.1056 z=  +0.87 n=80
+  depth-regression O3  vs ell: r=-0.1844 z=  -1.87 n=80
+  depth-regression O4  vs ell: r=+0.1886 z=  +1.70 n=80
+  depth-regression O5  vs ell: r=-0.2566 z=  -2.22 n=80
+  factorization completeness at A=19: 0 incomplete of 320509 factor calls so far (cumulative counter 0/320509)
+  scale A=19 done [1.1s]
+------------------------------------------------------------------------------
+SCALE A=23  G=34  L=33  P_A=37,182,145
+  scan A=23 m<37,182,145: runs ell=G-3/G-2/G-1: 8/2/4 [0.1s]
+  populations: defect n=4 (12694428,18165208,19016903,24487683), near G-3/G-2 n=8/2, matched-phase n=160, typical n=160
+  measured defect n=   4  [0.0s]  fac_incomplete(sum)=0
+  measured near   n=  10  [0.0s]  fac_incomplete(sum)=0
+  measured ctrl   n= 160  [0.2s]  fac_incomplete(sum)=0
+  measured typ    n= 160  [0.2s]  fac_incomplete(sum)=0
+  O1  defect mean   +3.1591 | matched   +3.2206 | typical   +3.2422 | z(d-m)   -0.44 (n=4/160) | z(d-t)   -0.60
+  O2  defect mean   -0.8736 | matched   -0.0887 | typical   -0.1349 | z(d-m)   -2.40 (n=4/160) | z(d-t)   -2.25
+  O3  defect mean   -0.0742 | matched   -0.0930 | typical   -0.0883 | z(d-m)   +0.38 (n=4/160) | z(d-t)   +0.29
+  O4  defect mean   +0.1247 | matched   +0.1235 | typical   +0.1265 | z(d-m)   +0.17 (n=4/160) | z(d-t)   -0.26
+  O5  defect mean   +0.7577 | matched   +0.8142 | typical   +0.7812 | z(d-m)   -2.35 (n=4/160) | z(d-t)   -0.97
+  O3d (demech vs 20-bin OMP): z(d-m)   +0.44 (n=4/160) | z(d-t)   +0.15
+  O1 block 2^4..2^5: z(d-m) = -9.99  FLAG|z|>=3 (rate d=0.1212 m=0.1348)
+  O1 block 2^18..2^19: z(d-m) = -3.04  FLAG|z|>=3 (rate d=0.0758 m=0.1053)
+  O1 per-block family: 21 blocks tested (pooled>=30), flags printed above if any
+  depth-regression O1  vs ell: r=-0.1677 z=  -0.64 n=14
+  depth-regression O2  vs ell: r=-0.3562 z=  -1.24 n=14
+  depth-regression O3  vs ell: r=+0.1624 z=  +0.56 n=14
+  depth-regression O4  vs ell: r=-0.3005 z=  -1.13 n=14
+  depth-regression O5  vs ell: r=+0.6249 z=  +2.09 n=14
+  factorization completeness at A=23: 0 incomplete of 393035 factor calls so far (cumulative counter 0/393035)
+  scale A=23 done [0.6s]
+------------------------------------------------------------------------------
+SCALE A=29  G=43  L=42  P_A=1,078,282,205
+  scan A=29 m<1,078,282,205: runs ell=G-3/G-2/G-1: 0/0/2 [3.7s]
+  populations: defect n=2 (200906185,877375977), near G-3/G-2 n=0/0, matched-phase n=80, typical n=80
+  measured defect n=   2  [0.0s]  fac_incomplete(sum)=0
+  measured ctrl   n=  80  [0.3s]  fac_incomplete(sum)=0
+  measured typ    n=  80  [0.3s]  fac_incomplete(sum)=0
+  O1  defect mean   +3.5714 | matched   +3.4863 | typical   +3.4982 | z(d-m)   +0.70 (n=2/80) | z(d-t)   +0.61
+  O2  defect mean   +0.6116 | matched   +0.2247 | typical   +0.0709 | z(d-m)   +0.19 (n=2/80) | z(d-t)   +0.27
+  O3  defect mean   -0.1125 | matched   -0.0763 | typical   -0.0547 | z(d-m)   -0.66 (n=2/80) | z(d-t)   -1.05
+  O4  defect mean   +0.1131 | matched   +0.1002 | typical   +0.1002 | z(d-m)   +0.50 (n=2/80) | z(d-t)   +0.50
+  O5  defect mean   +0.8091 | matched   +0.7844 | typical   +0.8018 | z(d-m)   +0.52 (n=2/80) | z(d-t)   +0.15
+  O3d (demech vs 20-bin OMP): z(d-m)   -0.19 (n=2/80) | z(d-t)   -0.44
+  O1 block 2^4..2^5: z(d-m) = +5.40  FLAG|z|>=3 (rate d=0.0714 m=0.0640)
+  O1 block 2^5..2^6: z(d-m) = +5.33  FLAG|z|>=3 (rate d=0.3095 m=0.2946)
+  O1 block 2^8..2^9: z(d-m) = -3.39  FLAG|z|>=3 (rate d=0.1429 m=0.2271)
+  O1 block 2^11..2^12: z(d-m) = -4.73  FLAG|z|>=3 (rate d=0.1071 m=0.1732)
+  O1 block 2^12..2^13: z(d-m) = +5.06  FLAG|z|>=3 (rate d=0.2262 m=0.1565)
+  O1 block 2^15..2^16: z(d-m) = -4.71  FLAG|z|>=3 (rate d=0.0595 m=0.1223)
+  O1 per-block family: 26 blocks tested (pooled>=30), flags printed above if any
+  depth-regression: UNAVAILABLE (strata [42], n=2) -- disclosed
+  factorization completeness at A=29: 0 incomplete of 440024 factor calls so far (cumulative counter 0/440024)
+  scale A=29 done [4.3s]
+------------------------------------------------------------------------------
+SCALE A=31  G=58  L=57  P_A=33,426,748,355
+  scan A=31 m<2,000,000,000: runs ell=G-3/G-2/G-1: 0/0/1 [7.3s]
+  populations: defect n=2 (1468940242,21844264615), near G-3/G-2 n=0/0, matched-phase n=80, typical n=80
+  measured defect n=   2  [0.0s]  fac_incomplete(sum)=0
+  measured ctrl   n=  80  [0.9s]  fac_incomplete(sum)=0
+  measured typ    n=  80  [0.9s]  fac_incomplete(sum)=0
+  O1  defect mean   +3.6404 | matched   +3.7202 | typical   +3.6774 | z(d-m)   -0.43 (n=2/80) | z(d-t)   -0.20
+  O2  defect mean   +0.1179 | matched   +0.0019 | typical   -0.1054 | z(d-m)   +0.64 (n=2/80) | z(d-t)   +1.41
+  O3  defect mean   -0.0840 | matched   -0.0416 | typical   -0.0507 | z(d-m)   -0.86 (n=2/80) | z(d-t)   -0.68
+  O4  defect mean   +0.0877 | matched   +0.0861 | typical   +0.0884 | z(d-m)   +0.14 (n=2/80) | z(d-t)   -0.06
+  O5  defect mean   +0.6725 | matched   +0.7991 | typical   +0.8161 | z(d-m)   -7.96 (n=2/80) | z(d-t)   -8.98  FLAG|z|>=3  FLAG(d-t)|z|>=3
+  O3d (demech vs 20-bin OMP): z(d-m)   -0.42 (n=2/80) | z(d-t)   -0.30
+  O1 block 2^13..2^14: z(d-m) = -4.21  FLAG|z|>=3 (rate d=0.1228 m=0.1467)
+  O1 block 2^20..2^21: z(d-m) = +7.00  FLAG|z|>=3 (rate d=0.1228 m=0.0956)
+  O1 per-block family: 30 blocks tested (pooled>=30), flags printed above if any
+  depth-regression: UNAVAILABLE (strata [57], n=2) -- disclosed
+  factorization completeness at A=31: 0 incomplete of 506232 factor calls so far (cumulative counter 0/506232)
+  scale A=31 done [9.1s]
+------------------------------------------------------------------------------
+SCALE A=37  G=88  L=87  P_A=1,236,789,689,135
+  populations: defect n=1 (1145973108145), near G-3/G-2 n=0/0, matched-phase n=24, typical n=24
+  DISCLOSED: n=1 defect at A=37, no scan (period 1,236,789,689,135) -- two-sample read as descriptive sigma-offset, NOT a test; no depth regression.
+  measured defect n=   1  [0.0s]  fac_incomplete(sum)=0
+  measured ctrl   n=  24  [0.8s]  fac_incomplete(sum)=0
+  measured typ    n=  24  [0.8s]  fac_incomplete(sum)=0
+  O1  defect mean   +3.9655 | matched   +4.0354 | typical   +4.0752 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -0.56, vs typical -0.83 (descriptive, NOT a test)
+  O2  defect mean   +2.5399 | matched   +0.0192 | typical   +0.3188 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched +2.58, vs typical +2.50 (descriptive, NOT a test)
+  O3  defect mean   +0.0458 | matched   -0.0515 | typical   -0.0299 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched +1.84, vs typical +1.32 (descriptive, NOT a test)
+  O4  defect mean   +0.0896 | matched   +0.0612 | typical   +0.0639 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched +2.18, vs typical +2.16 (descriptive, NOT a test)
+  O5  defect mean   +0.6765 | matched   +0.8286 | typical   +0.8141 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -4.25, vs typical -3.44 (descriptive, NOT a test)
+  O3d (demech) n=1: sigma-offset vs matched +1.01 (descriptive)
+  O1 per-block family: 36 blocks tested (pooled>=30), flags printed above if any
+  depth-regression: UNAVAILABLE (strata [87], n=1) -- disclosed
+  factorization completeness at A=37: 0 incomplete of 538567 factor calls so far (cumulative counter 0/538567)
+  scale A=37 done [1.7s]
+------------------------------------------------------------------------------
+SCALE A=41  G=91  L=90  P_A=50,708,377,254,535
+  populations: defect n=1 (50077677123072), near G-3/G-2 n=0/0, matched-phase n=24, typical n=24
+  DISCLOSED: n=1 defect at A=41, no scan (period 50,708,377,254,535) -- two-sample read as descriptive sigma-offset, NOT a test; no depth regression.
+  measured defect n=   1  [0.1s]  fac_incomplete(sum)=0
+  measured ctrl   n=  24  [1.3s]  fac_incomplete(sum)=0
+  measured typ    n=  24  [1.4s]  fac_incomplete(sum)=0
+  O1  defect mean   +4.1556 | matched   +4.1935 | typical   +4.2463 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -0.27, vs typical -0.82 (descriptive, NOT a test)
+  O2  defect mean   -0.0913 | matched   +0.1412 | typical   +0.1270 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -0.21, vs typical -0.19 (descriptive, NOT a test)
+  O3  defect mean   -0.0986 | matched   -0.0531 | typical   -0.0460 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -0.93, vs typical -1.20 (descriptive, NOT a test)
+  O4  defect mean   +0.0851 | matched   +0.0540 | typical   +0.0534 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched +3.72, vs typical +3.08 (descriptive, NOT a test)
+  O5  defect mean   +0.7018 | matched   +0.8352 | typical   +0.8254 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -4.35, vs typical -2.94 (descriptive, NOT a test)
+  O3d (demech) n=1: sigma-offset vs matched +0.04 (descriptive)
+  O1 per-block family: 41 blocks tested (pooled>=30), flags printed above if any
+  depth-regression: UNAVAILABLE (strata [90], n=1) -- disclosed
+  factorization completeness at A=41: 0 incomplete of 572901 factor calls so far (cumulative counter 0/572901)
+  scale A=41 done [2.7s]
+------------------------------------------------------------------------------
+SCALE A=43  G=103  L=102  P_A=2,180,460,221,945,005
+  populations: defect n=1 (233885349904190), near G-3/G-2 n=0/0, matched-phase n=24, typical n=24
+  DISCLOSED: n=1 defect at A=43, no scan (period 2,180,460,221,945,005) -- two-sample read as descriptive sigma-offset, NOT a test; no depth regression.
+  measured defect n=   1  [0.1s]  fac_incomplete(sum)=0
+  measured ctrl   n=  24  [1.8s]  fac_incomplete(sum)=0
+  measured typ    n=  24  [1.8s]  fac_incomplete(sum)=0
+  O1  defect mean   +4.1961 | matched   +4.2766 | typical   +4.2953 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -0.86, vs typical -0.98 (descriptive, NOT a test)
+  O2  defect mean   +1.6729 | matched   -0.0139 | typical   -0.1058 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched +1.61, vs typical +2.08 (descriptive, NOT a test)
+  O3  defect mean   -0.0370 | matched   -0.0214 | typical   -0.0417 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -0.35, vs typical +0.11 (descriptive, NOT a test)
+  O4  defect mean   +0.0707 | matched   +0.0507 | typical   +0.0489 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched +2.22, vs typical +2.15 (descriptive, NOT a test)
+  O5  defect mean   +0.7424 | matched   +0.8423 | typical   +0.8322 | z(d-m)    +nan (n=1/24) | z(d-t)    +nan | n=1: sigma-offset vs matched -2.84, vs typical -3.06 (descriptive, NOT a test)
+  O3d (demech) n=1: sigma-offset vs matched +0.25 (descriptive)
+  O1 per-block family: 43 blocks tested (pooled>=30), flags printed above if any
+  depth-regression: UNAVAILABLE (strata [102], n=1) -- disclosed
+  factorization completeness at A=43: 0 incomplete of 612433 factor calls so far (cumulative counter 0/612433)
+  scale A=43 done [3.7s]
+DEFECT stage done [23.5s total]; JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_defect.json
+==============================================================================
+[2026-07-11 11:44:49] PEEL-BILINEAR FOIL  foil-v2 ensemble grid A in {13,31,101} x X in {1e6,1e9}
+==============================================================================
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.1s)
+  factor tables: SPF<=7000000, 7702 trial-division primes <= 78500 (0.1s)
+  [X=1e+06] sieved 150000 centers + band 100 in 0.0s
+    edges: 500/3000 windows (0s)
+    edges: 1000/3000 windows (1s)
+    edges: 1500/3000 windows (1s)
+    edges: 2000/3000 windows (2s)
+    edges: 2500/3000 windows (2s)
+    edges: 3000/3000 windows (2s)
+  edge invariants: 3000 windows, block p in [32, 1000], O3 edges/window mean 210.2 [2s]
+  fresh-wing factorization completeness at X=1e+06: 0 incomplete of 630719
+==============================================================================
+[2026-07-11 11:44:51] PEEL-BILINEAR FOIL-CELL  X=1e+06 A=13 NW=3000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=44503 | O2 block edges (p>A) total=189707 | So==S disclosed degenerate
+  O2|S     R= -0.0149 zW=  -0.8 zI=  -1.0 n= 3000 
+  O2|S''   R= +0.0077 zW=  +0.4 zI=  +0.5 n= 3000 
+  O3|S''   R= +0.0009 zW=  +0.0 zI=  -0.0 n= 3000 
+  O3|S     R= +0.0216 zW=  +1.3 zI=  +1.0 n= 3000 
+  O3|So    R= +0.0216 zW=  +1.3 zI=  +1.0 n= 3000 
+  O3d|S''  R= -0.0034 zW=  -0.2 zI=  -0.2 n= 3000 
+  O4|S     R= -0.0247 zW=  -1.4 zI=  -1.2 n= 3000 
+  O4|S''   R= -0.0153 zW=  -0.8 zI=  -0.7 n= 3000 
+  cell JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_foil_1000000_13.json
+==============================================================================
+[2026-07-11 11:44:51] PEEL-BILINEAR FOIL-CELL  X=1e+06 A=31 NW=3000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=27942 | O2 block edges (p>A) total=189707 | So==S disclosed degenerate
+  O2|S     R= -0.0216 zW=  -1.2 zI=  -1.0 n= 3000 
+  O2|S''   R= +0.0060 zW=  +0.3 zI=  +0.4 n= 3000 
+  O3|S''   R= +0.0186 zW=  +1.1 zI=  +0.9 n= 3000 
+  O3|S     R= +0.0165 zW=  +0.9 zI=  +1.0 n= 3000 
+  O3|So    R= +0.0165 zW=  +0.9 zI=  +1.0 n= 3000 
+  O3d|S''  R= +0.0155 zW=  +0.9 zI=  +0.7 n= 3000 
+  O4|S     R= -0.0226 zW=  -1.4 zI=  -1.3 n= 3000 
+  O4|S''   R= -0.0160 zW=  -0.9 zI=  -0.9 n= 3000 
+  cell JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_foil_1000000_31.json
+==============================================================================
+[2026-07-11 11:44:52] PEEL-BILINEAR FOIL-CELL  X=1e+06 A=101 NW=3000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=16907 | O2 block edges (p>A) total=115601 | So==S disclosed degenerate
+  O2|S     R= -0.0133 zW=  -0.7 zI=  -0.7 n= 3000 
+  O2|S''   R= +0.0094 zW=  +0.5 zI=  +0.5 n= 3000 
+  O3|S''   R= +0.0076 zW=  +0.4 zI=  +0.4 n= 3000 
+  O3|S     R= +0.0104 zW=  +0.6 zI=  +0.5 n= 3000 
+  O3|So    R= +0.0104 zW=  +0.6 zI=  +0.5 n= 3000 
+  O3d|S''  R= +0.0056 zW=  +0.3 zI=  +0.3 n= 3000 
+  O4|S     R= -0.0194 zW=  -1.2 zI=  -0.9 n= 3000 
+  O4|S''   R= -0.0063 zW=  -0.4 zI=  -0.4 n= 3000 
+  cell JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_foil_1000000_101.json
+  [X=1e+09] sieved 50000 centers + band 100 in 0.0s
+    edges: 500/1000 windows (2s)
+    edges: 1000/1000 windows (4s)
+  edge invariants: 1000 windows, block p in [178, 31622], O3 edges/window mean 248.9 [4s]
+  fresh-wing factorization completeness at X=1e+09: 0 incomplete of 879614
+==============================================================================
+[2026-07-11 11:44:56] PEEL-BILINEAR FOIL-CELL  X=1e+09 A=13 NW=1000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=14835 | O2 block edges (p>A) total=68290 | So==S disclosed degenerate
+  O2|S     R= -0.0248 zW=  -0.8 zI=  -0.8 n= 1000 
+  O2|S''   R= -0.0459 zW=  -1.5 zI=  -1.4 n= 1000 
+  O3|S''   R= -0.0138 zW=  -0.4 zI=  -0.5 n= 1000 
+  O3|S     R= +0.0154 zW=  +0.5 zI=  +0.5 n= 1000 
+  O3|So    R= +0.0154 zW=  +0.5 zI=  +0.5 n= 1000 
+  O3d|S''  R= -0.0164 zW=  -0.5 zI=  -0.7 n= 1000 
+  O4|S     R= -0.0236 zW=  -0.8 zI=  -0.7 n= 1000 
+  O4|S''   R= -0.0081 zW=  -0.2 zI=  -0.2 n= 1000 
+  cell JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_foil_1000000000_13.json
+==============================================================================
+[2026-07-11 11:44:56] PEEL-BILINEAR FOIL-CELL  X=1e+09 A=31 NW=1000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=9311 | O2 block edges (p>A) total=68290 | So==S disclosed degenerate
+  O2|S     R= -0.0080 zW=  -0.3 zI=  -0.3 n= 1000 
+  O2|S''   R= -0.0110 zW=  -0.4 zI=  -0.4 n= 1000 
+  O3|S''   R= -0.0200 zW=  -0.6 zI=  -0.6 n= 1000 
+  O3|S     R= +0.0117 zW=  +0.4 zI=  +0.4 n= 1000 
+  O3|So    R= +0.0117 zW=  +0.4 zI=  +0.4 n= 1000 
+  O3d|S''  R= -0.0182 zW=  -0.6 zI=  -0.5 n= 1000 
+  O4|S     R= -0.0296 zW=  -1.0 zI=  -0.9 n= 1000 
+  O4|S''   R= +0.0231 zW=  +0.7 zI=  +0.7 n= 1000 
+  cell JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_foil_1000000000_31.json
+==============================================================================
+[2026-07-11 11:44:56] PEEL-BILINEAR FOIL-CELL  X=1e+09 A=101 NW=1000 H=50 (foil-v2, seed 20260710)
+==============================================================================
+  survivors=5593 | O2 block edges (p>A) total=68290 | So==S disclosed degenerate
+  O2|S     R= +0.0074 zW=  +0.2 zI=  +0.2 n= 1000 
+  O2|S''   R= -0.0241 zW=  -0.7 zI=  -0.7 n= 1000 
+  O3|S''   R= +0.0210 zW=  +0.7 zI=  +0.7 n= 1000 
+  O3|S     R= +0.0475 zW=  +1.5 zI=  +1.4 n= 1000 
+  O3|So    R= +0.0475 zW=  +1.5 zI=  +1.4 n= 1000 
+  O3d|S''  R= +0.0249 zW=  +0.8 zI=  +0.8 n= 1000 
+  O4|S     R= -0.0254 zW=  -0.8 zI=  -0.7 n= 1000 
+  O4|S''   R= +0.0203 zW=  +0.6 zI=  +0.7 n= 1000 
+  cell JSON -> C:\Users\elama\AppData\Local\Temp\peel_bilinear_scratch\peel_foil_1000000000_101.json
+FOIL stage done [7.5s total]
+==============================================================================
+[2026-07-11 11:45:18] PEEL-BILINEAR SUMMARY  verdict matrix (gate_g3 verbatim) + interpretation gate + STOP
+==============================================================================
+FOIL-v2 verdicts (thresholds verbatim: MANAGED-PASS iff min|z_I| >= 5 over the grid AND |R(A_hi)| >= |R(A_lo)|/3 for pairs (13->31),(31->101) at both X; SOFT-PASS iff min|z_I| >= 3; else PARITY-BLIND-UNDER-ESCALATION-v2):
+  O2   (O2|S):
+        A= 13 X=1e+06 R-0.0149 zI -0.96
+        A= 31 X=1e+06 R-0.0216 zI -1.01
+        A=101 X=1e+06 R-0.0133 zI -0.71
+        A= 13 X=1e+09 R-0.0248 zI -0.76
+        A= 31 X=1e+09 R-0.0080 zI -0.28
+        A=101 X=1e+09 R+0.0074 zI +0.18
+        min|z_I|=0.18  escalation ratios [1e+06:13->31=1.45, 1e+06:31->101=0.62, 1e+09:13->31=0.32, 1e+09:31->101=0.92] ratio_ok=False  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  O3   (O3|S''):
+        A= 13 X=1e+06 R+0.0009 zI -0.01
+        A= 31 X=1e+06 R+0.0186 zI +0.89
+        A=101 X=1e+06 R+0.0076 zI +0.41
+        A= 13 X=1e+09 R-0.0138 zI -0.55
+        A= 31 X=1e+09 R-0.0200 zI -0.59
+        A=101 X=1e+09 R+0.0210 zI +0.67
+        min|z_I|=0.01  escalation ratios [1e+06:13->31=21.37, 1e+06:31->101=0.41, 1e+09:13->31=1.45, 1e+09:31->101=1.05] ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  O4   (O4|S):
+        A= 13 X=1e+06 R-0.0247 zI -1.22
+        A= 31 X=1e+06 R-0.0226 zI -1.33
+        A=101 X=1e+06 R-0.0194 zI -0.94
+        A= 13 X=1e+09 R-0.0236 zI -0.69
+        A= 31 X=1e+09 R-0.0296 zI -0.89
+        A=101 X=1e+09 R-0.0254 zI -0.74
+        min|z_I|=0.69  escalation ratios [1e+06:13->31=0.92, 1e+06:31->101=0.86, 1e+09:13->31=1.26, 1e+09:31->101=0.86] ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  O3d  (O3d|S''):
+        A= 13 X=1e+06 R-0.0034 zI -0.23
+        A= 31 X=1e+06 R+0.0155 zI +0.74
+        A=101 X=1e+06 R+0.0056 zI +0.31
+        A= 13 X=1e+09 R-0.0164 zI -0.66
+        A= 31 X=1e+09 R-0.0182 zI -0.53
+        A=101 X=1e+09 R+0.0249 zI +0.80
+        min|z_I|=0.23  escalation ratios [1e+06:13->31=4.54, 1e+06:31->101=0.36, 1e+09:13->31=1.11, 1e+09:31->101=1.37] ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+------------------------------------------------------------------------------
+  secondary rows (information, not verdicts):
+  O2|S''   R+0.008 zI +0.5 | R+0.006 zI +0.4 | R+0.009 zI +0.5 | R-0.046 zI -1.4 | R-0.011 zI -0.4 | R-0.024 zI -0.7
+  O3|S     R+0.022 zI +1.0 | R+0.016 zI +1.0 | R+0.010 zI +0.5 | R+0.015 zI +0.5 | R+0.012 zI +0.4 | R+0.047 zI +1.4
+  O3|So    R+0.022 zI +1.0 | R+0.016 zI +1.0 | R+0.010 zI +0.5 | R+0.015 zI +0.5 | R+0.012 zI +0.4 | R+0.047 zI +1.4
+  O4|S''   R-0.015 zI -0.7 | R-0.016 zI -0.9 | R-0.006 zI -0.4 | R-0.008 zI -0.2 | R+0.023 zI +0.7 | R+0.020 zI +0.7
+------------------------------------------------------------------------------
+INTERPRETATION GATE: O3 content = O3 verdict AND O3d verdict:
+  O3=PARITY-BLIND-UNDER-ESCALATION-v2, O3d=PARITY-BLIND-UNDER-ESCALATION-v2 -> O3 content verdict: PARITY-BLIND-UNDER-ESCALATION-v2
+------------------------------------------------------------------------------
+DEFECT-STAGE trends (O1/O5 defect-vs-matched residuals + depth regression):
+  A=17  O1: z(d-m)=-2.99 reg-z=-0.63 | O5: z(d-m)=-2.82 reg-z=-1.27
+  A=19  O1: z(d-m)=-1.40 reg-z=-1.62 | O5: z(d-m)=-6.44 reg-z=-2.22
+  A=23  O1: z(d-m)=-0.44 reg-z=-0.64 | O5: z(d-m)=-2.35 reg-z=+2.09
+  A=29  O1: z(d-m)=+0.70 reg-z=NA | O5: z(d-m)=+0.52 reg-z=NA
+  A=31  O1: z(d-m)=-0.43 reg-z=NA | O5: z(d-m)=-7.96 reg-z=NA
+  A=37  O1: z(d-m)=n=1 reg-z=NA | O5: z(d-m)=n=1 reg-z=NA
+  A=41  O1: z(d-m)=n=1 reg-z=NA | O5: z(d-m)=n=1 reg-z=NA
+  A=43  O1: z(d-m)=n=1 reg-z=NA | O5: z(d-m)=n=1 reg-z=NA
+  O1/O5 depth-regression TREND (|z|>=3) at scales: none (need >= 2 to block STOP)
+------------------------------------------------------------------------------
+SECONDARY (deterministic lean-model tree profile; proof-search shadow, no
+  Lean statements, quoted from tools/phase_cover_run1.log): no-mirror UNSAT
+  B&B nodes A=17:464 19:2,626 23:5,301 29:11,527 31:30,079 37:25,543
+  41:473,293 43:4,889,831; UNSAT trees SHRINK above G(A) (x13.6 at 41,
+  x16.0 at 43).
+------------------------------------------------------------------------------
+REGISTERED STOP EVALUATION:
+  O2/O3/O4 all PARITY-BLIND-UNDER-ESCALATION-v2: True
+  O1/O5 defect-depth |z|>=3 trend at >= 2 scales: False (scales: none)
+  STOP TRIGGERED -- ledger null: the bilinear/peel layer is parity-blind
+  and phase-determined.  The Lean identities (peel_parity_transport /
+  peel_sign_flip / window_edge_count / struck_wing_minFac_le +
+  defect_edges_small_labels_17 / peel_target_window) are kept as the
+  exact conservation laws of the layer.  No new weightings, no threshold
+  moves, no extra blocks.

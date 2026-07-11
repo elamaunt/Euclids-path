@@ -37,6 +37,19 @@ Stages (argv modes; every stage APPENDS to tools/grave_depth_run1.log):
   emit        min-depth path witnesses for m in [1,2000] as (t, p, side_is_minus,
               target_is_plus) tuples, each step re-verified against the PeelStep
               arithmetic, written as JSON for tools/gen_paths_lean.py.
+  frontier    frontier/drainage census: maximal twin-free intervals between consecutive
+              twin centers ([1,10^6] exhaustive with assert-first base census; windows
+              [10^9,10^9+5e4), [10^12,10^12+5e4)); canonical-grave trajectories for every
+              interior root of DEC u LONG u MED intervals + BFS reach-sets (cap 200,
+              basins convention) on DEC; registered observables O1-O5 (landing entropy,
+              penetration, grave scatter, first-exit share, drop ratio); LONG (L>=100)
+              vs MED strata Welch comparison; SELFTEST: every exit lands t <= a (numeric
+              shadow of the green theorem twinFree_descent_exit) -- violation stops.
+  frontier_foil  foil-v2 verdicts on 5 registered per-window trajectory scalars F1..F5
+              (precompute_X + foil_row REUSED VERBATIM from betti_portrait_harness);
+              grid X in {10^6 NW=3000, 10^9 NW=1000} x A in {13,31}, H=50; loads
+              S'' primary / S secondary (So NA-degenerate, disclosed); 200 sigma_W +
+              200 sigma_I resamples, seed 20260710; gate_g3 thresholds immovable.
 
 Intermediate artifacts go to the scratch dir (env GRAVE_DEPTH_SCRATCH or the system temp
 dir) — the repo stays clean except this file, the log, gen_paths_lean.py and the Lean module.
@@ -733,11 +746,554 @@ def stage_selftest():
     log("  BFS == exact recursion on [1,400] + 40 spot roots -> %s" % ("PASS" if ok4 else "FAIL"))
 
 
+# ---------- stage: frontier (twin-free interval census + trajectory observables) ----------
+
+REACH_CAP = 200        # reach-set node cap (basins-stage convention)
+
+
+def canonical_next_any(m):
+    """Tier-general canonical peel (left-wing-first minFac rule; mirrors canonical_next /
+    GenealogyBasins.canonicalPeel exactly, but factors via fac_distinct so it works on
+    every factorization tier, not just under the SPF sieve)."""
+    for off in (-1, 1):
+        v = 6 * m + off
+        fs = fac_distinct(v)
+        if fs[0] == v:
+            continue  # wing prime
+        p = fs[0]
+        cof = v // p
+        if cof < 5:
+            continue
+        r6 = cof % 6
+        return (cof + 1) // 6 if r6 == 5 else (cof - 1) // 6
+    raise RuntimeError("no canonical peel at %d" % m)
+
+
+_GCACHE = {}
+
+
+def canonical_grave(m, ctx):
+    """(first canonical target, canonical grave) of m; grave = first twin center on the
+    canonical trajectory.  Cached (trajectory tails are shared across roots)."""
+    r = _GCACHE.get(m)
+    if r is not None:
+        return r
+    chain = []
+    cur = m
+    while True:
+        r = _GCACHE.get(cur)
+        if r is not None:
+            g = r[1]
+            break
+        if is_twin(cur, ctx):
+            g = cur
+            _GCACHE[cur] = (None, cur)
+            break
+        t = canonical_next_any(cur)
+        assert 1 <= t < cur, ("canonical descent violated", m, cur, t)
+        chain.append((cur, t))
+        cur = t
+    for (c, t) in reversed(chain):
+        _GCACHE[c] = (t, g)
+    return _GCACHE[m]
+
+
+def entropy_bits(vals):
+    n = len(vals)
+    if n == 0:
+        return float('nan')
+    cnt = {}
+    for v in vals:
+        cnt[v] = cnt.get(v, 0) + 1
+    h = 0.0
+    for c in cnt.values():
+        p = c / n
+        h -= p * math.log2(p)
+    return h
+
+
+def welch_z(x, y):
+    x = np.asarray([v for v in x if np.isfinite(v)], dtype=np.float64)
+    y = np.asarray([v for v in y if np.isfinite(v)], dtype=np.float64)
+    if x.size < 2 or y.size < 2:
+        return float('nan')
+    se = math.sqrt(x.var(ddof=1) / x.size + y.var(ddof=1) / y.size)
+    return (x.mean() - y.mean()) / se if se > 0 else float('nan')
+
+
+def stat_ms(recs, key):
+    a = np.asarray([r[key] for r in recs], np.float64)
+    a = a[np.isfinite(a)]
+    if a.size == 0:
+        return float('nan'), float('nan'), 0
+    return float(a.mean()), float(a.std()), int(a.size)
+
+
+def traj_root(m, a, b, ctx):
+    """Canonical trajectory of interior root m of the twin-free interval (a, b):
+    returns (first target, (exit source, exit target), grave).  SELFTEST asserts:
+    strict descent; pre-exit nodes stay inside (a,b) and are twin-free; the exit
+    lands t <= a (numeric shadow of the green theorem twinFree_descent_exit); the
+    grave is a twin center <= a."""
+    assert a < m < b and not is_twin(m, ctx), ("bad interior root", m, a, b)
+    cur = m
+    f1 = None
+    ex = None
+    steps = 0
+    while ex is None:
+        t = canonical_next_any(cur)
+        assert 1 <= t < cur, ("descent violated", m, cur, t)
+        if f1 is None:
+            f1 = t
+        if t <= a:
+            ex = (cur, t)
+        else:
+            assert a < t < b, ("pre-exit node escaped (a,b)", m, cur, t)
+            assert not is_twin(t, ctx), ("twin inside twin-free interval", m, t)
+            cur = t
+        steps += 1
+        assert steps <= 400, ("trajectory too long", m)
+    g = canonical_grave(ex[1], ctx)[1]
+    assert is_twin(g, ctx) and g <= a, ("grave not a twin <= a", m, g, a)
+    return f1, ex, g
+
+
+def reach_stats(m, ctx, tcache, cap=REACH_CAP):
+    """Reach-set of m under arbitrary peel steps (the basins reach_set BFS with shared
+    caches): returns (#nodes, set of twin centers inside, capped?)."""
+    seen = {m}
+    frontier = [m]
+    capped = False
+    while frontier and not capped:
+        nxt = []
+        for t in frontier:
+            if is_twin(t, ctx):
+                continue  # twins are sinks
+            tg = tcache.get(t)
+            if tg is None:
+                tg = peel_targets(t)
+                if t > 10 ** 7:
+                    tcache[t] = tg   # cache only the expensive tiers
+            for u in tg:
+                if u not in seen:
+                    seen.add(u)
+                    nxt.append(u)
+                    if len(seen) >= cap:
+                        capped = True
+                        break
+            if capped:
+                break
+        frontier = nxt
+    tws = {u for u in seen if is_twin(u, ctx)}
+    return len(seen), tws, capped
+
+
+FR_KEYS = (('H', 'entropy(bits)'), ('Hn', 'Hn=H/log2(L-1)'), ('G', 'distinct graves'),
+           ('sc', 'scatter G/(L-1)'), ('pen', 'penetration a-t'),
+           ('penr', 'pen ratio (a-t)/a'), ('fx', 'first-exit share'),
+           ('mdr', 'mean drop (m-t)/L'), ('xdr', 'max drop (m-t)/L'))
+
+
+def frontier_scale(X, n, tag):
+    t0 = time.time()
+    ctx = make_ctx()
+    log("-- frontier %s --" % tag)
+    if X == 1:
+        centers = (np.flatnonzero(_TWIN[1:n + 1]) + 1).astype(np.int64)
+        log("  roots m in [1, %d]; factorization: SPF sieve (exact)" % n)
+    elif X == 10 ** 9:
+        centers = np.array([m for m in range(X, X + n) if is_twin(m, ctx)], np.int64)
+        log("  window [%d, %d); factorization: numpy trial division, primes <= %d"
+            " (exact by the remainder-prime argument)" % (X, X + n, PTD_LIM))
+    else:
+        centers = np.array([m for m in range(X, X + n) if is_twin(m, ctx)], np.int64)
+        log("  window [%d, %d); factorization: Pollard rho (Brent) + deterministic"
+            " Miller-Rabin bases %s" % (X, X + n, list(MR_BASES)))
+        log("    deterministic below %d; max wing here 6(X+n)+1 = %d -- margin > 50x;"
+            % (MR_VALID, 6 * (X + n) + 1))
+        log("    rho failure raises (stage completion == zero failures) ->"
+            " completeness: FULL")
+    L = np.diff(centers).astype(np.int64)
+    nint = int(L.size)
+    hist = {}
+    for bkt in ((L // 50) * 50).tolist():
+        hist[int(bkt)] = hist.get(int(bkt), 0) + 1
+    hist = dict(sorted(hist.items()))
+    mx = int(L.max())
+    left = int(centers[:-1][int(np.argmax(L == mx))])
+    ge100 = int((L >= 100).sum())
+    log("  twin centers: %d -> intervals: %d (%.0fs)"
+        % (int(centers.size), nint, time.time() - t0))
+    log("  length histogram (50-buckets): %s" % hist)
+    log("  intervals with L >= 100: %d; max L = %d after m = %d (next twin %d)"
+        % (ge100, mx, left, left + mx))
+    if tag == "1e6":
+        assert int(centers.size) == 37915, ("twin center count", int(centers.size))
+        assert nint == 37914, ("interval count", nint)
+        assert hist == {0: 32463, 50: 4726, 100: 626, 150: 87, 200: 10, 250: 2}, \
+            ("histogram", hist)
+        assert ge100 == 725, ("L>=100 count", ge100)
+        assert mx == 255 and left == 811652, ("max interval", mx, left)
+        log("  BASE-CENSUS ASSERTS (10^6): centers/intervals/histogram/L>=100/max --"
+            " ALL EXACT MATCH -> PASS")
+    med = int(np.median(L))
+    srt = np.sort(L)
+    thr = int(srt[int(0.9 * (nint - 1))])
+    dec = np.flatnonzero(L >= thr)
+    lng = np.flatnonzero(L >= 100)
+    mdb = np.flatnonzero(np.abs(L - med) <= 2)
+    log("  strata: DEC thr=%d -> %d intervals (%d interior roots); LONG L>=100 -> %d"
+        " (%d roots); MED |L-%d|<=2 -> %d (%d roots)"
+        % (thr, int(dec.size), int((L[dec] - 1).sum()), int(lng.size),
+           int((L[lng] - 1).sum()), med, int(mdb.size), int((L[mdb] - 1).sum())))
+    sel = sorted(set(dec.tolist()) | set(lng.tolist()) | set(mdb.tolist()))
+    dset = set(dec.tolist())
+    imax = int(np.argmax(L))
+    obs = {}
+    pooled = {}
+    maxdetail = None
+    nex = 0
+    t1 = time.time()
+    for k, i in enumerate(sel):
+        if time.time() - t0 > TIME_CAP:
+            log("  TIME CAP hit after %d/%d selected intervals -- remaining skipped"
+                " (reduction disclosed)" % (k, len(sel)))
+            break
+        a = int(centers[i])
+        b = int(centers[i + 1])
+        Li = int(L[i])
+        if Li < 2:
+            continue
+        graves, pens, drs = [], [], []
+        fxs = 0
+        for m in range(a + 1, b):
+            f1, (me, te), g = traj_root(m, a, b, ctx)
+            nex += 1
+            graves.append(g)
+            pens.append(a - te)
+            if f1 <= a:
+                fxs += 1
+            drs.append((me - te) / Li)
+        H = entropy_bits(graves)
+        G = len(set(graves))
+        obs[i] = dict(L=Li, a=a, H=H,
+                      Hn=(H / math.log2(Li - 1) if Li >= 3 else float('nan')),
+                      G=G, sc=G / (Li - 1), pen=float(np.mean(pens)),
+                      penr=float(np.mean(pens)) / a, fx=fxs / (Li - 1),
+                      mdr=float(np.mean(drs)), xdr=float(np.max(drs)))
+        if i in dset:
+            for g in graves:
+                pooled[g] = pooled.get(g, 0) + 1
+        if i == imax:
+            cnt = {}
+            for g in graves:
+                cnt[g] = cnt.get(g, 0) + 1
+            maxdetail = sorted(cnt.items(), key=lambda kv: -kv[1])[:5]
+        if (k + 1) % 1000 == 0:
+            log("    frontier %s: %d/%d intervals (%.0fs)"
+                % (tag, k + 1, len(sel), time.time() - t1))
+    log("  SELFTEST: %d interior-root trajectories verified (strict descent; pre-exit"
+        " confinement to (a,b); every exit lands t <= a; grave = twin <= a) -> PASS"
+        % nex)
+    for nm, idx in (('DEC', dec), ('LONG', lng), ('MED', mdb)):
+        rr = [obs[i] for i in idx.tolist() if i in obs]
+        if not rr:
+            log("  %s: no measured intervals" % nm)
+            continue
+        log("  %s (n=%d intervals, %d roots):"
+            % (nm, len(rr), sum(r['L'] - 1 for r in rr)))
+        log("    H=%.4f+-%.4f  Hn=%.4f+-%.4f  G=%.2f+-%.2f  sc=%.4f+-%.4f"
+            % (stat_ms(rr, 'H')[:2] + stat_ms(rr, 'Hn')[:2] + stat_ms(rr, 'G')[:2]
+               + stat_ms(rr, 'sc')[:2]))
+        log("    pen=%.6g+-%.3g  penr=%.6f+-%.6f  fx=%.6f+-%.6f"
+            % (stat_ms(rr, 'pen')[:2] + stat_ms(rr, 'penr')[:2]
+               + stat_ms(rr, 'fx')[:2]))
+        log("    mdr=%.6g+-%.3g  xdr=%.6g+-%.3g"
+            % (stat_ms(rr, 'mdr')[:2] + stat_ms(rr, 'xdr')[:2]))
+    rl = [obs[i] for i in lng.tolist() if i in obs]
+    rm = [obs[i] for i in mdb.tolist() if i in obs]
+    log("  DEFECT-LINKED comparison (LONG vs MED), Welch z per observable:")
+    for key, lbl in FR_KEYS:
+        ml, _, nl = stat_ms(rl, key)
+        mm, _, nm_ = stat_ms(rm, key)
+        z = welch_z([r[key] for r in rl], [r[key] for r in rm])
+        log("    %-22s LONG %.6g (n=%d) vs MED %.6g (n=%d)  z=%+7.2f%s"
+            % (lbl, ml, nl, mm, nm_, z,
+               "  [|z|>=3]" if np.isfinite(z) and abs(z) >= 3 else ""))
+    if pooled:
+        top5 = sorted(pooled.items(), key=lambda kv: -kv[1])[:5]
+        log("  DEC pooled landing-twin mass: %d exits over %d distinct graves;"
+            " top-5 graves: %s" % (sum(pooled.values()), len(pooled), top5))
+    if maxdetail is not None and imax in obs:
+        r = obs[imax]
+        log("  longest interval (a=%d, L=%d): H=%.3f bits, G=%d/%d, top-5 graves: %s"
+            % (r['a'], r['L'], r['H'], r['G'], r['L'] - 1, maxdetail))
+    tcache = {}
+    tot_nodes = ncap = tot_tw = nrr = 0
+    uni_ratio = []
+    t2 = time.time()
+    dec_meas = [i for i in dec.tolist() if i in obs]
+    for k, i in enumerate(dec_meas):
+        if time.time() - t0 > TIME_CAP:
+            log("  TIME CAP hit in reach phase after %d/%d DEC intervals -- remaining"
+                " skipped (reduction disclosed)" % (k, len(dec_meas)))
+            break
+        a = int(centers[i])
+        b = int(centers[i + 1])
+        uni = set()
+        for m in range(a + 1, b):
+            sz, tws, cp = reach_stats(m, ctx, tcache)
+            tot_nodes += sz
+            tot_tw += len(tws)
+            ncap += int(cp)
+            nrr += 1
+            uni |= tws
+        uni_ratio.append((len(uni), obs[i]['G']))
+        if (k + 1) % 500 == 0:
+            log("    reach %s: %d/%d DEC intervals (%.0fs)"
+                % (tag, k + 1, len(dec_meas), time.time() - t2))
+    if nrr:
+        ur = np.asarray(uni_ratio, np.float64)
+        log("  reach-sets (DEC, cap %d): %d roots; mean size %.1f; capped %d (share"
+            " %.4f); mean twins-in-reach per root %.2f"
+            % (REACH_CAP, nrr, tot_nodes / nrr, ncap, ncap / nrr, tot_tw / nrr))
+        log("  per-interval distinct twins in reach-union vs canonical grave count G:"
+            " mean %.1f vs %.1f (mean ratio %.2f)"
+            % (float(ur[:, 0].mean()), float(ur[:, 1].mean()),
+               float((ur[:, 0] / np.maximum(ur[:, 1], 1)).mean())))
+    log("  scale %s done in %.0fs" % (tag, time.time() - t0))
+
+
+def stage_frontier():
+    setup_tables()
+    log("== frontier: maximal twin-free intervals between consecutive twin centers ==")
+    log("PRE-REGISTRATION (logged BEFORE any measurement):")
+    log("  Interval: consecutive twin centers a < b; LENGTH L = b - a (the gap);")
+    log("    interior roots a < m < b (count L-1; L=1 = adjacent twins, no interior).")
+    log("  Scales: [1,10^6] exhaustive; windows [10^9,10^9+5e4) and [10^12,10^12+5e4)")
+    log("    (intervals between consecutive twins INSIDE each window; edge parts"
+        " dropped).")
+    log("  ASSERT-FIRST base census at 10^6: 37915 centers -> 37914 intervals;")
+    log("    histogram {0:32463, 50:4726, 100:626, 150:87, 200:10, 250:2}; 725 with")
+    log("    L>=100; max L=255 after m=811652 -- any mismatch stops the stage.")
+    log("  Trajectory: canonical grave rule (left-wing-first minFac,")
+    log("    GenealogyBasins.canonicalPeel mirror; tier-general via fac_distinct).")
+    log("    Exit = FIRST canonical step with target t <= a; penetration = a - t;")
+    log("    first-peel-exit = [first target <= a]; drop ratio of the exiting step =")
+    log("    (m_exit - t_exit)/L.")
+    log("  SELFTEST (mandatory, STOP on violation): every step 1 <= t < cur; pre-exit")
+    log("    nodes stay inside (a,b) and are twin-free; every exit lands t <= a")
+    log("    (numeric shadow of the green theorem twinFree_descent_exit); every grave")
+    log("    is a twin center <= a.")
+    log("  OBSERVABLES (registered here, before measurement):")
+    log("    O1 landing-twin (canonical grave) distribution per interval; entropy H")
+    log("       (bits) and normalized Hn = H/log2(L-1) (L>=3).")
+    log("    O2 penetration a - t per exit: per-interval mean; scale-free (a-t)/a.")
+    log("    O3 distinct graves per interval G; scatter G/(L-1) (prior: basins")
+    log("       adjacent-pair boundary density 0.9579 -> strong scatter, ratio near 1).")
+    log("    O4 share of interior roots whose FIRST peel already exits (t1 <= a).")
+    log("       A-priori note: every peel divides the center by >= ~5 while L stays")
+    log("       a few hundred << a at these scales, so the registered expectation is")
+    log("       share == 1 identically; any deviation is an anomaly.")
+    log("    O5 drop ratio (m_exit - t_exit)/L per root; per-interval mean and max.")
+    log("  STRATA: DEC = top decile by length (thr = sorted(L)[floor(0.9*(n-1))], take")
+    log("    L >= thr); LONG = L >= 100; MED = |L - floor(median)| <= 2. Trajectory")
+    log("    observables on DEC u LONG u MED; defect-linked comparison = LONG vs MED")
+    log("    at the same scale, Welch z per observable.")
+    log("  REACH-SETS: full BFS reach (arbitrary peel steps, node cap %d = basins"
+        % REACH_CAP)
+    log("    convention) for EVERY interior root of DEC intervals; DESCRIPTIVE")
+    log("    summaries only (mean size, capped share, twins-in-reach, union-twins vs"
+        " G).")
+    log("  BUDGET: TIME_CAP %ds per scale; overruns skip remaining items with a LOGGED"
+        % TIME_CAP)
+    log("    note. Factorization tiers as in census9/census12; completeness reported.")
+    bad = 0
+    for m in range(1, 20001):
+        if _TWIN[m]:
+            continue
+        if canonical_next_any(m) != canonical_next(m):
+            bad += 1
+    log("  selftest: canonical_next_any == canonical_next (SPF rule) on all non-twin"
+        " m <= 20000 -> %s" % ("PASS" if bad == 0 else ("FAIL (%d)" % bad)))
+    if bad:
+        sys.exit(1)
+    for X, n, tag in ((1, 10 ** 6, "1e6"), (10 ** 9, WINDOW, "1e9"),
+                      (10 ** 12, WINDOW, "1e12")):
+        try:
+            frontier_scale(X, n, tag)
+        except AssertionError as e:
+            log("  ASSERT/SELFTEST VIOLATION at %s: %r -- STOP (a violation is a bug;"
+                " later work must not run)" % (tag, e))
+            sys.exit(1)
+
+
+# ---------- stage: frontier_foil (foil-v2 on trajectory observables) ----------
+
+def stage_frontier_foil():
+    setup_tables()
+    import betti_portrait_harness as bp
+    log("== frontier_foil: foil-v2 verdicts on trajectory observables ==")
+    log("PRE-REGISTRATION (logged BEFORE any measurement):")
+    log("  Machinery: precompute_X + foil_row REUSED VERBATIM from"
+        " betti_portrait_harness;")
+    log("    grid X in {10^6 (NW=3000), 10^9 (NW=1000)} x A in {13,31}, H=50; seed %d;"
+        % bp.SEED)
+    log("    200 permutations (sigma_W) + 200 lambda-resamples from the survivor pool"
+        " (sigma_I).")
+    log("  Loads: S'' split-window PRIMARY (observable on left-half survivors, load =")
+    log("    sum of lambda over right-half survivors); S full-window SECONDARY")
+    log("    (self-contaminated: information, not verdicts); So self-excluded is")
+    log("    NA-DEGENERATE here and DISCLOSED: the trajectory observables read every")
+    log("    non-twin survivor of the window; the residual So support is the twin")
+    log("    stratum whose lambda is identically +1.")
+    log("  REGISTERED SCALARS (exactly these 5; per window, over non-twin A-survivors;")
+    log("    canonical trajectory as in stage frontier; a(m) = largest twin center"
+        " < m):")
+    log("    F1 landing entropy (bits) of the canonical-grave distribution;")
+    log("    F2 mean penetration ratio (a(m) - t1(m))/m;")
+    log("    F3 first-exit share [t1(m) <= a(m)] (a-priori expectation: identically 1")
+    log("       -> degenerate; registered anyway as the direct exit observable);")
+    log("    F4 grave scatter: distinct graves / roots;")
+    log("    F5 max drop ratio max_m (m - t1(m))/m.")
+    log("  VERDICT RULE (gate_g3 foil-v2, thresholds immovable): PARITY-SENSITIVE")
+    log("    (MANAGED-PASS) iff min|z_I| over the 4 cells >= 5 AND |R(31)| >=")
+    log("    |R(13)|/3 at both X; SOFT-PASS iff min|z_I| >= 3; else")
+    log("    PARITY-BLIND-UNDER-ESCALATION-v2.")
+    log("  HONEST PRIOR: PARITY-BLIND (L38/L41 pattern); the value is extending the")
+    log("    parity-blindness map to the trajectory-valued representation class; a")
+    log("    null is a ledger law. STOP (registered): after the grid, no new")
+    log("    observables, weightings or thresholds.")
+    rows_def = [("F1|S''", "F1L", "Ssplit"), ("F2|S''", "F2L", "Ssplit"),
+                ("F3|S''", "F3L", "Ssplit"), ("F4|S''", "F4L", "Ssplit"),
+                ("F5|S''", "F5L", "Ssplit"),
+                ("F1|S", "F1", "S"), ("F2|S", "F2", "S"), ("F3|S", "F3", "S"),
+                ("F4|S", "F4", "S"), ("F5|S", "F5", "S")]
+    H = 50
+    results = {}
+    for X, NW in ((10 ** 6, 3000), (10 ** 9, 1000)):
+        px = bp.precompute_X(X, NW)
+        ncent, lo = px['ncent'], px['lo']
+        log("  precompute: X=%d NW=%d H=%d ncent=%d lo=%d (band %d)"
+            % (X, NW, H, ncent, lo, bp.BAND))
+        twin_cov = (px['OLb'] == 1) & (px['ORb'] == 1)
+        assert bool(np.all(twin_cov[bp.BAND:] == px['twin']))
+        ctx = make_ctx()
+        t = lo - 1
+        guard = 0
+        while not is_twin(t, ctx):
+            t -= 1
+            guard += 1
+            assert guard < 100000
+        a0 = t
+        posn = np.arange(lo, X + ncent, dtype=np.int64)
+        prev_tw = np.maximum.accumulate(np.where(twin_cov, posn, np.int64(a0)))
+        m_arr = X + np.arange(ncent, dtype=np.int64)
+        for A in (13, 31):
+            tA = time.time()
+            clean = np.ones(ncent, bool)
+            for q in (5, 7, 11, 13, 17, 19, 23, 29, 31):
+                if q > A:
+                    break
+                i6 = pow(6, -1, q)
+                clean &= (m_arr % q != i6) & (m_arr % q != (q - i6) % q)
+            cl = clean.reshape(NW, H)
+            lamw = px['lam'].reshape(NW, H).astype(np.float64)
+            F = {k: np.full(NW, np.nan) for k in
+                 ('F1', 'F2', 'F3', 'F4', 'F5', 'F1L', 'F2L', 'F3L', 'F4L', 'F5L')}
+            ntw_tot = 0
+            for w in range(NW):
+                x0 = X + w * H
+                sv = m_arr[w * H:(w + 1) * H][cl[w]]
+                ntw = sv[~px['twin'][sv - X]]
+                ntw_tot += int(ntw.size)
+                for suf, roots in (('', ntw), ('L', ntw[ntw < x0 + H // 2])):
+                    if roots.size == 0:
+                        continue
+                    graves, penr, dr = [], [], []
+                    fx = 0
+                    for m in roots.tolist():
+                        t1, g = canonical_grave(m, ctx)
+                        a = int(prev_tw[m - 1 - lo])
+                        graves.append(g)
+                        penr.append((a - t1) / m)
+                        if t1 <= a:
+                            fx += 1
+                        dr.append((m - t1) / m)
+                    F['F1' + suf][w] = entropy_bits(graves)
+                    F['F2' + suf][w] = float(np.mean(penr))
+                    F['F3' + suf][w] = fx / len(graves)
+                    F['F4' + suf][w] = len(set(graves)) / len(graves)
+                    F['F5' + suf][w] = float(max(dr))
+            right = np.zeros((NW, H), bool)
+            right[:, H // 2:] = True
+            masks = {'S': cl, 'Ssplit': cl & right}
+            loads = {k: (lamw * mk).sum(1) for k, mk in masks.items()}
+            pool = px['lam'][clean].astype(np.float64)
+            rng = np.random.default_rng(bp.SEED)
+            nulls = {k: np.empty((200, NW)) for k in masks}
+            lmat = np.zeros((NW, H), np.float64)
+            nsurv = int(cl.sum())
+            for tI in range(200):
+                lmat[:] = 0.0
+                lmat[cl] = rng.choice(pool, size=nsurv)
+                for k, mk in masks.items():
+                    nulls[k][tI] = (lmat * mk).sum(1)
+            ntwin = int((px['twin'] & clean).sum())
+            log("  CELL X=%.0e A=%d: survivors=%d twin-survivors=%d non-twin=%d"
+                " (%.0fs)" % (X, A, nsurv, ntwin, ntw_tot, time.time() - tA))
+            log("    means: F1=%.4f F2=%.6f F3=%.6f F4=%.4f F5=%.6f"
+                % tuple(float(np.nanmean(F[k]))
+                        for k in ('F1', 'F2', 'F3', 'F4', 'F5')))
+            res = {}
+            for name, fk, lk in rows_def:
+                st = bp.foil_row(F[fk], loads[lk], nulls[lk],
+                                 np.random.default_rng(bp.SEED + 7))
+                res[name] = st
+                log("    %-8s R=%+8.4f zW=%+6.1f zI=%+6.1f n=%5d %s"
+                    % (name, st['R'], st['zW'], st['zI'], st['n'], st['note']))
+            results[(X, A)] = res
+    cells = [(10 ** 6, 13), (10 ** 6, 31), (10 ** 9, 13), (10 ** 9, 31)]
+    log("  VERDICT MATRIX (primary load S''; cells: %s):"
+        % ", ".join("X=%.0e A=%d" % c for c in cells))
+    for fi in range(1, 6):
+        name = "F%d|S''" % fi
+        zs, Rs, parts = [], {}, []
+        for c in cells:
+            st = results[c][name]
+            zs.append(abs(st['zI']))
+            Rs[c] = st['R']
+            parts.append("R%+.3f zI%+5.1f" % (st['R'], st['zI']))
+        ratio_ok = all(abs(Rs[(Xv, 31)]) >= abs(Rs[(Xv, 13)]) / 3.0
+                       for Xv in (10 ** 6, 10 ** 9) if abs(Rs[(Xv, 13)]) > 1e-9)
+        v = ("PARITY-SENSITIVE(MANAGED-PASS)" if min(zs) >= 5 and ratio_ok
+             else "SOFT-PASS" if min(zs) >= 3
+             else "PARITY-BLIND-UNDER-ESCALATION-v2")
+        log("    %-8s %s | min|zI|=%.1f ratio_ok=%s -> %s"
+            % (name, " | ".join(parts), min(zs), ratio_ok, v))
+    anom = []
+    for c in cells:
+        for name in sorted(results[c]):
+            st = results[c][name]
+            if abs(st['zI']) >= 3 or abs(st['zW']) >= 3:
+                anom.append((c, name, st['zW'], st['zI'], st['R']))
+    if anom:
+        log("  |z| >= 3 rows (any load; information, not verdicts):")
+        for c, name, zw, zi, r in anom:
+            log("    X=%.0e A=%d %s: R=%+.4f zW=%+.1f zI=%+.1f"
+                % (c[0], c[1], name, r, zw, zi))
+    else:
+        log("  |z| >= 3 rows: NONE (all loads, all cells)")
+    log("  STOP (registered): grid complete -- no new observables, weightings or"
+        " thresholds.")
+
+
 # ---------- main ----------
 
 STAGES = dict(selftest=stage_selftest, census6=stage_census6, census9=stage_census9,
               census12=stage_census12, drops6=stage_drops6, drops9=stage_drops9,
-              drops12=stage_drops12, mn=stage_mn, basins=stage_basins, emit=stage_emit)
+              drops12=stage_drops12, mn=stage_mn, basins=stage_basins, emit=stage_emit,
+              frontier=stage_frontier, frontier_foil=stage_frontier_foil)
 
 
 def main():

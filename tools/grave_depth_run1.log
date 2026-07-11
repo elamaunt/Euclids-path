@@ -139,3 +139,260 @@
   adjacent twin-free pairs checked: 89457; DISJOINT-reach pairs: 4053; unresolved (cap 200): 0
   disjoint examples (first 10): [27, 28, 34, 35, 36, 59, 60, 82, 93, 108]
   VERDICT: disjoint-reach twin-free adjacent pair exists <= 1e5: YES
+
+#### frontier @ 2026-07-11 12:16:18 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.0s)
+== frontier: maximal twin-free intervals between consecutive twin centers ==
+PRE-REGISTRATION (logged BEFORE any measurement):
+  Interval: consecutive twin centers a < b; LENGTH L = b - a (the gap);
+    interior roots a < m < b (count L-1; L=1 = adjacent twins, no interior).
+  Scales: [1,10^6] exhaustive; windows [10^9,10^9+5e4) and [10^12,10^12+5e4)
+    (intervals between consecutive twins INSIDE each window; edge parts dropped).
+  ASSERT-FIRST base census at 10^6: 37915 centers -> 37914 intervals;
+    histogram {0:32463, 50:4726, 100:626, 150:87, 200:10, 250:2}; 725 with
+    L>=100; max L=255 after m=811652 -- any mismatch stops the stage.
+  Trajectory: canonical grave rule (left-wing-first minFac,
+    GenealogyBasins.canonicalPeel mirror; tier-general via fac_distinct).
+    Exit = FIRST canonical step with target t <= a; penetration = a - t;
+    first-peel-exit = [first target <= a]; drop ratio of the exiting step =
+    (m_exit - t_exit)/L.
+  SELFTEST (mandatory, STOP on violation): every step 1 <= t < cur; pre-exit
+    nodes stay inside (a,b) and are twin-free; every exit lands t <= a
+    (numeric shadow of the green theorem twinFree_descent_exit); every grave
+    is a twin center <= a.
+  OBSERVABLES (registered here, before measurement):
+    O1 landing-twin (canonical grave) distribution per interval; entropy H
+       (bits) and normalized Hn = H/log2(L-1) (L>=3).
+    O2 penetration a - t per exit: per-interval mean; scale-free (a-t)/a.
+    O3 distinct graves per interval G; scatter G/(L-1) (prior: basins
+       adjacent-pair boundary density 0.9579 -> strong scatter, ratio near 1).
+    O4 share of interior roots whose FIRST peel already exits (t1 <= a).
+       A-priori note: every peel divides the center by >= ~5 while L stays
+       a few hundred << a at these scales, so the registered expectation is
+       share == 1 identically; any deviation is an anomaly.
+    O5 drop ratio (m_exit - t_exit)/L per root; per-interval mean and max.
+  STRATA: DEC = top decile by length (thr = sorted(L)[floor(0.9*(n-1))], take
+    L >= thr); LONG = L >= 100; MED = |L - floor(median)| <= 2. Trajectory
+    observables on DEC u LONG u MED; defect-linked comparison = LONG vs MED
+    at the same scale, Welch z per observable.
+  REACH-SETS: full BFS reach (arbitrary peel steps, node cap 200 = basins
+    convention) for EVERY interior root of DEC intervals; DESCRIPTIVE
+    summaries only (mean size, capped share, twins-in-reach, union-twins vs G).
+  BUDGET: TIME_CAP 5400s per scale; overruns skip remaining items with a LOGGED
+    note. Factorization tiers as in census9/census12; completeness reported.
+  selftest: canonical_next_any == canonical_next (SPF rule) on all non-twin m <= 20000 -> PASS
+-- frontier 1e6 --
+  roots m in [1, 1000000]; factorization: SPF sieve (exact)
+  twin centers: 37915 -> intervals: 37914 (0s)
+  length histogram (50-buckets): {0: 32463, 50: 4726, 100: 626, 150: 87, 200: 10, 250: 2}
+  intervals with L >= 100: 725; max L = 255 after m = 811652 (next twin 811907)
+  BASE-CENSUS ASSERTS (10^6): centers/intervals/histogram/L>=100/max -- ALL EXACT MATCH -> PASS
+  strata: DEC thr=59 -> 3854 intervals (314362 interior roots); LONG L>=100 -> 725 (88708 roots); MED |L-19|<=2 -> 3522 (62847 roots)
+    frontier 1e6: 1000/7376 intervals (0s)
+    frontier 1e6: 2000/7376 intervals (0s)
+    frontier 1e6: 3000/7376 intervals (0s)
+    frontier 1e6: 4000/7376 intervals (0s)
+    frontier 1e6: 5000/7376 intervals (0s)
+    frontier 1e6: 6000/7376 intervals (1s)
+    frontier 1e6: 7000/7376 intervals (1s)
+  SELFTEST: 377209 interior-root trajectories verified (strict descent; pre-exit confinement to (a,b); every exit lands t <= a; grave = twin <= a) -> PASS
+  DEC (n=3854 intervals, 314362 roots):
+    H=4.5986+-0.2971  Hn=0.7308+-0.0397  G=36.00+-8.35  sc=0.4502+-0.0577
+    pen=501670+-2.49e+05  penr=0.907283+-0.004641  fx=1.000000+-0.000000
+    mdr=6390.17+-3.48e+03  xdr=7035.36+-3.82e+03
+  LONG (n=725 intervals, 88708 roots):
+    H=4.9064+-0.2344  Hn=0.7104+-0.0319  G=48.60+-7.93  sc=0.4012+-0.0432
+    pen=549123+-2.32e+05  penr=0.907862+-0.003488  fx=1.000000+-0.000000
+    mdr=4573.16+-2.08e+03  xdr=5032.64+-2.29e+03
+  MED (n=3522 intervals, 62847 roots):
+    H=3.3800+-0.3061  Hn=0.8139+-0.0703  G=12.02+-1.97  sc=0.6743+-0.1001
+    pen=408121+-2.67e+05  penr=0.903540+-0.010836  fx=1.000000+-0.000000
+    mdr=21769.3+-1.44e+04  xdr=24019.9+-1.58e+04
+  DEFECT-LINKED comparison (LONG vs MED), Welch z per observable:
+    entropy(bits)          LONG 4.90644 (n=725) vs MED 3.38003 (n=3522)  z=+150.78  [|z|>=3]
+    Hn=H/log2(L-1)         LONG 0.71036 (n=725) vs MED 0.813911 (n=3522)  z= -61.75  [|z|>=3]
+    distinct graves        LONG 48.5959 (n=725) vs MED 12.0219 (n=3522)  z=+123.34  [|z|>=3]
+    scatter G/(L-1)        LONG 0.401219 (n=725) vs MED 0.674262 (n=3522)  z=-117.22  [|z|>=3]
+    penetration a-t        LONG 549123 (n=725) vs MED 408121 (n=3522)  z= +14.50  [|z|>=3]
+    pen ratio (a-t)/a      LONG 0.907862 (n=725) vs MED 0.90354 (n=3522)  z= +19.30  [|z|>=3]
+    first-exit share       LONG 1 (n=725) vs MED 1 (n=3522)  z=   +nan
+    mean drop (m-t)/L      LONG 4573.16 (n=725) vs MED 21769.3 (n=3522)  z= -67.67  [|z|>=3]
+    max drop (m-t)/L       LONG 5032.64 (n=725) vs MED 24019.9 (n=3522)  z= -67.81  [|z|>=3]
+  DEC pooled landing-twin mass: 314362 exits over 6891 distinct graves; top-5 graves: [(1, 38563), (2, 31973), (3, 25294), (5, 17397), (10, 11107)]
+  longest interval (a=811652, L=255): H=5.037 bits, G=73/254, top-5 graves: [(2, 32), (3, 30), (1, 25), (10, 21), (5, 12)]
+    reach 1e6: 500/3854 DEC intervals (1s)
+    reach 1e6: 1000/3854 DEC intervals (2s)
+    reach 1e6: 1500/3854 DEC intervals (3s)
+    reach 1e6: 2000/3854 DEC intervals (4s)
+    reach 1e6: 2500/3854 DEC intervals (6s)
+    reach 1e6: 3000/3854 DEC intervals (7s)
+    reach 1e6: 3500/3854 DEC intervals (8s)
+  reach-sets (DEC, cap 200): 314362 roots; mean size 26.8; capped 0 (share 0.0000); mean twins-in-reach per root 7.64
+  per-interval distinct twins in reach-union vs canonical grave count G: mean 62.1 vs 36.0 (mean ratio 1.75)
+  scale 1e6 done in 10s
+-- frontier 1e9 --
+  window [1000000000, 1000050000); factorization: numpy trial division, primes <= 78500 (exact by the remainder-prime argument)
+  twin centers: 765 -> intervals: 764 (1s)
+  length histogram (50-buckets): {0: 393, 50: 210, 100: 97, 150: 33, 200: 20, 250: 6, 300: 5}
+  intervals with L >= 100: 161; max L = 341 after m = 1000014902 (next twin 1000015243)
+  strata: DEC thr=140 -> 78 intervals (15308 interior roots); LONG L>=100 -> 161 (24803 roots); MED |L-47|<=2 -> 23 (1054 roots)
+  SELFTEST: 25857 interior-root trajectories verified (strict descent; pre-exit confinement to (a,b); every exit lands t <= a; grave = twin <= a) -> PASS
+  DEC (n=78 intervals, 15308 roots):
+    H=5.5418+-0.2077  Hn=0.7324+-0.0282  G=82.10+-15.10  sc=0.4258+-0.0407
+    pen=9.14582e+08+-2.5e+06  penr=0.914561+-0.002498  fx=1.000000+-0.000000
+    mdr=4.90035e+06+-1.09e+06  xdr=5.35826e+06+-1.19e+06
+  LONG (n=161 intervals, 24803 roots):
+    H=5.3615+-0.2808  Hn=0.7467+-0.0335  G=68.48+-17.58  sc=0.4579+-0.0555
+    pen=9.14542e+08+-2.82e+06  penr=0.914520+-0.002816  fx=1.000000+-0.000000
+    mdr=6.49949e+06+-1.81e+06  xdr=7.10678e+06+-1.98e+06
+  MED (n=23 intervals, 1054 roots):
+    H=4.4879+-0.2462  Hn=0.8135+-0.0462  G=28.22+-3.34  sc=0.6165+-0.0763
+    pen=9.13166e+08+-6.15e+06  penr=0.913142+-0.006146  fx=1.000000+-0.000000
+    mdr=1.95204e+07+-6.14e+05  xdr=2.13772e+07+-6.76e+05
+  DEFECT-LINKED comparison (LONG vs MED), Welch z per observable:
+    entropy(bits)          LONG 5.3615 (n=161) vs MED 4.48787 (n=23)  z= +15.33  [|z|>=3]
+    Hn=H/log2(L-1)         LONG 0.746737 (n=161) vs MED 0.813527 (n=23)  z=  -6.55  [|z|>=3]
+    distinct graves        LONG 68.4783 (n=161) vs MED 28.2174 (n=23)  z= +25.79  [|z|>=3]
+    scatter G/(L-1)        LONG 0.45787 (n=161) vs MED 0.616501 (n=23)  z=  -9.41  [|z|>=3]
+    penetration a-t        LONG 9.14542e+08 (n=161) vs MED 9.13166e+08 (n=23)  z=  +1.03
+    pen ratio (a-t)/a      LONG 0.91452 (n=161) vs MED 0.913142 (n=23)  z=  +1.04
+    first-exit share       LONG 1 (n=161) vs MED 1 (n=23)  z=   +nan
+    mean drop (m-t)/L      LONG 6.49949e+06 (n=161) vs MED 1.95204e+07 (n=23)  z= -67.07  [|z|>=3]
+    max drop (m-t)/L       LONG 7.10678e+06 (n=161) vs MED 2.13772e+07 (n=23)  z= -67.04  [|z|>=3]
+  DEC pooled landing-twin mass: 15308 exits over 2577 distinct graves; top-5 graves: [(1, 1544), (2, 1342), (3, 1110), (5, 767), (7, 467)]
+  longest interval (a=1000014902, L=341): H=6.011 bits, G=128/340, top-5 graves: [(1, 32), (2, 28), (3, 25), (5, 23), (25, 10)]
+  reach-sets (DEC, cap 200): 15308 roots; mean size 115.5; capped 2521 (share 0.1647); mean twins-in-reach per root 20.30
+  per-interval distinct twins in reach-union vs canonical grave count G: mean 287.7 vs 82.1 (mean ratio 3.54)
+  scale 1e9 done in 6s
+-- frontier 1e12 --
+  window [1000000000000, 1000000050000); factorization: Pollard rho (Brent) + deterministic Miller-Rabin bases [2, 3, 5, 7, 11, 13, 17]
+    deterministic below 330000000000000; max wing here 6(X+n)+1 = 6000000300001 -- margin > 50x;
+    rho failure raises (stage completion == zero failures) -> completeness: FULL
+  twin centers: 448 -> intervals: 447 (0s)
+  length histogram (50-buckets): {0: 175, 50: 101, 100: 56, 150: 38, 200: 29, 250: 13, 300: 10, 350: 7, 400: 5, 450: 7, 500: 4, 550: 1, 650: 1}
+  intervals with L >= 100: 171; max L = 690 after m = 1000000009587 (next twin 1000000010277)
+  strata: DEC thr=255 -> 46 intervals (17563 interior roots); LONG L>=100 -> 171 (37855 roots); MED |L-68|<=2 -> 9 (610 roots)
+  SELFTEST: 38465 interior-root trajectories verified (strict descent; pre-exit confinement to (a,b); every exit lands t <= a; grave = twin <= a) -> PASS
+  DEC (n=46 intervals, 17563 roots):
+    H=6.1933+-0.2031  Hn=0.7266+-0.0248  G=154.41+-30.31  sc=0.4110+-0.0348
+    pen=9.17396e+11+-1.62e+09  penr=0.917396+-0.001615  fx=1.000000+-0.000000
+    mdr=2.54637e+09+-6e+08  xdr=2.77543e+09+-6.53e+08
+  LONG (n=171 intervals, 37855 roots):
+    H=5.7254+-0.3909  Hn=0.7527+-0.0324  G=98.58+-40.28  sc=0.4669+-0.0554
+    pen=9.17194e+11+-2.44e+09  penr=0.917194+-0.002442  fx=1.000000+-0.000000
+    mdr=5.09704e+09+-2.11e+09  xdr=5.55749e+09+-2.3e+09
+  MED (n=9 intervals, 610 roots):
+    H=4.9399+-0.1605  Hn=0.8122+-0.0264  G=40.67+-3.06  sc=0.6002+-0.0456
+    pen=9.17698e+11+-4.27e+09  penr=0.917698+-0.004268  fx=1.000000+-0.000000
+    mdr=1.33465e+10+-2.22e+08  xdr=1.45435e+10+-2.4e+08
+  DEFECT-LINKED comparison (LONG vs MED), Welch z per observable:
+    entropy(bits)          LONG 5.72535 (n=171) vs MED 4.93993 (n=9)  z= +12.24  [|z|>=3]
+    Hn=H/log2(L-1)         LONG 0.752716 (n=171) vs MED 0.812159 (n=9)  z=  -6.16  [|z|>=3]
+    distinct graves        LONG 98.5848 (n=171) vs MED 40.6667 (n=9)  z= +17.70  [|z|>=3]
+    scatter G/(L-1)        LONG 0.466947 (n=171) vs MED 0.600158 (n=9)  z=  -8.00  [|z|>=3]
+    penetration a-t        LONG 9.17194e+11 (n=171) vs MED 9.17698e+11 (n=9)  z=  -0.33
+    pen ratio (a-t)/a      LONG 0.917194 (n=171) vs MED 0.917698 (n=9)  z=  -0.33
+    first-exit share       LONG 1 (n=171) vs MED 1 (n=9)  z=   +nan
+    mean drop (m-t)/L      LONG 5.09704e+09 (n=171) vs MED 1.33465e+10 (n=9)  z= -45.88  [|z|>=3]
+    max drop (m-t)/L       LONG 5.55749e+09 (n=171) vs MED 1.45435e+10 (n=9)  z= -45.93  [|z|>=3]
+  DEC pooled landing-twin mass: 17563 exits over 3602 distinct graves; top-5 graves: [(1, 1790), (2, 1499), (3, 1178), (5, 706), (7, 483)]
+  longest interval (a=1000000009587, L=690): H=6.329 bits, G=241/689, top-5 graves: [(1, 88), (2, 55), (3, 53), (5, 29), (12, 27)]
+  reach-sets (DEC, cap 200): 17563 roots; mean size 181.9; capped 14213 (share 0.8093); mean twins-in-reach per root 22.94
+  per-interval distinct twins in reach-union vs canonical grave count G: mean 955.4 vs 154.4 (mean ratio 6.26)
+  scale 1e12 done in 16s
+
+#### frontier_foil @ 2026-07-11 12:17:14 (caps: depth 8, budget 3000, time 5400s) ####
+  tables: SPF<=6000001, 7702 TD primes <= 78500, twin table <= 10^6 (0.0s)
+== frontier_foil: foil-v2 verdicts on trajectory observables ==
+PRE-REGISTRATION (logged BEFORE any measurement):
+  Machinery: precompute_X + foil_row REUSED VERBATIM from betti_portrait_harness;
+    grid X in {10^6 (NW=3000), 10^9 (NW=1000)} x A in {13,31}, H=50; seed 20260710;
+    200 permutations (sigma_W) + 200 lambda-resamples from the survivor pool (sigma_I).
+  Loads: S'' split-window PRIMARY (observable on left-half survivors, load =
+    sum of lambda over right-half survivors); S full-window SECONDARY
+    (self-contaminated: information, not verdicts); So self-excluded is
+    NA-DEGENERATE here and DISCLOSED: the trajectory observables read every
+    non-twin survivor of the window; the residual So support is the twin
+    stratum whose lambda is identically +1.
+  REGISTERED SCALARS (exactly these 5; per window, over non-twin A-survivors;
+    canonical trajectory as in stage frontier; a(m) = largest twin center < m):
+    F1 landing entropy (bits) of the canonical-grave distribution;
+    F2 mean penetration ratio (a(m) - t1(m))/m;
+    F3 first-exit share [t1(m) <= a(m)] (a-priori expectation: identically 1
+       -> degenerate; registered anyway as the direct exit observable);
+    F4 grave scatter: distinct graves / roots;
+    F5 max drop ratio max_m (m - t1(m))/m.
+  VERDICT RULE (gate_g3 foil-v2, thresholds immovable): PARITY-SENSITIVE
+    (MANAGED-PASS) iff min|z_I| over the 4 cells >= 5 AND |R(31)| >=
+    |R(13)|/3 at both X; SOFT-PASS iff min|z_I| >= 3; else
+    PARITY-BLIND-UNDER-ESCALATION-v2.
+  HONEST PRIOR: PARITY-BLIND (L38/L41 pattern); the value is extending the
+    parity-blindness map to the trajectory-valued representation class; a
+    null is a ledger law. STOP (registered): after the grid, no new
+    observables, weightings or thresholds.
+  precompute: X=1000000 NW=3000 H=50 ncent=150000 lo=999900 (band 100)
+  CELL X=1e+06 A=13: survivors=44503 twin-survivors=4793 non-twin=39710 (1s)
+    means: F1=3.2568 F2=0.979124 F3=1.000000 F4=0.7969 F5=0.999193
+    F1|S''   R= +0.0078 zW=  +0.4 zI=  +0.4 n= 3000 
+    F2|S''   R= +0.0055 zW=  +0.4 zI=  +0.3 n= 3000 
+    F3|S''   R= +0.0000 zW=  +0.0 zI=  +0.0 n= 3000 degenerate
+    F4|S''   R= +0.0248 zW=  +1.3 zI=  +1.4 n= 3000 
+    F5|S''   R= -0.0092 zW=  -0.5 zI=  -0.5 n= 3000 
+    F1|S     R= -0.1497 zW=  -8.1 zI=  -7.6 n= 3000 
+    F2|S     R= -0.0896 zW=  -5.4 zI=  -5.0 n= 3000 
+    F3|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 3000 degenerate
+    F4|S     R= +0.0105 zW=  +0.6 zI=  +0.5 n= 3000 
+    F5|S     R= -0.0713 zW=  -4.1 zI=  -3.9 n= 3000 
+  CELL X=1e+06 A=31: survivors=27942 twin-survivors=4793 non-twin=23149 (0s)
+    means: F1=2.6368 F2=0.990903 F3=1.000000 F4=0.8761 F5=0.999043
+    F1|S''   R= +0.0380 zW=  +2.2 zI=  +1.9 n= 2992 
+    F2|S''   R= -0.0057 zW=  -0.3 zI=  -0.3 n= 2992 
+    F3|S''   R= +0.0000 zW=  +0.0 zI=  +0.0 n= 2992 degenerate
+    F4|S''   R= +0.0262 zW=  +1.3 zI=  +1.2 n= 2992 
+    F5|S''   R= +0.0010 zW=  +0.1 zI=  +0.0 n= 2992 
+    F1|S     R= -0.2332 zW= -14.6 zI= -12.5 n= 3000 
+    F2|S     R= -0.0842 zW=  -4.5 zI=  -4.8 n= 3000 
+    F3|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 3000 degenerate
+    F4|S     R= +0.0311 zW=  +1.7 zI=  +1.7 n= 3000 
+    F5|S     R= -0.0953 zW=  -5.8 zI=  -5.5 n= 3000 
+  precompute: X=1000000000 NW=1000 H=50 ncent=50000 lo=999999900 (band 100)
+  CELL X=1e+09 A=13: survivors=14835 twin-survivors=765 non-twin=14070 (1s)
+    means: F1=3.4226 F2=0.981879 F3=1.000000 F4=0.8301 F5=0.999885
+    F1|S''   R= -0.0105 zW=  -0.3 zI=  -0.4 n= 1000 
+    F2|S''   R= +0.0325 zW=  +1.0 zI=  +1.0 n= 1000 
+    F3|S''   R= +0.0000 zW=  +0.0 zI=  +0.0 n= 1000 degenerate
+    F4|S''   R= -0.0218 zW=  -0.7 zI=  -0.7 n= 1000 
+    F5|S''   R= +0.0244 zW=  +0.7 zI=  +0.7 n= 1000 
+    F1|S     R= -0.0121 zW=  -0.3 zI=  -0.3 n= 1000 
+    F2|S     R= -0.0594 zW=  -1.7 zI=  -2.2 n= 1000 
+    F3|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 1000 degenerate
+    F4|S     R= +0.0644 zW=  +1.8 zI=  +1.7 n= 1000 
+    F5|S     R= -0.1518 zW=  -4.6 zI=  -5.0 n= 1000 
+  CELL X=1e+09 A=31: survivors=9311 twin-survivors=765 non-twin=8546 (0s)
+    means: F1=2.8403 F2=0.992568 F3=1.000000 F4=0.8976 F5=0.999795
+    F1|S''   R= +0.0089 zW=  +0.3 zI=  +0.3 n=  998 
+    F2|S''   R= +0.0035 zW=  +0.1 zI=  +0.1 n=  998 
+    F3|S''   R= +0.0000 zW=  +0.0 zI=  +0.0 n=  998 degenerate
+    F4|S''   R= +0.0355 zW=  +1.1 zI=  +1.3 n=  998 
+    F5|S''   R= +0.0137 zW=  +0.5 zI=  +0.4 n=  998 
+    F1|S     R= -0.1028 zW=  -3.2 zI=  -3.4 n= 1000 
+    F2|S     R= -0.0773 zW=  -2.6 zI=  -2.5 n= 1000 
+    F3|S     R= +0.0000 zW=  +0.0 zI=  +0.0 n= 1000 degenerate
+    F4|S     R= +0.0567 zW=  +1.6 zI=  +1.9 n= 1000 
+    F5|S     R= -0.0810 zW=  -2.4 zI=  -2.9 n= 1000 
+  VERDICT MATRIX (primary load S''; cells: X=1e+06 A=13, X=1e+06 A=31, X=1e+09 A=13, X=1e+09 A=31):
+    F1|S''   R+0.008 zI +0.4 | R+0.038 zI +1.9 | R-0.011 zI -0.4 | R+0.009 zI +0.3 | min|zI|=0.3 ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+    F2|S''   R+0.006 zI +0.3 | R-0.006 zI -0.3 | R+0.033 zI +1.0 | R+0.004 zI +0.1 | min|zI|=0.1 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+    F3|S''   R+0.000 zI +0.0 | R+0.000 zI +0.0 | R+0.000 zI +0.0 | R+0.000 zI +0.0 | min|zI|=0.0 ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+    F4|S''   R+0.025 zI +1.4 | R+0.026 zI +1.2 | R-0.022 zI -0.7 | R+0.036 zI +1.3 | min|zI|=0.7 ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+    F5|S''   R-0.009 zI -0.5 | R+0.001 zI +0.0 | R+0.024 zI +0.7 | R+0.014 zI +0.4 | min|zI|=0.0 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  |z| >= 3 rows (any load; information, not verdicts):
+    X=1e+06 A=13 F1|S: R=-0.1497 zW=-8.1 zI=-7.6
+    X=1e+06 A=13 F2|S: R=-0.0896 zW=-5.4 zI=-5.0
+    X=1e+06 A=13 F5|S: R=-0.0713 zW=-4.1 zI=-3.9
+    X=1e+06 A=31 F1|S: R=-0.2332 zW=-14.6 zI=-12.5
+    X=1e+06 A=31 F2|S: R=-0.0842 zW=-4.5 zI=-4.8
+    X=1e+06 A=31 F5|S: R=-0.0953 zW=-5.8 zI=-5.5
+    X=1e+09 A=13 F5|S: R=-0.1518 zW=-4.6 zI=-5.0
+    X=1e+09 A=31 F1|S: R=-0.1028 zW=-3.2 zI=-3.4
+  STOP (registered): grid complete -- no new observables, weightings or thresholds.

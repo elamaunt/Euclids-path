@@ -29,6 +29,11 @@ Stages (argv modes; every stage APPENDS to tools/pratt_wing_run1.log):
   defect     P3: prime wings of the 50 exact defect windows A=17..43
              (descriptive stratum; rho tier + 12-base MR, disclosed).
   summary    cross-population collation + candidate-law escalation notes.
+  sidepgf    stage A (post-summary escalation of candidate C-A / ledger L62(a)):
+             independent Fraction/int full-period census of the wing-side
+             collision law at B=7 (period 35) and B=13 (period 5005), asserted
+             byte-equal to the Lean kernel constants of
+             EuclidsPath/Engine/Step00SideCollision.lean; STOP on any mismatch.
 
 Reuse lineage: factorization tiers follow tools/grave_depth_harness.py (SPF /
 numpy trial division / Brent rho + deterministic MR); the registration/staged-log
@@ -1819,11 +1824,128 @@ def stage_summary():
     sys.stdout.flush()
 
 
+# ================================================================== stage: sidepgf
+
+# The Lean kernel constants of EuclidsPath/Engine/Step00SideCollision.lean
+# (decide gates twin_side_pgf_B7 / twin_side_pgf_B13 / clean_side_pgf_B13 and the
+# Fraction corollary side_collision_mean_excess_B13); asserted byte-equal below.
+LEAN_SIDE_TWIN_B7 = [8, 6, 1]
+LEAN_SIDE_TWIN_B13 = [640, 624, 196, 24, 1]
+LEAN_SIDE_CLEAN_B13 = [1485, 1092, 274, 28, 1]
+LEAN_SIDE_EXCESS_B13 = Fraction(67, 495)
+
+
+def side_census(qs, twin):
+    """Full-period side-L histogram, independent of the Lean encoding: for
+    m in [1, prod(qs)] a survivor has (6m-1) % q != 0 for every clock (and,
+    if twin, (6m+1) % q != 0 too -- the twin-CLASS conditioning); entry j
+    counts survivors with exactly j clocks dividing the side value 6m-2.
+    Direct residue enumeration, pure Python ints (no numpy, no floats)."""
+    P = 1
+    for q in qs:
+        P *= q
+    hist = [0] * (len(qs) + 1)
+    for m in range(1, P + 1):
+        if any((6 * m - 1) % q == 0 for q in qs):
+            continue
+        if twin and any((6 * m + 1) % q == 0 for q in qs):
+            continue
+        hist[sum(1 for q in qs if (6 * m - 2) % q == 0)] += 1
+    return hist
+
+
+def poly_coeffs(roots):
+    """Coefficient list (low degree first) of prod_(a in roots) (a + x)."""
+    c = [1]
+    for a in roots:
+        c = [a * c[0]] + [a * c[k] + c[k - 1] for k in range(1, len(c))] + [c[-1]]
+    return c
+
+
+def stage_sidepgf():
+    assert_registered()
+    banner("SIDEPGF", "stage A: the L62(a) wing-side collision law as an exact"
+                      " machine law")
+    print("""
+STAGE-A REGISTRATION (sidepgf) -- escalation of candidate C-A (this log's summary
+stage; ledger L62(a)): the wing-side collision law becomes an exact machine law.
+Registered BEFORE the measurement lines below.  Lean twin (kernel decide gates
+over the SAME full periods): EuclidsPath/Engine/Step00SideCollision.lean
+(sideCensusB / cleanSideCensusB / twinSideCountB_card / twin_class_card_B13 /
+side_collision_mean_excess_B13).  CLOSED byte-exact targets -- ANY mismatch with
+the Lean constants is STOP (exit 1):
+ T1 twin-class side-L histogram, B=7, period 35, m in [1,35]:  [8, 6, 1]
+ T2 twin-class side-L histogram, B=13, period 5005: [640, 624, 196, 24, 1]
+    (total 1485 = 3*5*9*11 -- the L34 kernel constant, cross-checked in T5)
+ T3 clean-at-B (left wing) histogram, B=13:       [1485, 1092, 274, 28, 1]
+    (total 2880 = 4*6*10*12)
+ T4 histograms == pgf numerator coefficients: prod((q-3)+x) twin-class resp.
+    prod((q-2)+x) clean-at-B, coefficientwise (independent convolution)
+ T5 totals: 15 = 3*5 (B=7); 1485 = 3*5*9*11 (L34 weld); 2880 = 4*6*10*12
+ T6 mean side-L excess (twin-class minus clean-at-B), Fraction exact:
+    = sum_(q in {5,7,11,13}) (1/(q-2) - 1/(q-1)) = 67/495
+DISCLOSURES (as in L62(a) and the Lean module header): the conditioning is
+CLASS-exact (mod-q admissibility of the wings), NOT primality/isolation;
+67/495 = 0.13535 is the B=13 truncation of the full reference = 0.1539
+(measured +0.1535 at 1e7 / +0.1504 at 1e9; tail over q > 13 = 0.0185, the
+disclosed remainder); the law is L34/L35-family collision arithmetic and does
+NOT feed the wall (no window-ensemble structure).
+STAGE-A REGISTRATION ENDS -- measurements begin below this line.
+""")
+    sys.stdout.flush()
+    t0 = time.time()
+    q13 = [5, 7, 11, 13]
+    t7 = side_census([5, 7], True)
+    if t7 != LEAN_SIDE_TWIN_B7:
+        STOP("sidepgf T1: B=7 twin census %s != Lean %s" % (t7, LEAN_SIDE_TWIN_B7))
+    print("T1 twin-class B=7 census (period 35):    %s == Lean twin_side_pgf_B7"
+          " -> PASS" % t7)
+    t13 = side_census(q13, True)
+    if t13 != LEAN_SIDE_TWIN_B13:
+        STOP("sidepgf T2: B=13 twin census %s != Lean %s" % (t13, LEAN_SIDE_TWIN_B13))
+    print("T2 twin-class B=13 census (period 5005): %s == Lean twin_side_pgf_B13"
+          " -> PASS" % t13)
+    c13 = side_census(q13, False)
+    if c13 != LEAN_SIDE_CLEAN_B13:
+        STOP("sidepgf T3: B=13 clean census %s != Lean %s" % (c13, LEAN_SIDE_CLEAN_B13))
+    print("T3 clean-at-B B=13 census (left wing):   %s == Lean clean_side_pgf_B13"
+          " -> PASS" % c13)
+    if (poly_coeffs([q - 3 for q in (5, 7)]) != t7
+            or poly_coeffs([q - 3 for q in q13]) != t13
+            or poly_coeffs([q - 2 for q in q13]) != c13):
+        STOP("sidepgf T4: pgf coefficient mismatch: %s / %s / %s vs censuses"
+             % (poly_coeffs([2, 4]), poly_coeffs([2, 4, 8, 10]),
+                poly_coeffs([3, 5, 9, 11])))
+    print("T4 census == pgf coefficients: (2+x)(4+x); (2+x)(4+x)(8+x)(10+x);"
+          " (3+x)(5+x)(9+x)(11+x) -> PASS")
+    if (sum(t7) != 15 or 15 != 3 * 5 or sum(t13) != 1485 or 1485 != 3 * 5 * 9 * 11
+            or sum(c13) != 2880 or 2880 != 4 * 6 * 10 * 12):
+        STOP("sidepgf T5: totals %d/%d/%d != 15/1485/2880 factored"
+             % (sum(t7), sum(t13), sum(c13)))
+    print("T5 totals: 15 = 3*5; 1485 = 3*5*9*11 (THE L34 kernel constant);"
+          " 2880 = 4*6*10*12 -> PASS")
+    mt = Fraction(sum(j * c for j, c in enumerate(t13)), sum(t13))
+    mc = Fraction(sum(j * c for j, c in enumerate(c13)), sum(c13))
+    ref = sum(Fraction(1, q - 2) - Fraction(1, q - 1) for q in q13)
+    if mt - mc != LEAN_SIDE_EXCESS_B13 or ref != LEAN_SIDE_EXCESS_B13:
+        STOP("sidepgf T6: excess %s (census) / %s (reference) != 67/495"
+             % (mt - mc, ref))
+    print("T6 mean side-L excess: %s - %s = %s == 67/495 == sum(1/(q-2)-1/(q-1))"
+          " -> PASS" % (mt, mc, mt - mc))
+    print("   (= %.6f; the B=13 truncation of the full reference ~ 0.1539;"
+          " tail q > 13 ~ 0.0185, disclosed)" % float(mt - mc))
+    print("STAGE VERDICT: sidepgf ALL TARGETS T1-T6 PASS -- the Lean kernel constants"
+          " are reproduced")
+    print("  byte-exactly by the independent Fraction/int census (%.1fs)"
+          % (time.time() - t0))
+    sys.stdout.flush()
+
+
 # ================================================================== main
 
 STAGES = dict(selftest=stage_selftest, anatomy7=stage_anatomy7, pratt7=stage_pratt7,
               orders7=stage_orders7, quartic7=stage_quartic7, probe9=stage_probe9,
-              defect=stage_defect, summary=stage_summary)
+              defect=stage_defect, summary=stage_summary, sidepgf=stage_sidepgf)
 
 
 def main():

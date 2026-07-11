@@ -465,3 +465,42 @@ ESCALATION CANDIDATES (subject to a NEW pre-registration; proposed Fraction-exac
   C-C O7: if any conditional |z| >= 5 appeared, register a dedicated
       quartic campaign; the Chebotarev NULL otherwise CLOSES the class.
   (Escalation decisions belong to the next registration, not this log.)
+==============================================================================
+[2026-07-11 16:15:12] PRATT-WING SIDEPGF  stage A: the L62(a) wing-side collision law as an exact machine law
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+
+STAGE-A REGISTRATION (sidepgf) -- escalation of candidate C-A (this log's summary
+stage; ledger L62(a)): the wing-side collision law becomes an exact machine law.
+Registered BEFORE the measurement lines below.  Lean twin (kernel decide gates
+over the SAME full periods): EuclidsPath/Engine/Step00SideCollision.lean
+(sideCensusB / cleanSideCensusB / twinSideCountB_card / twin_class_card_B13 /
+side_collision_mean_excess_B13).  CLOSED byte-exact targets -- ANY mismatch with
+the Lean constants is STOP (exit 1):
+ T1 twin-class side-L histogram, B=7, period 35, m in [1,35]:  [8, 6, 1]
+ T2 twin-class side-L histogram, B=13, period 5005: [640, 624, 196, 24, 1]
+    (total 1485 = 3*5*9*11 -- the L34 kernel constant, cross-checked in T5)
+ T3 clean-at-B (left wing) histogram, B=13:       [1485, 1092, 274, 28, 1]
+    (total 2880 = 4*6*10*12)
+ T4 histograms == pgf numerator coefficients: prod((q-3)+x) twin-class resp.
+    prod((q-2)+x) clean-at-B, coefficientwise (independent convolution)
+ T5 totals: 15 = 3*5 (B=7); 1485 = 3*5*9*11 (L34 weld); 2880 = 4*6*10*12
+ T6 mean side-L excess (twin-class minus clean-at-B), Fraction exact:
+    = sum_(q in {5,7,11,13}) (1/(q-2) - 1/(q-1)) = 67/495
+DISCLOSURES (as in L62(a) and the Lean module header): the conditioning is
+CLASS-exact (mod-q admissibility of the wings), NOT primality/isolation;
+67/495 = 0.13535 is the B=13 truncation of the full reference = 0.1539
+(measured +0.1535 at 1e7 / +0.1504 at 1e9; tail over q > 13 = 0.0185, the
+disclosed remainder); the law is L34/L35-family collision arithmetic and does
+NOT feed the wall (no window-ensemble structure).
+STAGE-A REGISTRATION ENDS -- measurements begin below this line.
+
+T1 twin-class B=7 census (period 35):    [8, 6, 1] == Lean twin_side_pgf_B7 -> PASS
+T2 twin-class B=13 census (period 5005): [640, 624, 196, 24, 1] == Lean twin_side_pgf_B13 -> PASS
+T3 clean-at-B B=13 census (left wing):   [1485, 1092, 274, 28, 1] == Lean clean_side_pgf_B13 -> PASS
+T4 census == pgf coefficients: (2+x)(4+x); (2+x)(4+x)(8+x)(10+x); (3+x)(5+x)(9+x)(11+x) -> PASS
+T5 totals: 15 = 3*5; 1485 = 3*5*9*11 (THE L34 kernel constant); 2880 = 4*6*10*12 -> PASS
+T6 mean side-L excess: 364/495 - 3/5 = 67/495 == 67/495 == sum(1/(q-2)-1/(q-1)) -> PASS
+   (= 0.135354; the B=13 truncation of the full reference ~ 0.1539; tail q > 13 ~ 0.0185, disclosed)
+STAGE VERDICT: sidepgf ALL TARGETS T1-T6 PASS -- the Lean kernel constants are reproduced
+  byte-exactly by the independent Fraction/int census (0.0s)

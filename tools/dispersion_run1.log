@@ -835,3 +835,156 @@ SECTION LINE INDEX (this run, 1-based in this append block):
   line   320: s2 -- THE FAREY m-CLASS PROFILE (level-1 x level-1 cross-terms)
   line   458: s3 -- SHIFTED-CONVOLUTION TABLE + ENSEMBLE KLOOS PROBE
   line   820: RUN COMPLETE
+==============================================================================
+S4 APPEND RUN -- 2026-07-11 23:55:15 -- the large-sieve stage (Step00LargeSieve.lean)
+==============================================================================
+harness: tools/dispersion_harness.py s4; log: tools/dispersion_run1.log
+python 3.11.9 | numpy 2.4.4 | seed 20260710
+==============================================================================
+s4 PRE-REGISTRATION (appended run block; written FIRST; closed list)
+==============================================================================
+MIRROR: EuclidsPath/Engine/Step00LargeSieve.lean (the additive large
+  sieve over the clock frequencies).  Objects: e(theta) = exp(2 pi i
+  theta); level-1 modes (q, j), q in clocks A, 1 <= j <= q-1, freq
+  j/q; S(theta) = sum_{t<K} a_t e(t*theta); maxRowSum A =
+  sum_{q' in clocks A} A*q'*H(A*q'//2) EXACT Fraction (H = harmonic
+  number); the THEOREM large_sieve_v0: sum_level-1 |S(j/q)|^2 <=
+  (K + maxRowSum A) * sum_{t<K} |a_t|^2 for EVERY sequence a.
+CLOSED TASK LIST: s4-BC, s4-PARS, s4-T1, s4-T2 -- no additions.
+
+s4-BC byte-checks (ANY failure = STOP exit 1):
+  maxRowSum(13) computed here as exact Fraction == the Lean kernel
+  literal 342332647440426240579477769343529818239 /
+  155308287585455802788347505848114800 (theorem maxRowSum_13,
+  norm_num-verified in Lean).  Level-2 witness byte-checks mirroring
+  the level_wall lemmas: |8/143 - 5/91| == 1/1001 EXACT;
+  1/(2*(1/1001)) = 1001/2 > 29 = ceil(13^2/6).
+s4-PARS Parseval anchor (STOP on fail): at A = 13, on the first
+  defect-centered segment, for every clock q of scale 13 and the
+  fluct sequence: sum_{j mod q} |sum_t a_t e(jt/q)|^2 ==
+  q * sum_{c mod q} |sum_{t = c mod q} a_t|^2 to 1e-9 rel (theorem
+  clock_parseval; ties the DFT wiring to the Lean identity).
+s4-T1 the measured sieve table.  Scales A in {13,17,23,31,43},
+  ceiling windows K = ceil(A^2/6) = 29/49/89/161/309.  Segments per
+  scale: 3 typical starts k uniform in [0, P_A) (seed 20260710 +
+  400 + A) + 1 defect-centered start k = r - (K - g)//2, g = G(A)-1
+  (r = first DEFECT_R witness; A = 13: first start of the
+  full-period scan).  Sequences on (k, k+K], BOTH registered:
+  a_clean(t) = [Clean A (k+1+t)] (the clean indicator, 0/1) and
+  a_fluct(t) = [Clean A (k+1+t)] - prod_q (1-2/q) (the density-
+  centered fluctuation; NOTE the two masses DIFFER on an incomplete
+  window -- the constant shift contributes dens^2*|D_K(j/q)|^2 per
+  mode, the Dirichlet kernel does not vanish off complete periods).
+  Reported per segment AND per sequence: mass = sum over level-1
+  modes |S(j/q)|^2 (float64 -- absolute values have no rational
+  form, disclosed); bound = (K + maxRowSum A) * sum |a_t|^2; ratio
+  mass/bound.  REGISTERED CHECK (STOP on fail): mass <= bound *
+  (1 + 1e-9) on every cell -- the inequality is a THEOREM; a
+  violation is a harness bug, not news.
+s4-T2 the level-2 triviality demonstration.  The level-2 system of
+  scale A: frequencies m/(q*q') for ordered clock pairs q < q' and
+  admissible classes m in [1, qq'-1], q not| m, q' not| m (the
+  admissibleClasses of Step00FareyModeGeometry).  Reported per
+  scale: #modes2; the minimal circle spacing delta2_min of the
+  level-2 frequency system (exact Fraction at A = 13, float64
+  above); the same-method per-pair cost 1/(2*delta2_min) vs K --
+  the demonstration that the Schur constant one level up dwarfs
+  the ceiling window (the L52 conspiracy lives at levels 2-3);
+  measured mass2 = sum over level-2 modes |S|^2 for a_fluct on the
+  defect-centered segment vs the LEVEL-1 bound value -- measured
+  numbers only, no verdict vocabulary beyond the registered
+  comparison.
+DISCIPLINE: float64 for masses (disclosed above); Fractions for
+  maxRowSum, delta2_min at 13, and all byte-checks; seed 20260710;
+  STAGE_TIME_CAP as registered for the first run.  STOP rules: any
+  s4-BC/s4-PARS assert, any s4-T1 inequality cell.  Measured ratios
+  never STOP.
+
+s4-BC maxRowSum(13) Fraction vs Lean kernel literal:
+  maxRowSum(13) = 342332647440426240579477769343529818239/155308287585455802788347505848114800
+               == Lean maxRowSum_13 literal BYTE-EXACT (~2204.2136) -- PASS
+  level-2 witness: |8/143 - 5/91| = 1/1001 exact; 1/(2 delta) =
+  1001/2 = 500.5 > 29 = K(13) (mirrors level_wall_spacing /
+  level_wall_cost_exceeds_ceiling) -- PASS
+
+segment starts (registered): A=13 defect scan first r=122 (12 per
+period, census KNOWN_TRUE); A in {17,23,31,43}: first DEFECT_R witness
+  A=13 K= 29: defect-centered k=113; typical [4604, 220, 2845]
+  A=17 K= 49: defect-centered k=101; typical [67446, 31409, 27234]
+  A=23 K= 89: defect-centered k=12694400; typical [21427082, 28927308, 35746250]
+  A=31 K=161: defect-centered k=21844264563; typical [31557188286, 29935858530, 29566177998]
+  A=43 K=309: defect-centered k=233885349904087; typical [1949533073154142, 1354241228232324, 1132459542783312]
+
+s4-PARS clock_parseval tie at A=13 (defect segment, fluct sequence):
+  per-clock full-frequency mass == q * residue mass at q in
+  {5,7,11,13}, max rel dev 4.54e-15 (<= 1e-9) -- PASS
+
+s4-T1 THE MEASURED SIEVE TABLE (bound = (K + maxRowSum A) * sum|a|^2):
+  A    K   #modes1   maxRowSum(A)      segment    k          seq     mass          bound         ratio
+  13   29       32      2204.2136   defect             113  clean      202.0000    17865.7092  0.011307
+  13   29       32      2204.2136   defect             113  fluct      205.0192    12965.3680  0.015813
+  13   29       32      2204.2136   typical           4604  clean      202.0000    17865.7092  0.011307
+  13   29       32      2204.2136   typical           4604  fluct      207.3928    12965.3680  0.015996
+  13   29       32      2204.2136   typical            220  clean      226.0000    17865.7092  0.012650
+  13   29       32      2204.2136   typical            220  fluct      207.6566    12965.3680  0.016016
+  13   29       32      2204.2136   typical           2845  clean      208.0000    20098.9228  0.010349
+  13   29       32      2204.2136   typical           2845  fluct      209.2390    13873.3780  0.015082
+  17   49       48      4650.7009   defect             101  clean      430.0000    51696.7101  0.008318
+  17   49       48      4650.7009   defect             101  fluct      427.5414    40411.8442  0.010580
+  17   49       48      4650.7009   typical          67446  clean      594.0000    65795.8129  0.009028
+  17   49       48      4650.7009   typical          67446  fluct      586.3055    47128.7406  0.012441
+  17   49       48      4650.7009   typical          31409  clean      468.0000    46997.0092  0.009958
+  17   49       48      4650.7009   typical          31409  fluct      482.2965    38172.8787  0.012635
+  17   49       48      4650.7009   typical          27234  clean      652.0000    61096.1120  0.010672
+  17   49       48      4650.7009   typical          27234  fluct      639.5932    44889.7751  0.014248
+  23   89       88     12522.8963   defect        12694400  clean     1014.0000   163954.6515  0.006185
+  23   89       88     12522.8963   defect        12694400  fluct     1007.6851   145166.4974  0.006942
+  23   89       88     12522.8963   typical       21427082  clean     1638.0000   264849.8217  0.006185
+  23   89       88     12522.8963   typical       21427082  fluct     1644.5174   202904.6065  0.008105
+  23   89       88     12522.8963   typical       28927308  clean     1568.0000   252237.9254  0.006216
+  23   89       88     12522.8963   typical       28927308  fluct     1565.1071   195687.3429  0.007998
+  23   89       88     12522.8963   typical       35746250  clean     1618.0000   227014.1329  0.007127
+  23   89       88     12522.8963   typical       35746250  fluct     1600.5639   181252.8156  0.008831
+  31  161      146     30256.5898   defect     21844264563  clean     2922.0000   638769.3858  0.004574
+  31  161      146     30256.5898   defect     21844264563  fluct     2952.6002   570721.6075  0.005173
+  31  161      146     30256.5898   typical    31557188286  clean     3502.0000   760439.7450  0.004605
+  31  161      146     30256.5898   typical    31557188286  fluct     3522.1688   647063.7801  0.005443
+  31  161      146     30256.5898   typical    29935858530  clean     5000.0000  1003780.4635  0.004981
+  31  161      146     30256.5898   typical    29935858530  fluct     5143.8551   799748.1254  0.006432
+  31  161      146     30256.5898   typical    29566177998  clean     3950.0000   942945.2839  0.004189
+  31  161      146     30256.5898   typical    29566177998  fluct     3970.1688   761577.0391  0.005213
+  43  309      264     82362.4793   defect    233885349904087  clean    10250.0000  3224187.6936  0.003179
+  43  309      264     82362.4793   defect    233885349904087  fluct    10118.5107  2846092.6797  0.003555
+  43  309      264     82362.4793   typical   1949533073154142  clean    10558.0000  3472202.1316  0.003041
+  43  309      264     82362.4793   typical   1949533073154142  fluct    10653.7668  3014834.5382  0.003534
+  43  309      264     82362.4793   typical   1354241228232324  clean    11264.0000  3968231.0076  0.002839
+  43  309      264     82362.4793   typical   1354241228232324  fluct    11147.8529  3352318.2552  0.003325
+  43  309      264     82362.4793   typical   1132459542783312  clean    13126.0000  4133573.9662  0.003175
+  43  309      264     82362.4793   typical   1132459542783312  fluct    13090.0797  3464812.8275  0.003778
+  (all cells satisfy the THEOREM inequality -- registered check
+  passed; the ratio column is the measured saturation of the bound.)
+
+s4-T2 LEVEL-2 TRIVIALITY (the same method one level up):
+  A    #modes2   delta2_min          1/(2 delta2_min)   K     cost/K
+  13       364   1.998002e-04             2502.5    29       86.3  exact delta2_min = 1/5005
+  17       876   5.876476e-05             8508.5    49      173.6
+  23      3192   1.035443e-05            48288.5    89      542.6
+  31      9136   2.545417e-06           196431.5   161     1220.1
+  43     30996   4.945205e-07          1011080.5   309     3272.1
+  measured level-2 mass (fluct sequence, defect-centered segment)
+  vs the LEVEL-1 bound value (K + maxRowSum A) * sum|a|^2:
+  A=13: mass2 =      2088.2067 | level-1 bound value =     12965.3680 | mass2/bound1 =   0.1611
+  A=17: mass2 =      7568.1704 | level-1 bound value =     40411.8442 | mass2/bound1 =   0.1873
+  A=23: mass2 =     36437.3154 | level-1 bound value =    145166.4974 | mass2/bound1 =   0.2510
+  A=31: mass2 =    169646.1225 | level-1 bound value =    570721.6075 | mass2/bound1 =   0.2972
+  A=43: mass2 =   1058580.6125 | level-1 bound value =   2846092.6797 | mass2/bound1 =   0.3719
+  (measured numbers only: the level-1 CONSTANT is not a theorem for
+  the level-2 system -- the registered comparison exhibits how much
+  mass the finer layer carries while the method's own per-pair cost
+  1/(2 delta2_min) has already dwarfed K at every scale.)
+s4 done (0.3s)
+==============================================================================
+S4 APPEND RUN COMPLETE
+==============================================================================
+total s4 runtime 0.0 min; closed task list executed: s4-BC,
+s4-PARS, s4-T1, s4-T2; no thresholds moved; byte-checks byte-exact.

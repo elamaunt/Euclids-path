@@ -1224,9 +1224,291 @@ def main():
         log("  line %5d: %s" % (ln, title))
 
 
+# -------------------------------------------------------------------- s4
+# APPENDED STAGE (registered append run; the closed list s0-s3 of the first
+# run is untouched -- s4 is a NEW appended run block with its own
+# pre-registration written FIRST, mirroring EuclidsPath/Engine/
+# Step00LargeSieve.lean).  Invoke: python tools/dispersion_harness.py s4
+
+# the Lean kernel anchor (Step00LargeSieve.lean, maxRowSum_13): STOP on mismatch
+LEAN_MAXROWSUM_13 = Fraction(
+    342332647440426240579477769343529818239,
+    155308287585455802788347505848114800)
+
+S4_SCALES = (13, 17, 23, 31, 43)
+
+
+def harmonic_frac(n):
+    """H(n) = sum_{i=1..n} 1/i, exact Fraction (mirrors mathlib `harmonic`)."""
+    h = Fraction(0)
+    for i in range(1, n + 1):
+        h += Fraction(1, i)
+    return h
+
+
+def max_row_sum(A):
+    """maxRowSum A = sum_{q' in clocks A} A*q'*H(A*q'//2), exact Fraction
+    (mirrors Step00LargeSieve.maxRowSum byte for byte)."""
+    return sum(Fraction(A * qp) * harmonic_frac((A * qp) // 2)
+               for qp in clocks(A))
+
+
+def registration_s4():
+    section("s4 PRE-REGISTRATION (appended run block; written FIRST; "
+            "closed list)")
+    for s in [
+        "MIRROR: EuclidsPath/Engine/Step00LargeSieve.lean (the additive large",
+        "  sieve over the clock frequencies).  Objects: e(theta) = exp(2 pi i",
+        "  theta); level-1 modes (q, j), q in clocks A, 1 <= j <= q-1, freq",
+        "  j/q; S(theta) = sum_{t<K} a_t e(t*theta); maxRowSum A =",
+        "  sum_{q' in clocks A} A*q'*H(A*q'//2) EXACT Fraction (H = harmonic",
+        "  number); the THEOREM large_sieve_v0: sum_level-1 |S(j/q)|^2 <=",
+        "  (K + maxRowSum A) * sum_{t<K} |a_t|^2 for EVERY sequence a.",
+        "CLOSED TASK LIST: s4-BC, s4-PARS, s4-T1, s4-T2 -- no additions.",
+        "",
+        "s4-BC byte-checks (ANY failure = STOP exit 1):",
+        "  maxRowSum(13) computed here as exact Fraction == the Lean kernel",
+        "  literal 342332647440426240579477769343529818239 /",
+        "  155308287585455802788347505848114800 (theorem maxRowSum_13,",
+        "  norm_num-verified in Lean).  Level-2 witness byte-checks mirroring",
+        "  the level_wall lemmas: |8/143 - 5/91| == 1/1001 EXACT;",
+        "  1/(2*(1/1001)) = 1001/2 > 29 = ceil(13^2/6).",
+        "s4-PARS Parseval anchor (STOP on fail): at A = 13, on the first",
+        "  defect-centered segment, for every clock q of scale 13 and the",
+        "  fluct sequence: sum_{j mod q} |sum_t a_t e(jt/q)|^2 ==",
+        "  q * sum_{c mod q} |sum_{t = c mod q} a_t|^2 to 1e-9 rel (theorem",
+        "  clock_parseval; ties the DFT wiring to the Lean identity).",
+        "s4-T1 the measured sieve table.  Scales A in {13,17,23,31,43},",
+        "  ceiling windows K = ceil(A^2/6) = 29/49/89/161/309.  Segments per",
+        "  scale: 3 typical starts k uniform in [0, P_A) (seed 20260710 +",
+        "  400 + A) + 1 defect-centered start k = r - (K - g)//2, g = G(A)-1",
+        "  (r = first DEFECT_R witness; A = 13: first start of the",
+        "  full-period scan).  Sequences on (k, k+K], BOTH registered:",
+        "  a_clean(t) = [Clean A (k+1+t)] (the clean indicator, 0/1) and",
+        "  a_fluct(t) = [Clean A (k+1+t)] - prod_q (1-2/q) (the density-",
+        "  centered fluctuation; NOTE the two masses DIFFER on an incomplete",
+        "  window -- the constant shift contributes dens^2*|D_K(j/q)|^2 per",
+        "  mode, the Dirichlet kernel does not vanish off complete periods).",
+        "  Reported per segment AND per sequence: mass = sum over level-1",
+        "  modes |S(j/q)|^2 (float64 -- absolute values have no rational",
+        "  form, disclosed); bound = (K + maxRowSum A) * sum |a_t|^2; ratio",
+        "  mass/bound.  REGISTERED CHECK (STOP on fail): mass <= bound *",
+        "  (1 + 1e-9) on every cell -- the inequality is a THEOREM; a",
+        "  violation is a harness bug, not news.",
+        "s4-T2 the level-2 triviality demonstration.  The level-2 system of",
+        "  scale A: frequencies m/(q*q') for ordered clock pairs q < q' and",
+        "  admissible classes m in [1, qq'-1], q not| m, q' not| m (the",
+        "  admissibleClasses of Step00FareyModeGeometry).  Reported per",
+        "  scale: #modes2; the minimal circle spacing delta2_min of the",
+        "  level-2 frequency system (exact Fraction at A = 13, float64",
+        "  above); the same-method per-pair cost 1/(2*delta2_min) vs K --",
+        "  the demonstration that the Schur constant one level up dwarfs",
+        "  the ceiling window (the L52 conspiracy lives at levels 2-3);",
+        "  measured mass2 = sum over level-2 modes |S|^2 for a_fluct on the",
+        "  defect-centered segment vs the LEVEL-1 bound value -- measured",
+        "  numbers only, no verdict vocabulary beyond the registered",
+        "  comparison.",
+        "DISCIPLINE: float64 for masses (disclosed above); Fractions for",
+        "  maxRowSum, delta2_min at 13, and all byte-checks; seed 20260710;",
+        "  STAGE_TIME_CAP as registered for the first run.  STOP rules: any",
+        "  s4-BC/s4-PARS assert, any s4-T1 inequality cell.  Measured ratios",
+        "  never STOP.",
+    ]:
+        log(s)
+
+
+def s4_byte_checks():
+    log("")
+    log("s4-BC maxRowSum(13) Fraction vs Lean kernel literal:")
+    mrs13 = max_row_sum(13)
+    assert mrs13 == LEAN_MAXROWSUM_13, \
+        "maxRowSum(13) MISMATCH vs Lean: %s != %s" % (mrs13, LEAN_MAXROWSUM_13)
+    log("  maxRowSum(13) = %s" % mrs13)
+    log("               == Lean maxRowSum_13 literal BYTE-EXACT (~%.4f) -- PASS"
+        % float(mrs13))
+    w = abs(Fraction(8, 143) - Fraction(5, 91))
+    assert w == Fraction(1, 1001), "level-2 witness spacing"
+    assert Fraction(1, 1) / (2 * w) == Fraction(1001, 2) > 29
+    log("  level-2 witness: |8/143 - 5/91| = 1/1001 exact; 1/(2 delta) =")
+    log("  1001/2 = 500.5 > 29 = K(13) (mirrors level_wall_spacing /")
+    log("  level_wall_cost_exceeds_ceiling) -- PASS")
+    return mrs13
+
+
+def s4_sequences(A, k, K):
+    """(a_clean, a_fluct) on the segment (k, k+K] as float64 arrays."""
+    cl = np.array([1.0 if is_clean_int(A, k + 1 + t) else 0.0
+                   for t in range(K)])
+    dens = float(main_term(A, 1))
+    return cl, cl - dens
+
+
+def s4_level1_freqs(A):
+    return [(q, j) for q in clocks(A) for j in range(1, q)]
+
+
+def s4_mass(freqs_float, a):
+    """sum over modes |sum_t a_t e(t*theta)|^2 (float64)."""
+    K = a.size
+    t = np.arange(K)
+    tot = 0.0
+    chunk = 4096
+    for c0 in range(0, len(freqs_float), chunk):
+        th = np.asarray(freqs_float[c0: c0 + chunk])[:, None]
+        S = (np.exp(2j * np.pi * th * t[None, :]) @ a.astype(complex))
+        tot += float((np.abs(S) ** 2).sum())
+    return tot
+
+
+def s4_parseval_anchor(A, k, K, a):
+    """clock_parseval tie: per clock q, LHS(full j mod q) == q * residue mass."""
+    worst = 0.0
+    t = np.arange(K)
+    for q in clocks(A):
+        lhs = 0.0
+        for j in range(q):
+            S = (a * np.exp(2j * np.pi * j * t / q)).sum()
+            lhs += abs(S) ** 2
+        rhs = 0.0
+        for c in range(q):
+            rhs += abs(a[t % q == c].sum()) ** 2
+        rhs *= q
+        dev = abs(lhs - rhs) / max(1.0, abs(rhs))
+        worst = max(worst, dev)
+        assert dev <= 1e-9, "clock_parseval tie FAILED q=%d dev=%.2e" % (q, dev)
+    return worst
+
+
+def s4_level2_freqs(A):
+    """Admissible level-2 frequencies m/(q q'), q < q', as (num, den) pairs."""
+    Q = clocks(A)
+    out = []
+    for i in range(len(Q)):
+        for jx in range(i + 1, len(Q)):
+            q, qp = Q[i], Q[jx]
+            N = q * qp
+            for m in range(1, N):
+                if m % q != 0 and m % qp != 0:
+                    out.append((m, N))
+    return out
+
+
+def main_s4():
+    t00 = time.time()
+    section("S4 APPEND RUN -- %s -- the large-sieve stage "
+            "(Step00LargeSieve.lean)" % time.strftime("%Y-%m-%d %H:%M:%S"))
+    log("harness: tools/dispersion_harness.py s4; log: tools/dispersion_run1.log")
+    log("python %s | numpy %s | seed %d" % (sys.version.split()[0],
+                                            np.__version__, SEED))
+    registration_s4()
+    t0 = time.time()
+    mrs13 = s4_byte_checks()
+    # segments
+    d13 = scan_defect_starts(13)
+    log("")
+    log("segment starts (registered): A=13 defect scan first r=%d (12 per"
+        % d13[0])
+    log("period, census KNOWN_TRUE); A in {17,23,31,43}: first DEFECT_R witness")
+    segs = {}
+    for A in S4_SCALES:
+        K = CEIL_K[A]
+        g = G_KERNEL[A] - 1
+        r = d13[0] if A == 13 else DEFECT_R[A][0]
+        kdef = r - (K - g) // 2
+        rng = np.random.default_rng(SEED + 400 + A)
+        ktyp = [int(v) for v in rng.integers(0, period(A), size=3)]
+        segs[A] = [("defect", kdef)] + [("typical", k) for k in ktyp]
+        log("  A=%2d K=%3d: defect-centered k=%d; typical %s"
+            % (A, K, kdef, ktyp))
+    # s4-PARS
+    log("")
+    log("s4-PARS clock_parseval tie at A=13 (defect segment, fluct sequence):")
+    _, af13 = s4_sequences(13, segs[13][0][1], CEIL_K[13])
+    worst = s4_parseval_anchor(13, segs[13][0][1], CEIL_K[13],
+                               af13.astype(complex))
+    log("  per-clock full-frequency mass == q * residue mass at q in")
+    log("  {5,7,11,13}, max rel dev %.2e (<= 1e-9) -- PASS" % worst)
+    # s4-T1
+    log("")
+    log("s4-T1 THE MEASURED SIEVE TABLE (bound = (K + maxRowSum A) * sum|a|^2):")
+    log("  A    K   #modes1   maxRowSum(A)      segment    k          "
+        "seq     mass          bound         ratio")
+    for A in S4_SCALES:
+        K = CEIL_K[A]
+        freqs1 = s4_level1_freqs(A)
+        ff = [j / q for (q, j) in freqs1]
+        mrs = max_row_sum(A) if A != 13 else mrs13
+        C = float(Fraction(K) + mrs)
+        for kind, k in segs[A]:
+            ac, af = s4_sequences(A, k, K)
+            for tag, a in (("clean", ac), ("fluct", af)):
+                mass = s4_mass(ff, a.astype(complex))
+                ssq = float((a * a).sum())
+                bound = C * ssq
+                ratio = mass / bound if bound > 0 else float("nan")
+                assert mass <= bound * (1 + 1e-9), \
+                    "SIEVE INEQUALITY VIOLATED (harness bug) A=%d k=%d" % (A, k)
+                log("  %2d %4d  %7d   %12.4f   %-8s  %12d  %-5s  %12.4f  "
+                    "%12.4f  %8.6f"
+                    % (A, K, len(freqs1), float(mrs), kind, k, tag, mass,
+                       bound, ratio))
+    log("  (all cells satisfy the THEOREM inequality -- registered check")
+    log("  passed; the ratio column is the measured saturation of the bound.)")
+    # s4-T2
+    log("")
+    log("s4-T2 LEVEL-2 TRIVIALITY (the same method one level up):")
+    log("  A    #modes2   delta2_min          1/(2 delta2_min)   K     "
+        "cost/K")
+    for A in S4_SCALES:
+        K = CEIL_K[A]
+        fr2 = s4_level2_freqs(A)
+        vals = sorted(m / N for (m, N) in fr2)
+        arr = np.array(vals)
+        gaps = np.diff(arr)
+        pos = gaps[gaps > 1e-15]
+        dmin = float(min(pos.min(), (1.0 - arr[-1]) + arr[0]))
+        cost = 1.0 / (2 * dmin)
+        note = ""
+        if A == 13:
+            ex = sorted(set(Fraction(m, N) for (m, N) in fr2))
+            gmin = min((b - a for a, b in zip(ex, ex[1:]) if b != a),
+                       default=None)
+            gwrap = 1 - ex[-1] + ex[0]
+            dmin_exact = min(gmin, gwrap)
+            note = "  exact delta2_min = %s" % dmin_exact
+            assert abs(float(dmin_exact) - dmin) <= 1e-12
+        log("  %2d  %8d   %.6e     %14.1f   %3d   %8.1f%s"
+            % (A, len(fr2), dmin, cost, K, cost / K, note))
+    log("  measured level-2 mass (fluct sequence, defect-centered segment)")
+    log("  vs the LEVEL-1 bound value (K + maxRowSum A) * sum|a|^2:")
+    for A in S4_SCALES:
+        K = CEIL_K[A]
+        kdef = segs[A][0][1]
+        _, af = s4_sequences(A, kdef, K)
+        fr2 = s4_level2_freqs(A)
+        mass2 = s4_mass([m / N for (m, N) in fr2], af.astype(complex))
+        mrs = max_row_sum(A)
+        bound1 = float(Fraction(K) + mrs) * float((af * af).sum())
+        log("  A=%2d: mass2 = %14.4f | level-1 bound value = %14.4f | "
+            "mass2/bound1 = %8.4f"
+            % (A, mass2, bound1, mass2 / bound1))
+    log("  (measured numbers only: the level-1 CONSTANT is not a theorem for")
+    log("  the level-2 system -- the registered comparison exhibits how much")
+    log("  mass the finer layer carries while the method's own per-pair cost")
+    log("  1/(2 delta2_min) has already dwarfed K at every scale.)")
+    stage_close("s4", t0)
+    section("S4 APPEND RUN COMPLETE")
+    log("total s4 runtime %.1f min; closed task list executed: s4-BC,"
+        % ((time.time() - t00) / 60.0))
+    log("s4-PARS, s4-T1, s4-T2; no thresholds moved; byte-checks byte-exact.")
+
+
 if __name__ == "__main__":
     try:
-        main()
+        if len(sys.argv) > 1 and sys.argv[1] == "s4":
+            main_s4()
+        else:
+            main()
     except AssertionError as exc:
         log("")
         log("STOP: registered selftest/byte-check FAILED -- surfacing before")

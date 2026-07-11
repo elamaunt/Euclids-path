@@ -1,0 +1,636 @@
+==============================================================================
+CIRCLE-SUM HARNESS RUN 1 -- 2026-07-11 16:21:00
+==============================================================================
+harness: tools/circle_sum_harness.py; log: tools/circle_sum_run1.log
+stage D of the circle-volume pass: exact selftests of the four Lean
+identity targets BEFORE their Lean modules land; M4 stratum blueprint;
+one registered refutation record; bridge navigation probe.
+python 3.11.9 | numpy 2.4.4 | seed 20260710
+objects: C = {(a,b): a^2 - d b^2 = 1} over Z/l (|C| = l+1), d a
+quadratic nonresidue; psi(t) = exp(2 pi i t/l); circleSum(u) =
+sum_C psi(u a); kloos(a,b) = sum_{x in U} psi(a x + b x^-1);
+inv2 = (l+1)/2.  Window side mirrors fourier_window_harness.py:
+clocks = primes in [5,A]; window (r, r+g]; strike classes +-i6(q).
+==============================================================================
+PRE-REGISTRATION BLOCK (logged before ANY measurement; closed task list)
+==============================================================================
+T1 IDENTITY SELFTESTS -- honest label: VALIDATION of the four Lean
+  identity targets BEFORE their Lean modules land; ANY failure = STOP
+  exit 1 (wrong design constants MUST surface before Lean effort).
+  Range: ALL odd primes l <= 2000; circle C = {(a,b): a^2 - d*b^2 = 1}
+  over Z/l, d a quadratic nonresidue; at least 2 nonresidues d per l
+  where they exist (l = 3 has exactly (l-1)/2 = 1 -- disclosed);
+  psi(t) = exp(2 pi i t/l); circleSum(u) = sum_C psi(u*a);
+  kloos(a,b) = sum_{x in U} psi(a*x + b*x^-1); inv2 = (l+1)/2.
+  (a) pair count  #{(x,y) in C^2 : re x = re y} = 2l  (integer-exact
+      direct count via the coordinate histogram N(a)).
+  (b) energy  sum_{u != 0} |circleSum(u)|^2 = l^2 - 2l - 1, BOTH ways:
+      float route (1e-9 RELATIVE to the l^2 family scale -- disclosed)
+      AND the pure-integer route l*paircount - (l+1)^2 (Parseval-free:
+      sum_u |S(u)|^2 = l * #{re-pairs}, |S(0)|^2 = (l+1)^2).
+  (c) bridge  circleSum(u) = -kloos(u*inv2, u*inv2) for ALL u != 0
+      (float 1e-9 ABSOLUTE per value) + integer cross-check:
+      sum_{u != 0} |kloos(u/2, u/2)|^2 = l^2 - 2l - 1 via the exact
+      count #{(x,y) in U^2 : x + x^-1 = y + y^-1} = 2l - 4.
+  (d) family moments (kloos(a,1), a != 0):
+      M2 = sum |kloos(a,1)|^2 = l^2 - l - 1 (float + integer route
+      l*(l-1) - |kloos(0,1)|^2 with kloos(0,1) = -1 exact).
+      DISAMBIGUATION registered BEFORE measurement: the design's
+      literal product form sum_{a != 0} kloos(a,1)*kloos(-a,1) is a
+      DIFFERENT exact constant, -(l+1): kloos(a,1) is real with
+      conj kloos(a,1) = kloos(-a,-1), NOT kloos(-a,1).  BOTH asserted.
+      M4 = sum_{a != 0} kloos(a,1)^4 = 2l^3 - 3l^2 - 3l - 1 (float 1e-9
+      relative to l^3) via the honest integer route: the 4-tuple count
+      N4 = #{(x,y,z,w) in U^4: x+z = y+w and x^-1+z^-1 = y^-1+w^-1}
+      (O(l^2) key-collision count) through the exact assembly
+      M4 = (l^2*N4 - 2(l-1) - (l-1)^4)/(l-1).  If the M4 constant
+      fails: NO patching -- report the measured polynomial fit, STOP 1.
+  d-independence: the coordinate histogram N(a) = #{b : (a,b) in C} is
+  asserted IDENTICAL across every tested d at every l (structural
+  reason: N(a) = 1 - chi(a^2 - 1) for a != +-1, nonresidue-blind).
+T2 M4 STRATUM BLUEPRINT -- honest label: the EXACT per-stratum table
+  the Lean Phase-5 M4 proof will follow.  Strata: I diagonal (y=x,
+  w=z), II swap (y=z, w=x, x != z), III antipodal (z=-x, w=-y,
+  y notin {x,-x}); count formulas verified EXACTLY for all odd primes
+  l <= 500 via the key-side pair-collision decomposition (keys
+  (e1,e2) = (x+z, x^-1+z^-1), root-pair counting, chi criterion),
+  plus FULL tuple-level classification (every solution in exactly one
+  stratum) for l <= 31.
+T3 REGISTERED REFUTATION RECORD -- the 'fixed-circle M4 two-class
+  cubic' hypothesis: M4circle(l) = #{(x,y,z,w) in C^4 : re x + re y =
+  re z + re w}, odd primes l <= 97; exact cubic interpolation per
+  l mod 4 class (bases: class 1 {5,13,17,29}; class 3 {3,7,11,19} AND
+  the design base {7,11,19,23}) + least-squares cubic per class;
+  exhibit the breakdown (design predicts l = 31/37); log REFUTED with
+  the exact residual table.  Ledger law: the fixed-circle fourth
+  moment carries curve-count fluctuations -- Weil territory -- NOT
+  house-exact.
+T4 BRIDGE NAVIGATION PROBE -- honest label: EXACT-MEASURED,
+  UNREGISTERED-FOR-VERDICTS, NO THRESHOLDS; tabulation only.
+  The 12 defect windows: A=17, g=17, r in {117, 502, 5642, 6027,
+  21497, 30845}; A=19, g=24, r in {110, 26045, 67695, 170035, 203005,
+  373175} (census: gap_extremal_run1.log:124-131,133-140) -- each
+  RE-VERIFIED against the census (zero clean centers, clean endpoints)
+  before use.  Incomplete side: L52-style support-pair terms
+  E_S(W) = sum_{m in W} eps_q(m)*eps_q'(m), |S| = 2, exact Fractions.
+  Complete side (comparand design documented at the T4 header):
+  K_q(W) = kloos_q(u*inv2_q, u*inv2_q) at u = r mod q
+  = -circleSum_q(r mod q) -- the complete circle-side dual of the
+  window's clock phase.  Side-by-side tables; per-pair linear fits
+  E ~ [1, K_q, K_q', K_q*K_q'] with R^2 + jackknife coefficient
+  stability.  HONEST EXPECTATION registered: NO stable re-expression
+  (the complete/incomplete boundary -- the wall's sixth costume);
+  a stable fit would be the first hint the incomplete object borrows
+  structure from the complete one.  Tabulate, do NOT verdict.
+K3 KILL (pre-registered vocabulary kill -- NO measurement): the foil
+  candidate class 'window Sato-Tate angle classes' (per-clock
+  Kloosterman angle classes over windows) is phase-determined -- a
+  function of the phase vector (r mod q)_q alone -- exactly the class
+  already closed by L38 (linear foil-v2 PARITY-BLIND) + L63
+  (out-of-phase class NULL); confirming would not inform.  KILLED;
+  NO foil campaign anywhere in this run.
+DISCIPLINE: seed 20260710 wherever sampling occurs (only the 25
+  random third-nonresidue spot checks sample); append-only ASCII log;
+  tolerances: 1e-9 absolute per value, 1e-9 relative on aggregated
+  family sums (scale disclosed inline); runtime rule: the l <= 2000
+  loop is estimated FIRST -- if the projection exceeds 20 min the
+  range shrinks to l <= 1000 with a LOGGED note; any T1/T2 assert
+  failure = STOP exit 1.  Closed list: T1a-T1d, T2, T3, T4 -- no
+  additions after this block.
+==============================================================================
+T0 -- RUNTIME ESTIMATE (registered rule: projection > 20 min -> l <= 1000)
+==============================================================================
+probe: full T1 body at l = 1999 took 0.10s; sum(l^2) scale factor 90.0
+projection for the full odd-prime l <= 2000 loop: 0.2 min (threshold 20 min)
+-> proceed with the full l <= 2000 range.
+==============================================================================
+T1 -- IDENTITY SELFTESTS of the four Lean targets, odd primes l <= 2000
+==============================================================================
+grounding (definition-verbatim brute checks, small l):
+  l= 5 d=2: |C| =  6 by explicit (a,b) census; N-hist == census;
+    circleSum FFT route == direct point sum (max dev 8.9e-16); kloos(a,1)
+    FFT route == direct definition sum (max dev 4.7e-16) -- PASS
+  l=13 d=2: |C| = 14 by explicit (a,b) census; N-hist == census;
+    circleSum FFT route == direct point sum (max dev 3.6e-15); kloos(a,1)
+    FFT route == direct definition sum (max dev 2.4e-15) -- PASS
+  l=31 d=3: |C| = 32 by explicit (a,b) census; N-hist == census;
+    circleSum FFT route == direct point sum (max dev 6.1e-15); kloos(a,1)
+    FFT route == direct definition sum (max dev 6.1e-15) -- PASS
+primes: 302 odd primes (3..1999); d policy: two smallest nonresidues per
+prime (l=3: single nonresidue d=2, disclosed) + a random third nonresidue
+at 25 seed-20260710-sampled primes: [101, 283, 467, 673, 709, 797, 809, 827, 853, 997, 1049, 1069, 1171, 1217, 1307, 1361, 1399, 1409, 1499, 1543, 1553, 1693, 1723, 1741, 1861]
+  spot l=3: d=[2] paircount=2l=6 energy=l^2-2l-1=2
+    bridge max|S(u)+kloos(u/2,u/2)| = 0.00e+00; diag count 2l-4 = 2
+    M2=5 M4=17 N4=3(l-1)(l-2)=6; product form sum K(a)K(-a)
+    = -(l+1) = -4 (dev 2.0e-16)
+  spot l=5: d=[2, 3] paircount=2l=10 energy=l^2-2l-1=14
+    bridge max|S(u)+kloos(u/2,u/2)| = 0.00e+00; diag count 2l-4 = 6
+    M2=19 M4=159 N4=3(l-1)(l-2)=36; product form sum K(a)K(-a)
+    = -(l+1) = -6 (dev 7.1e-17)
+  spot l=101: d=[2, 3, 53] paircount=2l=202 energy=l^2-2l-1=9998
+    bridge max|S(u)+kloos(u/2,u/2)| = 1.78e-14; diag count 2l-4 = 198
+    M2=10099 M4=2029695 N4=3(l-1)(l-2)=29700; product form sum K(a)K(-a)
+    = -(l+1) = -102 (dev 8.2e-17)
+  spot l=997: d=[2, 5, 783] paircount=2l=1994 energy=l^2-2l-1=992014
+    bridge max|S(u)+kloos(u/2,u/2)| = 6.57e-14; diag count 2l-4 = 1990
+    M2=993011 M4=1979068927 N4=3(l-1)(l-2)=2973060; product form sum K(a)K(-a)
+    = -(l+1) = -998 (dev 3.1e-17)
+  spot l=1999: d=[3, 6] paircount=2l=3998 energy=l^2-2l-1=3992002
+    bridge max|S(u)+kloos(u/2,u/2)| = 2.36e-13; diag count 2l-4 = 3994
+    M2=3994001 M4=15964017997 N4=3(l-1)(l-2)=11970018; product form sum K(a)K(-a)
+    = -(l+1) = -2000 (dev 1.1e-16)
+
+per-group maxima of the float deviations (all asserted under tolerance):
+  range        #l  #(l,d)  energy_rel  bridge_abs  diagE_rel   M2_rel      P2_rel      M4_rel
+      3- 200   45     90   5.30e-16   3.02e-14   6.64e-16   4.77e-16   2.43e-16   2.15e-15
+    201- 500   49    100   5.57e-16   6.22e-14   7.42e-16   7.37e-16   2.09e-16   2.69e-15
+    501-1000   73    153   7.62e-16   2.17e-13   7.22e-16   6.90e-16   1.68e-16   2.81e-15
+   1001-1500   71    151   9.76e-16   2.56e-13   9.76e-16   9.78e-16   1.33e-16   3.65e-15
+   1501-2000   64    134   8.18e-16   3.06e-13   9.69e-16   9.68e-16   1.37e-16   3.89e-15
+T1 SUMMARY: 302 odd primes, 628 (l,d) pairs checked; ALL FOUR IDENTITY
+TARGETS CONFIRMED EXACTLY (integer routes) at every prime:
+  (a) paircount = 2l; (b) energy = l^2-2l-1 (int route l*2l-(l+1)^2 and
+      float, max rel dev 9.76e-16);
+  (c) bridge circleSum(u) = -kloos(u*inv2,u*inv2) per value, max abs dev
+      3.06e-13; diag count 2l-4 and diag energy = l^2-2l-1 (max rel 9.76e-16);
+  (d) M2 = l^2-l-1 (int route l(l-1)-1; float max rel 9.78e-16);
+      M4 = 2l^3-3l^2-3l-1 via N4 = 3(l-1)(l-2) EXACT integer assembly
+      at every prime (float max rel 3.89e-15).
+  DISAMBIGUATION CONFIRMED: sum_{a!=0} kloos(a,1)*kloos(-a,1) = -(l+1)
+  exactly (max rel dev 2.43e-16) -- the design's literal product form is a
+  DIFFERENT constant; the Lean M2 target must use |kloos(a,1)|^2
+  (equivalently kloos(a,1)^2 -- kloos(a,1) is real).
+  d-INDEPENDENCE CONFIRMED: N-histogram identical across every tested d
+  at every prime (incl. the 25 random third nonresidues); identities are
+  nonresidue-blind as designed (N(a) = 1 - chi(a^2-1) for a != +-1).
+T1 done (8.5s)
+==============================================================================
+T2 -- M4 STRATUM BLUEPRINT (the exact table the Lean Phase-5 proof follows)
+==============================================================================
+N4(l) = #{(x,y,z,w) in U^4 : x+z = y+w AND x^-1+z^-1 = y^-1+w^-1},
+U = (Z/l)^*.  COMPLETENESS LEMMA (the Lean spine): write s = x+z.
+  s != 0:  x^-1+z^-1 = s/(xz) forces xz = yw with x+z = y+w, so {x,z}
+           and {y,w} are root multisets of ONE monic quadratic ->
+           multiset-equal;
+  s  = 0:  z = -x and the inverse equation is automatic; y+w = 0
+           forces w = -y (the antipodal family).
+DISJOINT STRATA (each solution in EXACTLY one; validity: all odd primes):
+  I    diagonal    y = x,  w = z                      count (l-1)^2
+  II   swap        y = z,  w = x,  x != z             count (l-1)(l-2)
+  III  antipodal   z = -x, w = -y, y notin {x,-x}     count (l-1)(l-3)
+                                        (empty at l = 3, as (l-3) = 0)
+  TOTAL  N4 = 3(l-1)(l-2)
+KEY-SIDE DECOMPOSITION (machine verification route; keys (e1,e2) =
+(x+z, x^-1+z^-1) over ordered unit pairs; N4 = sum over keys cnt^2):
+  K0  key (0,0):            cnt = l-1   -> contributes (l-1)^2 (all s=0)
+  K1  exactly one of e1,e2 zero:  cnt = 0   (e1 = 0 <=> e2 = 0)
+  K2  e1,e2 != 0:  cnt = 1 + chi(e1^2 - 4*e1*e2^-1)  in {0,1,2}
+      cnt=1 keys (double root x=z):    l-1 keys, characterized e1*e2 = 4
+      cnt=2 keys (unordered pair x!=z, s!=0):   (l-1)(l-3)/2 keys
+      cnt=0 keys:                                (l-1)^2/2 keys
+      s!=0 solutions: (l-1)*1 + (l-1)(l-3)/2*4 = (l-1)(2l-5)
+  CROSS: (l-1)^2 + (l-1)(2l-5) = 3(l-1)(l-2) = N4
+M4 ASSEMBLY (the Lean Phase-5 target):
+  sum_{a,b mod l} |kloos(a,b)|^4 = l^2 * N4   (orthogonality, both a,b)
+  kloos(a,b) = kloos(1,ab) (x -> a^-1 x); ab != 0 covers each kloos(1,c)
+  exactly l-1 times; boundary kloos(a,0) = kloos(0,b) = -1 (2(l-1)
+  tuples), kloos(0,0) = l-1 ((l-1)^4);  hence
+  M4 = (l^2*N4 - 2(l-1) - (l-1)^4)/(l-1) = 2l^3 - 3l^2 - 3l - 1.
+
+tuple-level brute classification (every solution in EXACTLY one stratum),
+l in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31]:
+   l    I=(l-1)^2   II=(l-1)(l-2)   III=(l-1)(l-3)   N4=3(l-1)(l-2)
+   3         4           2               0                6   EXACT
+   5        16          12               8               36   EXACT
+   7        36          30              24               90   EXACT
+  11       100          90              80              270   EXACT
+  13       144         132             120              396   EXACT
+  17       256         240             224              720   EXACT
+  19       324         306             288              918   EXACT
+  23       484         462             440             1386   EXACT
+  29       784         756             728             2268   EXACT
+  31       900         870             840             2610   EXACT
+key-side verification (K0/K1/K2 counts, e1*e2=4 characterization, chi
+formula on the FULL (e1,e2) grid, s!=0 solution count, N4 total): ALL
+EXACT for all 94 odd primes l <= 500 (3..499) -- PASS
+T2 done (0.3s)
+==============================================================================
+T3 -- REGISTERED REFUTATION RECORD: fixed-circle M4 two-class cubic
+==============================================================================
+M4circle(l) = #{(x,y,z,w) in C^4 : re x + re y = re z + re w}, exact
+integers (d-independent, asserted; bridge cross-check M4circle =
+((l+1)^4 + sum_{v!=0} kloos(v,v)^4)/l holds to 1e-9 rel at every l):
+  3:86  5:278  7:614  11:2102  13:3190  17:6598  19:8982  23:15398  29:29238  31:35718  37:59030  41:79206
+  43:90550  47:116550  53:165974  59:226934  61:248758  67:327510  71:387430  73:420838  79:531142  83:612886  89:751782  97:969606
+
+exact cubic interpolation, class 1 primary: base [5, 13, 17, 29]
+   l    M4circle      cubic P(l)      residual
+   5        278             278             0
+  13       3190            3190             0
+  17       6598            6598             0
+  29      29238           29238             0
+  37      59030           58518           512   <-- FIRST BREAKDOWN (above base)
+  41      79206           78566           640
+  53     165974          164950          1024
+  61     248758          248246           512
+  73     420838          419430          1408
+  89     751782          750118          1664
+  97     969606          966278          3328
+
+exact cubic interpolation, class 3 primary: base [3, 7, 11, 19]
+   l    M4circle      cubic P(l)      residual
+   3         86              86             0
+   7        614             614             0
+  11       2102            2102             0
+  19       8982            8982             0
+  23      15398           14886           512   <-- FIRST BREAKDOWN (above base)
+  31      35718           32902          2816
+  43      90550           79286         11264
+  47     116550          100934         15616
+  59     226934          188022         38912
+  67     327510          267094         60416
+  71     387430          313702         73728
+  79     531142          422342        108800
+  83     612886          484886        128000
+
+exact cubic interpolation, class 3 design base (l=3 excluded): base [7, 11, 19, 23]
+   l    M4circle      cubic P(l)      residual
+   3         86          -766/3        1024/3   (below base, off-cubic)
+   7        614             614             0
+  11       2102            2102             0
+  19       8982            8982             0
+  23      15398           15398             0
+  31      35718           36742         -1024   <-- FIRST BREAKDOWN (above base)
+  43      90550           97718         -7168
+  47     116550          127814        -11264
+  59     226934          254582        -27648
+  67     327510          374614        -47104
+  71     387430          446822        -59392
+  79     531142          618182        -87040
+  83     612886          718358       -105472
+
+least-squares cubic, class 1 (n=11): coef [   1.009    4.742   46.978 -379.628]
+  residuals: 5:+178  13:-58  17:-146  29:-330  37:+95  41:+179  53:+397  61:-290  73:+183  89:-562  97:+354
+  max |residual| = 562 (a cubic cannot absorb the fluctuation)
+least-squares cubic, class 3 (n=13): coef [  1.003   5.709   7.416 -27.804]
+  residuals: 3:+13  7:-34  11:+23  19:-68  23:+37  31:+163  43:-6  47:-469  59:+749  67:-117  71:-671  79:+657  83:-277
+  max |residual| = 749 (a cubic cannot absorb the fluctuation)
+
+VERDICT: REFUTED (registered).  No cubic in l fits M4circle per mod-4
+class: class 1 primary breaks first at l = 37; class 3 primary at l = 23; the design base at l = 31
+(design predicted 31/37: the design base {7,11,19,23} reproduces 31 --
+and leaves l = 3 itself off-cubic; the primary class-3 base {3,7,11,19}
+already breaks at 23; class 1 breaks at 37 as predicted).
+LEDGER LAW: the fixed-circle fourth moment M4circle = ((l+1)^4 +
+sum_{v!=0} kloos(v,v)^4)/l carries curve-count fluctuations -- Weil
+territory -- NOT house-exact.  The house-exact object is the FAMILY
+moment M4 over kloos(a,1) (T1d, CONFIRMED 2l^3-3l^2-3l-1): averaging
+over the family kills the fluctuation; freezing the circle keeps it.
+T3 done (0.0s)
+==============================================================================
+T4 -- BRIDGE NAVIGATION PROBE (EXACT-MEASURED; unregistered-for-verdicts; no thresholds)
+==============================================================================
+COMPARAND DESIGN (fixed before any fit): the window's clock-q data
+enters the incomplete side only through the phase u = r mod q (E_S is
+a function of the phase vector and g).  The bridge (T1c, validated at
+every prime above) maps a circle frequency u to the complete diagonal
+Kloosterman sum: circleSum_q(u) = -kloos_q(u*inv2, u*inv2).  The most
+natural complete-sum comparand at clock q is therefore
+  K_q(W) = kloos_q(u*inv2_q, u*inv2_q),  u = r mod q,
+i.e. MINUS the complete circle sum at the frequency the window phase
+names.  u = 0 degenerates to kloos(0,0) = q-1 (bridge holds only for
+u != 0; marked 'deg').  Pair features: [K_q, K_q', K_q*K_q'] (product
+by twisted multiplicativity).  DISCLOSED LIMITS: census phases are
+heavily clustered (mirror orbits) -- several K_q have little or no
+variance across the 12 windows; fits carry the design-matrix rank;
+n = 12 (10 small-clock pairs) or n = 6 (pairs with 19) against 4
+parameters inflates R^2.  Tabulation only.
+
+census re-verified A=17 g=17: 6 windows [117, 502, 5642, 6027, 21497, 30845] -- zero clean centers,
+  endpoints r and r+18 clean (source gap_extremal_run1.log) -- PASS
+census re-verified A=19 g=24: 6 windows [110, 26045, 67695, 170035, 203005, 373175] -- zero clean centers,
+  endpoints r and r+25 clean (source gap_extremal_run1.log) -- PASS
+
+comparand wiring check: K_q(u) == -circleSum_q(u) for every u != 0 at
+every clock q in {5,7,11,13,17,19} (1e-9 per value) -- PASS
+
+complete side K_q(W) (deg = u = 0, kloos(0,0) = q-1; bridge n/a there):
+   A       r           q=5          q=7          q=11         q=13         q=17         q=19   
+  17       117   +0.3820      +2.0489      -5.7170     +12.0000*deg  -3.9591           --    
+  17       502   +0.3820      +2.0489      -5.7170      -0.4333      +1.3722           --    
+  17      5642   +0.3820      +6.0000*deg  +0.7247     +12.0000*deg  -3.9591           --    
+  17      6027   +0.3820      +6.0000*deg  +0.7247      -0.4333      +1.3722           --    
+  17     21497   +0.3820      +6.0000*deg  -0.7576      -0.4333      +1.3722           --    
+  17     30845   +4.0000*deg  -2.6920      +0.7247      +0.5690      -5.6738           --    
+  19       110   +4.0000*deg  +2.0489     +10.0000*deg  +4.0821      +1.3722      +5.4937    
+  19     26045   +4.0000*deg  +2.0489      -0.7576      +4.0821      +3.6064      +5.4937    
+  19     67695   +4.0000*deg  +2.0489      +0.7247      +0.5690      +3.6064      +0.8948    
+  19    170035   +4.0000*deg  +2.0489      -0.7576      -0.4333      +3.6064      +5.4937    
+  19    203005   +4.0000*deg  +2.0489     +10.0000*deg  -4.6367      +1.3722      -1.8424    
+  19    373175   +4.0000*deg  +2.0489     +10.0000*deg  -4.6367      +1.3722      +5.4937    
+  (*deg entries: u = r mod q = 0)
+
+incomplete side E_S(W) = sum_{m in W} eps_q(m) eps_q'(m), |S| = 2,
+EXACT (V = sum (q*s_q-2)(q'*s_q'-2) integer; E = V/(q*q'); share =
+E/(g*a_q*a_q') = pair-term share of mainTerm, L52 convention):
+  window A=17 r=117 (g=17):
+    E{ 5, 7} =     -51/35 =  -1.45714   share -0.20000   V = -51
+    E{ 5,11} =       4/11 =  +0.36364   share +0.04357   V = 20
+    E{ 5,13} =      -3/13 =  -0.23077   share -0.02674   V = -15
+    E{ 5,17} =     -14/17 =  -0.82353   share -0.09150   V = -70
+    E{ 7,11} =     -27/77 =  -0.35065   share -0.03529   V = -27
+    E{ 7,13} =      -3/91 =  -0.03297   share -0.00321   V = -3
+    E{ 7,17} =     -12/17 =  -0.70588   share -0.06588   V = -84
+    E{11,13} =     45/143 =  +0.31469   share +0.02674   V = 45
+    E{11,17} =      -8/17 =  -0.47059   share -0.03834   V = -88
+    E{13,17} =      -6/17 =  -0.35294   share -0.02781   V = -78
+  window A=17 r=502 (g=17):
+    E{ 5, 7} =     -51/35 =  -1.45714   share -0.20000   V = -51
+    E{ 5,11} =       4/11 =  +0.36364   share +0.04357   V = 20
+    E{ 5,13} =      -3/13 =  -0.23077   share -0.02674   V = -15
+    E{ 5,17} =     -14/17 =  -0.82353   share -0.09150   V = -70
+    E{ 7,11} =     -27/77 =  -0.35065   share -0.03529   V = -27
+    E{ 7,13} =      -3/91 =  -0.03297   share -0.00321   V = -3
+    E{ 7,17} =     -12/17 =  -0.70588   share -0.06588   V = -84
+    E{11,13} =    -98/143 =  -0.68531   share -0.05823   V = -98
+    E{11,17} =      -8/17 =  -0.47059   share -0.03834   V = -88
+    E{13,17} =      -6/17 =  -0.35294   share -0.02781   V = -78
+  window A=17 r=5642 (g=17):
+    E{ 5, 7} =     -72/35 =  -2.05714   share -0.28235   V = -72
+    E{ 5,11} =     -13/55 =  -0.23636   share -0.02832   V = -13
+    E{ 5,13} =      -3/13 =  -0.23077   share -0.02674   V = -15
+    E{ 5,17} =     -14/17 =  -0.82353   share -0.09150   V = -70
+    E{ 7,11} =     -68/77 =  -0.88312   share -0.08889   V = -68
+    E{ 7,13} =      11/91 =  +0.12088   share +0.01176   V = 11
+    E{ 7,17} =     -10/17 =  -0.58824   share -0.05490   V = -70
+    E{11,13} =    -76/143 =  -0.53147   share -0.04516   V = -76
+    E{11,17} =      -6/17 =  -0.35294   share -0.02876   V = -66
+    E{13,17} =      -6/17 =  -0.35294   share -0.02781   V = -78
+  window A=17 r=6027 (g=17):
+    E{ 5, 7} =     -72/35 =  -2.05714   share -0.28235   V = -72
+    E{ 5,11} =     -13/55 =  -0.23636   share -0.02832   V = -13
+    E{ 5,13} =      -3/13 =  -0.23077   share -0.02674   V = -15
+    E{ 5,17} =     -14/17 =  -0.82353   share -0.09150   V = -70
+    E{ 7,11} =     -68/77 =  -0.88312   share -0.08889   V = -68
+    E{ 7,13} =     -80/91 =  -0.87912   share -0.08556   V = -80
+    E{ 7,17} =     -10/17 =  -0.58824   share -0.05490   V = -70
+    E{11,13} =     67/143 =  +0.46853   share +0.03981   V = 67
+    E{11,17} =      -6/17 =  -0.35294   share -0.02876   V = -66
+    E{13,17} =      -6/17 =  -0.35294   share -0.02781   V = -78
+  window A=17 r=21497 (g=17):
+    E{ 5, 7} =     -72/35 =  -2.05714   share -0.28235   V = -72
+    E{ 5,11} =     -13/55 =  -0.23636   share -0.02832   V = -13
+    E{ 5,13} =      -3/13 =  -0.23077   share -0.02674   V = -15
+    E{ 5,17} =     -14/17 =  -0.82353   share -0.09150   V = -70
+    E{ 7,11} =       9/77 =  +0.11688   share +0.01176   V = 9
+    E{ 7,13} =     -80/91 =  -0.87912   share -0.08556   V = -80
+    E{ 7,17} =     -10/17 =  -0.58824   share -0.05490   V = -70
+    E{11,13} =    -76/143 =  -0.53147   share -0.04516   V = -76
+    E{11,17} =      -6/17 =  -0.35294   share -0.02876   V = -66
+    E{13,17} =      -6/17 =  -0.35294   share -0.02781   V = -78
+  window A=17 r=30845 (g=17):
+    E{ 5, 7} =     -72/35 =  -2.05714   share -0.28235   V = -72
+    E{ 5,11} =     -13/55 =  -0.23636   share -0.02832   V = -13
+    E{ 5,13} =      -3/13 =  -0.23077   share -0.02674   V = -15
+    E{ 5,17} =     -14/17 =  -0.82353   share -0.09150   V = -70
+    E{ 7,11} =       9/77 =  +0.11688   share +0.01176   V = 9
+    E{ 7,13} =     -80/91 =  -0.87912   share -0.08556   V = -80
+    E{ 7,17} =     -10/17 =  -0.58824   share -0.05490   V = -70
+    E{11,13} =    -76/143 =  -0.53147   share -0.04516   V = -76
+    E{11,17} =      -6/17 =  -0.35294   share -0.02876   V = -66
+    E{13,17} =      -6/17 =  -0.35294   share -0.02781   V = -78
+  window A=19 r=110 (g=24):
+    E{ 5, 7} =     -46/35 =  -1.31429   share -0.12778   V = -46
+    E{ 5,11} =      -4/55 =  -0.07273   share -0.00617   V = -4
+    E{ 5,13} =     -43/65 =  -0.66154   share -0.05429   V = -43
+    E{ 5,17} =     -21/85 =  -0.24706   share -0.01944   V = -21
+    E{ 5,19} =     -23/95 =  -0.24211   share -0.01879   V = -23
+    E{ 7,11} =      -7/11 =  -0.63636   share -0.04537   V = -49
+    E{ 7,13} =     -29/91 =  -0.31868   share -0.02197   V = -29
+    E{ 7,17} =   -118/119 =  -0.99160   share -0.06556   V = -118
+    E{ 7,19} =      3/133 =  +0.02256   share +0.00147   V = 3
+    E{11,13} =     25/143 =  +0.17483   share +0.01052   V = 25
+    E{11,17} =   -116/187 =  -0.62032   share -0.03580   V = -116
+    E{11,19} =     81/209 =  +0.38756   share +0.02206   V = 81
+    E{13,17} =   -110/221 =  -0.49774   share -0.02778   V = -110
+    E{13,19} =   -122/247 =  -0.49393   share -0.02718   V = -122
+    E{17,19} =   -120/323 =  -0.37152   share -0.01961   V = -120
+  window A=19 r=26045 (g=24):
+    E{ 5, 7} =     -46/35 =  -1.31429   share -0.12778   V = -46
+    E{ 5,11} =      -4/55 =  -0.07273   share -0.00617   V = -4
+    E{ 5,13} =     -43/65 =  -0.66154   share -0.05429   V = -43
+    E{ 5,17} =     -21/85 =  -0.24706   share -0.01944   V = -21
+    E{ 5,19} =     -23/95 =  -0.24211   share -0.01879   V = -23
+    E{ 7,11} =      -7/11 =  -0.63636   share -0.04537   V = -49
+    E{ 7,13} =     -29/91 =  -0.31868   share -0.02197   V = -29
+    E{ 7,17} =   -118/119 =  -0.99160   share -0.06556   V = -118
+    E{ 7,19} =      3/133 =  +0.02256   share +0.00147   V = 3
+    E{11,13} =     25/143 =  +0.17483   share +0.01052   V = 25
+    E{11,17} =   -116/187 =  -0.62032   share -0.03580   V = -116
+    E{11,19} =     81/209 =  +0.38756   share +0.02206   V = 81
+    E{13,17} =   -110/221 =  -0.49774   share -0.02778   V = -110
+    E{13,19} =   -122/247 =  -0.49393   share -0.02718   V = -122
+    E{17,19} =   -120/323 =  -0.37152   share -0.01961   V = -120
+  window A=19 r=67695 (g=24):
+    E{ 5, 7} =     -46/35 =  -1.31429   share -0.12778   V = -46
+    E{ 5,11} =      -4/55 =  -0.07273   share -0.00617   V = -4
+    E{ 5,13} =      22/65 =  +0.33846   share +0.02778   V = 22
+    E{ 5,17} =     -21/85 =  -0.24706   share -0.01944   V = -21
+    E{ 5,19} =     -23/95 =  -0.24211   share -0.01879   V = -23
+    E{ 7,11} =       4/11 =  +0.36364   share +0.02593   V = 28
+    E{ 7,13} =     -29/91 =  -0.31868   share -0.02197   V = -29
+    E{ 7,17} =   -118/119 =  -0.99160   share -0.06556   V = -118
+    E{ 7,19} =      3/133 =  +0.02256   share +0.00147   V = 3
+    E{11,13} =   -118/143 =  -0.82517   share -0.04966   V = -118
+    E{11,17} =     71/187 =  +0.37968   share +0.02191   V = 71
+    E{11,19} =   -128/209 =  -0.61244   share -0.03486   V = -128
+    E{13,17} =   -110/221 =  -0.49774   share -0.02778   V = -110
+    E{13,19} =    125/247 =  +0.50607   share +0.02785   V = 125
+    E{17,19} =   -120/323 =  -0.37152   share -0.01961   V = -120
+  window A=19 r=170035 (g=24):
+    E{ 5, 7} =     -46/35 =  -1.31429   share -0.12778   V = -46
+    E{ 5,11} =      -4/55 =  -0.07273   share -0.00617   V = -4
+    E{ 5,13} =     -43/65 =  -0.66154   share -0.05429   V = -43
+    E{ 5,17} =     -21/85 =  -0.24706   share -0.01944   V = -21
+    E{ 5,19} =     -16/19 =  -0.84211   share -0.06536   V = -80
+    E{ 7,11} =      -7/11 =  -0.63636   share -0.04537   V = -49
+    E{ 7,13} =     -29/91 =  -0.31868   share -0.02197   V = -29
+    E{ 7,17} =   -118/119 =  -0.99160   share -0.06556   V = -118
+    E{ 7,19} =    -92/133 =  -0.69173   share -0.04510   V = -92
+    E{11,13} =     25/143 =  +0.17483   share +0.01052   V = 25
+    E{11,17} =   -116/187 =  -0.62032   share -0.03580   V = -116
+    E{11,19} =    119/209 =  +0.56938   share +0.03241   V = 119
+    E{13,17} =   -110/221 =  -0.49774   share -0.02778   V = -110
+    E{13,19} =    -84/247 =  -0.34008   share -0.01872   V = -84
+    E{17,19} =    -82/323 =  -0.25387   share -0.01340   V = -82
+  window A=19 r=203005 (g=24):
+    E{ 5, 7} =     -46/35 =  -1.31429   share -0.12778   V = -46
+    E{ 5,11} =      -4/55 =  -0.07273   share -0.00617   V = -4
+    E{ 5,13} =      22/65 =  +0.33846   share +0.02778   V = 22
+    E{ 5,17} =     -21/85 =  -0.24706   share -0.01944   V = -21
+    E{ 5,19} =     -16/19 =  -0.84211   share -0.06536   V = -80
+    E{ 7,11} =      -7/11 =  -0.63636   share -0.04537   V = -49
+    E{ 7,13} =     -29/91 =  -0.31868   share -0.02197   V = -29
+    E{ 7,17} =   -118/119 =  -0.99160   share -0.06556   V = -118
+    E{ 7,19} =    -92/133 =  -0.69173   share -0.04510   V = -92
+    E{11,13} =   -118/143 =  -0.82517   share -0.04966   V = -118
+    E{11,17} =   -116/187 =  -0.62032   share -0.03580   V = -116
+    E{11,19} =    119/209 =  +0.56938   share +0.03241   V = 119
+    E{13,17} =   -110/221 =  -0.49774   share -0.02778   V = -110
+    E{13,19} =    -84/247 =  -0.34008   share -0.01872   V = -84
+    E{17,19} =    -82/323 =  -0.25387   share -0.01340   V = -82
+  window A=19 r=373175 (g=24):
+    E{ 5, 7} =     -46/35 =  -1.31429   share -0.12778   V = -46
+    E{ 5,11} =      -4/55 =  -0.07273   share -0.00617   V = -4
+    E{ 5,13} =      22/65 =  +0.33846   share +0.02778   V = 22
+    E{ 5,17} =     -21/85 =  -0.24706   share -0.01944   V = -21
+    E{ 5,19} =     -23/95 =  -0.24211   share -0.01879   V = -23
+    E{ 7,11} =      -7/11 =  -0.63636   share -0.04537   V = -49
+    E{ 7,13} =     -29/91 =  -0.31868   share -0.02197   V = -29
+    E{ 7,17} =   -118/119 =  -0.99160   share -0.06556   V = -118
+    E{ 7,19} =      3/133 =  +0.02256   share +0.00147   V = 3
+    E{11,13} =   -118/143 =  -0.82517   share -0.04966   V = -118
+    E{11,17} =   -116/187 =  -0.62032   share -0.03580   V = -116
+    E{11,19} =     81/209 =  +0.38756   share +0.02206   V = 81
+    E{13,17} =   -110/221 =  -0.49774   share -0.02778   V = -110
+    E{13,19} =    125/247 =  +0.50607   share +0.02785   V = 125
+    E{17,19} =   -120/323 =  -0.37152   share -0.01961   V = -120
+
+side-by-side and per-pair linear fits  E ~ c0 + cA*K_q + cB*K_q' +
+cC*K_q*K_q'   (least squares; R2 raw and per-center E/g; jackknife =
+leave-one-window-out coefficient ranges, sign-stable Y/N):
+  pair ( 5, 7) n=12 distinct-phase-pairs=4 rank(X)=4  R2=1.0000  R2/ctr=1.0000
+    E        :  -1.4571  -1.4571  -2.0571  -2.0571  -2.0571  -2.0571  -1.3143  -1.3143  -1.3143  -1.3143  -1.3143  -1.3143
+    K_5      :  +0.3820  +0.3820  +0.3820  +0.3820  +0.3820  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000
+    K_7      :  +2.0489  +2.0489  +6.0000  +6.0000  +6.0000  -2.6920  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489
+    coef [c0,cA,cB,cC] = [-1.09434, -0.13525, -0.18443, +0.08528]  all-sign-stable=Y
+    jack ranges: c0[-1.094,-1.039]Y cA[-0.281,-0.135]Y cB[-0.212,-0.184]Y cC[+0.085,+0.156]Y
+  pair ( 5,11) n=12 distinct-phase-pairs=6 rank(X)=4  R2=0.9268  R2/ctr=0.9142
+    E        :  +0.3636  +0.3636  -0.2364  -0.2364  -0.2364  -0.2364  -0.0727  -0.0727  -0.0727  -0.0727  -0.0727  -0.0727
+    K_5      :  +0.3820  +0.3820  +0.3820  +0.3820  +0.3820  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000
+    K_11     :  -5.7170  -5.7170  +0.7247  +0.7247  -0.7576  +0.7247 +10.0000  -0.7576  +0.7247  -0.7576 +10.0000 +10.0000
+    coef [c0,cA,cB,cC] = [-0.21595, +0.02639, -0.10816, +0.02788]  all-sign-stable=Y
+    jack ranges: c0[-0.241,-0.175]Y cA[+0.016,+0.037]Y cB[-0.113,-0.103]Y cC[+0.027,+0.029]Y
+  pair ( 5,13) n=12 distinct-phase-pairs=7 rank(X)=4  R2=0.5910  R2/ctr=0.6043
+    E        :  -0.2308  -0.2308  -0.2308  -0.2308  -0.2308  -0.2308  -0.6615  -0.6615  +0.3385  -0.6615  +0.3385  +0.3385
+    K_5      :  +0.3820  +0.3820  +0.3820  +0.3820  +0.3820  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000
+    K_13     : +12.0000  -0.4333 +12.0000  -0.4333  -0.4333  +0.5690  +4.0821  +4.0821  +0.5690  -0.4333  -4.6367  -4.6367
+    coef [c0,cA,cB,cC] = [-0.23638, +0.01469, +0.01131, -0.02960]  all-sign-stable=N
+    jack ranges: c0[-0.246,-0.226]Y cA[-0.012,+0.039]N cB[+0.011,+0.012]Y cC[-0.031,-0.029]Y
+  pair ( 5,17) n=12 distinct-phase-pairs=5 rank(X)=4  R2=0.9669  R2/ctr=0.9669
+    E        :  -0.8235  -0.8235  -0.8235  -0.8235  -0.8235  -0.8235  -0.2471  -0.2471  -0.2471  -0.2471  -0.2471  -0.2471
+    K_5      :  +0.3820  +0.3820  +0.3820  +0.3820  +0.3820  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000
+    K_17     :  -3.9591  +1.3722  -3.9591  +1.3722  +1.3722  -5.6738  +1.3722  +3.6064  +3.6064  +3.6064  +1.3722  +1.3722
+    coef [c0,cA,cB,cC] = [-0.86697, +0.11374, -0.00659, +0.01726]  all-sign-stable=Y
+    jack ranges: c0[-0.884,-0.866]Y cA[+0.110,+0.159]Y cB[-0.007,-0.000]Y cC[+0.000,+0.018]Y
+  pair ( 5,19) n= 6 distinct-phase-pairs=4 rank(X)=2  R2=0.1651  R2/ctr=0.1651
+    E        :  -0.2421  -0.2421  -0.2421  -0.8421  -0.8421  -0.2421
+    K_5      :  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000  +4.0000
+    K_19     :  +5.4937  +5.4937  +0.8948  +5.4937  -1.8424  +5.4937
+    coef [c0,cA,cB,cC] = [-0.03411, -0.13645, +0.00231, +0.00925]  all-sign-stable=N
+    jack ranges: c0[-0.043,-0.013]Y cA[-0.172,-0.050]Y cB[-0.002,+0.004]N cC[-0.008,+0.015]N
+    (n=6, 4 parameters: df = 2; jackknife df = 1 -- listed for
+    completeness, carries no stability information)
+  pair ( 7,11) n=12 distinct-phase-pairs=7 rank(X)=4  R2=0.6007  R2/ctr=0.7057
+    E        :  -0.3506  -0.3506  -0.8831  -0.8831  +0.1169  +0.1169  -0.6364  -0.6364  +0.3636  -0.6364  -0.6364  -0.6364
+    K_7      :  +2.0489  +2.0489  +6.0000  +6.0000  +6.0000  -2.6920  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489
+    K_11     :  -5.7170  -5.7170  +0.7247  +0.7247  -0.7576  +0.7247 +10.0000  -0.7576  +0.7247  -0.7576 +10.0000 +10.0000
+    coef [c0,cA,cB,cC] = [-0.41072, +0.00353, +0.31892, -0.16457]  all-sign-stable=N
+    jack ranges: c0[-0.523,-0.143]Y cA[-0.127,+0.017]N cB[-0.051,+0.346]N cC[-0.176,+0.016]N
+  pair ( 7,13) n=12 distinct-phase-pairs=8 rank(X)=4  R2=0.3533  R2/ctr=0.2889
+    E        :  -0.0330  -0.0330  +0.1209  -0.8791  -0.8791  -0.8791  -0.3187  -0.3187  -0.3187  -0.3187  -0.3187  -0.3187
+    K_7      :  +2.0489  +2.0489  +6.0000  +6.0000  +6.0000  -2.6920  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489
+    K_13     : +12.0000  -0.4333 +12.0000  -0.4333  -0.4333  +0.5690  +4.0821  +4.0821  +0.5690  -0.4333  -4.6367  -4.6367
+    coef [c0,cA,cB,cC] = [-0.36744, -0.02865, -0.00528, +0.01081]  all-sign-stable=N
+    jack ranges: c0[-0.419,+0.038]N cA[-0.147,+0.006]N cB[-0.572,+0.004]N cC[+0.007,+0.285]Y
+  pair ( 7,17) n=12 distinct-phase-pairs=7 rank(X)=4  R2=0.8478  R2/ctr=0.8084
+    E        :  -0.7059  -0.7059  -0.5882  -0.5882  -0.5882  -0.5882  -0.9916  -0.9916  -0.9916  -0.9916  -0.9916  -0.9916
+    K_7      :  +2.0489  +2.0489  +6.0000  +6.0000  +6.0000  -2.6920  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489
+    K_17     :  -3.9591  +1.3722  -3.9591  +1.3722  +1.3722  -5.6738  +1.3722  +3.6064  +3.6064  +3.6064  +1.3722  +1.3722
+    coef [c0,cA,cB,cC] = [-0.98535, +0.06560, -0.06680, +0.01187]  all-sign-stable=Y
+    jack ranges: c0[-1.020,-0.971]Y cA[+0.063,+0.071]Y cB[-0.071,-0.057]Y cC[+0.010,+0.014]Y
+  pair ( 7,19) n= 6 distinct-phase-pairs=4 rank(X)=2  R2=0.1651  R2/ctr=0.1651
+    E        :  +0.0226  +0.0226  +0.0226  -0.6917  -0.6917  +0.0226
+    K_7      :  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489  +2.0489
+    K_19     :  +5.4937  +5.4937  +0.8948  +5.4937  -1.8424  +5.4937
+    coef [c0,cA,cB,cC] = [-0.07303, -0.14963, +0.00901, +0.01845]  all-sign-stable=N
+    jack ranges: c0[-0.107,+0.011]N cA[-0.220,+0.023]N cB[-0.007,+0.015]N cC[-0.015,+0.030]N
+    (n=6, 4 parameters: df = 2; jackknife df = 1 -- listed for
+    completeness, carries no stability information)
+  pair (11,13) n=12 distinct-phase-pairs=11 rank(X)=4  R2=0.1926  R2/ctr=0.1192
+    E        :  +0.3147  -0.6853  -0.5315  +0.4685  -0.5315  -0.5315  +0.1748  +0.1748  -0.8252  +0.1748  -0.8252  -0.8252
+    K_11     :  -5.7170  -5.7170  +0.7247  +0.7247  -0.7576  +0.7247 +10.0000  -0.7576  +0.7247  -0.7576 +10.0000 +10.0000
+    K_13     : +12.0000  -0.4333 +12.0000  -0.4333  -0.4333  +0.5690  +4.0821  +4.0821  +0.5690  -0.4333  -4.6367  -4.6367
+    coef [c0,cA,cB,cC] = [-0.31461, -0.00948, +0.03336, +0.00210]  all-sign-stable=N
+    jack ranges: c0[-0.429,-0.190]Y cA[-0.044,+0.006]N cB[-0.015,+0.077]N cC[-0.003,+0.013]N
+  pair (11,17) n=12 distinct-phase-pairs=9 rank(X)=4  R2=0.0809  R2/ctr=0.0654
+    E        :  -0.4706  -0.4706  -0.3529  -0.3529  -0.3529  -0.3529  -0.6203  -0.6203  +0.3797  -0.6203  -0.6203  -0.6203
+    K_11     :  -5.7170  -5.7170  +0.7247  +0.7247  -0.7576  +0.7247 +10.0000  -0.7576  +0.7247  -0.7576 +10.0000 +10.0000
+    K_17     :  -3.9591  +1.3722  -3.9591  +1.3722  +1.3722  -5.6738  +1.3722  +3.6064  +3.6064  +3.6064  +1.3722  +1.3722
+    coef [c0,cA,cB,cC] = [-0.39574, -0.01132, +0.00539, -0.00300]  all-sign-stable=N
+    jack ranges: c0[-0.466,-0.170]Y cA[-0.209,-0.004]Y cB[-0.068,+0.016]N cC[-0.005,+0.133]N
+  pair (11,19) n= 6 distinct-phase-pairs=5 rank(X)=4  R2=0.9834  R2/ctr=0.9834
+    E        :  +0.3876  +0.3876  -0.6124  +0.5694  +0.5694  +0.3876
+    K_11     : +10.0000  -0.7576  +0.7247  -0.7576 +10.0000 +10.0000
+    K_19     :  +5.4937  +5.4937  +0.8948  +5.4937  -1.8424  +5.4937
+    coef [c0,cA,cB,cC] = [-0.92742, +0.14511, +0.25474, -0.02795]  all-sign-stable=N
+    jack ranges: c0[-0.944,+0.020]N cA[-0.398,+0.147]N cB[+0.082,+0.273]Y cC[-0.030,+0.071]N
+    (n=6, 4 parameters: df = 2; jackknife df = 1 -- listed for
+    completeness, carries no stability information)
+  pair (13,17) n=12 distinct-phase-pairs=8 rank(X)=4  R2=0.4471  R2/ctr=0.4471
+    E        :  -0.3529  -0.3529  -0.3529  -0.3529  -0.3529  -0.3529  -0.4977  -0.4977  -0.4977  -0.4977  -0.4977  -0.4977
+    K_13     : +12.0000  -0.4333 +12.0000  -0.4333  -0.4333  +0.5690  +4.0821  +4.0821  +0.5690  -0.4333  -4.6367  -4.6367
+    K_17     :  -3.9591  +1.3722  -3.9591  +1.3722  +1.3722  -5.6738  +1.3722  +3.6064  +3.6064  +3.6064  +1.3722  +1.3722
+    coef [c0,cA,cB,cC] = [-0.41945, +0.00059, -0.01533, +0.00000]  all-sign-stable=N
+    jack ranges: c0[-0.429,-0.375]Y cA[-0.003,+0.003]N cB[-0.036,-0.014]Y cC[-0.001,+0.002]N
+  pair (13,19) n= 6 distinct-phase-pairs=5 rank(X)=4  R2=0.9175  R2/ctr=0.9175
+    E        :  -0.4939  -0.4939  +0.5061  -0.3401  -0.3401  +0.5061
+    K_13     :  +4.0821  +4.0821  +0.5690  -0.4333  -4.6367  -4.6367
+    K_19     :  +5.4937  +5.4937  +0.8948  +5.4937  -1.8424  +5.4937
+    coef [c0,cA,cB,cC] = [+0.55261, +0.15407, -0.12302, -0.04740]  all-sign-stable=N
+    jack ranges: c0[-0.012,+0.570]N cA[+0.032,+0.274]Y cB[-0.168,-0.020]Y cC[-0.069,-0.025]Y
+    (n=6, 4 parameters: df = 2; jackknife df = 1 -- listed for
+    completeness, carries no stability information)
+  pair (17,19) n= 6 distinct-phase-pairs=5 rank(X)=4  R2=0.6250  R2/ctr=0.6250
+    E        :  -0.3715  -0.3715  -0.3715  -0.2539  -0.2539  -0.3715
+    K_17     :  +1.3722  +3.6064  +3.6064  +3.6064  +1.3722  +1.3722
+    K_19     :  +5.4937  +5.4937  +0.8948  +5.4937  -1.8424  +5.4937
+    coef [c0,cA,cB,cC] = [-0.22228, -0.04455, -0.03374, +0.01290]  all-sign-stable=Y
+    jack ranges: c0[-0.229,-0.040]Y cA[-0.128,-0.039]Y cB[-0.067,-0.026]Y cC[+0.007,+0.028]Y
+    (n=6, 4 parameters: df = 2; jackknife df = 1 -- listed for
+    completeness, carries no stability information)
+
+T4 SUMMARY (tabulation, NO verdict -- unregistered for verdicts):
+  10 small-clock pairs (n=12): R2 range 0.0809 .. 1.0000, median 0.5958
+  pairs with all four jackknife-sign-stable coefficients: 5/15
+  pairs whose design has <= 4 distinct phase pairs: 3/15 -- for these
+  a 4-parameter fit INTERPOLATES by construction (E and the K features
+  are both functions of the same phase pair (r mod q, r mod q'); with
+  <= 4 distinct design points a perfect R2 is a tautology, not a
+  re-expression -- the R2 = 1.0000 rows are exactly this artifact).
+  honest reading: the high-R2 rows are interpolation artifacts of the
+  clustered census phases (mirror orbits), the remaining rows are
+  mid-to-low R2 with jackknife-sign-unstable coefficients, and no
+  common coefficient pattern survives across pairs.  Nothing here is
+  evidence of a stable linear re-expression of the incomplete pair
+  terms by the complete Kloosterman values -- matching the registered
+  honest expectation: the complete/incomplete boundary (the wall's
+  sixth costume) stands.  A stable fit, had it appeared, would have
+  been the first hint the incomplete object borrows structure from
+  the complete one.  Data above is exact and complete for re-analysis;
+  no thresholds were set and none are applied.
+T4 done (0.0s)
+==============================================================================
+RUN COMPLETE
+==============================================================================
+total runtime 0.1 min; closed task list executed: T1a-d, T2, T3, T4;
+K3 kill stands (no foil campaign was run); no thresholds moved.
+SECTION LINE INDEX (this run, 1-based in this append block):
+  line     1: CIRCLE-SUM HARNESS RUN 1 -- 2026-07-11 16:21:00
+  line    14: PRE-REGISTRATION BLOCK (logged before ANY measurement; closed task list)
+  line   100: T0 -- RUNTIME ESTIMATE (registered rule: projection > 20 min -> l <= 1000)
+  line   106: T1 -- IDENTITY SELFTESTS of the four Lean targets, odd primes l <= 2000
+  line   167: T2 -- M4 STRATUM BLUEPRINT (the exact table the Lean Phase-5 proof follows)
+  line   217: T3 -- REGISTERED REFUTATION RECORD: fixed-circle M4 two-class cubic
+  line   290: T4 -- BRIDGE NAVIGATION PROBE (EXACT-MEASURED; unregistered-for-verdicts; no thresholds)
+  line   623: RUN COMPLETE

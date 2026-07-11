@@ -1,0 +1,837 @@
+==============================================================================
+DISPERSION HARNESS RUN 1 -- 2026-07-11 20:28:35
+==============================================================================
+harness: tools/dispersion_harness.py; log: tools/dispersion_run1.log
+the numeric core of the dispersion pass over the strike-clock window
+system of EuclidsPath/Engine/Step00StrikeFourier.lean.
+python 3.11.9 | numpy 2.4.4 | seed 20260710 | STAGE_TIME_CAP 5400s/stage
+==============================================================================
+PRE-REGISTRATION BLOCK (written FIRST, before ANY measurement; closed lists)
+==============================================================================
+CONVENTIONS (mirror EuclidsPath/Engine/Step00StrikeFourier.lean and
+  tools/fourier_window_harness.py): clocks A = primes in [5,A];
+  Clean A m <=> m mod q notin {i6, q-i6} for every clock q, i6 =
+  6^{-1} mod q; window (k, k+g], centers k+1..k+g; cleanCount;
+  mainTerm A g = g*prod(1-2/q) EXACT Fraction; windowFluct =
+  cleanCount - mainTerm; period P_A = prod q.  Seed 20260710 wherever
+  sampling occurs; append-only ASCII log; Fraction-exact wherever
+  feasible (all counting identities, pair terms, variance sums,
+  Markov bounds); float64 numpy elsewhere, disclosed inline.
+CLOSED STAGE LIST: s0, s1, s2, s3 -- no additions after this block.
+
+s0 SELFTESTS (mandatory; ANY failure = STOP exit 1):
+  ST-A  pair-class trichotomy c_q(d), INDEPENDENTLY DERIVED here:
+    the allowed residues for {r clean, r+d clean} at clock q exclude
+    U = {i6,-i6} union {i6-d,-i6-d}; |U| = 2 iff d = 0 mod q; else
+    the overlap of the two doubletons is nonempty iff d = +-2*i6
+    (elementwise: i6 = -i6-d gives d = -2*i6; -i6 = i6-d gives
+    d = 2*i6; the same-sign equations force d = 0; both signs at
+    once force 4*i6 = 0, impossible), the overlap then has size
+    EXACTLY 1, and 2*i6 = 2/6 = 3^{-1} mod q, so d = +-2*i6 <=>
+    3d = +-1 mod q.  Hence c_q(d) = 2 / 3 / 4 as registered.
+    CHECK (byte-exact): |U| by direct set construction == trichotomy
+    for EVERY clock q <= 43 and EVERY d in [0,q); the overlap-1 class
+    {d : |U|=3} == {+-2*i6 mod q} == {d : 3d = +-1 mod q} as SETS.
+  ST-B  pairCorr(A,d) = #{r < P : Clean r and Clean r+d} by direct
+    full-period scan == CRT product prod_q (q - c_q(d)): byte-exact
+    at A in {5,7,11,13} for ALL d < 100, and for ALL d in [0, P) at
+    A = 5 (P=5) and A = 7 (P=35).
+  ST-C  window variance Sum_{k<P} windowFluct^2, three ways:
+    (a) direct scan (exact integers Sum cc, Sum cc^2 -> Fraction);
+    (b) pair-correlation formula Sum_{|d|<g}(g-|d|)*pairCorr(|d|)
+        - P*mainTerm^2 (exact Fraction, pairCorr via CRT product);
+    (c) spectral side P * Sum_{p != 0} |c(p)|^2 |W_g(theta_p)|^2,
+        c(p) = DFT of the clean indicator over Z_P, theta_p = p/P,
+        W_g(theta) = sum_{t=1..g} e(theta t)  (complex float64).
+    (a) == (b) BYTE-EXACT as Fractions; |(c)-(a)| <= 1e-9*max(1,(a))
+    at every cell A in {5,7,11,13} x g in {2,5,11}.
+  ST-D  Lean-constant byte-checks:
+    L34: #{r in [0,P): Clean(13,r)} == 1485 == 3*5*9*11 at P = 5005
+      (Step00SideCollision.lean / Step00PackingGeometry.lean).
+    G(A) table {5:2, 7:5, 11:7, 13:11, 17:18, 19:25, 23:34, 29:43,
+      31:58, 37:88, 41:91, 43:103}: for A <= 19 the full-period scan
+      here must give max struck run == G(A)-1 (byte-exact); A = 23 is
+      scan-confirmed in s1 (registered deferral: the same scan
+      delivers the s1 counts); for A in {23..43} every DEFECT_R
+      witness r must have (r, r+G-1] fully struck with r and r+G
+      clean (certifies G(A) >= table value; the upper side is the
+      Lean kernel gate ladder, phase_cover_run1.log, cited not rerun).
+    50 defect windows: A=17 scan -> exactly 20 starts, first r=117,
+      502 present, all 6 listed present; A=19 scan -> exactly 20
+      starts, first r=110, all 6 listed present; DEFECT_R witnesses
+      at A in {23,29,31,37,41,43} (4+2+1+1+1+1) verified struck;
+      total 20+20+10 = 50 (tools/pratt_wing_harness.py lineage).
+  ST-E  r4(n) == 8*sigma(n) for EVERY odd n <= 1e6 (anchors the
+    gated-Jacobi claim).  Route (EXACT, no float): r2(n) by direct
+    lattice count (x^2+y^2 = n over Z^2, sign/zero multiplicities
+    explicit); r4 = r2 * r2 by Kronecker-substitution convolution in
+    Python big integers, base 2^64 (carry-safe: max coefficient <=
+    max r2 * sum r2, asserted < 2^63); sigma by divisor sieve.
+    0 mismatches required; spot anchors r4(1)=8, r4(3)=32 asserted.
+  ST-F  Cornacchia gate: for EVERY prime p = 1 mod 3, p < 1e5:
+    (exists a,b: p = a^2 + 27 b^2)  <=>  2^((p-1)/3) = 1 mod p
+    (2 a cubic residue).  0 failures required (pre-validates the
+    sphere harness's cubic probe).
+
+s1 THE MARKOV-GAP TABLE (the pass's calibration number):
+  For A in {5,7,11,13,17,19,23}: exact defect-window count per
+  period N(g) = #{k < P : cleanCount(A,k,g) = 0} by direct scan
+  (A=23: chunked numpy over P = 37,182,145) at:
+    g = G(A)-1  (maximal defect length; N known nonzero -- byte-
+      check vs gap_extremal_run1.log census: 2/2/4/12/20/20/4);
+    g = G(A)    (MUST be zero -- kernel gap cross-check, STOP if not);
+    g = floor(A^2/14) (Sharp window) where distinct from both.
+  Markov/dispersion bound at each g: B(g) = VarSum(g)/mainTerm(g)^2
+  EXACT Fraction via the ST-C-validated pair-correlation formula
+  (a defect window has Fluct^2 = mainTerm^2, so N(g) <= B(g)).
+  THE deliverable: the ratio table B/N -- how far is Markov from
+  the wall.  A in {29,31}: true counts from logged solver data where
+  complete (A=29: 2, full-period scan gap_extremal_run1.log:28);
+  A=31 census incomplete -> bound-only, labeled.
+
+s2 THE FAREY m-CLASS PROFILE (the pass's NEW measurement).
+  Object: level-1 modes c(q,j) = -(1/q)(e(-j*i6/q) + e(j*i6/q)),
+  j in [1,q-1] (Step00StrikeFourier modeCoeff, j != 0).  For ordered
+  clock pairs (q,q'), q != q', the window second moment of the
+  level-1 strike-density fluctuation f1(m) = sum_q sum_j c(q,j)
+  e(jm/q) = -sum_q eps_q(m) decomposes into cross-terms at the
+  DIFFERENCE frequencies theta = (jq'-j'q)/(qq') = m/(qq'), m the
+  integer Farey class, 0 < |m| < qq'; the cross-term of the pair is
+  c(q,j) c(q',j') S_W(theta) with |S_W(theta)| = |D_K(m/(qq'))|,
+  D_K(theta) = sum_{t=1..K} e(theta t) (Dirichlet kernel).
+  M-OBS-1 (position-independent, ceiling segments K = ceil(A^2/6):
+    29/49/89/161/309 at A = 13/17/23/31/43): TOTAL cross-term mass
+    profile by |m|: mass(|m|) = sum over ordered pairs and (j,j')
+    with |jq'-j'q| = |m| of |c(q,j)|*|c(q',j')|*|D_K(m/(qq'))|;
+    reported: total, the m = +-1 (Farey-adjacent) layer and share,
+    bands |m| in [2,5],[6,10],[11,20],[21,50],[51,200],[201,max),
+    top-10 classes.  Float64 (absolute values have no rational
+    form -- disclosed); frequencies m/(qq') exact.
+  M-OBS-2 (position-dependent, SIGNED): X(m; W) = sum over ordered
+    pairs mapping to class m of c(q,j) c(q',j') Re S_W(m/(qq')),
+    S_W(theta) = e(theta k) D_K(theta) for W = (k, k+K].  Statistics
+    per segment (registered BEFORE measurement): S1 = X(1)+X(-1);
+    SL5 = sum_{1<=|m|<=5} X(m); STOT = sum_m X(m); T = sum_m |X(m)|;
+    R1 = S1/T; RL5 = SL5/T.
+    EXACTNESS TIE (selftest, STOP on fail): STOT == 2 * sum_{q<q'}
+    E_{q,q'}(W) where E_{q,q'}(W) = sum_{m in W} eps_q(m) eps_q'(m)
+    is the EXACT Fraction pair term (L52 convention, circle_sum T4);
+    match to 1e-9*max(1,|value|) on every segment; plus 40 random
+    (pair,j,j') closed-form-vs-brute checks per scale at 1e-9.
+  Populations at A in {17,19}: the 12 exact defect windows (6+6,
+    DEFECT_R lists, re-verified zero-clean before use), segment
+    centered: k = r - (K - g)//2, g = G(A)-1, K = 49/61; vs 20
+    typical segments per scale, k uniform in [0, P_A), seed
+    20260710 + 100 + A.  ('matched' = same K, same scale; no other
+    matching -- disclosed.)
+  REGISTERED QUESTION: does the defect vicinity overweight
+    small-|m| (Farey-adjacent) interference?  Registered comparison:
+    z(stat) = (defect mean - typical mean)/typical sd (ddof=1) for
+    stat in {S1, SL5, STOT, T, R1, RL5}; any |z| >= 3 on R1 or RL5
+    (the m-profile mass RATIOS) fires the conditional foil below.
+
+s3 SHIFTED-CONVOLUTION TABLE + ENSEMBLE KLOOS PROBE (the measured
+  half of the dispersion-blindness law; EXACT-MEASURED, no verdicts
+  beyond the registered expectation check):
+  S3-T1 deviation table: R(d; W) = #{m in W : Clean m and Clean m+d}
+    on ceiling segments W (K = ceil(A^2/6)), complete-side prediction
+    pred(d) = K * prod_q (q - c_q(d))/q (EXACT Fraction; grounded:
+    the full-period mean of R(d;.) equals pred(d) exactly -- brute-
+    verified at A=13 for d in {1,7,30,100}, STOP on fail).  Ensemble:
+    200 segments per A in {13,17,23}, k uniform in [0,P_A), seed
+    20260710 + 200 + A.  Table by d = 0..100: pred, mean dev, sd,
+    sampling z = mean_dev/(sd/sqrt(n)), min, max.  |z| >= 3 entries
+    are counted and listed.  DISCLOSED: the 101 cells of one scale
+    share the SAME segment draw, so deviations across d are strongly
+    correlated (a clean-poor draw depresses every R(d) at once);
+    the independent-cell chance figure (~0.8 hits at 3 sigma over
+    303 cells) is a heuristic only; deviations are sampling
+    fluctuations, the identity fixes the mean.
+  S3-T2 ensemble kloos probe (stage-D extension, REGISTERED here):
+    scales A in {17,19}; segments = the 6 defect-centered + the 20
+    typical of s2 (same starts, same K).  Second-moment data per
+    segment: M2(W) = sum_{d=1..100} (R(d;W) - pred(d))^2.  Complete-
+    side features at u = k mod q (k = segment start): K_q(W) =
+    kloos_q(u*inv2_q, u*inv2_q), inv2_q = (q+1)/2 (the circle_sum T4
+    comparand; u = 0 degenerates to kloos(0,0) = q-1, marked deg).
+    Fits (least squares): pooled n=26: M2 ~ [1, K_q ... for all
+    clocks q <= A]; typical-only n=20 with defect residuals
+    reported; R^2, jackknife leave-one-out coefficient ranges and
+    sign-stability -- reporting AS IN stage D.  Group means of M2
+    (defect vs typical) + z reported.
+    REGISTERED EXPECTATION: NO stable re-expression -- confirmed
+    unless BOTH pooled R^2 >= 0.9 AND all coefficients jackknife-
+    sign-stable.  No other verdict vocabulary.
+
+FOIL NOTE (registered): the pure identities (s0 selftests, the s1
+  counts and bounds, the s3 deviation-table identity layer) need NO
+  foil -- they are weight-independent counting/identity statements
+  (honest exclusion).  The NEW measured observables -- the s2
+  m-profile mass ratios R1, RL5 on defect vs typical segments -- get
+  a gate_g3 foil run ONLY IF the registered trigger fires (any
+  |z| >= 3 on R1 or RL5 at A in {17,19}).  Conditional protocol,
+  spelled out now: observable I = the triggering statistic over the
+  26 segments of that scale; load L = lambda-sum over the segment's
+  Clean survivors, lambda(m) = twin indicator [6m-1 and 6m+1 both
+  prime] (sieve-exact); 200 sigma_W permutations + 200 sigma_I
+  lambda-resamples over the pooled survivor lambdas; foil_row
+  VERBATIM from tools/betti_portrait_harness.py; rng seed 20260710+7;
+  report R, zW, zI ONLY -- no threshold moves, no new statistics.
+  EXPECTATION: BLIND (L52d genus -- the linear character layer was
+  parity-blind, L38; whether difference-frequency interference
+  carries defect structure is not predicted by the ledger).
+
+DISCIPLINE: STAGE_TIME_CAP = 5400 s per stage.  Registered fallback
+  if a measured projection exceeds the remaining stage budget:
+  ensemble knobs (s3 deviation ensemble 200/A; s2-s3 typical 20 per
+  scale) are HALVED repeatedly, each halving logged, until the
+  projection fits; the s1 A=23 full-period scan (the only heavy
+  non-ensemble task) degrades to bound-only with the true count
+  labeled UNSCANNED-BUDGET.  Projections come from timing probes
+  logged before the task runs.  Tolerances: byte-exact wherever the
+  word appears; float routes 1e-9 relative to max(1, |value|).
+  STOP rule: any s0 assert, any registered byte-check, any s2/s3
+  exactness-tie selftest failure -> STOP exit 1.  Measured outcomes
+  (z values, ratios, R^2) never STOP.
+==============================================================================
+s0 -- SELFTESTS (closed list ST-A..ST-F; ANY failure = STOP exit 1)
+==============================================================================
+ST-A c_q trichotomy: direct |{i6,-i6} u {i6-d,-i6-d}| == registered
+  2/3/4 trichotomy for EVERY clock q <= 43, EVERY d in [0,q);
+  overlap-1 class {d:|U|=3} == {+-2*i6} == {d: 3d=+-1 mod q} as sets
+  at every clock (the class derivation CONFIRMED independently) -- PASS
+ST-B A= 5 (P=      5): pairCorr direct scan == CRT product prod(q - c_q(d))
+  byte-exact for ALL d in [0,P) -- PASS
+ST-B A= 7 (P=     35): pairCorr direct scan == CRT product prod(q - c_q(d))
+  byte-exact for ALL d in [0,P) -- PASS
+ST-B A=11 (P=    385): pairCorr direct scan == CRT product prod(q - c_q(d))
+  byte-exact for all d < 100 -- PASS
+ST-B A=13 (P=   5005): pairCorr direct scan == CRT product prod(q - c_q(d))
+  byte-exact for all d < 100 -- PASS
+  spot: pairCorr(13,0) = 1485 = 3*5*9*11 (the L34 survivor count)
+ST-C A= 5: VarSum direct == pair-correlation formula (Fraction, byte-exact)
+  == spectral P*sum|c(p)|^2|W_g|^2 (<=1e-9 rel) at g in {2,5,11} -- PASS
+ST-C A= 7: VarSum direct == pair-correlation formula (Fraction, byte-exact)
+  == spectral P*sum|c(p)|^2|W_g|^2 (<=1e-9 rel) at g in {2,5,11} -- PASS
+ST-C A=11: VarSum direct == pair-correlation formula (Fraction, byte-exact)
+  == spectral P*sum|c(p)|^2|W_g|^2 (<=1e-9 rel) at g in {2,5,11} -- PASS
+ST-C A=13: VarSum direct == pair-correlation formula (Fraction, byte-exact)
+  == spectral P*sum|c(p)|^2|W_g|^2 (<=1e-9 rel) at g in {2,5,11} -- PASS
+  spot exact: VarSum(13,11) = 593854/91 (~6525.868132), mainTerm = 297/91
+ST-D L34: #{r in [0,5005): Clean(13,r)} = 1485 = 3*5*9*11 -- PASS
+ST-D G( 5) =  2: full-period max struck run ==  1 == G-1 -- PASS
+ST-D G( 7) =  5: full-period max struck run ==  4 == G-1 -- PASS
+ST-D G(11) =  7: full-period max struck run ==  6 == G-1 -- PASS
+ST-D G(13) = 11: full-period max struck run == 10 == G-1 -- PASS
+ST-D G(17) = 18: full-period max struck run == 17 == G-1 -- PASS
+ST-D G(19) = 25: full-period max struck run == 24 == G-1 -- PASS
+ST-D A=17 scan: 20 defect starts, first r=117, 502 present, all 6
+  DEFECT_R-listed present; A=19 scan: 20 starts, first r=110, all 6
+  listed present -- PASS (pratt_wing S7 calibration reproduced)
+ST-D DEFECT_R witnesses A in {23,29,31,37,41,43}: all 10 windows
+  (r, r+G-1] fully struck, r and r+G clean (certifies G(A) >= table;
+  upper side = Lean kernel gates, phase_cover_run1.log) -- PASS
+ST-D 50 defect windows CONFIRMED: 20 + 20 + 10 -- PASS
+ST-E r4 = 8*sigma: r2 by exact lattice count (anchors 1,4,4,0;
+  r2(25)=12); r4 = r2*r2 by EXACT base-2^64 Kronecker convolution
+  (carry guard max_r2 * sum_r2 = 128 * 3141549 < 2^63); sigma by
+  divisor sieve; r4(n) == 8*sigma(n) for ALL 500000 odd n <= 1e6,
+  0 mismatches (spot r4(1)=8, r4(3)=32, r4(999999)=16343040=8*2042880)
+  -- PASS (29.4s) -- the gated-Jacobi anchor holds
+ST-F Cornacchia gate: p = a^2 + 27 b^2 solvable <=> 2^((p-1)/3) = 1
+  mod p, checked on ALL 4784 primes p = 1 mod 3 below 1e5:
+  0 failures; 1559 representable (~1/3 as the cubic-class heuristic
+  expects) -- PASS (0.1s) -- the sphere harness cubic probe is
+  pre-validated
+s0 ALL SELFTESTS PASS
+s0 done (29.8s)
+==============================================================================
+s1 -- THE MARKOV-GAP TABLE (exact counts vs the dispersion bound)
+==============================================================================
+N(g) = #{k < P : cleanCount = 0} exact scan; B(g) = VarSum/mainTerm^2
+exact Fraction (pair-correlation formula, ST-C-validated); a defect
+window has windowFluct^2 = mainTerm^2, so N(g) <= B(g) (Markov).
+
+  A   g  label      true N(g)   bound B(g)      B/N      mainTerm    VarSum
+   5   1  G-1              2        3.3333       1.67     0.6000        1.2000
+        [scan==census] exact B = 10/3
+   5   2  G                0        0.5556    inf(N=0)     1.2000        0.8000
+        [scan==kernel] exact B = 5/9
+   7   3  sharp            4        9.1605       2.29     1.2857       15.1429
+        [scan] exact B = 742/81
+   7   4  G-1              2        6.5139       3.26     1.7143       19.1429
+        [scan==census] exact B = 469/72
+   7   5  G                0        3.5467    inf(N=0)     2.1429       16.2857
+        [scan==kernel] exact B = 266/75
+  11   6  G-1              4       63.2219      15.81     2.1039      279.8442
+        [scan==census] exact B = 414799/6561
+  11   7  G                0       49.0398    inf(N=0)     2.4545      295.4545
+        [scan==kernel] exact B = 35750/729
+  11   8  sharp            0       47.8312    inf(N=0)     2.8052      376.3896
+        [scan] exact B = 1115807/23328
+  13  10  G-1             12      669.2457      55.77     2.9670     5891.5604
+        [scan==census] exact B = 12197003/18225
+  13  11  G                0      612.6440    inf(N=0)     3.2637     6525.8681
+        [scan==kernel] exact B = 54040714/88209
+  13  12  sharp            0      533.6524    inf(N=0)     3.5604     6764.9670
+        [scan] exact B = 4668391/8748
+  17  17  G-1             20     6948.8804     347.44     4.4505   137639.1868
+        [scan==census] exact B = 1139790106/164025
+  17  18  G                0     6373.2030    inf(N=0)     4.7123   141524.6800
+        [scan==kernel] exact B = 627218774/98415
+  17  20  sharp            0     5227.8720    inf(N=0)     5.2359   143322.4939
+        [scan] exact B = 171500341103/32805000
+  19  24  G-1             20    89921.7399    4496.09     5.6217  2841889.8739
+        [scan==census] exact B = 353985921107/3936600
+  19  25  G                0    81565.2524    inf(N=0)     5.8560  2797082.4083
+        [scan==kernel] exact B = 2787237610612/34171875
+  budget probe A=23: projected scan 10s vs remaining 5400s
+  23  33  G-1              4  1459861.1338  364965.28     7.0577  72718079.9905
+        [scan==census] exact B = 782295311330702/535869675
+  23  34  G                0  1401105.6464    inf(N=0)     7.2716  74085240.4362
+        [scan==kernel] exact B = 132833852414731/94806450
+  23  37  sharp            0  1270974.4827    inf(N=0)     7.9132  79587205.6740
+        [scan] exact B = 285397606064506/224550225
+  29  42  G-1              2  40304301.3080 20152150.65     8.3631
+        [gap_extremal_run1.log:28 FULL-period scan]
+  29  43  G                0  39857649.1285    inf(N=0)     8.5622
+        [zero via kernel gap G(29)=43 (g >= G)]
+  29  60  sharp            0  25828785.1466    inf(N=0)    11.9473
+        [zero via kernel gap G(29)=43 (g >= G)]
+  31  57  G-1             --  1020851745.4443         --    10.6177
+        [census incomplete (1 witness known, phase_cover); bound-only]
+  31  58  G                0  991724316.5605    inf(N=0)    10.8039
+        [zero via kernel gap G(31)=58 (g >= G)]
+  31  68  sharp            0  739429287.0651    inf(N=0)    12.6667
+        [zero via kernel gap G(31)=58 (g >= G)]
+
+READING (measured): the dispersion bound B at the wall g = G(A):
+  A= 5: B(G) =       0.56  < 1 -- Markov ALONE sees the wall here
+  A= 7: B(G) =       3.55  >= 1 -- Markov is blind to the wall
+  A=11: B(G) =      49.04  >= 1 -- Markov is blind to the wall
+  A=13: B(G) =     612.64  >= 1 -- Markov is blind to the wall
+  A=17: B(G) =    6373.20  >= 1 -- Markov is blind to the wall
+  A=19: B(G) =   81565.25  >= 1 -- Markov is blind to the wall
+  A=23: B(G) = 1401105.65  >= 1 -- Markov is blind to the wall
+  A=29: B(G) = 39857649.13  >= 1 -- Markov is blind to the wall
+  A=31: B(G) = 991724316.56  >= 1 -- Markov is blind to the wall
+  overshoot at g = G-1 (B/N): A=5:1.7x  A=7:3.3x  A=11:15.8x  A=13:55.8x  A=17:347.4x  A=19:4496.1x  A=23:364965.3x  A=29:20152150.7x
+s1 done (1.9s)
+==============================================================================
+s2 -- THE FAREY m-CLASS PROFILE (level-1 x level-1 cross-terms)
+==============================================================================
+M-OBS-1: position-independent ceiling-segment mass profile by |m|
+(mass = |c(q,j)|*|c(q',j')|*|D_K(m/(qq'))| over ordered clock pairs):
+  A=13 K= 29 clocks=4 ordered pairs=12 max|m|=119
+    total cross-term mass = 26.108105 ; |m|=1 (Farey-adjacent) mass = 7.636082  share 0.2925
+    band |m| in [  2,   5]: mass   6.736594  share 0.2580
+    band |m| in [  6,  10]: mass   4.438760  share 0.1700
+    band |m| in [ 11,  20]: mass   3.326145  share 0.1274
+    band |m| in [ 21,  50]: mass   2.940463  share 0.1126
+    band |m| in [ 51, 200]: mass   1.030061  share 0.0395
+    top-10 |m| classes: 1:7.6361  2:3.0512  3:1.8941  4:1.5002  6:1.1574  8:1.0265  7:0.9932  12:0.9357  9:0.8176  18:0.5934
+  A=17 K= 49 clocks=5 ordered pairs=20 max|m|=191
+    total cross-term mass = 51.933964 ; |m|=1 (Farey-adjacent) mass = 14.123621  share 0.2720
+    band |m| in [  2,   5]: mass  15.120545  share 0.2911
+    band |m| in [  6,  10]: mass   7.185321  share 0.1384
+    band |m| in [ 11,  20]: mass   5.550091  share 0.1069
+    band |m| in [ 21,  50]: mass   6.437576  share 0.1240
+    band |m| in [ 51, 200]: mass   3.516810  share 0.0677
+    top-10 |m| classes: 1:14.1236  2:5.9984  3:4.7776  4:3.0430  6:2.3872  9:1.5121  5:1.3016  12:1.2016  7:1.1557  10:1.0851
+  A=23 K= 89 clocks=7 ordered pairs=42 max|m|=395
+    total cross-term mass = 117.462146 ; |m|=1 (Farey-adjacent) mass = 26.330012  share 0.2242
+    band |m| in [  2,   5]: mass  30.939382  share 0.2634
+    band |m| in [  6,  10]: mass  15.352680  share 0.1307
+    band |m| in [ 11,  20]: mass  13.725304  share 0.1168
+    band |m| in [ 21,  50]: mass  15.868970  share 0.1351
+    band |m| in [ 51, 200]: mass  13.661048  share 0.1163
+    band |m| in [201, 395]: mass   1.584749  share 0.0135
+    top-10 |m| classes: 1:26.3300  2:13.6809  3:7.5361  4:5.6932  6:5.0116  5:4.0292  9:3.0742  7:2.9385  8:2.8204  12:2.7583
+  A=31 K=161 clocks=9 ordered pairs=72 max|m|=839
+    total cross-term mass = 219.982188 ; |m|=1 (Farey-adjacent) mass = 42.782340  share 0.1945
+    band |m| in [  2,   5]: mass  54.246142  share 0.2466
+    band |m| in [  6,  10]: mass  26.763483  share 0.1217
+    band |m| in [ 11,  20]: mass  24.433719  share 0.1111
+    band |m| in [ 21,  50]: mass  30.214226  share 0.1373
+    band |m| in [ 51, 200]: mass  31.832047  share 0.1447
+    band |m| in [201, 839]: mass   9.710230  share 0.0441
+    top-10 |m| classes: 1:42.7823  2:24.5007  3:14.7818  4:8.0595  6:7.8045  5:6.9042  9:5.3073  7:5.1805  8:4.9346  12:3.9503
+  A=43 K=309 clocks=12 ordered pairs=132 max|m|=1679
+    total cross-term mass = 457.675537 ; |m|=1 (Farey-adjacent) mass = 86.314248  share 0.1886
+    band |m| in [  2,   5]: mass  97.537157  share 0.2131
+    band |m| in [  6,  10]: mass  50.234781  share 0.1098
+    band |m| in [ 11,  20]: mass  49.194292  share 0.1075
+    band |m| in [ 21,  50]: mass  60.512716  share 0.1322
+    band |m| in [ 51, 200]: mass  73.965396  share 0.1616
+    band |m| in [201,1679]: mass  39.916945  share 0.0872
+    top-10 |m| classes: 1:86.3142  2:40.5308  3:29.7706  4:16.2016  6:15.6843  5:11.0342  7:9.9486  9:9.7623  8:9.3326  12:7.2071
+
+M-OBS-2: SIGNED profiles X(m;W) on defect-centered vs typical
+segments (statistics registered above; exactness tie per segment).
+  A=17 K=49 g=17: 6 defect windows re-verified (zero clean
+    centers); defect segment starts k = r - 16: [101, 486, 5626, 6011, 21481, 30829]
+    typical starts (seed 20260827): [48622, 31586, 24375, 56700, 80577, 45344, 46741, 57049, 26934, 60569, 21541, 60496, 51122, 6545, 9134, 51279, 55088, 8829, 41308, 69734]
+    spot brute vs closed form (40 samples): max dev 1.92e-14 -- PASS
+    exactness tie: STOT == 2*sum_{q<q'} E_{q,q'}(W) (exact
+    Fractions) on all 26 segments, max rel dev 1.04e-14 -- PASS
+    per-segment table (S1, SL5, STOT, T, R1=S1/T, RL5=SL5/T):
+      defect  k=     101  S1= +2.98928 SL5= +2.55165 STOT= +0.96337  T= 11.40597  R1=+0.26208 RL5=+0.22371
+      defect  k=     486  S1= -0.81803 SL5= +0.65910 STOT= +0.96337  T= 11.25624  R1=-0.07267 RL5=+0.05855
+      defect  k=    5626  S1= -1.04668 SL5= -0.25661 STOT= -0.95105  T= 10.43592  R1=-0.10030 RL5=-0.02459
+      defect  k=    6011  S1= +2.82114 SL5= +4.55157 STOT= +3.04895  T= 14.86846  R1=+0.18974 RL5=+0.30612
+      defect  k=   21481  S1= +2.32486 SL5= +2.26684 STOT= +1.04895  T= 11.95731  R1=+0.19443 RL5=+0.18958
+      defect  k=   30829  S1= +3.63001 SL5= -0.12015 STOT= -0.95105  T= 14.90717  R1=+0.24351 RL5=-0.00806
+      typical k=   48622  S1= +2.03205 SL5= +2.90158 STOT= +1.45567  T= 15.21655  R1=+0.13354 RL5=+0.19069
+      typical k=   31586  S1= +4.83088 SL5= +5.19966 STOT= +7.04895  T= 14.49802  R1=+0.33321 RL5=+0.35865
+      typical k=   24375  S1= -8.26945 SL5=-10.55532 STOT=-10.41598  T= 18.32105  R1=-0.45136 RL5=-0.57613
+      typical k=   56700  S1= -1.17690 SL5= -2.27995 STOT= -2.42910  T= 10.41763  R1=-0.11297 RL5=-0.21886
+      typical k=   80577  S1= -2.13057 SL5= -1.32516 STOT= -2.50157  T= 10.42285  R1=-0.20441 RL5=-0.12714
+      typical k=   45344  S1= -1.50070 SL5= -3.06741 STOT= -3.06627  T= 12.00298  R1=-0.12503 RL5=-0.25555
+      typical k=   46741  S1= +0.93407 SL5= +0.11804 STOT= +2.96337  T= 10.24692  R1=+0.09116 RL5=+0.01152
+      typical k=   57049  S1= +4.92216 SL5= +5.94776 STOT= +7.00612  T= 16.00425  R1=+0.30755 RL5=+0.37164
+      typical k=   26934  S1= +0.08664 SL5= -1.40436 STOT= -2.98069  T= 12.00568  R1=+0.00722 RL5=-0.11697
+      typical k=   60569  S1= +2.18002 SL5= +2.11769 STOT= -1.02352  T= 13.63889  R1=+0.15984 RL5=+0.15527
+      typical k=   21541  S1= -2.90854 SL5= -4.35816 STOT= -5.06627  T= 12.35926  R1=-0.23533 RL5=-0.35262
+      typical k=   60496  S1= -1.86091 SL5= -1.52206 STOT= -0.95105  T= 13.32929  R1=-0.13961 RL5=-0.11419
+      typical k=   51122  S1= -4.66822 SL5= -7.43074 STOT= -6.38634  T= 17.05609  R1=-0.27370 RL5=-0.43566
+      typical k=    6545  S1= +4.52899 SL5= +5.87825 STOT= +5.57090  T= 15.24043  R1=+0.29717 RL5=+0.38570
+      typical k=    9134  S1= +7.00141 SL5= +8.81838 STOT= +9.04895  T= 16.69748  R1=+0.41931 RL5=+0.52813
+      typical k=   51279  S1= -2.87400 SL5= -5.23190 STOT= -4.86546  T= 13.22490  R1=-0.21732 RL5=-0.39561
+      typical k=   55088  S1= -1.97975 SL5= -3.71002 STOT= -4.42910  T= 12.77182  R1=-0.15501 RL5=-0.29048
+      typical k=    8829  S1= +0.18791 SL5= +0.00989 STOT= +1.01931  T=  9.60752  R1=+0.01956 RL5=+0.00103
+      typical k=   41308  S1= +3.63690 SL5= -0.84112 STOT= -0.47193  T= 15.52497  R1=+0.23426 RL5=-0.05418
+      typical k=   69734  S1= +2.65091 SL5= +1.33349 STOT= +3.01931  T= 13.58332  R1=+0.19516 RL5=+0.09817
+    spot exact STOT (defect #1): 81968/85085
+    defect-vs-typical (z = (mean_d - mean_t)/sd_t, n_d=6 n_t=20):
+      S1    defect mean  +1.65010  typical mean  +0.28115  sd_t  3.75585  z =  +0.36
+      SL5   defect mean  +1.60873  typical mean  -0.47007  sd_t  4.77454  z =  +0.44
+      STOT  defect mean  +0.68709  typical mean  -0.37274  sd_t  5.03056  z =  +0.21
+      T     defect mean +12.47184  typical mean +13.60849  sd_t  2.45336  z =  -0.46
+      R1    defect mean  +0.11946  typical mean  +0.01416  sd_t  0.24124  z =  +0.44
+      RL5   defect mean  +0.12422  typical mean  -0.04183  sd_t  0.30571  z =  +0.54
+  A=19 K=61 g=24: 6 defect windows re-verified (zero clean
+    centers); defect segment starts k = r - 18: [92, 26027, 67677, 170017, 202987, 373157]
+    typical starts (seed 20260829): [1520543, 1059283, 286022, 764272, 1342801, 704996, 1087080, 1236657, 1016682, 1120982, 95543, 654364, 650743, 1380780, 1342192, 1502706, 1041061, 677163, 1204401, 1480159]
+    spot brute vs closed form (40 samples): max dev 1.58e-14 -- PASS
+    exactness tie: STOT == 2*sum_{q<q'} E_{q,q'}(W) (exact
+    Fractions) on all 26 segments, max rel dev 2.66e-14 -- PASS
+    per-segment table (S1, SL5, STOT, T, R1=S1/T, RL5=SL5/T):
+      defect  k=      92  S1= +0.16314 SL5= -2.89934 STOT= -2.83758  T= 17.69866  R1=+0.00922 RL5=-0.16382
+      defect  k=   26027  S1= +0.56629 SL5= -0.07362 STOT= -2.83758  T= 17.32361  R1=+0.03269 RL5=-0.00425
+      defect  k=   67677  S1= -1.15787 SL5= -3.27501 STOT= -1.11563  T= 15.61776  R1=-0.07414 RL5=-0.20970
+      defect  k=  170017  S1= -2.54561 SL5= -5.41246 STOT= -4.83758  T= 17.80032  R1=-0.14301 RL5=-0.30407
+      defect  k=  202987  S1= -4.38573 SL5= -8.78834 STOT= -6.83758  T= 18.10738  R1=-0.24221 RL5=-0.48535
+      defect  k=  373157  S1= -2.14019 SL5= -4.62752 STOT= -2.83758  T= 15.74793  R1=-0.13590 RL5=-0.29385
+      typical k= 1520543  S1= -9.62978 SL5=-12.32723 STOT=-12.57165  T= 24.18892  R1=-0.39811 RL5=-0.50962
+      typical k= 1059283  S1= -2.36605 SL5= +1.25662 STOT= -1.05749  T= 20.80108  R1=-0.11375 RL5=+0.06041
+      typical k=  286022  S1= -6.16099 SL5= -3.36681 STOT= -3.29651  T= 19.81598  R1=-0.31091 RL5=-0.16990
+      typical k=  764272  S1= -0.98234 SL5= -0.93914 STOT= -0.50144  T= 14.50338  R1=-0.06773 RL5=-0.06475
+      typical k= 1342801  S1= -2.42241 SL5= -3.74193 STOT= -3.03278  T= 14.48312  R1=-0.16726 RL5=-0.25836
+      typical k=  704996  S1= +5.33897 SL5= +7.80240 STOT= +4.78634  T= 18.66565  R1=+0.28603 RL5=+0.41801
+      typical k= 1087080  S1= +1.26658 SL5= +3.82723 STOT= +5.01491  T= 16.55454  R1=+0.07651 RL5=+0.23119
+      typical k= 1236657  S1= -0.92780 SL5= -0.73238 STOT= -1.01846  T= 14.10818  R1=-0.06576 RL5=-0.05191
+      typical k= 1016682  S1= +2.15744 SL5= +3.83014 STOT= +3.03748  T= 16.05578  R1=+0.13437 RL5=+0.23855
+      typical k= 1120982  S1= -7.61429 SL5= -7.76932 STOT= -9.11563  T= 23.04779  R1=-0.33037 RL5=-0.33710
+      typical k=   95543  S1= +1.87055 SL5= -2.35141 STOT= -0.57870  T= 19.30481  R1=+0.09690 RL5=-0.12180
+      typical k=  654364  S1= -2.73602 SL5= -6.26288 STOT= -5.06055  T= 16.85047  R1=-0.16237 RL5=-0.37167
+      typical k=  650743  S1= +7.80278 SL5= +8.61662 STOT=+11.19579  T= 21.29846  R1=+0.36635 RL5=+0.40457
+      typical k= 1380780  S1= +8.80784 SL5=+10.57776 STOT=+13.19579  T= 24.55885  R1=+0.35864 RL5=+0.43071
+      typical k= 1342192  S1= -2.12014 SL5= +1.64310 STOT= +0.78634  T= 16.04888  R1=-0.13211 RL5=+0.10238
+      typical k= 1502706  S1= +1.22149 SL5= +1.95592 STOT= +2.57855  T= 15.09447  R1=+0.08092 RL5=+0.12958
+      typical k= 1041061  S1= +1.77922 SL5= +1.18254 STOT= +2.70349  T= 15.12652  R1=+0.11762 RL5=+0.07818
+      typical k=  677163  S1= -4.33082 SL5= -2.67566 STOT= -2.62419  T= 19.59992  R1=-0.22096 RL5=-0.13651
+      typical k= 1204401  S1= +3.86994 SL5= +4.60662 STOT= +5.16242  T= 18.65396  R1=+0.20746 RL5=+0.24695
+      typical k= 1480159  S1= -4.35467 SL5= -3.30687 STOT= -4.86234  T= 19.96856  R1=-0.21808 RL5=-0.16560
+    spot exact STOT (defect #1): -655324/230945
+    defect-vs-typical (z = (mean_d - mean_t)/sd_t, n_d=6 n_t=20):
+      S1    defect mean  -1.58333  typical mean  -0.47652  sd_t  4.83124  z =  -0.23
+      SL5   defect mean  -4.17938  typical mean  +0.09127  sd_t  5.66064  z =  -0.75
+      STOT  defect mean  -3.55058  typical mean  +0.23707  sd_t  6.14281  z =  -0.62
+      T     defect mean +17.04928  typical mean +18.43647  sd_t  3.25626  z =  -0.43
+      R1    defect mean  -0.09223  typical mean  -0.02313  sd_t  0.22769  z =  -0.30
+      RL5   defect mean  -0.24350  typical mean  +0.00766  sd_t  0.27203  z =  -0.92
+
+  CONDITIONAL FOIL TRIGGER: no |z| >= 3 on R1 or RL5 at either
+  scale -- the gate_g3 foil run is NOT fired (registered
+  conditional; the registration stands, nothing was run).
+s2 done (0.0s)
+==============================================================================
+s3 -- SHIFTED-CONVOLUTION TABLE + ENSEMBLE KLOOS PROBE
+==============================================================================
+grounding: sum_{k<P} R(d;k) == P * pred(d) EXACT at A=13 for
+d in {1,7,30,100} (the complete side is the true segment mean) -- PASS
+
+S3-T1 deviation table: 200 segments/A (seeds 20260710+200+A), K=ceil(A^2/6);
+dev = R(d;W) - pred(d); z = mean_dev/(sd/sqrt(200)) (sampling z).
+
+  A=13 K= 29 n=200 segments:
+      d  pred      mean_dev   sd      z      min    max
+        0    8.6044   -0.0294   1.141   -0.36     -4     +2
+        1    1.0951   -0.0201   0.722   -0.39     -1     +2
+        2    2.9203   -0.0503   1.118   -0.64     -3     +3
+        3    2.1902   -0.0502   0.914   -0.78     -2     +2
+        4    1.3906   -0.0806   0.726   -1.57     -1     +2
+        5    4.3804   +0.0146   1.207   +0.17     -3     +4
+        6    1.0951   -0.0201   0.795   -0.36     -1     +2
+        7    4.1718   +0.0282   1.056   +0.38     -2     +3
+        8    2.1902   +0.0498   1.062   +0.66     -2     +3
+        9    1.6224   -0.0224   0.770   -0.41     -2     +1
+       10    3.2853   -0.0503   1.098   -0.65     -3     +3
+       11    1.4080   -0.0580   0.624   -1.31     -1     +2
+       12    2.9203   +0.0447   1.058   +0.60     -2     +3
+       13    2.6769   +0.0431   1.368   +0.45     -3     +3
+       14    1.8252   +0.0048   0.635   +0.11     -2     +1
+       15    3.7546   +0.0104   1.466   +0.10     -4     +3
+       16    1.4601   -0.0001   0.820   -0.00     -1     +3
+       17    2.4336   +0.0714   1.121   +0.90     -2     +3
+       18    2.5031   +0.0419   0.896   +0.66     -3     +1
+       19    1.4601   -0.0601   0.687   -1.24     -1     +2
+       20    3.2853   -0.0503   1.598   -0.45     -3     +4
+       21    1.8252   -0.0202   0.861   -0.33     -2     +2
+       22    3.1289   +0.0511   1.106   +0.65     -3     +3
+       23    2.9203   +0.0047   1.051   +0.06     -3     +2
+       24    1.0951   +0.0549   0.582   +1.33     -1     +1
+       25    3.2853   +0.0347   0.976   +0.50     -2     +3
+       26    2.0396   -0.0296   0.763   -0.55     -2     +2
+       27    2.1902   -0.0102   1.093   -0.13     -2     +3
+       28    3.6503   -0.0403   1.239   -0.46     -3     +2
+       29    1.2515   +0.0135   0.726   +0.26     -1     +2
+       30    4.8671   +0.0079   1.037   +0.11     -3     +2
+       31    1.0951   -0.0251   0.733   -0.48     -1     +2
+       32    2.1902   -0.0602   1.029   -0.83     -2     +3
+       33    3.7546   -0.0396   1.095   -0.51     -3     +2
+       34    1.0951   -0.0001   0.748   -0.00     -1     +2
+       35    6.0839   +0.0561   1.341   +0.59     -3     +3
+       36    1.0951   -0.0301   0.709   -0.60     -1     +2
+       37    3.3375   -0.0325   0.887   -0.52     -2     +2
+       38    2.1902   +0.0798   1.078   +1.05     -2     +3
+       39    1.3385   -0.0185   0.831   -0.31     -1     +2
+       40    5.0062   -0.0212   1.082   -0.28     -2     +2
+       41    1.0951   +0.0099   0.835   +0.17     -1     +2
+       42    3.6503   +0.0997   1.074   +1.31     -3     +2
+       43    2.4336   +0.0414   1.032   +0.57     -2     +3
+       44    1.8773   +0.0127   0.801   +0.22     -2     +2
+       45    3.2853   -0.0603   1.091   -0.78     -3     +3
+       46    1.0951   -0.0701   0.613   -1.62     -1     +1
+       47    2.9203   +0.0147   0.967   +0.22     -2     +2
+       48    2.7812   +0.0338   1.191   +0.40     -3     +2
+       49    1.8252   -0.0702   0.848   -1.17     -2     +2
+       50    3.2853   +0.0497   1.357   +0.52     -3     +4
+       51    1.6687   -0.0387   0.766   -0.72     -2     +1
+       52    2.6769   +0.0231   0.874   +0.37     -3     +1
+       53    2.1902   -0.0002   0.943   -0.00     -2     +2
+       54    1.4601   +0.0249   0.820   +0.43     -1     +2
+       55    4.2240   -0.0040   1.144   -0.05     -2     +3
+       56    2.0280   +0.0370   0.903   +0.58     -2     +2
+       57    2.1902   +0.1398   1.228   +1.61     -2     +4
+       58    2.9203   -0.0553   1.050   -0.74     -2     +3
+       59    1.2515   -0.0165   0.650   -0.36     -1     +2
+       60    3.2853   -0.0053   1.161   -0.06     -3     +3
+       61    1.6224   -0.0324   0.920   -0.50     -2     +2
+       62    2.5031   -0.0031   1.027   -0.04     -3     +2
+       63    3.6503   +0.0497   1.098   +0.64     -3     +3
+       64    1.0951   +0.0099   0.829   +0.17     -1     +2
+       65    5.3538   -0.0938   1.253   -1.06     -3     +3
+       66    1.4080   -0.0130   0.801   -0.23     -1     +2
+       67    2.1902   +0.0048   0.981   +0.07     -2     +2
+       68    2.9203   +0.0097   0.990   +0.14     -3     +2
+       69    1.2168   +0.0082   0.705   +0.16     -1     +2
+       70    6.2577   +0.1373   1.143   +1.70     -3     +3
+       71    1.0951   -0.0451   0.855   -0.75     -1     +2
+       72    2.9203   +0.0747   1.082   +0.98     -3     +2
+       73    2.5031   +0.0269   0.929   +0.41     -3     +1
+       74    1.2168   +0.0232   0.659   +0.50     -1     +1
+       75    4.3804   -0.0904   1.141   -1.12     -3     +3
+       76    1.0951   -0.0301   0.802   -0.53     -1     +2
+       77    4.6933   +0.0417   1.030   +0.57     -3     +2
+       78    2.6769   +0.0281   0.981   +0.40     -3     +2
+       79    1.4601   +0.0599   0.709   +1.19     -1     +2
+       80    3.2853   +0.0047   0.995   +0.07     -2     +3
+       81    1.2515   +0.0185   0.685   +0.38     -1     +2
+       82    3.2448   +0.0602   1.233   +0.69     -2     +4
+       83    2.1902   +0.0748   1.087   +0.97     -2     +3
+       84    2.0859   -0.0109   0.763   -0.20     -2     +2
+       85    3.2853   +0.0947   1.286   +1.04     -3     +4
+       86    1.4601   -0.0851   0.876   -1.37     -1     +2
+       87    2.4336   +0.0914   1.056   +1.22     -2     +3
+       88    2.8160   -0.0410   0.959   -0.60     -3     +2
+       89    1.4601   -0.0051   0.855   -0.08     -1     +2
+       90    3.2853   +0.0797   1.364   +0.83     -3     +3
+       91    2.2308   -0.0758   0.717   -1.50     -2     +2
+       92    2.5031   +0.1269   0.937   +1.92     -3     +2
+       93    2.9203   -0.0653   1.077   -0.86     -2     +2
+       94    1.0951   +0.0549   0.819   +0.95     -1     +2
+       95    4.1718   +0.0032   0.995   +0.05     -3     +2
+       96    1.4601   -0.0201   0.713   -0.40     -1     +2
+       97    2.1902   +0.0348   1.365   +0.36     -2     +4
+       98    3.6503   -0.0303   1.096   -0.39     -3     +3
+       99    1.4080   -0.0180   0.742   -0.34     -1     +2
+      100    4.8671   +0.0029   1.192   +0.03     -4     +3
+
+  A=17 K= 49 n=200 segments:
+      d  pred      mean_dev   sd      z      min    max
+        0   12.8281   -0.2631   1.532   -2.43     -4     +4
+        1    1.4150   +0.0100   0.766   +0.19     -1     +2
+        2    3.7733   -0.2483   1.435   -2.45     -4     +4
+        3    2.8299   -0.2049   1.145   -2.53     -3     +3
+        4    1.7968   +0.0482   0.983   +0.69     -2     +2
+        5    5.6599   -0.2499   1.521   -2.32     -4     +3
+        6    1.5238   -0.0938   0.959   -1.38     -2     +2
+        7    5.3904   -0.2904   1.364   -3.01     -4     +3  <-- |z|>=3
+        8    2.8299   -0.1449   1.123   -1.82     -3     +2
+        9    2.0963   +0.0387   0.928   +0.59     -2     +3
+       10    4.2449   -0.2249   1.449   -2.19     -4     +4
+       11    1.9592   -0.0042   0.893   -0.07     -2     +2
+       12    3.7733   -0.2033   1.336   -2.15     -4     +3
+       13    3.4588   -0.1188   1.605   -1.05     -3     +5
+       14    2.3583   +0.0667   0.990   +0.95     -2     +3
+       15    4.8513   -0.2713   1.664   -2.31     -4     +5
+       16    1.8866   -0.0466   0.948   -0.70     -2     +2
+       17    3.6281   -0.2131   1.372   -2.20     -4     +3
+       18    3.2342   -0.1392   1.325   -1.49     -3     +3
+       19    1.8866   -0.0666   0.950   -0.99     -2     +2
+       20    4.2449   -0.0749   1.802   -0.59     -3     +5
+       21    2.3583   -0.0733   1.014   -1.02     -2     +3
+       22    4.0428   -0.1078   1.319   -1.16     -3     +3
+       23    4.0635   -0.0835   1.393   -0.85     -3     +4
+       24    1.4150   -0.0500   0.852   -0.83     -1     +3
+       25    4.2449   -0.1249   1.298   -1.36     -3     +3
+       26    2.6353   -0.0103   1.010   -0.14     -3     +2
+       27    2.8299   -0.0349   1.297   -0.38     -3     +3
+       28    5.0794   -0.3294   1.572   -2.96     -4     +4
+       29    1.6171   -0.0571   0.860   -0.94     -2     +2
+       30    6.2888   -0.1088   1.406   -1.09     -3     +4
+       31    1.4150   +0.0250   0.944   +0.37     -1     +3
+       32    2.8299   -0.0049   1.230   -0.06     -3     +3
+       33    4.8513   -0.3213   1.497   -3.04     -4     +4  <-- |z|>=3
+       34    1.6327   +0.1273   0.926   +1.95     -2     +2
+       35    7.8610   -0.3310   1.736   -2.70     -5     +3
+       36    1.4150   -0.0100   0.777   -0.18     -1     +3
+       37    4.3123   -0.1723   1.232   -1.98     -3     +4
+       38    2.8299   -0.2249   1.314   -2.42     -3     +4
+       39    1.7294   +0.0506   1.018   +0.70     -2     +2
+       40    6.9660   -0.1610   1.513   -1.51     -4     +4
+       41    1.4150   -0.0750   0.899   -1.18     -1     +3
+       42    4.7166   -0.2466   1.330   -2.62     -4     +3
+       43    3.1444   -0.1094   1.058   -1.46     -3     +3
+       44    2.4257   +0.0743   1.116   +0.94     -2     +3
+       45    4.5715   -0.2515   1.410   -2.52     -4     +3
+       46    1.4150   -0.0100   0.919   -0.15     -1     +3
+       47    3.7733   -0.0783   1.285   -0.86     -3     +3
+       48    3.5936   -0.0686   1.315   -0.74     -4     +3
+       49    2.3583   -0.0183   1.010   -0.26     -2     +3
+       50    4.2449   -0.2249   1.517   -2.10     -3     +6
+       51    2.4879   -0.0529   1.049   -0.71     -2     +3
+       52    3.4588   -0.2138   1.354   -2.23     -3     +4
+       53    2.8299   -0.0349   1.149   -0.43     -3     +3
+       54    1.8866   +0.0784   0.841   +1.32     -2     +2
+       55    5.4578   -0.0728   1.445   -0.71     -3     +4
+       56    2.6203   -0.1053   1.032   -1.44     -3     +2
+       57    3.0476   -0.0176   1.566   -0.16     -3     +4
+       58    3.7733   -0.1433   1.324   -1.53     -3     +3
+       59    1.6171   -0.0671   0.895   -1.06     -2     +3
+       60    4.2449   -0.0549   1.570   -0.49     -3     +5
+       61    2.0963   -0.1663   0.980   -2.40     -2     +2
+       62    3.4830   +0.1020   1.293   +1.12     -3     +5
+       63    4.7166   -0.1816   1.396   -1.84     -4     +3
+       64    1.4150   +0.0700   0.967   +1.02     -1     +3
+       65    6.9176   -0.0326   1.488   -0.31     -4     +3
+       66    1.8193   -0.1043   0.942   -1.56     -2     +2
+       67    2.8299   +0.0551   1.237   +0.63     -3     +4
+       68    4.3538   -0.1838   1.288   -2.02     -3     +4
+       69    1.5722   +0.0978   0.908   +1.52     -2     +2
+       70    8.0856   -0.1256   1.517   -1.17     -4     +4
+       71    1.4150   -0.1050   0.948   -1.57     -1     +3
+       72    3.7733   -0.0383   1.354   -0.40     -3     +3
+       73    3.2342   -0.2492   1.297   -2.72     -3     +3
+       74    1.6931   +0.0419   0.916   +0.65     -2     +2
+       75    5.6599   -0.1749   1.638   -1.51     -4     +3
+       76    1.4150   +0.0500   0.832   +0.85     -1     +3
+       77    6.0642   -0.0892   1.297   -0.97     -4     +4
+       78    3.4588   -0.1688   1.096   -2.18     -2     +4
+       79    2.0318   +0.1232   1.003   +1.74     -2     +3
+       80    4.2449   -0.2099   1.488   -1.99     -3     +5
+       81    1.6171   +0.1179   0.980   +1.70     -2     +2
+       82    4.1925   -0.0325   1.440   -0.32     -3     +4
+       83    2.8299   +0.0051   1.263   +0.06     -2     +3
+       84    2.6952   +0.0748   1.011   +1.05     -3     +3
+       85    4.8980   -0.1080   1.391   -1.10     -3     +3
+       86    1.8866   -0.0466   1.171   -0.56     -2     +3
+       87    3.1444   -0.0794   1.244   -0.90     -3     +3
+       88    3.6385   +0.0615   1.326   +0.66     -4     +3
+       89    1.8866   +0.0384   0.956   +0.57     -2     +2
+       90    4.2449   +0.1151   1.604   +1.01     -3     +5
+       91    3.1041   -0.0291   0.929   -0.44     -2     +2
+       92    3.2342   +0.0108   1.188   +0.13     -2     +4
+       93    3.7733   -0.1433   1.324   -1.53     -4     +4
+       94    1.4150   +0.0200   0.959   +0.30     -1     +3
+       95    5.3904   +0.0696   1.438   +0.68     -2     +5
+       96    2.0318   -0.0218   0.977   -0.31     -2     +3
+       97    2.8299   +0.0251   1.661   +0.21     -3     +4
+       98    4.7166   -0.0866   1.301   -0.94     -4     +3
+       99    1.8193   +0.1207   1.124   +1.52     -2     +3
+      100    6.2888   -0.0188   1.424   -0.19     -3     +4
+
+  A=23 K= 89 n=200 segments:
+      d  pred      mean_dev   sd      z      min    max
+        0   19.0345   +0.0455   2.051   +0.31     -6     +6
+        1    1.6761   -0.0311   0.940   -0.47     -2     +2
+        2    4.4697   -0.0347   1.624   -0.30     -4     +5
+        3    3.3522   +0.0428   1.333   +0.45     -3     +4
+        4    2.1284   -0.1034   1.118   -1.31     -2     +3
+        5    6.7045   +0.1855   2.090   +1.26     -6     +6
+        6    1.9254   +0.0046   1.250   +0.05     -2     +4
+        7    6.3852   +0.0698   1.821   +0.54     -4     +5
+        8    3.5287   +0.0963   1.615   +0.84     -4     +4
+        9    2.4831   +0.0619   1.259   +0.69     -2     +5
+       10    5.0284   +0.0466   1.550   +0.43     -4     +4
+       11    2.3208   -0.0108   1.132   -0.13     -2     +3
+       12    4.4697   +0.1953   1.624   +1.70     -3     +5
+       13    4.3703   +0.0197   2.225   +0.12     -4     +6
+       14    2.7935   -0.0285   1.116   -0.36     -3     +3
+       15    6.0492   +0.0358   2.042   +0.25     -5     +6
+       16    2.2348   +0.0102   1.087   +0.13     -2     +3
+       17    4.2977   +0.2373   1.483   +2.26     -2     +4
+       18    3.8311   +0.1139   1.563   +1.03     -4     +5
+       19    2.5328   -0.1428   1.155   -1.75     -3     +2
+       20    5.0284   -0.0784   2.303   -0.48     -4     +7
+       21    2.7935   -0.0885   1.215   -1.03     -3     +3
+       22    4.7889   +0.1661   1.879   +1.25     -5     +5
+       23    5.3202   +0.1948   1.579   +1.75     -5     +4
+       24    1.6761   -0.0611   1.078   -0.80     -2     +3
+       25    5.3636   -0.1286   1.598   -1.14     -4     +5
+       26    3.1217   -0.1517   1.182   -1.82     -2     +3
+       27    3.3522   +0.0978   1.680   +0.82     -3     +5
+       28    6.0168   +0.2632   1.852   +2.01     -4     +5
+       29    1.9156   -0.0706   1.033   -0.97     -2     +3
+       30    7.4494   -0.0744   1.763   -0.60     -6     +5
+       31    1.7643   +0.0007   1.056   +0.01     -2     +3
+       32    3.5757   +0.1943   1.427   +1.92     -4     +4
+       33    5.7467   -0.1817   1.703   -1.51     -5     +5
+       34    1.9340   -0.0540   1.049   -0.73     -2     +2
+       35    9.3118   -0.0318   2.519   -0.18     -7     +8
+       36    1.6761   -0.1461   1.037   -1.99     -2     +3
+       37    5.1082   +0.0168   1.504   +0.16     -5     +4
+       38    3.9992   +0.0308   1.371   +0.32     -4     +3
+       39    2.0486   +0.1464   1.036   +2.00     -2     +3
+       40    8.2517   +0.1383   1.904   +1.03     -6     +5
+       41    1.6761   -0.0611   1.083   -0.80     -2     +3
+       42    5.5871   +0.1279   1.648   +1.10     -5     +3
+       43    3.7247   +0.1753   1.378   +1.80     -3     +4
+       44    3.0649   -0.0249   1.507   -0.23     -3     +5
+       45    5.4152   +0.1498   1.522   +1.39     -4     +5
+       46    1.8526   -0.0976   1.073   -1.29     -2     +4
+       47    4.4697   +0.0953   1.462   +0.92     -3     +5
+       48    4.2568   -0.0268   1.634   -0.23     -3     +5
+       49    2.7935   +0.0765   1.253   +0.86     -3     +3
+       50    5.0284   +0.0116   2.091   +0.08     -4     +6
+       51    3.1435   -0.2035   1.325   -2.17     -3     +4
+       52    4.0972   +0.1578   1.576   +1.42     -4     +4
+       53    3.3522   -0.0722   1.304   -0.78     -3     +5
+       54    2.3525   +0.0925   1.069   +1.22     -2     +3
+       55    6.4650   +0.0450   1.964   +0.32     -4     +5
+       56    3.1039   -0.0389   1.260   -0.44     -3     +4
+       57    4.0915   +0.1285   2.238   +0.81     -4     +5
+       58    4.4697   -0.0747   1.582   -0.67     -3     +4
+       59    1.9156   -0.0306   0.998   -0.43     -2     +2
+       60    5.0284   +0.0516   1.630   +0.45     -4     +5
+       61    2.6138   -0.2638   1.189   -3.14     -3     +3  <-- |z|>=3
+       62    4.1258   +0.1042   1.698   +0.87     -4     +5
+       63    5.9595   +0.1105   1.758   +0.89     -4     +5
+       64    1.6761   -0.0761   1.139   -0.95     -2     +3
+       65    8.1944   +0.0156   1.667   +0.13     -5     +5
+       66    2.1550   -0.1650   1.195   -1.95     -2     +5
+       67    3.3522   +0.1628   1.371   +1.68     -3     +4
+       68    5.1573   -0.0173   1.595   -0.15     -3     +4
+       69    2.0584   -0.0634   1.180   -0.76     -2     +3
+       70   10.2164   -0.0714   2.070   -0.49     -5     +7
+       71    1.6761   +0.0339   1.105   +0.43     -2     +3
+       72    4.4697   +0.2003   1.598   +1.77     -3     +5
+       73    3.8311   +0.0639   1.574   +0.57     -4     +5
+       74    2.0056   +0.0194   1.063   +0.26     -2     +3
+       75    6.7045   +0.0405   1.793   +0.32     -4     +4
+       76    1.8996   -0.0446   1.109   -0.57     -2     +4
+       77    7.5615   +0.2435   1.597   +2.16     -5     +4
+       78    4.0972   +0.2578   1.442   +2.53     -3     +4
+       79    2.4067   +0.0733   1.385   +0.75     -2     +4
+       80    5.0284   +0.1616   1.482   +1.54     -4     +4
+       81    1.9156   -0.1506   1.032   -2.06     -2     +3
+       82    5.2974   +0.2876   1.521   +2.67     -3     +4
+       83    3.3522   -0.0722   1.518   -0.67     -3     +4
+       84    3.3606   +0.0844   1.476   +0.81     -3     +4
+       85    5.8020   +0.1380   2.092   +0.93     -5     +6
+       86    2.2348   -0.1048   1.229   -1.21     -2     +3
+       87    3.7247   +0.2903   1.343   +3.06     -3     +4  <-- |z|>=3
+       88    4.3100   -0.0700   1.433   -0.69     -3     +5
+       89    2.3838   +0.0862   1.032   +1.18     -2     +3
+       90    5.0284   -0.1084   1.976   -0.78     -4     +4
+       91    3.6770   -0.1620   1.295   -1.77     -3     +4
+       92    4.2344   +0.0906   1.730   +0.74     -3     +5
+       93    4.4697   +0.1003   1.475   +0.96     -3     +5
+       94    1.6761   +0.0289   0.929   +0.44     -2     +2
+       95    7.2366   +0.1934   1.661   +1.65     -4     +5
+       96    2.4067   -0.1817   1.180   -2.18     -2     +4
+       97    3.3522   -0.0472   1.889   -0.35     -3     +5
+       98    5.5871   -0.0521   1.656   -0.44     -4     +4
+       99    2.1550   +0.0050   1.266   +0.06     -2     +3
+      100    7.8415   +0.0035   1.481   +0.03     -4     +3
+
+  |z| >= 3 cells: 4 of 303: ['A=17 d=7 z=-3.01', 'A=17 d=33 z=-3.04', 'A=23 d=61 z=-3.14', 'A=23 d=87 z=+3.06']
+  (registered disclosure: cells within a scale share one segment
+  draw -- correlated across d; ~0.8 independent-cell hits expected
+  at 3 sigma is heuristic only; the identity fixes the mean, so
+  these are draw-level sampling fluctuations, not d-structure.)
+
+S3-T2 ensemble kloos probe (stage-D extension; registered):
+M2(W) = sum_{d=1..100} (R(d;W)-pred(d))^2; features K_q(W) =
+kloos_q(u*inv2_q, u*inv2_q), u = k mod q (deg -> q-1 at u=0);
+kloos wiring check vs circle_sum T1(c) bridge below.
+  kloos wiring: kloos(0,0) = q-1 and sum_{u!=0} kloos(u*inv2,u*inv2)^2
+  == q^2-2q-1 (circle_sum T1(c) diagonal energy) at every clock q <= 19
+  -- PASS
+
+  A=17 n=26 (6 defect + 20 typical), 16 deg feature cells:
+    M2 defect mean 163.61 | typical mean 162.67 sd 42.70 | z = +0.02
+    fit [pooled n=26]: R2 = 0.1811  rank(X) = 6/6  all-sign-stable=N
+      coef [1, K_5, K_7, K_11, K_13, K_17] = [+174.176, +0.306, -3.454, +0.662, -1.636, -1.284]
+      jackknife sign-stability per coef: [Y N Y N Y Y]
+    fit [typical-only n=20]: R2 = 0.2751  rank(X) = 6/6  all-sign-stable=N
+      coef [1, K_5, K_7, K_11, K_13, K_17] = [+179.768, +4.061, -4.808, +0.297, -2.949, -1.713]
+      jackknife sign-stability per coef: [Y N Y N Y Y]
+      defect residuals under the typical-only fit: -7.3 -67.7 -40.0 -2.3 -18.5 -64.2
+
+  A=19 n=26 (6 defect + 20 typical), 11 deg feature cells:
+    M2 defect mean 202.04 | typical mean 144.87 sd 23.03 | z = +2.48
+    fit [pooled n=26]: R2 = 0.5423  rank(X) = 7/7  all-sign-stable=N
+      coef [1, K_5, K_7, K_11, K_13, K_17, K_19] = [+185.904, -13.087, -4.137, -0.408, -6.035, -0.329, -0.345]
+      jackknife sign-stability per coef: [Y Y Y N Y N N]
+    fit [typical-only n=20]: R2 = 0.3467  rank(X) = 7/7  all-sign-stable=N
+      coef [1, K_5, K_7, K_11, K_13, K_17, K_19] = [+163.744, -8.833, -1.316, +0.837, -2.893, +0.254, -0.632]
+      jackknife sign-stability per coef: [Y Y Y N Y N Y]
+      defect residuals under the typical-only fit: +47.4 +17.3 -38.4 +84.1 +73.5 +47.9
+
+  REGISTERED EXPECTATION CHECK (no other verdict vocabulary):
+  NO stable re-expression -- CONFIRMED (no pooled fit reached
+  R2 >= 0.9 with all-coefficient jackknife sign stability).
+  The complete kloos values at the segment's clock frequencies do
+  not re-express the incomplete shifted-convolution second moment
+  -- the measured half of the dispersion-blindness law.
+s3 done (0.0s)
+==============================================================================
+RUN COMPLETE
+==============================================================================
+ANOMALIES |z| >= 3 (registered contexts):
+  s3 deviation A=17 d=7: z = -3.01
+  s3 deviation A=17 d=33: z = -3.04
+  s3 deviation A=23 d=61: z = -3.14
+  s3 deviation A=23 d=87: z = +3.06
+total runtime 0.5 min; closed stage list executed: s0, s1, s2, s3;
+no thresholds moved; the conditional foil did not fire.
+SECTION LINE INDEX (this run, 1-based in this append block):
+  line     1: DISPERSION HARNESS RUN 1 -- 2026-07-11 20:28:35
+  line     8: PRE-REGISTRATION BLOCK (written FIRST, before ANY measurement; closed lists)
+  line   196: s0 -- SELFTESTS (closed list ST-A..ST-F; ANY failure = STOP exit 1)
+  line   248: s1 -- THE MARKOV-GAP TABLE (exact counts vs the dispersion bound)
+  line   320: s2 -- THE FAREY m-CLASS PROFILE (level-1 x level-1 cross-terms)
+  line   458: s3 -- SHIFTED-CONVOLUTION TABLE + ENSEMBLE KLOOS PROBE
+  line   820: RUN COMPLETE

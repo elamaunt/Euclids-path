@@ -1,0 +1,413 @@
+==============================================================================
+CIRCLE-VOLUME RUN 1 (Stage C) -- 2026-07-11 16:52:48
+==============================================================================
+harness: tools/circle_volume_harness.py; log: tools/circle_volume_run1.log
+empirical body of EuclidsPath/Engine/Step00CircleVolume.lean (volume-deficit layer)
+python 3.11.9 | numpy 2.4.4 | seed 20260710 | STAGE_TIME_CAP 5400s
+foil-v2 machinery reused VERBATIM from tools/betti_portrait_harness.py (precompute_X, foil_row);
+mask/load/null construction from tools/fourier_window_harness.py; factor tiers from
+tools/pratt_wing_harness.py / tools/grave_depth_harness.py (SPF / numpy TD / Brent rho + 12-base MR).
+==============================================================================
+PRE-REGISTRATION BLOCK (logged before ANY measurement; nothing may be added below)
+==============================================================================
+DEFINITIONS (for an integer w with known factorization w = prod l^a;
+  l runs over the odd prime factors; wings 6m+-1 are odd and coprime to 6,
+  hence coprime to d in {2,3} ALWAYS -- the skip/mark counter for w even or
+  gcd(w,d)>1 is registered and must equal 0):
+  chi_d(l)   = +1 if d is a nonzero QR mod l else -1 (Jacobi/Euler; l odd
+               prime; selftest ST5 checks Jacobi == Euler criterion and the
+               closed forms chi_2 <=> l mod 8 in {1,7}, chi_3 <=> l mod 12
+               in {1,11}).
+  circVol_d(w)  = prod_{l^a || w} l^(a-1) * (l - chi_d(l))
+                = w * prod_{l | w} (1 - chi_d(l)/l)   [multiplicative].
+  volGap_d(w)   = (w+1) - circVol_d(w)  -- the SIGNED volume gap.  Registered
+               as SIGNED, deliberately NOT called a deficit: it goes NEGATIVE
+               (example w = 55 = 5*11, d = 2: circVol = 6*12 = 72, gap = -16).
+  lcmBound_d(w) = lcm_{l^a || w} l^(a-1)*(l - chi_d(l)).
+  ordDef_d(w)   = (w+1) - lcmBound_d(w)  -- the order-budget deficit, SIGNED
+               (on prime-power wings l^a, a >= 2, chi = -1 the local factor
+               exceeds w+1: w = 25, d = 2 gives lcmBound 30, ordDef -4 --
+               disclosed).
+  LEAN SCOPE DISCLOSURE: the Lean module Step00CircleVolume proves the volume
+  formula and the order bound for SEMIPRIMES p*q (circle_card_semiprime,
+  circle_order_bound_semiprime); the per-prime-power factor l^(a-1)(l-chi)
+  and the multi-factor lcm used here are the NUMERIC generalization (Quad d
+  l^k is not etale; deliberately out of the Lean scope).  Selftests ST2/ST3b
+  check the numeric generalization by brute force; ST4 checks the order
+  bound at semiprimes (the Lean scope).
+
+GRID POPULATION (foil-v2, the L38/L52 house grid): A in {13,31} x X in
+  {1e6 (NW=3000), 1e9 (NW=1000)}, H = 50; windows [x0, x0+50), x0 = X + 50w.
+  READ SET per window: the composite-wing centers = centers with at least
+  one composite wing = the NON-TWIN centers (a twin center has both wings
+  prime); BOTH wings of every read center enter, including a prime co-wing.
+  Window value = mean over the 2*|read| wings.  The observable is
+  A-INDEPENDENT (it reads all non-twin centers, not survivors); the
+  A-escalation acts through the LOAD (survivor set) -- disclosed.
+  Twin flags are exact (Omega(6m-1) = Omega(6m+1) = 1 from the house sieve,
+  cross-checked against the harness factorization in ST7).
+
+OBSERVABLES (CLOSED LIST -- nothing may be added after this block):
+  V1 = window mean of circVol_2(w)/w        over the read wings.
+  V2 = window mean of volGap_2(w)/w         (SIGNED) over the read wings.
+  V3 = window mean of ordDef_2(w)/(w+1)     (SIGNED) over the read wings.
+  V4 = window mean of (circVol_2(w) - circVol_3(w))/w  -- the d-contrast
+       (character-twist differential) over the read wings.
+  V5 = DESCRIPTIVE defect-vs-typical contrast of V1..V3 on the 50 exact
+       defect windows A = 17..43 vs matched typical windows (small n --
+       NEVER part of the foil verdict; populations below).
+  The foil verdict applies to V1-V4.
+
+LOADS (foil-v2 verbatim; lambda(m) = (-1)^(Omega(6m-1)+Omega(6m+1))):
+  S    = sum of lambda over the window's A-survivors (clean centers);
+         support overlaps the read set -- disclosed (fourier AN5 precedent).
+  S''  = split-window: observable on the LEFT half [x0, x0+25), load = sum
+         of lambda over RIGHT-half survivors (disjoint support).
+  So   = self-excluded: load over survivors NOT read by the observable
+         = the TWIN survivors only.  Frame fact: lambda == +1 identically on
+         twin centers (Omega = 1+1), so the So lambda-load is a twin-COUNT
+         load, not a parity load -> INFORMATIONAL ROW ONLY, excluded from
+         the verdict (precedent: betti P3|So NA, fourier So NA).
+  Verdict rows: V1-V4 x {S, S''} over the 4-cell grid.
+
+FOIL MACHINERY (verbatim reuse): BP.precompute_X / BP.foil_row from
+  tools/betti_portrait_harness.py; 200 sigma_W permutations + 200 sigma_I
+  lambda-resamples per (cell, load); mask/load/null construction copied from
+  tools/fourier_window_harness.py make_cell (So mask added).  Seed 20260710;
+  substreams: default_rng(SEED) sigma_I nulls per cell; default_rng(SEED+7)
+  per foil row (betti cell_run copy); [SEED,5] selftest draws; [SEED,A,i]
+  V5 control draws.
+
+THRESHOLDS (gate_g3 foil-v2, VERBATIM, immovable):
+  PARITY-SENSITIVE (MANAGED-PASS) iff min|z_I| >= 5 over the 4-cell grid
+    AND escalation |R(31)| >= |R(13)|/3 at both X (cells with |R(13)| <=
+    1e-9 skipped -- betti stage_s4v copy);
+  SOFT iff min|z_I| >= 3;
+  else PARITY-BLIND-UNDER-ESCALATION-v2.
+
+REGISTERED EXPECTATION: PARITY-BLIND-UNDER-ESCALATION-v2.
+  Honest reasoning: circVol_d / volGap_d / ordDef_d are congruence-AND-
+  factorization-determined multiplicative functionals of the wings --
+  circVol_d(w)/w = prod_{l|w}(1 - chi_d(l)/l) is a character-twisted
+  weighting of the wing's prime support: a new MEMBER of an old class, not
+  a new class.  The ledger closes the family: L38 (five foil-v2 candidates
+  blind), L41 (grave depth / strata blind), L53 (quadratic imaginary layer
+  collapsed over the twin panel), L55 (bilinear/peel observables outside
+  the window blind), L58 (trajectory class blind), L63 (beyond-phase
+  quartic/Gaussian class NULL).  A MANAGED-PASS here would be the FIRST
+  parity-sensitive window observable under foil-v2 and ESCALATES IMMEDIATELY
+  per protocol (no threshold moves, no re-runs; escalation = a registered
+  follow-up pass).
+
+V5 POPULATIONS (descriptive stratum):
+  Defect windows (the 50 exact ones, A = 17..43): window = centers r+1..r+L,
+  L = G(A)-1 with exact G = {17:18, 19:25, 23:34, 29:43, 31:58, 37:88,
+  41:91, 43:103}; starts: A=17 -- 20 starts by full-period scan (calibration:
+  first r=117, must contain 502); A=19 -- 20 starts (first r=110); A=23..43
+  from the pratt_wing DEFECT_R witness list incl. the 41/43 witnesses
+  50077677123072 (L=90) and 233885349904190 (L=102).  Every start is
+  re-verified (r clean, r+1..r+L struck, r+L+1 clean) in ST8 -- STOP on
+  mismatch.  Read set as in the grid (non-twin centers; in a defect window
+  every center is struck hence composite-winged hence read -- asserted).
+  Matched typical windows: per defect window i at scale A, 20 control
+  windows of the SAME length L, starts r' seeded uniform (rng [SEED,A,i])
+  in [max(1, r//2), r + r//2), redrawn while |r' - r| <= L (no overlap);
+  unconditioned (typical).  Contrast: Welch z on V1..V3 per scale where
+  n_def >= 2; sigma-distance (v_def - mean_ctl)/sd_ctl where n_def = 1;
+  ALL labeled DESCRIPTIVE (small n) -- no foil verdict.
+
+FACTORIZATION TIERS (grave_depth / pratt_wing lineage): SPF sieve (int32) to
+  7.0e6 -- REGISTERED ADAPTATION of the planned 6.1e6 (the 1e6-scale wings
+  reach 6*(1e6+150000)+1 = 6,900,001 > 6.1e6); numpy trial division over
+  sieved primes <= 78,500 for values <= 6.1e9 (covers the 1e9 scale: wings
+  <= 6*(1e9+50000)+1 = 6,000,300,001); Brent rho + deterministic 12-base
+  Miller-Rabin above (deterministic < 3.186e23; A=43 control wings reach
+  ~2.1e15).  EVERY factorization is verified by reconstruction product == w
+  (STOP otherwise): completeness target 100% is enforced, not sampled.
+
+SELFTEST LIST (all STOP exit 1):
+  ST1 kernel constants: brute circle count == the landed Lean constants
+      circleCountN_5_2 = 6, circleCountN_11_2 = 12 (Step00ImaginaryCircle),
+      circleCountN_35_2 = 36, circleCountN_127_3 = 128 (Step00CircleVolume),
+      AND == the circVol formula value on each.
+  ST2 multiplicativity: brute circle count == circVol_d at 3 seeded random
+      semiprimes p*q (p,q distinct primes in [5,113], rng [SEED,5]), both
+      d in {2,3}; plus the fixed beyond-semiprime instances 175 = 5^2*7 and
+      385 = 5*7*11.
+  ST3 per-prime volume: brute count == l - chi_d(l) on 20 seeded primes in
+      [5,400) (rng [SEED,5]), both d.
+  ST3b prime-power face (numeric generalization): brute count ==
+      l^(a-1)(l - chi_d(l)) on {25, 125, 49, 121, 169}, both d.
+  ST4 order bound at the ST2 semiprimes (the Lean scope): EVERY brute circle
+      point satisfies point^lcmBound_d == (1,0) via the qmulN ladder
+      (circle_order_bound_semiprime used numerically).
+  ST5 chi: Jacobi == Euler criterion on 300 seeded (d,l) + closed-form
+      mod-8 / mod-12 agreement on every prime < 10^4.
+  ST6 factor tiers: fac == independent trial division on 2000 seeded values
+      <= 7e6 (SPF tier) and 40 seeded values in (7e6, 6.1e9] (TD tier);
+      5 seeded rho-tier values in (6.1e9, 1e13]: reconstruction + MR
+      primality of every factor.
+  ST7 grid Omega-consistency (runs at grid construction, STOP semantics):
+      sum of exponents of the harness factorization == the house sieve
+      Omega (BP.omega_range arrays) on EVERY wing of both scales; twin
+      flags follow (Omega = 1 <=> prime wing).
+  ST8 defect calibration: A=17 scan -> 20 starts, first 117, contains 502;
+      A=19 scan -> 20 starts, first 110; every DEFECT_R witness re-verified
+      (r clean, r+1..r+L struck, r+L+1 clean).
+
+STOP RULE (registered): after the grid + V5 -- no new observables, no new
+  weightings, no threshold moves.  STAGE_TIME_CAP 5400 s; fallback: HALVE the
+  remaining per-population workload and LOG the shrink -- never silently.
+PRE-REGISTRATION ENDS -- measurements begin below this line.
+==============================================================================
+SELFTESTS (ST1-ST6, ST8; ST7 runs at grid construction; any failure = STOP)
+==============================================================================
+  tables: SPF <= 7000000 (in-memory), 7702 TD primes <= 78500 (0.0s)
+ST1 kernel constants: brute count == Lean constant == formula on all 4:
+    (5,d=2)=6  (11,d=2)=12  (35,d=2)=36  (127,d=3)=128 -- PASS
+ST2 multiplicativity (seeds [SEED,5]): brute == formula at semiprimes 803=11*73, 791=7*113, 1501=19*79
+    (both d) + fixed 175=5^2*7, 385=5*7*11 (both d) -- PASS
+ST3 per-prime volume: brute == l - chi_d(l) on 20 seeded primes (5..223), both d -- PASS
+ST3b prime-power face: brute == l^(a-1)(l-chi) on {25,125,49,121,169}, both d -- PASS
+ST4 order bound: pt^lcmBound == (1,0) for ALL 6328 circle points of the 3
+    semiprimes (both d; qmulN ladder) -- circle_order_bound numerically -- PASS
+ST5 chi: Jacobi == Euler on 300 seeded (d,l); closed forms mod 8 / mod 12 on all primes in [5,1e4) -- PASS
+ST6 tiers: SPF == reference on 2000 seeded <= 7e6; TD tier == reference on 40 seeded
+    in (7e6, 6.1e9]; 5 rho-tier values verified (reconstruction + MR factors) -- PASS
+ST8 defect calibration: A=17 20 starts (first 117, 502 present); A=19 20 starts (first 110);
+    all 10 witnesses A=23..43 re-verified (clean-struck-clean); census = 50 -- PASS
+SELFTESTS ST1-ST6, ST8 ALL PASS (0.1s)
+==============================================================================
+FOIL GRID -- A in {13,31} x X in {1e6,1e9}, H=50 (foil-v2 verbatim)
+==============================================================================
+  [X=1e+06] sieved 150000 centers + band 100 in 0.0s
+    [X=1e+06] 50000/150000 centers factorized (0s)
+    [X=1e+06] 100000/150000 centers factorized (1s)
+    [X=1e+06] 150000/150000 centers factorized (1s)
+  [X=1e+06] ST7 Omega-consistency on all 300000 wings -- PASS; skip counter = 0;
+    lambda == +1 on all 4793 twin centers (frame fact) -- OK (1s)
+  [X=1e+06] read centers/window mean=48.40 (of 50); empty windows: full=0 left=0
+  [X=1e+06] observable means/sd over 3000 windows:
+    V1 full: mean=+1.032753 sd=0.001422 | left: mean=+1.032766 sd=0.003053
+    V2 full: mean=-0.032753 sd=0.001422 | left: mean=-0.032766 sd=0.003053
+    V3 full: mean=+0.662298 sd=0.024468 | left: mean=+0.662173 sd=0.036386
+    V4 full: mean=-0.021988 sd=0.002150 | left: mean=-0.021984 sd=0.005308
+
+CELL X=1e+06 A=13 NW=3000 H=50 (seed 20260710): survivors=44503 twin-survivors=4793 [0.1s]
+  V1 |S   R= +0.2080 zW= +12.0 zI= +11.2 n= 3000 
+  V1 |S'' R= -0.0131 zW=  -0.7 zI=  -0.7 n= 3000 
+  V1 |So  R= +0.5778 zW= +29.9 zI= +31.9 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V2 |S   R= -0.2080 zW= -12.0 zI= -11.2 n= 3000 
+  V2 |S'' R= +0.0131 zW=  +0.7 zI=  +0.7 n= 3000 
+  V2 |So  R= -0.5778 zW= -29.9 zI= -31.9 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V3 |S   R= +0.2673 zW= +14.0 zI= +14.0 n= 3000 
+  V3 |S'' R= +0.0241 zW=  +1.3 zI=  +1.4 n= 3000 
+  V3 |So  R= +0.2398 zW= +13.8 zI= +12.8 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V4 |S   R= -0.1054 zW=  -6.5 zI=  -5.9 n= 3000 
+  V4 |S'' R= -0.0275 zW=  -1.5 zI=  -1.5 n= 3000 
+  V4 |So  R= -0.2315 zW= -12.7 zI= -12.2 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+
+CELL X=1e+06 A=31 NW=3000 H=50 (seed 20260710): survivors=27942 twin-survivors=4793 [0.2s]
+  V1 |S   R= +0.2716 zW= +15.8 zI= +13.9 n= 3000 
+  V1 |S'' R= -0.0161 zW=  -0.9 zI=  -0.9 n= 3000 
+  V1 |So  R= +0.5778 zW= +29.9 zI= +29.3 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V2 |S   R= -0.2716 zW= -15.8 zI= -13.9 n= 3000 
+  V2 |S'' R= +0.0161 zW=  +0.9 zI=  +0.9 n= 3000 
+  V2 |So  R= -0.5778 zW= -29.9 zI= -29.3 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V3 |S   R= +0.2899 zW= +16.2 zI= +15.5 n= 3000 
+  V3 |S'' R= -0.0047 zW=  -0.3 zI=  -0.3 n= 3000 
+  V3 |So  R= +0.2398 zW= +13.8 zI= +13.1 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V4 |S   R= -0.1074 zW=  -6.1 zI=  -5.5 n= 3000 
+  V4 |S'' R= -0.0266 zW=  -1.5 zI=  -1.5 n= 3000 
+  V4 |So  R= -0.2315 zW= -12.7 zI= -12.8 n= 3000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  [X=1e+09] sieved 50000 centers + band 100 in 0.1s
+    [X=1e+09] 50000/50000 centers factorized (2s)
+  [X=1e+09] ST7 Omega-consistency on all 100000 wings -- PASS; skip counter = 0;
+    lambda == +1 on all 765 twin centers (frame fact) -- OK (2s)
+  [X=1e+09] read centers/window mean=49.23 (of 50); empty windows: full=0 left=0
+  [X=1e+09] observable means/sd over 1000 windows:
+    V1 full: mean=+1.032188 sd=0.001270 | left: mean=+1.032228 sd=0.002878
+    V2 full: mean=-0.032188 sd=0.001270 | left: mean=-0.032228 sd=0.002878
+    V3 full: mean=+0.732699 sd=0.025466 | left: mean=+0.732222 sd=0.036593
+    V4 full: mean=-0.021610 sd=0.002099 | left: mean=-0.021637 sd=0.005229
+
+CELL X=1e+09 A=13 NW=1000 H=50 (seed 20260710): survivors=14835 twin-survivors=765 [0.1s]
+  V1 |S   R= +0.1133 zW=  +3.7 zI=  +3.7 n= 1000 
+  V1 |S'' R= +0.0245 zW=  +0.8 zI=  +0.7 n= 1000 
+  V1 |So  R= +0.4324 zW= +14.9 zI= +12.4 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V2 |S   R= -0.1133 zW=  -3.7 zI=  -3.7 n= 1000 
+  V2 |S'' R= -0.0245 zW=  -0.8 zI=  -0.7 n= 1000 
+  V2 |So  R= -0.4324 zW= -14.9 zI= -12.4 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V3 |S   R= +0.1177 zW=  +3.7 zI=  +3.8 n= 1000 
+  V3 |S'' R= -0.0012 zW=  -0.0 zI=  +0.0 n= 1000 
+  V3 |So  R= +0.1017 zW=  +3.5 zI=  +3.4 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V4 |S   R= -0.0432 zW=  -1.4 zI=  -1.2 n= 1000 
+  V4 |S'' R= -0.0087 zW=  -0.3 zI=  -0.3 n= 1000 
+  V4 |So  R= -0.1493 zW=  -4.9 zI=  -5.1 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+
+CELL X=1e+09 A=31 NW=1000 H=50 (seed 20260710): survivors=9311 twin-survivors=765 [0.1s]
+  V1 |S   R= +0.1108 zW=  +3.9 zI=  +3.3 n= 1000 
+  V1 |S'' R= +0.0209 zW=  +0.7 zI=  +0.6 n= 1000 
+  V1 |So  R= +0.4324 zW= +14.9 zI= +11.6 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V2 |S   R= -0.1108 zW=  -3.9 zI=  -3.3 n= 1000 
+  V2 |S'' R= -0.0209 zW=  -0.7 zI=  -0.6 n= 1000 
+  V2 |So  R= -0.4324 zW= -14.9 zI= -11.6 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V3 |S   R= +0.1482 zW=  +4.4 zI=  +4.8 n= 1000 
+  V3 |S'' R= -0.0283 zW=  -0.9 zI=  -0.8 n= 1000 
+  V3 |So  R= +0.1017 zW=  +3.5 zI=  +3.3 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+  V4 |S   R= -0.0767 zW=  -2.5 zI=  -2.3 n= 1000 
+  V4 |S'' R= -0.0070 zW=  -0.2 zI=  -0.3 n= 1000 
+  V4 |So  R= -0.1493 zW=  -4.9 zI=  -4.8 n= 1000   [INFORMATIONAL: twin-count load, lambda==+1 on twins]
+==============================================================================
+V5 -- defect vs matched typical windows (DESCRIPTIVE, small n; no foil verdict)
+==============================================================================
+
+A=17 L= 17: n_def=20 n_ctl=400 (starts ~117; ctl twin-skipped centers=387 of 6800) [0s]
+  V1: def +1.032701 (sd 0.002600, n=20) vs ctl +1.034021 (sd 0.005168, n=400)  Welch z=-2.07  [DESCRIPTIVE small n]
+  V2: def -0.032613 (sd 0.002702, n=20) vs ctl -0.033927 (sd 0.005118, n=400)  Welch z=+2.00  [DESCRIPTIVE small n]
+  V3: def +0.571305 (sd 0.063012, n=20) vs ctl +0.587532 (sd 0.066068, n=400)  Welch z=-1.12  [DESCRIPTIVE small n]
+
+A=19 L= 24: n_def=20 n_ctl=400 (starts ~110; ctl twin-skipped centers=393 of 9600) [0s]
+  V1: def +1.031971 (sd 0.001415, n=20) vs ctl +1.032926 (sd 0.003781, n=400)  Welch z=-2.59  [DESCRIPTIVE small n]
+  V2: def -0.031902 (sd 0.001465, n=20) vs ctl -0.032840 (sd 0.003745, n=400)  Welch z=+2.48  [DESCRIPTIVE small n]
+  V3: def +0.646763 (sd 0.062589, n=20) vs ctl +0.640985 (sd 0.065979, n=400)  Welch z=+0.40  [DESCRIPTIVE small n]
+
+A=23 L= 33: n_def=4 n_ctl=80 (starts ~1.27e+07; ctl twin-skipped centers=63 of 2640) [0s]
+  V1: def +1.033640 (sd 0.001070, n=4) vs ctl +1.032664 (sd 0.002193, n=80)  Welch z=+1.66  [DESCRIPTIVE small n]
+  V2: def -0.033640 (sd 0.001070, n=4) vs ctl -0.032664 (sd 0.002193, n=80)  Welch z=-1.66  [DESCRIPTIVE small n]
+  V3: def +0.676063 (sd 0.043483, n=4) vs ctl +0.694770 (sd 0.028811, n=80)  Welch z=-0.85  [DESCRIPTIVE small n]
+
+A=29 L= 42: n_def=2 n_ctl=40 (starts ~2.01e+08; ctl twin-skipped centers=37 of 1680) [0s]
+  V1: def +1.033600 (sd 0.000300, n=2) vs ctl +1.032075 (sd 0.001899, n=40)  Welch z=+4.15  [DESCRIPTIVE small n]
+  V2: def -0.033600 (sd 0.000300, n=2) vs ctl -0.032075 (sd 0.001899, n=40)  Welch z=-4.15  [DESCRIPTIVE small n]
+  V3: def +0.737477 (sd 0.018227, n=2) vs ctl +0.732266 (sd 0.025966, n=40)  Welch z=+0.39  [DESCRIPTIVE small n]
+
+A=31 L= 57: n_def=1 n_ctl=20 (starts ~2.18e+10; ctl twin-skipped centers=15 of 1140) [0s]
+  V1: def +1.031760 (n=1) vs ctl +1.032136 (sd 0.001152, n=20)  sigma-dist=-0.33  [DESCRIPTIVE n=1]
+  V2: def -0.031760 (n=1) vs ctl -0.032136 (sd 0.001152, n=20)  sigma-dist=+0.33  [DESCRIPTIVE n=1]
+  V3: def +0.745786 (n=1) vs ctl +0.750917 (sd 0.020749, n=20)  sigma-dist=-0.25  [DESCRIPTIVE n=1]
+
+A=37 L= 87: n_def=1 n_ctl=20 (starts ~1.15e+12; ctl twin-skipped centers=12 of 1740) [0s]
+  V1: def +1.031428 (n=1) vs ctl +1.031358 (sd 0.000684, n=20)  sigma-dist=+0.10  [DESCRIPTIVE n=1]
+  V2: def -0.031428 (n=1) vs ctl -0.031358 (sd 0.000684, n=20)  sigma-dist=-0.10  [DESCRIPTIVE n=1]
+  V3: def +0.778781 (n=1) vs ctl +0.776325 (sd 0.014880, n=20)  sigma-dist=+0.17  [DESCRIPTIVE n=1]
+
+A=41 L= 90: n_def=1 n_ctl=20 (starts ~5.01e+13; ctl twin-skipped centers=17 of 1800) [0s]
+  V1: def +1.031362 (n=1) vs ctl +1.031675 (sd 0.000597, n=20)  sigma-dist=-0.52  [DESCRIPTIVE n=1]
+  V2: def -0.031362 (n=1) vs ctl -0.031675 (sd 0.000597, n=20)  sigma-dist=+0.52  [DESCRIPTIVE n=1]
+  V3: def +0.809458 (n=1) vs ctl +0.793157 (sd 0.018207, n=20)  sigma-dist=+0.90  [DESCRIPTIVE n=1]
+
+A=43 L=102: n_def=1 n_ctl=20 (starts ~2.34e+14; ctl twin-skipped centers=9 of 2040) [1s]
+  V1: def +1.030925 (n=1) vs ctl +1.031836 (sd 0.000772, n=20)  sigma-dist=-1.18  [DESCRIPTIVE n=1]
+  V2: def -0.030925 (n=1) vs ctl -0.031836 (sd 0.000772, n=20)  sigma-dist=+1.18  [DESCRIPTIVE n=1]
+  V3: def +0.801398 (n=1) vs ctl +0.802592 (sd 0.018240, n=20)  sigma-dist=-0.07  [DESCRIPTIVE n=1]
+
+V5 sign census over the 8 scales (def > ctl: +1): V1 [-1, -1, 1, 1, -1, 1, -1, -1] | V2 [1, 1, -1, -1, 1, -1, 1, 1] | V3 [-1, 1, -1, 1, -1, 1, 1, -1]
+  (descriptive only; 8 scales, n_def in {20,20,4,2,1,1,1,1} -- honest small-n label)
+==============================================================================
+FOIL VERDICTS (gate_g3 thresholds VERBATIM, immovable; V1-V4 x {S, S''})
+==============================================================================
+  V1 |S   X1e+06A13 R+0.208 zI+11.2 | X1e+06A31 R+0.272 zI+13.9 | X1e+09A13 R+0.113 zI +3.7 | X1e+09A31 R+0.111 zI +3.3
+           min|z_I|=3.33 esc(1e+06:1.31,1e+09:0.98) ratio_ok=True -> SOFT
+  V1 |S'' X1e+06A13 R-0.013 zI -0.7 | X1e+06A31 R-0.016 zI -0.9 | X1e+09A13 R+0.025 zI +0.7 | X1e+09A31 R+0.021 zI +0.6
+           min|z_I|=0.57 esc(1e+06:1.23,1e+09:0.85) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V2 |S   X1e+06A13 R-0.208 zI-11.2 | X1e+06A31 R-0.272 zI-13.9 | X1e+09A13 R-0.113 zI -3.7 | X1e+09A31 R-0.111 zI -3.3
+           min|z_I|=3.33 esc(1e+06:1.31,1e+09:0.98) ratio_ok=True -> SOFT
+  V2 |S'' X1e+06A13 R+0.013 zI +0.7 | X1e+06A31 R+0.016 zI +0.9 | X1e+09A13 R-0.025 zI -0.7 | X1e+09A31 R-0.021 zI -0.6
+           min|z_I|=0.57 esc(1e+06:1.23,1e+09:0.85) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V3 |S   X1e+06A13 R+0.267 zI+14.0 | X1e+06A31 R+0.290 zI+15.5 | X1e+09A13 R+0.118 zI +3.8 | X1e+09A31 R+0.148 zI +4.8
+           min|z_I|=3.82 esc(1e+06:1.08,1e+09:1.26) ratio_ok=True -> SOFT
+  V3 |S'' X1e+06A13 R+0.024 zI +1.4 | X1e+06A31 R-0.005 zI -0.3 | X1e+09A13 R-0.001 zI +0.0 | X1e+09A31 R-0.028 zI -0.8
+           min|z_I|=0.02 esc(1e+06:0.19,1e+09:23.04) ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V4 |S   X1e+06A13 R-0.105 zI -5.9 | X1e+06A31 R-0.107 zI -5.5 | X1e+09A13 R-0.043 zI -1.2 | X1e+09A31 R-0.077 zI -2.3
+           min|z_I|=1.25 esc(1e+06:1.02,1e+09:1.78) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V4 |S'' X1e+06A13 R-0.027 zI -1.5 | X1e+06A31 R-0.027 zI -1.5 | X1e+09A13 R-0.009 zI -0.3 | X1e+09A31 R-0.007 zI -0.3
+           min|z_I|=0.27 esc(1e+06:0.97,1e+09:0.81) ratio_ok=True -> PARITY-BLIND-UNDER-ESCALATION-v2
+------------------------------------------------------------------------------
+VERDICT SUMMARY:
+  V1 |S   min|z_I|= 3.33 ratio_ok=True  -> SOFT
+  V1 |S'' min|z_I|= 0.57 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V2 |S   min|z_I|= 3.33 ratio_ok=True  -> SOFT
+  V2 |S'' min|z_I|= 0.57 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V3 |S   min|z_I|= 3.82 ratio_ok=True  -> SOFT
+  V3 |S'' min|z_I|= 0.02 ratio_ok=False -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V4 |S   min|z_I|= 1.25 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  V4 |S'' min|z_I|= 0.27 ratio_ok=True  -> PARITY-BLIND-UNDER-ESCALATION-v2
+  5/8 verdict rows PARITY-BLIND-UNDER-ESCALATION-v2 (registered expectation: BLIND)
+==============================================================================
+ANOMALIES + RUN SUMMARY
+==============================================================================
+ANOMALIES |z| >= 3 (all contexts, incl. informational/descriptive):
+  grid V1|S X=1e+06 A=13: zW=+12.04
+  grid V1|S X=1e+06 A=13: zI=+11.23
+  grid V1|So(info) X=1e+06 A=13: zW=+29.93
+  grid V1|So(info) X=1e+06 A=13: zI=+31.86
+  grid V2|S X=1e+06 A=13: zW=-12.04
+  grid V2|S X=1e+06 A=13: zI=-11.23
+  grid V2|So(info) X=1e+06 A=13: zW=-29.93
+  grid V2|So(info) X=1e+06 A=13: zI=-31.86
+  grid V3|S X=1e+06 A=13: zW=+14.03
+  grid V3|S X=1e+06 A=13: zI=+14.01
+  grid V3|So(info) X=1e+06 A=13: zW=+13.77
+  grid V3|So(info) X=1e+06 A=13: zI=+12.80
+  grid V4|S X=1e+06 A=13: zW=-6.45
+  grid V4|S X=1e+06 A=13: zI=-5.91
+  grid V4|So(info) X=1e+06 A=13: zW=-12.71
+  grid V4|So(info) X=1e+06 A=13: zI=-12.24
+  grid V1|S X=1e+06 A=31: zW=+15.76
+  grid V1|S X=1e+06 A=31: zI=+13.89
+  grid V1|So(info) X=1e+06 A=31: zW=+29.93
+  grid V1|So(info) X=1e+06 A=31: zI=+29.27
+  grid V2|S X=1e+06 A=31: zW=-15.76
+  grid V2|S X=1e+06 A=31: zI=-13.89
+  grid V2|So(info) X=1e+06 A=31: zW=-29.93
+  grid V2|So(info) X=1e+06 A=31: zI=-29.27
+  grid V3|S X=1e+06 A=31: zW=+16.16
+  grid V3|S X=1e+06 A=31: zI=+15.47
+  grid V3|So(info) X=1e+06 A=31: zW=+13.77
+  grid V3|So(info) X=1e+06 A=31: zI=+13.10
+  grid V4|S X=1e+06 A=31: zW=-6.14
+  grid V4|S X=1e+06 A=31: zI=-5.52
+  grid V4|So(info) X=1e+06 A=31: zW=-12.71
+  grid V4|So(info) X=1e+06 A=31: zI=-12.83
+  grid V1|S X=1e+09 A=13: zW=+3.72
+  grid V1|S X=1e+09 A=13: zI=+3.71
+  grid V1|So(info) X=1e+09 A=13: zW=+14.93
+  grid V1|So(info) X=1e+09 A=13: zI=+12.42
+  grid V2|S X=1e+09 A=13: zW=-3.72
+  grid V2|S X=1e+09 A=13: zI=-3.71
+  grid V2|So(info) X=1e+09 A=13: zW=-14.93
+  grid V2|So(info) X=1e+09 A=13: zI=-12.42
+  grid V3|S X=1e+09 A=13: zW=+3.72
+  grid V3|S X=1e+09 A=13: zI=+3.82
+  grid V3|So(info) X=1e+09 A=13: zW=+3.45
+  grid V3|So(info) X=1e+09 A=13: zI=+3.36
+  grid V4|So(info) X=1e+09 A=13: zW=-4.90
+  grid V4|So(info) X=1e+09 A=13: zI=-5.06
+  grid V1|S X=1e+09 A=31: zW=+3.86
+  grid V1|S X=1e+09 A=31: zI=+3.33
+  grid V1|So(info) X=1e+09 A=31: zW=+14.93
+  grid V1|So(info) X=1e+09 A=31: zI=+11.60
+  grid V2|S X=1e+09 A=31: zW=-3.86
+  grid V2|S X=1e+09 A=31: zI=-3.33
+  grid V2|So(info) X=1e+09 A=31: zW=-14.93
+  grid V2|So(info) X=1e+09 A=31: zI=-11.60
+  grid V3|S X=1e+09 A=31: zW=+4.43
+  grid V3|S X=1e+09 A=31: zI=+4.84
+  grid V3|So(info) X=1e+09 A=31: zW=+3.45
+  grid V3|So(info) X=1e+09 A=31: zI=+3.31
+  grid V4|So(info) X=1e+09 A=31: zW=-4.90
+  grid V4|So(info) X=1e+09 A=31: zI=-4.75
+  V5 V1 A=29 (descriptive): welch_z=+4.15
+  V5 V2 A=29 (descriptive): welch_z=-4.15
+factorization tier usage: SPF=328405 TD=114616 rho=14616; completeness 100% (every factorization
+  verified by reconstruction product == w; ST7 Omega-consistency on every grid wing)
+total runtime 0.1 min; STOP registered: no new observables, no new weightings, no threshold moves.
+SECTION LINE INDEX (this append block, 1-based):
+  line     1: CIRCLE-VOLUME RUN 1 (Stage C) -- 2026-07-11 16:52:48
+  line    10: PRE-REGISTRATION BLOCK (logged before ANY measurement; nothing may be added below)
+  line   162: SELFTESTS (ST1-ST6, ST8; ST7 runs at grid construction; any failure = STOP)
+  line   180: FOIL GRID -- A in {13,31} x X in {1e6,1e9}, H=50 (foil-v2 verbatim)
+  line   261: V5 -- defect vs matched typical windows (DESCRIPTIVE, small n; no foil verdict)
+  line   307: FOIL VERDICTS (gate_g3 thresholds VERBATIM, immovable; V1-V4 x {S, S''})
+  line   337: ANOMALIES + RUN SUMMARY

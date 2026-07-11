@@ -1,0 +1,467 @@
+==============================================================================
+[2026-07-11 15:03:53] PRATT-WING SELFTEST  pre-registration + S1-S7 STOP selftests
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+
+PRE-REGISTRATION -- PRATT-WING campaign (numeric reconnaissance of the structure
+UNDER the primes: p-1 / p+1 anatomy and Pratt genealogy of twin wings, plus the
+program's FIRST beyond-phase observable class O7).  Registered BEFORE any
+measurement line.  Seed 20260710 (numpy default_rng; documented substreams
+[SEED, k]: k=0 selftest samples, k=2 P2 matching at 1e7, k=4 P4 at 1e7,
+k=9 populations at the 1e9 window).  STAGE_TIME_CAP = 5400 s per stage;
+registered fallback: if a stage threatens the cap, HALVE the remaining
+per-population workload and LOG the shrink -- never silently.  Log append-only,
+ASCII; stages are separate argv invocations (house crash-resilience pattern).
+
+NULL DESIGN -- decision (b), registered: prime-conditioned population; no parity
+verdict is defined here; deviations from reference curves are navigation, not
+laws.  Protocol: EXACT-MEASURED laws only; local-model reference curves
+(Dickman for smoothness, cyclic-index/Artin constants, the E4-truncated
+prediction for omega) are printed as DISCLOSED REFERENCES, never verdicts.
+The window-foil protocol's sigma_I has no analogue in these populations; NO
+parity verdicts are issuable anywhere in this campaign.
+
+POPULATIONS (closed)
+ P1 twin wings: all twin centers m <= 1e7 (expected n = 280557, MUST equal the
+    L35 census count exactly); wings p = 6m-1 (type L) and q = 6m+1 (type R).
+    PLUS the 1e9 probe stratum: m in [1e9, 1e9+1e6) per the L35 window protocol
+    (packing_walk stage w3, segmented exact; expected n_twin = 15577).
+ P2 isolated 6k+-1 primes, size-matched to P1 wings: same count per wing type,
+    sampled seeded WITHOUT replacement from primes of the same type in the same
+    m-bins (1e7 scale: 100 bins of width 1e5; 1e9 window: 20 bins of width 5e4)
+    that are NOT twin wings (type L: 6k-1 prime AND 6k+1 composite; type R
+    mirrored; twins pair only as (6m-1, 6m+1) since 6m+3 == 0 mod 3).
+ P3 wings of the 50 exact defect windows A=17..43 (descriptive stratum, tiny n):
+    A=17: 20 starts (full-period scan, calibration: first r=117); A=19: 20
+    starts (first r=110); A=23: {12694428, 18165208, 19016903, 24487683};
+    A=29: {200906185, 877375977}; A=31: {21844264615}; A=37: {1145973108145};
+    A=41: {50077677123072} (L=90); A=43: {233885349904190} (L=102); window =
+    centers r+1..r+L with L = G(A)-1; population = the PRIME wings among the
+    2L wings of each window (a struck center can still carry one prime wing).
+ P4 random centers 6m (control for c-anatomy): seeded sample of NON-twin m,
+    n = 4 x n_twin at each scale (1e7: 1122228; 1e9 window: 62308).
+
+OBSERVABLES (CLOSED LIST -- nothing may be added after this block)
+ O1 largest-prime-factor tiers of p-1 AND p+1 per population: shares with
+    P+ > x^(1/2); in (x^(1/3), x^(1/2)]; in (x^(1/4), x^(1/3)]; <= x^(1/4)
+    (x = the factored value; integer-exact comparisons P^2 > x, P^3 > x, ...).
+ O2 smoothness fractions of p-1 / p+1: P+ <= x^(1/2) and P+ <= x^(1/3).
+ O3 omega / Omega / powerDefect (= Omega - omega) of p-1 and p+1.  NOTE
+    (registered): omega(c) for twin centers IS the L35 collision law -- it is
+    used as a CROSS-CHECK ONLY; re-claiming it is barred.
+ O4 Pratt tree of each wing (recursive primality certificate down p-1 to 2):
+    depth(2) = 0, depth(p) = 1 + max over distinct primes q | p-1 of depth(q);
+    nodes(2) = 1, nodes(p) = 1 + sum over distinct q | p-1 of nodes(q) (tree
+    semantics, DAG-memoized); breadth(p) = omega(p-1) (root degree).  Memoized
+    over ALL primes <= 6.1e7 via the SPF sieve; TD/rho tiers per prime above.
+    The Pratt DAG (all primes connected through their predecessors) summary:
+    depth histogram by magnitude decade, max depth + witness chain.
+ O5 multiplicative order of 2, 3, 5 in F_p per wing; cyclic index
+    i_b = (p-1)/ord_b; share i_b = 1 (primitive root) vs the Artin reference;
+    v_2(i_2) layer distribution.  CROSS-CHECK/HARD SELFTEST on every prime:
+    i_2 even <=> 2 is a QR mod p <=> p == +-1 (mod 8).
+ O6 c-anatomy beyond omega: P+(c) tiers and powerDefect(c) for twin centers vs
+    omega-MATCHED reweighted P4 (the anti-L35 device): P4 reweighted so its
+    omega(c) distribution equals P1's (weights w_k = share_P1(k)/share_P4(k);
+    unmatched omega cells disclosed and dropped with their mass logged);
+    surviving weighted contrasts of P+/powerDefect are ORTHOGONAL to the known
+    collision law.  Unweighted contrast printed as reference.  Descriptive
+    z only (weighted side uses effective n = (sum w)^2 / sum w^2).
+ O7 THE BEYOND-PHASE CLASS (the program's FIRST beyond-phase observable class):
+    for the 1-mod-4 wing of each twin (exactly one per pair: the wings sum to
+    12m, so they are 1 and 3 mod 4): quartic residuacity of 2, 3, 5:
+    s_b = b^((p-1)/4) mod p classified in mu_4 = {+1, -1, i, -i} (i.e. mu_4 via
+    the order of s_b), with i canonicalized as x0 = min(x, p-x) where
+    x^2 == -1 (mod p) (registered convention; the i/-i split is symmetric under
+    the other choice).  PLUS the Gaussian representation p = a^2 + b^2
+    (Cornacchia; normalized a odd > 0, b even > 0).  HARD SELFTEST on EVERY
+    such prime: (2|p)_4 = 1 <=> 8 | b (Gauss's criterion) -- any single failure
+    exits 1.  Comparison: quartic-symbol distributions, twin 1-mod-4 wings vs
+    isolated 1-mod-4 primes (P2 members == 1 mod 4), overall and CONDITIONAL on
+    the phase layer (p mod 8 for b=2; the QR layer s_b^2 = +1 vs -1 for every
+    base).  REGISTERED EXPECTATION: NULL (Chebotarev equidistribution,
+    twin-independent); the value is closing or cracking the last uncovered
+    observable class.  Also logged: joint distribution (quartic symbol of 2) x
+    (m mod 5 / m mod 7 / m mod 8) to confirm non-phase-ness empirically (no
+    congruence in m should predict the CONDITIONAL symbol; the p mod 8
+    stratification itself IS phase and is disclosed as such).
+
+DISCLOSED REFERENCE CURVES (never verdicts):
+ - Dickman (RANDOM-integer model): P(P+ > x^(1/2)) = ln 2 = 0.693147;
+   P(P+ <= x^(1/2)) = 0.306853; P(P+ <= x^(1/3)) = rho(3) = 0.048608;
+   P(P+ <= x^(1/4)) = rho(4) = 0.004911.  p-1 / p+1 of PRIMES are known to
+   deviate (shifted-prime smoothness); any deviation is navigation.
+ - Artin: density of primes with ord_b(p) = p-1 (i_b = 1) = 0.3739558136...
+   for b in {2, 3, 5} (GRH reference).
+ - E4-truncated omega references (exact L34 1/1/1/(q-3) split):
+   center enrichment (L35): sum_(5<=q<=31)(1/(q-2) - 1/q) = 41209978/166424895
+   = +0.247619 (all q <= 1e5 reference: +0.260416).  Wing-side twin-vs-isolated
+   reference, derived BEFORE measurement from the same split: the twin
+   condition makes each fixed side-class hit 1/(q-2), a single-prime condition
+   makes it 1/(q-1); predicted omega(p+-1) excess (twin wing minus isolated
+   wing, either side, q >= 5 layer), truncated B=31:
+   sum_(5<=q<=31)(1/(q-2) - 1/(q-1)) = 12088213/81995760 = +0.147425.
+   Forced small-prime layer (mechanical, disclosed): outer sides 6m-2 / 6m+2
+   have v3 = 0 and v2 >= 1; inner sides equal the center 6m (v2, v3 >= 1) --
+   the inner side of a twin wing IS the twin center; matching P1-vs-P2
+   contrasts are always same-type same-side.
+ - O7: Chebotarev NULL -- conditional symbol splits 1/2 : 1/2 within each phase
+   layer, twin-independent.
+
+SELFTESTS (all STOP: any failure exits 1)
+ S1 SPF sieve vs independent trial division: full factorization match on a
+    1e4-value seeded sample in [2, 6.1e7].
+ S2 Pratt depth AND node count: memoized values vs brute-force recursion over
+    an independent trial-division factorizer, ALL primes < 1e4.
+ S3 multiplicative order of 2, 3, 5: factored-exponent algorithm vs brute-force
+    cycle, ALL primes < 1e3 (bases coprime to p).
+ S4 Gauss O7 criterion: brute-force quartic solvability of y^4 == 2 (mod p)
+    vs (s_2 == 1) vs (8 | b), ALL primes p == 1 (mod 4) below 2000; PLUS the
+    registered hard per-prime assert in every O7 measurement.
+ S5 jacobi vs Euler criterion on 500 seeded (a, p).
+ S6 L35 REGRESSION GATE (before ANY new observable is logged): reproduce the
+    L35 collision law on P1 EXACTLY, per the packing_walk stage-w3 protocol
+    (omega sieve to 6e7+2 counting DISTINCT primes; twin <=> both wings in the
+    prime sieve; contrast = E[omega(6m)|twin] - E[omega(6m)|no-twin], m <= 1e7,
+    printed %+.6f): MUST print +0.211442 with n_twin = 280557.  The 1e9 stage
+    carries its own gate: +0.224068 with n_twin = 15577 on the segmented-exact
+    window.  Mismatch = STOP, report.
+ S7 defect calibration: A=17 full-period scan yields 20 defect starts, first
+    r = 117; A=19 yields 20 starts, first r = 110; every listed witness r has
+    r clean, r+1..r+L struck, r+L+1 clean.
+
+FACTORIZATION TIERS (house, grave_depth lineage): SPF sieve to 6.1e7 (int32);
+numpy trial division over sieved primes <= 78500 for values <= 6.1e9 (remainder
+after stripping all sub-sqrt hits is prime); Pollard rho (Brent) + deterministic
+Miller-Rabin above, bases = the first 12 primes (2..37), deterministic for
+n < 3.186e23 (Sorenson-Webster 2015) -- REGISTERED ADAPTATION (A=43 wings reach
+1.5e15 > the 3.4e14 bound of the 7-base tier); completeness counted, target 0.
+
+STAGES: selftest (this registration + S1-S7) -> anatomy7 (O1/O2/O3/O6 at 1e7)
+-> pratt7 (O4) -> orders7 (O5) -> quartic7 (O7) -> probe9 (1e9 window: gate +
+O1-O5 + O7 + O6 control) -> defect (P3, descriptive) -> summary.  The
+observable list is CLOSED at this registration.
+PRE-REGISTRATION ENDS -- measurements begin below this line.
+
+registration constants: wing-side truncated reference (B=31) = 12088213/81995760 = +0.147425;
+  center reference (L34/E4, B=31) = 41209978/166424895 = +0.247619
+  tables: SPF <= 61000000 (built), 7702 TD primes <= 78500 (0.9s)
+S1 SPF vs trial division on 1e4 sample in [2, 61000000] -> PASS
+  pratt memo: depth/nodes for 3618045 primes <= 61000000 built in 6.7s
+S2 Pratt depth+nodes memo vs brute-force recursion, ALL primes < 1e4 -> PASS
+S3 mult_order(2,3,5) vs brute-force cycle, ALL primes in [7, 1e3) -> PASS
+S4 Gauss criterion (y^4==2 solvable <=> s_2==1 <=> 8|b), 147 primes p==1 mod 4 below 2000 -> PASS
+S5 jacobi == Euler criterion on 500 seeded (a, p) -> PASS
+[omega sieve] loaded cache C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad\packing_walk_omega_6e7.npy
+S6 L35 REGRESSION GATE (m <= 1e7, exhaustive):
+    E[omega_C | twin]    = 4.385209   (n_twin = 280557)
+    E[omega_C | no-twin] = 4.173766   (n = 9719443)
+    contrast = +0.211442   z =  +123.46
+    reproduces L35 EXACTLY (+0.211442, n_twin=280557) -> PASS
+S7 defect calibration: A=17 -> 20 starts, first r=117 (502 present); A=19 -> 20 starts, first r=110; all listed witnesses verified -> PASS
+SELFTEST verdict: ALL S1-S7 PASS (8.8s); defect starts cached -> C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad
+==============================================================================
+[2026-07-11 15:04:49] PRATT-WING ANATOMY7  O1/O2/O3 on p-1 and p+1; O6 c-anatomy (m <= 1e7)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  populations 1e7: twins=280557 isoL=280557 isoR=280557 p4=1122228 (bin width 100000, seeds [20260710,2]/[20260710,4]) -> cached
+  populations: twins=280557 isoL=280557 isoR=280557 p4=1122228
+  DISCLOSED REFERENCES (never verdicts): Dickman t0=0.6931 t1=0.2582 t2=0.0437 t3=0.0049; smooth(1/2)=0.3069 smooth(1/3)=0.0486;
+    E4 wing-side twin-vs-isolated omega excess (B=31) = +0.147425; center (L35) = +0.247619 (trunc) / +0.260416 (q<=1e5)
+  NOTE: inner side of a twin wing IS the center 6m; outer sides 6m-2/6m+2 have v3=0, v2>=1 (mechanical layer, disclosed).
+  P1.L p-1       n= 280557 | tiers >x^1/2:0.6792 (x^1/3,x^1/2]:0.2633 (x^1/4,x^1/3]:0.0484 <=x^1/4:0.0091
+                 smooth: P+<=x^1/2 0.3208  P+<=x^1/3 0.0575 | omega 3.4944+-0.935  Omega 4.6496+-1.744  powdef 1.1552+-1.485
+  P1.L p+1       n= 280557 | tiers >x^1/2:0.5716 (x^1/3,x^1/2]:0.3208 (x^1/4,x^1/3]:0.0846 <=x^1/4:0.0230
+                 smooth: P+<=x^1/2 0.4284  P+<=x^1/3 0.1076 | omega 4.3852+-0.896  Omega 6.0341+-1.883  powdef 1.6489+-1.714
+  [P1.L measured in 0.8s]
+  P1.R p-1       n= 280557 | tiers >x^1/2:0.5716 (x^1/3,x^1/2]:0.3208 (x^1/4,x^1/3]:0.0846 <=x^1/4:0.0230
+                 smooth: P+<=x^1/2 0.4284  P+<=x^1/3 0.1076 | omega 4.3852+-0.896  Omega 6.0341+-1.883  powdef 1.6489+-1.714
+  P1.R p+1       n= 280557 | tiers >x^1/2:0.6808 (x^1/3,x^1/2]:0.2619 (x^1/4,x^1/3]:0.0487 <=x^1/4:0.0085
+                 smooth: P+<=x^1/2 0.3192  P+<=x^1/3 0.0572 | omega 3.4920+-0.936  Omega 4.6470+-1.741  powdef 1.1550+-1.483
+  [P1.R measured in 0.8s]
+  P2.L p-1       n= 280557 | tiers >x^1/2:0.7077 (x^1/3,x^1/2]:0.2458 (x^1/4,x^1/3]:0.0404 <=x^1/4:0.0061
+                 smooth: P+<=x^1/2 0.2923  P+<=x^1/3 0.0465 | omega 3.3385+-0.903  Omega 4.4548+-1.707  powdef 1.1163+-1.467
+  P2.L p+1       n= 280557 | tiers >x^1/2:0.6021 (x^1/3,x^1/2]:0.3078 (x^1/4,x^1/3]:0.0728 <=x^1/4:0.0173
+                 smooth: P+<=x^1/2 0.3979  P+<=x^1/3 0.0901 | omega 4.2329+-0.863  Omega 5.8557+-1.861  powdef 1.6228+-1.708
+  [P2.L measured in 1.4s]
+  P2.R p-1       n= 280557 | tiers >x^1/2:0.6028 (x^1/3,x^1/2]:0.3083 (x^1/4,x^1/3]:0.0722 <=x^1/4:0.0167
+                 smooth: P+<=x^1/2 0.3972  P+<=x^1/3 0.0889 | omega 4.2348+-0.864  Omega 5.8494+-1.850  powdef 1.6145+-1.698
+  P2.R p+1       n= 280557 | tiers >x^1/2:0.7063 (x^1/3,x^1/2]:0.2473 (x^1/4,x^1/3]:0.0403 <=x^1/4:0.0060
+                 smooth: P+<=x^1/2 0.2937  P+<=x^1/3 0.0463 | omega 3.3365+-0.905  Omega 4.4612+-1.715  powdef 1.1247+-1.475
+  [P2.R measured in 1.5s]
+
+-- O1/O2/O3 twin-vs-isolated contrasts (same type, same side; DESCRIPTIVE, no verdicts) --
+  DESCRIPTIVE contrast P1.L-P2.L p-1      om +0.155833 z  +63.51 | Om +0.194759 z  +42.28 | pd +0.038926 z   +9.88
+    tier-share deltas: t0 -0.02848 z  -23.1  t1 +0.01752 z  +15.1  t2 +0.00801 z  +14.6  t3 +0.00295 z  +12.7
+  DESCRIPTIVE contrast P1.L-P2.L p+1      om +0.152318 z  +64.85 | Om +0.178441 z  +35.71 | pd +0.026123 z   +5.72
+    tier-share deltas: t0 -0.03057 z  -23.3  t1 +0.01301 z  +10.5  t2 +0.01184 z  +16.5  t3 +0.00572 z  +15.3
+  DESCRIPTIVE contrast P1.R-P2.R p-1      om +0.150362 z  +64.00 | Om +0.184757 z  +37.08 | pd +0.034396 z   +7.55
+    tier-share deltas: t0 -0.03127 z  -23.8  t1 +0.01248 z  +10.1  t2 +0.01242 z  +17.3  t3 +0.00637 z  +17.1
+  DESCRIPTIVE contrast P1.R-P2.R p+1      om +0.155430 z  +63.25 | Om +0.185713 z  +40.25 | pd +0.030283 z   +7.67
+    tier-share deltas: t0 -0.02549 z  -20.7  t1 +0.01457 z  +12.5  t2 +0.00847 z  +15.4  t3 +0.00245 z  +10.8
+  reference (E4-truncated, disclosed): omega excess ~ +0.147425 on each side; deviations are navigation, not laws.
+
+-- O6: c-anatomy of twin centers vs omega-MATCHED reweighted P4 --
+  [O6 centers measured in 4.0s]
+  P1 c=6m        n= 280557 | tiers >x^1/2:0.5716 (x^1/3,x^1/2]:0.3208 (x^1/4,x^1/3]:0.0846 <=x^1/4:0.0230
+                 smooth: P+<=x^1/2 0.4284  P+<=x^1/3 0.1076 | omega 4.3852+-0.896  Omega 6.0341+-1.883  powdef 1.6489+-1.714
+  P4 c=6m        n=1122228 | tiers >x^1/2:0.6177 (x^1/3,x^1/2]:0.3021 (x^1/4,x^1/3]:0.0661 <=x^1/4:0.0141
+                 smooth: P+<=x^1/2 0.3823  P+<=x^1/3 0.0802 | omega 4.1737+-0.849  Omega 5.7799+-1.848  powdef 1.6062+-1.703
+  O3 CROSS-CHECK ONLY (re-claiming barred; L35 owns this): E[omega_C|twin] - E[omega_C|P4] = +0.211502
+  DESCRIPTIVE contrast O6 unweighted (ref) pd +0.042777 z  +11.84
+    tier-share deltas: t0 -0.04619 z  -44.4  t1 +0.01871 z  +19.1  t2 +0.01851 z  +32.2  t3 +0.00896 z  +29.4
+  reweighting: omega cells 1..8, P1 mass in cells absent from P4: 0.000000 (disclosed)
+  weighted P4: sum w = 1122228.0, effective n = 1051312.3
+  check: weighted E[omega(c)|P4] = 4.385209 vs P1 4.385209 (must match to ~1e-6 up to dropped mass)
+  O6 powdef(c)  P1 1.648931 | P4-reweighted 1.572708 | delta +0.076222  z  +21.05 (DESCRIPTIVE; orthogonal to L35 by construction)
+  O6 tier0(c)   P1 0.571559 | P4-reweighted 0.544035 | delta +0.027524  z  +26.14 (DESCRIPTIVE; orthogonal to L35 by construction)
+  O6 tier1(c)   P1 0.320798 | P4-reweighted 0.343914 | delta -0.023117  z  -23.22 (DESCRIPTIVE; orthogonal to L35 by construction)
+  O6 tier2(c)   P1 0.084607 | P4-reweighted 0.091709 | delta -0.007102  z  -11.92 (DESCRIPTIVE; orthogonal to L35 by construction)
+  O6 tier3(c)   P1 0.023036 | P4-reweighted 0.020341 | delta +0.002695  z   +8.56 (DESCRIPTIVE; orthogonal to L35 by construction)
+[anatomy7 done in 9.8s]
+==============================================================================
+[2026-07-11 15:04:59] PRATT-WING PRATT7  O4: Pratt depth/nodes/breadth per wing + DAG summary (m <= 1e7)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  pratt memo: loaded cache (C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad)
+  P1.L  n= 280557 depth 5.2733+-1.085 (max 12) | nodes 23.50+-4.32 (max 38) | breadth 3.4944+-0.935  [0.2s]
+        depth hist %%: 1:0.001 2:0.008 3:2.033 4:22.208 5:38.231 6:25.069 7:9.445 8:2.449 9:0.465 10:0.078 11:0.011 12:0.001
+        max-depth witness p=25833359 chain 25833359->12916679->6458339->3229169->201823->33637->2803->467->233->29->7->3->2
+  P1.R  n= 280557 depth 5.0582+-1.069 (max 12) | nodes 23.19+-4.32 (max 38) | breadth 4.3852+-0.896  [0.3s]
+        depth hist %%: 2:0.042 3:4.056 4:27.777 5:37.730 6:21.301 7:7.119 8:1.646 9:0.287 10:0.036 11:0.004 12:0.001
+        max-depth witness p=36529903 chain 36529903->2029439->1014719->507359->253679->126839->63419->857->107->53->13->3->2
+  P2.L  n= 280557 depth 5.3203+-1.079 (max 12) | nodes 23.53+-4.30 (max 38) | breadth 3.3385+-0.903  [0.2s]
+        depth hist %%: 1:0.000 2:0.004 3:1.622 4:20.780 5:38.476 6:26.052 7:9.886 8:2.583 9:0.501 10:0.084 11:0.011 12:0.001
+        max-depth witness p=26532953 chain 26532953->3316619->1658309->414577->2879->1439->719->359->179->89->11->5->2
+  P2.R  n= 280557 depth 5.1114+-1.064 (max 11) | nodes 23.21+-4.31 (max 38) | breadth 4.2348+-0.864  [0.3s]
+        depth hist %%: 2:0.035 3:3.316 4:26.377 5:38.222 6:22.325 7:7.632 8:1.758 9:0.290 10:0.040 11:0.005
+        max-depth witness p=6633457 chain 6633457->138197->34549->2879->1439->719->359->179->89->11->5->2
+
+-- O4 twin-vs-isolated contrasts (DESCRIPTIVE) --
+  P1.L-P2.L dep  delta -0.047024  z  -16.28
+  P1.L-P2.L nod  delta -0.027823  z   -2.42
+  P1.L-P2.L bre  delta +0.155833  z  +63.51
+  P1.R-P2.R dep  delta -0.053237  z  -18.69
+  P1.R-P2.R nod  delta -0.023097  z   -2.00
+  P1.R-P2.R bre  delta +0.150362  z  +64.00
+
+-- Pratt DAG summary (ALL primes <= 61000000; all primes connected through their predecessors) --
+  primes: 3618045; depth histogram: {0: 1, 1: 5, 2: 591, 3: 87897, 4: 849659, 5: 1386748, 6: 875981, 7: 320171, 8: 79745, 9: 14629, 10: 2269, 11: 314, 12: 32, 13: 3}
+  max depth = 13 at p = 36449279; chain 36449279->18224639->9112319->4556159->2278079->103549->8629->719->359->179->89->11->5->2
+  decade [1e+04, 1e+05): mean depth 4.3177  mean nodes 14.99  (n=8363)
+  decade [1e+05, 1e+06): mean depth 4.7035  mean nodes 18.19  (n=68906)
+  decade [1e+06, 1e+07): mean depth 5.0331  mean nodes 21.40  (n=586081)
+  decade [1e+07, 6e+07): mean depth 5.2738  mean nodes 24.07  (n=2953466)
+[pratt7 done in 1.3s]
+==============================================================================
+[2026-07-11 15:05:40] PRATT-WING ORDERS7  O5: ord_p(2/3/5), cyclic index, Artin reference (m <= 1e7)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  DISCLOSED REFERENCE: Artin density of i_b = 1 is 0.3739558136 (GRH); navigation only.
+  P1.L  n= 280557 b=2 prim 0.43762 mean_i 9.936 med 2 even_i 0.49981 | b=3 prim 0.43799 mean_i 7.619 med 2 even_i 0.49926 | b=5 prim 0.31349 mean_i 16.012 med 2 even_i 0.66633  [2.3s]
+        v2(i_2) %%: 0:50.019 1:37.371 2:6.313 3:4.713 4:1.212 5:0.282 6:0.064 7:0.020 8:0.004 9:0.001 10:0.001 11:0.000   mod-8 assert: PASS on all 280557
+  P1.R  n= 280557 b=2 prim 0.29166 mean_i 20.479 med 2 even_i 0.49913 | b=3 prim 0.29254 mean_i 25.103 med 3 even_i 0.49926 | b=5 prim 0.20923 mean_i 24.624 med 3 even_i 0.66627  [5.2s]
+        v2(i_2) %%: 0:50.087 1:37.442 2:6.191 3:4.741 4:1.149 5:0.291 6:0.071 7:0.021 8:0.004 9:0.001   mod-8 assert: PASS on all 280557
+  P2.L  n= 280557 b=2 prim 0.45201 mean_i 11.657 med 2 even_i 0.49853 | b=3 prim 0.44997 mean_i 6.051 med 2 even_i 0.50083 | b=5 prim 0.50259 mean_i 9.714 med 1 even_i 0.46868  [3.8s]
+        v2(i_2) %%: 0:50.147 1:37.410 2:6.259 3:4.635 4:1.157 5:0.293 6:0.074 7:0.019 8:0.005 9:0.001 10:0.001   mod-8 assert: PASS on all 280557
+  P2.R  n= 280557 b=2 prim 0.30020 mean_i 17.851 med 2 even_i 0.49946 | b=3 prim 0.30171 mean_i 18.688 med 3 even_i 0.49791 | b=5 prim 0.33517 mean_i 18.769 med 2 even_i 0.46758  [3.4s]
+        v2(i_2) %%: 0:50.054 1:37.553 2:6.196 3:4.669 4:1.144 5:0.288 6:0.074 7:0.018 8:0.004 9:0.000 10:0.000 11:0.000   mod-8 assert: PASS on all 280557
+
+-- O5 twin-vs-isolated contrasts (DESCRIPTIVE) --
+  P1.L-P2.L b=2: prim delta -0.014389 z -10.85 | even-index delta +0.001272 z  +0.95 | mean_i delta   -1.7203
+  P1.L-P2.L b=3: prim delta -0.011976 z  -9.03 | even-index delta -0.001565 z  -1.17 | mean_i delta   +1.5682
+  P1.L-P2.L b=5: prim delta -0.189094 z -146.85 | even-index delta +0.197648 z +152.49 | mean_i delta   +6.2981
+  P1.R-P2.R b=2: prim delta -0.008540 z  -7.01 | even-index delta -0.000331 z  -0.25 | mean_i delta   +2.6285
+  P1.R-P2.R b=3: prim delta -0.009164 z  -7.51 | even-index delta +0.001354 z  +1.01 | mean_i delta   +6.4157
+  P1.R-P2.R b=5: prim delta -0.125942 z -107.06 | even-index delta +0.198683 z +153.29 | mean_i delta   +5.8549
+[orders7 done in 14.8s]
+==============================================================================
+[2026-07-11 15:05:55] PRATT-WING QUARTIC7  O7 THE BEYOND-PHASE CLASS: quartic symbols + Cornacchia (m <= 1e7)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  populations: twin 1-mod-4 wings n=280557 (one per pair, exact); isolated 1-mod-4 (from P2) n=279738
+  REGISTERED EXPECTATION: NULL (Chebotarev; conditional splits 1/2:1/2 within each phase layer, twin-independent).
+  P1(1m4)  n= 280557  [1.1s]  Gauss hard selftest: PASS on all 280557
+    b=2 symbols %: +1 0.2508  -1 0.2490  i 0.2501  -i 0.2501 | QR layer 0.4998 | P(+1|QR) 0.50179  P(i|NQR) 0.49994
+    b=3 symbols %: +1 0.2494  -1 0.2499  i 0.2492  -i 0.2515 | QR layer 0.4993 | P(+1|QR) 0.49944  P(i|NQR) 0.49774
+    b=5 symbols %: +1 0.3317  -1 0.3340  i 0.1666  -i 0.1677 | QR layer 0.6656 | P(+1|QR) 0.49829  P(i|NQR) 0.49838
+    Gaussian b mod 8 %%: 0:0.2508 2:0.2506 4:0.2490 6:0.2496
+  P2(1m4)  n= 279738  [1.2s]  Gauss hard selftest: PASS on all 279738
+    b=2 symbols %: +1 0.2491  -1 0.2499  i 0.2502  -i 0.2509 | QR layer 0.4989 | P(+1|QR) 0.49923  P(i|NQR) 0.49930
+    b=3 symbols %: +1 0.2498  -1 0.2496  i 0.2511  -i 0.2495 | QR layer 0.4994 | P(+1|QR) 0.50018  P(i|NQR) 0.50164
+    b=5 symbols %: +1 0.2340  -1 0.2336  i 0.2667  -i 0.2656 | QR layer 0.4677 | P(+1|QR) 0.50042  P(i|NQR) 0.50097
+    Gaussian b mod 8 %%: 0:0.2491 2:0.2518 4:0.2499 6:0.2493
+
+-- O7 twin-vs-isolated contrasts (DESCRIPTIVE; beyond-phase layer) --
+  b=2: P(+1|QR) twin 0.50179 iso 0.49923 z  +1.35 | P(i|NQR) twin 0.49994 iso 0.49930 z  +0.34 | QR-layer share z  +0.65 (phase-carried, disclosed)
+  b=3: P(+1|QR) twin 0.49944 iso 0.50018 z  -0.39 | P(i|NQR) twin 0.49774 iso 0.50164 z  -2.07 | QR-layer share z  -0.08 (phase-carried, disclosed)
+  b=5: P(+1|QR) twin 0.49829 iso 0.50042 z  -1.18 | P(i|NQR) twin 0.49838 iso 0.50097 z  -1.24 | QR-layer share z +152.58 (phase-carried, disclosed)
+
+-- O7 non-phase-ness joints (twin population) --
+    joint (quartic symbol of 2) x (m mod 5)  [conditional shares; z vs pooled, DESCRIPTIVE]
+      p==1(8): P(+1 | {+1,-1}) pooled 0.50179 | m=0:0.5006(z-0.4) m=1: - m=2:0.5032(z+0.5) m=3:0.5016(z-0.1) m=4: - | max|z| 0.51
+      p==5(8): P(i | {i,-i}) pooled 0.49994 | m=0:0.4997(z-0.1) m=1:1.0000(z+374.7) m=2:0.4994(z-0.2) m=3:0.5007(z+0.3) m=4: - | max|z| 374.66
+    joint (quartic symbol of 2) x (m mod 7)  [conditional shares; z vs pooled, DESCRIPTIVE]
+      p==1(8): P(+1 | {+1,-1}) pooled 0.50179 | m=0:0.4967(z-1.5) m=1: - m=2:0.5066(z+1.5) m=3:0.5006(z-0.4) m=4:0.5012(z-0.2) m=5:0.5037(z+0.6) m=6: - | max|z| 1.55
+      p==5(8): P(i | {i,-i}) pooled 0.49994 | m=0:0.5000(z+0.0) m=1:1.0000(z+374.7) m=2:0.5021(z+0.7) m=3:0.5002(z+0.1) m=4:0.4994(z-0.2) m=5:0.4980(z-0.6) m=6: - | max|z| 374.66
+    joint (quartic symbol of 2) x (m mod 8)  [conditional shares; z vs pooled, DESCRIPTIVE]
+      p==1(8): P(+1 | {+1,-1}) pooled 0.50179 | m=0:0.4991(z-0.9) m=1: - m=2: - m=3:0.5025(z+0.2) m=4:0.5022(z+0.1) m=5: - m=6: - m=7:0.5034(z+0.5) | max|z| 0.91
+      p==5(8): P(i | {i,-i}) pooled 0.49994 | m=0: - m=1:0.5006(z+0.2) m=2:0.4982(z-0.6) m=3: - m=4: - m=5:0.5010(z+0.3) m=6:0.5000(z+0.0) m=7: - | max|z| 0.59
+  Gauss criterion checks so far: 560295, failures 0 (STOP guarantees 0)
+[quartic7 done in 2.5s]
+==============================================================================
+[2026-07-11 15:06:56] PRATT-WING PROBE9  the 1e9 window per the L35 protocol: gate + O1-O5, O6, O7
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  pratt memo: loaded cache (C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad)
+  [window X=1.0e+09 W=1e+06] exact triple grades in 0.3s (primes to 77491)
+  1e9 WINDOW GATE (L35 protocol, segmented exact, m in [1e9, 1e9+1e6)):
+    contrast E[omega_C|twin] - E[omega_C|no-twin] = +0.224068  n_twin = 15577
+    reproduces the L35 window value EXACTLY -> PASS
+  populations: twins=15577 isoL=15577 isoR=15577 p4=62308
+  P1.L p-1       n=  15577 | tiers >x^1/2:0.6796 (x^1/3,x^1/2]:0.2689 (x^1/4,x^1/3]:0.0447 <=x^1/4:0.0069
+                 smooth: P+<=x^1/2 0.3204  P+<=x^1/3 0.0516 | omega 3.7957+-1.050  Omega 4.9533+-1.825  powdef 1.1576+-1.486
+  P1.L p+1       n=  15577 | tiers >x^1/2:0.6088 (x^1/3,x^1/2]:0.3074 (x^1/4,x^1/3]:0.0691 <=x^1/4:0.0147
+                 smooth: P+<=x^1/2 0.3912  P+<=x^1/3 0.0838 | omega 4.7078+-1.027  Omega 6.3629+-2.007  powdef 1.6551+-1.739
+  P1.L   O4 depth 5.8703+-1.133 (max 12 at p=6005445419) nodes 31.50 breadth 3.7957 | O5 prim(2/3/5) 0.43590/0.44168/0.31617 | mod-8 assert PASS on all 15577  [1.6s]
+  P1.R p-1       n=  15577 | tiers >x^1/2:0.6088 (x^1/3,x^1/2]:0.3074 (x^1/4,x^1/3]:0.0691 <=x^1/4:0.0147
+                 smooth: P+<=x^1/2 0.3912  P+<=x^1/3 0.0838 | omega 4.7078+-1.027  Omega 6.3629+-2.007  powdef 1.6551+-1.739
+  P1.R p+1       n=  15577 | tiers >x^1/2:0.6861 (x^1/3,x^1/2]:0.2610 (x^1/4,x^1/3]:0.0454 <=x^1/4:0.0075
+                 smooth: P+<=x^1/2 0.3139  P+<=x^1/3 0.0529 | omega 3.7980+-1.055  Omega 4.9523+-1.826  powdef 1.1543+-1.484
+  P1.R   O4 depth 5.7172+-1.138 (max 12 at p=6000510949) nodes 31.22 breadth 4.7078 | O5 prim(2/3/5) 0.29242/0.29788/0.21512 | mod-8 assert PASS on all 15577  [2.2s]
+  P2.L p-1       n=  15577 | tiers >x^1/2:0.7000 (x^1/3,x^1/2]:0.2542 (x^1/4,x^1/3]:0.0407 <=x^1/4:0.0051
+                 smooth: P+<=x^1/2 0.3000  P+<=x^1/3 0.0458 | omega 3.6372+-1.016  Omega 4.7783+-1.803  powdef 1.1411+-1.492
+  P2.L p+1       n=  15577 | tiers >x^1/2:0.6222 (x^1/3,x^1/2]:0.3023 (x^1/4,x^1/3]:0.0648 <=x^1/4:0.0107
+                 smooth: P+<=x^1/2 0.3778  P+<=x^1/3 0.0755 | omega 4.5712+-0.992  Omega 6.1662+-1.929  powdef 1.5950+-1.680
+  P2.L   O4 depth 5.9092+-1.127 (max 11 at p=6000330041) nodes 31.47 breadth 3.6372 | O5 prim(2/3/5) 0.45054/0.45535/0.49355 | mod-8 assert PASS on all 15577  [2.5s]
+  P2.R p-1       n=  15577 | tiers >x^1/2:0.6191 (x^1/3,x^1/2]:0.3017 (x^1/4,x^1/3]:0.0661 <=x^1/4:0.0132
+                 smooth: P+<=x^1/2 0.3809  P+<=x^1/3 0.0792 | omega 4.5734+-0.999  Omega 6.2006+-1.965  powdef 1.6272+-1.705
+  P2.R p+1       n=  15577 | tiers >x^1/2:0.7097 (x^1/3,x^1/2]:0.2441 (x^1/4,x^1/3]:0.0418 <=x^1/4:0.0044
+                 smooth: P+<=x^1/2 0.2903  P+<=x^1/3 0.0462 | omega 3.6260+-1.024  Omega 4.7405+-1.786  powdef 1.1145+-1.464
+  P2.R   O4 depth 5.7473+-1.113 (max 11 at p=6000333319) nodes 31.24 breadth 4.5734 | O5 prim(2/3/5) 0.30064/0.29826/0.33171 | mod-8 assert PASS on all 15577  [2.8s]
+
+-- 1e9 twin-vs-isolated contrasts (same type/side; DESCRIPTIVE) --
+  DESCRIPTIVE contrast P1.L-P2.L p-1      om +0.158439 z  +13.54 | Om +0.174937 z   +8.51 | pd +0.016499 z   +0.98
+    tier-share deltas: t0 -0.02041 z   -3.9  t1 +0.01470 z   +3.0  t2 +0.00398 z   +1.7  t3 +0.00173 z   +2.0
+  DESCRIPTIVE contrast P1.L-P2.L p+1      om +0.136547 z  +11.93 | Om +0.196700 z   +8.82 | pd +0.060153 z   +3.10
+    tier-share deltas: t0 -0.01342 z   -2.4  t1 +0.00514 z   +1.0  t2 +0.00430 z   +1.5  t3 +0.00398 z   +3.1
+  P1.L-P2.L dep  delta -0.038904  z   -3.04
+  P1.L-P2.L nod  delta +0.027862  z   +0.53
+  P1.L-P2.L bre  delta +0.158439  z  +13.54
+  P1.L-P2.L b=2 prim delta -0.014637 z  -2.60
+  P1.L-P2.L b=3 prim delta -0.013674 z  -2.43
+  P1.L-P2.L b=5 prim delta -0.177377 z -32.42
+  DESCRIPTIVE contrast P1.R-P2.R p-1      om +0.134365 z  +11.70 | Om +0.162291 z   +7.21 | pd +0.027926 z   +1.43
+    tier-share deltas: t0 -0.01027 z   -1.9  t1 +0.00571 z   +1.1  t2 +0.00302 z   +1.1  t3 +0.00154 z   +1.2
+  DESCRIPTIVE contrast P1.R-P2.R p+1      om +0.172049 z  +14.60 | Om +0.211851 z  +10.35 | pd +0.039802 z   +2.38
+    tier-share deltas: t0 -0.02362 z   -4.5  t1 +0.01695 z   +3.4  t2 +0.00360 z   +1.6  t3 +0.00308 z   +3.5
+  P1.R-P2.R dep  delta -0.030044  z   -2.36
+  P1.R-P2.R nod  delta -0.015536  z   -0.29
+  P1.R-P2.R bre  delta +0.134365  z  +11.70
+  P1.R-P2.R b=2 prim delta -0.008217 z  -1.59
+  P1.R-P2.R b=3 prim delta -0.000385 z  -0.07
+  P1.R-P2.R b=5 prim delta -0.116582 z -23.28
+  reference (E4-truncated, disclosed): wing-side omega excess ~ +0.147425; navigation, not laws.
+
+-- O6 (1e9): twin centers vs omega-MATCHED reweighted P4 --
+  P1 c=6m        n=  15577 | tiers >x^1/2:0.6088 (x^1/3,x^1/2]:0.3074 (x^1/4,x^1/3]:0.0691 <=x^1/4:0.0147
+                 smooth: P+<=x^1/2 0.3912  P+<=x^1/3 0.0838 | omega 4.7078+-1.027  Omega 6.3629+-2.007  powdef 1.6551+-1.739
+  P4 c=6m        n=  62308 | tiers >x^1/2:0.6368 (x^1/3,x^1/2]:0.2944 (x^1/4,x^1/3]:0.0590 <=x^1/4:0.0097
+                 smooth: P+<=x^1/2 0.3632  P+<=x^1/3 0.0687 | omega 4.4855+-0.974  Omega 6.1000+-1.942  powdef 1.6145+-1.707
+  O3 CROSS-CHECK ONLY (re-claiming barred): E[omega_C|twin]-E[omega_C|P4] = +0.222251
+  reweighting: dropped P1 mass 0.000000 (cells absent from P4, disclosed)
+  O6 powdef(c)  P1 1.655133 | P4-reweighted 1.600338 | delta +0.054794  z   +3.52 (DESCRIPTIVE)
+  O6 tier0(c)   P1 0.608782 | P4-reweighted 0.569019 | delta +0.039763  z   +9.02 (DESCRIPTIVE)
+  O6 tier1(c)   P1 0.307440 | P4-reweighted 0.332850 | delta -0.025410  z   -6.09 (DESCRIPTIVE)
+  O6 tier2(c)   P1 0.069076 | P4-reweighted 0.082299 | delta -0.013222  z   -5.68 (DESCRIPTIVE)
+  O6 tier3(c)   P1 0.014701 | P4-reweighted 0.015832 | delta -0.001131  z   -1.03 (DESCRIPTIVE)
+
+-- O7 (1e9): quartic symbols, twin vs isolated 1-mod-4 --
+  P1(1m4)  n=  15577  [0.3s]  Gauss hard selftest: PASS on all 15577
+    b=2 symbols %: +1 0.2488  -1 0.2534  i 0.2435  -i 0.2543 | QR layer 0.5022 | P(+1|QR) 0.49546  P(i|NQR) 0.48917
+    b=3 symbols %: +1 0.2485  -1 0.2509  i 0.2497  -i 0.2509 | QR layer 0.4994 | P(+1|QR) 0.49762  P(i|NQR) 0.49885
+    b=5 symbols %: +1 0.3315  -1 0.3277  i 0.1713  -i 0.1695 | QR layer 0.6592 | P(+1|QR) 0.50292  P(i|NQR) 0.50273
+    Gaussian b mod 8 %%: 0:0.2488 2:0.2485 4:0.2534 6:0.2493
+  P2(1m4)  n=  15694  [0.3s]  Gauss hard selftest: PASS on all 15694
+    b=2 symbols %: +1 0.2486  -1 0.2501  i 0.2488  -i 0.2525 | QR layer 0.4987 | P(+1|QR) 0.49847  P(i|NQR) 0.49631
+    b=3 symbols %: +1 0.2470  -1 0.2521  i 0.2561  -i 0.2447 | QR layer 0.4991 | P(+1|QR) 0.49496  P(i|NQR) 0.51139
+    b=5 symbols %: +1 0.2440  -1 0.2341  i 0.2632  -i 0.2587 | QR layer 0.4781 | P(+1|QR) 0.51033  P(i|NQR) 0.50433
+    Gaussian b mod 8 %%: 0:0.2486 2:0.2532 4:0.2501 6:0.2481
+  b=2: P(+1|QR) twin 0.49546 iso 0.49847 z  -0.38 | P(i|NQR) twin 0.48917 iso 0.49631 z  -0.89
+  b=3: P(+1|QR) twin 0.49762 iso 0.49496 z  +0.33 | P(i|NQR) twin 0.49885 iso 0.51139 z  -1.57
+  b=5: P(+1|QR) twin 0.50292 iso 0.51033 z  -0.98 | P(i|NQR) twin 0.50273 iso 0.50433 z  -0.18
+    joint (quartic symbol of 2) x (m mod 5)  [conditional shares; z vs pooled, DESCRIPTIVE]
+      p==1(8): P(+1 | {+1,-1}) pooled 0.49546 | m=0:0.4861(z-0.8) m=1: - m=2:0.5023(z+0.6) m=3:0.4979(z+0.2) m=4: - | max|z| 0.83
+      p==5(8): P(i | {i,-i}) pooled 0.48917 | m=0:0.4923(z+0.3) m=1: - m=2:0.4845(z-0.4) m=3:0.4909(z+0.2) m=4: - | max|z| 0.41
+    joint (quartic symbol of 2) x (m mod 7)  [conditional shares; z vs pooled, DESCRIPTIVE]
+      p==1(8): P(+1 | {+1,-1}) pooled 0.49546 | m=0:0.5015(z+0.4) m=1: - m=2:0.4935(z-0.1) m=3:0.4941(z-0.1) m=4:0.4971(z+0.1) m=5:0.4908(z-0.3) m=6: - | max|z| 0.45
+      p==5(8): P(i | {i,-i}) pooled 0.48917 | m=0:0.4997(z+0.8) m=1: - m=2:0.4878(z-0.1) m=3:0.4836(z-0.4) m=4:0.4833(z-0.4) m=5:0.4915(z+0.2) m=6: - | max|z| 0.76
+    joint (quartic symbol of 2) x (m mod 8)  [conditional shares; z vs pooled, DESCRIPTIVE]
+      p==1(8): P(+1 | {+1,-1}) pooled 0.49546 | m=0:0.5025(z+0.6) m=1: - m=2: - m=3:0.4990(z+0.3) m=4:0.4831(z-1.0) m=5: - m=6: - m=7:0.4969(z+0.1) | max|z| 0.97
+      p==5(8): P(i | {i,-i}) pooled 0.48917 | m=0: - m=1:0.4836(z-0.4) m=2:0.4908(z+0.1) m=3: - m=4: - m=5:0.4897(z+0.0) m=6:0.4927(z+0.3) m=7: - | max|z| 0.44
+  factorization completeness: 0 incomplete of 277698 calls (target 0)
+[probe9 done in 13.1s]
+==============================================================================
+[2026-07-11 15:07:53] PRATT-WING DEFECT  P3: prime wings of the 50 exact defect windows A=17..43 (DESCRIPTIVE stratum)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+  tables: SPF <= 61000000 (cache), 7702 TD primes <= 78500 (0.1s)
+  pratt memo: loaded cache (C:\Users\elama\AppData\Local\Temp\claude\f--Primes\97ede83e-b2e6-4536-9b2a-5c0a9ff39583\scratchpad)
+  MR bases = first 12 primes, deterministic < 3.186e23 (registered adaptation; A=43 wings ~ 1.4e15).
+  windows verified: 50 (A=17:20, A=19:20, 23:4, 29:2, 31:1, 37:1, 41:1, 43:1); prime wings per window:
+    A=17 L= 17: n_windows=20 prime wings [13, 11, 10, 8, 9, 10]... (total 164 of 680 wings)
+    A=19 L= 24: n_windows=20 prime wings [18, 7, 9, 10, 6, 7]... (total 159 of 960 wings)
+    A=23 L= 33: n_windows= 4 prime wings [14, 7, 12, 13] (total 46 of 264 wings)
+    A=29 L= 42: n_windows= 2 prime wings [9, 5] (total 14 of 168 wings)
+    A=31 L= 57: n_windows= 1 prime wings [14] (total 14 of 114 wings)
+    A=37 L= 87: n_windows= 1 prime wings [13] (total 13 of 174 wings)
+    A=41 L= 90: n_windows= 1 prime wings [10] (total 10 of 180 wings)
+    A=43 L=102: n_windows= 1 prime wings [16] (total 16 of 204 wings)
+  A=17 prime wings n=164 | omega(p-1) 3.409 | P+>sqrt share 0.585 | Pratt depth 4.427 (max 8 at p=280223) nodes 15.8 | prim2 share 0.366
+  A=19 prime wings n=159 | omega(p-1) 3.597 | P+>sqrt share 0.642 | Pratt depth 4.893 (max 8 at p=6898037) nodes 20.0 | prim2 share 0.377
+  A=23 prime wings n= 46 | omega(p-1) 3.935 | P+>sqrt share 0.674 | Pratt depth 5.565 (max 9 at p=146926147) nodes 26.8 | prim2 share 0.326
+  A=29 prime wings n= 14 | omega(p-1) 4.071 | P+>sqrt share 0.714 | Pratt depth 5.786 (max 9 at p=1205437301) nodes 30.4 | prim2 share 0.214
+  A=31 prime wings n= 14 | omega(p-1) 3.929 | P+>sqrt share 0.643 | Pratt depth 6.357 (max 9 at p=131065587799) nodes 35.6 | prim2 share 0.286
+  A=37 prime wings n= 13 | omega(p-1) 4.462 | P+>sqrt share 0.462 | Pratt depth 5.846 (max 8 at p=6875838649151) nodes 40.0 | prim2 share 0.462
+  A=41 prime wings n= 10 | omega(p-1) 5.200 | P+>sqrt share 0.500 | Pratt depth 7.000 (max 11 at p=300466062738791) nodes 47.4 | prim2 share 0.500
+  A=43 prime wings n= 16 | omega(p-1) 4.000 | P+>sqrt share 0.812 | Pratt depth 7.250 (max 9 at p=1403312099425253) nodes 49.2 | prim2 share 0.250
+  P3 pooled: 436 prime wings; depth mean 5.028 max 11; omega(p-1) mean 3.665
+  deepest/biggest witness: p=1403312099425729 (A=43) depth 8 chain 1403312099425729->1439->719->359->179->89->11->5->2
+  O7 on P3 (pooled, tiny n, DESCRIPTIVE): P(+1|QR) = 48/104; P(i|NQR) = 58/104; Gauss hard selftest PASS on all measured
+  factorization completeness: 0 incomplete of 1197 calls (target 0)
+[defect done in 0.2s]
+==============================================================================
+[2026-07-11 15:07:53] PRATT-WING SUMMARY  cross-population collation + escalation candidates (NO verdicts by design)
+  seed=20260710  numpy=2.4.4  STAGE_TIME_CAP=5400s
+==============================================================================
+REMINDER (registered): prime-conditioned population; no parity verdict is defined here;
+  deviations from reference curves are navigation, not laws.
+
+O3 omega(p+-1) twin-vs-isolated excesses at 1e7 (reference +0.147425 trunc B=31):
+  type L side p-1: +0.155833
+  type L side p+1: +0.152318
+  type R side p-1: +0.150362
+  type R side p+1: +0.155430
+O3 omega(p+-1) excesses at the 1e9 window:
+  type L side p-1: +0.158439
+  type L side p+1: +0.136547
+  type R side p-1: +0.134365
+  type R side p+1: +0.172049
+
+ESCALATION CANDIDATES (subject to a NEW pre-registration; proposed Fraction-exact census forms):
+  C-A wing-side collision law: E[d_B(p-+1)|twin] - E[d_B|isolated] =
+      sum_(5<=q<=B)(1/(q-2) - 1/(q-1)) -- provable via the L34 pgf with
+      the isolated condition (q excludes ONE class) vs twin (q excludes
+      TWO); full-period Fraction census at B=7 (period 35) and B=13
+      (period 5005) over side values 6m-2 / 6m+2, exactly as L34/E1-E4.
+  C-B any surviving O6 weighted contrast: powerDefect/P+ tier census
+      conditioned on fixed omega(c) -- Fraction-exact truncated form:
+      joint pgf of (d_B(C), 1[q^2|C]) from the 1/1/1/(q-3) split.
+  C-C O7: if any conditional |z| >= 5 appeared, register a dedicated
+      quartic campaign; the Chebotarev NULL otherwise CLOSES the class.
+  (Escalation decisions belong to the next registration, not this log.)

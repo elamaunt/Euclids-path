@@ -14,6 +14,8 @@
     * `gap_from_volume` — g_j = (c_j c_{j+1}/6)·ΔV_j (§56);
     * `shape_line` — u + v = η_c := ½log((c+1)/(c−1)) (all divisor reps on one line, §59);
     * `hodge_reflection` — in centered coordinates the Hodge complement is x ↦ −x (§60);
+    * `hodge_even_kills_odd_modes` — Hodge symmetry kills the ODD (sine) shape-Fourier modes,
+      reducing the off-diagonal target to its EVEN modes (§XXXII, Direction A target-reduction);
     * `logDivisor_fourier` — the centered log-divisor Fourier sum equals ∏ cos(ξ log p/2)
       (§XXXIII): the exact Fourier image of the factorization hypercube.
 
@@ -70,6 +72,33 @@ theorem shape_line {c d e m n : ℝ} (hd : 0 < d) (he : 0 < e) (hm : 0 < m) (hn 
     complement `u ↦ η_c − u` is the mirror reflection `x ↦ −x`. -/
 theorem hodge_reflection (c u : ℝ) : (eta c - u) - eta c / 2 = -(u - eta c / 2) := by
   ring
+
+/-- **Odd shape-modes vanish under Hodge symmetry (§XXXII, target-reduction).** If a finite
+    family carries a sign-reversing involution `neg` (the Hodge complement: `X(neg i) = −X i`)
+    under which the weight `ρ` is even (`ρ(neg i) = ρ i`), then every ODD (sine) Fourier mode
+    of the weighted family vanishes: `Σ_i ρ i · sin(ξ · X i) = 0`. Together with the connected
+    (Segre) subtraction of the zero mode (`Segre.exterior_algebra_identity`), this reduces the
+    off-diagonal shape-Fourier target to its EVEN (cosine) modes only.
+
+    HONEST SCOPE: the surviving even modes of `∏ cos(ξ log p/2)` form a positive-type kernel
+    with no cancellation — this SHARPENS the target, it does NOT break the parity wall.
+    twin sorry untouched. -/
+theorem hodge_even_kills_odd_modes {ι : Type*} (s : Finset ι)
+    (neg : ι → ι) (hmem : ∀ i ∈ s, neg i ∈ s) (hinvol : ∀ i ∈ s, neg (neg i) = i)
+    (X ρ : ι → ℝ) (hX : ∀ i ∈ s, X (neg i) = - X i) (hρ : ∀ i ∈ s, ρ (neg i) = ρ i)
+    (ξ : ℝ) : ∑ i ∈ s, ρ i * Real.sin (ξ * X i) = 0 := by
+  set f : ι → ℝ := fun i => ρ i * Real.sin (ξ * X i) with hf
+  have hflip : ∀ i ∈ s, f (neg i) = - f i := by
+    intro i hi
+    simp only [hf, hX i hi, hρ i hi, mul_neg, Real.sin_neg]
+  have hre : ∑ i ∈ s, f (neg i) = ∑ i ∈ s, f i :=
+    Finset.sum_nbij' neg neg hmem hmem hinvol hinvol (fun _ _ => rfl)
+  have hdouble : ∑ i ∈ s, f i + ∑ i ∈ s, f i = 0 := by
+    nth_rewrite 1 [← hre]
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_eq_zero (fun i hi => ?_)
+    rw [hflip i hi]; ring
+  linarith
 
 /-! ## The log-divisor Fourier product (§XXXIII) -/
 

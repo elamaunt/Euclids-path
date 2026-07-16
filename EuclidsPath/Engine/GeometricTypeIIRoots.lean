@@ -132,6 +132,111 @@ noncomputable def PairRoughRemainder (Δ : ℕ → ℝ) (Q : Finset ℕ) : ℝ :
 def LowFreqRootCoherence (E : ℝ → ℝ) : Prop :=
   ∀ B : ℕ, ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x → E x ≤ C * x ^ 2 / (Real.log x) ^ B
 
+/-! ## The local root Fourier moments (§53, prime level)
+
+The Fourier transform of the local root pair `{±1} mod p`.  These are COMPLETE sums over ALL
+frequencies `h mod p` (including `h = 0`) — the `ω(q) = 1` case of §53, refining the summable root
+`S₄` budget already recorded (`root_S4_euler` / `root_S4_bounded`, criterion B).
+
+DISCLOSURE (§55): the interval kernel concentrates on LOW frequencies, where complete-sum moments
+give no cancellation; the coherent signed low-frequency sum over `q` remains the open target
+`LowFreqRootCoherence` (residual E) — unchanged by these identities and not duplicated under any
+new name. -/
+
+/-- The root-pair Fourier sum `S_p(h) = ψ(h) + ψ(−h)` (the transform of `{±1} mod p`). -/
+noncomputable def rootSum {p : ℕ} [NeZero p] (h : ZMod p) : ℂ :=
+  ZMod.stdAddChar h + ZMod.stdAddChar (-h)
+
+private theorem two_ne_zero_zmod' {p : ℕ} [Fact p.Prime] (hp2 : 2 < p) : (2 : ZMod p) ≠ 0 := by
+  have : ((2 : ℕ) : ZMod p) ≠ 0 := by
+    rw [Ne, CharP.cast_eq_zero_iff (ZMod p) p 2]
+    intro hdvd; have := Nat.le_of_dvd (by norm_num) hdvd; omega
+  simpa using this
+
+private theorem four_ne_zero_zmod {p : ℕ} [Fact p.Prime] (hp2 : 2 < p) : (4 : ZMod p) ≠ 0 := by
+  have : ((4 : ℕ) : ZMod p) ≠ 0 := by
+    rw [Ne, CharP.cast_eq_zero_iff (ZMod p) p 4]
+    intro hdvd
+    have hp := (Fact.out : p.Prime)
+    have h24 : (4 : ℕ) = 2 ^ 2 := by norm_num
+    rw [h24] at hdvd
+    have h2 := hp.dvd_of_dvd_pow hdvd
+    have := Nat.le_of_dvd (by norm_num) h2
+    omega
+  simpa using this
+
+/-- Complete character sums with an invertible multiplier vanish. -/
+private theorem char_sum_mul_zero {p : ℕ} [Fact p.Prime] {c : ZMod p} (hc : c ≠ 0) :
+    ∑ h : ZMod p, ZMod.stdAddChar (c * h) = 0 := by
+  have h := AddChar.sum_mulShift c (ZMod.isPrimitive_stdAddChar p)
+  rw [if_neg hc, Nat.cast_zero] at h
+  rw [← h]
+  exact Finset.sum_congr rfl fun a _ => by rw [mul_comm]
+
+private theorem char_sum_neg_mul_zero {p : ℕ} [Fact p.Prime] {c : ZMod p} (hc : c ≠ 0) :
+    ∑ h : ZMod p, ZMod.stdAddChar (-(c * h)) = 0 := by
+  have hneg : (-c : ZMod p) ≠ 0 := neg_ne_zero.mpr hc
+  have h := char_sum_mul_zero hneg
+  rw [← h]
+  exact Finset.sum_congr rfl fun a _ => by rw [show -(c * a) = -c * a by ring]
+
+/-- The squared root sum: `S_p(h)² = ψ(2h) + ψ(−2h) + 2`. -/
+private theorem rootSum_sq {p : ℕ} [Fact p.Prime] (h : ZMod p) :
+    rootSum h * rootSum h
+      = ZMod.stdAddChar (2 * h) + ZMod.stdAddChar (-(2 * h)) + 2 := by
+  unfold rootSum
+  have hXX : ZMod.stdAddChar h * ZMod.stdAddChar h = ZMod.stdAddChar (2 * h) := by
+    rw [← AddChar.map_add_eq_mul]; congr 1; ring
+  have hYY : ZMod.stdAddChar (-h) * ZMod.stdAddChar (-h) = ZMod.stdAddChar (-(2 * h)) := by
+    rw [← AddChar.map_add_eq_mul]; congr 1; ring
+  have hXY : ZMod.stdAddChar h * ZMod.stdAddChar (-h) = 1 := by
+    rw [← AddChar.map_add_eq_mul, show h + -h = 0 by ring, AddChar.map_zero_eq_one]
+  linear_combination hXX + hYY + 2 * hXY
+
+/-- **Root second moment (§53, `ω = 1`).** `Σ_h S_p(h)² = 2p` — the complete-sum form of the local
+    additive count `2^{ω(q)}` at a single prime. -/
+theorem rootSum_M2 {p : ℕ} [Fact p.Prime] (hp2 : 2 < p) :
+    ∑ h : ZMod p, rootSum h * rootSum h = 2 * (p : ℂ) := by
+  have h2ne := two_ne_zero_zmod' hp2
+  rw [Finset.sum_congr rfl (fun h _ => rootSum_sq h), Finset.sum_add_distrib,
+    Finset.sum_add_distrib, char_sum_mul_zero h2ne, char_sum_neg_mul_zero h2ne,
+    Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]
+  ring
+
+/-- The fourth power: `S_p(h)⁴ = ψ(4h) + ψ(−4h) + 4ψ(2h) + 4ψ(−2h) + 6` — the local additive
+    energy `6` of the root pair appears as the constant term. -/
+private theorem rootSum_fourth {p : ℕ} [Fact p.Prime] (h : ZMod p) :
+    (rootSum h) ^ 4
+      = ZMod.stdAddChar (4 * h) + ZMod.stdAddChar (-(4 * h))
+        + 4 * ZMod.stdAddChar (2 * h) + 4 * ZMod.stdAddChar (-(2 * h)) + 6 := by
+  have hsq := rootSum_sq h
+  have hXX : ZMod.stdAddChar (2 * h) * ZMod.stdAddChar (2 * h) = ZMod.stdAddChar (4 * h) := by
+    rw [← AddChar.map_add_eq_mul]; congr 1; ring
+  have hYY : ZMod.stdAddChar (-(2 * h)) * ZMod.stdAddChar (-(2 * h))
+      = ZMod.stdAddChar (-(4 * h)) := by
+    rw [← AddChar.map_add_eq_mul]; congr 1; ring
+  have hXY : ZMod.stdAddChar (2 * h) * ZMod.stdAddChar (-(2 * h)) = 1 := by
+    rw [← AddChar.map_add_eq_mul, show 2 * h + -(2 * h) = 0 by ring, AddChar.map_zero_eq_one]
+  have e4 : (rootSum h) ^ 4 = (rootSum h * rootSum h) * (rootSum h * rootSum h) := by ring
+  rw [e4, hsq]
+  linear_combination hXX + hYY + 2 * hXY
+
+/-- **Root fourth moment (§53, `ω = 1`).** `Σ_h S_p(h)⁴ = 6p` — the local additive energy
+    `1² + 2² + 1² = 6` of the root pair `{±1}`, at the complete-sum level. -/
+theorem rootSum_M4 {p : ℕ} [Fact p.Prime] (hp2 : 2 < p) :
+    ∑ h : ZMod p, (rootSum h) ^ 4 = 6 * (p : ℂ) := by
+  have h2ne := two_ne_zero_zmod' hp2
+  have h4ne := four_ne_zero_zmod hp2
+  have hc2 : ∑ h : ZMod p, (4 : ℂ) * ZMod.stdAddChar (2 * h) = 0 := by
+    rw [← Finset.mul_sum, char_sum_mul_zero h2ne, mul_zero]
+  have hc2n : ∑ h : ZMod p, (4 : ℂ) * ZMod.stdAddChar (-(2 * h)) = 0 := by
+    rw [← Finset.mul_sum, char_sum_neg_mul_zero h2ne, mul_zero]
+  rw [Finset.sum_congr rfl (fun h _ => rootSum_fourth h), Finset.sum_add_distrib,
+    Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib,
+    char_sum_mul_zero h4ne, char_sum_neg_mul_zero h4ne, hc2, hc2n,
+    Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]
+  ring
+
 end TypeII
 end Geometric
 end EuclidsPath

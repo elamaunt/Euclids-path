@@ -253,18 +253,18 @@ theorem root_card_crt {q₁ q₂ : ℕ} [NeZero q₁] [NeZero q₂] (hq : Nat.Co
         * (Finset.univ.filter fun C : ZMod q₂ => C ^ 2 = 1).card := by
   classical
   haveI : NeZero (q₁ * q₂) := ⟨mul_ne_zero (NeZero.ne q₁) (NeZero.ne q₂)⟩
-  set φ := ZMod.chineseRemainder hq with hφ
+  set crtIso := ZMod.chineseRemainder hq with hcrtIso
   have hcard : (Finset.univ.filter fun C : ZMod (q₁ * q₂) => C ^ 2 = 1).card
       = ((Finset.univ.filter fun a : ZMod q₁ => a ^ 2 = 1) ×ˢ
           (Finset.univ.filter fun b : ZMod q₂ => b ^ 2 = 1)).card := by
-    apply Finset.card_equiv φ.toEquiv
+    apply Finset.card_equiv crtIso.toEquiv
     intro C
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product]
-    have hφC : φ.toEquiv C = φ C := rfl
-    rw [hφC]
+    have hphiC : crtIso.toEquiv C = crtIso C := rfl
+    rw [hphiC]
     constructor
     · intro hC
-      have hsq : (φ C) ^ 2 = 1 := by rw [← map_pow, hC, map_one]
+      have hsq : (crtIso C) ^ 2 = 1 := by rw [← map_pow, hC, map_one]
       constructor
       · have hfst := congrArg Prod.fst hsq
         rw [pow_two, Prod.fst_mul] at hfst
@@ -275,17 +275,17 @@ theorem root_card_crt {q₁ q₂ : ℕ} [NeZero q₁] [NeZero q₂] (hq : Nat.Co
         rw [pow_two]
         simpa using hsnd
     · intro ⟨h1, h2⟩
-      have hsq : (φ C) ^ 2 = 1 := by
-        have hf : ((φ C) ^ 2).1 = (1 : ZMod q₁ × ZMod q₂).1 := by
+      have hsq : (crtIso C) ^ 2 = 1 := by
+        have hf : ((crtIso C) ^ 2).1 = (1 : ZMod q₁ × ZMod q₂).1 := by
           rw [pow_two, Prod.fst_mul, ← pow_two]
           simpa using h1
-        have hs : ((φ C) ^ 2).2 = (1 : ZMod q₁ × ZMod q₂).2 := by
+        have hs : ((crtIso C) ^ 2).2 = (1 : ZMod q₁ × ZMod q₂).2 := by
           rw [pow_two, Prod.snd_mul, ← pow_two]
           simpa using h2
         exact Prod.ext hf hs
-      have hsq' : φ (C ^ 2) = 1 := by rw [map_pow]; exact hsq
-      have := congrArg φ.symm hsq'
-      rw [φ.symm_apply_apply, map_one] at this
+      have hsq' : crtIso (C ^ 2) = 1 := by rw [map_pow]; exact hsq
+      have := congrArg crtIso.symm hsq'
+      rw [crtIso.symm_apply_apply, map_one] at this
       exact this
   rw [hcard, Finset.card_product]
 

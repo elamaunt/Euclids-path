@@ -237,6 +237,58 @@ theorem rootSum_M4 {p : ℕ} [Fact p.Prime] (hp2 : 2 < p) :
     Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]
   ring
 
+/-! ## The CRT junction: the root set factors (§53, the (C)×(E) meeting point)
+
+The CRT-root sets multiply under coprime moduli: `|R_{q₁q₂}| = |R_{q₁}|·|R_{q₂}|`, hence
+`|R_q| = 2^{ω(q)}` for odd squarefree `q` — the §53 count, previously carried only through the
+Euler-product analogy, becomes exact CRT algebra.  This is the junction where the degree-two
+conductor structure (residual C) meets the root remainder (residual E) in machine form.
+DISCLOSURE: exact algebra; no bound on any signed sum; residuals C/D/E and `CRE` unchanged. -/
+
+/-- **The root set factors under CRT (§53).** For coprime moduli,
+    `#{C² = 1 mod q₁q₂} = #{C² = 1 mod q₁} · #{C² = 1 mod q₂}`. -/
+theorem root_card_crt {q₁ q₂ : ℕ} [NeZero q₁] [NeZero q₂] (hq : Nat.Coprime q₁ q₂) :
+    (Finset.univ.filter fun C : ZMod (q₁ * q₂) => C ^ 2 = 1).card
+      = (Finset.univ.filter fun C : ZMod q₁ => C ^ 2 = 1).card
+        * (Finset.univ.filter fun C : ZMod q₂ => C ^ 2 = 1).card := by
+  classical
+  haveI : NeZero (q₁ * q₂) := ⟨mul_ne_zero (NeZero.ne q₁) (NeZero.ne q₂)⟩
+  set φ := ZMod.chineseRemainder hq with hφ
+  have hcard : (Finset.univ.filter fun C : ZMod (q₁ * q₂) => C ^ 2 = 1).card
+      = ((Finset.univ.filter fun a : ZMod q₁ => a ^ 2 = 1) ×ˢ
+          (Finset.univ.filter fun b : ZMod q₂ => b ^ 2 = 1)).card := by
+    apply Finset.card_equiv φ.toEquiv
+    intro C
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product]
+    have hφC : φ.toEquiv C = φ C := rfl
+    rw [hφC]
+    constructor
+    · intro hC
+      have hsq : (φ C) ^ 2 = 1 := by rw [← map_pow, hC, map_one]
+      constructor
+      · have hfst := congrArg Prod.fst hsq
+        rw [pow_two, Prod.fst_mul] at hfst
+        rw [pow_two]
+        simpa using hfst
+      · have hsnd := congrArg Prod.snd hsq
+        rw [pow_two, Prod.snd_mul] at hsnd
+        rw [pow_two]
+        simpa using hsnd
+    · intro ⟨h1, h2⟩
+      have hsq : (φ C) ^ 2 = 1 := by
+        have hf : ((φ C) ^ 2).1 = (1 : ZMod q₁ × ZMod q₂).1 := by
+          rw [pow_two, Prod.fst_mul, ← pow_two]
+          simpa using h1
+        have hs : ((φ C) ^ 2).2 = (1 : ZMod q₁ × ZMod q₂).2 := by
+          rw [pow_two, Prod.snd_mul, ← pow_two]
+          simpa using h2
+        exact Prod.ext hf hs
+      have hsq' : φ (C ^ 2) = 1 := by rw [map_pow]; exact hsq
+      have := congrArg φ.symm hsq'
+      rw [φ.symm_apply_apply, map_one] at this
+      exact this
+  rw [hcard, Finset.card_product]
+
 end TypeII
 end Geometric
 end EuclidsPath

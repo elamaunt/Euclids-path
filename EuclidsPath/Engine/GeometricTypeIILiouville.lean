@@ -247,6 +247,69 @@ theorem oneWingTarget_of_sign
   · -- the corner-form count identity
     exact window_corner_identity I
 
+/-! ## The surviving remainder of target B, in its canonical Liouville form
+
+On PAIR-ROUGH windows (both wings with `Ω ∈ {1,2}` — discharged from real arithmetic by
+`rough_omega_le_two` in the critical range) the sign condition of `oneWingTarget_of_sign` is
+LITERALLY the negative two-wing Liouville bias: `Σ_{m∈I} λ(6m−1) + Σ_{m∈I} λ(6m+1) < 0` with
+`λ = (−1)^Ω`.  This is the dossier's §12/§68 form of residual B, now the SINGLE surviving
+analytic statement of the one-wing route.
+
+HONESTY. This is Chowla-adjacent strength — a signed two-point correlation of `λ` along the
+twin configuration, the purest known form of the parity wall on route B.  Rewriting the sign
+condition in the canonical `λ`-vocabulary does NOT make it easier; it makes it impossible to
+misread.  No new open `Prop`; the premise is a hypothesis of a theorem. -/
+
+/-- **Rough-window Liouville sum.** On a rough wing (`Ω ∈ {1,2}` pointwise),
+    `Σ_{m∈I} (−1)^{Ω(w m)} = 2·#{composite wings} − |I|`. -/
+theorem rough_window_liouville_sum (I : Finset ℕ) (w : ℕ → ℕ)
+    (hw : ∀ m ∈ I, cardFactors (w m) = 1 ∨ cardFactors (w m) = 2) :
+    ∑ m ∈ I, ((-1 : ℤ)) ^ (cardFactors (w m))
+      = 2 * ((I.filter fun m => ¬ (w m).Prime).card : ℤ) - I.card := by
+  classical
+  have hpt : ∀ m ∈ I, ((-1 : ℤ)) ^ (cardFactors (w m))
+      = 2 * (if ¬ (w m).Prime then (1 : ℤ) else 0) - 1 := by
+    intro m hm
+    rcases hw m hm with h1 | h2
+    · have hprime : (w m).Prime := cardFactors_eq_one_iff_prime.mp h1
+      rw [h1, if_neg (not_not_intro hprime)]
+      norm_num
+    · have hnp : ¬ (w m).Prime := by
+        intro hp
+        rw [cardFactors_eq_one_iff_prime.mpr hp] at h2
+        exact absurd h2 (by norm_num)
+      rw [h2, if_pos hnp]
+      norm_num
+  rw [Finset.sum_congr rfl hpt, Finset.sum_sub_distrib, ← Finset.mul_sum,
+    Finset.sum_boole, Finset.sum_const, nsmul_eq_mul, mul_one]
+
+/-- **Target B in its canonical Liouville form (the surviving remainder).** If cofinally there is
+    a pair-rough window above `N` with NEGATIVE two-wing Liouville bias
+    `Σ λ(6m−1) + Σ λ(6m+1) < 0`, then `OneWingTarget` holds.  Together with
+    `oneWingTarget_of_sign` and `twins_of_oneWing`, the whole one-wing route to twins now rests
+    on this ONE signed correlation statement. -/
+theorem oneWingTarget_of_liouville_bias
+    (H : ∀ N : ℕ, ∃ I : Finset ℕ, (∀ m ∈ I, N < m) ∧
+      (∀ m ∈ I, (cardFactors (6 * m - 1) = 1 ∨ cardFactors (6 * m - 1) = 2)
+              ∧ (cardFactors (6 * m + 1) = 1 ∨ cardFactors (6 * m + 1) = 2)) ∧
+      (∑ m ∈ I, ((-1 : ℤ)) ^ (cardFactors (6 * m - 1)))
+        + (∑ m ∈ I, ((-1 : ℤ)) ^ (cardFactors (6 * m + 1))) < 0) :
+    OneWingTarget := by
+  apply oneWingTarget_of_sign
+  intro N
+  obtain ⟨I, hN, hrough, hbias⟩ := H N
+  refine ⟨I, hN, ?_⟩
+  have h1 := rough_window_liouville_sum I (fun m => 6 * m - 1) (fun m hm => (hrough m hm).1)
+  have h2 := rough_window_liouville_sum I (fun m => 6 * m + 1) (fun m hm => (hrough m hm).2)
+  have hsum : (2 * ((I.filter fun m => ¬ (6 * m - 1).Prime).card : ℤ) - I.card)
+      + (2 * ((I.filter fun m => ¬ (6 * m + 1).Prime).card : ℤ) - I.card) < 0 := by
+    rw [← h1, ← h2]
+    exact hbias
+  have hZ : ((I.filter fun m => ¬ (6 * m - 1).Prime).card : ℤ)
+      + ((I.filter fun m => ¬ (6 * m + 1).Prime).card : ℤ) < (I.card : ℤ) := by
+    linarith
+  exact_mod_cast hZ
+
 end TypeII
 end Geometric
 end EuclidsPath

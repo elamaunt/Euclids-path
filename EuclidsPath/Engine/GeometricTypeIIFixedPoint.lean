@@ -115,6 +115,236 @@ theorem one_defect_fixed_point {ι : Type*} [Fintype ι] [DecidableEq ι]
   field_simp
   ring
 
+/-! ## The full S₄ profile table (§26)
+
+The five profiles of the S₄ opening, classified by the multiplicity partition of the shifts.
+`[4]` is `A_moment` at `k = 2` (the even moment itself, of order ONE — the main term, NOT a defect
+sector); `[3+1]` is `one_defect_fixed_point` (the unique NON-summable defect, `−1/m` scale).  Below:
+the three remaining profiles `[2+2]`, `[2+1+1]`, `[1+1+1+1]` are computed EXACTLY and are all
+`O(1/m²)` — summable (criterion B).  So among the OFF-DIAGONAL profiles the one-defect `[3+1]` is
+the only non-summable one: this LOCALIZES the non-summable ambient S₄ sector, it does not shrink
+it — `[3+1]` carries exactly the parity eigenvalue `−1/(p−2)`, so higher moments alone still do not
+break the wall (§59).
+
+AMBIENT DISCLOSURE (§57). These are full-character-group computations; by the withdrawn overclaim
+of dossier §57, ambient S₄ does NOT transfer to the short rectangle — restriction to a short
+arithmetic trajectory can sharply increase coherence, and no short-interval statement is made or
+implied here. -/
+
+/-- The shifted local factor: `1` at the marked point `a`, `−1/m` elsewhere.  For a two-valued `f`
+    and a permutation `σ`, `f(σχ) = onePoint (σ⁻¹ i₀) m χ` (`shift_eq_onePoint`). -/
+noncomputable def onePoint {ι : Type*} [DecidableEq ι] (a : ι) (m : ℕ) : ι → ℝ :=
+  fun χ => if χ = a then 1 else -1 / (m : ℝ)
+
+/-- Bridge: a shifted two-valued factor is `onePoint` at the shifted marked point. -/
+theorem shift_eq_onePoint {ι : Type*} [DecidableEq ι] (i₀ : ι) (m : ℕ) (f : ι → ℝ)
+    (hf0 : f i₀ = 1) (hf1 : ∀ i, i ≠ i₀ → f i = -1 / (m : ℝ)) (σ : Equiv.Perm ι) (χ : ι) :
+    f (σ χ) = onePoint (σ⁻¹ i₀) m χ := by
+  unfold onePoint
+  by_cases h : χ = σ⁻¹ i₀
+  · rw [if_pos h, h]
+    simp [hf0]
+  · rw [if_neg h]
+    apply hf1
+    intro hc
+    apply h
+    rw [← hc]
+    simp
+
+/-- **Profile [2+2] (§26).** `Σ_χ (onePoint a)²(onePoint b)² = 2/m² + 1/m³ − 1/m⁴` for `a ≠ b`:
+    exactly `O(1/m²)` — summable. -/
+theorem s4_profile_22 {ι : Type*} [Fintype ι] [DecidableEq ι] {a b : ι} (hab : a ≠ b)
+    (m : ℕ) (hm : Fintype.card ι = m + 1) (hm1 : 1 ≤ m) :
+    ∑ χ, (onePoint a m χ) ^ 2 * (onePoint b m χ) ^ 2
+      = 2 / (m : ℝ) ^ 2 + 1 / (m : ℝ) ^ 3 - 1 / (m : ℝ) ^ 4 := by
+  have hm0 : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hpt : ∀ χ : ι, (onePoint a m χ) ^ 2 * (onePoint b m χ) ^ 2
+      = 1 / (m : ℝ) ^ 4
+        + (1 / (m : ℝ) ^ 2 - 1 / (m : ℝ) ^ 4) * (if χ = a then 1 else 0)
+        + (1 / (m : ℝ) ^ 2 - 1 / (m : ℝ) ^ 4) * (if χ = b then 1 else 0) := by
+    intro χ
+    unfold onePoint
+    by_cases ha : χ = a
+    · subst ha
+      rw [if_pos rfl, if_neg hab, if_pos rfl, if_neg hab]
+      field_simp
+      ring
+    · by_cases hb : χ = b
+      · subst hb
+        rw [if_neg (fun h => hab h.symm), if_pos rfl, if_neg (fun h => hab h.symm), if_pos rfl]
+        field_simp
+        ring
+      · rw [if_neg ha, if_neg hb, if_neg ha, if_neg hb]
+        field_simp
+        ring
+  rw [Finset.sum_congr rfl (fun χ _ => hpt χ), Finset.sum_add_distrib, Finset.sum_add_distrib,
+    Finset.sum_const, ← Finset.mul_sum, ← Finset.mul_sum,
+    sum_indicator_eq_one a, sum_indicator_eq_one b, Finset.card_univ, hm, nsmul_eq_mul]
+  push_cast
+  field_simp
+  ring
+
+/-- **Profile [2+1+1] (§26).** `Σ_χ (onePoint a)²(onePoint b)(onePoint c) = 1/m² − 1/m³ − 2/m⁴`
+    for pairwise distinct `a, b, c`: exactly `O(1/m²)` — summable. -/
+theorem s4_profile_211 {ι : Type*} [Fintype ι] [DecidableEq ι] {a b c : ι}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (m : ℕ) (hm : Fintype.card ι = m + 1) (hm1 : 1 ≤ m) :
+    ∑ χ, (onePoint a m χ) ^ 2 * (onePoint b m χ) * (onePoint c m χ)
+      = 1 / (m : ℝ) ^ 2 - 1 / (m : ℝ) ^ 3 - 2 / (m : ℝ) ^ 4 := by
+  have hm0 : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hpt : ∀ χ : ι, (onePoint a m χ) ^ 2 * (onePoint b m χ) * (onePoint c m χ)
+      = 1 / (m : ℝ) ^ 4
+        + (1 / (m : ℝ) ^ 2 - 1 / (m : ℝ) ^ 4) * (if χ = a then 1 else 0)
+        + (-(1 / (m : ℝ) ^ 3) - 1 / (m : ℝ) ^ 4) * (if χ = b then 1 else 0)
+        + (-(1 / (m : ℝ) ^ 3) - 1 / (m : ℝ) ^ 4) * (if χ = c then 1 else 0) := by
+    intro χ
+    unfold onePoint
+    by_cases ha : χ = a
+    · subst ha
+      rw [if_pos rfl, if_neg hab, if_neg hac, if_pos rfl, if_neg hab, if_neg hac]
+      field_simp
+      ring
+    · by_cases hb : χ = b
+      · subst hb
+        rw [if_neg (fun h => hab h.symm), if_pos rfl, if_neg hbc,
+          if_neg (fun h => hab h.symm), if_pos rfl, if_neg hbc]
+        field_simp
+        ring
+      · by_cases hc : χ = c
+        · subst hc
+          rw [if_neg (fun h => hac h.symm), if_neg (fun h => hbc h.symm), if_pos rfl,
+            if_neg (fun h => hac h.symm), if_neg (fun h => hbc h.symm), if_pos rfl]
+          field_simp
+          ring
+        · rw [if_neg ha, if_neg hb, if_neg hc, if_neg ha, if_neg hb, if_neg hc]
+          field_simp
+          ring
+  rw [Finset.sum_congr rfl (fun χ _ => hpt χ), Finset.sum_add_distrib, Finset.sum_add_distrib,
+    Finset.sum_add_distrib, Finset.sum_const, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum,
+    sum_indicator_eq_one a, sum_indicator_eq_one b, sum_indicator_eq_one c,
+    Finset.card_univ, hm, nsmul_eq_mul]
+  push_cast
+  field_simp
+  ring
+
+/-- **Profile [1+1+1+1] (§26).** `Σ_χ ∏ᵢ onePoint aᵢ = −3/m³ − 3/m⁴` for pairwise distinct marked
+    points: exactly `O(1/m³)` — the fully connected profile, summable. -/
+theorem s4_profile_1111 {ι : Type*} [Fintype ι] [DecidableEq ι] {a b c d : ι}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (m : ℕ) (hm : Fintype.card ι = m + 1) (hm1 : 1 ≤ m) :
+    ∑ χ, (onePoint a m χ) * (onePoint b m χ) * (onePoint c m χ) * (onePoint d m χ)
+      = -(3 / (m : ℝ) ^ 3) - 3 / (m : ℝ) ^ 4 := by
+  have hm0 : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hpt : ∀ χ : ι, (onePoint a m χ) * (onePoint b m χ) * (onePoint c m χ) * (onePoint d m χ)
+      = 1 / (m : ℝ) ^ 4
+        + (-(1 / (m : ℝ) ^ 3) - 1 / (m : ℝ) ^ 4) * (if χ = a then 1 else 0)
+        + (-(1 / (m : ℝ) ^ 3) - 1 / (m : ℝ) ^ 4) * (if χ = b then 1 else 0)
+        + (-(1 / (m : ℝ) ^ 3) - 1 / (m : ℝ) ^ 4) * (if χ = c then 1 else 0)
+        + (-(1 / (m : ℝ) ^ 3) - 1 / (m : ℝ) ^ 4) * (if χ = d then 1 else 0) := by
+    intro χ
+    unfold onePoint
+    by_cases ha : χ = a
+    · subst ha
+      rw [if_pos rfl, if_neg hab, if_neg hac, if_neg had,
+        if_pos rfl, if_neg hab, if_neg hac, if_neg had]
+      field_simp
+      ring
+    · by_cases hb : χ = b
+      · subst hb
+        rw [if_neg (fun h => hab h.symm), if_pos rfl, if_neg hbc, if_neg hbd,
+          if_neg (fun h => hab h.symm), if_pos rfl, if_neg hbc, if_neg hbd]
+        field_simp
+        ring
+      · by_cases hc : χ = c
+        · subst hc
+          rw [if_neg (fun h => hac h.symm), if_neg (fun h => hbc h.symm), if_pos rfl, if_neg hcd,
+            if_neg (fun h => hac h.symm), if_neg (fun h => hbc h.symm), if_pos rfl, if_neg hcd]
+          field_simp
+          ring
+        · by_cases hd : χ = d
+          · subst hd
+            rw [if_neg (fun h => had h.symm), if_neg (fun h => hbd h.symm),
+              if_neg (fun h => hcd h.symm), if_pos rfl,
+              if_neg (fun h => had h.symm), if_neg (fun h => hbd h.symm),
+              if_neg (fun h => hcd h.symm), if_pos rfl]
+            field_simp
+            ring
+          · rw [if_neg ha, if_neg hb, if_neg hc, if_neg hd,
+              if_neg ha, if_neg hb, if_neg hc, if_neg hd]
+            field_simp
+            ring
+  rw [Finset.sum_congr rfl (fun χ _ => hpt χ), Finset.sum_add_distrib, Finset.sum_add_distrib,
+    Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_const,
+    ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum,
+    sum_indicator_eq_one a, sum_indicator_eq_one b, sum_indicator_eq_one c,
+    sum_indicator_eq_one d, Finset.card_univ, hm, nsmul_eq_mul]
+  push_cast
+  field_simp
+  ring
+
+/-! ## The off-diagonal profiles are summable (criterion B) -/
+
+/-- `[2+2]` is `O(1/m²)`: `|Σ| ≤ 3/m²`. -/
+theorem s4_profile_22_bound {ι : Type*} [Fintype ι] [DecidableEq ι] {a b : ι} (hab : a ≠ b)
+    (m : ℕ) (hm : Fintype.card ι = m + 1) (hm1 : 1 ≤ m) :
+    |∑ χ, (onePoint a m χ) ^ 2 * (onePoint b m χ) ^ 2| ≤ 3 / (m : ℝ) ^ 2 := by
+  have hmr : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm1
+  have hmp : (0 : ℝ) < (m : ℝ) := by linarith
+  rw [s4_profile_22 hab m hm hm1]
+  have h43 : 1 / (m : ℝ) ^ 4 ≤ 1 / (m : ℝ) ^ 3 := by
+    apply one_div_le_one_div_of_le (by positivity)
+    nlinarith [mul_le_mul_of_nonneg_left hmr (show (0:ℝ) ≤ (m:ℝ)^3 by positivity)]
+  have h32 : 1 / (m : ℝ) ^ 3 ≤ 1 / (m : ℝ) ^ 2 := by
+    apply one_div_le_one_div_of_le (by positivity)
+    nlinarith [mul_le_mul_of_nonneg_left hmr (show (0:ℝ) ≤ (m:ℝ)^2 by positivity)]
+  have h2 : (0:ℝ) < 1 / (m : ℝ) ^ 2 := by positivity
+  have h40 : (0:ℝ) ≤ 1 / (m : ℝ) ^ 4 := by positivity
+  have e2 : 2 / (m : ℝ) ^ 2 = 2 * (1 / (m : ℝ) ^ 2) := by ring
+  have e3 : 3 / (m : ℝ) ^ 2 = 3 * (1 / (m : ℝ) ^ 2) := by ring
+  rw [abs_of_nonneg (by linarith)]
+  linarith
+
+/-- `[2+1+1]` is `O(1/m²)`: `|Σ| ≤ 2/m²` for `m ≥ 2`. -/
+theorem s4_profile_211_bound {ι : Type*} [Fintype ι] [DecidableEq ι] {a b c : ι}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (m : ℕ) (hm : Fintype.card ι = m + 1) (hm2 : 2 ≤ m) :
+    |∑ χ, (onePoint a m χ) ^ 2 * (onePoint b m χ) * (onePoint c m χ)| ≤ 2 / (m : ℝ) ^ 2 := by
+  have hmr : (2 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm2
+  have hm0 : (m : ℝ) ≠ 0 := by linarith
+  rw [s4_profile_211 hab hac hbc m hm (by omega)]
+  have e : 1 / (m : ℝ) ^ 2 - 1 / (m : ℝ) ^ 3 - 2 / (m : ℝ) ^ 4
+      = ((m : ℝ) ^ 2 - (m : ℝ) - 2) / (m : ℝ) ^ 4 := by
+    field_simp
+  have hnum : (0:ℝ) ≤ (m : ℝ) ^ 2 - (m : ℝ) - 2 := by nlinarith
+  have hV0 : (0:ℝ) ≤ 1 / (m : ℝ) ^ 2 - 1 / (m : ℝ) ^ 3 - 2 / (m : ℝ) ^ 4 := by
+    rw [e]
+    exact div_nonneg hnum (by positivity)
+  rw [abs_of_nonneg hV0]
+  have h3 : (0:ℝ) ≤ 1 / (m : ℝ) ^ 3 := by positivity
+  have h4 : (0:ℝ) ≤ 2 / (m : ℝ) ^ 4 := by positivity
+  have h2 : (0:ℝ) ≤ 1 / (m : ℝ) ^ 2 := by positivity
+  have e2 : 2 / (m : ℝ) ^ 2 = 2 * (1 / (m : ℝ) ^ 2) := by ring
+  linarith
+
+/-- `[1+1+1+1]` is `O(1/m³)`: `|Σ| ≤ 6/m³` — the fully connected budget. -/
+theorem s4_profile_1111_bound {ι : Type*} [Fintype ι] [DecidableEq ι] {a b c d : ι}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (m : ℕ) (hm : Fintype.card ι = m + 1) (hm1 : 1 ≤ m) :
+    |∑ χ, (onePoint a m χ) * (onePoint b m χ) * (onePoint c m χ) * (onePoint d m χ)|
+      ≤ 6 / (m : ℝ) ^ 3 := by
+  have hmr : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm1
+  rw [s4_profile_1111 hab hac had hbc hbd hcd m hm hm1]
+  have h43 : 1 / (m : ℝ) ^ 4 ≤ 1 / (m : ℝ) ^ 3 := by
+    apply one_div_le_one_div_of_le (by positivity)
+    nlinarith [mul_le_mul_of_nonneg_left hmr (show (0:ℝ) ≤ (m:ℝ)^3 by positivity)]
+  have h3 : (0:ℝ) ≤ 3 / (m : ℝ) ^ 3 := by positivity
+  have h4 : (0:ℝ) ≤ 3 / (m : ℝ) ^ 4 := by positivity
+  have e3 : 3 / (m : ℝ) ^ 4 = 3 * (1 / (m : ℝ) ^ 4) := by ring
+  have e4 : 3 / (m : ℝ) ^ 3 = 3 * (1 / (m : ℝ) ^ 3) := by ring
+  have e6 : 6 / (m : ℝ) ^ 3 = 6 * (1 / (m : ℝ) ^ 3) := by ring
+  rw [abs_of_nonpos (by linarith)]
+  linarith
+
 end TypeII
 end Geometric
 end EuclidsPath

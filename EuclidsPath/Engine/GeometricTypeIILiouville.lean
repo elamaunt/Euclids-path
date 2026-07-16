@@ -176,6 +176,77 @@ theorem rough_liouville_dichotomy {y n : ℕ} (hn1 : 1 < n) (hn3 : n < y ^ 3)
     omega
   omega
 
+/-! ## The corner-form discharge: target B shrinks to ONE sign condition (§12 / §68)
+
+The registered target `OneWingTarget` bundles six conjuncts.  Below, five of them are discharged
+CONSTRUCTIVELY: the corner-form count identity `T = |I| − B₋ − B₊ + C` is exact inclusion–exclusion
+over ANY finite window, `C ≥ 0` is a cardinality, and the `L`-relations are definitional.  The
+surviving open content of target B is exactly ONE analytic sign condition — cofinally there is a
+window above `N` with FEWER composite wings than window points (`B₋ + B₊ < |I|`, i.e. the mean
+composite-wing count is below 1; on the rough set this IS the negative Liouville bias
+`L₋ + L₊ < 0`).
+
+HONESTY. The intended windows are the PAIR-ROUGH sets (where every wing has `Ω ∈ {1,2}`, composite
+means semiprime, and the dossier's `1 : log 2` heuristic margin makes the sign condition the
+plausible open content); for RAW windows the condition is expected to FAIL for large `N` (prime
+density decays) — choosing a good window family is part of the open problem, not discharged here.
+This is a §110 criterion-C event on the REGISTERED target B: to close `OneWingTarget` it now
+suffices to prove the single sign condition.  No equivalence is claimed, and no new open `Prop`
+is introduced (the sign condition is a PREMISE of a theorem, phrased in the target's own
+vocabulary). -/
+
+/-- **The corner-form count identity (§12).** Exact inclusion–exclusion over ANY finite window:
+    `#twin = |I| − B₋ − B₊ + C` with `B∓` the composite-wing counts and `C` the both-composite
+    count. -/
+theorem window_corner_identity (I : Finset ℕ) :
+    ((I.filter fun m => (6 * m - 1).Prime ∧ (6 * m + 1).Prime).card : ℝ)
+      = (I.card : ℝ)
+        - ((I.filter fun m => ¬ (6 * m - 1).Prime).card : ℝ)
+        - ((I.filter fun m => ¬ (6 * m + 1).Prime).card : ℝ)
+        + ((I.filter fun m => ¬ (6 * m - 1).Prime ∧ ¬ (6 * m + 1).Prime).card : ℝ) := by
+  classical
+  have hcast : ∀ (P : ℕ → Prop) (_ : DecidablePred P),
+      ((I.filter P).card : ℝ) = ∑ m ∈ I, (if P m then (1 : ℝ) else 0) := by
+    intro P hP
+    rw [Finset.card_filter]
+    push_cast
+    rfl
+  rw [hcast _ _, hcast _ _, hcast _ _, hcast _ _]
+  have hcard : (I.card : ℝ) = ∑ _m ∈ I, (1 : ℝ) := by
+    rw [Finset.sum_const, nsmul_eq_mul, mul_one]
+  rw [hcard, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro m _
+  by_cases h1 : (6 * m - 1).Prime <;> by_cases h2 : (6 * m + 1).Prime <;> simp [h1, h2]
+
+/-- **Target B shrinks to one sign condition (§12/§68, criterion C on a registered target).**
+    If cofinally there is a window above `N` whose composite-wing counts satisfy
+    `B₋ + B₊ < |I|` (mean composite-wing count `< 1` — on the rough set, exactly the negative
+    Liouville bias `L₋ + L₊ < 0`), then `OneWingTarget` holds.  All other conjuncts of the
+    target are discharged constructively by `window_corner_identity`. -/
+theorem oneWingTarget_of_sign
+    (H : ∀ N : ℕ, ∃ I : Finset ℕ, (∀ m ∈ I, N < m) ∧
+      (I.filter fun m => ¬ (6 * m - 1).Prime).card
+        + (I.filter fun m => ¬ (6 * m + 1).Prime).card < I.card) :
+    OneWingTarget := by
+  intro N
+  obtain ⟨I, hN, hsign⟩ := H N
+  classical
+  refine ⟨I, (I.card : ℝ),
+    ((I.filter fun m => ¬ (6 * m - 1).Prime).card : ℝ),
+    ((I.filter fun m => ¬ (6 * m + 1).Prime).card : ℝ),
+    ((I.filter fun m => ¬ (6 * m - 1).Prime ∧ ¬ (6 * m + 1).Prime).card : ℝ),
+    2 * ((I.filter fun m => ¬ (6 * m - 1).Prime).card : ℝ) - (I.card : ℝ),
+    2 * ((I.filter fun m => ¬ (6 * m + 1).Prime).card : ℝ) - (I.card : ℝ),
+    hN, rfl, rfl, by positivity, ?_, ?_⟩
+  · -- the sign condition
+    have hs : ((I.filter fun m => ¬ (6 * m - 1).Prime).card : ℝ)
+        + ((I.filter fun m => ¬ (6 * m + 1).Prime).card : ℝ) < (I.card : ℝ) := by
+      exact_mod_cast hsign
+    linarith
+  · -- the corner-form count identity
+    exact window_corner_identity I
+
 end TypeII
 end Geometric
 end EuclidsPath

@@ -504,6 +504,75 @@ theorem root_remainder_prime_bound {p : ℕ} [Fact p.Prime] (hp2 : 2 < p) {M : �
       ≤ (p : ℝ) * Real.sqrt (2 * M) := habs
     _ = Real.sqrt (2 * M) * p := by ring
 
+/-! ## Full-period annihilation (criterion A on the remainder's own object)
+
+When the window length is COMMENSURABLE with the modulus (`q ∣ M`), the entire `h ≠ 0` Fourier
+tail of the short root-count remainder vanishes EXACTLY: every nonzero-frequency interval weight
+is a whole number of full geometric cycles.  Machine consequence: the open content of the root
+remainder (residuals C/E) lives ONLY in the INCOMMENSURABLE sector `q ∤ M`.
+DISCLOSURE: this confines, it does not reduce — the critical twin windows are incommensurable
+with almost all moduli, and nothing here bounds any signed sum; residuals C/D/E and `CRE` are
+unchanged. -/
+
+/-- The standard character is `1` only at `0` (any modulus). -/
+private theorem stdAddChar_ne_one {q : ℕ} [NeZero q] {x : ZMod q} (hx : x ≠ 0) :
+    ZMod.stdAddChar x ≠ 1 := by
+  intro hcon
+  have hval : (((x.val : ℤ)) : ZMod q) = x := by
+    push_cast
+    exact ZMod.natCast_rightInverse x
+  rw [← hval, ZMod.stdAddChar_coe, Complex.exp_eq_one_iff] at hcon
+  obtain ⟨k, hk⟩ := hcon
+  have hq0 : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne q)
+  have h2πI : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0 := by
+    have hπ : ((Real.pi : ℝ) : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
+    have hI : Complex.I ≠ 0 := Complex.I_ne_zero
+    exact mul_ne_zero (mul_ne_zero (by norm_num) hπ) hI
+  have hcancel : (x.val : ℂ) = (k : ℂ) * q := by
+    field_simp at hk
+    linear_combination hk
+  have hint : (x.val : ℤ) = k * q := by exact_mod_cast hcancel
+  have hv1 : 1 ≤ x.val := by
+    have h0 : x.val ≠ 0 := fun h => hx ((ZMod.val_eq_zero x).mp h)
+    omega
+  have hvq : x.val < q := ZMod.val_lt x
+  by_cases hk0 : k ≤ 0
+  · have hkq : k * (q : ℤ) ≤ 0 :=
+      mul_nonpos_of_nonpos_of_nonneg hk0 (by exact_mod_cast Nat.zero_le q)
+    omega
+  · push_neg at hk0
+    have hk1 : (1 : ℤ) ≤ k := hk0
+    have hkq : (q : ℤ) ≤ k * q := le_mul_of_one_le_left (by exact_mod_cast Nat.zero_le q) hk1
+    omega
+
+/-- **Full-period annihilation of the interval weight.** `q ∣ M ⟹ W_M(h) = 0` for every `h ≠ 0`:
+    a commensurable window sums whole geometric cycles. -/
+theorem intervalWeight_vanishes_of_dvd {q : ℕ} [NeZero q] {M : ℕ} (hqM : q ∣ M)
+    {h : ZMod q} (hh : h ≠ 0) : intervalWeight q M h = 0 := by
+  have hgeom := interval_weight_geom q M h
+  have hM0 : ((M : ℕ) : ZMod q) = 0 := by
+    rw [CharP.cast_eq_zero_iff (ZMod q) q M]
+    exact hqM
+  rw [hM0, mul_zero, neg_zero, AddChar.map_zero_eq_one, sub_self] at hgeom
+  have hne : ZMod.stdAddChar (-h) - 1 ≠ 0 := fun hc =>
+    stdAddChar_ne_one (neg_ne_zero.mpr hh) (sub_eq_zero.mp hc)
+  exact (mul_eq_zero.mp hgeom).resolve_right hne
+
+/-- **Full-period annihilation of the root remainder (criterion A).** `q ∣ M ⟹` the short root
+    count is EXACT: `q·#{m<M : m²≡1} = M·#{C : C²=1}` — the `h ≠ 0` tail vanishes identically.
+    The open content of residuals C/E is hereby confined to the incommensurable sector. -/
+theorem root_remainder_full_period {q : ℕ} [NeZero q] {M : ℕ} (hqM : q ∣ M) :
+    (q : ℂ) * (((Finset.range M).filter (fun (m : ℕ) => ((m : ZMod q)) ^ 2 = 1)).card : ℂ)
+      = (M : ℂ) * ((Finset.univ.filter (fun C : ZMod q => C ^ 2 = 1)).card : ℂ) := by
+  have hid := root_remainder_fourier q M
+  have htail : ∑ h ∈ Finset.univ.erase (0 : ZMod q),
+      intervalWeight q M h * rootFourier q h = 0 := by
+    apply Finset.sum_eq_zero
+    intro h hmem
+    rw [intervalWeight_vanishes_of_dvd hqM (Finset.ne_of_mem_erase hmem), zero_mul]
+  rw [htail, add_zero] at hid
+  exact hid
+
 end TypeII
 end Geometric
 end EuclidsPath

@@ -26,6 +26,7 @@
 -/
 import Mathlib
 import EuclidsPath.Step00_Overview
+import EuclidsPath.Engine.Residuals
 
 set_option autoImplicit false
 
@@ -105,6 +106,75 @@ structure OneWingProgram where
 theorem twins_of_oneWing (H : OneWingProgram) :
     ∀ N : ℕ, ∃ m : ℕ, N < m ∧ IsTwinCenter m :=
   twinCenters_cofinal_of_oneWing H.target
+
+/-! ## Grounding the rough hypothesis in actual integers (§10)
+
+The `Ω(n) ∈ {1,2}` hypothesis of `prime_liouville_form` is now DISCHARGED from real arithmetic:
+`n < y³` with all prime factors `> y` forces `Ω(n) ≤ 2` (three factors, each `> y`, would exceed
+`y³`), and `n < y²` forces primality.  This is exact bookkeeping: it grounds the dichotomy on the
+actual rough set and NOTHING MORE — it carries NO information about the SIGN or the size of the
+one-wing Liouville bias `L₋ + L₊`; the open content of `OneWingTarget` (pair-rough positivity plus
+the negative bias) is untouched and is NOT made more plausible by this grounding. -/
+
+/-- A product of naturals, each `> y`, is at least `(y+1)^length`. -/
+private theorem le_prod_of_forall_lt {y : ℕ} :
+    ∀ l : List ℕ, (∀ x ∈ l, y < x) → (y + 1) ^ l.length ≤ l.prod := by
+  intro l
+  induction l with
+  | nil => intro _; simp
+  | cons x t ih =>
+    intro h
+    rw [List.prod_cons, List.length_cons, pow_succ]
+    have hx : y + 1 ≤ x := h x List.mem_cons_self
+    have ht := ih fun z hz => h z (List.mem_cons_of_mem x hz)
+    calc (y + 1) ^ t.length * (y + 1) ≤ t.prod * x := Nat.mul_le_mul ht hx
+      _ = x * t.prod := Nat.mul_comm _ _
+
+/-- **Rough numbers below `y³` have `Ω ≤ 2` (§10).** If `1 < n < y³` and every prime factor of
+    `n` exceeds `y`, then `Ω(n) ≤ 2`: three prime factors, each `> y`, would force `n > y³`. -/
+theorem rough_omega_le_two {y n : ℕ} (hn1 : 1 < n) (hn3 : n < y ^ 3)
+    (hrough : ∀ p : ℕ, p.Prime → p ∣ n → y < p) :
+    cardFactors n ≤ 2 := by
+  by_contra hcon
+  push_neg at hcon
+  have hn0 : n ≠ 0 := by omega
+  have hall : ∀ x ∈ n.primeFactorsList, y < x := fun x hx =>
+    hrough x (Nat.prime_of_mem_primeFactorsList hx) (Nat.dvd_of_mem_primeFactorsList hx)
+  have hprod : n.primeFactorsList.prod = n := Nat.prod_primeFactorsList hn0
+  have hge : (y + 1) ^ n.primeFactorsList.length ≤ n := by
+    calc (y + 1) ^ n.primeFactorsList.length ≤ n.primeFactorsList.prod :=
+        le_prod_of_forall_lt _ hall
+      _ = n := hprod
+  have hlen : cardFactors n = n.primeFactorsList.length := ArithmeticFunction.cardFactors_apply
+  have h3 : 3 ≤ n.primeFactorsList.length := by omega
+  have hpow : y ^ 3 < (y + 1) ^ 3 := Nat.pow_lt_pow_left (by omega) (by norm_num)
+  have hmono : (y + 1) ^ 3 ≤ (y + 1) ^ n.primeFactorsList.length :=
+    Nat.pow_le_pow_right (by omega) h3
+  omega
+
+/-- **Rough numbers below `y²` are prime (§10).** Reuses `Residuals.oldfree_below_sq_prime`. -/
+theorem prime_of_rough_small {y n : ℕ} (hn2 : 2 ≤ n) (hny : n < y ^ 2)
+    (hrough : ∀ p : ℕ, p.Prime → p ∣ n → y < p) : n.Prime := by
+  rw [pow_two] at hny
+  exact Residuals.oldfree_below_sq_prime hn2 hny
+    (fun q hq hqy hdvd => absurd (hrough q hq hdvd) (by omega))
+
+/-- **The rough Liouville dichotomy, grounded (§10).** On the ACTUAL rough set
+    (`1 < n < y³`, all prime factors `> y`) the prime indicator equals `(1 − (−1)^{Ω(n)})/2` —
+    the `Ω ∈ {1,2}` hypothesis of `prime_liouville_form` is discharged from real arithmetic. -/
+theorem rough_liouville_dichotomy {y n : ℕ} (hn1 : 1 < n) (hn3 : n < y ^ 3)
+    (hrough : ∀ p : ℕ, p.Prime → p ∣ n → y < p) :
+    (if n.Prime then (1 : ℝ) else 0) = (1 - (-1) ^ (cardFactors n)) / 2 := by
+  apply prime_liouville_form
+  have h2 := rough_omega_le_two hn1 hn3 hrough
+  have h1 : 1 ≤ cardFactors n := by
+    obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : n ≠ 1)
+    have hmem : p ∈ n.primeFactorsList :=
+      (Nat.mem_primeFactorsList (by omega)).mpr ⟨hp, hpd⟩
+    have hlen : cardFactors n = n.primeFactorsList.length := ArithmeticFunction.cardFactors_apply
+    have : 0 < n.primeFactorsList.length := List.length_pos_of_mem hmem
+    omega
+  omega
 
 end TypeII
 end Geometric

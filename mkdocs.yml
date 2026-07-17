@@ -164,6 +164,7 @@ plugins:
             58. Профинитный скелет: 58. The profinite skeleton
             59. Геометрический маршрут: 59. The geometric route
             60. Стена Type II: 60. The Type II wall
+            61. Твин-многообразие: 61. The twin variety
 
 nav:
   - Главная: index.md
@@ -238,6 +239,7 @@ nav:
       - 58. Профинитный скелет: 58_ProfiniteSkeleton.md
       - 59. Геометрический маршрут: 59_GeometricRoute.md
       - 60. Стена Type II: 60_TypeIIWall.md
+      - 61. Твин-многообразие: 61_TwinVariety.md
 
 extra:
   social:

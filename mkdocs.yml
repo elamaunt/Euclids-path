@@ -165,6 +165,7 @@ plugins:
             59. Геометрический маршрут: 59. The geometric route
             60. Стена Type II: 60. The Type II wall
             61. Твин-многообразие: 61. The twin variety
+            62. Дилатационная лестница: 62. The dilation ladder
 
 nav:
   - Главная: index.md
@@ -240,6 +241,7 @@ nav:
       - 59. Геометрический маршрут: 59_GeometricRoute.md
       - 60. Стена Type II: 60_TypeIIWall.md
       - 61. Твин-многообразие: 61_TwinVariety.md
+      - 62. Дилатационная лестница: 62_DilationLadder.md
 
 extra:
   social:

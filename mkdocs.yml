@@ -162,6 +162,7 @@ plugins:
             56. Первопричина Коллатца: 56. The Collatz first cause
             57. Канон вполне-фундированности: 57. The well-foundedness canon
             58. Профинитный скелет: 58. The profinite skeleton
+            59. Геометрический маршрут: 59. The geometric route
 
 nav:
   - Главная: index.md
@@ -234,6 +235,7 @@ nav:
       - 56. Первопричина Коллатца: 56_CollatzFirstCause.md
       - 57. Канон вполне-фундированности: 57_WellFoundednessCanon.md
       - 58. Профинитный скелет: 58_ProfiniteSkeleton.md
+      - 59. Геометрический маршрут: 59_GeometricRoute.md
 
 extra:
   social:

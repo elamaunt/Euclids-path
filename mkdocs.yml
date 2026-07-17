@@ -163,6 +163,7 @@ plugins:
             57. Канон вполне-фундированности: 57. The well-foundedness canon
             58. Профинитный скелет: 58. The profinite skeleton
             59. Геометрический маршрут: 59. The geometric route
+            60. Стена Type II: 60. The Type II wall
 
 nav:
   - Главная: index.md
@@ -236,6 +237,7 @@ nav:
       - 57. Канон вполне-фундированности: 57_WellFoundednessCanon.md
       - 58. Профинитный скелет: 58_ProfiniteSkeleton.md
       - 59. Геометрический маршрут: 59_GeometricRoute.md
+      - 60. Стена Type II: 60_TypeIIWall.md
 
 extra:
   social:

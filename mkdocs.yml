@@ -167,6 +167,7 @@ plugins:
             61. Твин-многообразие: 61. The twin variety
             62. Дилатационная лестница: 62. The dilation ladder
             63. Тропа Бруна: 63. The Brun track
+            64. Составное ядро: 64. The composite core
 
 nav:
   - Главная: index.md
@@ -244,6 +245,7 @@ nav:
       - 61. Твин-многообразие: 61_TwinVariety.md
       - 62. Дилатационная лестница: 62_DilationLadder.md
       - 63. Тропа Бруна: 63_BrunTrack.md
+      - 64. Составное ядро: 64_CompositeCore.md
 
 extra:
   social:

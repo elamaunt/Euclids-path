@@ -20,9 +20,16 @@
     * `twins_of_oneWing` — `OneWingProgram ⟹ ∀ N, ∃ m > N, IsTwinCenter m` (green-conditional, the
       SECOND 🔴 target).
 
-  DISCLOSURE. `OneWingTarget` is an open analytic input (a named `Prop`, not a `sorry`); the
-  heuristic `1 : log 2` margin (§13) is NOT a proved asymptotic.  Nothing here proves twins.
-  twin sorry untouched.
+  DISCLOSURE. `OneWingTarget` is an open analytic input (a named `Prop`, not a `sorry`).  The §13
+  heuristic (`1 : log 2` margin) is now a PER-WING THEOREM at count level: on the FULL rough minus
+  window with `X^7 ≤ z^20 ≤ X^9`, eventually `Σ λ(6m−1) ≤ −(1/40)·X/log X`
+  (`minus_wing_sign`, Engine/GeometricTypeIIWingSign — unconditional, axiom-clean, via the
+  campaign's PNT-in-progressions `apCount_mul_log_div_tendsto`; the plus wing is named, unclaimed
+  work).  This does NOT discharge, shrink, or reweight `OneWingTarget`: the target needs BOTH wings
+  rough on ONE window with SUMMED negative bias (`L_− + L_+ < 0` against the SAME pair-rough `A`),
+  and any valid instantiation forces twin-count > 0 by pigeonhole — the surviving open core is
+  exactly the PAIR-ROUGH two-wing coupling; three per-wing→pair-rough bridges were refuted.
+  Nothing here proves twins.  twin sorry untouched.
 -/
 import Mathlib
 import EuclidsPath.Step00_Overview

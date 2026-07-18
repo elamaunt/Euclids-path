@@ -352,13 +352,14 @@ theorem rungClass_or (p : ℕ) : rungClass p = 1 ∨ rungClass p = 5 := by
   split <;> simp
 
 /-- The per-rung `apCount` cap on slice `i`, with the `1/80`-notch weight
-`80/(49−2i)` absorbing the ℕ-division `log 2` slop. -/
-theorem slice_apCount_le {X z i p : ℕ} {ε : ℝ} (hε : 0 < ε)
-    (hXbig : 2 ^ 80 ≤ X) (hi : i < 6)
+`80/(49−2i)` absorbing the ℕ-division `log 2` slop.  Class-agnostic:
+`c` is any unit class mod 6 (both wings instantiate it). -/
+theorem slice_apCount_le {X z i p c : ℕ} {ε : ℝ} (hε : 0 < ε)
+    (hXbig : 2 ^ 80 ≤ X) (hi : i < 6) (hc : c = 1 ∨ c = 5)
     (hup : ∀ a : ℕ, a = 1 ∨ a = 5 → ∀ m : ℕ, z < m →
       (apCount a m : ℝ) * (2 * Real.log m) ≤ (1 + ε) * m)
     (hp : p ∈ rungSlice X z i) :
-    (apCount (rungClass p) (X / p) : ℝ)
+    (apCount c (X / p) : ℝ)
       ≤ (1 + ε) * (80 / (49 - 2 * (i : ℝ)))
           * ((X : ℝ) / ((p : ℝ) * (2 * Real.log X))) := by
   have hX : 2 ≤ X := le_trans (by norm_num) hXbig
@@ -436,7 +437,7 @@ theorem slice_apCount_le {X z i p : ℕ} {ε : ℝ} (hε : 0 < ε)
       exact hlog_half
     linarith
   -- (3) the interface at scale m, then the two monotonicities
-  have happly := hup (rungClass p) (rungClass_or p) m hzm
+  have happly := hup c hc m hzm
   set T : ℝ := (1 + ε) * (80 / (49 - 2 * (i : ℝ)))
       * ((X : ℝ) / ((p : ℝ) * (2 * Real.log X))) with hTdef
   have hT0 : 0 ≤ T := by
@@ -493,12 +494,16 @@ theorem wingK_le : wingK ≤ 0.925 := by
 /-! ### Layer 6: the assembled semiprime bound and THE CROWN -/
 
 /-- The full rung-sum cap: `Σ_p apCount(c_p, X/p) ≤
-(1+ε)·(X/(2 log X))·wingK·(1 + 80/log X)`. -/
-theorem rung_sum_le {X z : ℕ} {ε : ℝ} (hε : 0 < ε) (hXbig : 2 ^ 80 ≤ X)
+(1+ε)·(X/(2 log X))·wingK·(1 + 80/log X)`.  Class-agnostic: `cf` is any
+unit-class assignment (the minus wing passes `rungClass`, the plus wing
+its own). -/
+theorem rung_sum_le {X z : ℕ} {ε : ℝ} (cf : ℕ → ℕ)
+    (hcf : ∀ p : ℕ, cf p = 1 ∨ cf p = 5)
+    (hε : 0 < ε) (hXbig : 2 ^ 80 ≤ X)
     (h14 : X ^ 14 ≤ z ^ 40)
     (hup : ∀ a : ℕ, a = 1 ∨ a = 5 → ∀ m : ℕ, z < m →
       (apCount a m : ℝ) * (2 * Real.log m) ≤ (1 + ε) * m) :
-    ∑ p ∈ rungPrimes X z, (apCount (rungClass p) (X / p) : ℝ)
+    ∑ p ∈ rungPrimes X z, (apCount (cf p) (X / p) : ℝ)
       ≤ (1 + ε) * ((X : ℝ) / (2 * Real.log X)) * wingK
           * (1 + 80 / Real.log X) := by
   have hX : 2 ≤ X := le_trans (by norm_num) hXbig
@@ -513,17 +518,18 @@ theorem rung_sum_le {X z : ℕ} {ε : ℝ} (hε : 0 < ε) (hXbig : 2 ^ 80 ≤ X)
       (Finset.mem_coe.mp hj) hij
   rw [rungPrimes_eq_biUnion_slices hX h14, Finset.sum_biUnion hdisj]
   have hper : ∀ i ∈ Finset.range 6,
-      ∑ p ∈ rungSlice X z i, (apCount (rungClass p) (X / p) : ℝ)
+      ∑ p ∈ rungSlice X z i, (apCount (cf p) (X / p) : ℝ)
         ≤ ((1 + ε) * ((X : ℝ) / (2 * Real.log X)) * (1 + 80 / Real.log X))
             * ((80 / (49 - 2 * (i : ℝ))) * (Real.log 4 / (14 + (i : ℝ)))) := by
     intro i hi
     have hi6 : i < 6 := Finset.mem_range.mp hi
     have hi5 : (i : ℝ) ≤ 5 := by exact_mod_cast Nat.lt_succ_iff.mp hi6
     have h49 : (0 : ℝ) < 49 - 2 * (i : ℝ) := by linarith
-    have hstep1 : ∑ p ∈ rungSlice X z i, (apCount (rungClass p) (X / p) : ℝ)
+    have hstep1 : ∑ p ∈ rungSlice X z i, (apCount (cf p) (X / p) : ℝ)
         ≤ ∑ p ∈ rungSlice X z i, (1 + ε) * (80 / (49 - 2 * (i : ℝ)))
             * ((X : ℝ) / ((p : ℝ) * (2 * Real.log X))) :=
-      Finset.sum_le_sum fun p hp => slice_apCount_le hε hXbig hi6 hup hp
+      Finset.sum_le_sum fun p hp =>
+        slice_apCount_le hε hXbig hi6 (hcf p) hup hp
     have hstep2 : ∑ p ∈ rungSlice X z i, (1 + ε) * (80 / (49 - 2 * (i : ℝ)))
           * ((X : ℝ) / ((p : ℝ) * (2 * Real.log X)))
         = ((1 + ε) * (80 / (49 - 2 * (i : ℝ)))
@@ -539,7 +545,7 @@ theorem rung_sum_le {X z : ℕ} {ε : ℝ} (hε : 0 < ε) (hXbig : 2 ^ 80 ≤ X)
         (div_nonneg (by norm_num) h49.le))
       positivity
     have hstep3 := slice_inv_sum_le (X := X) (z := z) (i := i) hXbig hi6
-    calc ∑ p ∈ rungSlice X z i, (apCount (rungClass p) (X / p) : ℝ)
+    calc ∑ p ∈ rungSlice X z i, (apCount (cf p) (X / p) : ℝ)
         ≤ ((1 + ε) * (80 / (49 - 2 * (i : ℝ)))
               * ((X : ℝ) / (2 * Real.log X)))
             * ∑ p ∈ rungSlice X z i, ((p : ℝ))⁻¹ := by
@@ -556,7 +562,7 @@ theorem rung_sum_le {X z : ℕ} {ε : ℝ} (hε : 0 < ε) (hXbig : 2 ^ 80 ≤ X)
           field_simp [h49.ne', hlogX.ne']
           ring
   calc ∑ i ∈ Finset.range 6, ∑ p ∈ rungSlice X z i,
-        (apCount (rungClass p) (X / p) : ℝ)
+        (apCount (cf p) (X / p) : ℝ)
       ≤ ∑ i ∈ Finset.range 6,
           ((1 + ε) * ((X : ℝ) / (2 * Real.log X)) * (1 + 80 / Real.log X))
             * ((80 / (49 - 2 * (i : ℝ))) * (Real.log 4 / (14 + (i : ℝ)))) :=
@@ -691,7 +697,7 @@ theorem minus_wing_sign_of_apPNT
       _ = ∑ p ∈ rungPrimes X z, (apCount (rungClass p) (X / p) : ℝ) := by
           push_cast
           rfl
-  have hSup := rung_sum_le (X := X) (z := z)
+  have hSup := rung_sum_le (X := X) (z := z) rungClass rungClass_or
     (by norm_num : (0 : ℝ) < 1 / 1000) hbig h14 hup
   -- numeric assembly
   have h80 : 80 / Real.log X ≤ 1 / 100 := by

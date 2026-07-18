@@ -18,3 +18,4 @@ tools/fractal/__pycache__/
 /all_names.txt
 /euclids_decls.tsv
 scripts/__pycache__/
+tools/__pycache__/

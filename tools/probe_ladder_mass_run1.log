@@ -1,0 +1,39 @@
+[   0.0s] sieving lam+minFac to N=1000000002 ...
+[ 166.5s] sieve done
+
+(1) exact fibered identity at X=1000000: FullSum = 236
+  z=  10: Lx=     323  A=  428571  Lx/A=+0.0008  sum nodes=     -87  identity: EXACT MATCH
+  z=  30: Lx=     474  A=  199116  Lx/A=+0.0024  sum nodes=    -238  identity: EXACT MATCH
+  z= 100: Lx=    3760  A=  115078  Lx/A=+0.0327  sum nodes=   -3524  identity: EXACT MATCH
+
+(2) mass ledger:
+  fibered ladder: partition at every level -> l1 mass == 1 (exact).
+  I-E unroll to unconstrained sums: M_IE(z) = prod_(5<=p<=z)(1+2/p):
+  z=    10: M_IE=    1.800   M/log z=  0.782   M/log^2 z= 0.3395
+  z=    30: M_IE=    3.523   M/log z=  1.036   M/log^2 z= 0.3045
+  z=   100: M_IE=    5.975   M/log z=  1.297   M/log^2 z= 0.2817
+  z=   300: M_IE=    9.070   M/log z=  1.590   M/log^2 z= 0.2788
+  z=  1000: M_IE=   13.128   M/log z=  1.900   M/log^2 z= 0.2751
+  z=  3000: M_IE=   17.575   M/log z=  2.195   M/log^2 z= 0.2742
+  z= 10000: M_IE=   23.207   M/log z=  2.520   M/log^2 z= 0.2736
+  z= 30000: M_IE=   29.024   M/log z=  2.815   M/log^2 z= 0.2731
+  (M/log^2 z stabilizing => clean log^2 growth for the I-E organization)
+
+(3) dilated correlations D(p) = sum_(k<=K) lam(k) lam(pk+2), K=1e+07:
+  p=  1: D(p)=    1246   D/sqrt(K)= +0.394
+  p=  5: D(p)=   -5980   D/sqrt(K)= -1.891
+  p=  7: D(p)=     456   D/sqrt(K)= +0.144
+  p= 11: D(p)=     468   D/sqrt(K)= +0.148
+  p= 13: D(p)=    -808   D/sqrt(K)= -0.256
+  p= 17: D(p)=     782   D/sqrt(K)= +0.247
+  p= 19: D(p)=   -1962   D/sqrt(K)= -0.620
+  p= 23: D(p)=    3014   D/sqrt(K)= +0.953
+  p= 29: D(p)=    3632   D/sqrt(K)= +1.149
+  p= 31: D(p)=    -900   D/sqrt(K)= -0.285
+  p= 41: D(p)=    2440   D/sqrt(K)= +0.772
+  p= 53: D(p)=   -3318   D/sqrt(K)= -1.049
+  p= 71: D(p)=   -4116   D/sqrt(K)= -1.302
+  p= 97: D(p)=   -3462   D/sqrt(K)= -1.095
+  p-average over dilations (p>1): -750   normalized -0.237
+
+[ 169.8s] done

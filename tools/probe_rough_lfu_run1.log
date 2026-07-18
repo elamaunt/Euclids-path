@@ -1,0 +1,34 @@
+
+=== H=10000, z=100  (mean |R| = 1202) ===
+  G at rationals   : median |G|/|R| = 0.0329  q95 = 0.1221   (structural peaks present)
+  F at rationals   : median |F|/sqrt|R| = 0.828  q95 = 1.730  max = 3.343
+  F at random alpha: median = 0.855  q95 = 1.724  max = 2.694
+  rho = q95(F rational)/q95(F random) = 1.003
+  [    4.1s]
+
+=== H=10000, z=3000  (mean |R| = 678) ===
+  G at rationals   : median |G|/|R| = 0.0397  q95 = 0.1248   (structural peaks present)
+  F at rationals   : median |F|/sqrt|R| = 0.965  q95 = 2.445  max = 19.341
+  F at random alpha: median = 0.790  q95 = 1.635  max = 2.912
+  rho = q95(F rational)/q95(F random) = 1.495
+  [    7.0s]
+
+=== H=100000, z=100  (mean |R| = 12033) ===
+  G at rationals   : median |G|/|R| = 0.0292  q95 = 0.1243   (structural peaks present)
+  F at rationals   : median |F|/sqrt|R| = 0.837  q95 = 1.743  max = 6.241
+  F at random alpha: median = 0.824  q95 = 1.721  max = 2.893
+  rho = q95(F rational)/q95(F random) = 1.013
+  [   36.7s]
+
+=== H=100000, z=3000  (mean |R| = 6792) ===
+  G at rationals   : median |G|/|R| = 0.0311  q95 = 0.1226   (structural peaks present)
+  F at rationals   : median |F|/sqrt|R| = 1.746  q95 = 6.297  max = 56.205
+  F at random alpha: median = 0.764  q95 = 1.596  max = 3.073
+  rho = q95(F rational)/q95(F random) = 3.945
+  [   54.3s]
+
+=== SUMMARY ===
+  H= 10000 z=  100: rho = 1.003
+  H= 10000 z= 3000: rho = 1.495
+  H=100000 z=  100: rho = 1.013
+  H=100000 z= 3000: rho = 3.945

@@ -1,0 +1,19 @@
+[   0.0s] minFac sieve to N=60000002 ...
+[   0.8s] sieve done
+
+ z | graph      | vertices | giant frac | gap 1-sigma2
+   300 | full       |   302425 |     0.5169 | 0.160278   [   1.5s]
+   300 | restricted |    78247 |     0.5169 | 0.122867   [   1.5s]
+        -> kept fraction 0.259, gap ratio g(z) = 0.767
+  1000 | full       |   284139 |     0.5060 | 0.160583   [   1.9s]
+  1000 | restricted |    60280 |     0.5060 | 0.143394   [   1.9s]
+        -> kept fraction 0.212, gap ratio g(z) = 0.893
+  3000 | full       |   213626 |     0.5078 | 0.153489   [   2.1s]
+  3000 | restricted |    37259 |     0.5076 | 0.142762   [   2.1s]
+        -> kept fraction 0.174, gap ratio g(z) = 0.930
+
+=== SUMMARY ===
+  z=  300: kept=0.259  restricted-giant=0.517  gap-ratio=0.767
+  z= 1000: kept=0.212  restricted-giant=0.506  gap-ratio=0.893
+  z= 3000: kept=0.174  restricted-giant=0.508  gap-ratio=0.930
+[   2.1s] done

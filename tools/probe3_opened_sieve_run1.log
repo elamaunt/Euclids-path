@@ -1,0 +1,50 @@
+[     0.0s] sieving lambda up to N=600000001 ...
+[    39.1s] sieve done
+[    39.4s] F(m) built, lambda array freed
+[    39.4s] anchor: sum F(m), m<=1e6  = 236   (wave-1 value: 236)
+[    39.4s] anchor: sum F(m), m<=3e7  = 3918   (wave-1 value: 3918)
+[    39.4s] full:   sum F(m), m<=1e8  = 19350   sqrt(X) = 10000
+[    39.4s] (a) LHS: exact pair-rough sums via trial division, z in {10,20,30}
+[    46.6s]     LHS(z=10) = -8110
+[    46.6s]     LHS(z=20) = -562
+[    46.6s]     LHS(z=30) = 1149
+[    46.6s] (a) RHS: enumerating all 256 squarefree d | P(30) with root sums
+[    47.2s]     256 moduli done (largest d = 1078282205)
+
+--- (a) EXACT IDENTITY CHECK ---
+  z=10: LHS =      -8110   RHS =      -8110   moduli =   4   EXACT MATCH: True
+  z=20: LHS =       -562   RHS =       -562   moduli =  64   EXACT MATCH: True
+  z=30: LHS =       1149   RHS =       1149   moduli = 256   EXACT MATCH: True
+
+--- (b) CONTRACTION MEASUREMENT (z=30, 256 moduli ordered by d) ---
+    k    d_k          err(k)      noise(k)   ratio   ratio_no_d1
+   32        377         135.9       17810.0   0.008    0.009
+   64       2261        -101.6       18476.9   0.005    0.007  <- quartile
+   96       8855       -4235.5       18655.4   0.227    0.269
+  128      32045       -3296.1       18728.5   0.176    0.208  <- quartile
+  160     115115       -2967.6       18754.8   0.158    0.187
+  192     443555       -2841.7       18765.8   0.151    0.179  <- quartile
+  224    2800733       -2626.7       18769.1   0.140    0.165
+  256  1078282205       -2704.0       18769.8   0.144    0.170  <- quartile
+[    47.2s] (c) composite scan: all squarefree (d,6)=1, d <= 10^4
+[    47.2s]     3042 moduli; workload Sum 2^om/d = 6.96 passes over X
+[    48.9s]     ... 1000/3042 moduli
+[    49.4s]     ... 2000/3042 moduli
+[    49.7s]     ... 3000/3042 moduli
+[    49.7s]     composite scan done
+
+--- (c) COMPOSITE E(d) SCAN: r(d) = |E(d)|/sqrt(2^om X/d) by omega ---
+  (Gaussian-pure benchmark: E|N(0,1)| = 0.798)
+  omega=1: n= 1227  mean=0.801  median=0.670  q95=2.020  max=3.678
+  omega=2: n= 1464  mean=0.811  median=0.671  q95=2.056  max=3.414
+  omega=3: n=  345  mean=0.854  median=0.732  q95=2.048  max=4.182
+  omega=4: n=    6  mean=0.588  median=0.498  q95=1.117  max=1.145
+
+--- PRE-REGISTERED VERDICT (mechanical) ---
+  identity exact (all z):        True
+  quartile ratios:               ['0.005', '0.176', '0.151', '0.144']
+  contraction in [0.3,3] all q:  False   (kill >10: False)
+  r-mean omega=2: 0.811  omega=3: 0.854  in [0.5,1.2]: True   (kill >2: False)
+
+VERDICT: AMBIGUOUS
+[    49.7s] done

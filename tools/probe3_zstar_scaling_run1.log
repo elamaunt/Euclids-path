@@ -1,0 +1,73 @@
+PROBE W3-3: z*(X) cube-root scaling law (NWIN=40, z-grid ratio 1.3 from 50 to 3*X^(1/3))
+Farey fractions q<=48: 711
+thresholds: frac(Omega<=2) >= 0.999, corr >= 0.99
+
+########## X = 1e+07  H = 30000  pred z* = (0.75X)^(1/3) = 196 ##########
+trial-division primes up to 3172 (count 449); z-grid (10 pts): [50, 65, 84, 110, 143, 186, 241, 314, 408, 530]
+[    0.2s] 40 windows sieved (x in [5.00e+06, 1.00e+07])
+  z=   50  mean|R|=    4161  fracOm<=2=0.93826  corr(peak,|SP|)=-0.763  windows=40  [    0.2s]
+  z=   65  mean|R|=    3947  fracOm<=2=0.95554  corr(peak,|SP|)= 0.741  windows=40  [    0.3s]
+  z=   84  mean|R|=    3686  fracOm<=2=0.97582  corr(peak,|SP|)= 0.983  windows=40  [    0.4s]
+  z=  110  mean|R|=    3474  fracOm<=2=0.98944  corr(peak,|SP|)= 0.993  windows=40  [    0.4s]
+  z=  143  mean|R|=    3344  fracOm<=2=0.99586  corr(peak,|SP|)= 0.997  windows=40  [    0.5s]
+  z=  186  mean|R|=    3195  fracOm<=2=0.99975  corr(peak,|SP|)= 1.000  windows=40  [    0.6s]
+  z=  241  mean|R|=    3050  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    0.6s]
+  z=  314  mean|R|=    2924  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    0.7s]
+  z=  408  mean|R|=    2806  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    0.8s]
+  z=  530  mean|R|=    2674  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    0.8s]
+X=1e+07: z_dich = 186  z_lock = 110  pred = 196
+
+########## X = 1e+08  H = 100000  pred z* = (0.75X)^(1/3) = 422 ##########
+trial-division primes up to 10010 (count 1231); z-grid (13 pts): [50, 65, 84, 110, 143, 186, 241, 314, 408, 530, 689, 896, 1165]
+[    1.4s] 40 windows sieved (x in [5.00e+07, 1.00e+08])
+  z=   50  mean|R|=   13869  fracOm<=2=0.89040  corr(peak,|SP|)=-0.116  windows=40  [    1.5s]
+  z=   65  mean|R|=   13159  fracOm<=2=0.91049  corr(peak,|SP|)=-0.475  windows=40  [    1.6s]
+  z=   84  mean|R|=   12294  fracOm<=2=0.93494  corr(peak,|SP|)=-0.858  windows=40  [    1.7s]
+  z=  110  mean|R|=   11573  fracOm<=2=0.95485  corr(peak,|SP|)=-0.074  windows=40  [    1.8s]
+  z=  143  mean|R|=   11128  fracOm<=2=0.96675  corr(peak,|SP|)= 0.928  windows=40  [    1.9s]
+  z=  186  mean|R|=   10593  fracOm<=2=0.97996  corr(peak,|SP|)= 0.964  windows=40  [    2.0s]
+  z=  241  mean|R|=   10070  fracOm<=2=0.99117  corr(peak,|SP|)= 0.989  windows=40  [    2.1s]
+  z=  314  mean|R|=    9664  fracOm<=2=0.99747  corr(peak,|SP|)= 0.997  windows=40  [    2.2s]
+  z=  408  mean|R|=    9324  fracOm<=2=0.99981  corr(peak,|SP|)= 1.000  windows=40  [    2.3s]
+  z=  530  mean|R|=    8960  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    2.4s]
+  z=  689  mean|R|=    8612  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    2.5s]
+  z=  896  mean|R|=    8282  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    2.6s]
+  z= 1165  mean|R|=    7953  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    2.7s]
+X=1e+08: z_dich = 408  z_lock = 314  pred = 422
+
+########## X = 1e+09  H = 300000  pred z* = (0.75X)^(1/3) = 909 ##########
+trial-division primes up to 31633 (count 3402); z-grid (16 pts): [50, 65, 84, 110, 143, 186, 241, 314, 408, 530, 689, 896, 1165, 1514, 1969, 2559]
+[    4.3s] 40 windows sieved (x in [5.00e+08, 1.00e+09])
+  z=   50  mean|R|=   41608  fracOm<=2=0.84411  corr(peak,|SP|)=-0.161  windows=40  [    4.5s]
+  z=   65  mean|R|=   39475  fracOm<=2=0.86537  corr(peak,|SP|)=-0.273  windows=40  [    4.8s]
+  z=   84  mean|R|=   36885  fracOm<=2=0.89213  corr(peak,|SP|)=-0.386  windows=40  [    5.0s]
+  z=  110  mean|R|=   34738  fracOm<=2=0.91474  corr(peak,|SP|)=-0.733  windows=40  [    5.3s]
+  z=  143  mean|R|=   33407  fracOm<=2=0.92865  corr(peak,|SP|)=-0.854  windows=40  [    5.5s]
+  z=  186  mean|R|=   31807  fracOm<=2=0.94540  corr(peak,|SP|)=-0.901  windows=40  [    5.7s]
+  z=  241  mean|R|=   30206  fracOm<=2=0.96181  corr(peak,|SP|)= 0.886  windows=40  [    5.9s]
+  z=  314  mean|R|=   28926  fracOm<=2=0.97431  corr(peak,|SP|)= 0.966  windows=40  [    6.1s]
+  z=  408  mean|R|=   27830  fracOm<=2=0.98394  corr(peak,|SP|)= 0.984  windows=40  [    6.3s]
+  z=  530  mean|R|=   26671  fracOm<=2=0.99260  corr(peak,|SP|)= 0.993  windows=40  [    6.6s]
+  z=  689  mean|R|=   25641  fracOm<=2=0.99805  corr(peak,|SP|)= 0.999  windows=40  [    6.7s]
+  z=  896  mean|R|=   24767  fracOm<=2=0.99992  corr(peak,|SP|)= 1.000  windows=40  [    6.9s]
+  z= 1165  mean|R|=   23942  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    7.1s]
+  z= 1514  mean|R|=   23121  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    7.3s]
+  z= 1969  mean|R|=   22357  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    7.5s]
+  z= 2559  mean|R|=   21538  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=40  [    7.6s]
+X=1e+09: z_dich = 896  z_lock = 530  pred = 909
+
+=== SUMMARY: z*(X) vs cube-root prediction ===
+      X        pred   z_dich  ratio_d   z_lock  ratio_l
+      1e+07      196      186    0.950      110    0.562
+      1e+08      422      408    0.967      314    0.745
+      1e+09      909      896    0.986      530    0.583
+
+fit slope log z_dich vs log X : 0.3414  (cube root = 0.3333; kill range outside [0.28, 0.39])
+fit slope log z_lock vs log X : 0.3414
+
+=== PRE-REGISTERED VERDICT ===
+  both indicators defined at all three X : True
+  all z*/pred within [1/1.3, 1.3]        : False  ([0.95, 0.562, 0.967, 0.745, 0.986, 0.583])
+  slope outside [0.28, 0.39] (kill)      : False
+  VERDICT: AMBIGUOUS
+[    7.6s] done

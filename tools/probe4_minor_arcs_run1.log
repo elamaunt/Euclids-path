@@ -1,0 +1,37 @@
+PROBE W4-4: large-q and minor-arc LFU with Arm-B model subtracted
+  H=100000, NWIN=50, x in [5e+07,1e+08], z in [1000, 3000]  (Omega<=2 guard: 1000^3 = 1.0e+09 > 1.0010e+08)
+  bands: ['B1[50,100)', 'B2[100,180)', 'B3[180,316]'] with 300 fractions each; 200 minor alphas (||aq|| > 1/(320q), q <= 316); 40 generic alphas (reference)
+  verdict rules: signal = all variance-adjusted ratios <= 1.5; kill = some band ratio >= 3.0 aggregate AND in >= 50% of windows
+[    0.2s] 10/50 windows sieved
+[    0.4s] 20/50 windows sieved
+[    0.5s] 30/50 windows sieved
+[    0.7s] 40/50 windows sieved
+[    0.9s] 50/50 windows sieved
+
+=== z=1000  (windows 50, mean |R| = 8150, mean prime fraction = 0.677) ===
+  generic reference: q95 resid = 1.632   q95 raw |F| = 1.701   (sqrt(4*pbar*(1-pbar)) = 0.935)
+  B1[50,100)    q95 resid = 1.587  VAR-ADJ RATIO = 0.972  (raw rho = 1.125; per-window ratio: median 1.031, frac >= 3: 0.00)
+  B2[100,180)   q95 resid = 1.621  VAR-ADJ RATIO = 0.993  (raw rho = 1.025; per-window ratio: median 1.044, frac >= 3: 0.00)
+  B3[180,316]   q95 resid = 1.620  VAR-ADJ RATIO = 0.993  (raw rho = 0.999; per-window ratio: median 1.054, frac >= 3: 0.00)
+  MINOR         q95 resid = 1.608  VAR-ADJ RATIO = 0.985  (raw rho = 0.993; per-window ratio: median 1.027, frac >= 3: 0.00)
+  [    5.3s]
+
+=== z=3000  (windows 50, mean |R| = 6785, mean prime fraction = 0.813) ===
+  generic reference: q95 resid = 1.335   q95 raw |F| = 1.627   (sqrt(4*pbar*(1-pbar)) = 0.779)
+  B1[50,100)    q95 resid = 1.345  VAR-ADJ RATIO = 1.008  (raw rho = 1.385; per-window ratio: median 1.030, frac >= 3: 0.00)
+  B2[100,180)   q95 resid = 1.368  VAR-ADJ RATIO = 1.025  (raw rho = 1.092; per-window ratio: median 1.036, frac >= 3: 0.00)
+  B3[180,316]   q95 resid = 1.348  VAR-ADJ RATIO = 1.010  (raw rho = 1.010; per-window ratio: median 1.035, frac >= 3: 0.00)
+  MINOR         q95 resid = 1.346  VAR-ADJ RATIO = 1.008  (raw rho = 0.993; per-window ratio: median 1.011, frac >= 3: 0.00)
+  [    8.8s]
+
+=== SUMMARY TABLE (variance-adjusted q95 ratios band/generic) ===
+   z       B1[50,100)    B2[100,180)    B3[180,316]          MINOR
+ 1000           0.972          0.993          0.993          0.985
+ 3000           1.008          1.025          1.010          1.008
+
+=== PRE-REGISTERED VERDICT (mechanical) ===
+  all ratios <= 1.5 (both z, all bands incl MINOR): True
+  kill list (aggregate >= 3.0 AND >= 50% windows): empty
+  VERDICT: SIGNAL
+  Scope note: this verdict concerns ONLY the Fourier purity of the Arm-B residual at large-q rationals and on minor arcs. It does NOT move the parity wall (Chowla2LogHypothesis -> Chowla2Hypothesis).
+[    8.8s] done

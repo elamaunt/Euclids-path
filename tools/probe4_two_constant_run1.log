@@ -1,0 +1,144 @@
+PROBE W4-3: two-constant law for z_dich / z_lock (NWIN=50, z-grid ratio 1.15 from 30 to 3*X^(1/3))
+Farey fractions q<=48: 711
+thresholds: frac(Omega<=2) >= 0.999, corr >= 0.99
+registered: c_d in [0.90,1.05] each decade; c_l within +-20% of 4-decade mean; slopes in [0.31,0.36]
+
+########## X = 1e+06  H = 10000  pred z* = (0.75X)^(1/3) = 91 ##########
+trial-division primes up to 1010 (count 169); z-grid (17 pts): [30, 34, 40, 46, 52, 60, 69, 80, 92, 106, 121, 140, 161, 185, 212, 244, 281]
+[    0.1s] 50 windows sieved (x in [5.00e+05, 1.00e+06])
+  z=   30  mean|R|=    1580  fracOm<=2=0.94392  corr(peak,|SP|)=-0.101  windows=50  [    0.2s]
+  z=   34  mean|R|=    1529  fracOm<=2=0.95471  corr(peak,|SP|)= 0.744  windows=50  [    0.2s]
+  z=   40  mean|R|=    1487  fracOm<=2=0.96300  corr(peak,|SP|)= 0.898  windows=50  [    0.3s]
+  z=   46  mean|R|=    1416  fracOm<=2=0.97637  corr(peak,|SP|)= 0.984  windows=50  [    0.4s]
+  z=   52  mean|R|=    1387  fracOm<=2=0.98182  corr(peak,|SP|)= 0.990  windows=50  [    0.4s]
+  z=   60  mean|R|=    1338  fracOm<=2=0.98979  corr(peak,|SP|)= 0.994  windows=50  [    0.5s]
+  z=   69  mean|R|=    1298  fracOm<=2=0.99485  corr(peak,|SP|)= 0.997  windows=50  [    0.6s]
+  z=   80  mean|R|=    1249  fracOm<=2=0.99909  corr(peak,|SP|)= 1.000  windows=50  [    0.6s]
+  z=   92  mean|R|=    1222  fracOm<=2=0.99992  corr(peak,|SP|)= 1.000  windows=50  [    0.7s]
+  z=  106  mean|R|=    1188  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    0.8s]
+  z=  121  mean|R|=    1158  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    0.8s]
+  z=  140  mean|R|=    1124  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    0.9s]
+  z=  161  mean|R|=    1100  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    1.0s]
+  z=  185  mean|R|=    1066  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    1.0s]
+  z=  212  mean|R|=    1035  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    1.1s]
+  z=  244  mean|R|=    1003  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    1.2s]
+  z=  281  mean|R|=     970  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    1.2s]
+X=1e+06: z_dich = 80  z_lock = 52  pred = 91
+
+########## X = 1e+07  H = 30000  pred z* = (0.75X)^(1/3) = 196 ##########
+trial-division primes up to 3172 (count 449); z-grid (22 pts): [30, 34, 40, 46, 52, 60, 69, 80, 92, 106, 121, 140, 161, 185, 212, 244, 281, 323, 371, 427, 491, 565]
+[    1.5s] 50 windows sieved (x in [5.00e+06, 1.00e+07])
+  z=   30  mean|R|=    4739  fracOm<=2=0.89170  corr(peak,|SP|)=-0.247  windows=50  [    1.5s]
+  z=   34  mean|R|=    4585  fracOm<=2=0.90453  corr(peak,|SP|)=-0.268  windows=50  [    1.6s]
+  z=   40  mean|R|=    4462  fracOm<=2=0.91477  corr(peak,|SP|)=-0.396  windows=50  [    1.7s]
+  z=   46  mean|R|=    4252  fracOm<=2=0.93175  corr(peak,|SP|)=-0.682  windows=50  [    1.8s]
+  z=   52  mean|R|=    4162  fracOm<=2=0.93930  corr(peak,|SP|)=-0.770  windows=50  [    1.9s]
+  z=   60  mean|R|=    4014  fracOm<=2=0.95103  corr(peak,|SP|)=-0.174  windows=50  [    2.0s]
+  z=   69  mean|R|=    3888  fracOm<=2=0.96098  corr(peak,|SP|)= 0.940  windows=50  [    2.1s]
+  z=   80  mean|R|=    3732  fracOm<=2=0.97283  corr(peak,|SP|)= 0.968  windows=50  [    2.2s]
+  z=   92  mean|R|=    3645  fracOm<=2=0.97895  corr(peak,|SP|)= 0.978  windows=50  [    2.2s]
+  z=  106  mean|R|=    3539  fracOm<=2=0.98592  corr(peak,|SP|)= 0.986  windows=50  [    2.3s]
+  z=  121  mean|R|=    3444  fracOm<=2=0.99167  corr(peak,|SP|)= 0.993  windows=50  [    2.4s]
+  z=  140  mean|R|=    3346  fracOm<=2=0.99614  corr(peak,|SP|)= 0.997  windows=50  [    2.5s]
+  z=  161  mean|R|=    3284  fracOm<=2=0.99820  corr(peak,|SP|)= 0.998  windows=50  [    2.6s]
+  z=  185  mean|R|=    3198  fracOm<=2=0.99972  corr(peak,|SP|)= 1.000  windows=50  [    2.6s]
+  z=  212  mean|R|=    3125  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    2.7s]
+  z=  244  mean|R|=    3048  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    2.8s]
+  z=  281  mean|R|=    2970  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    2.9s]
+  z=  323  mean|R|=    2911  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    3.0s]
+  z=  371  mean|R|=    2850  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    3.0s]
+  z=  427  mean|R|=    2781  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    3.1s]
+  z=  491  mean|R|=    2700  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    3.2s]
+  z=  565  mean|R|=    2647  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    3.3s]
+X=1e+07: z_dich = 185  z_lock = 121  pred = 196
+
+########## X = 1e+08  H = 100000  pred z* = (0.75X)^(1/3) = 422 ##########
+trial-division primes up to 10010 (count 1231); z-grid (28 pts): [30, 34, 40, 46, 52, 60, 69, 80, 92, 106, 121, 140, 161, 185, 212, 244, 281, 323, 371, 427, 491, 565, 649, 747, 859, 988, 1136, 1306]
+[    4.0s] 50 windows sieved (x in [5.00e+07, 1.00e+08])
+  z=   30  mean|R|=   15796  fracOm<=2=0.83739  corr(peak,|SP|)=-0.257  windows=50  [    4.1s]
+  z=   34  mean|R|=   15287  fracOm<=2=0.85090  corr(peak,|SP|)=-0.357  windows=50  [    4.3s]
+  z=   40  mean|R|=   14874  fracOm<=2=0.86205  corr(peak,|SP|)=-0.338  windows=50  [    4.4s]
+  z=   46  mean|R|=   14174  fracOm<=2=0.88139  corr(peak,|SP|)=-0.485  windows=50  [    4.6s]
+  z=   52  mean|R|=   13873  fracOm<=2=0.88985  corr(peak,|SP|)=-0.509  windows=50  [    4.8s]
+  z=   60  mean|R|=   13381  fracOm<=2=0.90363  corr(peak,|SP|)=-0.712  windows=50  [    4.9s]
+  z=   69  mean|R|=   12966  fracOm<=2=0.91542  corr(peak,|SP|)=-0.768  windows=50  [    5.1s]
+  z=   80  mean|R|=   12449  fracOm<=2=0.93001  corr(peak,|SP|)=-0.873  windows=50  [    5.2s]
+  z=   92  mean|R|=   12160  fracOm<=2=0.93809  corr(peak,|SP|)=-0.915  windows=50  [    5.3s]
+  z=  106  mean|R|=   11798  fracOm<=2=0.94824  corr(peak,|SP|)=-0.889  windows=50  [    5.5s]
+  z=  121  mean|R|=   11477  fracOm<=2=0.95717  corr(peak,|SP|)= 0.307  windows=50  [    5.6s]
+  z=  140  mean|R|=   11132  fracOm<=2=0.96614  corr(peak,|SP|)= 0.967  windows=50  [    5.8s]
+  z=  161  mean|R|=   10912  fracOm<=2=0.97188  corr(peak,|SP|)= 0.977  windows=50  [    5.9s]
+  z=  185  mean|R|=   10600  fracOm<=2=0.97960  corr(peak,|SP|)= 0.980  windows=50  [    6.0s]
+  z=  212  mean|R|=   10338  fracOm<=2=0.98559  corr(peak,|SP|)= 0.986  windows=50  [    6.2s]
+  z=  244  mean|R|=   10078  fracOm<=2=0.99082  corr(peak,|SP|)= 0.992  windows=50  [    6.3s]
+  z=  281  mean|R|=    9824  fracOm<=2=0.99518  corr(peak,|SP|)= 0.996  windows=50  [    6.4s]
+  z=  323  mean|R|=    9640  fracOm<=2=0.99754  corr(peak,|SP|)= 0.998  windows=50  [    6.5s]
+  z=  371  mean|R|=    9463  fracOm<=2=0.99917  corr(peak,|SP|)= 0.999  windows=50  [    6.7s]
+  z=  427  mean|R|=    9268  fracOm<=2=0.99992  corr(peak,|SP|)= 1.000  windows=50  [    6.8s]
+  z=  491  mean|R|=    9050  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    6.9s]
+  z=  565  mean|R|=    8906  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.1s]
+  z=  649  mean|R|=    8696  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.2s]
+  z=  747  mean|R|=    8523  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.3s]
+  z=  859  mean|R|=    8341  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.4s]
+  z=  988  mean|R|=    8178  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.5s]
+  z= 1136  mean|R|=    7983  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.7s]
+  z= 1306  mean|R|=    7806  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [    7.8s]
+X=1e+08: z_dich = 371  z_lock = 244  pred = 422
+
+########## X = 1e+09  H = 300000  pred z* = (0.75X)^(1/3) = 909 ##########
+trial-division primes up to 31633 (count 3402); z-grid (33 pts): [30, 34, 40, 46, 52, 60, 69, 80, 92, 106, 121, 140, 161, 185, 212, 244, 281, 323, 371, 427, 491, 565, 649, 747, 859, 988, 1136, 1306, 1502, 1727, 1986, 2284, 2627]
+[    9.9s] 50 windows sieved (x in [5.00e+08, 1.00e+09])
+  z=   30  mean|R|=   47384  fracOm<=2=0.78992  corr(peak,|SP|)= 0.009  windows=50  [   10.3s]
+  z=   34  mean|R|=   45855  fracOm<=2=0.80379  corr(peak,|SP|)=-0.091  windows=50  [   10.7s]
+  z=   40  mean|R|=   44616  fracOm<=2=0.81533  corr(peak,|SP|)=-0.049  windows=50  [   11.1s]
+  z=   46  mean|R|=   42514  fracOm<=2=0.83543  corr(peak,|SP|)=-0.125  windows=50  [   11.5s]
+  z=   52  mean|R|=   41609  fracOm<=2=0.84431  corr(peak,|SP|)=-0.188  windows=50  [   11.8s]
+  z=   60  mean|R|=   40131  fracOm<=2=0.85903  corr(peak,|SP|)=-0.167  windows=50  [   12.1s]
+  z=   69  mean|R|=   38886  fracOm<=2=0.87172  corr(peak,|SP|)=-0.219  windows=50  [   12.5s]
+  z=   80  mean|R|=   37336  fracOm<=2=0.88770  corr(peak,|SP|)=-0.364  windows=50  [   12.8s]
+  z=   92  mean|R|=   36472  fracOm<=2=0.89664  corr(peak,|SP|)=-0.438  windows=50  [   13.1s]
+  z=  106  mean|R|=   35391  fracOm<=2=0.90795  corr(peak,|SP|)=-0.591  windows=50  [   13.4s]
+  z=  121  mean|R|=   34433  fracOm<=2=0.91812  corr(peak,|SP|)=-0.773  windows=50  [   13.7s]
+  z=  140  mean|R|=   33412  fracOm<=2=0.92873  corr(peak,|SP|)=-0.844  windows=50  [   14.0s]
+  z=  161  mean|R|=   32756  fracOm<=2=0.93555  corr(peak,|SP|)=-0.877  windows=50  [   14.3s]
+  z=  185  mean|R|=   31809  fracOm<=2=0.94536  corr(peak,|SP|)=-0.910  windows=50  [   14.6s]
+  z=  212  mean|R|=   31007  fracOm<=2=0.95359  corr(peak,|SP|)=-0.665  windows=50  [   14.9s]
+  z=  244  mean|R|=   30207  fracOm<=2=0.96169  corr(peak,|SP|)= 0.899  windows=50  [   15.2s]
+  z=  281  mean|R|=   29417  fracOm<=2=0.96947  corr(peak,|SP|)= 0.967  windows=50  [   15.6s]
+  z=  323  mean|R|=   28839  fracOm<=2=0.97490  corr(peak,|SP|)= 0.971  windows=50  [   15.9s]
+  z=  371  mean|R|=   28263  fracOm<=2=0.98018  corr(peak,|SP|)= 0.982  windows=50  [   16.2s]
+  z=  427  mean|R|=   27634  fracOm<=2=0.98543  corr(peak,|SP|)= 0.989  windows=50  [   16.5s]
+  z=  491  mean|R|=   26924  fracOm<=2=0.99079  corr(peak,|SP|)= 0.994  windows=50  [   16.8s]
+  z=  565  mean|R|=   26482  fracOm<=2=0.99371  corr(peak,|SP|)= 0.996  windows=50  [   17.0s]
+  z=  649  mean|R|=   25864  fracOm<=2=0.99701  corr(peak,|SP|)= 0.998  windows=50  [   17.3s]
+  z=  747  mean|R|=   25379  fracOm<=2=0.99887  corr(peak,|SP|)= 0.999  windows=50  [   17.5s]
+  z=  859  mean|R|=   24893  fracOm<=2=0.99982  corr(peak,|SP|)= 1.000  windows=50  [   17.8s]
+  z=  988  mean|R|=   24482  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   18.1s]
+  z= 1136  mean|R|=   23998  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   18.3s]
+  z= 1306  mean|R|=   23558  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   18.6s]
+  z= 1502  mean|R|=   23143  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   18.8s]
+  z= 1727  mean|R|=   22712  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   19.1s]
+  z= 1986  mean|R|=   22332  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   19.3s]
+  z= 2284  mean|R|=   21888  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   19.5s]
+  z= 2627  mean|R|=   21479  fracOm<=2=1.00000  corr(peak,|SP|)= 1.000  windows=50  [   19.8s]
+X=1e+09: z_dich = 859  z_lock = 491  pred = 909
+
+=== SUMMARY: two-constant law z* = c * (0.75X)^(1/3) ===
+      X        pred   z_dich      c_d   z_lock      c_l
+      1e+06       91       80    0.881       52    0.572
+      1e+07      196      185    0.945      121    0.618
+      1e+08      422      371    0.880      244    0.579
+      1e+09      909      859    0.945      491    0.540
+
+fit slope log z_dich vs log X : 0.3395  (cube root = 0.3333; registered [0.31, 0.36]; kill outside [0.28, 0.39])
+fit slope log z_lock vs log X : 0.3230
+
+=== PRE-REGISTERED VERDICT ===
+  both indicators defined at all four X  : True
+  clause 1: c_d in [0.90, 1.05] each dec : False  (c_d = [0.881, 0.945, 0.88, 0.945])
+  clause 2: c_l within +-20% of mean     : True  (c_l = [0.572, 0.618, 0.579, 0.54], mean = 0.577, max dev = 0.071)
+  clause 3: both slopes in [0.31, 0.36]  : True  (slope_d = 0.33949117117299293, slope_l = 0.3229838901486788)
+  kill: slope outside [0.28, 0.39]       : False
+  kill: c_l spread factor > 2            : False  (spread = 1.144)
+  VERDICT: AMBIGUOUS
+[   19.8s] done

@@ -1,0 +1,95 @@
+PROBE W2-2: LFU purity-to-structure z-scan  (H=100000, NWIN=60, x in [5e+07,1e+08])
+Omega<=2 dichotomy threshold z* = (x+H)^(1/3) ~ 464
+Farey fractions q<=48: 711; random alphas per window: 40
+[    0.9s] 60 windows sieved
+
+=== z=30  (windows used 60, mean |R| = 15795, mean frac Omega<=2 in R = 0.837) ===
+  F rational : median 0.831  q95 1.728  max 3.177
+  F random   : median 0.833  q95 1.717  max 2.926
+  rho = 1.006
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 0.040  (mean |SP|/sqrt|R| = 17.513, mean SP = 2200.9)
+  [    2.3s]
+
+=== z=100  (windows used 60, mean |R| = 12033, mean frac Omega<=2 in R = 0.941) ===
+  F rational : median 0.842  q95 1.755  max 5.345
+  F random   : median 0.828  q95 1.704  max 2.957
+  rho = 1.030
+  per-window peak vs |SP|/sqrt|R|: Pearson r = -0.894  (mean |SP|/sqrt|R| = 2.755, mean SP = 302.2)
+  [    3.4s]
+
+=== z=200  (windows used 60, mean |R| = 10384, mean frac Omega<=2 in R = 0.984) ===
+  F rational : median 0.889  q95 1.963  max 11.561
+  F random   : median 0.840  q95 1.705  max 3.710
+  rho = 1.151
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 0.980  (mean |SP|/sqrt|R| = 7.861, mean SP = -801.1)
+  [    4.4s]
+
+=== z=300  (windows used 60, mean |R| = 9758, mean frac Omega<=2 in R = 0.996) ===
+  F rational : median 0.951  q95 2.250  max 16.015
+  F random   : median 0.813  q95 1.699  max 3.822
+  rho = 1.324
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 0.997  (mean |SP|/sqrt|R| = 13.204, mean SP = -1304.3)
+  [    5.3s]
+
+=== z=400  (windows used 60, mean |R| = 9348, mean frac Omega<=2 in R = 1.000) ===
+  F rational : median 1.013  q95 2.560  max 20.082
+  F random   : median 0.826  q95 1.736  max 3.906
+  rho = 1.475
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 1.000  (mean |SP|/sqrt|R| = 17.364, mean SP = -1678.9)
+  [    6.2s]
+
+=== z=500  (windows used 60, mean |R| = 9030, mean frac Omega<=2 in R = 1.000) ===
+  F rational : median 1.076  q95 2.914  max 23.754
+  F random   : median 0.826  q95 1.732  max 4.040
+  rho = 1.683
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 1.000  (mean |SP|/sqrt|R| = 20.983, mean SP = -1994.0)
+  [    7.1s]
+
+=== z=700  (windows used 60, mean |R| = 8606, mean frac Omega<=2 in R = 1.000) ===
+  F rational : median 1.176  q95 3.464  max 28.863
+  F random   : median 0.829  q95 1.745  max 4.191
+  rho = 1.985
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 1.000  (mean |SP|/sqrt|R| = 26.068, mean SP = -2418.2)
+  [    7.9s]
+
+=== z=1000  (windows used 60, mean |R| = 8156, mean frac Omega<=2 in R = 1.000) ===
+  F rational : median 1.291  q95 4.091  max 34.594
+  F random   : median 0.824  q95 1.774  max 4.221
+  rho = 2.306
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 1.000  (mean |SP|/sqrt|R| = 31.765, mean SP = -2868.6)
+  [    8.7s]
+
+=== z=2000  (windows used 60, mean |R| = 7292, mean frac Omega<=2 in R = 1.000) ===
+  F rational : median 1.557  q95 5.356  max 47.090
+  F random   : median 0.796  q95 1.804  max 4.836
+  rho = 2.968
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 1.000  (mean |SP|/sqrt|R| = 43.701, mean SP = -3731.7)
+  [    9.5s]
+
+=== z=5000  (windows used 60, mean |R| = 6184, mean frac Omega<=2 in R = 1.000) ===
+  F rational : median 2.003  q95 7.490  max 65.914
+  F random   : median 0.742  q95 1.659  max 5.727
+  rho = 4.514
+  per-window peak vs |SP|/sqrt|R|: Pearson r = 1.000  (mean |SP|/sqrt|R| = 61.551, mean SP = -4839.8)
+  [   10.1s]
+
+=== SUMMARY TABLE ===
+   z     mean|R|   rho    q95Frat  q95Frnd  corr(peak,SP)  mean|SP|/sqrtR  fracOm<=2
+    30     15795   1.006    1.728    1.717         0.040         17.513      0.837
+   100     12033   1.030    1.755    1.704        -0.894          2.755      0.941
+   200     10384   1.151    1.963    1.705         0.980          7.861      0.984
+   300      9758   1.324    2.250    1.699         0.997         13.204      0.996
+   400      9348   1.475    2.560    1.736         1.000         17.364      1.000
+   500      9030   1.683    2.914    1.732         1.000         20.983      1.000
+   700      8606   1.985    3.464    1.745         1.000         26.068      1.000
+  1000      8156   2.306    4.091    1.774         1.000         31.765      1.000
+  2000      7292   2.968    5.356    1.804         1.000         43.701      1.000
+  5000      6184   4.514    7.490    1.659         1.000         61.551      1.000
+
+=== PRE-REGISTERED VERDICT ===
+  rho <= 1.35 for z in {30,100,200,300} : True  ([np.float64(1.006), np.float64(1.03), np.float64(1.151), np.float64(1.324)])
+  first z with rho >= 2.0               : 1000  (in (232,930): False)
+  corr > 0.6 at z in {1000,2000,5000}   : True  ([1.0, 1.0, 1.0])
+  rho > 3 at some z <= 100 (kill)       : False
+  VERDICT: AMBIGUOUS
+[   10.1s] done

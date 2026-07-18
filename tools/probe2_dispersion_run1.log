@@ -1,0 +1,55 @@
+[    0.0s] sieving lambda up to N=180000001 ...
+[   19.6s] sieve done
+anchor: sum F(m), m<=1e6  = 236   (wave-1 ledger: 236)
+full:   sum F(m), m<=X=3e+07 = 3918   (wave-1 ledger: 3918)   sqrt(X) = 5477
+
+===== D = 30: 7 primes in [30,60), 21 pairs =====
+  (i)  r2 = |E|/sqrt(4X/(d1*d2)):  mean=0.853  median=0.669  q95=2.282  max=2.545   [Gaussian pred: mean 0.798]
+       signed z: mean=-0.2748  (bias check; noise scale 1/sqrt(npairs) = 0.2182)
+  (ii) mean |row corr| (raw E rows): 0.399  (max 0.783, 21 row pairs, 5 common cols; pure-noise baseline E|r| ~ 0.399)
+       mean |row corr| (normalized z rows): 0.406  (max 0.828)
+  (iii) Delta(D) = sum E^2 = 1739761.3   noise pred = 1374085.0   ratio = 1.266
+  [   20.0s] D=30 done
+
+===== D = 100: 21 primes in [100,200), 210 pairs =====
+  (i)  r2 = |E|/sqrt(4X/(d1*d2)):  mean=0.778  median=0.637  q95=1.860  max=2.615   [Gaussian pred: mean 0.798]
+       signed z: mean=+0.1134  (bias check; noise scale 1/sqrt(npairs) = 0.0690)
+  (ii) mean |row corr| (raw E rows): 0.203  (max 0.683, 210 row pairs, 19 common cols; pure-noise baseline E|r| ~ 0.188)
+       mean |row corr| (normalized z rows): 0.200  (max 0.684)
+  (iii) Delta(D) = sum E^2 = 1111694.6   noise pred = 1218513.7   ratio = 0.912
+  [   20.0s] D=100 done
+
+===== D = 300: 47 primes in [300,600), 1081 pairs =====
+  (i)  r2 = |E|/sqrt(4X/(d1*d2)):  mean=0.804  median=0.685  q95=1.964  max=3.417   [Gaussian pred: mean 0.798]
+       signed z: mean=+0.0096  (bias check; noise scale 1/sqrt(npairs) = 0.0304)
+  (ii) mean |row corr| (raw E rows): 0.122  (max 0.470, 1081 row pairs, 45 common cols; pure-noise baseline E|r| ~ 0.120)
+       mean |row corr| (normalized z rows): 0.121  (max 0.456)
+  (iii) Delta(D) = sum E^2 = 705019.7   noise pred = 699497.9   ratio = 1.008
+  [   20.0s] D=300 done
+
+===== D = 1000: 135 primes in [1000,2000), 9045 pairs =====
+  (i)  r2 = |E|/sqrt(4X/(d1*d2)):  mean=0.792  median=0.660  q95=1.952  max=3.841   [Gaussian pred: mean 0.798]
+       signed z: mean=+0.0058  (bias check; noise scale 1/sqrt(npairs) = 0.0105)
+  (ii) mean |row corr| (raw E rows): 0.071  (max 0.342, 9045 row pairs, 133 common cols; pure-noise baseline E|r| ~ 0.069)
+       mean |row corr| (normalized z rows): 0.069  (max 0.346)
+  (iii) Delta(D) = sum E^2 = 530646.8   noise pred = 530202.8   ratio = 1.001
+  [   20.4s] D=1000 done
+
+===== SUMMARY =====
+     D  npairs  r2_mean   r2_med   r2_q95  |corr|  |corr|z   base  Dlt/nse
+    30      21    0.853    0.669    2.282   0.399    0.406  0.399    1.266
+   100     210    0.778    0.637    1.860   0.203    0.200  0.188    0.912
+   300    1081    0.804    0.685    1.964   0.122    0.121  0.120    1.008
+  1000    9045    0.792    0.660    1.952   0.071    0.069  0.069    1.001
+pooled mean |row corr| over all D (raw E): 0.079   (normalized z: 0.078)
+
+===== PRE-REGISTERED VERDICT =====
+  signal conds: r2 mean in [0.5,1.2] all D: True (means ['0.853', '0.778', '0.804', '0.792'])
+                mean |row corr| < 0.2:      True (pooled 0.079; per-D ['0.399', '0.203', '0.122', '0.071'])
+                Delta/noise in [0.5,2] all D: True (ratios ['1.266', '0.912', '1.008', '1.001'])
+  kill conds:   r2 mean grows beyond 2:     False
+                mean |row corr| > 0.5:      False
+                Delta/noise > 5:            False
+
+VERDICT: SIGNAL
+[   20.4s] done

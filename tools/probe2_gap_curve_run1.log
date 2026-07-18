@@ -1,0 +1,45 @@
+[   0.0s] plain IS_PRIME sieve to 6000000 ...
+[   0.0s] sieve done (412849 primes)
+
+ z | graph      | vertices | giant frac | gap 1-sigma2
+[   0.4s] z=100: |p-list|=21, |k-list|=409054, pairs=3090846, trial-division primes=23
+   100 | full       |  3090846 |     0.5287 | 0.155513   [  15.5s]
+   100 | restricted |   983743 |     0.5290 | 0.098776   [  15.5s]
+        -> kept fraction 0.318, giant full/restricted = 0.5287/0.5290, gap ratio g(z) = 0.635
+[  16.0s] z=200: |p-list|=32, |k-list|=215768, pairs=2442949, trial-division primes=44
+   200 | full       |  2442949 |     0.5033 | 0.179704   [  36.8s]
+   200 | restricted |   670633 |     0.5031 | 0.120124   [  36.8s]
+        -> kept fraction 0.275, giant full/restricted = 0.5033/0.5031, gap ratio g(z) = 0.668
+[  37.7s] z=300: |p-list|=47, |k-list|=148398, pairs=2502063, trial-division primes=60
+   300 | full       |  2502063 |     0.5175 | 0.159811   [  53.9s]
+   300 | restricted |   643846 |     0.5174 | 0.121952   [  53.9s]
+        -> kept fraction 0.257, giant full/restricted = 0.5175/0.5174, gap ratio g(z) = 0.763
+[  54.8s] z=450: |p-list|=67, |k-list|=102083, pairs=2446765, trial-division primes=85
+   450 | full       |  2446765 |     0.5101 | 0.163598   [  65.9s]
+   450 | restricted |   589797 |     0.5103 | 0.134853   [  65.9s]
+        -> kept fraction 0.241, giant full/restricted = 0.5101/0.5103, gap ratio g(z) = 0.824
+[  67.0s] z=600: |p-list|=87, |k-list|=78274, pairs=2457155, trial-division primes=107
+   600 | full       |  2457155 |     0.5149 | 0.162573   [  77.5s]
+   600 | restricted |   569066 |     0.5150 | 0.139903   [  77.5s]
+        -> kept fraction 0.232, giant full/restricted = 0.5149/0.5150, gap ratio g(z) = 0.861
+[  78.8s] z=750: |p-list|=107, |k-list|=63745, pairs=2436120, trial-division primes=130
+   750 | full       |  2436120 |     0.5113 | 0.163555   [  88.9s]
+   750 | restricted |   546098 |     0.5111 | 0.144235   [  88.9s]
+        -> kept fraction 0.224, giant full/restricted = 0.5113/0.5111, gap ratio g(z) = 0.882
+[  90.3s] z=843: |p-list|=117, |k-list|=57226, pairs=2395220, trial-division primes=144
+   843 | full       |  2395220 |     0.5125 | 0.163047   [  98.3s]
+   843 | restricted |   527733 |     0.5120 | 0.145223   [  98.3s]
+        -> kept fraction 0.220, giant full/restricted = 0.5125/0.5120, gap ratio g(z) = 0.891
+
+=== SUMMARY (M = 10^8, window 6M ~ 6e8, X^(1/3) ~ 843) ===
+  z=  100: kept=0.318  giant full=0.5287  giant restricted=0.5290  gap-ratio g(z)=0.635
+  z=  200: kept=0.275  giant full=0.5033  giant restricted=0.5031  gap-ratio g(z)=0.668
+  z=  300: kept=0.257  giant full=0.5175  giant restricted=0.5174  gap-ratio g(z)=0.763
+  z=  450: kept=0.241  giant full=0.5101  giant restricted=0.5103  gap-ratio g(z)=0.824
+  z=  600: kept=0.232  giant full=0.5149  giant restricted=0.5150  gap-ratio g(z)=0.861
+  z=  750: kept=0.224  giant full=0.5113  giant restricted=0.5111  gap-ratio g(z)=0.882
+  z=  843: kept=0.220  giant full=0.5125  giant restricted=0.5120  gap-ratio g(z)=0.891
+
+min g(z) over grid = 0.635; g(843) = 0.891; max |giant_restr - giant_full| = 0.0005; restricted giant collapse (<0.30): False
+PRE-REGISTERED VERDICT: SIGNAL
+[  98.3s] done
